@@ -28,8 +28,10 @@ A prompt then runs:
 
 A proposition is stored only when the source supplies one. VectorPrism's
 offline heuristic extractor can add a causal graph and numeric attributes
-from the retrieved texts. A policy rule and an objective are not inferred
-from those texts. PrismManifest's span grammar then allows only numeric
+from the retrieved texts. A measurement written in a chunk, such as a body
+length in centimetres, is copied onto that chunk alone, and "up to" stays
+a maximum in the claim's provenance. A policy rule and an objective are
+not inferred from those texts. PrismManifest's span grammar then allows only numeric
 tokens that were cut from those chunks. The signed tool gate is separate
 and needs an Ed25519 keyring.
 """
@@ -59,6 +61,7 @@ from cpu_llm.cognition.adapter import PrismCognitionSubspaceAdapter
 from cpu_llm.grounding import shine_gate, verify_grounding
 from cpu_llm.ir.schema import EIRProposition
 from cpu_llm.manifest_spans import answer_numbers_allowed, build_span_grammar, canonical_values
+from cpu_llm.measurements import extract_stated_measurements
 from cpu_llm.realizer.surface import SemanticSurfaceRealizer
 from cpu_llm.retrieval import VectorPrismIndex
 
@@ -425,7 +428,36 @@ def _structure_metadata(related: list[dict[str, Any]]) -> dict[str, dict[str, An
         meta = metadata.setdefault(str(row["doc_id"]), {})
         meta["numeric_claims"] = claims
         meta["facts"] = claims
+    _attach_literal_measurements(metadata, related)
     return metadata
+
+
+def _attach_literal_measurements(
+    metadata: dict[str, dict[str, Any]],
+    related: list[dict[str, Any]],
+) -> None:
+    """Copy stated measurements onto the chunk that contains them."""
+    for item in related:
+        claims, provenance = extract_stated_measurements(item["chunk_text"])
+        if not claims:
+            continue
+        meta = metadata.setdefault(item["chunk_id"], {})
+        numeric = dict(meta.get("numeric_claims") or {})
+        facts = dict(meta.get("facts") or {})
+        kept: dict[str, Any] = {}
+        for key, value in claims.items():
+            if key in numeric:
+                continue
+            numeric[key] = value
+            facts.setdefault(key, value)
+            kept[key] = provenance[key]
+        if not kept:
+            continue
+        meta["numeric_claims"] = numeric
+        meta["facts"] = facts
+        qualifiers = dict(meta.get("numeric_qualifiers") or {})
+        qualifiers.update(kept)
+        meta["numeric_qualifiers"] = qualifiers
 
 
 def _causal_metadata(edges: list[dict[str, Any]]) -> dict[str, Any] | None:
@@ -498,6 +530,16 @@ def _think(appliance: Appliance):
         update: dict[str, Any] = {
             "thinker_directive": envelope.directive.value,
             "gather_questions": list(envelope.gather_questions),
+            "numeric_claims": {
+                chunk_id: meta["numeric_claims"]
+                for chunk_id, meta in metadata.items()
+                if meta.get("numeric_claims")
+            },
+            "numeric_qualifiers": {
+                chunk_id: meta["numeric_qualifiers"]
+                for chunk_id, meta in metadata.items()
+                if meta.get("numeric_qualifiers")
+            },
         }
         turn = appliance._turn or {}
         proposal = turn.get("payment")

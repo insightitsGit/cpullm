@@ -167,6 +167,57 @@ def test_ingest_saves_and_replaces_source_chunks(appliance: Appliance):
     ingest_source(appliance.index, [], replace_prefix=prefix)
 
 
+def test_stated_measurement_clears_numeric_observations_without_an_answer(
+    appliance: Appliance, monkeypatch: pytest.MonkeyPatch
+):
+    description = next(
+        text
+        for document_id, _title, text in validation_chunks()
+        if document_id == "wikitext2-homarus-gammarus-p0002"
+    )
+    lead = next(
+        text
+        for document_id, _title, text in validation_chunks()
+        if document_id == "wikitext2-homarus-gammarus-p0001"
+    )
+    hits = [
+        {
+            "document_id": document_id,
+            "chunk_text": text,
+            "final_score": score,
+            "tensor_1024d": appliance.index.encode_chunk(text),
+        }
+        for document_id, text, score in (
+            ("wikitext2-homarus-gammarus-p0001", lead, 0.9),
+            ("wikitext2-homarus-gammarus-p0002", description, 0.8),
+        )
+    ]
+    monkeypatch.setattr(appliance.index, "search", lambda query, top_k=5: hits)
+    result = appliance.ask("What is the European lobster?")
+    lead_claims = result["numeric_claims"]["wikitext2-homarus-gammarus-p0001"]
+    described = result["numeric_claims"]["wikitext2-homarus-gammarus-p0002"]
+    assert lead_claims["length_cm"] == 60.0
+    assert lead_claims["length_in"] == 24.0
+    assert lead_claims["mass_kg"] == 6.0
+    assert lead_claims["mass_lb"] == 13.0
+    assert "body_length_cm" not in lead_claims
+    assert "weight_kg_min" not in lead_claims
+    assert described["body_length_cm"] == 60.0
+    assert described["body_length_in"] == 24.0
+    assert described["weight_kg_min"] == 5.0
+    assert "mass_kg" not in described
+    assert result["numeric_qualifiers"]["wikitext2-homarus-gammarus-p0001"]["length_cm"]["qualifier"] == "maximum"
+    assert result["numeric_qualifiers"]["wikitext2-homarus-gammarus-p0002"]["body_length_cm"]["qualifier"] == "maximum"
+    questions = result["gather_questions"]
+    assert "no numeric observations" not in questions
+    assert "no numeric threshold on hypothesis or objective" in questions
+    assert "causal_graph is required" in questions
+    assert "missing treatment/outcome binding" not in questions
+    assert result["cognition_status"] == "needs_evidence_propositions"
+    assert result.get("answer") is None
+    assert result["thinker_directive"] == "gather"
+
+
 def test_wikitext_paragraph_is_retrieved_as_source_text(appliance: Appliance):
     document_id, title, text = next(
         item for item in validation_chunks() if item[1] == "Homarus gammarus"
