@@ -3,7 +3,7 @@
 ChorusGraph orders the steps. There is no language-model client in this module.
 
 Training stores a caller-supplied chunk in three places: VectorPrism writes the
-1024-d tensor to pgvector, PrismResonance keeps that tensor in the catalog and
+1024-d tensor to pgvector, PrismResonance keeps the dense-channel amplitude and
 sleeps so co-activated chunks can find each other, and PrismCortex records the
 chunk as a graph node.
 
@@ -11,11 +11,20 @@ A prompt then runs:
 
 1. PrismGuard checks the prompt.
 2. VectorPrism returns the nearest chunks and their tensors.
-3. PrismResonance ranks those chunks against the query tensor.
-4. PrismThinker reads the ranked chunks as evidence and names what is missing.
-5. The design's deliberation adapter runs when evidence propositions are
+3. PrismResonance ranks those chunks by dense-channel interference. The header
+   is a packed timestamp, not a coordinate, so it is not part of the amplitude.
+   VectorPrism already chose this shortlist, so the coherence shield does not
+   drop a hit whose cosine is merely moderate.
+4. PrismRAG labels each retrieved chunk with the article slug already in its
+   document id, and labels the prompt only when that slug's token is in the prompt.
+5. PrismThinker reads the ranked chunks as evidence and names what is missing.
+   A payment proposal is evaluated with PrismAgenticPay's corporate policy.
+6. The design's deliberation adapter runs when evidence propositions are
    present, and when the retrieval is empty. The surface realizer turns that
    result into a sentence, and the auditor checks the sentence.
+7. PrismShine checks the retrieval trace and, when a sentence exists, the
+   sentence against those paragraphs. The judge stays off. An abstention
+   sentence is kept. Any other blocked sentence is replaced.
 
 A proposition is stored only when the source supplies one. VectorPrism's
 offline heuristic extractor can add a causal graph and numeric attributes
@@ -27,10 +36,12 @@ and needs an Ed25519 keyring.
 
 from __future__ import annotations
 
+import math
 from pathlib import Path
 from typing import Any
 
 import numpy as np
+from vectorprism.tensor_contract import PSMTensorContract
 from chorusgraph.core import END, START, Graph
 from chorusgraph.core.node import dict_node_adapter
 from chorusgraph.persistence.sqlite_graph_store import SqliteGraphStore
@@ -41,8 +52,11 @@ from prismthinker import PrismThinker
 from prismthinker.adapters.chorusgraph import to_chorusgraph
 from prismthinker.adapters.vectorprism import RetrievedDocument, from_vectorprism
 
+from cpu_llm.agents.discovery import run_discovery
 from cpu_llm.audit.entailment import EpistemicEntailmentAuditor
+from cpu_llm.catalog import label_retrieval
 from cpu_llm.cognition.adapter import PrismCognitionSubspaceAdapter
+from cpu_llm.grounding import shine_gate, verify_grounding
 from cpu_llm.ir.schema import EIRProposition
 from cpu_llm.manifest_spans import answer_numbers_allowed, build_span_grammar, canonical_values
 from cpu_llm.realizer.surface import SemanticSurfaceRealizer
@@ -51,8 +65,34 @@ from cpu_llm.retrieval import VectorPrismIndex
 TENSOR_DIM = 1024
 
 
+def resonance_amplitude(tensor: np.ndarray) -> np.ndarray:
+    """Unit dense core in the 1024-d layout. The header is not an embedding.
+
+    VectorPrism stores a unix timestamp in header slots 3 and 4 by reinterpreting
+    the integer bits as float32. That bit pattern is about 1e26, and a float32
+    dot product of two such headers overflows to infinity. The dense core is the
+    trained channel and is already a unit vector. The other five channels are
+    still initialization; the disentangled slice alone has a norm near 12, so
+    mixing it in would rank that noise and drop the real matches under the
+    coherence shield.
+    """
+    vector = np.asarray(tensor, dtype=np.float64).reshape(-1)
+    if vector.shape != (TENSOR_DIM,):
+        raise ValueError(f"expected a {TENSOR_DIM}-d tensor, got {vector.shape}")
+    dense = PSMTensorContract.DENSE_CORE
+    part = vector[dense.start : dense.end]
+    norm = float(np.linalg.norm(part))
+    if not math.isfinite(norm) or norm == 0.0:
+        raise ValueError("dense channel is not a finite non-zero vector")
+    amplitude = np.zeros(TENSOR_DIM, dtype=np.float32)
+    amplitude[dense.start : dense.end] = (part / norm).astype(np.float32)
+    return amplitude
+
+
 def default_checkpoint() -> Path:
-    return Path(__file__).resolve().parents[2] / "checkpoints" / "vectorprism.pt"
+    from cpu_llm.retrieval import default_checkpoint as checkpoint
+
+    return checkpoint()
 
 
 class Appliance:
@@ -67,12 +107,15 @@ class Appliance:
         self.cognition = PrismCognitionSubspaceAdapter()
         self.realizer = SemanticSurfaceRealizer()
         self.auditor = EpistemicEntailmentAuditor()
+        self.shine = shine_gate()
+        self.payment_policy = _payment_evaluator()
         cache = Path(".chorusgraph") / "cpu-llm"
         cache.mkdir(parents=True, exist_ok=True)
         self.resonance = PrismResonance.create(
             embedding_dim=TENSOR_DIM,
             onnx_path=cache / "resonance_1024.onnx",
             state_path=cache / "resonance_state.db",
+            coherence_threshold=-1.0,
             auto_sleep=False,
         )
         self.memory = SqliteGraphStore(cache / "graph_store.db", tenant_id="cpu-llm")
@@ -94,7 +137,11 @@ class Appliance:
         for document_id, chunk_text in chunks:
             self.index.upsert(document_id, chunk_text)
             tensor = np.asarray(self.index.encode_chunk(chunk_text), dtype=np.float32).reshape(-1)
-            self.resonance.ingest(document_id, tensor, frequency=FrequencyFamily.NEUTRAL)
+            self.resonance.ingest(
+                document_id,
+                resonance_amplitude(tensor),
+                frequency=FrequencyFamily.NEUTRAL,
+            )
             _remember_chunk(self.memory, document_id, chunk_text, tensor, bound.get(document_id))
         self.resonance.sleep()
         return len(chunks)
@@ -102,9 +149,25 @@ class Appliance:
     def upsert(self, document_id: str, chunk_text: str) -> int:
         return self.index_chunks([(document_id, chunk_text)])
 
-    def ask(self, message: str, propositions: list[EIRProposition] | None = None) -> dict[str, Any]:
-        self._turn = {"propositions": list(propositions or [])}
-        return self.graph.invoke({"message": message, "tenant_id": "cpu-llm"})
+    def ask(
+        self,
+        message: str,
+        propositions: list[EIRProposition] | None = None,
+        *,
+        discover: bool = False,
+        payment: Any | None = None,
+        authority: Any | None = None,
+    ) -> dict[str, Any]:
+        if (payment is None) != (authority is None):
+            raise ValueError("a payment turn needs both a proposal and an authority snapshot")
+        self._turn = {
+            "propositions": list(propositions or []),
+            "payment": payment,
+            "authority": authority,
+        }
+        return self.graph.invoke(
+            {"message": message, "tenant_id": "cpu-llm", "discover": discover}
+        )
 
 
 def _remember_chunk(
@@ -154,18 +217,24 @@ def _compile(appliance: Appliance):
     graph.add_node("guard", dict_node_adapter(_guard(appliance), hop="guard"))
     graph.add_node("retrieve", dict_node_adapter(_retrieve(appliance), hop="retrieve"))
     graph.add_node("resonate", dict_node_adapter(_resonate(appliance), hop="resonate"))
+    graph.add_node("catalog", dict_node_adapter(_catalog(appliance), hop="catalog"))
     graph.add_node("spans", dict_node_adapter(_spans(appliance), hop="spans"))
     graph.add_node("think", dict_node_adapter(_think(appliance), hop="think"))
     graph.add_node("cognize", dict_node_adapter(_cognize(appliance), hop="cognize"))
     graph.add_node("grammar", dict_node_adapter(_grammar(appliance), hop="grammar"))
+    graph.add_node("shine", dict_node_adapter(_shine(appliance), hop="shine"))
+    graph.add_node("discover", dict_node_adapter(_discover(appliance), hop="discover"))
     graph.add_edge(START, "guard")
     graph.add_conditional_edges("guard", _after_guard, {"retrieve": "retrieve", "end": END})
     graph.add_edge("retrieve", "resonate")
-    graph.add_edge("resonate", "spans")
+    graph.add_edge("resonate", "catalog")
+    graph.add_edge("catalog", "spans")
     graph.add_edge("spans", "think")
     graph.add_edge("think", "cognize")
     graph.add_edge("cognize", "grammar")
-    graph.add_edge("grammar", END)
+    graph.add_edge("grammar", "shine")
+    graph.add_conditional_edges("shine", _after_grammar, {"discover": "discover", "end": END})
+    graph.add_edge("discover", END)
     return graph.compile()
 
 
@@ -187,6 +256,77 @@ def _after_guard(state: dict[str, Any]) -> str:
     if state.get("guard_decision") == "allow":
         return "retrieve"
     return "end"
+
+
+def _catalog(appliance: Appliance):
+    def node(state: dict[str, Any]) -> dict[str, Any]:
+        labeled = label_retrieval(state.get("message") or "", list(state.get("related") or []))
+        return {
+            "related": labeled["related"],
+            "query_category": labeled["query_category"],
+            "rag_hits": labeled["rag_hits"],
+            "rag_retrieval_mode": labeled["rag_retrieval_mode"],
+        }
+
+    return node
+
+
+def _shine(appliance: Appliance):
+    def node(state: dict[str, Any]) -> dict[str, Any]:
+        checked = verify_grounding(
+            appliance.shine,
+            question=state.get("message") or "",
+            answer=state.get("answer"),
+            related=list(state.get("related") or []),
+            query_category=state.get("query_category"),
+            abstention=bool(state.get("abstention_triggered")),
+        )
+        update = {
+            "shine_decision": checked["shine_decision"],
+            "shine_resolution_gate": checked["shine_resolution_gate"],
+            "shine_signatures": checked["shine_signatures"],
+            "shine_ok": checked["shine_ok"],
+            "shine_enforced": checked["shine_enforced"],
+        }
+        if checked["answer"] is not None:
+            update["answer"] = checked["answer"]
+        return update
+
+    return node
+
+
+def _payment_evaluator():
+    from prismagenticpay.core.evaluator import PrismThinkerPaymentEvaluator
+    from prismagenticpay.policies.corporate import default_corporate_policies
+
+    return PrismThinkerPaymentEvaluator(default_corporate_policies())
+
+
+def evaluate_payment(evaluator, proposal, authority):
+    """Run the corporate policy with a fresh authority snapshot.
+
+    PrismAgenticPay withholds a fact that has no source timestamp. The
+    snapshot just taken is the source, with the library's own freshness record.
+    """
+    from datetime import datetime, timezone
+
+    now = datetime.now(timezone.utc)
+    facts = evaluator._structured_facts(proposal, authority)
+    metadata = evaluator._fresh_metadata(facts, now)
+    return evaluator.evaluate_proposal(proposal, authority, fact_metadata=metadata, now=now)
+
+
+def _after_grammar(state: dict[str, Any]) -> str:
+    if state.get("discover") is True:
+        return "discover"
+    return "end"
+
+
+def _discover(appliance: Appliance):
+    def node(state: dict[str, Any]) -> dict[str, Any]:
+        return {"discovery": run_discovery(state)}
+
+    return node
 
 
 def _retrieve(appliance: Appliance):
@@ -219,15 +359,20 @@ def _resonate(appliance: Appliance):
             return {"related": []}
         ids = [hit["document_id"] for hit in hits]
         amplitudes = np.stack(
-            [np.asarray(hit["tensor_1024d"], dtype=np.float32).reshape(-1) for hit in hits]
+            [
+                resonance_amplitude(hit["tensor_1024d"])
+                for hit in hits
+            ]
         )
+        query_amplitude = resonance_amplitude(turn["query_tensor"])
         for chunk_id, amplitude in zip(ids, amplitudes):
             appliance.resonance.ingest(chunk_id, amplitude, frequency=FrequencyFamily.NEUTRAL)
         ranked = appliance.resonance.query(
-            turn["query_tensor"],
+            query_amplitude,
             FrequencyFamily.NEUTRAL,
             ids,
             amplitudes,
+            flat=True,
         )
         by_id = {hit["document_id"]: hit for hit in hits}
         related = []
@@ -235,10 +380,13 @@ def _resonate(appliance: Appliance):
             source = by_id.get(hit.chunk_id)
             if source is None:
                 continue
+            score = float(hit.score)
+            if not math.isfinite(score):
+                raise RuntimeError(f"resonance score for {hit.chunk_id} is not finite")
             related.append(
                 {
                     "chunk_id": hit.chunk_id,
-                    "score": float(hit.score),
+                    "score": score,
                     "chunk_text": source["chunk_text"],
                 }
             )
@@ -347,10 +495,22 @@ def _think(appliance: Appliance):
         ]
         context = from_vectorprism(state.get("message") or "", documents)
         envelope = to_chorusgraph(appliance.thinker.evaluate(context))
-        return {
+        update: dict[str, Any] = {
             "thinker_directive": envelope.directive.value,
             "gather_questions": list(envelope.gather_questions),
         }
+        turn = appliance._turn or {}
+        proposal = turn.get("payment")
+        authority = turn.get("authority")
+        if proposal is not None and authority is not None:
+            from prismagenticpay.policies.corporate import CORPORATE_POLICY_VERSION
+
+            outcome = evaluate_payment(appliance.payment_policy, proposal, authority)
+            update["payment_directive"] = outcome.directive
+            update["payment_allowed_tools"] = list(outcome.allowed_tools)
+            update["payment_gather_fact_keys"] = list(outcome.gather_fact_keys)
+            update["policy_version"] = CORPORATE_POLICY_VERSION
+        return update
 
     return node
 

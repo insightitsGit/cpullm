@@ -24,6 +24,10 @@ ENCODER_NAME = "sentence-transformers/all-mpnet-base-v2"
 LOCAL_PG_DSN = "postgresql://vectorprism:vectorprism@localhost:5433/vectorprism"
 
 
+def default_checkpoint() -> Path:
+    return Path(__file__).resolve().parents[2] / "checkpoints" / "vectorprism.pt"
+
+
 class VectorPrismIndex:
     def __init__(
         self,
@@ -73,6 +77,28 @@ class VectorPrismIndex:
 
     def search(self, query: str, top_k: int = 5):
         return self.engine.search(self.encode_query(query), query, top_k=top_k)
+
+    def save_chunks(self, chunks: list[tuple[str, str]], *, replace_prefix: str | None = None) -> int:
+        """Encode chunk_text with VectorPrism and store the 1024-d rows.
+
+        ``replace_prefix`` deletes previous rows for that source before insert,
+        so a second training run replaces the old chunks instead of leaving them.
+        """
+        if replace_prefix:
+            if not hasattr(self.db, "conn"):
+                raise ValueError("replacing a source requires the pgvector backend")
+            with self.db.conn.cursor() as cursor:
+                cursor.execute(
+                    "DELETE FROM psm_document_embeddings WHERE document_id LIKE %s",
+                    (replace_prefix + "%",),
+                )
+        if not chunks:
+            return 0
+        documents = [
+            IngestDocument(document_id=document_id, chunk_text=chunk_text)
+            for document_id, chunk_text in chunks
+        ]
+        return self.pipeline.upsert_documents(documents, batch_size=32)
 
 
 def _enable_pgvector(dsn: str) -> None:

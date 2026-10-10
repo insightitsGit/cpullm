@@ -22,6 +22,7 @@ def test_header_libraries_import_at_their_published_versions():
         "prismcortex": "0.4.1",
         "prismmanifest": "0.3.4",
         "prismshine": "0.2.2",
+        "prismagenticpay": "1.4.1",
     }
     assert rules_checker().__class__.__name__ == "RuntimeChecker"
     assert chorus_stack("tenant_test").__class__.__name__ == "ChorusStack"

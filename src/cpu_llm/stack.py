@@ -12,6 +12,7 @@ from pathlib import Path
 
 def library_versions() -> dict[str, str]:
     import chorusgraph
+    import prismagenticpay
     import prismcognition
     import prismcortex
     import prismguard
@@ -31,6 +32,7 @@ def library_versions() -> dict[str, str]:
         "prismcortex": prismcortex.__version__,
         "prismmanifest": prismmanifest.__version__,
         "prismshine": prismshine.__version__,
+        "prismagenticpay": prismagenticpay.__version__,
     }
 
 

@@ -1,8 +1,11 @@
 """A turn retrieves VectorPrism chunks and PrismResonance ranks them."""
 
+import math
 import os
 
 import pytest
+
+from prismagenticpay.domain.models import AuthorityState, MerchantIdentity, PaymentProposal
 
 from cpu_llm.ir.schema import (
     EIRProposition,
@@ -16,6 +19,8 @@ from cpu_llm.ir.schema import (
 )
 from cpu_llm.manifest_spans import answer_numbers_allowed, build_span_grammar
 from cpu_llm.pipeline import Appliance
+from cpu_llm.ingest import ingest_source
+from cpu_llm.source import validation_chunks
 
 
 @pytest.fixture(scope="module")
@@ -43,11 +48,15 @@ def test_allowed_question_resonates_the_vectorprism_chunk(appliance: Appliance):
     assert any(item["chunk_id"] == "doc_hyper" for item in result["related"])
     matched = next(item for item in result["related"] if item["chunk_id"] == "doc_hyper")
     assert "taxonomy" in matched["chunk_text"]
-    assert matched["score"] > 0
+    assert math.isfinite(matched["score"])
+    assert 0.0 < matched["score"] <= 1.0
+    assert all(math.isfinite(item["score"]) and -1.0 <= item["score"] <= 1.0 for item in result["related"])
     assert result["thinker_directive"] == "gather"
     assert result["gather_questions"]
     assert result["cognition_status"] == "needs_evidence_propositions"
-    assert result["grammar_span_ids"] == []
+    related_text = " ".join(item["chunk_text"] for item in result["related"])
+    for value in result["grammar_values"]:
+        assert value in related_text
     assert result["grammar_ok"] is True
     assert appliance.memory.find_node_by_label(matched["chunk_text"]) is not None
 
@@ -130,6 +139,102 @@ def test_empty_retrieval_realizes_the_design_abstention(appliance: Appliance, mo
     assert result["abstention_triggered"] is True
     assert result["answer"] == "system does not possess sufficient verified evidence."
     assert result["audit_passed"] is True
+    assert "EMPTY_RETRIEVAL" in result["shine_signatures"]
+    assert result["shine_enforced"] is False
+
+
+def test_ingest_saves_and_replaces_source_chunks(appliance: Appliance):
+    prefix = "ingest-probe-"
+    first = ingest_source(
+        appliance.index,
+        [(prefix + "1", "The European lobster lives in the Atlantic Ocean."), (prefix + "2", "A second stored sentence.")],
+        replace_prefix=prefix,
+    )
+    assert first == 2
+    replaced = ingest_source(
+        appliance.index,
+        [(prefix + "1", "The European lobster lives in the Atlantic Ocean.")],
+        replace_prefix=prefix,
+    )
+    assert replaced == 1
+    with appliance.index.db.conn.cursor() as cursor:
+        cursor.execute(
+            "SELECT document_id FROM psm_document_embeddings WHERE document_id LIKE %s",
+            (prefix + "%",),
+        )
+        ids = {row[0] for row in cursor.fetchall()}
+    assert ids == {prefix + "1"}
+    ingest_source(appliance.index, [], replace_prefix=prefix)
+
+
+def test_wikitext_paragraph_is_retrieved_as_source_text(appliance: Appliance):
+    document_id, title, text = next(
+        item for item in validation_chunks() if item[1] == "Homarus gammarus"
+    )
+    ingest_source(appliance.index, [(document_id, text)])
+    result = appliance.ask("What is the European lobster?")
+    assert any(item["document_id"] == document_id for item in result["passages"])
+    matched = next(item for item in result["related"] if item["chunk_id"] == document_id)
+    assert "European lobster" in matched["chunk_text"]
+    assert title.split()[0] in matched["chunk_text"]
+    assert math.isfinite(matched["score"])
+    assert 0.0 < matched["score"] <= 1.0
+    assert matched["category"] == "homarus-gammarus"
+    assert result["thinker_directive"] == "gather"
+    assert result["gather_questions"]
+    assert result["shine_decision"] in {"pass", "flag", "block", "regenerate"}
+    assert "PARTIAL_RETRIEVAL" not in result["shine_signatures"]
+    assert "EMPTY_RETRIEVAL" not in result["shine_signatures"]
+    assert result["cognition_status"] == "needs_evidence_propositions"
+
+
+def test_discovery_loop_is_opt_in(appliance: Appliance):
+    skipped = appliance.ask("Why use hyperbolic embeddings?")
+    assert "discovery" not in skipped
+    result = appliance.ask("Why use hyperbolic embeddings?", discover=True)
+    discovery = result["discovery"]
+    assert discovery["version"] == "1.0"
+    assert discovery["stages_completed"] == [1, 2, 3, 4]
+    assert discovery["stopped_before"] == "Stage 5: Scale Shifting"
+    assert discovery["claim"]["text"] == "Why use hyperbolic embeddings?"
+    assert any(item["kind"] == "hypothesis" for item in discovery["information"])
+    assert any(item["kind"] == "reported" and "taxonomy" in item["text"] for item in discovery["information"])
+    assert any(item["kind"] == "unknown" for item in discovery["information"])
+    evidence = " ".join(item["text"] for item in discovery["information"])
+    for perspective in discovery["perspectives"]:
+        assert perspective["named_in_evidence"].casefold() in evidence.casefold()
+
+
+def test_payment_turn_uses_the_corporate_policy(appliance: Appliance):
+    proposal = PaymentProposal(
+        transaction_id="tx-blocked",
+        amount_cents=2500,
+        currency="USD",
+        merchant=MerchantIdentity(
+            merchant_id="merchant-1",
+            merchant_name="Blocked Vendor",
+            mcc="5734",
+            domain="vendor.example",
+        ),
+        category="software",
+        agent_id="agent-1",
+        principal_id="principal-1",
+        mandate_id="mandate-1",
+        mandate_type="closed_payment",
+        mandate_hash="a" * 64,
+        idempotency_nonce="nonce-1",
+    )
+    authority = AuthorityState(
+        transaction_cap_cents=100_000,
+        session_remaining_cents=100_000,
+        daily_remaining_cents=100_000,
+        mandate_remaining_cents=100_000,
+        vendor_status="blocked",
+        tier="standard",
+    )
+    result = appliance.ask("Pay the vendor.", payment=proposal, authority=authority)
+    assert result["policy_version"] == "1.1.0"
+    assert result["payment_directive"] == "REFUSE"
 
 
 def test_prompt_injection_stops_before_retrieval(appliance: Appliance):
