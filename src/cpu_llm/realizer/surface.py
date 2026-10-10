@@ -148,7 +148,10 @@ def _clause(proposition: EIRProposition, seen_subjects: dict[str, int]) -> str:
 
 
 def _verb_phrase(proposition: EIRProposition, *, plural: bool, negative: bool) -> str:
-    """Active clauses use present agreement. Only passive voice reads tense."""
+    """Active present uses present agreement. Active past uses the past form.
+
+    Passive voice reads tense on its own auxiliary.
+    """
     lemma = proposition.predicate.lemma
     table = forms(lemma)
     if proposition.predicate.voice == "PASSIVE":
@@ -169,6 +172,8 @@ def _verb_phrase(proposition: EIRProposition, *, plural: bool, negative: bool) -
     if negative:
         auxiliary = "do not" if plural else "does not"
         return f"{auxiliary} {lemma}"
+    if proposition.predicate.tense == "PAST":
+        return table["past_pl"] if plural else table["past"]
     return table["present_pl"] if plural else table["present_3s"]
 
 

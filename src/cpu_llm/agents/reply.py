@@ -4,7 +4,8 @@ The preface, the follow-ups, and the next steps are filled from this turn:
 the passages that were retrieved, the measurements named in them, and the
 questions PrismThinker left open. A follow-up that is not in those passages
 is not produced. The checked sentence, when one exists, stays the body.
-This node does not write a new conclusion.
+The six channel readings, when the detail node wrote them, are appended
+after that sentence. This node does not write a new conclusion.
 """
 
 from __future__ import annotations
@@ -48,12 +49,16 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
     if next_steps:
         lines.extend(["", "What would make the next step checkable:"])
         lines.extend(f"{index}. {item}" for index, item in enumerate(next_steps, start=1))
+    report = state.get("channel_report") or {}
+    if report.get("text"):
+        lines.extend(["", str(report["text"])])
     return {
         "preface": preface,
         "body": body,
         "closing": closing,
         "follow_ups": follow_ups,
         "next_steps": next_steps,
+        "discovery_suggested": bool(report.get("discovery_suggested")),
         "text": "\n".join(lines).strip(),
     }
 

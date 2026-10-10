@@ -2,6 +2,7 @@
 
 import math
 import os
+import re
 
 import pytest
 
@@ -19,6 +20,9 @@ from cpu_llm.ir.schema import (
 )
 from cpu_llm.manifest_spans import answer_numbers_allowed, build_span_grammar
 from cpu_llm.pipeline import Appliance
+from cpu_llm.proposition_catalog import HOMARUS_DOCUMENT_ID, homarus_definition, supplied_propositions
+from cpu_llm.realizer.surface import SemanticSurfaceRealizer
+from cpu_llm.clauses import proposition_from_chunk
 from cpu_llm.ingest import ingest_source
 from cpu_llm.source import validation_chunks
 
@@ -53,7 +57,14 @@ def test_allowed_question_resonates_the_vectorprism_chunk(appliance: Appliance):
     assert all(math.isfinite(item["score"]) and -1.0 <= item["score"] <= 1.0 for item in result["related"])
     assert result["thinker_directive"] == "gather"
     assert result["gather_questions"]
-    assert result["cognition_status"] == "needs_evidence_propositions"
+    if result["cognition_status"] == "deliberated":
+        assert result["audit_passed"] is True
+        assert result["answer"]
+    else:
+        assert result["cognition_status"] == "needs_evidence_propositions"
+        assert result.get("answer") is None
+    assert result["discovery_suggested"] is True
+    assert "discovery" not in result
     related_text = " ".join(item["chunk_text"] for item in result["related"])
     for value in result["grammar_values"]:
         assert value in related_text
@@ -96,6 +107,117 @@ def test_stored_proposition_is_realized(appliance: Appliance, monkeypatch: pytes
     assert result["answer"] == "No patient may discontinue therapy."
     assert result["audit_passed"] is True
     assert result["grammar_ok"] is True
+
+
+def test_supplied_homarus_proposition_is_realized(appliance: Appliance, monkeypatch: pytest.MonkeyPatch):
+    text = next(chunk for document_id, _title, chunk in validation_chunks() if document_id == HOMARUS_DOCUMENT_ID)
+    other = "The populations in the Mediterranean Sea are distinct from those in the Atlantic Ocean."
+    appliance.index_chunks([(HOMARUS_DOCUMENT_ID, text)], supplied_propositions())
+    hits = [
+        {
+            "document_id": document_id,
+            "chunk_text": chunk_text,
+            "final_score": score,
+            "tensor_1024d": appliance.index.encode_chunk(chunk_text),
+        }
+        for document_id, chunk_text, score in (
+            (HOMARUS_DOCUMENT_ID, text, 0.9),
+            ("wikitext2-homarus-gammarus-p0012", other, 0.4),
+        )
+    ]
+    monkeypatch.setattr(appliance.index, "search", lambda query, top_k=5: hits)
+    result = appliance.ask("What is the European lobster?")
+    assert result["cognition_status"] == "deliberated"
+    assert result["answer"] == "Homarus gammarus is a species of clawed lobster."
+    assert result["audit_passed"] is True
+    assert "no numeric threshold on hypothesis or objective" in result["gather_questions"]
+    assert "causal_graph is required" in result["gather_questions"]
+    assert homarus_definition().proposition_id == "prop_homarus_gammarus_def"
+
+
+def test_catalog_training_realizes_the_repeated_sentence(
+    appliance: Appliance, monkeypatch: pytest.MonkeyPatch
+):
+    document_id = "catalog-probe-species"
+    text = "Homarus gammarus is a species of clawed lobster."
+    proposition = proposition_from_chunk(document_id, text)
+    assert proposition is not None
+    appliance.catalog_chunks([(document_id, text)], {document_id: proposition}, replace_prefix="catalog-probe-")
+    tensor = appliance.index.encode_chunk(text)
+
+    def search(query: str, top_k: int = 5):
+        return [
+            {
+                "document_id": document_id,
+                "chunk_text": text,
+                "final_score": 0.9,
+                "tensor_1024d": tensor,
+            }
+        ]
+
+    monkeypatch.setattr(appliance.index, "search", search)
+    result = appliance.ask("What is the European lobster?")
+    assert result["cognition_status"] == "deliberated"
+    assert result["answer"] == text
+    assert result["audit_passed"] is True
+
+
+def test_six_channel_nodes_quote_the_passages_and_suggest_discovery_for_a_why_question(
+    appliance: Appliance, monkeypatch: pytest.MonkeyPatch
+):
+    lead_id = "channel-euro"
+    cause_id = "channel-cause"
+    lead = "The European lobster is Homarus gammarus."
+    cause = "The pots work because the lobster enters them."
+    proposition = proposition_from_chunk(lead_id, lead)
+    assert proposition is not None
+    appliance.catalog_chunks([(lead_id, lead)], {lead_id: proposition})
+    hits = [
+        {
+            "document_id": document_id,
+            "chunk_text": text,
+            "final_score": score,
+            "tensor_1024d": appliance.index.encode_chunk(text),
+        }
+        for document_id, text, score in ((lead_id, lead, 0.9), (cause_id, cause, 0.4))
+    ]
+    monkeypatch.setattr(appliance.index, "search", lambda query, top_k=5: hits)
+
+    simple = appliance.ask("What is the European lobster?")
+    sentence, _delivered = SemanticSurfaceRealizer().synthesize([proposition], [])
+    assert [item["channel"] for item in simple["channel_readings"]] == [
+        "dense",
+        "relational",
+        "disentangled",
+        "hyperbolic",
+        "identity",
+        "causal",
+    ]
+    assert simple["cognition_status"] == "deliberated"
+    assert simple["answer"] == sentence
+    assert simple["audit_passed"] is True
+    assert simple["discovery_suggested"] is False
+    assert "discovery" not in simple
+    assert simple["reply"]["body"] == sentence
+    assert "Six readings" in simple["reply"]["text"]
+    assert "discovery loop" not in simple["reply"]["text"]
+    by_channel = {item["channel"]: item for item in simple["channel_readings"]}
+    assert "European" in by_channel["identity"]["detail"]
+    assert "The European lobster" in by_channel["relational"]["detail"]
+    assert cause in by_channel["causal"]["detail"]
+    for quoted in _quoted(simple["channel_report"]["text"]):
+        assert quoted in lead or quoted in cause
+
+    complicated = appliance.ask("Why is the European lobster different from the American lobster?")
+    assert complicated["discovery_suggested"] is True
+    assert "discovery" not in complicated
+    assert complicated["answer"] == sentence
+    assert "discovery loop" in complicated["reply"]["text"]
+    assert "It stays off until you ask for it." in complicated["reply"]["text"]
+
+
+def _quoted(text: str) -> list[str]:
+    return re.findall(r"“([^”]+)”", text)
 
 
 def test_span_grammar_rejects_a_number_that_is_not_in_the_chunks():
@@ -167,7 +289,7 @@ def test_ingest_saves_and_replaces_source_chunks(appliance: Appliance):
     ingest_source(appliance.index, [], replace_prefix=prefix)
 
 
-def test_stated_measurement_clears_numeric_observations_without_an_answer(
+def test_stated_measurement_keeps_claims_and_realizes_the_stored_sentences(
     appliance: Appliance, monkeypatch: pytest.MonkeyPatch
 ):
     description = next(
@@ -180,6 +302,14 @@ def test_stated_measurement_clears_numeric_observations_without_an_answer(
         for document_id, _title, text in validation_chunks()
         if document_id == "wikitext2-homarus-gammarus-p0001"
     )
+    lead_id = "wikitext2-homarus-gammarus-p0001"
+    description_id = "wikitext2-homarus-gammarus-p0002"
+    stored = {
+        lead_id: proposition_from_chunk(lead_id, lead),
+        description_id: proposition_from_chunk(description_id, description),
+    }
+    assert stored[lead_id] is not None and stored[description_id] is not None
+    appliance.catalog_chunks([(lead_id, lead), (description_id, description)], stored)
     hits = [
         {
             "document_id": document_id,
@@ -213,13 +343,18 @@ def test_stated_measurement_clears_numeric_observations_without_an_answer(
     assert "no numeric threshold on hypothesis or objective" in questions
     assert "causal_graph is required" in questions
     assert "missing treatment/outcome binding" not in questions
-    assert result["cognition_status"] == "needs_evidence_propositions"
-    assert result.get("answer") is None
+    lead_sentence, _delivered = SemanticSurfaceRealizer().synthesize([stored[lead_id]], [])
+    described_sentence, _delivered = SemanticSurfaceRealizer().synthesize([stored[description_id]], [])
+    assert result["cognition_status"] == "deliberated"
+    assert result["audit_passed"] is True
+    assert lead_sentence in result["answer"]
+    assert described_sentence in result["answer"]
     assert result["thinker_directive"] == "gather"
     reply = result["reply"]
     assert "proposition" in reply["preface"]
+    assert reply["body"] == result["answer"]
     assert "European lobster" in reply["body"]
-    assert any("exoskeleton" in item or "centimetres" in item for item in reply["follow_ups"])
+    assert any("Atlantic Ocean" in item or "American lobster" in item for item in reply["follow_ups"])
     assert any("body length 60 cm" in step for step in reply["next_steps"])
 
 
@@ -227,7 +362,10 @@ def test_wikitext_paragraph_is_retrieved_as_source_text(appliance: Appliance):
     document_id, title, text = next(
         item for item in validation_chunks() if item[1] == "Homarus gammarus"
     )
-    ingest_source(appliance.index, [(document_id, text)])
+    proposition = proposition_from_chunk(document_id, text)
+    assert proposition is not None
+    appliance.catalog_chunks([(document_id, text)], {document_id: proposition})
+    sentence, _delivered = SemanticSurfaceRealizer().synthesize([proposition], [])
     result = appliance.ask("What is the European lobster?")
     assert any(item["document_id"] == document_id for item in result["passages"])
     matched = next(item for item in result["related"] if item["chunk_id"] == document_id)
@@ -241,7 +379,9 @@ def test_wikitext_paragraph_is_retrieved_as_source_text(appliance: Appliance):
     assert result["shine_decision"] in {"pass", "flag", "block", "regenerate"}
     assert "PARTIAL_RETRIEVAL" not in result["shine_signatures"]
     assert "EMPTY_RETRIEVAL" not in result["shine_signatures"]
-    assert result["cognition_status"] == "needs_evidence_propositions"
+    assert result["cognition_status"] == "deliberated"
+    assert sentence in result["answer"]
+    assert result["audit_passed"] is True
 
 
 def test_discovery_loop_is_opt_in(appliance: Appliance):

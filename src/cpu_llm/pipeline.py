@@ -15,17 +15,25 @@ A prompt then runs:
    is a packed timestamp, not a coordinate, so it is not part of the amplitude.
    VectorPrism already chose this shortlist, so the coherence shield does not
    drop a hit whose cosine is merely moderate.
-4. PrismRAG labels each retrieved chunk with the article slug already in its
+4. Six channel nodes read that same shortlist. Dense cosine is the trained
+   rank. A stored proposition, a word unique to one passage, Poincaré distance
+   inside the unit ball, a shared name, and a sentence that states a cause are
+   the other readings. A head that is off in the checkpoint is not ranked by
+   its slice. The detail node writes those six readings into one template and,
+   when the prompt asks why, how, for a comparison, or about a cause, suggests
+   the discovery loop. It does not turn the loop on, and it does not add a
+   sentence that was not written in a retrieved passage.
+5. PrismRAG labels each retrieved chunk with the article slug already in its
    document id, and labels the prompt only when that slug's token is in the prompt.
-5. PrismThinker reads the ranked chunks as evidence and names what is missing.
+6. PrismThinker reads the ranked chunks as evidence and names what is missing.
    A payment proposal is evaluated with PrismAgenticPay's corporate policy.
-6. The design's deliberation adapter runs when evidence propositions are
+7. The design's deliberation adapter runs when evidence propositions are
    present, and when the retrieval is empty. The surface realizer turns that
    result into a sentence, and the auditor checks the sentence.
-7. PrismShine checks the retrieval trace and, when a sentence exists, the
+8. PrismShine checks the retrieval trace and, when a sentence exists, the
    sentence against those paragraphs. The judge stays off. An abstention
    sentence is kept. Any other blocked sentence is replaced.
-8. A reply node adds a preface, follow-ups, and next steps taken from the
+9. A reply node adds a preface, follow-ups, and next steps taken from the
    passages and the open questions. It leaves the checked sentence unchanged.
 
 A proposition is stored only when the source supplies one. VectorPrism's
@@ -58,6 +66,7 @@ from prismthinker.adapters.vectorprism import RetrievedDocument, from_vectorpris
 
 from cpu_llm.agents.discovery import run_discovery
 from cpu_llm.agents.reply import compose_reply
+from cpu_llm.channels import judge_readings, read_channel
 from cpu_llm.audit.entailment import EpistemicEntailmentAuditor
 from cpu_llm.catalog import label_retrieval
 from cpu_llm.cognition.adapter import PrismCognitionSubspaceAdapter
@@ -152,6 +161,53 @@ class Appliance:
         self.resonance.sleep()
         return len(chunks)
 
+    def catalog_chunks(
+        self,
+        chunks: list[tuple[str, str]],
+        propositions: dict[str, EIRProposition] | None = None,
+        *,
+        replace_prefix: str | None = None,
+    ) -> int:
+        """Store every chunk, and store a proposition when one was supplied.
+
+        The vector rows are written in a batch. Each chunk is then encoded
+        again so the graph node keeps the same tensor the row stores.
+        """
+        self.index.save_chunks(chunks, replace_prefix=replace_prefix)
+        bound = propositions or {}
+        texts = [text for _document_id, text in chunks]
+        vectors: list[Any] = []
+        for start in range(0, len(texts), 32):
+            vectors.extend(self.index.pipeline.encode_texts(texts[start : start + 32]))
+        known = {node.id: node for node in self.memory.all_nodes()}
+        pending: dict[str, str] = {}
+        ops: list[DeltaOp] = []
+        for (document_id, chunk_text), vector in zip(chunks, vectors):
+            tensor = np.asarray(vector, dtype=np.float32).reshape(-1)
+            self.resonance.ingest(
+                document_id,
+                resonance_amplitude(tensor),
+                frequency=FrequencyFamily.NEUTRAL,
+            )
+            op = _assimilation(
+                self.memory,
+                document_id,
+                chunk_text,
+                tensor,
+                bound.get(document_id),
+                known,
+                pending,
+            )
+            if op is not None and op.node is not None:
+                ops.append(op)
+                known[op.node.id] = op.node
+                pending[chunk_text.strip().lower()] = op.node.id
+        if ops:
+            self.memory.apply(StateDelta(ops=ops))
+        if chunks:
+            self.resonance.sleep()
+        return len(chunks)
+
     def upsert(self, document_id: str, chunk_text: str) -> int:
         return self.index_chunks([(document_id, chunk_text)])
 
@@ -183,31 +239,58 @@ def _remember_chunk(
     tensor: np.ndarray,
     proposition: EIRProposition | None,
 ) -> None:
-    if store.find_node_by_label(chunk_text) is not None:
-        return
+    known = {node.id: node for node in store.all_nodes()}
+    op = _assimilation(store, document_id, chunk_text, tensor, proposition, known, {})
+    if op is not None:
+        store.apply(StateDelta(ops=[op]))
+
+
+def _assimilation(
+    store: SqliteGraphStore,
+    document_id: str,
+    chunk_text: str,
+    tensor: np.ndarray,
+    proposition: EIRProposition | None,
+    known: dict[str, Node],
+    pending: dict[str, str],
+) -> DeltaOp | None:
+    payload = proposition.model_dump(mode="json") if proposition is not None else None
+    existing_id = pending.get(chunk_text.strip().lower()) or store.find_node_by_label(chunk_text)
+    if existing_id is not None:
+        if payload is None:
+            return None
+        current = known.get(existing_id)
+        if current is not None and current.attributes.get("proposition") == payload:
+            return None
+        node_id = existing_id
+    else:
+        node_id = document_id
     attributes: dict[str, Any] = {}
-    if proposition is not None:
-        attributes["proposition"] = proposition.model_dump(mode="json")
-    store.apply(
-        StateDelta(
-            ops=[
-                DeltaOp(
-                    operation=Operation.ASSIMILATE,
-                    node=Node(
-                        id=document_id,
-                        label=chunk_text,
-                        kind="chunk",
-                        embedding=[float(value) for value in tensor],
-                        attributes=attributes,
-                    ),
-                    reason="vectorprism chunk",
-                )
-            ]
-        )
+    if payload is not None:
+        attributes["proposition"] = payload
+    return DeltaOp(
+        operation=Operation.ASSIMILATE,
+        node=Node(
+            id=node_id,
+            label=chunk_text,
+            kind="chunk",
+            embedding=[float(value) for value in tensor],
+            attributes=attributes,
+        ),
+        reason="vectorprism chunk",
     )
 
 
 def _stored_proposition(store: SqliteGraphStore, chunk_text: str, tensor: np.ndarray) -> EIRProposition | None:
+    node_id = store.find_node_by_label(chunk_text)
+    if node_id is not None:
+        node = next((item for item in store.all_nodes() if item.id == node_id), None)
+        if node is None or node.label != chunk_text:
+            return None
+        raw = node.attributes.get("proposition")
+        if isinstance(raw, dict):
+            return EIRProposition.model_validate(raw)
+        return None
     subgraph = store.retrieve([float(value) for value in tensor], k=4)
     for node in subgraph.nodes:
         if node.label != chunk_text:
@@ -223,7 +306,10 @@ def _compile(appliance: Appliance):
     graph.add_node("guard", dict_node_adapter(_guard(appliance), hop="guard"))
     graph.add_node("retrieve", dict_node_adapter(_retrieve(appliance), hop="retrieve"))
     graph.add_node("resonate", dict_node_adapter(_resonate(appliance), hop="resonate"))
+    for channel_name in ("dense", "relational", "disentangled", "hyperbolic", "identity", "causal"):
+        graph.add_node(channel_name, dict_node_adapter(_channel(appliance, channel_name), hop=channel_name))
     graph.add_node("catalog", dict_node_adapter(_catalog(appliance), hop="catalog"))
+    graph.add_node("detail", dict_node_adapter(_detail, hop="detail"))
     graph.add_node("spans", dict_node_adapter(_spans(appliance), hop="spans"))
     graph.add_node("think", dict_node_adapter(_think(appliance), hop="think"))
     graph.add_node("cognize", dict_node_adapter(_cognize(appliance), hop="cognize"))
@@ -234,8 +320,15 @@ def _compile(appliance: Appliance):
     graph.add_edge(START, "guard")
     graph.add_conditional_edges("guard", _after_guard, {"retrieve": "retrieve", "reply": "reply"})
     graph.add_edge("retrieve", "resonate")
-    graph.add_edge("resonate", "catalog")
-    graph.add_edge("catalog", "spans")
+    graph.add_edge("resonate", "dense")
+    graph.add_edge("dense", "relational")
+    graph.add_edge("relational", "disentangled")
+    graph.add_edge("disentangled", "hyperbolic")
+    graph.add_edge("hyperbolic", "identity")
+    graph.add_edge("identity", "causal")
+    graph.add_edge("causal", "catalog")
+    graph.add_edge("catalog", "detail")
+    graph.add_edge("detail", "spans")
     graph.add_edge("spans", "think")
     graph.add_edge("think", "cognize")
     graph.add_edge("cognize", "grammar")
@@ -274,6 +367,75 @@ def _after_reply(state: dict[str, Any]) -> str:
     if state.get("discover") is True and state.get("guard_decision") == "allow":
         return "discover"
     return "end"
+
+
+def _channel(appliance: Appliance, name: str):
+    def node(state: dict[str, Any]) -> dict[str, Any]:
+        passages = _passages(appliance, state)
+        flags = appliance.index.pipeline.enabled_channels
+        anchor_set, anchor = _identity_anchor(appliance)
+        propositions = {}
+        if name == "relational":
+            propositions = {
+                passage["document_id"]: _stored_proposition(
+                    appliance.memory,
+                    passage["chunk_text"],
+                    np.asarray(passage["tensor"], dtype=np.float32),
+                )
+                for passage in passages
+            }
+        query = (appliance._turn or {}).get("query_tensor")
+        reading = read_channel(
+            name,
+            state.get("message") or "",
+            passages,
+            query_tensor=None if query is None else np.asarray(query, dtype=np.float64),
+            propositions=propositions,
+            enabled=bool(flags.get(name)),
+            anchor_set=anchor_set,
+            anchor=anchor,
+        )
+        readings = list(state.get("channel_readings") or [])
+        readings.append(reading)
+        return {"channel_readings": readings}
+
+    return node
+
+
+def _detail(state: dict[str, Any]) -> dict[str, Any]:
+    report = judge_readings(
+        state.get("message") or "",
+        list(state.get("channel_readings") or []),
+        [item.get("category") or "" for item in state.get("related") or []],
+    )
+    return {
+        "channel_report": report,
+        "discovery_suggested": report["discovery_suggested"],
+        "discovery_reasons": report["discovery_reasons"],
+    }
+
+
+def _passages(appliance: Appliance, state: dict[str, Any]) -> list[dict[str, Any]]:
+    hits = {hit["document_id"]: hit for hit in (appliance._turn or {}).get("hits") or []}
+    passages: list[dict[str, Any]] = []
+    for item in state.get("related") or []:
+        hit = hits.get(item["chunk_id"])
+        if hit is None:
+            continue
+        passages.append(
+            {
+                "document_id": item["chunk_id"],
+                "chunk_text": item["chunk_text"],
+                "tensor": np.asarray(hit["tensor_1024d"], dtype=np.float64).reshape(-1),
+            }
+        )
+    return passages
+
+
+def _identity_anchor(appliance: Appliance) -> tuple[bool, np.ndarray]:
+    raw = appliance.index.pipeline.adapter.identity_anchor_v0.detach().cpu().numpy()
+    anchor = np.asarray(raw, dtype=np.float64).reshape(-1)
+    return float(np.linalg.norm(anchor)) > 0.0, anchor
 
 
 def _catalog(appliance: Appliance):
