@@ -1,11 +1,22 @@
 [project]
 name = "cpu-llm"
 version = "1.7.0"
-description = "CPU-native vertical slice for cone-gated symbolic deduction."
+description = "CPU appliance over VectorPrism, PrismCognition, and the Chorus stack."
 requires-python = ">=3.11"
 dependencies = [
   "numpy>=1.26",
   "pydantic>=2",
+  "vectorprism[encoder,postgres]==0.1.3",
+  "psycopg[binary]>=3.1",
+  "pgvector>=0.2",
+  "chorusgraph==1.3.0",
+  "prismguard==0.1.10",
+  "prismcognition==2.1.0",
+  "prismrag-patch==0.2.1",
+  "prismresonance==0.3.0",
+  "prismcortex==0.4.1",
+  "prismmanifest==0.3.4",
+  "prismshine==0.2.2",
 ]
 
 [tool.pytest.ini_options]

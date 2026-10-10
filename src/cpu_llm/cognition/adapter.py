@@ -22,6 +22,7 @@ from pydantic import BaseModel, ConfigDict
 
 from cpu_llm.cpu_guard import assert_cpu_only
 from cpu_llm.geometry.poincare import is_in_entailment_cone
+from vectorprism.tensor_contract import VectorPrismTensorContract
 from cpu_llm.ir.schema import (
     ConditionEval,
     DerivationTrace,
@@ -59,16 +60,17 @@ class DeliberationResult(BaseModel):
 
 
 def poincare_slice(tensor: np.ndarray) -> Optional[np.ndarray]:
-    """Return a 128-d in-ball coordinate, or None when the tensor is not one.
+    """Return the hyperbolic channel when it is a point inside the unit ball.
 
-    A 1024-d evidence tensor contributes the slice [400:528], matching the
-    hyperbolic block in the architecture diagram. Any other width is used
-    only when it is already 128-d.
+    A 1024-d tensor uses VectorPrism's hyperbolic channel, [640:768]. A raw
+    128-d vector is accepted as that channel already cut out. Any other width
+    is not a cone coordinate.
     """
     point = np.asarray(tensor, dtype=np.float64).reshape(-1)
-    if point.size >= 528:
-        point = point[400:528]
-    elif point.size != 128:
+    channel = VectorPrismTensorContract.HYPERBOLIC
+    if point.size == VectorPrismTensorContract.TOTAL_DIM:
+        point = point[channel.start : channel.end]
+    elif point.size != channel.length:
         return None
     norm = float(np.linalg.norm(point))
     if norm < 1e-6 or norm >= 1.0:
