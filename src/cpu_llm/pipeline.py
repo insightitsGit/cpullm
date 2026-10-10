@@ -25,6 +25,8 @@ A prompt then runs:
 7. PrismShine checks the retrieval trace and, when a sentence exists, the
    sentence against those paragraphs. The judge stays off. An abstention
    sentence is kept. Any other blocked sentence is replaced.
+8. A reply node adds a preface, follow-ups, and next steps taken from the
+   passages and the open questions. It leaves the checked sentence unchanged.
 
 A proposition is stored only when the source supplies one. VectorPrism's
 offline heuristic extractor can add a causal graph and numeric attributes
@@ -55,6 +57,7 @@ from prismthinker.adapters.chorusgraph import to_chorusgraph
 from prismthinker.adapters.vectorprism import RetrievedDocument, from_vectorprism
 
 from cpu_llm.agents.discovery import run_discovery
+from cpu_llm.agents.reply import compose_reply
 from cpu_llm.audit.entailment import EpistemicEntailmentAuditor
 from cpu_llm.catalog import label_retrieval
 from cpu_llm.cognition.adapter import PrismCognitionSubspaceAdapter
@@ -226,9 +229,10 @@ def _compile(appliance: Appliance):
     graph.add_node("cognize", dict_node_adapter(_cognize(appliance), hop="cognize"))
     graph.add_node("grammar", dict_node_adapter(_grammar(appliance), hop="grammar"))
     graph.add_node("shine", dict_node_adapter(_shine(appliance), hop="shine"))
+    graph.add_node("reply", dict_node_adapter(_reply, hop="reply"))
     graph.add_node("discover", dict_node_adapter(_discover(appliance), hop="discover"))
     graph.add_edge(START, "guard")
-    graph.add_conditional_edges("guard", _after_guard, {"retrieve": "retrieve", "end": END})
+    graph.add_conditional_edges("guard", _after_guard, {"retrieve": "retrieve", "reply": "reply"})
     graph.add_edge("retrieve", "resonate")
     graph.add_edge("resonate", "catalog")
     graph.add_edge("catalog", "spans")
@@ -236,7 +240,8 @@ def _compile(appliance: Appliance):
     graph.add_edge("think", "cognize")
     graph.add_edge("cognize", "grammar")
     graph.add_edge("grammar", "shine")
-    graph.add_conditional_edges("shine", _after_grammar, {"discover": "discover", "end": END})
+    graph.add_edge("shine", "reply")
+    graph.add_conditional_edges("reply", _after_reply, {"discover": "discover", "end": END})
     graph.add_edge("discover", END)
     return graph.compile()
 
@@ -258,6 +263,16 @@ def _guard(appliance: Appliance):
 def _after_guard(state: dict[str, Any]) -> str:
     if state.get("guard_decision") == "allow":
         return "retrieve"
+    return "reply"
+
+
+def _reply(state: dict[str, Any]) -> dict[str, Any]:
+    return {"reply": compose_reply(state)}
+
+
+def _after_reply(state: dict[str, Any]) -> str:
+    if state.get("discover") is True and state.get("guard_decision") == "allow":
+        return "discover"
     return "end"
 
 
@@ -317,12 +332,6 @@ def evaluate_payment(evaluator, proposal, authority):
     facts = evaluator._structured_facts(proposal, authority)
     metadata = evaluator._fresh_metadata(facts, now)
     return evaluator.evaluate_proposal(proposal, authority, fact_metadata=metadata, now=now)
-
-
-def _after_grammar(state: dict[str, Any]) -> str:
-    if state.get("discover") is True:
-        return "discover"
-    return "end"
 
 
 def _discover(appliance: Appliance):
