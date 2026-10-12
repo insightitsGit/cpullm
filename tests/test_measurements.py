@@ -93,7 +93,7 @@ def test_ambiguous_or_unsupported_phrases_do_not_invent_values():
     assert extract_literal_numeric_claims("body length up to sixty centimetres") == {}
     assert extract_literal_numeric_claims("The limit exceeds 10 million.") == {}
     assert extract_literal_numeric_claims("It sheds once every 1 – 2 years.") == {}
-    assert extract_literal_numeric_claims("60 centimetres") == {}
+    assert extract_literal_numeric_claims("60 centimetres") == {"length_cm": 60.0}
 
 
 def test_exact_and_approximate_qualifiers_stay_distinct():
@@ -123,3 +123,91 @@ def test_finance_claims_stay_on_their_chunk_and_physical_claims_do_not_cross():
     assert metadata["case_a_policy"]["numeric_claims"]["amount_min"] == 10_000_000.0
     assert "body_length_cm" not in metadata["case_a_policy"]["numeric_claims"]
     assert "amount_min" not in measured["numeric_claims"]
+
+
+def test_a_metre_span_is_not_money_and_a_million_span_is_kept():
+    metres = _structure_metadata([{"chunk_id": "height-m", "chunk_text": "4,399 m"}])
+    assert metres["height-m"]["numeric_claims"]["length_m"] == 4399.0
+    assert "amount_min" not in metres["height-m"]["numeric_claims"]
+
+    feet = _structure_metadata([{"chunk_id": "height-ft", "chunk_text": "14,440 feet"}])
+    assert feet["height-ft"]["numeric_claims"]["length_ft"] == 14440.0
+    assert "amount_min" not in feet["height-ft"]["numeric_claims"]
+
+    million = _structure_metadata([{"chunk_id": "cash", "chunk_text": "10 million"}])
+    assert million["cash"]["numeric_claims"]["amount_min"] == 10_000_000.0
+
+    exceeds = _structure_metadata(
+        [{"chunk_id": "limit", "chunk_text": "The limit exceeds 10 million."}]
+    )
+    assert exceeds["limit"]["numeric_claims"]["amount_min"] == 10_000_000.0
+
+    both = (
+        "The mountain rises 4,399 m above sea level. "
+        "The restoration project received 10 million dollars."
+    )
+    mixed = _structure_metadata([{"chunk_id": "both", "chunk_text": both}])
+    assert mixed["both"]["numeric_claims"]["amount_min"] == 10_000_000.0
+    assert mixed["both"]["numeric_claims"]["elevation_m"] == 4399.0
+
+
+def test_elevation_written_in_feet_and_metres_stays_physical():
+    text = "Originally measured as 14,433 feet (4,399 m) in height."
+    claims = extract_literal_numeric_claims(text)
+    assert claims["height_ft"] == 14433.0
+    assert claims["height_m"] == 4399.0
+    metadata = _structure_metadata([{"chunk_id": "elbert", "chunk_text": text}])
+    assert "amount_min" not in metadata["elbert"].get("numeric_claims", {})
+
+
+def test_money_is_a_currency_span_and_a_counted_noun_is_not():
+    cases = {
+        "15 million copies": None,
+        "4.16 million viewers": None,
+        "20 million men and 6 million horses": None,
+        "around 28 million years ago": None,
+        "five million years ago": None,
+        "12 km": None,
+        "10 million": 10_000_000.0,
+        "The limit exceeds 10 million.": 10_000_000.0,
+        "five million": 5_000_000.0,
+        "$5 m": 5_000_000.0,
+        "£ 1.7 million": 1_700_000.0,
+        "$ 2.5 million in grants": 2_500_000.0,
+        "US $ 780 million worldwide": 780_000_000.0,
+        "CZK 8 million (~ US $ 400,000)": 8_000_000.0,
+        "10 million dollars": 10_000_000.0,
+        "28 million years ago. The grant was £ 4 million.": 4_000_000.0,
+        "4,399 m and the budget was $ 10 million": 10_000_000.0,
+        "a viewership of 8.69 million.": None,
+        "the population of 3 million.": None,
+        "a cost of 10 million.": 10_000_000.0,
+    }
+    for text, expected in cases.items():
+        metadata = _structure_metadata([{"chunk_id": "span", "chunk_text": text}])
+        claims = metadata["span"].get("numeric_claims", {})
+        assert claims.get("amount_min") == expected, text
+
+    currency_metre = _structure_metadata([{"chunk_id": "abbr", "chunk_text": "$5 m"}])
+    assert "length_m" not in currency_metre["abbr"]["numeric_claims"]
+
+    hyphen = extract_literal_numeric_claims("The summit is a 14,440-foot (4,399 m) peak.")
+    assert hyphen["elevation_ft"] == 14440.0
+    assert hyphen["elevation_m"] == 4399.0
+
+    massive = "Mount Massive differs in elevation by only 12 feet (3.7 m)."
+    claims = extract_literal_numeric_claims(massive)
+    assert claims["elevation_ft"] == 12.0
+    assert claims["elevation_m"] == 3.7
+    assert "mass_ft" not in claims
+
+
+def test_a_bad_vectorprism_number_does_not_drop_the_other_paragraph():
+    metadata = _structure_metadata(
+        [
+            {"chunk_id": "broken", "chunk_text": "The note says . m on the map."},
+            {"chunk_id": "limit", "chunk_text": "The limit exceeds 10 million."},
+        ]
+    )
+    assert "amount_min" not in metadata["broken"].get("numeric_claims", {})
+    assert metadata["limit"]["numeric_claims"]["amount_min"] == 10_000_000.0

@@ -10,7 +10,9 @@ chunk as a graph node.
 A prompt then runs:
 
 1. PrismGuard checks the prompt.
-2. VectorPrism returns the nearest chunks and their tensors.
+2. VectorPrism returns the nearest chunks and their tensors. The prompt was
+   encoded once, before this graph runs, and that same 1024-d tensor is the
+   query for the scan and for every later channel rank.
 3. PrismResonance ranks those chunks by dense-channel interference. The header
    is a packed timestamp, not a coordinate, so it is not part of the amplitude.
    VectorPrism already chose this shortlist, so the coherence shield does not
@@ -26,7 +28,9 @@ A prompt then runs:
 5. PrismRAG labels each retrieved chunk with the article slug already in its
    document id, and labels the prompt only when that slug's token is in the prompt.
 6. PrismThinker reads the ranked chunks as evidence and names what is missing.
-   A payment proposal is evaluated with PrismAgenticPay's corporate policy.
+   Its five head processes and the in-process probe pool are started with the
+   appliance, beside the encoder, and reused for every prompt. A payment
+   proposal is evaluated with PrismAgenticPay's corporate policy.
 7. The design's deliberation adapter runs when evidence propositions are
    present, and when the retrieval is empty. The surface realizer turns that
    result into a sentence, and the auditor checks the sentence.
@@ -60,7 +64,6 @@ from chorusgraph.persistence.sqlite_graph_store import SqliteGraphStore
 from prismcortex.models import DeltaOp, Node, Operation, StateDelta
 from prismguard.runtime.factory import create_checker_rules_only
 from prismresonance import FrequencyFamily, PrismResonance
-from prismthinker import PrismThinker
 from prismthinker.adapters.chorusgraph import to_chorusgraph
 from prismthinker.adapters.vectorprism import RetrievedDocument, from_vectorprism
 
@@ -73,9 +76,10 @@ from cpu_llm.cognition.adapter import PrismCognitionSubspaceAdapter
 from cpu_llm.grounding import shine_gate, verify_grounding
 from cpu_llm.ir.schema import EIRProposition
 from cpu_llm.manifest_spans import answer_numbers_allowed, build_span_grammar, canonical_values
-from cpu_llm.measurements import extract_stated_measurements
+from cpu_llm.measurements import extract_stated_measurements, stated_million_amount
 from cpu_llm.realizer.surface import SemanticSurfaceRealizer
 from cpu_llm.retrieval import VectorPrismIndex
+from cpu_llm.thinker_pool import WarmPrismThinker
 
 TENSOR_DIM = 1024
 
@@ -118,7 +122,7 @@ class Appliance:
             dsn=dsn,
         )
         self.guard = create_checker_rules_only()
-        self.thinker = PrismThinker()
+        self.thinker = WarmPrismThinker()
         self.cognition = PrismCognitionSubspaceAdapter()
         self.realizer = SemanticSurfaceRealizer()
         self.auditor = EpistemicEntailmentAuditor()
@@ -222,14 +226,25 @@ class Appliance:
     ) -> dict[str, Any]:
         if (payment is None) != (authority is None):
             raise ValueError("a payment turn needs both a proposal and an authority snapshot")
+        z_query = np.asarray(self.index.encode_query(message), dtype=np.float32).reshape(TENSOR_DIM)
         self._turn = {
             "propositions": list(propositions or []),
             "payment": payment,
             "authority": authority,
+            "z_query": z_query,
         }
         return self.graph.invoke(
             {"message": message, "tenant_id": "cpu-llm", "discover": discover}
         )
+
+    def close(self) -> None:
+        self.thinker.close()
+
+    def __enter__(self) -> Appliance:
+        return self
+
+    def __exit__(self, *_exc: object) -> None:
+        self.close()
 
 
 def _remember_chunk(
@@ -384,7 +399,7 @@ def _channel(appliance: Appliance, name: str):
                 )
                 for passage in passages
             }
-        query = (appliance._turn or {}).get("query_tensor")
+        query = (appliance._turn or {}).get("z_query")
         reading = read_channel(
             name,
             state.get("message") or "",
@@ -506,9 +521,12 @@ def _discover(appliance: Appliance):
 def _retrieve(appliance: Appliance):
     def node(state: dict[str, Any]) -> dict[str, Any]:
         message = state.get("message") or ""
-        hits = appliance.index.search(message, top_k=5)
         turn = appliance._turn or {}
-        turn["query_tensor"] = np.asarray(appliance.index.encode_query(message), dtype=np.float32).reshape(-1)
+        z_query = turn.get("z_query")
+        if z_query is None:
+            z_query = np.asarray(appliance.index.encode_query(message), dtype=np.float32).reshape(TENSOR_DIM)
+            turn["z_query"] = z_query
+        hits = appliance.index.search(message, top_k=5, query_tensor=z_query)
         turn["hits"] = hits
         appliance._turn = turn
         return {
@@ -538,7 +556,7 @@ def _resonate(appliance: Appliance):
                 for hit in hits
             ]
         )
-        query_amplitude = resonance_amplitude(turn["query_tensor"])
+        query_amplitude = resonance_amplitude(turn["z_query"])
         for chunk_id, amplitude in zip(ids, amplitudes):
             appliance.resonance.ingest(chunk_id, amplitude, frequency=FrequencyFamily.NEUTRAL)
         ranked = appliance.resonance.query(
@@ -575,32 +593,73 @@ def _structure_metadata(related: list[dict[str, Any]]) -> dict[str, dict[str, An
     """Causal edges and numeric attributes from VectorPrism's offline extractor."""
     if len(related) < 1:
         return {}
-    from vectorprism.structure_extract import extract_structure
-
-    extracted = extract_structure(
-        {item["chunk_id"]: item["chunk_text"] for item in related},
-        backend="heuristic",
-    )
-    causal = _causal_metadata(extracted.causal_edges)
+    documents = {item["chunk_id"]: item["chunk_text"] for item in related}
+    extracted = _extract_structure(documents)
+    causal = _causal_metadata(extracted.causal_edges) if extracted is not None else None
     metadata: dict[str, dict[str, Any]] = {}
     for item in related:
         meta: dict[str, Any] = {}
         if causal is not None:
             meta["causal_graph"] = causal
         metadata[item["chunk_id"]] = meta
-    for row in extracted.relational_attrs:
+    rows = extracted.relational_attrs if extracted is not None else []
+    for row in rows:
         claims = {
             key: float(value)
             for key, value in row.get("attributes", {}).items()
-            if isinstance(value, (int, float)) and not isinstance(value, bool)
+            if isinstance(value, (int, float)) and not isinstance(value, bool) and key != "amount_min"
         }
         if not claims:
             continue
         meta = metadata.setdefault(str(row["doc_id"]), {})
         meta["numeric_claims"] = claims
         meta["facts"] = claims
+    _attach_money_amounts(metadata, related)
     _attach_literal_measurements(metadata, related)
     return metadata
+
+
+def _extract_structure(documents: dict[str, str]):
+    """Heuristic structure for the batch.
+
+    VectorPrism's amount pattern treats a lone ``.`` as a number and raises
+    ValueError. One such paragraph must not drop the other paragraphs.
+    """
+    from vectorprism.structure_extract import extract_structure
+
+    try:
+        return extract_structure(documents, backend="heuristic")
+    except ValueError:
+        if len(documents) == 1:
+            return None
+    kept = {}
+    for doc_id, text in documents.items():
+        try:
+            extract_structure({doc_id: text}, backend="heuristic")
+        except ValueError:
+            continue
+        kept[doc_id] = text
+    if not kept:
+        return None
+    return extract_structure(kept, backend="heuristic")
+
+
+def _attach_money_amounts(
+    metadata: dict[str, dict[str, Any]],
+    related: list[dict[str, Any]],
+) -> None:
+    """Set amount_min from a money span. A metre or a counted noun does not qualify."""
+    for item in related:
+        amount = stated_million_amount(item["chunk_text"])
+        if amount is None:
+            continue
+        meta = metadata.setdefault(item["chunk_id"], {})
+        claims = dict(meta.get("numeric_claims") or {})
+        facts = dict(meta.get("facts") or {})
+        claims["amount_min"] = amount
+        facts["amount_min"] = amount
+        meta["numeric_claims"] = claims
+        meta["facts"] = facts
 
 
 def _attach_literal_measurements(
@@ -697,9 +756,12 @@ def _think(appliance: Appliance):
             for item in related
         ]
         context = from_vectorprism(state.get("message") or "", documents)
-        envelope = to_chorusgraph(appliance.thinker.evaluate(context))
+        graph = appliance.thinker.evaluate(context)
+        envelope = to_chorusgraph(graph)
         update: dict[str, Any] = {
             "thinker_directive": envelope.directive.value,
+            "thinker_regime": graph.regime.value,
+            "thinker_regime_reasons": [str(code) for code in graph.classifier.reason_codes],
             "gather_questions": list(envelope.gather_questions),
             "numeric_claims": {
                 chunk_id: meta["numeric_claims"]
@@ -766,7 +828,7 @@ def _cognize(appliance: Appliance):
         tensors = [
             np.asarray(hits[chunk_id]["tensor_1024d"], dtype=np.float32).reshape(-1) for chunk_id in related_ids
         ]
-        query = turn.get("query_tensor")
+        query = turn.get("z_query")
         if query is None:
             query = np.zeros(TENSOR_DIM, dtype=np.float32)
         result = appliance.cognition.deliberate(

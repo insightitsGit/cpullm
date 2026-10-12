@@ -3,6 +3,7 @@
 import math
 import os
 import re
+from collections.abc import Iterator
 
 import pytest
 
@@ -28,7 +29,7 @@ from cpu_llm.source import validation_chunks
 
 
 @pytest.fixture(scope="module")
-def appliance() -> Appliance:
+def appliance() -> Iterator[Appliance]:
     if not os.environ.get("VECTORPRISM_PG_DSN"):
         os.environ["VECTORPRISM_PG_DSN"] = "postgresql://vectorprism:vectorprism@localhost:5433/vectorprism"
     built = Appliance()
@@ -42,11 +43,17 @@ def appliance() -> Appliance:
             (["doc_patient", "case_a_policy", "case_a_incident"],),
         )
     built.index.db.conn.commit()
-    return built
+    try:
+        yield built
+    finally:
+        built.close()
 
 
 def test_allowed_question_resonates_the_vectorprism_chunk(appliance: Appliance):
+    head_pids = appliance.thinker.worker_pids()
     result = appliance.ask("Why use hyperbolic embeddings?")
+    assert head_pids == appliance.thinker.worker_pids()
+    assert len(head_pids) == 5
     assert result["guard_decision"] == "allow"
     assert any(item["document_id"] == "doc_hyper" for item in result["passages"])
     assert any(item["chunk_id"] == "doc_hyper" for item in result["related"])
@@ -91,7 +98,7 @@ def test_stored_proposition_is_realized(appliance: Appliance, monkeypatch: pytes
         cursor.execute("DELETE FROM psm_document_embeddings WHERE document_id = %s", ("doc_patient",))
     appliance.index.db.conn.commit()
 
-    def search(query: str, top_k: int = 5):
+    def search(query: str, top_k: int = 5, **_extra):
         return [
             {
                 "document_id": "doc_patient",
@@ -125,7 +132,7 @@ def test_supplied_homarus_proposition_is_realized(appliance: Appliance, monkeypa
             ("wikitext2-homarus-gammarus-p0012", other, 0.4),
         )
     ]
-    monkeypatch.setattr(appliance.index, "search", lambda query, top_k=5: hits)
+    monkeypatch.setattr(appliance.index, "search", lambda query, top_k=5, **_extra: hits)
     result = appliance.ask("What is the European lobster?")
     assert result["cognition_status"] == "deliberated"
     assert result["answer"] == "Homarus gammarus is a species of clawed lobster."
@@ -145,7 +152,7 @@ def test_catalog_training_realizes_the_repeated_sentence(
     appliance.catalog_chunks([(document_id, text)], {document_id: proposition}, replace_prefix="catalog-probe-")
     tensor = appliance.index.encode_chunk(text)
 
-    def search(query: str, top_k: int = 5):
+    def search(query: str, top_k: int = 5, **_extra):
         return [
             {
                 "document_id": document_id,
@@ -181,7 +188,7 @@ def test_six_channel_nodes_quote_the_passages_and_suggest_discovery_for_a_why_qu
         }
         for document_id, text, score in ((lead_id, lead, 0.9), (cause_id, cause, 0.4))
     ]
-    monkeypatch.setattr(appliance.index, "search", lambda query, top_k=5: hits)
+    monkeypatch.setattr(appliance.index, "search", lambda query, top_k=5, **_extra: hits)
 
     simple = appliance.ask("What is the European lobster?")
     sentence, _delivered = SemanticSurfaceRealizer().synthesize([proposition], [])
@@ -243,7 +250,7 @@ def test_heuristic_structure_supplies_causal_and_numeric_facts(
         }
         for document_id, text in (("case_a_policy", policy), ("case_a_incident", incident))
     ]
-    monkeypatch.setattr(appliance.index, "search", lambda query, top_k=5: hits)
+    monkeypatch.setattr(appliance.index, "search", lambda query, top_k=5, **_extra: hits)
     result = appliance.ask("Why was the incident blocked?")
     questions = result["gather_questions"]
     assert "causal_graph is required" not in questions
@@ -254,7 +261,7 @@ def test_heuristic_structure_supplies_causal_and_numeric_facts(
 
 
 def test_empty_retrieval_realizes_the_design_abstention(appliance: Appliance, monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setattr(appliance.index, "search", lambda query, top_k=5: [])
+    monkeypatch.setattr(appliance.index, "search", lambda query, top_k=5, **_extra: [])
     result = appliance.ask("a question with no stored chunk")
     assert result["related"] == []
     assert result["cognition_status"] == "deliberated"
@@ -322,7 +329,7 @@ def test_stated_measurement_keeps_claims_and_realizes_the_stored_sentences(
             ("wikitext2-homarus-gammarus-p0002", description, 0.8),
         )
     ]
-    monkeypatch.setattr(appliance.index, "search", lambda query, top_k=5: hits)
+    monkeypatch.setattr(appliance.index, "search", lambda query, top_k=5, **_extra: hits)
     result = appliance.ask("What is the European lobster?")
     lead_claims = result["numeric_claims"]["wikitext2-homarus-gammarus-p0001"]
     described = result["numeric_claims"]["wikitext2-homarus-gammarus-p0002"]

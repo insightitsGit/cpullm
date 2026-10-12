@@ -75,8 +75,14 @@ class VectorPrismIndex:
     def encode_query(self, query: str):
         return self.pipeline.encode_query(query)
 
-    def search(self, query: str, top_k: int = 5):
-        return self.engine.search(self.encode_query(query), query, top_k=top_k)
+    def search(self, query: str, top_k: int = 5, *, query_tensor: object | None = None):
+        """Nearest chunks for ``query``.
+
+        Pass ``query_tensor`` when the caller already encoded ``query``. The
+        scan then uses that 1024-d vector instead of encoding again.
+        """
+        vector = self.encode_query(query) if query_tensor is None else query_tensor
+        return self.engine.search(vector, query, top_k=top_k)
 
     def save_chunks(self, chunks: list[tuple[str, str]], *, replace_prefix: str | None = None) -> int:
         """Encode chunk_text with VectorPrism and store the 1024-d rows.

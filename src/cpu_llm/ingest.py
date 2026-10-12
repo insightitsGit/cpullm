@@ -39,8 +39,11 @@ def train_wikitext(appliance: Appliance) -> tuple[int, int]:
 
 def main() -> None:
     appliance = Appliance(default_checkpoint())
-    stored, propositions = train_wikitext(appliance)
-    print(f"saved {stored} chunks under {SOURCE_PREFIX}, with {propositions} stored propositions")
+    try:
+        stored, propositions = train_wikitext(appliance)
+        print(f"saved {stored} chunks under {SOURCE_PREFIX}, with {propositions} stored propositions")
+    finally:
+        appliance.close()
 
 
 if __name__ == "__main__":
