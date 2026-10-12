@@ -107,7 +107,7 @@ The node does not scan the index. The shortlist names the articles, and the arti
 
 PrismResonance scores each loaded paragraph against the same 1024-d query tensor. A paragraph whose interference is not positive is dropped. The paragraphs that stay are ordered by a walk on their dense cores: each step is the nearest unused paragraph. The sentence on a step is copied from that paragraph. The keywords on a step are the question's content words that occur in that sentence. Near tensors mean those paragraphs sit near each other. The link is not a cause, a measurement, or a new proposition.
 
-The result is `imagination`. `answer` stays the checked sentence.
+The result is `imagination`, and the reply prints that passage after the checked sentence. `answer` stays the checked sentence.
 
 ---
 
@@ -125,8 +125,8 @@ prompt
   → PrismThinker
   → PrismCognition + surface realizer + entailment auditor
   → PrismShine (no external judge)
-  → reply preface, follow-ups, and next steps
   → creative writing only if the classifier names a reason, or imagine=True
+  → reply preface, the checked sentence, then the imagined passage
   → discovery loop only if discover=True
 ```
 

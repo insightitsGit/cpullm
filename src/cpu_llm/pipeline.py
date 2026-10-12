@@ -37,14 +37,14 @@ A prompt then runs:
 8. PrismShine checks the retrieval trace and, when a sentence exists, the
    sentence against those paragraphs. The judge stays off. An abstention
    sentence is kept. Any other blocked sentence is replaced.
-9. A reply node adds a preface, follow-ups, and next steps taken from the
-   passages and the open questions. It leaves the checked sentence unchanged.
-10. Creative writing runs only when the prompt classifier names a reason, or
-    when the caller turns it on. It loads every paragraph of the articles in
-    the shortlist, keeps the ones PrismResonance finds interfering with the
-    question, and walks those dense cores. The imagined passage is a separate
-    field. A plain question does not enter it. Discovery still runs only when
-    the caller asks for it.
+9. Creative writing runs only when the prompt classifier names a reason, or
+   when the caller turns it on. It loads every paragraph of the articles in
+   the shortlist, keeps the ones PrismResonance finds interfering with the
+   question, and walks those dense cores. A plain question skips this step.
+10. A reply node adds a preface, follow-ups, and next steps taken from the
+    passages and the open questions. It leaves the checked sentence unchanged.
+    When creative writing ran, that passage is appended after the checked
+    sentence. Discovery still runs only when the caller asks for it.
 
 A proposition is stored only when the source supplies one. VectorPrism's
 offline heuristic extractor can add a causal graph and numeric attributes
@@ -367,13 +367,9 @@ def _compile(appliance: Appliance):
     graph.add_edge("think", "cognize")
     graph.add_edge("cognize", "grammar")
     graph.add_edge("grammar", "shine")
-    graph.add_edge("shine", "reply")
-    graph.add_conditional_edges(
-        "reply",
-        _after_reply,
-        {"imagine": "imagine", "discover": "discover", "end": END},
-    )
-    graph.add_conditional_edges("imagine", _after_imagine, {"discover": "discover", "end": END})
+    graph.add_conditional_edges("shine", _after_shine, {"imagine": "imagine", "reply": "reply"})
+    graph.add_edge("imagine", "reply")
+    graph.add_conditional_edges("reply", _after_reply, {"discover": "discover", "end": END})
     graph.add_edge("discover", END)
     return graph.compile()
 
@@ -402,17 +398,15 @@ def _reply(state: dict[str, Any]) -> dict[str, Any]:
     return {"reply": compose_reply(state)}
 
 
+def _after_shine(state: dict[str, Any]) -> str:
+    if state.get("creative") is True:
+        return "imagine"
+    return "reply"
+
+
 def _after_reply(state: dict[str, Any]) -> str:
     if state.get("guard_decision") != "allow":
         return "end"
-    if state.get("creative") is True:
-        return "imagine"
-    if state.get("discover") is True:
-        return "discover"
-    return "end"
-
-
-def _after_imagine(state: dict[str, Any]) -> str:
     if state.get("discover") is True:
         return "discover"
     return "end"

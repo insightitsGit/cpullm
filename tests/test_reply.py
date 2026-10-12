@@ -146,6 +146,31 @@ def test_empty_retrieval_does_not_invent_a_follow_up():
     assert reply["next_steps"] == []
 
 
+def test_the_imagined_passage_follows_the_checked_sentence():
+    reply = compose_reply(
+        {
+            "message": "Imagine the European lobster.",
+            "guard_decision": "allow",
+            "cognition_status": "deliberated",
+            "answer": "Homarus gammarus is a species of clawed lobster.",
+            "audit_passed": True,
+            "related": [
+                {
+                    "chunk_id": "wikitext2-homarus-gammarus-p0001",
+                    "score": 0.9,
+                    "chunk_text": "Homarus gammarus is a species of clawed lobster.",
+                }
+            ],
+            "imagination": {
+                "text": "Homarus gammarus is a large crustacean, with a body length up to 60 centimetres.",
+            },
+        }
+    )
+    assert reply["body"] == "Homarus gammarus is a species of clawed lobster."
+    assert reply["text"].index(reply["body"]) < reply["text"].index("Imagined passage:")
+    assert "body length up to 60 centimetres" in reply["text"]
+
+
 def test_a_blocked_prompt_is_not_given_passages():
     reply = compose_reply(
         {

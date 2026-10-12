@@ -52,6 +52,9 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
     report = state.get("channel_report") or {}
     if report.get("text"):
         lines.extend(["", str(report["text"])])
+    imagined = str((state.get("imagination") or {}).get("text") or "").strip()
+    if imagined:
+        lines.extend(["", "Imagined passage:", imagined])
     return {
         "preface": preface,
         "body": body,

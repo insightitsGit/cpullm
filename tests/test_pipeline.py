@@ -223,6 +223,8 @@ def test_six_channel_nodes_quote_the_passages_and_suggest_discovery_for_a_why_qu
     assert complicated["answer"] == sentence
     assert "discovery loop" in complicated["reply"]["text"]
     assert "It stays off until you ask for it." in complicated["reply"]["text"]
+    appliance.index.save_chunks([], replace_prefix="channel-euro")
+    appliance.index.save_chunks([], replace_prefix="channel-cause")
 
 
 def _quoted(text: str) -> list[str]:
@@ -496,11 +498,15 @@ def test_creative_writing_walks_the_article_and_leaves_the_answer(
         ]
 
     monkeypatch.setattr(appliance.index, "search", search)
-    plain = appliance.ask("What is the European lobster?")
-    creative = appliance.ask("Imagine the European lobster.")
+    try:
+        plain = appliance.ask("What is the European lobster?")
+        creative = appliance.ask("Imagine the European lobster.")
+    finally:
+        appliance.index.save_chunks([], replace_prefix="imagine-lobster-")
     assert plain["creative_reasons"] == []
     assert "imagination" not in plain
     assert creative["answer"] == plain["answer"]
+    assert creative["reply"]["body"] == creative["answer"]
     imagined = creative["imagination"]
     assert imagined["loaded"] == 3
     assert imagined["articles"] == ["imagine-lobster"]
@@ -510,6 +516,7 @@ def test_creative_writing_walks_the_article_and_leaves_the_answer(
         assert link["sentence"] in texts[link["chunk_id"]]
     assert any("lobster" in link["keywords"] for link in imagined["links"])
     assert creative["answer"] != imagined["text"]
+    assert imagined["text"] in creative["reply"]["text"]
 
 
 def test_prompt_injection_stops_before_retrieval(appliance: Appliance):
