@@ -39,6 +39,12 @@ A prompt then runs:
    sentence is kept. Any other blocked sentence is replaced.
 9. A reply node adds a preface, follow-ups, and next steps taken from the
    passages and the open questions. It leaves the checked sentence unchanged.
+10. Creative writing runs only when the prompt classifier names a reason, or
+    when the caller turns it on. It loads every paragraph of the articles in
+    the shortlist, keeps the ones PrismResonance finds interfering with the
+    question, and walks those dense cores. The imagined passage is a separate
+    field. A plain question does not enter it. Discovery still runs only when
+    the caller asks for it.
 
 A proposition is stored only when the source supplies one. VectorPrism's
 offline heuristic extractor can add a causal graph and numeric attributes
@@ -70,7 +76,9 @@ from prismthinker.config import EngineConfig
 from prismthinker.core.schemas import EpistemicRegime, ReasoningContext
 
 from cpu_llm.agents.discovery import run_discovery
+from cpu_llm.agents.imagine import compose_imagination
 from cpu_llm.agents.reply import compose_reply
+from cpu_llm.classifier import creative_writing_trigger
 from cpu_llm.channels import judge_readings, read_channel
 from cpu_llm.audit.entailment import EpistemicEntailmentAuditor
 from cpu_llm.catalog import label_retrieval
@@ -223,12 +231,14 @@ class Appliance:
         propositions: list[EIRProposition] | None = None,
         *,
         discover: bool = False,
+        imagine: bool = False,
         payment: Any | None = None,
         authority: Any | None = None,
     ) -> dict[str, Any]:
         if (payment is None) != (authority is None):
             raise ValueError("a payment turn needs both a proposal and an authority snapshot")
         z_query = np.asarray(self.index.encode_query(message), dtype=np.float32).reshape(TENSOR_DIM)
+        creative_reasons = creative_writing_trigger(message, forced=imagine)
         self._turn = {
             "propositions": list(propositions or []),
             "payment": payment,
@@ -236,7 +246,13 @@ class Appliance:
             "z_query": z_query,
         }
         return self.graph.invoke(
-            {"message": message, "tenant_id": "cpu-llm", "discover": discover}
+            {
+                "message": message,
+                "tenant_id": "cpu-llm",
+                "discover": discover,
+                "creative": bool(creative_reasons),
+                "creative_reasons": creative_reasons,
+            }
         )
 
     def close(self) -> None:
@@ -333,6 +349,7 @@ def _compile(appliance: Appliance):
     graph.add_node("grammar", dict_node_adapter(_grammar(appliance), hop="grammar"))
     graph.add_node("shine", dict_node_adapter(_shine(appliance), hop="shine"))
     graph.add_node("reply", dict_node_adapter(_reply, hop="reply"))
+    graph.add_node("imagine", dict_node_adapter(_imagine(appliance), hop="imagine"))
     graph.add_node("discover", dict_node_adapter(_discover(appliance), hop="discover"))
     graph.add_edge(START, "guard")
     graph.add_conditional_edges("guard", _after_guard, {"retrieve": "retrieve", "reply": "reply"})
@@ -351,7 +368,12 @@ def _compile(appliance: Appliance):
     graph.add_edge("cognize", "grammar")
     graph.add_edge("grammar", "shine")
     graph.add_edge("shine", "reply")
-    graph.add_conditional_edges("reply", _after_reply, {"discover": "discover", "end": END})
+    graph.add_conditional_edges(
+        "reply",
+        _after_reply,
+        {"imagine": "imagine", "discover": "discover", "end": END},
+    )
+    graph.add_conditional_edges("imagine", _after_imagine, {"discover": "discover", "end": END})
     graph.add_edge("discover", END)
     return graph.compile()
 
@@ -381,7 +403,17 @@ def _reply(state: dict[str, Any]) -> dict[str, Any]:
 
 
 def _after_reply(state: dict[str, Any]) -> str:
-    if state.get("discover") is True and state.get("guard_decision") == "allow":
+    if state.get("guard_decision") != "allow":
+        return "end"
+    if state.get("creative") is True:
+        return "imagine"
+    if state.get("discover") is True:
+        return "discover"
+    return "end"
+
+
+def _after_imagine(state: dict[str, Any]) -> str:
+    if state.get("discover") is True:
         return "discover"
     return "end"
 
@@ -511,6 +543,83 @@ def evaluate_payment(evaluator, proposal, authority):
     facts = evaluator._structured_facts(proposal, authority)
     metadata = evaluator._fresh_metadata(facts, now)
     return evaluator.evaluate_proposal(proposal, authority, fact_metadata=metadata, now=now)
+
+
+def _imagine(appliance: Appliance):
+    def node(state: dict[str, Any]) -> dict[str, Any]:
+        related = list(state.get("related") or [])
+        if not related:
+            return {
+                "imagination": compose_imagination(state.get("message") or "", [], {}),
+            }
+        rows = appliance.index.chunks_for_articles([item["chunk_id"] for item in related])
+        if not rows:
+            rows = _shortlist_rows(appliance, related)
+        turn = appliance._turn or {}
+        query = turn.get("z_query")
+        scores = _resonate_article(appliance, rows, query)
+        chunks = [
+            {
+                "document_id": row["document_id"],
+                "chunk_text": row["chunk_text"],
+                "tensor": np.asarray(row["tensor_1024d"], dtype=np.float32).reshape(-1),
+            }
+            for row in rows
+            if row.get("tensor_1024d") is not None
+        ]
+        return {"imagination": compose_imagination(state.get("message") or "", chunks, scores)}
+
+    return node
+
+
+def _shortlist_rows(appliance: Appliance, related: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    hits = {hit["document_id"]: hit for hit in (appliance._turn or {}).get("hits") or []}
+    rows: list[dict[str, Any]] = []
+    for item in related:
+        hit = hits.get(item["chunk_id"])
+        if hit is None or hit.get("tensor_1024d") is None:
+            continue
+        rows.append(
+            {
+                "document_id": item["chunk_id"],
+                "chunk_text": item["chunk_text"],
+                "tensor_1024d": hit["tensor_1024d"],
+            }
+        )
+    return rows
+
+
+def _resonate_article(appliance: Appliance, rows: list[dict[str, Any]], query: Any) -> dict[str, float]:
+    if query is None or not rows:
+        return {}
+    kept: list[tuple[str, np.ndarray]] = []
+    for row in rows:
+        try:
+            amplitude = resonance_amplitude(row["tensor_1024d"])
+        except ValueError:
+            continue
+        kept.append((row["document_id"], amplitude))
+    if not kept:
+        return {}
+    try:
+        query_amplitude = resonance_amplitude(query)
+    except ValueError:
+        return {}
+    for chunk_id, amplitude in kept:
+        appliance.resonance.ingest(chunk_id, amplitude, frequency=FrequencyFamily.NEUTRAL)
+    ranked = appliance.resonance.query(
+        query_amplitude,
+        FrequencyFamily.NEUTRAL,
+        [chunk_id for chunk_id, _amplitude in kept],
+        np.stack([amplitude for _chunk_id, amplitude in kept]),
+        flat=True,
+    )
+    scores: dict[str, float] = {}
+    for hit in ranked:
+        score = float(hit.score)
+        if math.isfinite(score):
+            scores[hit.chunk_id] = score
+    return scores
 
 
 def _discover(appliance: Appliance):

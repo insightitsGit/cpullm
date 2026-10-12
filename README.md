@@ -97,6 +97,18 @@ The detail node prints all six. It does not replace the checked sentence. A why,
 
 PrismThinker can return `answer`, `gather`, `refuse`, or `escalate`. A gather result still realizes the grounded sentence when a proposition exists. The open questions stay on `gather_questions`. An audited sentence means the sentence matches stored propositions. It does not mean the reasoning objective was completed.
 
+### 5. Creative writing, off the fixed chain
+
+**Keywords:** imagined passage, article-wide tensor walk, PrismResonance word overlap, opt-in creative node
+
+A plain question stays on the five-hit shortlist. Creative writing runs when `cpu_llm.classifier.creative_writing_trigger` names a reason (`imagine`, `what if`, `story`, `fiction`, `poem`, `creative writing`), or when the caller passes `imagine=True`.
+
+The node does not scan the index. The shortlist names the articles, and the article id is the slug in the document id: `homarus-gammarus` from `wikitext2-homarus-gammarus-p0001`. For the European lobster that article is 24 paragraphs; the normal path still reads five of them. The creative node loads every stored paragraph of those articles. An empty shortlist has nothing to connect.
+
+PrismResonance scores each loaded paragraph against the same 1024-d query tensor. A paragraph whose interference is not positive is dropped. The paragraphs that stay are ordered by a walk on their dense cores: each step is the nearest unused paragraph. The sentence on a step is copied from that paragraph. The keywords on a step are the question's content words that occur in that sentence. Near tensors mean those paragraphs sit near each other. The link is not a cause, a measurement, or a new proposition.
+
+The result is `imagination`. `answer` stays the checked sentence.
+
 ---
 
 ## Turn order
@@ -114,10 +126,11 @@ prompt
   → PrismCognition + surface realizer + entailment auditor
   → PrismShine (no external judge)
   → reply preface, follow-ups, and next steps
+  → creative writing only if the classifier names a reason, or imagine=True
   → discovery loop only if discover=True
 ```
 
-A blocked prompt stops at the reply. It does not enter discovery.
+A blocked prompt stops at the reply. It does not enter creative writing or discovery. A plain question does not enter creative writing. `imagination` is a separate field from `answer`.
 
 The current VectorPrism checkpoint trained the **dense** channel. Relational, disentangled, hyperbolic, and causal heads are still at initialization, and the identity anchor norm is 0. cpu-llm does not pretend those slices rank the search.
 
@@ -250,8 +263,10 @@ src/cpu_llm/clauses.py           first-sentence propositions for training
 src/cpu_llm/realizer/            controlled English from a proposition
 src/cpu_llm/cognition/           deliberation adapter
 src/cpu_llm/audit/               lexical entailment check
+src/cpu_llm/classifier.py         creative-writing trigger
 src/cpu_llm/agents/reply.py      preface and follow-ups around the sentence
 src/cpu_llm/agents/discovery.py  opt-in discovery loop
+src/cpu_llm/agents/imagine.py    article walk for an imagined passage
 src/cpu_llm/manifest_spans.py    numbers in the answer must occur in the passages
 docs/cpu-llm-v1.6.1-architecture-spec.md
 ```

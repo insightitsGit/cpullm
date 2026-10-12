@@ -9,11 +9,13 @@ PSMRetrievalEngine.search.
 from __future__ import annotations
 
 import os
+import re
 from pathlib import Path
 
 import pyarrow  # noqa: F401  # must load before torch; otherwise pyarrow faults on this machine
 
 from vectorprism.base_encoder import SentenceTransformerEncoder
+from vectorprism.db_client import _as_float32_vector
 from vectorprism.checkpointing import load_checkpoint
 from vectorprism.db_client import PgVectorClient
 from vectorprism.db_factory import make_db
@@ -21,6 +23,7 @@ from vectorprism.ingest_pipeline import IngestDocument, VectorPrismIngestPipelin
 from vectorprism.retrieval_engine import PSMRetrievalEngine
 
 ENCODER_NAME = "sentence-transformers/all-mpnet-base-v2"
+_PARAGRAPH = re.compile(r"-p\d+$")
 LOCAL_PG_DSN = "postgresql://vectorprism:vectorprism@localhost:5433/vectorprism"
 
 
@@ -84,6 +87,51 @@ class VectorPrismIndex:
         vector = self.encode_query(query) if query_tensor is None else query_tensor
         return self.engine.search(vector, query, top_k=top_k)
 
+    def chunks_for_articles(self, document_ids: list[str]) -> list[dict]:
+        """Every stored paragraph of the articles named by ``document_ids``.
+
+        A paragraph id such as ``wikitext2-homarus-gammarus-p0001`` loads every
+        row with that article stem. An id with no paragraph suffix loads that
+        row alone. This does not scan the rest of the index.
+        """
+        if not hasattr(self.db, "conn"):
+            return []
+        exact: list[str] = []
+        prefixes: list[str] = []
+        for document_id in document_ids:
+            if _PARAGRAPH.search(document_id):
+                stem = _PARAGRAPH.sub("-p", document_id)
+                if stem not in prefixes:
+                    prefixes.append(stem)
+            elif document_id not in exact:
+                exact.append(document_id)
+        found: dict[str, dict] = {}
+        with self.db.conn.cursor() as cursor:
+            for document_id in exact:
+                cursor.execute(
+                    """
+                    SELECT document_id, chunk_text, tensor_1024d
+                    FROM psm_document_embeddings
+                    WHERE document_id = %s
+                    """,
+                    (document_id,),
+                )
+                for row in cursor.fetchall():
+                    found[row[0]] = _chunk_row(row)
+            for stem in prefixes:
+                cursor.execute(
+                    """
+                    SELECT document_id, chunk_text, tensor_1024d
+                    FROM psm_document_embeddings
+                    WHERE document_id LIKE %s ESCAPE '\\'
+                    ORDER BY document_id
+                    """,
+                    (_like_prefix(stem),),
+                )
+                for row in cursor.fetchall():
+                    found[row[0]] = _chunk_row(row)
+        return [found[key] for key in sorted(found)]
+
     def save_chunks(self, chunks: list[tuple[str, str]], *, replace_prefix: str | None = None) -> int:
         """Encode chunk_text with VectorPrism and store the 1024-d rows.
 
@@ -105,6 +153,19 @@ class VectorPrismIndex:
             for document_id, chunk_text in chunks
         ]
         return self.pipeline.upsert_documents(documents, batch_size=32)
+
+
+def _like_prefix(stem: str) -> str:
+    escaped = stem.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+    return escaped + "%"
+
+
+def _chunk_row(row) -> dict:
+    return {
+        "document_id": row[0],
+        "chunk_text": row[1],
+        "tensor_1024d": _as_float32_vector(row[2]),
+    }
 
 
 def _enable_pgvector(dsn: str) -> None:
