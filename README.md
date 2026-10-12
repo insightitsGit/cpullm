@@ -66,6 +66,8 @@ Index a passage with a proposition whose subject, predicate, and object are slic
 
 WikiText training stores a proposition only when the realizer can repeat the paragraph’s first sentence exactly. On the validation split that is 1,434 of 1,841 paragraphs. The other 407 stay text. They are not given an invented triple.
 
+The WikiText-2 test split is a second set of those articles: 62 titles and 2,183 paragraphs, with no title in common with the validation split. The same cutter stored 1,607 propositions. The other 576 stay text. Those rows use the prefix `wikitext2test-`, so retraining validation does not delete them. The creative walk loads every stored paragraph of an article the shortlist names, from either split.
+
 ### 2. A measurement that stays a measurement
 
 **Keywords:** elevation extraction, physical unit versus million, span-aware numeric claims, CPU measurement parser
@@ -103,7 +105,7 @@ PrismThinker can return `answer`, `gather`, `refuse`, or `escalate`. A gather re
 
 A plain question stays on the five-hit shortlist. Creative writing runs when `cpu_llm.classifier.creative_writing_trigger` names a reason (`imagine`, `what if`, `story`, `fiction`, `poem`, `creative writing`), or when the caller passes `imagine=True`.
 
-The node does not scan the index. The shortlist names the articles, and the article id is the slug in the document id: `homarus-gammarus` from `wikitext2-homarus-gammarus-p0001`. For the European lobster that article is 24 paragraphs; the normal path still reads five of them. The creative node loads every stored paragraph of those articles. An empty shortlist has nothing to connect.
+The node does not scan the index. The shortlist names the articles, and the article id is the slug in the document id: `homarus-gammarus` from `wikitext2-homarus-gammarus-p0001`. When the question names an article whose lead is stored, that article replaces neighbors from other titles, and the lead is kept even if the dense scan missed it. For the European lobster that article is 24 paragraphs; the normal path still reads five of them. The creative node loads every stored paragraph of the articles that remain. An empty shortlist has nothing to connect.
 
 PrismResonance scores each loaded paragraph against the same 1024-d query tensor. A paragraph whose interference is not positive is dropped. The paragraphs that stay are ordered by a walk on their dense cores: each step is the nearest unused paragraph. The sentence on a step is copied from that paragraph. The keywords on a step are the question's content words that occur in that sentence. Near tensors mean those paragraphs sit near each other. The link is not a cause, a measurement, or a new proposition.
 

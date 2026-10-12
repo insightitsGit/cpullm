@@ -527,3 +527,15 @@ def test_prompt_injection_stops_before_retrieval(appliance: Appliance):
     assert result["reply"]["follow_ups"] == []
     assert "passages" not in result
     assert "related" not in result
+
+
+def test_a_named_article_is_the_answer_and_the_creative_walk(appliance: Appliance):
+    result = appliance.ask("Imagine Robert Boulter.")
+    assert result["answer"] == "Robert Boulter is an English film, television and theatre actor."
+    assert result["reply"]["body"] == result["answer"]
+    imagined = result["imagination"]
+    assert imagined["articles"] == ["robert-boulter"]
+    assert imagined["loaded"] >= 1
+    assert all(link["chunk_id"].startswith("wikitext2test-robert-boulter-") for link in imagined["links"])
+    assert "James Bond" not in imagined["text"]
+    assert imagined["text"] in result["reply"]["text"]

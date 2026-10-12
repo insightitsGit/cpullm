@@ -10,9 +10,11 @@ chunk as a graph node.
 A prompt then runs:
 
 1. PrismGuard checks the prompt.
-2. VectorPrism returns the nearest chunks and their tensors. The prompt was
-   encoded once, before this graph runs, and that same 1024-d tensor is the
-   query for the scan and for every later channel rank.
+2. VectorPrism returns the nearest chunks and their tensors. When the question
+   names an article whose lead paragraph is stored, that article replaces the
+   neighbors from other articles, and the lead is included if the scan missed
+   it. The prompt was encoded once, before this graph runs, and that same
+   1024-d tensor is the query for the scan and for every later channel rank.
 3. PrismResonance ranks those chunks by dense-channel interference. The header
    is a packed timestamp, not a coordinate, so it is not part of the amplitude.
    VectorPrism already chose this shortlist, so the coherence shield does not
@@ -81,7 +83,7 @@ from cpu_llm.agents.reply import compose_reply
 from cpu_llm.classifier import creative_writing_trigger
 from cpu_llm.channels import judge_readings, read_channel
 from cpu_llm.audit.entailment import EpistemicEntailmentAuditor
-from cpu_llm.catalog import label_retrieval
+from cpu_llm.catalog import article_slug, label_retrieval, title_slugs
 from cpu_llm.cognition.adapter import PrismCognitionSubspaceAdapter
 from cpu_llm.grounding import shine_gate, verify_grounding
 from cpu_llm.ir.schema import EIRProposition
@@ -632,6 +634,9 @@ def _retrieve(appliance: Appliance):
             z_query = np.asarray(appliance.index.encode_query(message), dtype=np.float32).reshape(TENSOR_DIM)
             turn["z_query"] = z_query
         hits = appliance.index.search(message, top_k=5, query_tensor=z_query)
+        named = _hits_for_named_article(appliance.index, message, hits)
+        if named:
+            hits = named
         turn["hits"] = hits
         appliance._turn = turn
         return {
@@ -646,6 +651,23 @@ def _retrieve(appliance: Appliance):
         }
 
     return node
+
+
+def _hits_for_named_article(index, message: str, hits: list[dict[str, Any]]) -> list[dict[str, Any]] | None:
+    """Keep the article the question names, once its lead paragraph is stored.
+
+    Neighbors from other articles are left out. The lead is added when the
+    scan missed it, so the realizer still has that article's sentence.
+    """
+    for slug in title_slugs(message):
+        lead = index.lead_for_slug(slug)
+        if lead is None:
+            continue
+        kept = [hit for hit in hits if article_slug(str(hit["document_id"])) == slug]
+        if lead["document_id"] not in {str(hit["document_id"]) for hit in kept}:
+            kept.insert(0, lead)
+        return kept
+    return None
 
 
 def _resonate(appliance: Appliance):

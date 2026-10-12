@@ -132,6 +132,35 @@ class VectorPrismIndex:
                     found[row[0]] = _chunk_row(row)
         return [found[key] for key in sorted(found)]
 
+    def lead_for_slug(self, slug: str) -> dict | None:
+        """The stored lead paragraph whose article slug is ``slug``.
+
+        Validation ids and test-split ids are both accepted. A slug that is
+        not a stored title returns nothing.
+        """
+        if not hasattr(self.db, "conn"):
+            return None
+        if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", slug):
+            return None
+        document_ids = [f"wikitext2-{slug}-p0001", f"wikitext2test-{slug}-p0001"]
+        with self.db.conn.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT document_id, chunk_text, tensor_1024d
+                FROM psm_document_embeddings
+                WHERE document_id = ANY(%s)
+                ORDER BY document_id
+                LIMIT 1
+                """,
+                (document_ids,),
+            )
+            row = cursor.fetchone()
+        if row is None:
+            return None
+        hit = _chunk_row(row)
+        hit["final_score"] = 1.0
+        return hit
+
     def save_chunks(self, chunks: list[tuple[str, str]], *, replace_prefix: str | None = None) -> int:
         """Encode chunk_text with VectorPrism and store the 1024-d rows.
 

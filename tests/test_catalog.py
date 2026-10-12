@@ -1,11 +1,19 @@
 """PrismRAG labels a chunk with the article slug already in its document id."""
 
-from cpu_llm.catalog import article_slug, label_retrieval
+from cpu_llm.catalog import article_slug, label_retrieval, title_slugs
 
 
 def test_article_slug_drops_the_source_prefix_and_paragraph_number():
     assert article_slug("wikitext2-homarus-gammarus-p0001") == "homarus-gammarus"
+    assert article_slug("wikitext2test-homarus-gammarus-p0001") == "homarus-gammarus"
     assert article_slug("doc_hyper") == "doc_hyper"
+
+
+def test_title_slugs_keep_the_name_and_drop_the_prompt_word():
+    assert title_slugs("Imagine Robert Boulter.")[0] == "robert-boulter"
+    assert "imagine" not in title_slugs("Imagine Robert Boulter.")
+    assert title_slugs("What is Mount Elbert?") == ["mount-elbert", "mount", "elbert"]
+    assert title_slugs("What is the European lobster?") == ["european"]
 
 
 def test_query_category_follows_an_article_token():

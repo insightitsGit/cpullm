@@ -23,7 +23,15 @@ _TITLE = re.compile(r"^= (?!=).+ =$")
 
 
 def validation_path() -> Path:
-    return Path(__file__).resolve().parents[2] / "data" / "wikitext-2-raw-v1" / "validation.parquet"
+    return _split_path("validation.parquet")
+
+
+def test_path() -> Path:
+    return _split_path("test.parquet")
+
+
+def _split_path(name: str) -> Path:
+    return Path(__file__).resolve().parents[2] / "data" / "wikitext-2-raw-v1" / name
 
 
 def detokenize(text: str) -> str:
@@ -39,10 +47,24 @@ def detokenize(text: str) -> str:
 
 
 def validation_chunks(path: Path | None = None) -> list[tuple[str, str, str]]:
-    """Return (document_id, title, paragraph) for every paragraph in the split."""
+    """Return (document_id, title, paragraph) for every validation paragraph."""
+    return wikitext_chunks(path or validation_path(), prefix="wikitext2")
+
+
+def test_chunks(path: Path | None = None) -> list[tuple[str, str, str]]:
+    """Return (document_id, title, paragraph) for every test-split paragraph.
+
+    Ids use the prefix ``wikitext2test-``. A later validation replace deletes
+    ``wikitext2-%`` and must not remove this split.
+    """
+    return wikitext_chunks(path or test_path(), prefix="wikitext2test")
+
+
+def wikitext_chunks(path: Path, *, prefix: str) -> list[tuple[str, str, str]]:
+    """Return (document_id, title, paragraph) for every paragraph in ``path``."""
     import pyarrow.parquet as pq
 
-    table = pq.read_table(path or validation_path())
+    table = pq.read_table(path)
     lines = [row.strip() for row in table.column("text").to_pylist()]
     chunks: list[tuple[str, str, str]] = []
     title: str | None = None
@@ -55,10 +77,10 @@ def validation_chunks(path: Path | None = None) -> list[tuple[str, str, str]]:
         if title is None or not line or line.startswith("="):
             continue
         paragraph_number += 1
-        chunks.append((_document_id(title, paragraph_number), title, detokenize(line)))
+        chunks.append((_document_id(prefix, title, paragraph_number), title, detokenize(line)))
     return chunks
 
 
-def _document_id(title: str, paragraph_number: int) -> str:
+def _document_id(prefix: str, title: str, paragraph_number: int) -> str:
     slug = re.sub(r"[^a-z0-9]+", "-", title.casefold()).strip("-")
-    return f"wikitext2-{slug[:72]}-p{paragraph_number:04d}"
+    return f"{prefix}-{slug[:72]}-p{paragraph_number:04d}"

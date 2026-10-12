@@ -10,9 +10,10 @@ from __future__ import annotations
 from cpu_llm.clauses import propositions_for
 from cpu_llm.pipeline import Appliance
 from cpu_llm.retrieval import VectorPrismIndex, default_checkpoint
-from cpu_llm.source import validation_chunks
+from cpu_llm.source import test_chunks, validation_chunks
 
 SOURCE_PREFIX = "wikitext2-"
+TEST_PREFIX = "wikitext2test-"
 
 
 def ingest_source(
@@ -31,17 +32,41 @@ def ingest_wikitext(index: VectorPrismIndex) -> int:
 
 def train_wikitext(appliance: Appliance) -> tuple[int, int]:
     """Save the validation split and register every repeatable sentence."""
-    chunks = [(document_id, text) for document_id, _title, text in validation_chunks()]
+    return _train_split(appliance, validation_chunks(), SOURCE_PREFIX)
+
+
+def train_wikitext_test(appliance: Appliance) -> tuple[int, int]:
+    """Save the test split and register every repeatable sentence.
+
+    This is a second set of Good and Featured articles. It does not replace
+    the validation rows.
+    """
+    return _train_split(appliance, test_chunks(), TEST_PREFIX)
+
+
+def _train_split(
+    appliance: Appliance,
+    rows: list[tuple[str, str, str]],
+    prefix: str,
+) -> tuple[int, int]:
+    chunks = [(document_id, text) for document_id, _title, text in rows]
     propositions = propositions_for(chunks)
-    stored = appliance.catalog_chunks(chunks, propositions, replace_prefix=SOURCE_PREFIX)
+    stored = appliance.catalog_chunks(chunks, propositions, replace_prefix=prefix)
     return stored, len(propositions)
 
 
 def main() -> None:
+    import sys
+
     appliance = Appliance(default_checkpoint())
     try:
-        stored, propositions = train_wikitext(appliance)
-        print(f"saved {stored} chunks under {SOURCE_PREFIX}, with {propositions} stored propositions")
+        if "--test" in sys.argv:
+            stored, propositions = train_wikitext_test(appliance)
+            prefix = TEST_PREFIX
+        else:
+            stored, propositions = train_wikitext(appliance)
+            prefix = SOURCE_PREFIX
+        print(f"saved {stored} chunks under {prefix}, with {propositions} stored propositions")
     finally:
         appliance.close()
 
