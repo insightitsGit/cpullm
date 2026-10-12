@@ -137,8 +137,10 @@ def test_supplied_homarus_proposition_is_realized(appliance: Appliance, monkeypa
     assert result["cognition_status"] == "deliberated"
     assert result["answer"] == "Homarus gammarus is a species of clawed lobster."
     assert result["audit_passed"] is True
-    assert "no numeric threshold on hypothesis or objective" in result["gather_questions"]
-    assert "causal_graph is required" in result["gather_questions"]
+    assert result["gather_questions"] == []
+    assert result["thinker_directive"] == "answer"
+    assert "empirical" not in result["thinker_evaluators"]
+    assert "causal" not in result["thinker_evaluators"]
     assert homarus_definition().proposition_id == "prop_homarus_gammarus_def"
 
 
@@ -345,24 +347,23 @@ def test_stated_measurement_keeps_claims_and_realizes_the_stored_sentences(
     assert "mass_kg" not in described
     assert result["numeric_qualifiers"]["wikitext2-homarus-gammarus-p0001"]["length_cm"]["qualifier"] == "maximum"
     assert result["numeric_qualifiers"]["wikitext2-homarus-gammarus-p0002"]["body_length_cm"]["qualifier"] == "maximum"
-    questions = result["gather_questions"]
-    assert "no numeric observations" not in questions
-    assert "no numeric threshold on hypothesis or objective" in questions
-    assert "causal_graph is required" in questions
-    assert "missing treatment/outcome binding" not in questions
+    assert result["gather_questions"] == []
+    assert result["thinker_directive"] == "answer"
+    assert result["thinker_evaluators"] == ["formal"]
+    assert "no numeric threshold on hypothesis or objective" not in result["gather_questions"]
+    assert "causal_graph is required" not in result["gather_questions"]
     lead_sentence, _delivered = SemanticSurfaceRealizer().synthesize([stored[lead_id]], [])
     described_sentence, _delivered = SemanticSurfaceRealizer().synthesize([stored[description_id]], [])
     assert result["cognition_status"] == "deliberated"
     assert result["audit_passed"] is True
     assert lead_sentence in result["answer"]
     assert described_sentence in result["answer"]
-    assert result["thinker_directive"] == "gather"
     reply = result["reply"]
     assert "proposition" in reply["preface"]
     assert reply["body"] == result["answer"]
     assert "European lobster" in reply["body"]
     assert any("Atlantic Ocean" in item or "American lobster" in item for item in reply["follow_ups"])
-    assert any("body length 60 cm" in step for step in reply["next_steps"])
+    assert described["body_length_cm"] == 60.0
 
 
 def test_wikitext_paragraph_is_retrieved_as_source_text(appliance: Appliance):
@@ -381,8 +382,8 @@ def test_wikitext_paragraph_is_retrieved_as_source_text(appliance: Appliance):
     assert math.isfinite(matched["score"])
     assert 0.0 < matched["score"] <= 1.0
     assert matched["category"] == "homarus-gammarus"
-    assert result["thinker_directive"] == "gather"
-    assert result["gather_questions"]
+    assert result["thinker_directive"] == "answer"
+    assert result["gather_questions"] == []
     assert result["shine_decision"] in {"pass", "flag", "block", "regenerate"}
     assert "PARTIAL_RETRIEVAL" not in result["shine_signatures"]
     assert "EMPTY_RETRIEVAL" not in result["shine_signatures"]

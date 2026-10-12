@@ -4,7 +4,7 @@
 **Project:** cpu-llm (`c:\code\cpullm`)  
 **Date:** 2026-10-12  
 **To:** consulting agent  
-**Status:** Consult. Do not invent a policy, an objective, or a causal edge from prose.
+**Status:** Recommendations 1, 3, and 4 are in cpu-llm. Do not invent a policy, an objective, or a causal edge from prose.
 
 ## Question this handoff answers
 
@@ -104,4 +104,20 @@ The empirical regime asks for that graph even on a “what is” question, becau
 - `numeric_claims` for `wikitext2-mount-elbert-p0008`: `height_ft = 14433.0`, `height_m = 4399.0`
 - no `amount_min`, no invented policy, objective, or causal edge
 
-The false billions are gone. The two questions remain because the real height is still a numeric claim, and PrismThinker selects the empirical regime for any numeric claim. Financial extraction was not the only cause. A descriptive question still asks for a caller-owned threshold whenever a retrieved passage contains a measurement.
+The false billions are gone. The two questions remained on that re-run because the real height was still a numeric claim, and PrismThinker selected the empirical regime for any numeric claim.
+
+## Re-run after descriptive routing (2026-10-12)
+
+A measurement with no caller target and no caller causal graph is now a formal check. The empirical and causal heads are not selected. `Appliance().ask("What is Mount Elbert?")`:
+
+- `thinker_directive`: `answer`
+- `thinker_regime`: `closed_formal`
+- `thinker_evaluators`: `formal` only
+- `gather_questions`: `[]`
+- `cognition_status`: `deliberated`
+- `audit_passed`: true
+- PrismShine: `pass`
+- `wikitext2-mount-elbert-p0008` still has `height_ft = 14433.0` and `height_m = 4399.0`
+- no invented policy, objective, or causal edge
+
+A turn that already has a causal graph, such as the policy/incident pair, still runs the empirical and causal heads. A caller-supplied objective target does too.

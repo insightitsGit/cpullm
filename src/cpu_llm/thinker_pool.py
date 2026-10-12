@@ -323,6 +323,17 @@ class WarmPrismThinker(PrismThinker):
     def __exit__(self, *_exc: object) -> None:
         self.close()
 
+    def evaluate(self, context: object, *, config: EngineConfig | None = None):
+        """Evaluate with the startup pool. `config` selects heads for this prompt only."""
+        if config is None:
+            return super().evaluate(context)
+        previous = self.config
+        self.config = config
+        try:
+            return super().evaluate(context)
+        finally:
+            self.config = previous
+
     def _run_isolated_pool(
         self,
         names: list[str],

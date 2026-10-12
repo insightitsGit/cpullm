@@ -66,6 +66,8 @@ from prismguard.runtime.factory import create_checker_rules_only
 from prismresonance import FrequencyFamily, PrismResonance
 from prismthinker.adapters.chorusgraph import to_chorusgraph
 from prismthinker.adapters.vectorprism import RetrievedDocument, from_vectorprism
+from prismthinker.config import EngineConfig
+from prismthinker.core.schemas import EpistemicRegime, ReasoningContext
 
 from cpu_llm.agents.discovery import run_discovery
 from cpu_llm.agents.reply import compose_reply
@@ -741,6 +743,58 @@ def _grammar(appliance: Appliance):
     return node
 
 
+def _observation_without_target(context: ReasoningContext) -> bool:
+    """A stated number is not an optimization unless the caller supplied a test.
+
+    Height, length, and weight on a descriptive question stay observations.
+    An objective target, a numeric hypothesis payload, or a caller causal
+    graph is what engages the empirical and causal heads.
+    """
+    observed = any(item.numeric_claims for item in context.evidence)
+    if not observed:
+        observed = any(
+            isinstance(fact.value, (int, float)) and not isinstance(fact.value, bool)
+            for fact in context.structured_facts.values()
+        )
+    if not observed:
+        return False
+    if context.causal_graph is not None and context.causal_graph.edges:
+        return False
+    if context.objective is not None and any(term.target is not None for term in context.objective.terms):
+        return False
+    payload = {}
+    if context.hypothesis is not None and context.hypothesis.action is not None:
+        payload = context.hypothesis.action.payload
+    return not any(isinstance(value, (int, float)) and not isinstance(value, bool) for value in payload.values())
+
+
+def _descriptive_config(base: EngineConfig) -> EngineConfig:
+    """Formal check only. The lattice's extra-head fill would re-open empirical."""
+    optional = dict(base.selector.regime_optional)
+    optional["closed_formal"] = []
+    selector = base.selector.model_copy(update={"regime_optional": optional})
+    return base.model_copy(update={"min_heads": 1, "selector": selector})
+
+
+def _directive_after_descriptive(graph: Any, directive: str, descriptive: bool) -> str:
+    """One approving formal head is the descriptive result.
+
+    PrismThinker's lattice calls a single determined head insufficient and
+    emits gather. That gather has no question once empirical and causal are
+    not selected. The sentence is the answer to the descriptive question.
+    """
+    if not descriptive or directive != "gather":
+        return directive
+    if "empirical" in graph.selected_evaluators or "causal" in graph.selected_evaluators:
+        return directive
+    formal = graph.evaluators.get("formal")
+    if formal is None or formal.unresolved_questions:
+        return directive
+    if formal.verdict.value != "approve":
+        return directive
+    return "answer"
+
+
 def _think(appliance: Appliance):
     def node(state: dict[str, Any]) -> dict[str, Any]:
         related = list(state.get("related") or [])
@@ -756,12 +810,18 @@ def _think(appliance: Appliance):
             for item in related
         ]
         context = from_vectorprism(state.get("message") or "", documents)
-        graph = appliance.thinker.evaluate(context)
+        descriptive = _observation_without_target(context)
+        if descriptive:
+            context = context.model_copy(update={"force_regime": EpistemicRegime.CLOSED_FORMAL})
+            graph = appliance.thinker.evaluate(context, config=_descriptive_config(appliance.thinker.config))
+        else:
+            graph = appliance.thinker.evaluate(context)
         envelope = to_chorusgraph(graph)
         update: dict[str, Any] = {
-            "thinker_directive": envelope.directive.value,
+            "thinker_directive": _directive_after_descriptive(graph, envelope.directive.value, descriptive),
             "thinker_regime": graph.regime.value,
             "thinker_regime_reasons": [str(code) for code in graph.classifier.reason_codes],
+            "thinker_evaluators": list(graph.selected_evaluators),
             "gather_questions": list(envelope.gather_questions),
             "numeric_claims": {
                 chunk_id: meta["numeric_claims"]
