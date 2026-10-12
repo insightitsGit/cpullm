@@ -92,16 +92,22 @@ class WarmEvaluatorPool:
         self._lock = threading.Lock()
         self._workers: dict[str, _Worker] = {}
         self._closed = False
-        failures: list[str] = []
-        with self._lock:
-            for name in _HEADS:
-                message = self._launch(name)
-                if message is not None:
-                    failures.append(f"{name}: {message}")
-            if failures:
-                self._shutdown_locked()
+        failures: dict[str, str] = {}
+        try:
+            with self._lock:
+                for name in _HEADS:
+                    self._spawn(name)
+                failures = self._await_ready(list(_HEADS), HEAD_STARTUP_TIMEOUT_S)
+                if failures:
+                    self._shutdown_locked()
+        except Exception:
+            with self._lock:
+                if not self._closed:
+                    self._shutdown_locked()
+            raise
         if failures:
-            raise RuntimeError("evaluator pool failed to start: " + "; ".join(failures))
+            detail = "; ".join(f"{name}: {message}" for name, message in failures.items())
+            raise RuntimeError(f"evaluator pool failed to start: {detail}")
 
     def worker_pids(self) -> tuple[int, ...]:
         with self._lock:
@@ -206,7 +212,7 @@ class WarmEvaluatorPool:
         self._drop(name)
         return self._launch(name)
 
-    def _launch(self, name: str) -> str | None:
+    def _spawn(self, name: str) -> None:
         self._drop(name)
         inbox: Queue = _MP.Queue()
         outbox: Queue = _MP.Queue()
@@ -217,18 +223,41 @@ class WarmEvaluatorPool:
             name=f"prismthinker-{name}",
         )
         process.start()
-        worker = _Worker(process, inbox, outbox)
-        self._workers[name] = worker
-        item = _queue_get(outbox, HEAD_STARTUP_TIMEOUT_S)
-        if item is not None and item[0] == "ready" and process.is_alive():
-            return None
-        message = "worker failed to start before startup timeout"
-        if item is not None and item[0] != "ready":
-            message = str(item[1])
-        elif not process.is_alive():
-            message = f"worker exited during startup ({process.exitcode})"
-        self._drop(name)
-        return message
+        self._workers[name] = _Worker(process, inbox, outbox)
+
+    def _await_ready(self, names: list[str], timeout_s: float) -> dict[str, str]:
+        pending = set(names)
+        failures: dict[str, str] = {}
+        deadline = time.perf_counter() + timeout_s
+        while pending and time.perf_counter() < deadline:
+            for name in list(pending):
+                worker = self._workers.get(name)
+                if worker is None:
+                    pending.remove(name)
+                    failures[name] = "worker was not started"
+                    continue
+                item = _queue_get(worker.outbox, 0.02)
+                if item is None:
+                    if not worker.process.is_alive():
+                        pending.remove(name)
+                        failures[name] = f"worker exited during startup ({worker.process.exitcode})"
+                        self._drop(name)
+                    continue
+                pending.remove(name)
+                if item[0] != "ready" or not worker.process.is_alive():
+                    failures[name] = str(item[1]) if item[0] != "ready" else "worker exited during startup"
+                    self._drop(name)
+            if pending:
+                time.sleep(0.01)
+        for name in list(pending):
+            failures[name] = "worker failed to start before startup timeout"
+            self._drop(name)
+            pending.remove(name)
+        return failures
+
+    def _launch(self, name: str) -> str | None:
+        self._spawn(name)
+        return self._await_ready([name], HEAD_STARTUP_TIMEOUT_S).get(name)
 
     def _drop(self, name: str) -> None:
         worker = self._workers.pop(name, None)
