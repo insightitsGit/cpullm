@@ -11,7 +11,7 @@
 > **One query in. An audited, mathematically verified assertion out.**
 > Derived directly from stored epistemic propositions and verified against source evidence spans. Zero probabilistic token guessing, zero cloud APIs, zero GPU overhead.
 
-**Author:** Amin Parva ([parvaamin@gmail.com](mailto:parvaamin@gmail.com)), independent engineer · **Retrieval Plane:** [VectorPrism](https://github.com/insightitsGit/VectorPrism) · **Version:** 1.7.0
+**Author:** [Amin Parva](mailto:parvaamin@gmail.com) · **Retrieval plane:** [VectorPrism](https://github.com/insightitsGit/VectorPrism) · **Version:** 1.7.0
 
 ---
 
@@ -388,6 +388,7 @@ cpu-llm/
     data/artificial-intelligence.md          shipped primer, 70 paragraphs
   tests/                                      the suite, including the PDF upload check
   samples/harbor-field-guide.pdf              two-page field guide used as an upload example
+  docs/cpu-llm-white-paper.md                 technical white paper
   docs/cpu-llm-v1.6.1-architecture-spec.md
 ```
 
@@ -397,7 +398,7 @@ cpu-llm/
 
 ## Author
 
-**Amin Parva**, independent engineer, wrote cpu-llm.
+**Amin Parva**, AI Architect & Staff Applied AI Engineer, wrote cpu-llm.
 
 - Email: [parvaamin@gmail.com](mailto:parvaamin@gmail.com)
 - Repository: [https://github.com/insightitsGit/cpullm](https://github.com/insightitsGit/cpullm)
@@ -409,7 +410,7 @@ cpu-llm/
 
 ```bibtex
 @software{cpullm2026,
-  title  = {cpu-llm: A CPU Epistemic Text Engine on VectorPrism},
+  title  = {cpu-llm: A Deterministic CPU Epistemic Text Engine on VectorPrism},
   author = {Amin Parva},
   year   = {2026},
   url    = {https://github.com/insightitsGit/cpullm},
@@ -421,7 +422,8 @@ cpu-llm/
 
 ## Links
 
-- Author: **Amin Parva**, independent engineer ([parvaamin@gmail.com](mailto:parvaamin@gmail.com))
+- Author: **Amin Parva**, AI Architect & Staff Applied AI Engineer ([parvaamin@gmail.com](mailto:parvaamin@gmail.com))
+- White paper: [docs/cpu-llm-white-paper.md](docs/cpu-llm-white-paper.md)
 - This repository: [https://github.com/insightitsGit/cpullm](https://github.com/insightitsGit/cpullm)
 - Retrieval engine: [https://github.com/insightitsGit/VectorPrism](https://github.com/insightitsGit/VectorPrism)
 - License: [Apache License 2.0](LICENSE)
