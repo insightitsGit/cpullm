@@ -94,7 +94,7 @@ That command loads the WikiText validation split and then the primer. The same e
 
 ## Install
 
-Python 3.11 or newer. cpu-llm is a pip package. This tree is not uploaded to the public package index. Install it from a checkout:
+Python 3.11 or newer. The GitHub repository is public. The package name on PyPI is `cpu-llm`. Install from a checkout:
 
 ```bash
 git clone https://github.com/insightitsGit/cpullm.git
@@ -105,7 +105,7 @@ pip install -U pip
 pip install -e .
 ```
 
-`pip install -e .` installs the package, the WikiText parquet files, and the primer. On Windows, import `pyarrow` before `torch` or VectorPrism. `cpu_llm.retrieval` already does that.
+`pip install -e .` installs the package, the trained checkpoint, the WikiText parquet files, and the primer. On Windows, import `pyarrow` before `torch` or VectorPrism. `cpu_llm.retrieval` already does that.
 
 The appliance talks to PostgreSQL with the `vector` extension:
 
@@ -136,10 +136,50 @@ Pinned libraries in `pyproject.toml`:
 | prismcortex 0.4.1 | Graph memory behind the sqlite store |
 | prismmanifest 0.3.4 | Numeric span grammar on the CPU |
 | prismshine 0.2.2 | Retrieval and sentence gate, judge off |
-| prismthinker 1.1.0 | Sufficiency: answer, gather, refuse, escalate |
-| prismagenticpay 1.2.0 | Payment check when both a proposal and an authority are passed |
+| prismthinker 1.2.0 | Sufficiency: answer, gather, refuse, escalate |
+| prismagenticpay 1.4.1 | Payment check when both a proposal and an authority are passed |
 
-A clean install works when those pins can be downloaded. PrismThinker and PrismAgenticPay are required at import.
+A clean install works when those pins can be downloaded from PyPI. PrismThinker 1.2.0 and PrismAgenticPay 1.4.1 are both published. PrismAgenticPay 1.4.1 requires PrismThinker 1.2.0, and both are imported at startup.
+
+---
+
+## Runtime
+
+cpu-llm runs on a CPU. It does not use a GPU. Startup clears `CUDA_VISIBLE_DEVICES`. If PyTorch was already imported and CUDA is available, the process refuses to continue.
+
+| Requirement | This release |
+|-------------|----------------|
+| Python | 3.11 or newer |
+| Processor | A 64-bit CPU. No CUDA device |
+| Encoder | `sentence-transformers/all-mpnet-base-v2`, about 418 MiB, downloaded on first use and run on the CPU |
+| Checkpoint | `vectorprism.pt`, about 3.6 MB, shipped inside the package |
+| Database | PostgreSQL 16 with the `vector` extension |
+| Questions | One `ask` at a time on the calling thread |
+
+The five PrismThinker heads are separate processes, started once when the appliance loads. They do not let two questions run together.
+
+### Measured latency
+
+These times are from one machine on 13 October 2026: an Intel Core Ultra 9 275HX with 24 cores and 64 GB of RAM, Windows 11, Python 3.12. One appliance, three runs of each prompt, after the model was already loaded and after one warmup question. Load time is not included in the question times.
+
+Starting the appliance took 9.8 seconds on the six-mode run and 10.2 seconds on the deep-search rerun. The warmup question took 233 ms.
+
+| Mode | Prompt | Median | Three runs |
+|------|--------|--------|------------|
+| Normal | What is the European lobster? | 66 ms | 83, 56, 66 |
+| Explain | Why is the European lobster fished with pots? | 60 ms | 87, 60, 59 |
+| Summarize | Summarize the European lobster. | 63 ms | 72, 60, 63 |
+| Compare | Compare the European lobster and Robert Boulter. | 61 ms | 87, 61, 61 |
+| Creative | Imagine the European lobster. | 66 ms | 67, 66, 66 |
+| Deep search | Deep search the European lobster. | 593 ms | 577, 593, 629 |
+
+Deep search kept 582 possibilities and wrote a 32,639-character reply. Creative writing returned a different passage on each run. Ingesting a two-sentence note took 4.50 s, then 2.07 s, then 2.40 s, because each paragraph is encoded. A later upload of a 9-paragraph PDF stored every paragraph and answered from that file.
+
+This machine is the one that was measured. It is not a minimum specification.
+
+### Next release
+
+The next release is working on serving multiple threads, so one process can answer concurrent questions under heavy load. This release keeps each question on the calling thread.
 
 ---
 
@@ -244,7 +284,7 @@ A height in the retrieved text can still select PrismThinker's empirical regime.
 
 ## What this package does not do
 
-It does not rewrite a passage in a new style, translate it, write code, or pick a winner the store does not state. It does not expose an HTTP upload API, a per-customer tenant, or a published wheel on the public index. The tenant on this appliance is `cpu-llm`, and every source shares one pgvector index.
+It does not rewrite a passage in a new style, translate it, write code, or pick a winner the store does not state. It does not expose an HTTP upload API or a per-customer tenant. The tenant on this appliance is `cpu-llm`, and every source shares one pgvector index. Concurrent questions are the work of the next release.
 
 A paragraph that does not round-trip is stored and can be retrieved. It is not spoken.
 
@@ -254,6 +294,7 @@ A paragraph that does not round-trip is stored and can be retrieved. It is not s
 
 ```text
 src/cpu_llm/pipeline.py                         turn graph and Appliance.ask / ingest
+src/cpu_llm/checkpoints/vectorprism.pt          trained projection shipped in the package
 src/cpu_llm/ingest.py                           WikiText and the primer loader
 src/cpu_llm/data/wikitext-2-raw-v1/             shipped WikiText parquet files
 src/cpu_llm/data/artificial-intelligence.md    shipped primer

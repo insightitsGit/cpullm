@@ -3,10 +3,15 @@
 import json
 from pathlib import Path
 
-from cpu_llm.retrieval import VectorPrismIndex
+from cpu_llm.retrieval import VectorPrismIndex, default_checkpoint
 
-CHECKPOINT = Path(__file__).resolve().parents[1] / "checkpoints" / "vectorprism.pt"
+CHECKPOINT = default_checkpoint()
 DOCUMENTS = Path(__file__).resolve().parent / "data" / "documents.example.jsonl"
+
+
+def test_the_checkpoint_is_packaged_with_the_library():
+    assert CHECKPOINT.is_file()
+    assert CHECKPOINT.parent.parent.name == "cpu_llm"
 
 
 def test_readme_search_returns_the_hyperbolic_chunk(tmp_path: Path):

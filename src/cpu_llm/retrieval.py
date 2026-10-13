@@ -30,6 +30,14 @@ LOCAL_PG_DSN = "postgresql://vectorprism:vectorprism@localhost:5433/vectorprism"
 
 
 def default_checkpoint() -> Path:
+    """Trained projection shipped inside the package.
+
+    A checkout that still keeps the file at the repository root is accepted
+    so older layouts keep working.
+    """
+    packaged = Path(__file__).resolve().parent / "checkpoints" / "vectorprism.pt"
+    if packaged.is_file():
+        return packaged
     return Path(__file__).resolve().parents[2] / "checkpoints" / "vectorprism.pt"
 
 
