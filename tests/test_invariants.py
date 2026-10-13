@@ -457,3 +457,123 @@ def test_phase2_realizes_the_conditional_derivation():
     assert "Consequently" not in text
     assert "it must undergo an audit provided that revenue is greater than 10.0 M." in text
     assert EpistemicEntailmentAuditor().audit_delivered_output(delivered, result.grounded_propositions) is True
+
+
+def test_probabilistic_and_counterfactual_keep_their_wording():
+    realizer = SemanticSurfaceRealizer()
+    auditor = EpistemicEntailmentAuditor()
+    likely = EIRProposition(
+        proposition_id="likely",
+        modality=Modality.PROBABILISTIC,
+        subject=_entity("Supplier X", "Supplier X"),
+        predicate=_predicate("pass"),
+        object_target=_entity("audit", "audit"),
+        epistemic_weight=1.0,
+    )
+    counter = likely.model_copy(update={"proposition_id": "counter", "modality": Modality.COUNTERFACTUAL})
+    likely_text, likely_map = realizer.synthesize([likely], [])
+    counter_text, counter_map = realizer.synthesize([counter], [])
+    assert likely_text == "Supplier X probably passes audit."
+    assert counter_text == "Supplier X would pass audit."
+    assert auditor.audit_delivered_output(likely_map, [likely]) is True
+    assert auditor.audit_delivered_output(counter_map, [counter]) is True
+    declared = {"likely": "Supplier X passes audit."}
+    assert auditor.audit_delivered_output(declared, [likely]) is False
+    declared_counter = {"counter": "Supplier X passes audit."}
+    assert auditor.audit_delivered_output(declared_counter, [counter]) is False
+
+
+def test_a_conditional_membership_stays_conditional():
+    adapter = PrismCognitionSubspaceAdapter()
+    rule = EIRProposition(
+        proposition_id="rule",
+        modality=Modality.OBLIGATIVE,
+        quantifier=Quantifier(qtype=QuantifierType.ALL),
+        subject=_entity("suppliers", "supplier"),
+        predicate=_predicate("pass"),
+        object_target=_entity("audit", "audit"),
+        epistemic_weight=1.0,
+    )
+    member = EIRProposition(
+        proposition_id="member",
+        subject=_entity("Supplier X", "Supplier X"),
+        predicate=_predicate("be"),
+        object_target=_entity("a supplier", "supplier"),
+        condition_tree=LogicalExpressionNode(
+            operator=LogicalOperator.GT,
+            metric_name="revenue",
+            threshold_value=10.0,
+            unit="M",
+        ),
+        epistemic_weight=1.0,
+    )
+    result = adapter.deliberate(
+        np.zeros(4),
+        [rule, member],
+        [np.zeros(4), np.zeros(4)],
+        "tenant_test",
+    )
+    derived = [item for item in result.grounded_propositions if item.proposition_id.startswith("derived_")]
+    assert len(derived) == 1
+    assert derived[0].epistemic_status is EpistemicStatus.CONDITIONAL_DERIVATION
+    assert derived[0].condition_tree is not None
+    hypothesis = member.model_copy(
+        update={"proposition_id": "guess", "condition_tree": None, "epistemic_status": EpistemicStatus.HYPOTHESIS}
+    )
+    guessed = adapter.deliberate(np.zeros(4), [rule, hypothesis], [np.zeros(4), np.zeros(4)], "tenant_test")
+    assert not any(item.proposition_id.startswith("derived_") for item in guessed.grounded_propositions)
+
+
+def test_disjoint_premise_intervals_do_not_derive():
+    adapter = PrismCognitionSubspaceAdapter()
+    rule = EIRProposition(
+        proposition_id="rule-2024",
+        modality=Modality.OBLIGATIVE,
+        quantifier=Quantifier(qtype=QuantifierType.ALL),
+        subject=_entity("suppliers", "supplier"),
+        predicate=_predicate("pass"),
+        object_target=_entity("audit", "audit"),
+        temporal_interval=TemporalInterval(valid_from=2024, valid_to=2024),
+        epistemic_weight=1.0,
+    )
+    member = EIRProposition(
+        proposition_id="member-2026",
+        subject=_entity("Supplier X", "Supplier X"),
+        predicate=_predicate("be"),
+        object_target=_entity("a supplier", "supplier"),
+        temporal_interval=TemporalInterval(valid_from=2026, valid_to=2026),
+        epistemic_weight=1.0,
+    )
+    result = adapter.deliberate(np.zeros(4), [rule, member], [np.zeros(4), np.zeros(4)], "tenant_test")
+    assert not any(item.proposition_id.startswith("derived_") for item in result.grounded_propositions)
+    overlapping = member.model_copy(
+        update={
+            "proposition_id": "member-2024",
+            "temporal_interval": TemporalInterval(valid_from=2024, valid_to=2025),
+        }
+    )
+    kept = adapter.deliberate(np.zeros(4), [rule, overlapping], [np.zeros(4), np.zeros(4)], "tenant_test")
+    derived = next(item for item in kept.grounded_propositions if item.proposition_id.startswith("derived_"))
+    assert derived.temporal_interval is not None
+    assert derived.temporal_interval.valid_from == 2024
+    assert derived.temporal_interval.valid_to == 2024
+
+
+def test_negative_past_and_the_object_survive_the_round_trip():
+    realizer = SemanticSurfaceRealizer()
+    auditor = EpistemicEntailmentAuditor()
+    denied = EIRProposition(
+        proposition_id="past-denied",
+        polarity=Polarity.NEGATIVE,
+        subject=_entity("Supplier X", "Supplier X"),
+        predicate=_predicate("approve", tense="PAST"),
+        object_target=_entity("the filing", "filing"),
+        epistemic_weight=1.0,
+    )
+    text, delivered = realizer.synthesize([denied], [])
+    assert text == "Supplier X did not approve the filing."
+    assert auditor.audit_delivered_output(delivered, [denied]) is True
+    present = {"past-denied": "Supplier X does not approve the filing."}
+    assert auditor.audit_delivered_output(present, [denied]) is False
+    swapped = {"past-denied": "Supplier X did not approve the invoice."}
+    assert auditor.audit_delivered_output(swapped, [denied]) is False

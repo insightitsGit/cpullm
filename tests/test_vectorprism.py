@@ -3,12 +3,10 @@
 import json
 from pathlib import Path
 
-import vectorprism
-
 from cpu_llm.retrieval import VectorPrismIndex
 
 CHECKPOINT = Path(__file__).resolve().parents[1] / "checkpoints" / "vectorprism.pt"
-DOCUMENTS = Path(vectorprism.__file__).parent / "data" / "documents.example.jsonl"
+DOCUMENTS = Path(__file__).resolve().parent / "data" / "documents.example.jsonl"
 
 
 def test_readme_search_returns_the_hyperbolic_chunk(tmp_path: Path):

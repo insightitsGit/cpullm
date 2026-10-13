@@ -30,10 +30,12 @@ from cpu_llm.ir.schema import (
     EdgeType,
     EpistemicStatus,
     LogicalExpressionNode,
+    LogicalOperator,
     Modality,
     Polarity,
     Quantifier,
     QuantifierType,
+    TemporalInterval,
     TypedEntity,
     TypedGraphEdge,
     TypedPredicate,
@@ -42,6 +44,7 @@ from cpu_llm.ir.schema import (
 
 _COPULA = {"be", "qualify", "classify", "act"}
 _TENSION_DECAY = 0.5
+_MEMBERSHIP = {EpistemicStatus.RETRIEVED_FACT, EpistemicStatus.ACTIVATED_CONCLUSION}
 _HARD_CONTRADICTION = {
     frozenset({Modality.DECLARATIVE}),
     frozenset({Modality.OBLIGATIVE}),
@@ -109,8 +112,13 @@ def _time_overlaps(left: EIRProposition, right: EIRProposition) -> bool:
 def metrics_for_subject(
     subject_lemma: str,
     evidence: list[EIRProposition],
+    interval: Optional[TemporalInterval] = None,
 ) -> tuple[dict[str, float], dict[str, Optional[str]], set[str]]:
-    """Metrics stated about this subject. Disagreeing values or units are conflicts."""
+    """Metrics stated about this subject. Disagreeing values or units are conflicts.
+
+    An observation dated outside ``interval`` is not evidence for that window.
+    An undated observation still applies.
+    """
     found: dict[str, float] = {}
     units: dict[str, Optional[str]] = {}
     conflicts: set[str] = set()
@@ -119,6 +127,8 @@ def metrics_for_subject(
         if item.metric_name is None or item.metric_value is None:
             continue
         if item.subject.lemma.casefold() != key:
+            continue
+        if interval is not None and item.temporal_interval is not None and not interval.overlaps(item.temporal_interval):
             continue
         name = item.metric_name
         if name in found and (found[name] != item.metric_value or units.get(name) != item.metric_unit):
@@ -256,9 +266,18 @@ class PrismCognitionSubspaceAdapter:
                     continue
                 if not _instantiates(rule, instance):
                     continue
+                applicable = _shared_interval(rule.temporal_interval, instance.temporal_interval)
+                if applicable is False:
+                    continue
                 if not _cone_allows(evidence_tensors[rule_index], evidence_tensors[instance_index]):
                     continue
-                status, kept = _condition_status(rule.condition_tree, instance, evidence_propositions)
+                window = applicable if isinstance(applicable, TemporalInterval) else None
+                status, kept = _condition_status(
+                    _join_conditions(rule.condition_tree, instance.condition_tree),
+                    instance,
+                    evidence_propositions,
+                    interval=window,
+                )
                 if status is None:
                     continue
                 derived_id = "derived_" + hashlib.sha256(
@@ -274,6 +293,7 @@ class PrismCognitionSubspaceAdapter:
                         predicate=rule.predicate,
                         object_target=rule.object_target,
                         condition_tree=kept,
+                        temporal_interval=window,
                         epistemic_status=status,
                         epistemic_weight=min(weighted(rule), weighted(instance)),
                         derivation=DerivationTrace(
@@ -316,6 +336,10 @@ class PrismCognitionSubspaceAdapter:
 
 
 def _instantiates(rule: EIRProposition, instance: EIRProposition) -> bool:
+    if instance.epistemic_status not in _MEMBERSHIP:
+        return False
+    if instance.quantifier.qtype is not QuantifierType.UNSPECIFIED:
+        return False
     if instance.polarity is not Polarity.AFFIRMATIVE or instance.modality is not Modality.DECLARATIVE:
         return False
     if instance.predicate.lemma.casefold() not in _COPULA or instance.object_target is None:
@@ -327,14 +351,63 @@ def _instantiates(rule: EIRProposition, instance: EIRProposition) -> bool:
     return required.issubset(present)
 
 
+def _shared_interval(
+    left: Optional[TemporalInterval],
+    right: Optional[TemporalInterval],
+) -> TemporalInterval | None | bool:
+    """The overlap of two premise windows.
+
+    ``False`` means the windows are disjoint. ``None`` means both premises are
+    undated, so the conclusion stays undated.
+    """
+    if left is not None and right is not None and not left.overlaps(right):
+        return False
+    if left is None:
+        return right
+    if right is None:
+        return left
+    return TemporalInterval(
+        valid_from=_later(left.valid_from, right.valid_from),
+        valid_to=_earlier(left.valid_to, right.valid_to),
+    )
+
+
+def _later(left: Optional[int], right: Optional[int]) -> Optional[int]:
+    if left is None:
+        return right
+    if right is None:
+        return left
+    return max(left, right)
+
+
+def _earlier(left: Optional[int], right: Optional[int]) -> Optional[int]:
+    if left is None:
+        return right
+    if right is None:
+        return left
+    return min(left, right)
+
+
+def _join_conditions(
+    rule_tree: Optional[LogicalExpressionNode],
+    instance_tree: Optional[LogicalExpressionNode],
+) -> Optional[LogicalExpressionNode]:
+    if instance_tree is None:
+        return rule_tree
+    if rule_tree is None:
+        return instance_tree
+    return LogicalExpressionNode(operator=LogicalOperator.AND, operands=[rule_tree, instance_tree])
+
+
 def _condition_status(
     tree: Optional[LogicalExpressionNode],
     instance: EIRProposition,
     evidence: list[EIRProposition],
+    interval: Optional[TemporalInterval] = None,
 ) -> tuple[Optional[EpistemicStatus], Optional[LogicalExpressionNode]]:
     if tree is None:
         return EpistemicStatus.ACTIVATED_CONCLUSION, None
-    facts, units, conflicts = metrics_for_subject(instance.subject.lemma, evidence)
+    facts, units, conflicts = metrics_for_subject(instance.subject.lemma, evidence, interval=interval)
     verdict = evaluate_condition(tree, facts, units=units, conflicts=conflicts)
     if verdict is ConditionEval.EVAL_FALSE:
         return None, None

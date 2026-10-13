@@ -14,7 +14,9 @@ from pathlib import Path
 
 import pyarrow  # noqa: F401  # must load before torch; otherwise pyarrow faults on this machine
 
+import numpy as np
 from vectorprism.base_encoder import SentenceTransformerEncoder
+from vectorprism.tensor_contract import PSMTensorContract
 from vectorprism.db_client import _as_float32_vector
 from vectorprism.checkpointing import load_checkpoint
 from vectorprism.db_client import PgVectorClient
@@ -47,6 +49,7 @@ class VectorPrismIndex:
             _enable_pgvector(target)
             self.db = PgVectorClient(target)
             self.db.ensure_schema()
+            _widen_dense_beam(self.db)
         elif backend == "memory":
             if store is None:
                 raise ValueError("a memory backend needs a store path")
@@ -85,7 +88,14 @@ class VectorPrismIndex:
         scan then uses that 1024-d vector instead of encoding again.
         """
         vector = self.encode_query(query) if query_tensor is None else query_tensor
-        return self.engine.search(vector, query, top_k=top_k)
+        flags = getattr(self.pipeline, "enabled_channels", None) or {}
+        auxiliary = ("relational", "disentangled", "hyperbolic", "causal")
+        dense_only = not any(_channel_on(flags, name) for name in auxiliary)
+        fetch = max(top_k, 32) if dense_only else top_k
+        hits = self.engine.search(vector, query, top_k=fetch)
+        if dense_only:
+            hits = _order_by_dense_core(hits, vector)
+        return hits[:top_k]
 
     def chunks_for_articles(self, document_ids: list[str]) -> list[dict]:
         """Every stored paragraph of the articles named by ``document_ids``.
@@ -195,6 +205,48 @@ def _chunk_row(row) -> dict:
         "chunk_text": row[1],
         "tensor_1024d": _as_float32_vector(row[2]),
     }
+
+
+def _widen_dense_beam(db) -> None:
+    """Ask HNSW to visit enough dense neighbors to return the true one.
+
+    The default beam omitted a stored paragraph whose dense core was the
+    nearest match. Only that core is a trained channel, so the beam has to
+    be wide enough for the later dense ordering to see it.
+    """
+    conn = getattr(db, "conn", None)
+    if conn is None:
+        return
+    with conn.cursor() as cursor:
+        cursor.execute("SET hnsw.ef_search = 400")
+
+
+def _channel_on(flags, name: str) -> bool:
+    if isinstance(flags, dict):
+        return bool(flags.get(name))
+    return bool(getattr(flags, name, False))
+
+
+def _order_by_dense_core(hits: list, query) -> list:
+    """Rank by the trained dense core. Untrained channel slices do not vote."""
+    query_vector = np.asarray(query, dtype=np.float64).reshape(-1)
+    dense = PSMTensorContract.DENSE_CORE
+    query_slice = query_vector[dense.start : dense.end]
+    query_norm = float(np.linalg.norm(query_slice)) or 1.0
+
+    def score(hit) -> float:
+        tensor = hit.get("tensor_1024d")
+        if tensor is None:
+            return 0.0
+        vector = np.asarray(tensor, dtype=np.float64).reshape(-1)
+        if vector.size < dense.end:
+            return 0.0
+        part = vector[dense.start : dense.end]
+        part_norm = float(np.linalg.norm(part)) or 1.0
+        value = float(np.dot(part, query_slice) / (part_norm * query_norm))
+        return value if np.isfinite(value) else 0.0
+
+    return sorted(hits, key=score, reverse=True)
 
 
 def _enable_pgvector(dsn: str) -> None:

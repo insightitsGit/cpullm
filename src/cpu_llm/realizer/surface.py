@@ -150,8 +150,18 @@ def _clause(proposition: EIRProposition, seen_subjects: dict[str, int]) -> str:
 def _verb_phrase(proposition: EIRProposition, *, plural: bool, negative: bool) -> str:
     """Active present uses present agreement. Active past uses the past form.
 
-    Passive voice reads tense on its own auxiliary.
+    Passive voice reads tense on its own auxiliary. Probabilistic and
+    counterfactual modalities keep their own wording.
     """
+    if proposition.modality is Modality.COUNTERFACTUAL:
+        return _counterfactual(proposition, plural=plural, negative=negative)
+    phrase = _indicative(proposition, plural=plural, negative=negative)
+    if proposition.modality is Modality.PROBABILISTIC:
+        return f"probably {phrase}"
+    return phrase
+
+
+def _indicative(proposition: EIRProposition, *, plural: bool, negative: bool) -> str:
     lemma = proposition.predicate.lemma
     table = forms(lemma)
     if proposition.predicate.voice == "PASSIVE":
@@ -170,11 +180,26 @@ def _verb_phrase(proposition: EIRProposition, *, plural: bool, negative: bool) -
     if proposition.modality is Modality.PERMISSIVE:
         return f"may not {lemma}" if negative else f"may {lemma}"
     if negative:
-        auxiliary = "do not" if plural else "does not"
+        if proposition.predicate.tense == "PAST":
+            auxiliary = "did not"
+        else:
+            auxiliary = "do not" if plural else "does not"
         return f"{auxiliary} {lemma}"
     if proposition.predicate.tense == "PAST":
         return table["past_pl"] if plural else table["past"]
     return table["present_pl"] if plural else table["present_3s"]
+
+
+def _counterfactual(proposition: EIRProposition, *, plural: bool, negative: bool) -> str:
+    lemma = proposition.predicate.lemma
+    table = forms(lemma)
+    particle = "not " if negative else ""
+    if proposition.predicate.voice == "PASSIVE":
+        core = f"have been {table['part']}" if proposition.predicate.tense == "PAST" else f"be {table['part']}"
+        return f"would {particle}{core}"
+    if proposition.predicate.tense == "PAST":
+        return f"would {particle}have {table['part']}"
+    return f"would {particle}{lemma}"
 
 
 class SemanticSurfaceRealizer:

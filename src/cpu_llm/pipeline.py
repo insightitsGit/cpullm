@@ -13,9 +13,9 @@ A prompt then runs:
 
 1. PrismGuard checks the prompt.
 2. VectorPrism returns the nearest chunks and their tensors. When the question
-   names an article whose lead paragraph is stored, that article replaces the
-   neighbors from other articles, and the lead is included if the scan missed
-   it. The prompt was encoded once, before this graph runs, and that same
+   names one or more articles whose lead paragraphs are stored, those articles
+   replace the neighbors from other articles, and each lead is included if the
+   scan missed it. The prompt was encoded once, before this graph runs, and that same
    1024-d tensor is the query for the scan and for every later channel rank.
 3. PrismResonance ranks those chunks by dense-channel interference. The header
    is a packed timestamp, not a coordinate, so it is not part of the amplitude.
@@ -83,7 +83,7 @@ from cpu_llm.agents.discovery import run_discovery
 from cpu_llm.agents.imagine import compose_imagination
 from cpu_llm.agents.reply import compose_reply
 from cpu_llm.classifier import creative_writing_trigger
-from cpu_llm.channels import _content_words, judge_readings, read_channel
+from cpu_llm.channels import _content_words, complexity_reasons, judge_readings, read_channel
 from cpu_llm.audit.entailment import EpistemicEntailmentAuditor
 from cpu_llm.catalog import article_slug, label_retrieval, title_slugs
 from cpu_llm.cognition.adapter import PrismCognitionSubspaceAdapter
@@ -259,6 +259,9 @@ class Appliance:
         imagine: bool = False,
         payment: Any | None = None,
         authority: Any | None = None,
+        objective: Any | None = None,
+        hypothesis: Any | None = None,
+        causal_graph: Any | None = None,
     ) -> dict[str, Any]:
         if (payment is None) != (authority is None):
             raise ValueError("a payment turn needs both a proposal and an authority snapshot")
@@ -268,6 +271,9 @@ class Appliance:
             "propositions": list(propositions or []),
             "payment": payment,
             "authority": authority,
+            "objective": objective,
+            "hypothesis": hypothesis,
+            "causal_graph": causal_graph,
             "z_query": z_query,
         }
         return self.graph.invoke(
@@ -466,6 +472,8 @@ def _reply(state: dict[str, Any]) -> dict[str, Any]:
 
 
 def _after_shine(state: dict[str, Any]) -> str:
+    if state.get("delivery_blocked"):
+        return "reply"
     if state.get("creative") is True:
         return "imagine"
     return "reply"
@@ -825,20 +833,32 @@ def _retrieve(appliance: Appliance):
 
 
 def _hits_for_named_article(index, message: str, hits: list[dict[str, Any]]) -> list[dict[str, Any]] | None:
-    """Keep the article the question names, once its lead paragraph is stored.
+    """Keep every article the question names, once that article's lead is stored.
 
-    Neighbors from other articles are left out. The lead is added when the
-    scan missed it, so the realizer still has that article's sentence.
+    Neighbors from unnamed articles are left out. Each lead is added when the
+    scan missed it. Leads come first, then the other stored hits from those
+    articles, in the order the scan returned them.
     """
+    matched: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    found = False
     for slug in title_slugs(message):
         lead = index.lead_for_slug(slug)
         if lead is None:
             continue
+        found = True
         kept = [hit for hit in hits if article_slug(str(hit["document_id"])) == slug]
-        if lead["document_id"] not in {str(hit["document_id"]) for hit in kept}:
+        if str(lead["document_id"]) not in {str(hit["document_id"]) for hit in kept}:
             kept.insert(0, lead)
-        return kept
-    return None
+        for hit in kept:
+            document_id = str(hit["document_id"])
+            if document_id in seen:
+                continue
+            seen.add(document_id)
+            matched.append(hit)
+    if not found:
+        return None
+    return matched
 
 
 def _resonate(appliance: Appliance):
@@ -888,18 +908,18 @@ def _resonate(appliance: Appliance):
 
 
 def _structure_metadata(related: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
-    """Causal edges and numeric attributes from VectorPrism's offline extractor."""
+    """Numeric attributes from VectorPrism's offline extractor.
+
+    A causal graph is not inferred from the paragraph. The caller passes one
+    to ``Appliance.ask``.
+    """
     if len(related) < 1:
         return {}
     documents = {item["chunk_id"]: item["chunk_text"] for item in related}
     extracted = _extract_structure(documents)
-    causal = _causal_metadata(extracted.causal_edges) if extracted is not None else None
     metadata: dict[str, dict[str, Any]] = {}
     for item in related:
-        meta: dict[str, Any] = {}
-        if causal is not None:
-            meta["causal_graph"] = causal
-        metadata[item["chunk_id"]] = meta
+        metadata[item["chunk_id"]] = {}
     rows = extracted.relational_attrs if extracted is not None else []
     for row in rows:
         claims = {
@@ -988,23 +1008,6 @@ def _attach_literal_measurements(
         meta["numeric_qualifiers"] = qualifiers
 
 
-def _causal_metadata(edges: list[dict[str, Any]]) -> dict[str, Any] | None:
-    if not edges:
-        return None
-    nodes: list[str] = []
-    causal_edges: list[dict[str, Any]] = []
-    for edge in edges:
-        source = str(edge["earlier_doc_id"])
-        target = str(edge["later_doc_id"])
-        for node in (source, target):
-            if node not in nodes:
-                nodes.append(node)
-        causal_edges.append(
-            {"source": source, "target": target, "edge_id": f"{source}->{target}", "signed": 1}
-        )
-    return {"nodes": nodes, "edges": causal_edges}
-
-
 def _spans(appliance: Appliance):
     def node(state: dict[str, Any]) -> dict[str, Any]:
         related = [
@@ -1024,6 +1027,28 @@ def _spans(appliance: Appliance):
     return node
 
 
+def _withhold(state: dict[str, Any], reason: str) -> dict[str, Any]:
+    """Drop the sentence from delivery and keep it for the caller."""
+    return {
+        "grammar_ok": False,
+        "answer": None,
+        "rejected_answer": state.get("rejected_answer") or state.get("answer"),
+        "delivery_blocked": state.get("delivery_blocked") or reason,
+    }
+
+
+def _with_caller_context(context: ReasoningContext, turn: dict[str, Any]) -> ReasoningContext:
+    """Attach an objective, hypothesis, or causal graph the caller supplied."""
+    update = {
+        key: turn[key]
+        for key in ("objective", "hypothesis", "causal_graph")
+        if turn.get(key) is not None
+    }
+    if not update:
+        return context
+    return context.model_copy(update=update)
+
+
 def _grammar(appliance: Appliance):
     def node(state: dict[str, Any]) -> dict[str, Any]:
         answer = state.get("answer")
@@ -1033,10 +1058,25 @@ def _grammar(appliance: Appliance):
         index = turn.get("span_index")
         mask = turn.get("span_mask")
         if index is None or mask is None:
-            return {"grammar_ok": False}
-        return {"grammar_ok": answer_numbers_allowed(answer, index, mask)}
+            return _withhold(state, "grammar")
+        if answer_numbers_allowed(answer, index, mask):
+            return {"grammar_ok": True}
+        return _withhold(state, "grammar")
 
     return node
+
+
+def _descriptive_turn(message: str, context: ReasoningContext) -> bool:
+    """A stated measurement on a what-is question is a formal check.
+
+    A why, how, or cause question keeps the Thinker's own directive. Incidental
+    numbers in a neighbor do not turn that question into a descriptive answer.
+    """
+    if not _observation_without_target(context):
+        return False
+    reasons = set(complexity_reasons(message, []))
+    explanatory = {"the prompt asks why or how", "the prompt asks about a cause"}
+    return reasons.isdisjoint(explanatory)
 
 
 def _observation_without_target(context: ReasoningContext) -> bool:
@@ -1106,7 +1146,8 @@ def _think(appliance: Appliance):
             for item in related
         ]
         context = from_vectorprism(state.get("message") or "", documents)
-        descriptive = _observation_without_target(context)
+        context = _with_caller_context(context, appliance._turn or {})
+        descriptive = _descriptive_turn(state.get("message") or "", context)
         if descriptive:
             context = context.model_copy(update={"force_regime": EpistemicRegime.CLOSED_FORMAL})
             graph = appliance.thinker.evaluate(context, config=_descriptive_config(appliance.thinker.config))
@@ -1210,7 +1251,7 @@ def _cognize(appliance: Appliance):
         )
         sentence, delivered = appliance.realizer.synthesize(result.grounded_propositions, result.graph_edges)
         audited = appliance.auditor.audit_delivered_output(delivered, result.grounded_propositions)
-        return {
+        update = {
             "cognition_status": "deliberated",
             "answer": sentence,
             "audit_passed": audited,
@@ -1218,5 +1259,10 @@ def _cognize(appliance: Appliance):
             "ruin_distance": result.ruin_distance,
             "audit_trace_id": result.audit_trace_id,
         }
+        if not audited:
+            update["rejected_answer"] = sentence
+            update["answer"] = None
+            update["delivery_blocked"] = "audit"
+        return update
 
     return node

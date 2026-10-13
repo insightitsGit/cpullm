@@ -131,3 +131,4 @@ Word relations, sleep, and identity lookup are specified in section 7 of `docs/c
 - Training and `Appliance.sleep()` write a length-0.05 signature of the second and third hand into the last 32 values of the relational channel. The dense core is unchanged. The category integer is not written into `relational[0]`.
 - “What is …” / “Who is …” can realize an accepted copula from those word nodes when the retrieved paragraph has no proposition. A why-question does not.
 - No numeric target, `ObjectiveSpec`, or causal edge is invented from a passage. PrismThinker is not used to mint word links.
+- `Appliance.ask` accepts `objective`, `hypothesis`, and `causal_graph` from the caller. Chunk metadata no longer receives a causal graph built from the paragraph. A why, how, or cause question is not rewritten into a descriptive answer because a neighbor contains a number.

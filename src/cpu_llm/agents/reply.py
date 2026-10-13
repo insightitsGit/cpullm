@@ -52,7 +52,9 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
     report = state.get("channel_report") or {}
     if report.get("text"):
         lines.extend(["", str(report["text"])])
-    imagined = str((state.get("imagination") or {}).get("text") or "").strip()
+    imagined = ""
+    if not state.get("delivery_blocked"):
+        imagined = str((state.get("imagination") or {}).get("text") or "").strip()
     if imagined:
         lines.extend(["", "Imagined passage:", imagined])
     return {
@@ -79,6 +81,16 @@ def _preface(state: dict[str, Any]) -> str:
     noun = "passage" if count == 1 else "passages"
     score = related[0].get("score")
     closest = f" The closest match scores {float(score):.2f}." if isinstance(score, (int, float)) else ""
+    if state.get("delivery_blocked") == "audit":
+        return (
+            f"I found {count} {noun}{where}.{closest} "
+            "The checked sentence was withheld because it did not match the stored proposition."
+        )
+    if state.get("delivery_blocked") == "grammar":
+        return (
+            f"I found {count} {noun}{where}.{closest} "
+            "The checked sentence was withheld because a number in it is not in the retrieved passages."
+        )
     if state.get("shine_enforced"):
         return f"I found {count} {noun}{where}.{closest} The grounding check replaced the sentence."
     if state.get("answer") and not state.get("abstention_triggered"):
@@ -99,6 +111,10 @@ def _preface(state: dict[str, Any]) -> str:
 def _body(state: dict[str, Any]) -> str:
     if state.get("guard_decision") not in (None, "allow"):
         return state.get("answer") or "The prompt was blocked by PrismGuard."
+    if state.get("delivery_blocked") == "audit":
+        return "The checked sentence was withheld because it did not match the stored proposition."
+    if state.get("delivery_blocked") == "grammar":
+        return "The checked sentence was withheld because a number in it is not in the retrieved passages."
     answer = state.get("answer")
     if isinstance(answer, str) and answer.strip():
         return answer.strip()

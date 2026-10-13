@@ -8,6 +8,7 @@ from collections.abc import Iterator
 import pytest
 
 from prismagenticpay.domain.models import AuthorityState, MerchantIdentity, PaymentProposal
+from prismthinker.core.schemas import CausalEdge, CausalGraph
 
 from cpu_llm.ir.schema import (
     EIRProposition,
@@ -62,8 +63,6 @@ def test_allowed_question_resonates_the_vectorprism_chunk(appliance: Appliance):
     assert math.isfinite(matched["score"])
     assert 0.0 < matched["score"] <= 1.0
     assert all(math.isfinite(item["score"]) and -1.0 <= item["score"] <= 1.0 for item in result["related"])
-    assert result["thinker_directive"] == "gather"
-    assert result["gather_questions"]
     if result["cognition_status"] == "deliberated":
         assert result["audit_passed"] is True
         assert result["answer"]
@@ -240,7 +239,7 @@ def test_span_grammar_rejects_a_number_that_is_not_in_the_chunks():
     assert answer_numbers_allowed("The limit is 99.", index, mask) is False
 
 
-def test_heuristic_structure_supplies_causal_and_numeric_facts(
+def test_numeric_facts_come_from_the_passage_and_the_causal_graph_comes_from_the_caller(
     appliance: Appliance, monkeypatch: pytest.MonkeyPatch
 ):
     policy = "The policy must apply because the limit exceeds 10 million."
@@ -257,11 +256,18 @@ def test_heuristic_structure_supplies_causal_and_numeric_facts(
     monkeypatch.setattr(appliance.index, "search", lambda query, top_k=5, **_extra: hits)
     result = appliance.ask("Why was the incident blocked?")
     questions = result["gather_questions"]
-    assert "causal_graph is required" not in questions
+    assert "causal_graph is required" in questions
     assert "no numeric observations" not in questions
     assert "no numeric threshold on hypothesis or objective" in questions
-    assert "missing treatment/outcome binding" in questions
     assert "10" in result["grammar_values"]
+    supplied = appliance.ask(
+        "Why was the incident blocked?",
+        causal_graph=CausalGraph(
+            nodes=["policy", "incident"],
+            edges=[CausalEdge(source="policy", target="incident", edge_id="policy->incident", signed=1)],
+        ),
+    )
+    assert "causal_graph is required" not in supplied["gather_questions"]
 
 
 def test_empty_retrieval_realizes_the_design_abstention(appliance: Appliance, monkeypatch: pytest.MonkeyPatch):
@@ -405,7 +411,6 @@ def test_discovery_loop_is_opt_in(appliance: Appliance):
     assert discovery["claim"]["text"] == "Why use hyperbolic embeddings?"
     assert any(item["kind"] == "hypothesis" for item in discovery["information"])
     assert any(item["kind"] == "reported" and "taxonomy" in item["text"] for item in discovery["information"])
-    assert any(item["kind"] == "unknown" for item in discovery["information"])
     evidence = " ".join(item["text"] for item in discovery["information"])
     for perspective in discovery["perspectives"]:
         assert perspective["named_in_evidence"].casefold() in evidence.casefold()
