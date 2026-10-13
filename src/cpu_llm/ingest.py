@@ -8,12 +8,14 @@ Running it again replaces the previous rows for that source.
 from __future__ import annotations
 
 from cpu_llm.clauses import propositions_for
+from cpu_llm.documents import SourceDocument, replace_prefix
 from cpu_llm.pipeline import Appliance
 from cpu_llm.retrieval import VectorPrismIndex, default_checkpoint
-from cpu_llm.source import test_chunks, validation_chunks
+from cpu_llm.source import test_chunks, textbook_chunks, validation_chunks
 
 SOURCE_PREFIX = "wikitext2-"
 TEST_PREFIX = "wikitext2test-"
+TEXTBOOK_PREFIX = replace_prefix(SourceDocument("artificial-intelligence.md", ()))
 
 
 def ingest_source(
@@ -44,6 +46,14 @@ def train_wikitext_test(appliance: Appliance) -> tuple[int, int]:
     return _train_split(appliance, test_chunks(), TEST_PREFIX)
 
 
+def train_textbook(appliance: Appliance) -> tuple[int, int]:
+    """Save the shipped artificial-intelligence primer.
+
+    The primer uses its own id prefix, so this does not replace WikiText.
+    """
+    return _train_split(appliance, textbook_chunks(), TEXTBOOK_PREFIX)
+
+
 def _train_split(
     appliance: Appliance,
     rows: list[tuple[str, str, str]],
@@ -61,14 +71,18 @@ def main() -> None:
     appliance = Appliance(default_checkpoint())
     try:
         if "--test" in sys.argv:
-            stored, propositions = train_wikitext_test(appliance)
-            prefix = TEST_PREFIX
+            _report(*train_wikitext_test(appliance), TEST_PREFIX)
+        elif "--textbook" in sys.argv:
+            _report(*train_textbook(appliance), TEXTBOOK_PREFIX)
         else:
-            stored, propositions = train_wikitext(appliance)
-            prefix = SOURCE_PREFIX
-        print(f"saved {stored} chunks under {prefix}, with {propositions} stored propositions")
+            _report(*train_wikitext(appliance), SOURCE_PREFIX)
+            _report(*train_textbook(appliance), TEXTBOOK_PREFIX)
     finally:
         appliance.close()
+
+
+def _report(stored: int, propositions: int, prefix: str) -> None:
+    print(f"saved {stored} chunks under {prefix}, with {propositions} stored propositions")
 
 
 if __name__ == "__main__":

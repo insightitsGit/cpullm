@@ -1,8 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "cpu-llm"
 version = "1.7.0"
-description = "CPU appliance over VectorPrism, PrismCognition, and the Chorus stack."
+description = "CPU epistemic text engine. Answers from stored paragraphs, with no GPU decoder."
+readme = "README.md"
 requires-python = ">=3.11"
+authors = [{ name = "Amin Parva", email = "parvaamin@gmail.com" }]
+keywords = [
+  "cpu",
+  "epistemic",
+  "retrieval",
+  "pgvector",
+  "vectorprism",
+]
+classifiers = [
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 dependencies = [
   "numpy>=1.26",
   "pydantic>=2",
@@ -23,6 +43,19 @@ dependencies = [
   "python-docx>=1.1",
   "openpyxl>=3.1",
 ]
+
+[project.urls]
+Homepage = "https://github.com/insightitsGit/cpullm"
+Repository = "https://github.com/insightitsGit/cpullm"
+
+[project.scripts]
+cpu-llm-ingest = "cpu_llm.ingest:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+cpu_llm = ["data/*.md", "data/wikitext-2-raw-v1/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

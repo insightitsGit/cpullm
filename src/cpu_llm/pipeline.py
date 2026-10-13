@@ -173,6 +173,7 @@ class Appliance:
         self._turn: dict[str, Any] | None = None
         self._creative_seen: dict[str, str] = {}
         self._previous_ids: list[str] = []
+        self._deep_tensors: dict[str, Any] = {}
         self.graph = _compile(self)
 
     def index_chunks(
@@ -315,6 +316,7 @@ class Appliance:
     ) -> dict[str, Any]:
         if (payment is None) != (authority is None):
             raise ValueError("a payment turn needs both a proposal and an authority snapshot")
+        self._deep_tensors = {}
         z_query = np.asarray(self.index.encode_query(message), dtype=np.float32).reshape(TENSOR_DIM)
         creative_reasons = creative_writing_trigger(message, forced=imagine)
         deep_reasons = deep_search_trigger(message, forced=deep)
@@ -761,13 +763,12 @@ def _deep(appliance: Appliance):
                 texts[document_id] = str(row.get("chunk_text") or "")
                 if row.get("tensor_1024d") is not None:
                     tensors[document_id] = row["tensor_1024d"]
+        appliance._deep_tensors = tensors
         possibilities = []
         for item in gathered["possibilities"]:
             copy = dict(item)
             document_id = str(item["document_id"])
             copy["chunk_text"] = texts.get(document_id, "")
-            if document_id in tensors:
-                copy["tensor_1024d"] = tensors[document_id]
             possibilities.append(copy)
         return {
             "deep_reasons": list(state.get("deep_reasons") or []),
@@ -917,7 +918,7 @@ def _sentence_lines(text: str) -> list[str]:
 def _brief_rows(appliance: Appliance, state: dict[str, Any]) -> list[dict[str, Any]]:
     from cpu_llm.agents.summarize import topic_words
 
-    rows = _possibility_rows(state)
+    rows = _possibility_rows(state, tensors=appliance._deep_tensors)
     if rows:
         return rows
     collected: list[dict[str, Any]] = []
@@ -943,7 +944,7 @@ def _gather(appliance: Appliance):
     def node(state: dict[str, Any]) -> dict[str, Any]:
         from cpu_llm.agents.gather import gather_article
 
-        rows = _possibility_rows(state)
+        rows = _possibility_rows(state, tensors=appliance._deep_tensors)
         if not rows:
             related = list(state.get("related") or [])
             rows = appliance.index.chunks_for_articles([item["chunk_id"] for item in related])
@@ -1017,7 +1018,7 @@ def _imagine(appliance: Appliance):
             return {
                 "imagination": compose_imagination(state.get("message") or "", [], {}),
             }
-        rows = _possibility_rows(state) or (appliance._turn or {}).get("gathered_rows")
+        rows = _possibility_rows(state, tensors=appliance._deep_tensors) or (appliance._turn or {}).get("gathered_rows")
         if not rows:
             rows = appliance.index.chunks_for_articles([item["chunk_id"] for item in related])
         if not rows:
@@ -1071,13 +1072,18 @@ def _imagine(appliance: Appliance):
     return node
 
 
-def _possibility_rows(state: dict[str, Any], side: str | None = None) -> list[dict[str, Any]]:
+def _possibility_rows(
+    state: dict[str, Any],
+    side: str | None = None,
+    tensors: dict[str, Any] | None = None,
+) -> list[dict[str, Any]]:
     """Rows the deep-search agent already kept, optionally for one topic."""
     items = list(state.get("possibilities") or [])
     if side is not None:
         items = [item for item in items if item.get("side") == side]
     rows: list[dict[str, Any]] = []
     seen: set[str] = set()
+    held = tensors or {}
     for item in items:
         document_id = str(item.get("document_id") or "")
         text = str(item.get("chunk_text") or "")
@@ -1085,15 +1091,16 @@ def _possibility_rows(state: dict[str, Any], side: str | None = None) -> list[di
             continue
         seen.add(document_id)
         row = {"document_id": document_id, "chunk_text": text}
-        if item.get("tensor_1024d") is not None:
-            row["tensor_1024d"] = item["tensor_1024d"]
+        tensor = held.get(document_id, item.get("tensor_1024d"))
+        if tensor is not None:
+            row["tensor_1024d"] = tensor
         rows.append(row)
     return rows
 
 
 def _rows_for_agent(appliance: Appliance, state: dict[str, Any], side: str) -> list[dict[str, Any]]:
     """Prefer the chunks deep search already returned for this topic."""
-    rows = _possibility_rows(state, side)
+    rows = _possibility_rows(state, side, appliance._deep_tensors)
     if rows:
         return rows
     return rows_for_side(appliance.index, appliance.word_tags, side)

@@ -221,7 +221,11 @@ def test_six_channel_nodes_quote_the_passages_and_suggest_discovery_for_a_why_qu
     assert complicated["discovery_suggested"] is True
     assert "discovery" not in complicated
     assert complicated["answer"] == sentence
-    assert complicated["reply"]["text"] == sentence
+    assert complicated["reply"]["body"] == sentence
+    assert complicated["reply"]["text"].startswith(sentence)
+    assert "Explanation:" in complicated["reply"]["text"]
+    assert "Comparison:" in complicated["reply"]["text"]
+    assert "discovery loop" not in complicated["reply"]["text"]
     assert "discovery loop" in complicated["channel_report"]["text"]
     assert "It stays off until you ask for it." in complicated["channel_report"]["text"]
     appliance.index.save_chunks([], replace_prefix="channel-euro")

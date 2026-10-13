@@ -1,8 +1,8 @@
-"""WikiText-2 validation paragraphs, as published.
+"""Shipped source text.
 
-VectorPrism does not split text. This module reads the downloaded source and
-emits one chunk per paragraph. It keeps every paragraph. It does not keep
-only the lead, and it does not drop articles.
+WikiText-2 paragraphs come from the parquet files inside this package.
+The artificial-intelligence primer is original text in the same package.
+VectorPrism does not split text. This module emits one chunk per paragraph.
 """
 
 from __future__ import annotations
@@ -22,6 +22,19 @@ _CLOSE_PAREN = re.compile(r"\s+\)")
 _TITLE = re.compile(r"^= (?!=).+ =$")
 
 
+def corpus_dir() -> Path:
+    """Directory that holds the shipped WikiText parquet files."""
+    packaged = Path(__file__).resolve().parent / "data" / "wikitext-2-raw-v1"
+    if (packaged / "validation.parquet").is_file():
+        return packaged
+    return Path(__file__).resolve().parents[2] / "data" / "wikitext-2-raw-v1"
+
+
+def textbook_path() -> Path:
+    """Original artificial-intelligence primer shipped inside the package."""
+    return Path(__file__).resolve().parent / "data" / "artificial-intelligence.md"
+
+
 def validation_path() -> Path:
     return _split_path("validation.parquet")
 
@@ -31,7 +44,7 @@ def test_path() -> Path:
 
 
 def _split_path(name: str) -> Path:
-    return Path(__file__).resolve().parents[2] / "data" / "wikitext-2-raw-v1" / name
+    return corpus_dir() / name
 
 
 def detokenize(text: str) -> str:
@@ -84,3 +97,17 @@ def wikitext_chunks(path: Path, *, prefix: str) -> list[tuple[str, str, str]]:
 def _document_id(prefix: str, title: str, paragraph_number: int) -> str:
     slug = re.sub(r"[^a-z0-9]+", "-", title.casefold()).strip("-")
     return f"{prefix}-{slug[:72]}-p{paragraph_number:04d}"
+
+
+def textbook_chunks() -> list[tuple[str, str, str]]:
+    """Return (document_id, title, paragraph) for the shipped primer.
+
+    Ids use the same slug as ``Appliance.ingest`` for this file, so a later
+    ingest of the file replaces these rows and does not touch WikiText.
+    """
+    from cpu_llm.documents import SourceDocument, chunks_for, paragraphs_from_text
+
+    text = textbook_path().read_text(encoding="utf-8")
+    document = SourceDocument(textbook_path().name, tuple(paragraphs_from_text(text)))
+    title = "Artificial intelligence"
+    return [(document_id, title, paragraph) for document_id, paragraph in chunks_for(document)]
