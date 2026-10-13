@@ -36,8 +36,12 @@ A prompt then runs:
    appliance, beside the encoder, and reused for every prompt. A payment
    proposal is evaluated with PrismAgenticPay's corporate policy.
 7. The design's deliberation adapter runs when evidence propositions are
-   present, and when the retrieval is empty. The surface realizer turns that
-   result into a sentence, and the auditor checks the sentence.
+   present, and when the retrieval is empty. A named article is realized from
+   that article. An open question drops a neighbor that shares none of its
+   content words. An identity question leads with the affirmative copula that
+   names the asked subject, then any later sentence from the same scope. The
+   surface realizer turns that result into a sentence, and the auditor checks
+   the sentence.
 8. PrismShine checks the retrieval trace and, when a sentence exists, the
    sentence against those paragraphs. The judge stays off. An abstention
    sentence is kept. Any other blocked sentence is replaced.
@@ -1200,21 +1204,24 @@ def _cognize(appliance: Appliance):
         related_ids = list(turn.get("related_ids") or [])
         hits = {hit["document_id"]: hit for hit in turn.get("hits") or []}
         if not propositions and related_ids:
-            paired_ids: list[str] = []
-            paired: list[EIRProposition] = []
+            from cpu_llm.assembly import realization_order
+
+            ordered_hits: list[dict[str, Any]] = []
+            stored_by_id: dict[str, EIRProposition] = {}
             for chunk_id in related_ids:
                 hit = hits.get(chunk_id)
                 if hit is None:
                     continue
+                ordered_hits.append(hit)
                 stored = _stored_proposition(
                     appliance.memory,
                     hit["chunk_text"],
                     np.asarray(hit["tensor_1024d"], dtype=np.float32).reshape(-1),
                 )
-                if stored is None:
-                    continue
-                paired_ids.append(chunk_id)
-                paired.append(stored)
+                if stored is not None:
+                    stored_by_id[chunk_id] = stored
+            paired_ids = realization_order(state.get("message") or "", ordered_hits, stored_by_id)
+            paired = [stored_by_id[chunk_id] for chunk_id in paired_ids]
             if not paired:
                 lexical = _lexical_evidence(appliance.memory, state.get("message") or "")
                 if not lexical:
