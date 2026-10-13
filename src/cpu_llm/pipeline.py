@@ -3,9 +3,11 @@
 ChorusGraph orders the steps. There is no language-model client in this module.
 
 Training stores a caller-supplied chunk in three places: VectorPrism writes the
-1024-d tensor to pgvector, PrismResonance keeps the dense-channel amplitude and
-sleeps so co-activated chunks can find each other, and PrismCortex records the
-chunk as a graph node.
+1024-d tensor to pgvector, PrismResonance keeps the dense-channel amplitude for
+each lexical tag, and PrismCortex records the chunk as a graph node with those
+tags beside any proposition. Training and sleep write the second- and third-hand
+word relations into the tail of the relational channel. The dense core stays
+the vector VectorPrism encoded. A later sleep cycle may also link related nodes.
 
 A prompt then runs:
 
@@ -81,7 +83,7 @@ from cpu_llm.agents.discovery import run_discovery
 from cpu_llm.agents.imagine import compose_imagination
 from cpu_llm.agents.reply import compose_reply
 from cpu_llm.classifier import creative_writing_trigger
-from cpu_llm.channels import judge_readings, read_channel
+from cpu_llm.channels import _content_words, judge_readings, read_channel
 from cpu_llm.audit.entailment import EpistemicEntailmentAuditor
 from cpu_llm.catalog import article_slug, label_retrieval, title_slugs
 from cpu_llm.cognition.adapter import PrismCognitionSubspaceAdapter
@@ -92,6 +94,7 @@ from cpu_llm.measurements import extract_stated_measurements, stated_million_amo
 from cpu_llm.realizer.surface import SemanticSurfaceRealizer
 from cpu_llm.retrieval import VectorPrismIndex
 from cpu_llm.thinker_pool import WarmPrismThinker
+from cpu_llm.word_taxonomy import bind_word_taxonomy, load_word_index, recall_document_ids
 
 TENSOR_DIM = 1024
 
@@ -150,6 +153,9 @@ class Appliance:
             auto_sleep=False,
         )
         self.memory = SqliteGraphStore(cache / "graph_store.db", tenant_id="cpu-llm")
+        self.word_tags_path = cache / "word_tags.json"
+        self.word_tags = load_word_index(self.word_tags_path)
+        self.relations_path = cache / "word_relations.json"
         self._turn: dict[str, Any] | None = None
         self.graph = _compile(self)
 
@@ -165,16 +171,30 @@ class Appliance:
         stays text evidence.
         """
         bound = propositions or {}
+        stored: list[tuple[str, np.ndarray]] = []
+        edges = _passage_edges(self, chunks)
+        indexer = _taxonomy_indexer(self)
         for document_id, chunk_text in chunks:
             self.index.upsert(document_id, chunk_text)
             tensor = np.asarray(self.index.encode_chunk(chunk_text), dtype=np.float32).reshape(-1)
-            self.resonance.ingest(
+            signed, hands = _signed_row(self.index.db, document_id, chunk_text, tensor, edges)
+            stored.append((document_id, signed))
+            tags = indexer.build_chunk_tags(document_id, chunk_text, signed)
+            _remember_chunk(
+                self.memory,
                 document_id,
-                resonance_amplitude(tensor),
-                frequency=FrequencyFamily.NEUTRAL,
+                chunk_text,
+                signed,
+                bound.get(document_id),
+                tags,
+                hands,
             )
-            _remember_chunk(self.memory, document_id, chunk_text, tensor, bound.get(document_id))
-        self.resonance.sleep()
+        if chunks:
+            _bind_stored_words(
+                self,
+                chunks,
+                [tensor for _document_id, tensor in stored],
+            )
         return len(chunks)
 
     def catalog_chunks(
@@ -198,21 +218,24 @@ class Appliance:
         known = {node.id: node for node in self.memory.all_nodes()}
         pending: dict[str, str] = {}
         ops: list[DeltaOp] = []
+        indexer = _taxonomy_indexer(self)
+        edges = _passage_edges(self, chunks)
+        signed_rows: list[np.ndarray] = []
         for (document_id, chunk_text), vector in zip(chunks, vectors):
             tensor = np.asarray(vector, dtype=np.float32).reshape(-1)
-            self.resonance.ingest(
-                document_id,
-                resonance_amplitude(tensor),
-                frequency=FrequencyFamily.NEUTRAL,
-            )
+            signed, hands = _signed_row(self.index.db, document_id, chunk_text, tensor, edges)
+            signed_rows.append(signed)
+            tags = indexer.build_chunk_tags(document_id, chunk_text, signed)
             op = _assimilation(
                 self.memory,
                 document_id,
                 chunk_text,
-                tensor,
+                signed,
                 bound.get(document_id),
                 known,
                 pending,
+                tags,
+                hands,
             )
             if op is not None and op.node is not None:
                 ops.append(op)
@@ -221,7 +244,7 @@ class Appliance:
         if ops:
             self.memory.apply(StateDelta(ops=ops))
         if chunks:
-            self.resonance.sleep()
+            _bind_stored_words(self, chunks, signed_rows)
         return len(chunks)
 
     def upsert(self, document_id: str, chunk_text: str) -> int:
@@ -257,6 +280,18 @@ class Appliance:
             }
         )
 
+    def sleep(self, max_pairs: int = 500) -> int:
+        """Judge stored word claims, then refresh relation tails on chunk tensors."""
+        from cpu_llm.cortex_sleep import CortexSleepConsolidator
+        from cpu_llm.relations import load_edges
+
+        return CortexSleepConsolidator(
+            self.memory,
+            self.cognition,
+            vector_db=self.index.db,
+            relation_edges=load_edges(self.relations_path),
+        ).run_sleep_cycle(max_pairs=max_pairs)
+
     def close(self) -> None:
         self.thinker.close()
 
@@ -267,15 +302,33 @@ class Appliance:
         self.close()
 
 
+def _taxonomy_indexer(appliance: Appliance):
+    from cpu_llm.taxonomy import IngestTaxonomyIndexer
+
+    return IngestTaxonomyIndexer(appliance.resonance)
+
+
 def _remember_chunk(
     store: SqliteGraphStore,
     document_id: str,
     chunk_text: str,
     tensor: np.ndarray,
     proposition: EIRProposition | None,
+    tags: list[Any] | None = None,
+    relation_hands: dict[int, list[str]] | None = None,
 ) -> None:
     known = {node.id: node for node in store.all_nodes()}
-    op = _assimilation(store, document_id, chunk_text, tensor, proposition, known, {})
+    op = _assimilation(
+        store,
+        document_id,
+        chunk_text,
+        tensor,
+        proposition,
+        known,
+        {},
+        tags,
+        relation_hands,
+    )
     if op is not None:
         store.apply(StateDelta(ops=[op]))
 
@@ -288,21 +341,33 @@ def _assimilation(
     proposition: EIRProposition | None,
     known: dict[str, Node],
     pending: dict[str, str],
+    tags: list[Any] | None = None,
+    relation_hands: dict[int, list[str]] | None = None,
 ) -> DeltaOp | None:
     payload = proposition.model_dump(mode="json") if proposition is not None else None
+    tag_payload = [tag.model_dump() for tag in tags] if tags else []
     existing_id = pending.get(chunk_text.strip().lower()) or store.find_node_by_label(chunk_text)
+    current = known.get(existing_id) if existing_id is not None else None
+    attributes: dict[str, Any] = dict(current.attributes) if current is not None else {}
+    if payload is not None:
+        attributes["proposition"] = payload
+    if tag_payload:
+        attributes["taxonomy_tags"] = tag_payload
+    if relation_hands and any(relation_hands.values()):
+        attributes["relation_hands"] = {str(hand): words for hand, words in relation_hands.items()}
+    if "related_terms" not in attributes:
+        attributes["related_terms"] = []
     if existing_id is not None:
-        if payload is None:
+        same_proposition = current is not None and current.attributes.get("proposition") == attributes.get("proposition")
+        same_tags = current is not None and current.attributes.get("taxonomy_tags") == attributes.get("taxonomy_tags")
+        same_hands = current is not None and current.attributes.get("relation_hands") == attributes.get("relation_hands")
+        if payload is None and not tag_payload and not relation_hands:
             return None
-        current = known.get(existing_id)
-        if current is not None and current.attributes.get("proposition") == payload:
+        if same_proposition and same_tags and same_hands:
             return None
         node_id = existing_id
     else:
         node_id = document_id
-    attributes: dict[str, Any] = {}
-    if payload is not None:
-        attributes["proposition"] = payload
     return DeltaOp(
         operation=Operation.ASSIMILATE,
         node=Node(
@@ -554,6 +619,8 @@ def _imagine(appliance: Appliance):
         turn = appliance._turn or {}
         query = turn.get("z_query")
         scores = _resonate_article(appliance, rows, query)
+        loaded = {str(row["document_id"]) for row in rows}
+        hands, relations = _creation_relations(appliance, state.get("message") or "", loaded)
         chunks = [
             {
                 "document_id": row["document_id"],
@@ -563,9 +630,45 @@ def _imagine(appliance: Appliance):
             for row in rows
             if row.get("tensor_1024d") is not None
         ]
-        return {"imagination": compose_imagination(state.get("message") or "", chunks, scores)}
+        imagined = compose_imagination(state.get("message") or "", chunks, scores)
+        if relations:
+            imagined["relations"] = relations
+            imagined["relation_hands"] = {str(hand): words for hand, words in hands.items() if words}
+            extra = " ".join(item["sentence"] for item in relations)
+            if extra:
+                imagined["text"] = f"{imagined['text']} {extra}".strip()
+                imagined["note"] = (
+                    imagined["note"]
+                    + " Second- and third-hand sentences are copied from paragraphs the word graph names."
+                )
+        return {"imagination": imagined}
 
     return node
+
+
+def _creation_relations(appliance: Appliance, message: str, exclude: set[str]):
+    from cpu_llm.relations import creation_relations, load_edges, relation_sentences
+
+    edges = load_edges(appliance.relations_path)
+    hands, chosen = creation_relations(edges, appliance.word_tags, message, exclude)
+    if not chosen or not hasattr(appliance.index.db, "get_by_ids"):
+        return hands, []
+    wanted = {document_id: (hand, word) for hand, document_id, word in chosen}
+    rows = []
+    for row in appliance.index.db.get_by_ids(list(wanted)):
+        document_id = str(row["document_id"])
+        hand, word = wanted.get(document_id, (0, ""))
+        if hand not in (2, 3):
+            continue
+        rows.append(
+            {
+                "document_id": document_id,
+                "chunk_text": row["chunk_text"],
+                "relation_hand": hand,
+                "word": word,
+            }
+        )
+    return hands, relation_sentences(rows)
 
 
 def _shortlist_rows(appliance: Appliance, related: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -625,6 +728,73 @@ def _discover(appliance: Appliance):
     return node
 
 
+def _bind_stored_words(appliance: Appliance, chunks: list[tuple[str, str]], tensors: list[np.ndarray]) -> None:
+    """Record the word index and checkpoint resonance. Relation tails are already stored."""
+    bound = bind_word_taxonomy(
+        appliance.resonance,
+        chunks,
+        tensors,
+        tags_path=appliance.word_tags_path,
+    )
+    appliance.word_tags = bound["index"]
+
+
+def _passage_edges(appliance: Appliance, chunks: list[tuple[str, str]]):
+    from cpu_llm.relations import merge_passage_edges
+
+    return merge_passage_edges(appliance.relations_path, chunks, appliance.word_tags)
+
+
+def _signed_row(db, document_id: str, text: str, tensor: np.ndarray, edges):
+    from cpu_llm.relations import apply_relation_signature, hands_for_text
+    from cpu_llm.word_taxonomy import write_stamped_tensor
+
+    hands = hands_for_text(edges, text)
+    if not any(hands.values()):
+        return tensor, hands
+    signed = apply_relation_signature(tensor, hands)
+    write_stamped_tensor(db, document_id, text, signed)
+    return signed, hands
+
+
+def _with_tagged_paragraphs(
+    appliance: Appliance,
+    message: str,
+    hits: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Add a tagged paragraph when the shortlist missed the query word.
+
+    An empty shortlist stays empty. A word already written in a retrieved
+    paragraph is not used to pull in another article.
+    """
+    if not hits:
+        return hits
+    present = {word for hit in hits for word in _content_words(str(hit.get("chunk_text") or ""))}
+    allowed = {article_slug(str(hit["document_id"])) for hit in hits}
+    wanted = recall_document_ids(
+        appliance.resonance,
+        appliance.word_tags,
+        message,
+        skip_words=present,
+        allowed_slugs=allowed,
+    )
+    have = {str(hit["document_id"]) for hit in hits}
+    missing = [document_id for document_id in wanted if document_id not in have]
+    if not missing or not hasattr(appliance.index.db, "get_by_ids"):
+        return hits
+    added = list(hits)
+    for row in appliance.index.db.get_by_ids(missing):
+        added.append(
+            {
+                "document_id": row["document_id"],
+                "chunk_text": row["chunk_text"],
+                "tensor_1024d": np.asarray(row["tensor_1024d"], dtype=np.float32).reshape(-1),
+                "final_score": 0.0,
+            }
+        )
+    return added
+
+
 def _retrieve(appliance: Appliance):
     def node(state: dict[str, Any]) -> dict[str, Any]:
         message = state.get("message") or ""
@@ -637,6 +807,7 @@ def _retrieve(appliance: Appliance):
         named = _hits_for_named_article(appliance.index, message, hits)
         if named:
             hits = named
+        hits = _with_tagged_paragraphs(appliance, message, hits)
         turn["hits"] = hits
         appliance._turn = turn
         return {
@@ -975,6 +1146,12 @@ def _think(appliance: Appliance):
     return node
 
 
+def _lexical_evidence(store: SqliteGraphStore, message: str):
+    from cpu_llm.consolidation.sleep import lexical_evidence
+
+    return lexical_evidence(store, message)
+
+
 def _cognize(appliance: Appliance):
     def node(state: dict[str, Any]) -> dict[str, Any]:
         turn = appliance._turn or {}
@@ -998,21 +1175,30 @@ def _cognize(appliance: Appliance):
                 paired_ids.append(chunk_id)
                 paired.append(stored)
             if not paired:
-                return {"cognition_status": "needs_evidence_propositions"}
-            propositions = paired
-            related_ids = paired_ids
-            turn["related_ids"] = paired_ids
-            appliance._turn = turn
-        if propositions and len(related_ids) != len(propositions):
-            return {
-                "cognition_status": "proposition_tensor_mismatch",
-                "proposition_count": len(propositions),
-                "tensor_count": len(related_ids),
-            }
-        hits = {hit["document_id"]: hit for hit in turn.get("hits") or []}
-        tensors = [
-            np.asarray(hits[chunk_id]["tensor_1024d"], dtype=np.float32).reshape(-1) for chunk_id in related_ids
-        ]
+                lexical = _lexical_evidence(appliance.memory, state.get("message") or "")
+                if not lexical:
+                    return {"cognition_status": "needs_evidence_propositions"}
+                propositions = [item[0] for item in lexical]
+                tensors = [item[1] for item in lexical]
+            else:
+                propositions = paired
+                related_ids = paired_ids
+                turn["related_ids"] = paired_ids
+                appliance._turn = turn
+                tensors = None
+        else:
+            tensors = None
+        if tensors is None:
+            if propositions and len(related_ids) != len(propositions):
+                return {
+                    "cognition_status": "proposition_tensor_mismatch",
+                    "proposition_count": len(propositions),
+                    "tensor_count": len(related_ids),
+                }
+            hits = {hit["document_id"]: hit for hit in turn.get("hits") or []}
+            tensors = [
+                np.asarray(hits[chunk_id]["tensor_1024d"], dtype=np.float32).reshape(-1) for chunk_id in related_ids
+            ]
         query = turn.get("z_query")
         if query is None:
             query = np.zeros(TENSOR_DIM, dtype=np.float32)
