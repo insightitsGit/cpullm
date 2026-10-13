@@ -482,7 +482,7 @@ def test_creative_writing_walks_the_article_and_leaves_the_answer(
     appliance: Appliance, monkeypatch: pytest.MonkeyPatch
 ):
     lead = "The European lobster is Homarus gammarus."
-    coast = "The European lobster lives in the Atlantic Ocean."
+    coast = "Homarus gammarus is a species of clawed lobster."
     other = "A blue whale sings in the deep ocean."
     stored = [
         ("imagine-lobster-p0001", lead),
@@ -508,6 +508,7 @@ def test_creative_writing_walks_the_article_and_leaves_the_answer(
     try:
         plain = appliance.ask("What is the European lobster?")
         creative = appliance.ask("Imagine the European lobster.")
+        again = appliance.ask("Imagine the European lobster.")
     finally:
         appliance.index.save_chunks([], replace_prefix="imagine-lobster-")
     assert plain["creative_reasons"] == []
@@ -524,6 +525,9 @@ def test_creative_writing_walks_the_article_and_leaves_the_answer(
     assert any("lobster" in link["keywords"] for link in imagined["links"])
     assert creative["answer"] != imagined["text"]
     assert imagined["text"] in creative["reply"]["text"]
+    assert again["answer"] == creative["answer"]
+    assert again["imagination"]["text"] != imagined["text"]
+    assert again["imagination"]["text"] in again["reply"]["text"]
 
 
 def test_prompt_injection_stops_before_retrieval(appliance: Appliance):

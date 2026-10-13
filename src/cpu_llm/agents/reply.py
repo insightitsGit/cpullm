@@ -47,6 +47,12 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
         imagined = str((state.get("imagination") or {}).get("text") or "").strip()
     if imagined:
         lines.extend(["", "Imagined passage:", imagined])
+    possibilities = list(state.get("possibilities") or [])
+    if possibilities:
+        lines.extend(["", f"Possibilities ({len(possibilities)}):"])
+        for item in possibilities:
+            words = ", ".join(item.get("matched_words") or [])
+            lines.append(f"- {item.get('document_id')} [{words}]")
     return {
         "preface": preface,
         "body": body,

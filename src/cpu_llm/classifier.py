@@ -31,7 +31,23 @@ _REASONS: tuple[tuple[re.Pattern[str], str], ...] = (
     ),
 )
 
+_DEEP_REASONS: tuple[tuple[re.Pattern[str], str], ...] = (
+    (
+        re.compile(r"\bdeep search\b", re.IGNORECASE),
+        "the prompt asks for a deep search",
+    ),
+    (
+        re.compile(r"\bsearch deeply\b|\bsearch all\b|\blook everywhere\b", re.IGNORECASE),
+        "the prompt asks for a deep search",
+    ),
+    (
+        re.compile(r"\ball possible\b|\ball possibilities\b", re.IGNORECASE),
+        "the prompt asks for every possibility",
+    ),
+)
+
 CALLER_REASON = "the caller turned creative writing on"
+DEEP_CALLER_REASON = "the caller turned deep search on"
 
 
 def creative_writing_trigger(message: str, *, forced: bool = False) -> list[str]:
@@ -44,6 +60,23 @@ def creative_writing_trigger(message: str, *, forced: bool = False) -> list[str]
     if forced:
         reasons.append(CALLER_REASON)
     for pattern, reason in _REASONS:
+        if reason in reasons:
+            continue
+        if pattern.search(message or ""):
+            reasons.append(reason)
+    return reasons
+
+
+def deep_search_trigger(message: str, *, forced: bool = False) -> list[str]:
+    """Reasons to return every matching chunk instead of one ranked sentence.
+
+    A plain question stays on the shortlist. ``forced`` records that the caller
+    turned the wider search on.
+    """
+    reasons: list[str] = []
+    if forced:
+        reasons.append(DEEP_CALLER_REASON)
+    for pattern, reason in _DEEP_REASONS:
         if reason in reasons:
             continue
         if pattern.search(message or ""):
