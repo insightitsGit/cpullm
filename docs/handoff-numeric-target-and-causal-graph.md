@@ -121,3 +121,13 @@ A measurement with no caller target and no caller causal graph is now a formal c
 - no invented policy, objective, or causal edge
 
 A turn that already has a causal graph, such as the policy/incident pair, still runs the empirical and causal heads. A caller-supplied objective target does too.
+
+## Later lexical layer (2026-10-12)
+
+Word relations, sleep, and identity lookup are specified in section 7 of `docs/cpu-llm-v1.6.1-architecture-spec.md`. They do not change the Mount Elbert routing above.
+
+- Ingestion tags content words with the article slug and a PrismResonance key. Sleep writes `TAXONOMIC_LINK` between chunks that share a category and pass the relational cosine and PrismCognition ruin checks.
+- A stored copula that cognition accepts becomes `INSTANCE_OF` on concept nodes `word:{term}`. `SUBCLASS_OF` is added only when a second copula chains and the child tensor sits in the parent Poincaré cone.
+- Training and `Appliance.sleep()` write a length-0.05 signature of the second and third hand into the last 32 values of the relational channel. The dense core is unchanged. The category integer is not written into `relational[0]`.
+- “What is …” / “Who is …” can realize an accepted copula from those word nodes when the retrieved paragraph has no proposition. A why-question does not.
+- No numeric target, `ObjectiveSpec`, or causal edge is invented from a passage. PrismThinker is not used to mint word links.

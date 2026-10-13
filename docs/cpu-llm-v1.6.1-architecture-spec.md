@@ -15,6 +15,12 @@
 > those rules emit. It is not passed through a grammar rewriter, and the
 > auditor does not load a parser model. The auditor checks polarity,
 > modality, voice, the condition threshold, the subject, and the predicate.
+>
+> Section 7 is the cpu-llm 1.7.0 lexical layer. It records how PrismRAG,
+> PrismResonance, PrismCognition, and PrismCortex sleep attach relations
+> to words, write those relations into the stored tensors, and answer an
+> identity question from that graph. Where section 1 describes a bilinear
+> map or an O(1) subclass test, section 7 is the behavior the code runs.
 
 
 
@@ -783,3 +789,102 @@ def test_generalized_anchor_regex_and_terminal_punctuation():
 ```bash
 CUDA_VISIBLE_DEVICES="" python -m pytest tests/test_invariants.py
 ```
+
+---
+
+## 7. Lexical relations (cpu-llm 1.7.0)
+
+Words carry the relations. A paragraph proposition is still the symbolic form of one chunk when the caller stored one. Sleep compiles the relations those claims name, and an identity question can read them when the retrieved paragraph has none.
+
+The 1024-d layout is unchanged:
+
+| Slice | Range | Role in this layer |
+| --- | --- | --- |
+| Header | `[0:16]` | Bitmask, truth, anchor distance, time, model version |
+| Dense core | `[16:384]` | Trained retrieval channel. Resonance amplitudes use this slice |
+| Relational | `[384:512]` | Chunk-to-chunk cosine at sleep. The last 32 values hold the hand signature |
+| Disentangled | `[512:640]` | Unchanged by this layer |
+| Hyperbolic | `[640:768]` | Poincaré cone for a chained copula. The head in the checkpoint is off; a point is used only when its norm is inside the open unit ball |
+| Identity | `[768:896]` | Unchanged. The anchor is still zero |
+| Causal time | `[896:1024]` | Unchanged. This layer does not invent a causal edge |
+
+### 7.1 Ingestion
+
+`IngestTaxonomyIndexer` (`src/cpu_llm/taxonomy.py`) runs from `Appliance.index_chunks` and `Appliance.catalog_chunks`.
+
+- The category is the article slug in the document id. A PrismRAG object is asked for `resolve_category` only when that method exists and returns a value.
+- Terms are the content words of the chunk: tokens of four or more letters, with the stop list in `channels._content_words` removed. A fixed window of the first eight tokens is not used, because a later word such as “peat” would be dropped.
+- Each term becomes a `LexicalTaxonomyTag`: `term`, `category`, `resonance_key` `{category}:{term}`, and `channel_index` 16.
+- PrismResonance registers that key and the legacy key `tag:{category}:{term}`. The amplitude is the unit-norm dense core placed in a 1024-d vector. The header and the other channels of that amplitude are zero, so a packed timestamp cannot dominate the dot product. `record_co_activation` ties the marker to the document id.
+- The graph node stores `taxonomy_tags` beside any supplied `proposition`, plus `relation_hands` and `related_terms`. The node embedding is the tensor that was stored, including a relation tail when one was written.
+- WikiText paragraphs are not parsed into propositions. `proposition_from_chunk` keeps a record only when the realizer repeats that chunk’s first sentence. A caller-supplied proposition, such as `homarus_definition`, is stored under its document id.
+
+Recall of a tagged paragraph (`word_taxonomy.recall_document_ids`) stays inside the articles already in the shortlist. An empty shortlist stays empty. A query word that is already written in a retrieved paragraph does not pull another article. The category number is not written into `relational[0]`. That integer pulled unrelated paragraphs into why-questions.
+
+### 7.2 Second and third hand
+
+PrismRAG connects words that share a category and expands a search two hops. It does not label the hops, and it stops before a third hand. `src/cpu_llm/relations.py` walks the same undirected edges one hand at a time.
+
+- Hand 1 shares an edge with a seed word from the passage or the prompt.
+- Hand 2 is the next ring. Hand 3 is the ring after that.
+- Seeds are not listed again. Each hand is alphabetical and stops at 8 words.
+- A word that appears in more than 12 paragraphs is not a bridge. Each word keeps at most 8 partners, the rarer ones first.
+- Passage edges are the rule edges between content words that share a paragraph. `build_graph` is not run on the full vocabulary: the similarity matrix of that call is quadratic in the number of word nodes.
+- The edge list is `.chorusgraph/cpu-llm/word_relations.json`. The word index is `.chorusgraph/cpu-llm/word_tags.json`.
+
+Training (`index_chunks`, `catalog_chunks`) merges the new passage edges into that file and writes a signature into the stored tensor. The signature is a hashed signed bag of `{hand}:{word}` in the last 32 values of the relational channel, `[480:512]`, scaled by hand (1.0, 0.5, 0.25) and L2-normalized to length 0.05. The dense core and `relational[0]` stay as VectorPrism encoded them. An empty hand list leaves the tensor unchanged. The tail is a stored trace. It is not decoded back into words. The walk that names the words reads the edge list.
+
+Creation mode uses hands 2 and 3 only. After the imagined passage has walked the named article, `_creation_relations` loads at most four stored paragraphs per hand, skipping document ids already in that walk. Those sentences are appended to `imagination["text"]` and recorded on `imagination["relations"]`. They are not added to `links` or `articles`, so the article lock on the creative walk stays the named article.
+
+### 7.3 Sleep
+
+`Appliance.sleep()` builds `CortexSleepConsolidator` with the SQLite graph, the cognition adapter, the vector database, and the edges in `word_relations.json`. One cycle does three writes.
+
+**Chunk links.** For pairs that share a taxonomy category, the cosine of the full relational channel `[384:512]` must be above 0.75. When both nodes have a proposition, `PrismCognitionSubspaceAdapter.deliberate` must keep ruin at or below its threshold (default 0.85). Ruin is 1 when the pair is a contradiction on the modality matrix and 0 otherwise. There is no bilinear map and no SVD. An opposing relational slice fails the cosine check. The cycle then writes bidirectional `related_terms` (the other node’s label) and one `TAXONOMIC_LINK` edge. The node embedding is copied through unchanged.
+
+**Word relations.** `consolidate_word_relations` (`src/cpu_llm/consolidation/sleep.py`) reads stored copulas only: predicate lemma `be`, an object, affirmative polarity. It does not invent a proposition from a WikiText paragraph.
+
+- PrismCognition deliberates the claim. A second stored claim with the same subject, predicate, and object and a contradicting polarity blocks the link. Nothing is written for that pair.
+- A claim that survives writes an `INSTANCE_OF` edge from each content word of the subject to each content word of the object. `homarus` → `lobster` for the stored European-lobster definition. Provenance `agent_id` is `prism-cognition` and modality is `COMPATIBLE`.
+- Concept nodes use id and label `word:{term}`, kind `concept`, and no embedding, so they do not enter the chunk nearest-neighbor scan and they are not upserted into pgvector. Attributes hold `definitions` (the proposition, source chunk, passage words, claim words, category, ruin) and `relations` (the other term, the edge type, the judgment).
+- `SUBCLASS_OF` is written only when a second accepted copula names an object word of the child as its subject, and `cone_includes` is true: both hyperbolic slices are inside the open unit ball and the child lies in the parent’s Ganea cone. The edge runs from that shared word to a content word of the parent’s object (`lobster` → `crustacean`). Provenance modality is `CONE`. Equal norms, a point outside the ball, or the cone alone do not create this edge. The cone test is O(d) per pair. It does not by itself prove a taxonomy edge.
+
+**Vector tail.** When the cycle was given a vector database and relation edges, `sign_and_store` writes the same 0.05 hand signature onto chunk tensors. Concept nodes are skipped. The dense core is not part of that write.
+
+A second cycle does not add a chunk link that is already present, and it does not add a word edge whose id is already stored.
+
+### 7.4 Identity questions
+
+`_cognize` still deliberates a proposition stored on a retrieved chunk, and a caller-supplied proposition list, before anything else.
+
+When the shortlist has no stored proposition, and the question starts with “what is”, “what are”, “who is”, or “who are”, `lexical_evidence` reads the concept nodes:
+
+- Every content word of the question must occur in the definition’s passage words, so “European” and “lobster” both have to be in the source chunk.
+- At least one of those words must occur in the subject or the object of the stored copula.
+- The tensor deliberated is that source chunk’s embedding.
+- The realizer and the entailment auditor then run as on any other deliberated claim.
+
+“What is the European lobster?” can therefore realize “Homarus gammarus is a species of clawed lobster.” from the word `lobster` after sleep, even when the retrieved paragraph is a different sentence with no proposition. “Why use hyperbolic embeddings?” does not take this path. A contradicted copula is not in the graph, so the question stays `needs_evidence_propositions`.
+
+### 7.5 What this layer does not do
+
+- It does not train the relational, disentangled, hyperbolic, or causal VectorPrism heads. Dense remains the trained retrieval channel.
+- It does not decode the 32-d tail back into words.
+- It does not call PrismThinker to invent a word link.
+- It does not promote a “because” sentence into a causal edge, and it does not invent an `ObjectiveSpec` or a numeric target.
+- It does not parse the WikiText paragraphs that have no round-tripping proposition into copulas. Those paragraphs stay text until a proposition is supplied.
+
+### 7.6 Files and checks
+
+| Path | Role |
+| --- | --- |
+| `src/cpu_llm/taxonomy.py` | Category tags and resonance keys at ingestion |
+| `src/cpu_llm/relations.py` | Three-hand walk, passage edges, relational-tail signature |
+| `src/cpu_llm/word_taxonomy.py` | Word index and tagged-paragraph recall |
+| `src/cpu_llm/cortex_sleep.py` | Chunk `TAXONOMIC_LINK`, then word consolidation, then the tail upgrade |
+| `src/cpu_llm/consolidation/sleep.py` | `INSTANCE_OF`, `SUBCLASS_OF`, and identity lookup |
+| `src/cpu_llm/pipeline.py` | Training writes, `Appliance.sleep`, creation append, `_cognize` fallback |
+| `tests/test_word_taxonomy.py` | Tags, recall bounds, no category integer in the stored tensor |
+| `tests/test_relations.py` | Hands, tail norm 0.05, creation rows, sleep tail write |
+| `tests/test_cortex_sleep.py` | Shared-category link, opposing polarity, contradiction ruin |
+| `tests/test_lexical_relations.py` | Instance edge, identity answer, blocked contradiction, cone subclass |
