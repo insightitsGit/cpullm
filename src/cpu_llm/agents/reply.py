@@ -41,6 +41,11 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
     follow_ups = _follow_ups(state, body)
     next_steps = _next_steps(state)
     lines = [body]
+    math_result = state.get("math_result") or {}
+    math_text = str(math_result.get("text") or "").strip()
+    math_only = bool(math_text) and state.get("math") is True and not _other_agent(state)
+    if math_only:
+        lines = [math_text]
     brief = state.get("brief") or {}
     if state.get("summarize") is True:
         lines.extend(["", "Summary:", brief.get("summary") or "No stored sentence to summarize."])
@@ -70,6 +75,8 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
     if possibilities:
         lines.extend(["", f"Possibilities ({len(possibilities)}):"])
         lines.extend(_possibility_lines(possibilities))
+    if math_text and not math_only:
+        lines.extend(["", "Math:", math_text])
     return {
         "preface": preface,
         "body": body,
@@ -103,6 +110,13 @@ def _possibility_lines(possibilities: list[dict[str, Any]]) -> list[str]:
 def _possibility_item(item: dict[str, Any]) -> str:
     words = ", ".join(item.get("matched_words") or [])
     return f"- {item.get('document_id')} [{words}]"
+
+
+def _other_agent(state: dict[str, Any]) -> bool:
+    """True when another optional agent also has something to say."""
+    if any(state.get(flag) is True for flag in ("deep", "creative", "compare", "summarize", "explain", "list", "sources")):
+        return True
+    return bool(state.get("possibilities") or state.get("comparison") or state.get("imagination") or state.get("brief"))
 
 
 def _preface(state: dict[str, Any]) -> str:

@@ -93,6 +93,7 @@ from cpu_llm.classifier import (
     deep_search_trigger,
     explain_trigger,
     list_trigger,
+    math_trigger,
     source_trigger,
     summary_trigger,
 )
@@ -308,6 +309,7 @@ class Appliance:
         discover: bool = False,
         imagine: bool = False,
         deep: bool = False,
+        math: bool = False,
         payment: Any | None = None,
         authority: Any | None = None,
         objective: Any | None = None,
@@ -325,6 +327,7 @@ class Appliance:
         explain_reasons = explain_trigger(message)
         list_reasons = list_trigger(message)
         source_reasons = source_trigger(message)
+        math_reasons = math_trigger(message, forced=math)
         self._turn = {
             "propositions": list(propositions or []),
             "payment": payment,
@@ -353,6 +356,8 @@ class Appliance:
                 "list_reasons": list_reasons,
                 "sources": bool(source_reasons),
                 "source_reasons": source_reasons,
+                "math": bool(math_reasons),
+                "math_reasons": math_reasons,
             }
         )
         self._previous_ids = [
@@ -501,6 +506,7 @@ def _compile(appliance: Appliance):
     graph.add_node("deep", dict_node_adapter(_deep(appliance), hop="deep"))
     graph.add_node("compare", dict_node_adapter(_compare(appliance), hop="compare"))
     graph.add_node("brief", dict_node_adapter(_brief(appliance), hop="brief"))
+    graph.add_node("math", dict_node_adapter(_math(appliance), hop="math"))
     graph.add_node("discover", dict_node_adapter(_discover(appliance), hop="discover"))
     graph.add_edge(START, "guard")
     graph.add_conditional_edges("guard", _after_guard, {"retrieve": "retrieve", "reply": "reply"})
@@ -521,21 +527,22 @@ def _compile(appliance: Appliance):
     graph.add_conditional_edges(
         "shine",
         _after_shine,
-        {"deep": "deep", "gather": "gather", "compare": "compare", "brief": "brief", "reply": "reply"},
+        {"deep": "deep", "gather": "gather", "compare": "compare", "brief": "brief", "math": "math", "reply": "reply"},
     )
     graph.add_conditional_edges(
         "deep",
         _after_deep,
-        {"gather": "gather", "compare": "compare", "brief": "brief", "reply": "reply"},
+        {"gather": "gather", "compare": "compare", "brief": "brief", "math": "math", "reply": "reply"},
     )
     graph.add_edge("gather", "imagine")
     graph.add_conditional_edges(
         "imagine",
         _after_imagine,
-        {"compare": "compare", "brief": "brief", "reply": "reply"},
+        {"compare": "compare", "brief": "brief", "math": "math", "reply": "reply"},
     )
-    graph.add_conditional_edges("compare", _after_compare, {"brief": "brief", "reply": "reply"})
-    graph.add_edge("brief", "reply")
+    graph.add_conditional_edges("compare", _after_compare, {"brief": "brief", "math": "math", "reply": "reply"})
+    graph.add_conditional_edges("brief", _after_brief, {"math": "math", "reply": "reply"})
+    graph.add_edge("math", "reply")
     graph.add_conditional_edges("reply", _after_reply, {"discover": "discover", "end": END})
     graph.add_edge("discover", END)
     return graph.compile()
@@ -577,7 +584,7 @@ def _after_shine(state: dict[str, Any]) -> str:
         return "compare"
     if _wants_brief(state):
         return "brief"
-    return "reply"
+    return _else_math(state, "reply")
 
 
 def _after_deep(state: dict[str, Any]) -> str:
@@ -587,7 +594,7 @@ def _after_deep(state: dict[str, Any]) -> str:
         return "compare"
     if _wants_brief(state):
         return "brief"
-    return "reply"
+    return _else_math(state, "reply")
 
 
 def _after_imagine(state: dict[str, Any]) -> str:
@@ -595,13 +602,24 @@ def _after_imagine(state: dict[str, Any]) -> str:
         return "compare"
     if _wants_brief(state):
         return "brief"
-    return "reply"
+    return _else_math(state, "reply")
 
 
 def _after_compare(state: dict[str, Any]) -> str:
     if _wants_brief(state):
         return "brief"
-    return "reply"
+    return _else_math(state, "reply")
+
+
+def _after_brief(state: dict[str, Any]) -> str:
+    return _else_math(state, "reply")
+
+
+def _else_math(state: dict[str, Any], destination: str) -> str:
+    """Run the math agent before the reply when the prompt asked for a calculation."""
+    if destination == "reply" and state.get("math") is True and not state.get("delivery_blocked"):
+        return "math"
+    return destination
 
 
 def _wants_brief(state: dict[str, Any]) -> bool:
@@ -776,6 +794,22 @@ def _deep(appliance: Appliance):
             "possibility_count": len(possibilities),
             "deep_seeds": gathered["seeds"],
             "deep_hands": gathered["hands"],
+        }
+
+    return node
+
+
+def _math(appliance: Appliance):
+    """Evaluate the prompt's arithmetic. The number is not stored as a proposition."""
+
+    del appliance
+
+    def node(state: dict[str, Any]) -> dict[str, Any]:
+        from cpu_llm.agents.math import solve_math
+
+        return {
+            "math_reasons": list(state.get("math_reasons") or []),
+            "math_result": solve_math(state.get("message") or ""),
         }
 
     return node

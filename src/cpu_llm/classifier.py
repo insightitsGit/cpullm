@@ -77,6 +77,29 @@ _SOURCE_REASONS: tuple[tuple[re.Pattern[str], str], ...] = (
         "the prompt asks for sources",
     ),
 )
+_MATH_REASONS: tuple[tuple[re.Pattern[str], str], ...] = (
+    (
+        re.compile(r"\d\s*(?:[+\-*/^×÷]|plus|minus|times|multiplied by|divided by)\s*\d", re.IGNORECASE),
+        "the prompt contains an arithmetic expression",
+    ),
+    (
+        re.compile(r"\d(?:\.\d+)?\s*(?:%|percent)\s+of\s+\d", re.IGNORECASE),
+        "the prompt asks for a percentage",
+    ),
+    (
+        re.compile(r"\b(?:square\s+root\s+of|sqrt)\s*\(?\s*\d", re.IGNORECASE),
+        "the prompt asks for a square root",
+    ),
+    (
+        re.compile(
+            r"\b(?:sum|product|average|mean)\s+of\s+\d+(?:\.\d+)?"
+            r"(?:\s*(?:,\s*(?:and\s+)?|and\s+)\d+(?:\.\d+)?)+",
+            re.IGNORECASE,
+        ),
+        "the prompt asks for a calculation over a list of numbers",
+    ),
+)
+MATH_CALLER_REASON = "the caller turned math on"
 
 
 def creative_writing_trigger(message: str, *, forced: bool = False) -> list[str]:
@@ -131,6 +154,19 @@ def list_trigger(message: str) -> list[str]:
 def source_trigger(message: str) -> list[str]:
     """Reasons to name the paragraphs the sentences came from."""
     return _matched(message, _SOURCE_REASONS)
+
+
+def math_trigger(message: str, *, forced: bool = False) -> list[str]:
+    """Reasons to evaluate arithmetic instead of only retrieving a sentence.
+
+    A plain question, including one that merely contains a year or a measurement,
+    stays off this path. ``forced`` records that the caller turned the step on.
+    """
+    reasons: list[str] = []
+    if forced:
+        reasons.append(MATH_CALLER_REASON)
+    reasons.extend(_matched(message, _MATH_REASONS))
+    return reasons
 
 
 def _matched(message: str, table: tuple[tuple[re.Pattern[str], str], ...]) -> list[str]:

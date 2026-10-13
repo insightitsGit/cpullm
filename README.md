@@ -42,7 +42,8 @@ The second picture is a different product.
 
 * **A checked sentence, not a sample.** The words a caller hears are a stored sentence the realizer can rebuild. The auditor and PrismShine see that sentence. They do not see a free-form completion.
 * **One index for every source.** WikiText, the shipped artificial-intelligence primer, a PDF, a Word file, a spreadsheet, and paragraphs a developer already split land in the same pgvector index. A later question can hit any of them.
-* **Agents that chain.** Deep search, creative writing, comparison, and a brief (summarize, explain, list, cite) read the chunks the earlier agent kept. The checked sentence stays in front.
+* **Agents that chain.** Deep search, creative writing, comparison, a brief (summarize, explain, list, cite), and math read what the earlier step kept. The checked sentence stays in front, except when the question is only a calculation.
+* **A calculation of its own.** Addition, multiplication, percentages, roots, and a short list of numbers run in a math agent. The number is computed. It is not stored as a proposition.
 * **Numbers that stay what they are.** A height in metres is not turned into money. A cause is quoted only when the paragraph already states one. A missing policy, target, or causal graph is left empty.
 * **CPU, after one load.** On the measured machine, loading takes about 10 seconds. A question after that is 60–66 ms, and a deep search that keeps every match is about 0.6 s.
 
@@ -76,7 +77,7 @@ PrismCognition + realizer + EpistemicEntailmentAuditor
 PrismShine (retrieval trace and sentence gate; no external judge)
   │
   ▼
-Optional agents, in this order: deep search → creative writing → comparison → brief
+Optional agents, in this order: deep search → creative writing → comparison → brief → math
   │
   ▼
 Verified reply
@@ -116,6 +117,7 @@ PrismThinker can return `answer`, `gather`, `refuse`, or `escalate`. A gather re
 | Why is the European lobster fished with pots? | Only stored sentences that state a cause | An explanation, or "No stored sentence states a cause." |
 | List the European lobster. | The same ranking, kept longer | Up to eight sentences |
 | Cite sources for the European lobster. | The paragraph ids that were used | A source list |
+| What is 17 times 24? | The math agent | The calculation. A question that is only arithmetic is answered with that result |
 
 Those agents chain. "Deep search and compare the European lobster and Robert Boulter" gathers first, then splits the kept paragraphs by topic. "Summarize that" with no new topic words reuses the previous turn's paragraph ids. A normal follow-up such as "what about the claws?" does not.
 
@@ -261,6 +263,7 @@ with Appliance() as appliance:
 | `discover` | `False` | Runs the discovery loop. A why question does not turn this on |
 | `imagine` | `False` | Forces creative writing |
 | `deep` | `False` | Forces deep search |
+| `math` | `False` | Forces the math agent |
 | `propositions` | `None` | Overrides the stored propositions for this turn |
 | `payment`, `authority` | both or neither | A payment turn needs both a proposal and an authority snapshot |
 | `objective`, `hypothesis`, `causal_graph` | `None` | Caller-owned. The appliance does not invent them |
@@ -283,6 +286,7 @@ Read these fields on the result. The graph also returns the channel readings and
 | `possibilities`, `possibility_count` | Present after deep search |
 | `comparison` | Per-side stored sentences |
 | `imagination` | The creative passage. `answer` is unchanged |
+| `math_result` | The calculated value. It is not an audited proposition |
 | `brief` | Summary, explanation, list, and source ids |
 
 `reply` also carries `preface`, `follow_ups`, and `next_steps` for the caller. Those strings are not written into `reply["text"]`.
@@ -367,7 +371,7 @@ cpu-llm/
     realizer/                                 controlled English from a proposition
     audit/                                    EpistemicEntailmentAuditor
     cognition/                                PrismCognition deliberation adapter
-    agents/                                   deep_search, gather, imagine, summarize, reply, discovery
+    agents/                                   deep_search, gather, imagine, summarize, math, reply, discovery
     comparison.py                             two-topic split
     classifier.py                             which optional agent the prompt asked for
     channels.py                               six readings and the detail template
