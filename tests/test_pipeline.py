@@ -207,7 +207,8 @@ def test_six_channel_nodes_quote_the_passages_and_suggest_discovery_for_a_why_qu
     assert simple["discovery_suggested"] is False
     assert "discovery" not in simple
     assert simple["reply"]["body"] == sentence
-    assert "Six readings" in simple["reply"]["text"]
+    assert simple["reply"]["text"] == sentence
+    assert "Six readings" in simple["channel_report"]["text"]
     assert "discovery loop" not in simple["reply"]["text"]
     by_channel = {item["channel"]: item for item in simple["channel_readings"]}
     assert "European" in by_channel["identity"]["detail"]
@@ -220,8 +221,9 @@ def test_six_channel_nodes_quote_the_passages_and_suggest_discovery_for_a_why_qu
     assert complicated["discovery_suggested"] is True
     assert "discovery" not in complicated
     assert complicated["answer"] == sentence
-    assert "discovery loop" in complicated["reply"]["text"]
-    assert "It stays off until you ask for it." in complicated["reply"]["text"]
+    assert complicated["reply"]["text"] == sentence
+    assert "discovery loop" in complicated["channel_report"]["text"]
+    assert "It stays off until you ask for it." in complicated["channel_report"]["text"]
     appliance.index.save_chunks([], replace_prefix="channel-euro")
     appliance.index.save_chunks([], replace_prefix="channel-cause")
 

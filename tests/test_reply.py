@@ -124,7 +124,11 @@ def test_a_checked_sentence_stays_the_body():
         }
     )
     assert reply["body"] == "No patient may discontinue therapy."
+    assert reply["text"] == reply["body"]
+    assert "I found" not in reply["text"]
+    assert "Still open" not in reply["text"]
     assert "stored proposition" in reply["preface"]
+    assert "objective" in reply["closing"].casefold()
     assert reply["follow_ups"] == []
     assert any("objective" in step.casefold() for step in reply["next_steps"])
 

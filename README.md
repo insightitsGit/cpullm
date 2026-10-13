@@ -8,7 +8,7 @@
 
 > One question in. A sentence built from stored propositions, checked against the retrieved paragraphs. No decoder, no API key, no GPU.
 
-**Author:** [Amin Parva](mailto:insightits.info@gmail.com) · **Company:** [Insight ITS](https://www.insightits.com) · **Retrieval plane:** [VectorPrism](https://github.com/insightitsGit/VectorPrism)
+**Author:** [Amin Parva](mailto:insightits.info@gmail.com), independent engineer · **Retrieval plane:** [VectorPrism](https://github.com/insightitsGit/VectorPrism)
 
 ---
 
@@ -280,7 +280,7 @@ docs/cpu-llm-v1.6.1-architecture-spec.md
 ```bibtex
 @software{cpullm2026,
   title  = {cpu-llm: A CPU Epistemic Text Engine on VectorPrism},
-  author = {Amin Parva},
+  author = {Amin Parva, independent engineer},
   year   = {2026},
   url    = {https://github.com/insightitsGit/cpullm}
 }
@@ -290,7 +290,6 @@ docs/cpu-llm-v1.6.1-architecture-spec.md
 
 ## Links
 
-- Author: **Amin Parva** ([insightits.info@gmail.com](mailto:insightits.info@gmail.com))
-- Company: [https://www.insightits.com](https://www.insightits.com)
+- Author: **Amin Parva**, independent engineer ([insightits.info@gmail.com](mailto:insightits.info@gmail.com))
 - This repository: [https://github.com/insightitsGit/cpullm](https://github.com/insightitsGit/cpullm)
 - Retrieval engine: [https://github.com/insightitsGit/VectorPrism](https://github.com/insightitsGit/VectorPrism)

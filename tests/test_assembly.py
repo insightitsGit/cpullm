@@ -13,14 +13,21 @@ from cpu_llm.ir.schema import (
 )
 
 
-def _proposition(document_id: str, subject: str, lemma: str, object_text: str) -> EIRProposition:
+def _proposition(
+    document_id: str,
+    subject: str,
+    lemma: str,
+    object_text: str,
+    *,
+    tense: str = "PRESENT",
+) -> EIRProposition:
     return EIRProposition(
         proposition_id=f"prop-{document_id}",
         polarity=Polarity.AFFIRMATIVE,
         modality=Modality.DECLARATIVE,
         quantifier=Quantifier(qtype=QuantifierType.UNSPECIFIED),
         subject=TypedEntity(raw_text=subject, lemma=subject, is_plural=False),
-        predicate=TypedPredicate(lemma=lemma, tense="PRESENT", voice="ACTIVE"),
+        predicate=TypedPredicate(lemma=lemma, tense=tense, voice="ACTIVE"),
         object_target=TypedEntity(raw_text=object_text, lemma=object_text, is_plural=False),
         epistemic_status=EpistemicStatus.RETRIEVED_FACT,
         epistemic_weight=1.0,
@@ -54,6 +61,49 @@ def test_an_identity_question_leads_with_the_definition():
     }
     assert realization_order("What is Robert Boulter?", hits, propositions) == [
         "wikitext2test-robert-boulter-p0001",
+        "wikitext2test-robert-boulter-p0005",
+    ]
+
+
+def test_an_identity_question_orders_definition_attribute_then_event():
+    hits = [
+        {
+            "document_id": "wikitext2test-robert-boulter-p0005",
+            "chunk_text": "In 2006 Boulter starred in the play Citizenship.",
+        },
+        {
+            "document_id": "wikitext2test-robert-boulter-p0002",
+            "chunk_text": "The actor has a guest role on The Bill.",
+        },
+        {
+            "document_id": "wikitext2test-robert-boulter-p0001",
+            "chunk_text": "Robert Boulter is an English film, television and theatre actor.",
+        },
+    ]
+    propositions = {
+        "wikitext2test-robert-boulter-p0005": _proposition(
+            "wikitext2test-robert-boulter-p0005",
+            "In 2006 Boulter",
+            "star",
+            "in the play Citizenship",
+            tense="PAST",
+        ),
+        "wikitext2test-robert-boulter-p0002": _proposition(
+            "wikitext2test-robert-boulter-p0002",
+            "The actor",
+            "have",
+            "a guest role on The Bill",
+        ),
+        "wikitext2test-robert-boulter-p0001": _proposition(
+            "wikitext2test-robert-boulter-p0001",
+            "Robert Boulter",
+            "be",
+            "an English film, television and theatre actor",
+        ),
+    }
+    assert realization_order("What is Robert Boulter?", hits, propositions) == [
+        "wikitext2test-robert-boulter-p0001",
+        "wikitext2test-robert-boulter-p0002",
         "wikitext2test-robert-boulter-p0005",
     ]
 

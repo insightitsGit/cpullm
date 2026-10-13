@@ -1,11 +1,11 @@
 """Turn the finished retrieval into a short reply.
 
-The preface, the follow-ups, and the next steps are filled from this turn:
-the passages that were retrieved, the measurements named in them, and the
-questions PrismThinker left open. A follow-up that is not in those passages
-is not produced. The checked sentence, when one exists, stays the body.
-The six channel readings, when the detail node wrote them, are appended
-after that sentence. This node does not write a new conclusion.
+The spoken text is the checked sentence, then any imagined passage. The
+preface, the open questions, the follow-ups, the next steps, and the six
+channel readings stay on the reply for the caller. They are not written into
+the spoken text. A follow-up that is not in the retrieved passages is not produced.
+The checked sentence, when one exists, stays the body. This node does not
+write a new conclusion.
 """
 
 from __future__ import annotations
@@ -40,18 +40,8 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
     closing = _closing(state)
     follow_ups = _follow_ups(state, body)
     next_steps = _next_steps(state)
-    lines = [preface, "", body]
-    if closing:
-        lines.extend(["", closing])
-    if follow_ups:
-        lines.extend(["", "You could follow up on:"])
-        lines.extend(f"- {item}" for item in follow_ups)
-    if next_steps:
-        lines.extend(["", "What would make the next step checkable:"])
-        lines.extend(f"{index}. {item}" for index, item in enumerate(next_steps, start=1))
+    lines = [body]
     report = state.get("channel_report") or {}
-    if report.get("text"):
-        lines.extend(["", str(report["text"])])
     imagined = ""
     if not state.get("delivery_blocked"):
         imagined = str((state.get("imagination") or {}).get("text") or "").strip()
