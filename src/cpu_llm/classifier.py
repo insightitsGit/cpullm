@@ -49,6 +49,35 @@ _DEEP_REASONS: tuple[tuple[re.Pattern[str], str], ...] = (
 CALLER_REASON = "the caller turned creative writing on"
 DEEP_CALLER_REASON = "the caller turned deep search on"
 
+_SUMMARY_REASONS: tuple[tuple[re.Pattern[str], str], ...] = (
+    (
+        re.compile(r"\b(?:summarize|summarise|summary)\b", re.IGNORECASE),
+        "the prompt asks for a summary",
+    ),
+    (
+        re.compile(r"\b(?:tl;dr|tldr|in short|main points|most important|briefly)\b", re.IGNORECASE),
+        "the prompt asks for a summary",
+    ),
+)
+_EXPLAIN_REASONS: tuple[tuple[re.Pattern[str], str], ...] = (
+    (
+        re.compile(r"\b(?:explain|why|how come|what caused)\b", re.IGNORECASE),
+        "the prompt asks for an explanation",
+    ),
+)
+_LIST_REASONS: tuple[tuple[re.Pattern[str], str], ...] = (
+    (
+        re.compile(r"\b(?:list|enumerate|bullet points|bullets)\b", re.IGNORECASE),
+        "the prompt asks for a list",
+    ),
+)
+_SOURCE_REASONS: tuple[tuple[re.Pattern[str], str], ...] = (
+    (
+        re.compile(r"\b(?:cite|citation|citations|sources)\b", re.IGNORECASE),
+        "the prompt asks for sources",
+    ),
+)
+
 
 def creative_writing_trigger(message: str, *, forced: bool = False) -> list[str]:
     """Reasons to leave the fixed chain and walk the article.
@@ -77,6 +106,36 @@ def deep_search_trigger(message: str, *, forced: bool = False) -> list[str]:
     if forced:
         reasons.append(DEEP_CALLER_REASON)
     for pattern, reason in _DEEP_REASONS:
+        if reason in reasons:
+            continue
+        if pattern.search(message or ""):
+            reasons.append(reason)
+    return reasons
+
+
+def summary_trigger(message: str) -> list[str]:
+    """Reasons to keep the highest-weighted stored sentences."""
+    return _matched(message, _SUMMARY_REASONS)
+
+
+def explain_trigger(message: str) -> list[str]:
+    """Reasons to speak a stored cause. This does not turn discovery on."""
+    return _matched(message, _EXPLAIN_REASONS)
+
+
+def list_trigger(message: str) -> list[str]:
+    """Reasons to speak the ranked sentences one per line."""
+    return _matched(message, _LIST_REASONS)
+
+
+def source_trigger(message: str) -> list[str]:
+    """Reasons to name the paragraphs the sentences came from."""
+    return _matched(message, _SOURCE_REASONS)
+
+
+def _matched(message: str, table: tuple[tuple[re.Pattern[str], str], ...]) -> list[str]:
+    reasons: list[str] = []
+    for pattern, reason in table:
         if reason in reasons:
             continue
         if pattern.search(message or ""):

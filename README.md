@@ -8,7 +8,7 @@
 
 > One question in. A sentence built from stored propositions, checked against the retrieved paragraphs. No decoder, no API key, no GPU.
 
-**Author:** [Amin Parva](mailto:insightits.info@gmail.com), independent engineer · **Retrieval plane:** [VectorPrism](https://github.com/insightitsGit/VectorPrism)
+**Author:** [Amin Parva](mailto:parvaamin@gmail.com), independent engineer · **Retrieval plane:** [VectorPrism](https://github.com/insightitsGit/VectorPrism)
 
 ---
 
@@ -290,6 +290,6 @@ docs/cpu-llm-v1.6.1-architecture-spec.md
 
 ## Links
 
-- Author: **Amin Parva**, independent engineer ([insightits.info@gmail.com](mailto:insightits.info@gmail.com))
+- Author: **Amin Parva**, independent engineer ([parvaamin@gmail.com](mailto:parvaamin@gmail.com))
 - This repository: [https://github.com/insightitsGit/cpullm](https://github.com/insightitsGit/cpullm)
 - Retrieval engine: [https://github.com/insightitsGit/VectorPrism](https://github.com/insightitsGit/VectorPrism)

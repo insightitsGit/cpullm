@@ -41,18 +41,35 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
     follow_ups = _follow_ups(state, body)
     next_steps = _next_steps(state)
     lines = [body]
+    brief = state.get("brief") or {}
+    if state.get("summarize") is True:
+        lines.extend(["", "Summary:", brief.get("summary") or "No stored sentence to summarize."])
+    if state.get("explain") is True:
+        lines.extend(["", "Explanation:", brief.get("explanation") or "No stored sentence states a cause."])
+    if state.get("list") is True:
+        lines.extend(["", "List:", brief.get("list") or "No stored sentence to list."])
+    if state.get("sources") is True:
+        source_ids = list(brief.get("sources") or [])
+        lines.extend(["", "Sources:"])
+        lines.extend(f"- {document_id}" for document_id in source_ids)
+        if not source_ids:
+            lines.append("No stored paragraph was used.")
     report = state.get("channel_report") or {}
     imagined = ""
     if not state.get("delivery_blocked"):
         imagined = str((state.get("imagination") or {}).get("text") or "").strip()
+    covered = list((state.get("comparison") or {}).get("sides") or [])
+    if covered:
+        lines.extend(["", "Comparison:"])
+        for side in covered:
+            lines.append(f"{side.get('label')}:")
+            lines.append(str(side.get("text") or "").strip() or "No stored sentence for this side.")
     if imagined:
         lines.extend(["", "Imagined passage:", imagined])
     possibilities = list(state.get("possibilities") or [])
     if possibilities:
         lines.extend(["", f"Possibilities ({len(possibilities)}):"])
-        for item in possibilities:
-            words = ", ".join(item.get("matched_words") or [])
-            lines.append(f"- {item.get('document_id')} [{words}]")
+        lines.extend(_possibility_lines(possibilities))
     return {
         "preface": preface,
         "body": body,
@@ -62,6 +79,30 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
         "discovery_suggested": bool(report.get("discovery_suggested")),
         "text": "\n".join(lines).strip(),
     }
+
+
+def _possibility_lines(possibilities: list[dict[str, Any]]) -> list[str]:
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    order: list[str] = []
+    for item in possibilities:
+        side = str(item.get("side") or "")
+        if side not in grouped:
+            grouped[side] = []
+            order.append(side)
+        grouped[side].append(item)
+    if order == [""]:
+        return [_possibility_item(item) for item in possibilities]
+    lines: list[str] = []
+    for side in order:
+        items = grouped[side]
+        lines.append(f"{side or 'Other'} ({len(items)}):")
+        lines.extend(_possibility_item(item) for item in items)
+    return lines
+
+
+def _possibility_item(item: dict[str, Any]) -> str:
+    words = ", ".join(item.get("matched_words") or [])
+    return f"- {item.get('document_id')} [{words}]"
 
 
 def _preface(state: dict[str, Any]) -> str:

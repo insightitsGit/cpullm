@@ -88,7 +88,15 @@ from prismthinker.core.schemas import EpistemicRegime, ReasoningContext
 from cpu_llm.agents.discovery import run_discovery
 from cpu_llm.agents.imagine import compose_imagination
 from cpu_llm.agents.reply import compose_reply
-from cpu_llm.classifier import creative_writing_trigger, deep_search_trigger
+from cpu_llm.classifier import (
+    creative_writing_trigger,
+    deep_search_trigger,
+    explain_trigger,
+    list_trigger,
+    source_trigger,
+    summary_trigger,
+)
+from cpu_llm.comparison import comparison_sides, possibilities_by_side, rows_for_side
 from cpu_llm.channels import _content_words, complexity_reasons, judge_readings, read_channel
 from cpu_llm.audit.entailment import EpistemicEntailmentAuditor
 from cpu_llm.catalog import article_slug, label_retrieval, title_slugs
@@ -164,6 +172,7 @@ class Appliance:
         self.relations_path = cache / "word_relations.json"
         self._turn: dict[str, Any] | None = None
         self._creative_seen: dict[str, str] = {}
+        self._previous_ids: list[str] = []
         self.graph = _compile(self)
 
     def index_chunks(
@@ -276,6 +285,11 @@ class Appliance:
         z_query = np.asarray(self.index.encode_query(message), dtype=np.float32).reshape(TENSOR_DIM)
         creative_reasons = creative_writing_trigger(message, forced=imagine)
         deep_reasons = deep_search_trigger(message, forced=deep)
+        sides = comparison_sides(message)
+        summary_reasons = summary_trigger(message)
+        explain_reasons = explain_trigger(message)
+        list_reasons = list_trigger(message)
+        source_reasons = source_trigger(message)
         self._turn = {
             "propositions": list(propositions or []),
             "payment": payment,
@@ -285,7 +299,7 @@ class Appliance:
             "causal_graph": causal_graph,
             "z_query": z_query,
         }
-        return self.graph.invoke(
+        result = self.graph.invoke(
             {
                 "message": message,
                 "tenant_id": "cpu-llm",
@@ -294,8 +308,22 @@ class Appliance:
                 "creative_reasons": creative_reasons,
                 "deep": bool(deep_reasons),
                 "deep_reasons": deep_reasons,
+                "compare": bool(sides),
+                "comparison_sides": sides,
+                "summarize": bool(summary_reasons),
+                "summary_reasons": summary_reasons,
+                "explain": bool(explain_reasons),
+                "explain_reasons": explain_reasons,
+                "list": bool(list_reasons),
+                "list_reasons": list_reasons,
+                "sources": bool(source_reasons),
+                "source_reasons": source_reasons,
             }
         )
+        self._previous_ids = [
+            str(item["chunk_id"]) for item in result.get("related") or [] if item.get("chunk_id")
+        ]
+        return result
 
     def sleep(self, max_pairs: int = 500) -> int:
         """Judge stored word claims, then refresh relation tails on chunk tensors."""
@@ -436,6 +464,8 @@ def _compile(appliance: Appliance):
     graph.add_node("imagine", dict_node_adapter(_imagine(appliance), hop="imagine"))
     graph.add_node("gather", dict_node_adapter(_gather(appliance), hop="gather"))
     graph.add_node("deep", dict_node_adapter(_deep(appliance), hop="deep"))
+    graph.add_node("compare", dict_node_adapter(_compare(appliance), hop="compare"))
+    graph.add_node("brief", dict_node_adapter(_brief(appliance), hop="brief"))
     graph.add_node("discover", dict_node_adapter(_discover(appliance), hop="discover"))
     graph.add_edge(START, "guard")
     graph.add_conditional_edges("guard", _after_guard, {"retrieve": "retrieve", "reply": "reply"})
@@ -453,10 +483,24 @@ def _compile(appliance: Appliance):
     graph.add_edge("think", "cognize")
     graph.add_edge("cognize", "grammar")
     graph.add_edge("grammar", "shine")
-    graph.add_conditional_edges("shine", _after_shine, {"deep": "deep", "gather": "gather", "reply": "reply"})
-    graph.add_edge("deep", "reply")
+    graph.add_conditional_edges(
+        "shine",
+        _after_shine,
+        {"deep": "deep", "gather": "gather", "compare": "compare", "brief": "brief", "reply": "reply"},
+    )
+    graph.add_conditional_edges(
+        "deep",
+        _after_deep,
+        {"gather": "gather", "compare": "compare", "brief": "brief", "reply": "reply"},
+    )
     graph.add_edge("gather", "imagine")
-    graph.add_edge("imagine", "reply")
+    graph.add_conditional_edges(
+        "imagine",
+        _after_imagine,
+        {"compare": "compare", "brief": "brief", "reply": "reply"},
+    )
+    graph.add_conditional_edges("compare", _after_compare, {"brief": "brief", "reply": "reply"})
+    graph.add_edge("brief", "reply")
     graph.add_conditional_edges("reply", _after_reply, {"discover": "discover", "end": END})
     graph.add_edge("discover", END)
     return graph.compile()
@@ -487,13 +531,46 @@ def _reply(state: dict[str, Any]) -> dict[str, Any]:
 
 
 def _after_shine(state: dict[str, Any]) -> str:
+    """First optional agent. Later agents still run when the prompt names them."""
     if state.get("delivery_blocked"):
         return "reply"
     if state.get("deep") is True:
         return "deep"
     if state.get("creative") is True:
         return "gather"
+    if state.get("compare") is True:
+        return "compare"
+    if _wants_brief(state):
+        return "brief"
     return "reply"
+
+
+def _after_deep(state: dict[str, Any]) -> str:
+    if state.get("creative") is True:
+        return "gather"
+    if state.get("compare") is True:
+        return "compare"
+    if _wants_brief(state):
+        return "brief"
+    return "reply"
+
+
+def _after_imagine(state: dict[str, Any]) -> str:
+    if state.get("compare") is True:
+        return "compare"
+    if _wants_brief(state):
+        return "brief"
+    return "reply"
+
+
+def _after_compare(state: dict[str, Any]) -> str:
+    if _wants_brief(state):
+        return "brief"
+    return "reply"
+
+
+def _wants_brief(state: dict[str, Any]) -> bool:
+    return any(state.get(flag) is True for flag in ("summarize", "explain", "list", "sources"))
 
 
 def _after_reply(state: dict[str, Any]) -> str:
@@ -636,20 +713,28 @@ def _deep(appliance: Appliance):
         from cpu_llm.agents.deep_search import collect_possibilities
         from cpu_llm.relations import load_edges
 
-        gathered = collect_possibilities(
-            state.get("message") or "",
-            appliance.word_tags,
-            load_edges(appliance.relations_path),
-        )
+        edges = load_edges(appliance.relations_path)
+        sides = list(state.get("comparison_sides") or [])
+        if sides:
+            gathered = possibilities_by_side(sides, appliance.word_tags, edges, appliance.index)
+        else:
+            gathered = collect_possibilities(state.get("message") or "", appliance.word_tags, edges)
         texts: dict[str, str] = {}
+        tensors: dict[str, Any] = {}
         ids = [item["document_id"] for item in gathered["possibilities"]]
         if ids and hasattr(appliance.index.db, "get_by_ids"):
             for row in appliance.index.db.get_by_ids(ids):
-                texts[str(row["document_id"])] = str(row.get("chunk_text") or "")
+                document_id = str(row["document_id"])
+                texts[document_id] = str(row.get("chunk_text") or "")
+                if row.get("tensor_1024d") is not None:
+                    tensors[document_id] = row["tensor_1024d"]
         possibilities = []
         for item in gathered["possibilities"]:
             copy = dict(item)
-            copy["chunk_text"] = texts.get(item["document_id"], "")
+            document_id = str(item["document_id"])
+            copy["chunk_text"] = texts.get(document_id, "")
+            if document_id in tensors:
+                copy["tensor_1024d"] = tensors[document_id]
             possibilities.append(copy)
         return {
             "deep_reasons": list(state.get("deep_reasons") or []),
@@ -662,14 +747,175 @@ def _deep(appliance: Appliance):
     return node
 
 
+def _compare(appliance: Appliance):
+    def node(state: dict[str, Any]) -> dict[str, Any]:
+        from cpu_llm.agents.gather import gather_article
+
+        covered = []
+        query = (appliance._turn or {}).get("z_query")
+        for side in list(state.get("comparison_sides") or []):
+            rows = _rows_for_agent(appliance, state, side)
+            if not rows:
+                covered.append({"label": side, "text": "", "articles": [], "links": []})
+                continue
+            pool = gather_article(side, rows, query)
+            realized = _realize_pool(appliance, side, rows, pool)
+            covered.append(
+                {
+                    "label": side,
+                    "text": realized["text"],
+                    "articles": list(pool.get("articles") or []),
+                    "links": realized["links"],
+                }
+            )
+        return {"comparison": {"sides": covered}}
+
+    return node
+
+
+def _brief(appliance: Appliance):
+    def node(state: dict[str, Any]) -> dict[str, Any]:
+        from cpu_llm.agents.summarize import LIST_KEEP, SUMMARY_KEEP, cause_first, rank_by_cognition, topic_words
+        from cpu_llm.clauses import proposition_from_chunk
+        from cpu_llm.manifest_spans import answer_numbers_allowed, build_span_grammar
+
+        rows = _brief_rows(appliance, state)
+        query = (appliance._turn or {}).get("z_query")
+        if query is None:
+            query = np.zeros(TENSOR_DIM, dtype=np.float32)
+        propositions = []
+        tensors = []
+        texts: dict[str, str] = {}
+        origins: dict[str, str] = {}
+        for row in rows:
+            tensor = row.get("tensor_1024d")
+            if tensor is None:
+                continue
+            document_id = str(row["document_id"])
+            text = str(row.get("chunk_text") or "")
+            proposition = None
+            if text:
+                proposition = _stored_proposition(
+                    appliance.memory,
+                    text,
+                    np.asarray(tensor, dtype=np.float32).reshape(-1),
+                )
+            if proposition is None:
+                proposition = proposition_from_chunk(document_id, text)
+            if proposition is None:
+                continue
+            propositions.append(proposition)
+            tensors.append(np.asarray(tensor, dtype=np.float32).reshape(-1))
+            texts[proposition.proposition_id] = text
+            origins[proposition.proposition_id] = document_id
+        ranked: list[Any] = []
+        if propositions:
+            result = appliance.cognition.deliberate(
+                np.asarray(query, dtype=np.float32).reshape(-1),
+                propositions,
+                tensors,
+                state.get("tenant_id") or "cpu-llm",
+            )
+            tensors_by_id = {
+                proposition.proposition_id: tensor for proposition, tensor in zip(propositions, tensors)
+            }
+            ranked = rank_by_cognition(result, tensors_by_id)
+        index, mask = build_span_grammar(
+            [{"chunk_id": str(row["document_id"]), "chunk_text": str(row.get("chunk_text") or "")} for row in rows]
+        )
+
+        def speak(selected: list[Any], limit: int) -> tuple[str, list[str]]:
+            sentences: list[str] = []
+            sources: list[str] = []
+            for proposition in selected:
+                if len(sentences) >= limit:
+                    break
+                sentence, delivered = appliance.realizer.synthesize([proposition], [])
+                if not sentence or not appliance.auditor.audit_delivered_output(delivered, [proposition]):
+                    continue
+                if not answer_numbers_allowed(sentence, index, mask):
+                    continue
+                sentences.append(sentence)
+                document_id = origins.get(proposition.proposition_id)
+                if document_id and document_id not in sources:
+                    sources.append(document_id)
+            return " ".join(sentences), sources
+
+        summary, summary_sources = ("", [])
+        explanation, explanation_sources = ("", [])
+        listed, list_sources = ("", [])
+        if state.get("summarize") is True:
+            summary, summary_sources = speak(ranked, SUMMARY_KEEP)
+        if state.get("explain") is True:
+            explanation, explanation_sources = speak(cause_first(ranked, texts), SUMMARY_KEEP)
+        if state.get("list") is True:
+            spoken, list_sources = speak(ranked, LIST_KEEP)
+            listed = "\n".join(_sentence_lines(spoken))
+        source_ids: list[str] = []
+        for document_id in summary_sources + explanation_sources + list_sources:
+            if document_id not in source_ids:
+                source_ids.append(document_id)
+        if state.get("sources") is True and not source_ids:
+            for item in state.get("related") or []:
+                document_id = str(item.get("chunk_id") or "")
+                if document_id and document_id not in source_ids:
+                    source_ids.append(document_id)
+        return {
+            "brief": {
+                "summary": summary,
+                "explanation": explanation,
+                "list": listed,
+                "sources": source_ids,
+                "weights": [float(item.epistemic_weight) for item in ranked[:SUMMARY_KEEP]],
+            }
+        }
+
+    return node
+
+
+def _sentence_lines(text: str) -> list[str]:
+    parts = [part.strip() for part in text.split(". ") if part.strip()]
+    lines = []
+    for part in parts:
+        lines.append(part if part.endswith(".") else f"{part}.")
+    return lines
+
+
+def _brief_rows(appliance: Appliance, state: dict[str, Any]) -> list[dict[str, Any]]:
+    from cpu_llm.agents.summarize import topic_words
+
+    rows = _possibility_rows(state)
+    if rows:
+        return rows
+    collected: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for side in list(state.get("comparison_sides") or []):
+        for row in _rows_for_agent(appliance, state, side):
+            document_id = str(row["document_id"])
+            if document_id in seen:
+                continue
+            seen.add(document_id)
+            collected.append(row)
+    if collected:
+        return collected
+    if topic_words(state.get("message") or ""):
+        cleaned = " ".join(topic_words(state.get("message") or ""))
+        return rows_for_side(appliance.index, appliance.word_tags, cleaned)
+    if appliance._previous_ids and hasattr(appliance.index.db, "get_by_ids"):
+        return list(appliance.index.db.get_by_ids(appliance._previous_ids))
+    return []
+
+
 def _gather(appliance: Appliance):
     def node(state: dict[str, Any]) -> dict[str, Any]:
         from cpu_llm.agents.gather import gather_article
 
-        related = list(state.get("related") or [])
-        rows = appliance.index.chunks_for_articles([item["chunk_id"] for item in related])
+        rows = _possibility_rows(state)
         if not rows:
-            rows = _shortlist_rows(appliance, related)
+            related = list(state.get("related") or [])
+            rows = appliance.index.chunks_for_articles([item["chunk_id"] for item in related])
+            if not rows:
+                rows = _shortlist_rows(appliance, related)
         turn = appliance._turn or {}
         turn["gathered_rows"] = rows
         appliance._turn = turn
@@ -730,12 +976,15 @@ def _imagine(appliance: Appliance):
     def node(state: dict[str, Any]) -> dict[str, Any]:
         from cpu_llm.agents.gather import gather_article
 
+        sides = list(state.get("comparison_sides") or [])
+        if sides:
+            return _imagine_sides(appliance, state, sides)
         related = list(state.get("related") or [])
         if not related and not (appliance._turn or {}).get("gathered_rows"):
             return {
                 "imagination": compose_imagination(state.get("message") or "", [], {}),
             }
-        rows = (appliance._turn or {}).get("gathered_rows")
+        rows = _possibility_rows(state) or (appliance._turn or {}).get("gathered_rows")
         if not rows:
             rows = appliance.index.chunks_for_articles([item["chunk_id"] for item in related])
         if not rows:
@@ -787,6 +1036,82 @@ def _imagine(appliance: Appliance):
         return {"imagination": imagined}
 
     return node
+
+
+def _possibility_rows(state: dict[str, Any], side: str | None = None) -> list[dict[str, Any]]:
+    """Rows the deep-search agent already kept, optionally for one topic."""
+    items = list(state.get("possibilities") or [])
+    if side is not None:
+        items = [item for item in items if item.get("side") == side]
+    rows: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for item in items:
+        document_id = str(item.get("document_id") or "")
+        text = str(item.get("chunk_text") or "")
+        if not document_id or not text or document_id in seen:
+            continue
+        seen.add(document_id)
+        row = {"document_id": document_id, "chunk_text": text}
+        if item.get("tensor_1024d") is not None:
+            row["tensor_1024d"] = item["tensor_1024d"]
+        rows.append(row)
+    return rows
+
+
+def _rows_for_agent(appliance: Appliance, state: dict[str, Any], side: str) -> list[dict[str, Any]]:
+    """Prefer the chunks deep search already returned for this topic."""
+    rows = _possibility_rows(state, side)
+    if rows:
+        return rows
+    return rows_for_side(appliance.index, appliance.word_tags, side)
+
+
+def _imagine_sides(appliance: Appliance, state: dict[str, Any], sides: list[str]) -> dict[str, Any]:
+    from cpu_llm.agents.gather import gather_article
+
+    parts: list[str] = []
+    links: list[dict[str, Any]] = []
+    articles: list[str] = []
+    loaded = 0
+    query = (appliance._turn or {}).get("z_query")
+    seen = appliance._creative_seen
+    answer = str(state.get("answer") or "")
+    for side in sides:
+        rows = _rows_for_agent(appliance, state, side)
+        loaded += len(rows)
+        if not rows:
+            parts.append(f"{side}:\nNo stored sentence for this side.")
+            continue
+        pool = gather_article(side, rows, query)
+        for slug in pool.get("articles") or []:
+            if slug not in articles:
+                articles.append(slug)
+        key = f"{(state.get('message') or '').strip().casefold()}::{side.casefold()}"
+        avoid = {seen[key]} if key in seen else set()
+        if answer:
+            avoid.add(answer)
+        realized = _realize_pool(appliance, side, rows, pool, vary=True, avoid=avoid)
+        if realized["text"]:
+            seen[key] = realized["text"]
+            parts.append(f"{side}:\n{realized['text']}")
+            links.extend(realized["links"])
+        else:
+            parts.append(f"{side}:\nNo stored sentence for this side.")
+    return {
+        "imagination": {
+            "triggered": True,
+            "articles": articles,
+            "loaded": loaded,
+            "links": links,
+            "keywords": [word for link in links for word in link["keywords"]],
+            "text": "\n\n".join(parts),
+            "note": (
+                "Each topic was drawn on its own. "
+                "A later run draws another arrangement for every topic that has more than one sentence."
+            ),
+            "sides": list(sides),
+        }
+    }
 
 
 def _shortlist_rows(appliance: Appliance, related: list[dict[str, Any]]) -> list[dict[str, Any]]:
