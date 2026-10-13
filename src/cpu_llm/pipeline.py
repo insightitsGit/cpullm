@@ -263,6 +263,39 @@ class Appliance:
             _bind_stored_words(self, chunks, signed_rows)
         return len(chunks)
 
+    def ingest(self, source: str | Path | Any) -> dict[str, Any]:
+        """Store a file, a folder, or a ``SourceDocument`` the caller already split.
+
+        Each paragraph joins the same index as the paragraphs already stored.
+        Reading the same source again replaces that source's paragraphs.
+        A sheet connection is stored as a word edge beside the paragraph.
+        """
+        from cpu_llm.clauses import propositions_for
+        from cpu_llm.documents import chunks_for, open_source, replace_prefix
+        from cpu_llm.relations import add_edges
+
+        documents = open_source(source)
+        stored = 0
+        ids: list[str] = []
+        connections = 0
+        for document in documents:
+            chunks = chunks_for(document)
+            stored += self.catalog_chunks(
+                chunks,
+                propositions_for(chunks),
+                replace_prefix=replace_prefix(document),
+            )
+            ids.extend(document_id for document_id, _text in chunks)
+            pairs = [(left, right) for left, right, _label in document.connections]
+            if pairs:
+                connections += add_edges(self.relations_path, pairs)
+        return {
+            "documents": len(documents),
+            "chunks": stored,
+            "ids": ids,
+            "connections": connections,
+        }
+
     def upsert(self, document_id: str, chunk_text: str) -> int:
         return self.index_chunks([(document_id, chunk_text)])
 

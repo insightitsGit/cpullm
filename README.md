@@ -210,19 +210,30 @@ print(result["cognition_status"], result["audit_passed"])
 
 `answer` is the checked sentence. `reply` is the preface, that same sentence, follow-ups, and next steps. Shine and the auditor see `answer` only.
 
-### Index your own passages
+### Index your own source
+
+A source is a file, a folder of files, or paragraphs you already split. `ingest` stores those paragraphs in the same index, and a later `ask` reads them. Accepted files are `.txt`, `.md`, `.html`, `.pdf`, `.docx`, `.csv`, `.xlsx`, and `.epub`.
 
 ```python
+from cpu_llm.documents import SourceDocument
 from cpu_llm.pipeline import Appliance
 
-chunks = [
-    ("doc-1", "Homarus gammarus is a species of clawed lobster."),
-]
+guide = SourceDocument(
+    "field-guide",
+    (
+        "The European lobster is Homarus gammarus.",
+        "Homarus gammarus is a species of clawed lobster.",
+    ),
+)
 
 with Appliance() as appliance:
-    appliance.catalog_chunks(chunks)
-    result = appliance.ask("What is Homarus gammarus?")
+    appliance.ingest(guide)
+    appliance.ingest("notes/lobster.pdf")
+    appliance.ingest("notes")
+    result = appliance.ask("What is the European lobster?")
 ```
+
+A spreadsheet with `from` and `to` columns stores each row as a paragraph and stores the pair as a connection. `catalog_chunks` remains the call that writes the pairs of id and paragraph when you already have them.
 
 Pass `propositions=` into `catalog_chunks` when you already have an `EIRProposition` whose subject and object are literal slices of the chunk. `ask(..., propositions=...)` is an override for that turn. The normal path reads the proposition stored with the chunk.
 

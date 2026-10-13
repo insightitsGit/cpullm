@@ -164,6 +164,24 @@ def save_edges(path: Path, edges: list[GraphEdge]) -> None:
     path.write_text(json.dumps({"edges": rows}), encoding="utf-8")
 
 
+def add_edges(path: Path, pairs: list[tuple[str, str]]) -> int:
+    """Store endpoint pairs from a sheet without dropping the edges already there."""
+    current = {(edge.from_word, edge.to_word) for edge in load_edges(path)}
+    added = 0
+    for left, right in pairs:
+        left = left.strip().casefold()
+        right = right.strip().casefold()
+        if not left or not right or left == right:
+            continue
+        key = tuple(sorted((left, right)))
+        if key in current:
+            continue
+        current.add(key)
+        added += 1
+    save_edges(path, [GraphEdge(left, right, "rule", 1.0) for left, right in sorted(current)])
+    return added
+
+
 def merge_passage_edges(
     path: Path,
     chunks: list[tuple[str, str]],
