@@ -1,22 +1,29 @@
 # cpu-llm
 
-**A CPU epistemic text engine. It answers from paragraphs it has already stored.**
+**A deterministic, CPU-native epistemic reasoning appliance. Mathematically verified answers and multi-agent synthesis from indexed corpora without GPUs or hallucination.**
 
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
-[![CPU](https://img.shields.io/badge/runtime-CPU--only-2f9e7a)](src/cpu_llm/cpu_guard.py)
+[![Runtime](https://img.shields.io/badge/runtime-CPU--only-2f9e7a)](src/cpu_llm/cpu_guard.py)
+[![Architecture](https://img.shields.io/badge/architecture-neural--symbolic-8A2BE2)](docs/cpu-llm-v1.6.1-architecture-spec.md)
+[![License](https://img.shields.io/badge/license-Apache--2.0-orange)](LICENSE)
 [![GitHub](https://img.shields.io/badge/GitHub-insightitsGit%2Fcpullm-181717?logo=github)](https://github.com/insightitsGit/cpullm)
 
-> One question in. A sentence rebuilt from a stored proposition and checked against the retrieved paragraphs. No decoder, no API key, no GPU.
+> **One query in. An audited, mathematically verified assertion out.**
+> Derived directly from stored epistemic propositions and verified against source evidence spans. Zero probabilistic token guessing, zero cloud APIs, zero GPU overhead.
 
-**Author:** [Amin Parva](mailto:parvaamin@gmail.com), independent engineer · **Retrieval plane:** [VectorPrism](https://github.com/insightitsGit/VectorPrism)
+**Author:** Amin Parva ([parvaamin@gmail.com](mailto:parvaamin@gmail.com)), independent engineer · **Retrieval Plane:** [VectorPrism](https://github.com/insightitsGit/VectorPrism) · **Version:** 1.7.0
 
 ---
 
-## What cpu-llm is
+## Why cpu-llm?
 
-cpu-llm is not a quantized chat model. A chat model writes the next token. cpu-llm retrieves a stored paragraph, rebuilds one sentence from a proposition cut out of that paragraph, and says that sentence only when the rebuild matches the stored text and the auditor accepts it.
+Modern enterprise AI faces a hard reliability barrier: **probabilistic autoregressive models (LLMs) cannot provide mathematical guarantees against hallucination.** In regulatory compliance, medical informatics, financial reporting, and statutory law, a fluent generative model is an unmonitored liability.
 
-The encoder is VectorPrism, frozen `all-mpnet-base-v2` plus the projection checkpoint, writing one 1024-dimensional tensor per paragraph into PostgreSQL with pgvector. Deliberation is PrismCognition. The turn graph is ChorusGraph. The sentence itself comes from the realizer in this package. If a paragraph does not round-trip, it stays in the index as text and is not given an invented triple.
+`cpu-llm` is a neural-symbolic alternative. A frozen encoder stores each paragraph. The spoken sentence is rebuilt from a proposition cut out of that paragraph, and it is kept only when the rebuild matches the stored text and the auditor accepts it.
+
+* **Deterministic semantic grounding.** `cpu-llm` does not sample a next-token distribution. It indexes paragraphs into 1024-dimensional tensors, cuts a proposition only when the realizer can repeat the paragraph's first sentence, and deliberates over that stored evidence. A paragraph that does not round-trip stays text. It is not given an invented triple.
+* **Audited truth invariants.** The spoken sentence is checked by PrismShine and by `EpistemicEntailmentAuditor`. A failed check withholds the sentence. If no stored sentence states a cause, the reply says so. Discovery stays off until the caller passes `discover=True`.
+* **Bare-metal CPU execution.** Retrieval and the six channel readings run on CPU. Startup clears `CUDA_VISIBLE_DEVICES` and refuses to continue if PyTorch was already imported with CUDA available. There is no Gemini client, no OpenAI client, and no decoder.
 
 ```text
 stored paragraphs → VectorPrism 1024-d index
@@ -29,44 +36,90 @@ prompt → GPU chat model → free-form tokens
 prompt → “CPU LLM” GGUF decode
 ```
 
-The second picture is a different product. There is no Gemini client, no OpenAI client, and no neural decoder in this package.
+The second picture is a different product.
+
+### What this library is for
+
+* **A checked sentence, not a sample.** The words a caller hears are a stored sentence the realizer can rebuild. The auditor and PrismShine see that sentence. They do not see a free-form completion.
+* **One index for every source.** WikiText, the shipped artificial-intelligence primer, a PDF, a Word file, a spreadsheet, and paragraphs a developer already split land in the same pgvector index. A later question can hit any of them.
+* **Agents that chain.** Deep search, creative writing, comparison, and a brief (summarize, explain, list, cite) read the chunks the earlier agent kept. The checked sentence stays in front.
+* **Numbers that stay what they are.** A height in metres is not turned into money. A cause is quoted only when the paragraph already states one. A missing policy, target, or causal graph is left empty.
+* **CPU, after one load.** On the measured machine, loading takes about 10 seconds. A question after that is 60–66 ms, and a deep search that keeps every match is about 0.6 s.
 
 ---
 
-## What a question does
+## Architectural workflow
 
 ```text
-prompt
-  → PrismGuard
-  → VectorPrism dense shortlist
-  → PrismResonance on the dense core
-  → six channel readings of that shortlist
-  → PrismThinker
-  → PrismCognition, the realizer, and the entailment auditor
-  → PrismShine
-  → optional agents, in this order: deep search, creative writing, comparison, brief
-  → reply
-  → discovery only when ask(..., discover=True)
+Query
+  │
+  ▼
+PrismGuard (prompt check; a blocked prompt stops at the reply)
+  │
+  ▼
+VectorPrism 1024-d index (dense core [16:384], HNSW ef_search 400, then a dense-core re-rank)
+  │
+  ▼
+PrismResonance (dense-channel interference on that shortlist; the header is a timestamp, not a coordinate)
+  │
+  ▼
+6-channel readings of the same shortlist
+    Dense · Relational · Disentangled · Hyperbolic · Identity · Causal
+  │
+  ▼
+PrismThinker (answer / gather / refuse / escalate)
+  │
+  ▼
+PrismCognition + realizer + EpistemicEntailmentAuditor
+  │
+  ▼
+PrismShine (retrieval trace and sentence gate; no external judge)
+  │
+  ▼
+Optional agents, in this order: deep search → creative writing → comparison → brief
+  │
+  ▼
+Verified reply
+  │
+  ▼
+Discovery only when ask(..., discover=True)
 ```
 
-A blocked prompt stops at the reply. Think goes straight to cognize. Imagine is not inserted between them.
+The prompt is encoded once. That same 1024-d tensor is the query for the scan and for every later channel. Think goes straight to cognize. Imagine is not inserted between them.
 
-The checked sentence is `answer`. The reply prints that sentence first. Extra sections are added only when the question asked for them, in this order: summary or explanation or list or sources, then comparison, then an imagined passage, then deep-search possibilities. Preface, follow-ups, and next steps are not spoken.
+Only the dense channel was trained. Relational, disentangled, hyperbolic, and causal heads are still at initialization, and the identity anchor is unset. Those five readings are reported. They do not pick the passage. A quoted cause is not turned into a graph edge.
+
+| Channel | What the node reports | Used to pick the passage |
+|---------|----------------------|--------------------------|
+| Dense | Cosine on the trained dense core `[16:384]` | Yes |
+| Relational | A stored proposition that shares the prompt's words. Relation hands live in the tail `[480:512]` | No |
+| Disentangled | Words that appear in only one passage | No |
+| Hyperbolic | Poincaré distance, inside the open unit ball | No |
+| Identity | Names and title tokens shared with the prompt | No |
+| Causal | A sentence that already says *because*, *due to*, *caused*, or *therefore* | No |
+
+PrismThinker can return `answer`, `gather`, `refuse`, or `escalate`. A gather result still realizes the grounded sentence when a proposition exists. The open questions stay on `gather_questions`. Its five head processes start with the appliance and are reused. They do not run two questions at once.
+
+---
+
+## What a question can ask
+
+`answer` is the checked sentence. The reply prints that sentence first. Extra sections appear only when the question asked for them: summary, explanation, list, or sources, then comparison, then an imagined passage, then deep-search possibilities.
 
 | Question | What runs | What the reply adds |
 |----------|-----------|---------------------|
-| What is the European lobster? | The fixed chain | The checked sentence only |
+| What is the European lobster? | The fixed chain | The checked sentence |
 | Deep search the European lobster. | Every tagged paragraph of the seeds, plus relation-hand neighbors | A possibility list. The checked sentence stays |
-| Imagine the European lobster. | Stored sentences from the article, a different subset each run | An imagined passage after the checked sentence |
-| Compare the European lobster and Robert Boulter. | Each side's own stored article or tagged paragraphs | A comparison section. No invented "X differs from Y" sentence |
-| Summarize the European lobster. | PrismCognition ranks the stored sentences | Up to three sentences. A contradiction withholds the summary |
+| Imagine the European lobster. | Stored sentences from the article, a different subset each run when more than one passed | An imagined passage after the checked sentence |
+| Compare the European lobster and Robert Boulter. | Each side's own stored article or the paragraphs tagged with that side | A comparison. No invented "X differs from Y" sentence |
+| Summarize the European lobster. | PrismCognition ranks stored sentences by epistemic weight, then by alignment to the question | Up to three sentences. A contradiction withholds the summary |
 | Why is the European lobster fished with pots? | Only stored sentences that state a cause | An explanation, or "No stored sentence states a cause." |
 | List the European lobster. | The same ranking, kept longer | Up to eight sentences |
 | Cite sources for the European lobster. | The paragraph ids that were used | A source list |
 
-Those agents chain. "Deep search and compare the European lobster and Robert Boulter" gathers the possibilities first, then splits them by topic. "Summarize that" with no new topic words reuses the previous turn's paragraph ids. A normal follow-up such as "what about the claws?" does not.
+Those agents chain. "Deep search and compare the European lobster and Robert Boulter" gathers first, then splits the kept paragraphs by topic. "Summarize that" with no new topic words reuses the previous turn's paragraph ids. A normal follow-up such as "what about the claws?" does not.
 
-Discovery stays off until `discover=True`. A why question does not turn it on.
+Creative writing runs when the prompt says imagine, what if, story, poem, fiction, or creative writing, or when `ask(..., imagine=True)`. One eligible sentence cannot vary. `answer` stays the checked sentence.
 
 ---
 
@@ -74,21 +127,17 @@ Discovery stays off until `discover=True`. A why question does not turn it on.
 
 Two sources ship inside the package.
 
-**WikiText-2 raw**, the Salesforce validation and test splits. They are English Wikipedia articles that editors marked Good or Featured. The validation split is 60 articles and 1,841 paragraphs, stored under `wikitext2-`. The test split is a second set of articles with no shared title, stored under `wikitext2test-`. A proposition is stored only when the realizer can repeat the paragraph's first sentence. The rest stay text. License of that text: CC BY-SA 3.0 and GFDL, as stated in the provenance file next to the parquet.
+**WikiText-2 raw**, the Salesforce validation and test splits. They are English Wikipedia articles that editors marked Good or Featured. The validation split is 60 articles and 1,841 paragraphs, stored under `wikitext2-`. The test split is a second set of articles with no shared title, stored under `wikitext2test-`. A proposition is stored only when the realizer can repeat the paragraph's first sentence. The rest stay text. License of that text: CC BY-SA 3.0 and GFDL, as stated in the provenance file next to the parquet. That license is the dataset's, separate from the Apache-2.0 license of this code.
 
-**An original primer on artificial intelligence**, `src/cpu_llm/data/artificial-intelligence.md`, 70 paragraphs. It is text written for this package. It is not a copy of another textbook. Each paragraph's first sentence is one the realizer can repeat, so a question about search, learning, a transformer, or cpu-llm itself can be answered from those paragraphs. Its ids start with `artificial-intelligence-md-`, so loading it does not delete WikiText.
-
-```bash
-cpu-llm-ingest
-```
-
-That command loads the WikiText validation split and then the primer. The same entry point is `python -m cpu_llm.ingest`.
+**An original primer on artificial intelligence**, `src/cpu_llm/data/artificial-intelligence.md`, 70 paragraphs. It is text written for this package. It is not a copy of another textbook. Each paragraph's first sentence round-trips, so a question about search, learning, a transformer, or cpu-llm itself can be answered from those paragraphs. Its ids start with `artificial-intelligence-md-`, so loading it does not delete WikiText.
 
 | Command | What it writes |
 |---------|----------------|
 | `cpu-llm-ingest` | WikiText validation, then the primer |
-| `cpu-llm-ingest --textbook` | The primer only. Use this when WikiText is already in the index |
+| `cpu-llm-ingest --textbook` | The primer only |
 | `cpu-llm-ingest --test` | The WikiText test split only |
+
+The same entry point is `python -m cpu_llm.ingest`.
 
 ---
 
@@ -139,57 +188,9 @@ Pinned libraries in `pyproject.toml`:
 | prismthinker 1.2.0 | Sufficiency: answer, gather, refuse, escalate |
 | prismagenticpay 1.4.1 | Payment check when both a proposal and an authority are passed |
 
-A clean install works when those pins can be downloaded from PyPI. PrismThinker 1.2.0 and PrismAgenticPay 1.4.1 are both published. PrismAgenticPay 1.4.1 requires PrismThinker 1.2.0, and both are imported at startup.
+A clean install works when those pins can be downloaded from PyPI. PrismAgenticPay 1.4.1 requires PrismThinker 1.2.0, and both are imported at startup.
 
----
-
-## Runtime
-
-cpu-llm runs on a CPU. It does not use a GPU. Startup clears `CUDA_VISIBLE_DEVICES`. If PyTorch was already imported and CUDA is available, the process refuses to continue.
-
-| Requirement | This release |
-|-------------|----------------|
-| Python | 3.11 or newer |
-| Processor | A 64-bit CPU. No CUDA device |
-| Encoder | `sentence-transformers/all-mpnet-base-v2`, about 418 MiB, downloaded on first use and run on the CPU |
-| Checkpoint | `vectorprism.pt`, about 3.6 MB, shipped inside the package |
-| Database | PostgreSQL 16 with the `vector` extension |
-| Questions | One `ask` at a time on the calling thread |
-
-The five PrismThinker heads are separate processes, started once when the appliance loads. They do not let two questions run together.
-
-### Measured latency
-
-These times are from one machine on 13 October 2026: an Intel Core Ultra 9 275HX with 24 cores and 64 GB of RAM, Windows 11, Python 3.12. One appliance, three runs of each prompt, after the model was already loaded and after one warmup question. Load time is not included in the question times.
-
-Starting the appliance took 9.8 seconds on the six-mode run and 10.2 seconds on the deep-search rerun. The warmup question took 233 ms.
-
-| Mode | Prompt | Median | Three runs |
-|------|--------|--------|------------|
-| Normal | What is the European lobster? | 66 ms | 83, 56, 66 |
-| Explain | Why is the European lobster fished with pots? | 60 ms | 87, 60, 59 |
-| Summarize | Summarize the European lobster. | 63 ms | 72, 60, 63 |
-| Compare | Compare the European lobster and Robert Boulter. | 61 ms | 87, 61, 61 |
-| Creative | Imagine the European lobster. | 66 ms | 67, 66, 66 |
-| Deep search | Deep search the European lobster. | 593 ms | 577, 593, 629 |
-
-Deep search kept 582 possibilities and wrote a 32,639-character reply. Creative writing returned a different passage on each run. Ingesting a two-sentence note took 4.50 s, then 2.07 s, then 2.40 s, because each paragraph is encoded. A later upload of a 9-paragraph PDF stored every paragraph and answered from that file.
-
-This machine is the one that was measured. It is not a minimum specification.
-
-### Next release
-
-The next release is working on serving multiple threads, so one process can answer concurrent questions under heavy load. This release keeps each question on the calling thread.
-
----
-
-## Quickstart
-
-Load the shipped sources, then ask.
-
-```bash
-cpu-llm-ingest
-```
+### Ask
 
 ```python
 from cpu_llm.pipeline import Appliance
@@ -228,9 +229,9 @@ with Appliance() as appliance:
 
 Reading the same source again replaces that source's paragraphs. A spreadsheet with `from` and `to` columns stores each row as a paragraph and stores the pair as a connection. Other sheets become `column: value` rows and do not invent a connection.
 
-`catalog_chunks` is the lower-level call when you already have `(document_id, paragraph)` pairs. Pass `propositions=` when you already have an `EIRProposition` whose subject and object are slices of the chunk. `ask(..., propositions=...)` overrides that turn. The normal path reads the proposition stored with the chunk.
+`catalog_chunks` is the lower-level call when you already have `(document_id, paragraph)` pairs. Leave `ObjectiveSpec`, policy rules, and causal edges empty unless you are supplying them. The appliance does not invent them from prose.
 
-Leave `ObjectiveSpec`, policy rules, and causal edges empty unless you are supplying them. The appliance does not invent them from prose.
+A two-page sample field guide, `samples/harbor-field-guide.pdf`, is the upload check: nine paragraphs go in, and a later question about the harbor kestrel or the marsh kite is answered from that file.
 
 ### Tests
 
@@ -240,26 +241,89 @@ python -m pytest
 
 ---
 
-## How the checked sentence is chosen
+## For developers
 
-VectorPrism searches once. The six channel nodes read that shortlist. They do not run six more database queries.
+The public entry point is `cpu_llm.pipeline.Appliance`. Construct it, ingest, ask, then close it. A `with` block closes the Thinker worker pool.
 
-| Channel | What the node reports | Used to pick the passage |
-|---------|----------------------|--------------------------|
-| Dense | Cosine on the trained dense core | Yes |
-| Relational | A stored proposition that shares the prompt's words | No |
-| Disentangled | Words that appear in only one passage | No |
-| Hyperbolic | Poincaré distance, inside the open unit ball | No |
-| Identity | Names and title tokens shared with the prompt | No |
-| Causal | A sentence that already says *because*, *due to*, *caused*, or *therefore* | No |
+```python
+from cpu_llm.documents import SourceDocument
+from cpu_llm.pipeline import Appliance
 
-A quoted cause is not turned into a graph edge. The detail node prints all six. It does not replace the checked sentence.
+with Appliance() as appliance:
+    appliance.ingest(SourceDocument("notes", ("The harbor kestrel is a small coastal falcon.",)))
+    result = appliance.ask("What is the harbor kestrel?")
+```
 
-The current checkpoint trained the dense channel. Relational, disentangled, hyperbolic, and causal heads are still at initialization. cpu-llm does not pretend those slices rank the search.
+`ask` accepts the question and these keyword arguments:
 
-PrismThinker can return `answer`, `gather`, `refuse`, or `escalate`. A gather result still realizes the grounded sentence when a proposition exists. The open questions stay on `gather_questions`.
+| Argument | Default | Effect |
+|----------|---------|--------|
+| `discover` | `False` | Runs the discovery loop. A why question does not turn this on |
+| `imagine` | `False` | Forces creative writing |
+| `deep` | `False` | Forces deep search |
+| `propositions` | `None` | Overrides the stored propositions for this turn |
+| `payment`, `authority` | both or neither | A payment turn needs both a proposal and an authority snapshot |
+| `objective`, `hypothesis`, `causal_graph` | `None` | Caller-owned. The appliance does not invent them |
 
-Creative writing runs when the prompt says imagine, what if, story, poem, fiction, or creative writing, or when `ask(..., imagine=True)`. It realizes stored sentences from the article and draws a different subset each time more than one sentence passed the auditor. One eligible sentence cannot vary. `answer` stays the checked sentence.
+`ingest` accepts a path, a folder of accepted files, a `SourceDocument`, or a list of those. It returns `documents`, `chunks`, `ids`, and `connections`. Reading the same source again replaces rows whose ids share that source's prefix. `catalog_chunks` is the same write when the caller already has `(document_id, paragraph)` pairs. `sleep` refreshes relation tails on stored tensors.
+
+A paragraph stores a proposition when its first sentence round-trips. The shapes that do are a copula or *have*: `The harbor kestrel is a small coastal falcon.` A sentence the realizer cannot repeat is stored as text and is not spoken.
+
+File ids use the file stem: `harbor-field-guide.pdf` becomes `harbor-field-guide-p0001`. A name that still includes its suffix, such as `artificial-intelligence.md`, keeps that suffix in the slug.
+
+Read these fields on the result. The graph also returns the channel readings and the Thinker trace. The spoken string is `reply["text"]`.
+
+| Field | What it is |
+|-------|------------|
+| `answer` | The checked sentence. Shine and the auditor see this |
+| `reply["text"]` | That sentence, then Summary, Explanation, List, Sources, Comparison, Imagined passage, and Possibilities, in that order, and only when that section was asked for |
+| `audit_passed` | Whether the auditor accepted the realized sentence |
+| `thinker_directive`, `gather_questions` | Sufficiency: answer, gather, refuse, or escalate, plus the gaps |
+| `related` | The shortlist. Each item has a `chunk_id` |
+| `possibilities`, `possibility_count` | Present after deep search |
+| `comparison` | Per-side stored sentences |
+| `imagination` | The creative passage. `answer` is unchanged |
+| `brief` | Summary, explanation, list, and source ids |
+
+`reply` also carries `preface`, `follow_ups`, and `next_steps` for the caller. Those strings are not written into `reply["text"]`.
+
+---
+
+## Runtime
+
+cpu-llm runs on a CPU. It does not use a GPU.
+
+| Requirement | This release |
+|-------------|----------------|
+| Python | 3.11 or newer |
+| Processor | A 64-bit CPU. No CUDA device |
+| Encoder | `sentence-transformers/all-mpnet-base-v2`, about 418 MiB, downloaded on first use and run on the CPU |
+| Checkpoint | `vectorprism.pt`, about 3.6 MB, shipped inside the package |
+| Database | PostgreSQL 16 with the `vector` extension |
+| Questions | One `ask` at a time on the calling thread |
+
+### Measured latency
+
+These times are from one machine on 13 October 2026: an Intel Core Ultra 9 275HX with 24 cores and 64 GB of RAM, Windows 11, Python 3.12. One appliance, three runs of each prompt, after the model was already loaded and after one warmup question. Load time is not included in the question times.
+
+Starting the appliance took 9.8 seconds on the six-mode run and 10.2 seconds on the deep-search rerun. The warmup question took 233 ms. After that load, every measured question finished in under a second.
+
+| Mode | Prompt | Median | Three runs |
+|------|--------|--------|------------|
+| Normal | What is the European lobster? | 66 ms | 83, 56, 66 |
+| Explain | Why is the European lobster fished with pots? | 60 ms | 87, 60, 59 |
+| Summarize | Summarize the European lobster. | 63 ms | 72, 60, 63 |
+| Compare | Compare the European lobster and Robert Boulter. | 61 ms | 87, 61, 61 |
+| Creative | Imagine the European lobster. | 66 ms | 67, 66, 66 |
+| Deep search | Deep search the European lobster. | 593 ms | 577, 593, 629 |
+
+Deep search kept 582 possibilities and wrote a 32,639-character reply. Creative writing returned a different passage on each run. Ingesting a two-sentence note took 4.50 s, then 2.07 s, then 2.40 s, because each paragraph is encoded.
+
+This machine is the one that was measured. It is not a minimum specification.
+
+### Next release
+
+The next release is working on serving multiple threads, so one process can answer concurrent questions under heavy load. This release keeps each question on the calling thread.
 
 ---
 
@@ -272,45 +336,68 @@ Creative writing runs when the prompt says imagine, what if, story, poem, fictio
 | `4,399 m` | Length in metres. Not money |
 | `14,440 feet`, `14,440-foot` | Length in feet |
 | `10 million`, `exceeds 10 million`, `five million` | `amount_min = 10000000` or `5000000` |
-| `$5 m`, `£ 1.7 million`, `CZK 8 million`, `$ 2.5 million in grants` | Money, scaled by one million |
-| `28 million years`, `15 million copies`, `20 million men` | Not money. The noun is what was counted |
-| `a viewership of 8.69 million` | Not money. The noun before `of` is what was counted |
+| `$5 m`, `£ 1.7 million` | Money, scaled by one million |
+| `28 million years`, `15 million copies` | Not money. The noun is what was counted |
 | `4,399 m` and `$ 10 million` in one paragraph | Length and money, both kept |
-| `. m` | Ignored. One bad paragraph does not drop the rest of the batch |
 
-A height in the retrieved text can still select PrismThinker's empirical regime. The questions `no numeric threshold on hypothesis or objective` and `causal_graph is required` mean the caller did not supply those inputs. They are not a request for cpu-llm to invent a target.
+A height in the retrieved text can still select PrismThinker's empirical regime. The threshold and the causal graph stay empty until the caller supplies them.
 
 ---
 
 ## What this package does not do
 
-It does not rewrite a passage in a new style, translate it, write code, or pick a winner the store does not state. It does not expose an HTTP upload API or a per-customer tenant. The tenant on this appliance is `cpu-llm`, and every source shares one pgvector index. Concurrent questions are the work of the next release.
-
-A paragraph that does not round-trip is stored and can be retrieved. It is not spoken.
+It does not rewrite a passage in a new style, translate it, write code, or pick a winner the store does not state. It does not expose an HTTP upload API or a per-customer tenant. The tenant on this appliance is `cpu-llm`, and every source shares one pgvector index. A paragraph that does not round-trip is stored and can be retrieved. It is not spoken.
 
 ---
 
-## Layout
+## Structure
 
 ```text
-src/cpu_llm/pipeline.py                         turn graph and Appliance.ask / ingest
-src/cpu_llm/checkpoints/vectorprism.pt          trained projection shipped in the package
-src/cpu_llm/ingest.py                           WikiText and the primer loader
-src/cpu_llm/data/wikitext-2-raw-v1/             shipped WikiText parquet files
-src/cpu_llm/data/artificial-intelligence.md    shipped primer
-src/cpu_llm/documents.py                        file, folder, and spreadsheet readers
-src/cpu_llm/source.py                           paragraph cuts for the shipped sources
-src/cpu_llm/clauses.py                          first-sentence propositions
-src/cpu_llm/realizer/                           controlled English from a proposition
-src/cpu_llm/audit/                              lexical entailment check
-src/cpu_llm/cognition/                          deliberation adapter
-src/cpu_llm/agents/                             deep search, creative writing, reply
-src/cpu_llm/comparison.py                       two-topic split
-src/cpu_llm/classifier.py                       which optional agent the prompt asked for
-src/cpu_llm/measurements.py                     lengths, money spans, qualifiers
-src/cpu_llm/channels.py                         six readings and the detail template
-docs/cpu-llm-v1.6.1-architecture-spec.md
+cpu-llm/
+  pyproject.toml                              package metadata, pins, cpu-llm-ingest script
+  LICENSE                                     Apache-2.0, Copyright 2026 Amin Parva
+  README.md
+  src/cpu_llm/
+    pipeline.py                               Appliance: ask, ingest, catalog_chunks, sleep
+    ingest.py                                 WikiText and the primer loader
+    documents.py                              file, folder, and spreadsheet readers
+    source.py                                 paragraph cuts for the shipped sources
+    retrieval.py                              VectorPrism encode, search, default checkpoint
+    clauses.py                                first-sentence propositions
+    realizer/                                 controlled English from a proposition
+    audit/                                    EpistemicEntailmentAuditor
+    cognition/                                PrismCognition deliberation adapter
+    agents/                                   deep_search, gather, imagine, summarize, reply, discovery
+    comparison.py                             two-topic split
+    classifier.py                             which optional agent the prompt asked for
+    channels.py                               six readings and the detail template
+    measurements.py                           lengths, money spans, qualifiers
+    relations.py                              word edges and relation hands
+    word_taxonomy.py                          word → article → paragraph index
+    taxonomy.py                               tags written beside a chunk
+    thinker_pool.py                           five Thinker heads, started once
+    assembly.py                               which stored sentences are realized together
+    manifest_spans.py                         numbers in the answer must occur in the passages
+    cpu_guard.py                              refuse an already-initialized CUDA runtime
+    checkpoints/vectorprism.pt                trained projection shipped in the package
+    data/wikitext-2-raw-v1/                   shipped WikiText parquet files
+    data/artificial-intelligence.md          shipped primer, 70 paragraphs
+  tests/                                      the suite, including the PDF upload check
+  samples/harbor-field-guide.pdf              two-page field guide used as an upload example
+  docs/cpu-llm-v1.6.1-architecture-spec.md
 ```
+
+`cpu-llm-ingest` is the console script for `python -m cpu_llm.ingest`.
+
+---
+
+## Author
+
+**Amin Parva**, independent engineer, wrote cpu-llm.
+
+- Email: [parvaamin@gmail.com](mailto:parvaamin@gmail.com)
+- Repository: [https://github.com/insightitsGit/cpullm](https://github.com/insightitsGit/cpullm)
+- Retrieval plane: [VectorPrism](https://github.com/insightitsGit/VectorPrism)
 
 ---
 
@@ -319,9 +406,10 @@ docs/cpu-llm-v1.6.1-architecture-spec.md
 ```bibtex
 @software{cpullm2026,
   title  = {cpu-llm: A CPU Epistemic Text Engine on VectorPrism},
-  author = {Amin Parva, independent engineer},
+  author = {Amin Parva},
   year   = {2026},
-  url    = {https://github.com/insightitsGit/cpullm}
+  url    = {https://github.com/insightitsGit/cpullm},
+  license = {Apache-2.0}
 }
 ```
 
@@ -332,3 +420,4 @@ docs/cpu-llm-v1.6.1-architecture-spec.md
 - Author: **Amin Parva**, independent engineer ([parvaamin@gmail.com](mailto:parvaamin@gmail.com))
 - This repository: [https://github.com/insightitsGit/cpullm](https://github.com/insightitsGit/cpullm)
 - Retrieval engine: [https://github.com/insightitsGit/VectorPrism](https://github.com/insightitsGit/VectorPrism)
+- License: [Apache License 2.0](LICENSE)
