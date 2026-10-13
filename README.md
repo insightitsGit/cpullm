@@ -1,146 +1,100 @@
 # cpu-llm
 
-**A CPU epistemic text engine. Retrieve a passage, realize a checked sentence, and say what is still missing.**
+**A CPU epistemic text engine. It answers from paragraphs it has already stored.**
 
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![CPU](https://img.shields.io/badge/runtime-CPU--only-2f9e7a)](src/cpu_llm/cpu_guard.py)
 [![GitHub](https://img.shields.io/badge/GitHub-insightitsGit%2Fcpullm-181717?logo=github)](https://github.com/insightitsGit/cpullm)
 
-> One question in. A sentence built from stored propositions, checked against the retrieved paragraphs. No decoder, no API key, no GPU.
+> One question in. A sentence rebuilt from a stored proposition and checked against the retrieved paragraphs. No decoder, no API key, no GPU.
 
 **Author:** [Amin Parva](mailto:parvaamin@gmail.com), independent engineer · **Retrieval plane:** [VectorPrism](https://github.com/insightitsGit/VectorPrism)
 
 ---
 
-## cpu-llm is the answer path — not a language-model wrapper
+## What cpu-llm is
 
-Teams looking for a “CPU LLM” usually get a quantized chat model. cpu-llm is the other design: a **grounded text appliance** that encodes with VectorPrism, deliberates with PrismCognition, and writes one controlled-English sentence from evidence it already stored.
+cpu-llm is not a quantized chat model. A chat model writes the next token. cpu-llm retrieves a stored paragraph, rebuilds one sentence from a proposition cut out of that paragraph, and says that sentence only when the rebuild matches the stored text and the auditor accepts it.
 
-| Step | Who owns it | What runs |
-|------|-------------|-----------|
-| Split a source into passages | **You**, or the WikiText paragraph splitter in this repo | Plain `chunk_text` |
-| Encode and store each passage | **cpu-llm** on **VectorPrism** | Frozen `all-mpnet-base-v2` plus the projection checkpoint → one **1024-d** tensor in pgvector |
-| Ask a question | **cpu-llm** | Guard, dense retrieval, six readings of that shortlist, PrismThinker, deliberation, auditor, PrismShine, reply |
-| Supply a policy, a numeric target, or a causal graph | **You** | Not inferred from the paragraph |
-
-**Supported**
+The encoder is VectorPrism, frozen `all-mpnet-base-v2` plus the projection checkpoint, writing one 1024-dimensional tensor per paragraph into PostgreSQL with pgvector. Deliberation is PrismCognition. The turn graph is ChorusGraph. The sentence itself comes from the realizer in this package. If a paragraph does not round-trip, it stays in the index as text and is not given an invented triple.
 
 ```text
-your passages → VectorPrism 1024-d index
-             → cpu-llm ask
-             → checked sentence + open questions
+stored paragraphs → VectorPrism 1024-d index
+                 → cpu-llm ask
+                 → checked sentence, plus any extra section the question asked for
 ```
-
-**Not this product**
 
 ```text
 prompt → GPU chat model → free-form tokens
 prompt → “CPU LLM” GGUF decode
 ```
 
-There is no Gemini client, no OpenAI client, and no neural decoder. The sentence is realized from an epistemic proposition. If no proposition was stored, the turn says the evidence is missing instead of improvising a triple.
-
-**Keywords:** CPU LLM alternative, CPU epistemic text engine, grounded answer without a decoder, hallucination-checked RAG, VectorPrism appliance, deterministic sentence realization, CPU-only retrieval, PrismThinker evidence check, pgvector CPU RAG
+The second picture is a different product. There is no Gemini client, no OpenAI client, and no neural decoder in this package.
 
 ---
 
-## The problem
-
-A retrieval stack can be right about *which paragraph* is relevant and still wrong about *what sentence* it is allowed to say.
-
-1. **A chat model on top of search** writes a fluent answer that the passage did not license.
-2. **Cosine-only RAG** returns a neighbor and stops. It does not separate a definition, a measurement, a name, and a stated cause.
-3. **A finance heuristic on the letter `m`** can turn `4,399 m` into a multi-billion `amount_min`. The rest of the stack then asks for a numeric target and a causal graph that the question never requested.
-
-cpu-llm keeps those jobs apart. VectorPrism retrieves. Channel nodes quote the shortlist. PrismThinker names gaps. PrismCognition and the realizer emit a sentence only from stored propositions. The auditor and PrismShine check that sentence against the paragraphs. A reply wraps the checked sentence. It does not replace it.
-
----
-
-## What you can ask it to do
-
-### 1. A definition from a stored sentence
-
-**Keywords:** grounded definition generation, Wikipedia passage to sentence, epistemic proposition, source-checked answer
-
-Index a passage with a proposition whose subject, predicate, and object are slices of that passage. `ask("What is the European lobster?")` realizes the stored cut at response time. The words are generated by the realizer from the proposition. They are not a cached answer string, and they are not sampled from a decoder.
-
-WikiText training stores a proposition only when the realizer can repeat the paragraph’s first sentence exactly. On the validation split that is 1,434 of 1,841 paragraphs. The other 407 stay text. They are not given an invented triple.
-
-The WikiText-2 test split is a second set of those articles: 62 titles and 2,183 paragraphs, with no title in common with the validation split. The same cutter stored 1,607 propositions. The other 576 stay text. Those rows use the prefix `wikitext2test-`, so retraining validation does not delete them. The creative walk loads every stored paragraph of an article the shortlist names, from either split.
-
-### 2. A measurement that stays a measurement
-
-**Keywords:** elevation extraction, physical unit versus million, span-aware numeric claims, CPU measurement parser
-
-`4,399 m` and `14,440 feet` are lengths. `10 million`, `exceeds 10 million`, `$5 m`, and `£ 1.7 million` are money. `28 million years`, `15 million copies`, and `a viewership of 8.69 million` are counts of the noun in the span. A paragraph may contain both a height and a sum. Each span is judged on its own.
-
-Those numbers are observations. They are not an `ObjectiveSpec` target and they are not a causal edge. A descriptive question can still be classified as empirical because a number is present. The threshold and the causal graph stay empty until the caller supplies them.
-
-### 3. Six readings of one shortlist
-
-**Keywords:** multi-channel RAG explanation, dense cosine plus causal quote, CPU retrieval channels, no extra ANN index
-
-VectorPrism already searched. The six channel nodes do not run six more database queries. They read the same shortlist:
-
-| Channel | What the node reports | Used to pick the passage |
-|---------|----------------------|--------------------------|
-| Dense | Cosine on the trained dense core | Yes |
-| Relational | A stored proposition that shares the prompt’s words | No. The relational head is not the trained rank |
-| Disentangled | Words that appear in only one passage | No |
-| Hyperbolic | Poincaré distance, and only inside the open unit ball | No |
-| Identity | Names and title tokens shared with the prompt | No. The identity anchor in the current checkpoint is unset |
-| Causal | A sentence that already says *because*, *due to*, *caused*, or *therefore* | No. A quoted cause is not turned into a graph edge |
-
-The detail node prints all six. It does not replace the checked sentence. A why, how, comparison, or cause question is marked as a candidate for the discovery loop. The loop runs only when the caller passes `discover=True`.
-
-### 4. A gap list that is not a second answer
-
-**Keywords:** PrismThinker gather questions, missing evidence versus grounded sentence, CPU reasoning audit
-
-PrismThinker can return `answer`, `gather`, `refuse`, or `escalate`. A gather result still realizes the grounded sentence when a proposition exists. The open questions stay on `gather_questions`. An audited sentence means the sentence matches stored propositions. It does not mean the reasoning objective was completed.
-
-### 5. Creative writing, off the fixed chain
-
-**Keywords:** imagined passage, article-wide tensor walk, PrismResonance word overlap, opt-in creative node
-
-A plain question stays on the five-hit shortlist. Creative writing runs when `cpu_llm.classifier.creative_writing_trigger` names a reason (`imagine`, `what if`, `story`, `fiction`, `poem`, `creative writing`), or when the caller passes `imagine=True`.
-
-The node does not scan the index. The shortlist names the articles, and the article id is the slug in the document id: `homarus-gammarus` from `wikitext2-homarus-gammarus-p0001`. When the question names an article whose lead is stored, that article replaces neighbors from other titles, and the lead is kept even if the dense scan missed it. For the European lobster that article is 24 paragraphs; the normal path still reads five of them. The creative node loads every stored paragraph of the articles that remain. An empty shortlist has nothing to connect.
-
-PrismResonance scores each loaded paragraph against the same 1024-d query tensor. A paragraph whose interference is not positive is dropped. The paragraphs that stay are ordered by a walk on their dense cores: each step is the nearest unused paragraph. The sentence on a step is copied from that paragraph. The keywords on a step are the question's content words that occur in that sentence. Near tensors mean those paragraphs sit near each other. The link is not a cause, a measurement, or a new proposition.
-
-The result is `imagination`, and the reply prints that passage after the checked sentence. `answer` stays the checked sentence.
-
----
-
-## Turn order
+## What a question does
 
 ```text
 prompt
   → PrismGuard
-  → VectorPrism dense shortlist (1024-d query, encoded once)
-  → PrismResonance on the dense core only
+  → VectorPrism dense shortlist
+  → PrismResonance on the dense core
   → six channel readings of that shortlist
-  → detail template
-  → PrismRAG article label from the document id
-  → PrismManifest span grammar
   → PrismThinker
-  → PrismCognition + surface realizer + entailment auditor
-  → PrismShine (no external judge)
-  → creative writing only if the classifier names a reason, or imagine=True
-  → reply preface, the checked sentence, then the imagined passage
-  → discovery loop only if discover=True
+  → PrismCognition, the realizer, and the entailment auditor
+  → PrismShine
+  → optional agents, in this order: deep search, creative writing, comparison, brief
+  → reply
+  → discovery only when ask(..., discover=True)
 ```
 
-A blocked prompt stops at the reply. It does not enter creative writing or discovery. A plain question does not enter creative writing. `imagination` is a separate field from `answer`.
+A blocked prompt stops at the reply. Think goes straight to cognize. Imagine is not inserted between them.
 
-The current VectorPrism checkpoint trained the **dense** channel. Relational, disentangled, hyperbolic, and causal heads are still at initialization, and the identity anchor norm is 0. cpu-llm does not pretend those slices rank the search.
+The checked sentence is `answer`. The reply prints that sentence first. Extra sections are added only when the question asked for them, in this order: summary or explanation or list or sources, then comparison, then an imagined passage, then deep-search possibilities. Preface, follow-ups, and next steps are not spoken.
+
+| Question | What runs | What the reply adds |
+|----------|-----------|---------------------|
+| What is the European lobster? | The fixed chain | The checked sentence only |
+| Deep search the European lobster. | Every tagged paragraph of the seeds, plus relation-hand neighbors | A possibility list. The checked sentence stays |
+| Imagine the European lobster. | Stored sentences from the article, a different subset each run | An imagined passage after the checked sentence |
+| Compare the European lobster and Robert Boulter. | Each side's own stored article or tagged paragraphs | A comparison section. No invented "X differs from Y" sentence |
+| Summarize the European lobster. | PrismCognition ranks the stored sentences | Up to three sentences. A contradiction withholds the summary |
+| Why is the European lobster fished with pots? | Only stored sentences that state a cause | An explanation, or "No stored sentence states a cause." |
+| List the European lobster. | The same ranking, kept longer | Up to eight sentences |
+| Cite sources for the European lobster. | The paragraph ids that were used | A source list |
+
+Those agents chain. "Deep search and compare the European lobster and Robert Boulter" gathers the possibilities first, then splits them by topic. "Summarize that" with no new topic words reuses the previous turn's paragraph ids. A normal follow-up such as "what about the claws?" does not.
+
+Discovery stays off until `discover=True`. A why question does not turn it on.
+
+---
+
+## The default corpus
+
+Two sources ship inside the package.
+
+**WikiText-2 raw**, the Salesforce validation and test splits. They are English Wikipedia articles that editors marked Good or Featured. The validation split is 60 articles and 1,841 paragraphs, stored under `wikitext2-`. The test split is a second set of articles with no shared title, stored under `wikitext2test-`. A proposition is stored only when the realizer can repeat the paragraph's first sentence. The rest stay text. License of that text: CC BY-SA 3.0 and GFDL, as stated in the provenance file next to the parquet.
+
+**An original primer on artificial intelligence**, `src/cpu_llm/data/artificial-intelligence.md`, 70 paragraphs. It is text written for this package. It is not a copy of another textbook. Each paragraph's first sentence is one the realizer can repeat, so a question about search, learning, a transformer, or cpu-llm itself can be answered from those paragraphs. Its ids start with `artificial-intelligence-md-`, so loading it does not delete WikiText.
+
+```bash
+cpu-llm-ingest
+```
+
+That command loads the WikiText validation split and then the primer. The same entry point is `python -m cpu_llm.ingest`.
+
+| Command | What it writes |
+|---------|----------------|
+| `cpu-llm-ingest` | WikiText validation, then the primer |
+| `cpu-llm-ingest --textbook` | The primer only. Use this when WikiText is already in the index |
+| `cpu-llm-ingest --test` | The WikiText test split only |
 
 ---
 
 ## Install
 
-Python 3.11 or newer. The appliance talks to PostgreSQL with pgvector. This repository is the install. It is not published as its own wheel.
+Python 3.11 or newer. cpu-llm is a pip package. This tree is not uploaded to the public package index. Install it from a checkout:
 
 ```bash
 git clone https://github.com/insightitsGit/cpullm.git
@@ -151,9 +105,9 @@ pip install -U pip
 pip install -e .
 ```
 
-On Windows, import `pyarrow` before `torch` or VectorPrism. `cpu_llm.retrieval` already does that.
+`pip install -e .` installs the package, the WikiText parquet files, and the primer. On Windows, import `pyarrow` before `torch` or VectorPrism. `cpu_llm.retrieval` already does that.
 
-Start the local database the retrieval path expects:
+The appliance talks to PostgreSQL with the `vector` extension:
 
 ```text
 image    pgvector/pgvector:pg16
@@ -167,7 +121,7 @@ database vectorprism
 postgresql://vectorprism:vectorprism@localhost:5433/vectorprism
 ```
 
-`VECTORPRISM_PG_DSN` overrides that DSN. The extension is `vector`.
+`VECTORPRISM_PG_DSN` overrides that DSN.
 
 Pinned libraries in `pyproject.toml`:
 
@@ -176,43 +130,42 @@ Pinned libraries in `pyproject.toml`:
 | vectorprism 0.1.3 | 1024-d encode and dense-slice search |
 | chorusgraph 1.3.0 | Turn graph |
 | prismguard 0.1.10 | Prompt check |
-| prismcognition 2.1.0 | Deliberation |
+| prismcognition 2.1.0 | Deliberation and summary ranking |
 | prismrag-patch 0.2.1 | Article label from the document id |
 | prismresonance 0.3.0 | Dense-core resonance |
 | prismcortex 0.4.1 | Graph memory behind the sqlite store |
 | prismmanifest 0.3.4 | Numeric span grammar on the CPU |
 | prismshine 0.2.2 | Retrieval and sentence gate, judge off |
-| prismthinker | Sufficiency: answer, gather, refuse, escalate. Local checkout |
-| prismagenticpay | Payment proposal check when both a proposal and an authority are passed |
+| prismthinker 1.1.0 | Sufficiency: answer, gather, refuse, escalate |
+| prismagenticpay 1.2.0 | Payment check when both a proposal and an authority are passed |
+
+A clean install works when those pins can be downloaded. PrismThinker and PrismAgenticPay are required at import.
 
 ---
 
 ## Quickstart
 
-### Ask the indexed WikiText split
-
-Training writes each validation paragraph to pgvector and stores a proposition when the first sentence round-trips.
+Load the shipped sources, then ask.
 
 ```bash
-python -m cpu_llm.ingest
+cpu-llm-ingest
 ```
 
 ```python
 from cpu_llm.pipeline import Appliance
 
 with Appliance() as appliance:
-    result = appliance.ask("What is Mount Elbert?")
+    result = appliance.ask("What is artificial intelligence?")
 
 print(result["answer"])
-print(result["thinker_directive"], result["gather_questions"])
-print(result["cognition_status"], result["audit_passed"])
+print(result["reply"]["text"])
 ```
 
-`answer` is the checked sentence. `reply` is the preface, that same sentence, follow-ups, and next steps. Shine and the auditor see `answer` only.
+`answer` is the checked sentence. Shine and the auditor see `answer` only.
 
 ### Index your own source
 
-A source is a file, a folder of files, or paragraphs you already split. `ingest` stores those paragraphs in the same index, and a later `ask` reads them. Accepted files are `.txt`, `.md`, `.html`, `.pdf`, `.docx`, `.csv`, `.xlsx`, and `.epub`.
+A source is a file, a folder, or paragraphs you already split. `ingest` stores those paragraphs in the same index, and a later `ask` reads them with the WikiText rows and the primer. Accepted files are `.txt`, `.md`, `.html`, `.pdf`, `.docx`, `.csv`, `.xlsx`, `.xlsm`, and `.epub`. A legacy `.doc` or `.xls` file is refused. Save it as `.docx` or `.xlsx`.
 
 ```python
 from cpu_llm.documents import SourceDocument
@@ -233,17 +186,40 @@ with Appliance() as appliance:
     result = appliance.ask("What is the European lobster?")
 ```
 
-A spreadsheet with `from` and `to` columns stores each row as a paragraph and stores the pair as a connection. `catalog_chunks` remains the call that writes the pairs of id and paragraph when you already have them.
+Reading the same source again replaces that source's paragraphs. A spreadsheet with `from` and `to` columns stores each row as a paragraph and stores the pair as a connection. Other sheets become `column: value` rows and do not invent a connection.
 
-Pass `propositions=` into `catalog_chunks` when you already have an `EIRProposition` whose subject and object are literal slices of the chunk. `ask(..., propositions=...)` is an override for that turn. The normal path reads the proposition stored with the chunk.
+`catalog_chunks` is the lower-level call when you already have `(document_id, paragraph)` pairs. Pass `propositions=` when you already have an `EIRProposition` whose subject and object are slices of the chunk. `ask(..., propositions=...)` overrides that turn. The normal path reads the proposition stored with the chunk.
 
-Leave `ObjectiveSpec`, policy rules, and causal edges empty unless you are actually supplying them. The appliance will not invent them from prose.
+Leave `ObjectiveSpec`, policy rules, and causal edges empty unless you are supplying them. The appliance does not invent them from prose.
 
 ### Tests
 
 ```bash
 python -m pytest
 ```
+
+---
+
+## How the checked sentence is chosen
+
+VectorPrism searches once. The six channel nodes read that shortlist. They do not run six more database queries.
+
+| Channel | What the node reports | Used to pick the passage |
+|---------|----------------------|--------------------------|
+| Dense | Cosine on the trained dense core | Yes |
+| Relational | A stored proposition that shares the prompt's words | No |
+| Disentangled | Words that appear in only one passage | No |
+| Hyperbolic | Poincaré distance, inside the open unit ball | No |
+| Identity | Names and title tokens shared with the prompt | No |
+| Causal | A sentence that already says *because*, *due to*, *caused*, or *therefore* | No |
+
+A quoted cause is not turned into a graph edge. The detail node prints all six. It does not replace the checked sentence.
+
+The current checkpoint trained the dense channel. Relational, disentangled, hyperbolic, and causal heads are still at initialization. cpu-llm does not pretend those slices rank the search.
+
+PrismThinker can return `answer`, `gather`, `refuse`, or `escalate`. A gather result still realizes the grounded sentence when a proposition exists. The open questions stay on `gather_questions`.
+
+Creative writing runs when the prompt says imagine, what if, story, poem, fiction, or creative writing, or when `ask(..., imagine=True)`. It realizes stored sentences from the article and draws a different subset each time more than one sentence passed the auditor. One eligible sentence cannot vary. `answer` stays the checked sentence.
 
 ---
 
@@ -262,25 +238,36 @@ python -m pytest
 | `4,399 m` and `$ 10 million` in one paragraph | Length and money, both kept |
 | `. m` | Ignored. One bad paragraph does not drop the rest of the batch |
 
-A height in the retrieved text can still select PrismThinker’s empirical regime. The questions `no numeric threshold on hypothesis or objective` and `causal_graph is required` mean the caller did not supply those inputs. They are not a request for cpu-llm to invent a target.
+A height in the retrieved text can still select PrismThinker's empirical regime. The questions `no numeric threshold on hypothesis or objective` and `causal_graph is required` mean the caller did not supply those inputs. They are not a request for cpu-llm to invent a target.
+
+---
+
+## What this package does not do
+
+It does not rewrite a passage in a new style, translate it, write code, or pick a winner the store does not state. It does not expose an HTTP upload API, a per-customer tenant, or a published wheel on the public index. The tenant on this appliance is `cpu-llm`, and every source shares one pgvector index.
+
+A paragraph that does not round-trip is stored and can be retrieved. It is not spoken.
 
 ---
 
 ## Layout
 
 ```text
-src/cpu_llm/pipeline.py          turn graph and Appliance.ask
-src/cpu_llm/measurements.py      lengths, money spans, qualifiers
-src/cpu_llm/channels.py          six readings and the detail template
-src/cpu_llm/clauses.py           first-sentence propositions for training
-src/cpu_llm/realizer/            controlled English from a proposition
-src/cpu_llm/cognition/           deliberation adapter
-src/cpu_llm/audit/               lexical entailment check
-src/cpu_llm/classifier.py         creative-writing trigger
-src/cpu_llm/agents/reply.py      preface and follow-ups around the sentence
-src/cpu_llm/agents/discovery.py  opt-in discovery loop
-src/cpu_llm/agents/imagine.py    article walk for an imagined passage
-src/cpu_llm/manifest_spans.py    numbers in the answer must occur in the passages
+src/cpu_llm/pipeline.py                         turn graph and Appliance.ask / ingest
+src/cpu_llm/ingest.py                           WikiText and the primer loader
+src/cpu_llm/data/wikitext-2-raw-v1/             shipped WikiText parquet files
+src/cpu_llm/data/artificial-intelligence.md    shipped primer
+src/cpu_llm/documents.py                        file, folder, and spreadsheet readers
+src/cpu_llm/source.py                           paragraph cuts for the shipped sources
+src/cpu_llm/clauses.py                          first-sentence propositions
+src/cpu_llm/realizer/                           controlled English from a proposition
+src/cpu_llm/audit/                              lexical entailment check
+src/cpu_llm/cognition/                          deliberation adapter
+src/cpu_llm/agents/                             deep search, creative writing, reply
+src/cpu_llm/comparison.py                       two-topic split
+src/cpu_llm/classifier.py                       which optional agent the prompt asked for
+src/cpu_llm/measurements.py                     lengths, money spans, qualifiers
+src/cpu_llm/channels.py                         six readings and the detail template
 docs/cpu-llm-v1.6.1-architecture-spec.md
 ```
 
