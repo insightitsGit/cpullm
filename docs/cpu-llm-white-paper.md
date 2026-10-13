@@ -10,7 +10,7 @@
 
 **Repository:** [https://github.com/insightitsGit/cpullm](https://github.com/insightitsGit/cpullm)
 
-**Package:** [cpu-llm 1.7.0](https://pypi.org/project/cpu-llm/1.7.0/)
+**Package:** [cpu-llm 1.7.1](https://pypi.org/project/cpu-llm/1.7.1/)
 
 ---
 

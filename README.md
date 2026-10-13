@@ -11,7 +11,7 @@
 > **One query in. An audited, mathematically verified assertion out.**
 > Derived directly from stored epistemic propositions and verified against source evidence spans. Zero probabilistic token guessing, zero cloud APIs, zero GPU overhead.
 
-**Author:** [Amin Parva](mailto:parvaamin@gmail.com) · **Retrieval plane:** [VectorPrism](https://github.com/insightitsGit/VectorPrism) · **Version:** 1.7.0
+**Author:** [Amin Parva](mailto:parvaamin@gmail.com) · **Retrieval plane:** [VectorPrism](https://github.com/insightitsGit/VectorPrism) · **Version:** 1.7.1
 
 ---
 
