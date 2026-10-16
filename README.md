@@ -118,7 +118,7 @@ PrismThinker can return `answer`, `gather`, `refuse`, or `escalate`. A gather re
 | List the European lobster. | The same ranking, kept longer | Up to eight sentences |
 | Cite sources for the European lobster. | The paragraph ids that were used | A source list |
 | What is 17 times 24? | The math agent | The calculation. A question that is only arithmetic is answered with that result |
-| What color was the apple John ate? | An event frame cut from a round-tripped sentence | The color, when that word is in the retrieved sentence. A second color abstains |
+| What color was the apple John ate? | An event frame cut from a round-tripped sentence that matches the closed clause | The color, when that word is in the object. A missing color, a second color, a mismatched year, or a Shine rejection is spoken instead of a guessed color |
 
 Those agents chain. "Deep search and compare the European lobster and Robert Boulter" gathers first, then splits the kept paragraphs by topic. "Summarize that" with no new topic words reuses the previous turn's paragraph ids. A normal follow-up such as "what about the claws?" does not.
 

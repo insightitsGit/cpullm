@@ -12,36 +12,43 @@ The current retrieval path is unchanged for every other question. A plain questi
 
 ---
 
-## What changed in stage 1
+## What stage 1 stores
 
-Stage 1 is `src/cpu_llm/memory/frames.py`.
+Stage 1 is `src/cpu_llm/memory/frames.py`. The record schema is `stage1-v2`. Offsets are relative to the sentence, not the whole chunk.
 
-When the first sentence of a paragraph round-trips, ingestion stores an `event_frame` beside the proposition. The frame may contain:
+Ingest stores `event_frame` only when two checks both pass. The realizer must repeat the first sentence. That sentence must also be this clause, with nothing left over:
 
-| Role | When it is stored |
-|------|-------------------|
-| agent | The subject of an action sentence. A copula such as "The apple was yellow" has no agent. |
-| predicate | The verb token, plus the lemma and tense the realizer used. |
-| patient | The head noun of the object, or of the subject when the object is only a color. |
-| color | A closed color word written next to that noun, or the whole object when the verb is `be` and the object is that color word. |
-| location | A trailing `in` / `at` / `on` phrase with a determiner, such as `in his house`. |
-| time | A trailing year phrase, such as `in 2019`, or `yesterday`, `today`, `tomorrow`, `tonight`. |
+```text
+subject verb object location? time?
+object   = (a|an|the) color? noun
+location = (in|at|on) (his|her|their|the|a|an|my|our|your) noun
+time     = (in|on) YEAR | yesterday | today | tomorrow | tonight
+```
 
-Each role stores the exact text and the character offsets. `sentence[start:end]` is that text. There is no owner role. `his house` stays the location phrase.
+A copula is `The|A|An noun` plus `is|are|was|were` plus one color word. The patient of an action is the noun inside the object span. A repeated noun in the subject does not supply that span. `The apple seller ate a yellow apple in his house.` keeps the object apple at sentence offsets 30:35.
 
-A negated sentence (`not`, `never`, `no`, `n't`) does not become an affirmative frame.
+These do not become frames: negation, a condition (`if`), a nested object (`a picture of the apple`), an extra attachment (`with Mary`), coordination, and a clause the grammar does not finish. Round-trip alone does not create a frame. There is no owner role.
 
-At query time the frame node runs after the other optional agents and before the reply, and only for three question shapes:
+The query uses the stored `event_frame` when its schema is `stage1-v2`. Otherwise it runs the same extractor on the retrieved paragraph. There is one extractor. The join still sees only the retrieved shortlist.
 
+Supported questions, and only the whole question:
+
+* `What color was the apple?`
 * `What color was the apple John ate?`
+* `What color was the apple John ate in 2019?`
+* `In 2019, what color was the apple John ate?`
 * `Where did John eat the apple?`
 * `Who ate the apple?`
 
-The node reads the paragraphs already retrieved. It does not scan the whole index, and it does not add a vector. The joined sentence may contain only tokens from the source sentence, plus `the`, `a`, `an`, `was`, `were`, `is`, `are`, `did`, and `that`. `answer` stays the checked sentence. When the frame question is the only optional step, `reply["text"]` is the joined sentence.
+A year in the question is kept whether it is a prefix or a suffix. An undated sentence does not answer a dated question. A present sentence (`The apple is yellow.`) does not answer `What color was the apple?` The past copula answer keeps the source auxiliary, so `The apples were yellow.` stays plural.
 
-Two stored colors, locations, or agents for the same question produce no value. A question that names a year uses a frame only when that year is the frame's time span. `better`, `worse`, and a comparison do not enter this node.
+`frame_result.status` is `answered`, `missing`, `ambiguous`, `conflicting`, `unsupported`, or `ignored`. `verified` is true only for an answered sentence whose role spans and permitted words were checked. `answer` stays the checked sentence. `audit_passed` on that sentence is not verification of `reply["text"]`. The node also sets `frame_verified`.
 
-`eat` / `ate` / `eaten` is in the realizer's closed irregular list so the apple sentence can round-trip. The join is not stored as a new proposition.
+When the frame question is the only optional step, `reply["text"]` is the joined sentence or a visible non-answer. A missing color says so. Two colors conflict and name neither color. A question outside the supported form says it is unsupported. Another optional agent keeps the checked sentence and adds an `Event:` section.
+
+A Shine rejection (`shine_ok` false or `shine_enforced`), an audit block, or a grammar block is the delivered text. The frame node is not routed, and a frame result already in the state cannot replace that text or add an `Event:` section.
+
+`better`, `worse`, and a comparison do not enter this node. `eat` / `ate` / `eaten` is in the realizer's closed irregular list so the apple sentence can round-trip. The join is not stored as a new proposition.
 
 ---
 

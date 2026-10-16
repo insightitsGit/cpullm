@@ -13,6 +13,8 @@ from __future__ import annotations
 import re
 from typing import Any
 
+from cpu_llm.memory.frames import frame_reply_text
+
 _STOP = frozenset(
     """
     a an the of to and or in on for with from by as is are was were be been being
@@ -43,10 +45,9 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
     lines = [body]
     math_result = state.get("math_result") or {}
     math_text = str(math_result.get("text") or "").strip()
-    math_only = bool(math_text) and state.get("math") is True and not _other_agent(state)
-    frame_result = state.get("frame_result") or {}
-    frame_text = str(frame_result.get("text") or "").strip()
-    frame_only = bool(frame_text) and state.get("frame") is True and not _other_agent(state) and not math_text
+    math_only = bool(math_text) and state.get("math") is True and not _other_agent(state) and not _delivery_holds(state)
+    frame_text = frame_reply_text(state)
+    frame_only = bool(frame_text) and not _other_agent(state) and not math_text
     if math_only:
         lines = [math_text]
     elif frame_only:
@@ -117,6 +118,13 @@ def _possibility_lines(possibilities: list[dict[str, Any]]) -> list[str]:
 def _possibility_item(item: dict[str, Any]) -> str:
     words = ", ".join(item.get("matched_words") or [])
     return f"- {item.get('document_id')} [{words}]"
+
+
+def _delivery_holds(state: dict[str, Any]) -> bool:
+    """Shine, audit, and grammar rejections stay the spoken text."""
+    if state.get("delivery_blocked") or state.get("shine_enforced"):
+        return True
+    return state.get("shine_ok") is False
 
 
 def _other_agent(state: dict[str, Any]) -> bool:

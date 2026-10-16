@@ -446,6 +446,8 @@ def _assimilation(
         attributes["proposition"] = payload
     if frame is not None:
         attributes["event_frame"] = frame
+    else:
+        attributes.pop("event_frame", None)
     if tag_payload:
         attributes["taxonomy_tags"] = tag_payload
     if relation_hands and any(relation_hands.values()):
@@ -632,16 +634,25 @@ def _after_math(state: dict[str, Any]) -> str:
     return _else_frame(state, "reply")
 
 
+def _delivery_rejected(state: dict[str, Any]) -> bool:
+    """A Shine, audit, or grammar rejection is the final delivery decision."""
+    if state.get("delivery_blocked"):
+        return True
+    if state.get("shine_enforced"):
+        return True
+    return state.get("shine_ok") is False
+
+
 def _else_math(state: dict[str, Any], destination: str) -> str:
     """Run the math agent before the reply when the prompt asked for a calculation."""
-    if destination == "reply" and state.get("math") is True and not state.get("delivery_blocked"):
+    if destination == "reply" and state.get("math") is True and not _delivery_rejected(state):
         return "math"
     return _else_frame(state, destination)
 
 
 def _else_frame(state: dict[str, Any], destination: str) -> str:
     """Answer from a stored event frame when the question asks for one role."""
-    if destination == "reply" and state.get("frame") is True and not state.get("delivery_blocked"):
+    if destination == "reply" and state.get("frame") is True and not _delivery_rejected(state):
         return "frame"
     return destination
 
@@ -829,7 +840,7 @@ def _frame(appliance: Appliance):
     del appliance
 
     def node(state: dict[str, Any]) -> dict[str, Any]:
-        from cpu_llm.memory.frames import frame_from_chunk, resolve_frames
+        from cpu_llm.memory.frames import SCHEMA, frame_from_chunk, resolve_frames
 
         frames = []
         seen: set[str] = set()
@@ -838,15 +849,23 @@ def _frame(appliance: Appliance):
         for row in rows:
             document_id = str(row.get("document_id") or row.get("chunk_id") or "")
             text = str(row.get("chunk_text") or "")
-            if not document_id or not text or document_id in seen:
+            if not document_id or document_id in seen:
+                continue
+            if not text and not isinstance(row.get("event_frame"), dict):
                 continue
             seen.add(document_id)
-            frame = frame_from_chunk(document_id, text)
+            stored = row.get("event_frame")
+            if isinstance(stored, dict) and stored.get("schema") == SCHEMA:
+                frame = stored
+            else:
+                frame = frame_from_chunk(document_id, text) if text else None
             if frame is not None:
                 frames.append(frame)
+        result = resolve_frames(state.get("message") or "", frames)
         return {
             "frame_reasons": list(state.get("frame_reasons") or []),
-            "frame_result": resolve_frames(state.get("message") or "", frames),
+            "frame_result": result,
+            "frame_verified": result.get("verified") is True,
         }
 
     return node

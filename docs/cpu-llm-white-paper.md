@@ -122,7 +122,7 @@ guard → retrieve → resonate
      → dense → relational → disentangled → hyperbolic → identity → causal
      → catalog → detail → spans
      → think → cognize → grammar → shine
-     → deep → creative (gather → imagine) → compare → brief → math
+     → deep → creative (gather → imagine) → compare → brief → math → event frame
      → reply
      → discover only when ask(..., discover=True)
 ```
@@ -142,7 +142,7 @@ A blocked guard stops at the reply. A blocked delivery skips the optional agents
 | cognize | PrismCognition deliberates over stored propositions. |
 | grammar | The realizer compiles one clause per proposition. |
 | shine | PrismShine checks the retrieval trace and the sentence. The external judge stays off. |
-| agents | Optional, and only when the prompt or the caller asked. Order: deep search, creative writing, comparison, brief, math. |
+| agents | Optional, and only when the prompt or the caller asked. Order: deep search, creative writing, comparison, brief, math, event frame. A Shine, audit, or grammar rejection skips the frame. |
 | reply | The checked sentence, plus any section those agents produced. |
 | discover | Off unless `ask(..., discover=True)`. |
 
@@ -160,6 +160,7 @@ Each optional agent is a deterministic step over stored text. None of them sampl
 | Brief | PrismCognition ranks stored sentences. Summarize keeps 3. A list keeps 8. Explain keeps a sentence that already states a cause. Sources names the paragraph ids. | A contradiction whose ruin distance is at least 1 withholds the summary. |
 | Imagine | Realizes a varying subset of stored sentences from the gathered article. The same prompt does not have to return the same passage. | A sentence that was not in the article. |
 | Math | Evaluates the arithmetic the prompt writes, with decimal arithmetic and an expression tree. No `eval()`. | A year, a measurement, or a comparison does not enter this node. The number is not stored as a proposition. |
+| Event frame | Cuts one closed clause from a round-tripped sentence and answers a supported color, location, or agent question from those spans. | A nested object, a condition, a missing role, a mismatched year or tense, and a Shine rejection. The join is not a new proposition. |
 
 When math is the only optional agent, `reply["text"]` is the calculation. `answer` remains the checked sentence. When another agent also ran, the checked sentence stays and a `Math:` section is appended.
 

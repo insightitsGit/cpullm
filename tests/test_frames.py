@@ -91,3 +91,146 @@ def test_a_frame_question_is_spoken_as_the_joined_sentence():
     )
     assert reply["text"] == "The apple John ate was yellow."
     assert reply["body"] == "John ate a yellow apple in his house."
+    assert reply["text"] != reply["body"]
+
+
+SELLER = "The apple seller ate a yellow apple in his house."
+FALLBACK = "I don't have enough grounded evidence to answer that confidently."
+
+
+def test_a_shine_rejection_stays_the_delivered_sentence():
+    state = {
+        "message": "What color was the apple John ate?",
+        "guard_decision": "allow",
+        "frame": True,
+        "shine_ok": False,
+        "shine_enforced": True,
+        "answer": FALLBACK,
+        "passages": [{"document_id": "review-1", "chunk_text": APPLE}],
+    }
+    assert _after_shine(state) == "reply"
+    state.update(_frame(None)(state))
+    assert compose_reply(state)["text"] == FALLBACK
+    blocked = compose_reply(
+        {
+            "message": "What color was the apple John ate?",
+            "guard_decision": "allow",
+            "delivery_blocked": "audit",
+            "frame": True,
+            "answer": None,
+            "related": [{"chunk_id": "review-1", "chunk_text": APPLE, "score": 1.0}],
+            "frame_result": {"status": "answered", "verified": True, "text": "The apple John ate was yellow."},
+        }
+    )
+    assert blocked["text"] == "The checked sentence was withheld because it did not match the stored proposition."
+    mixed = compose_reply(
+        {
+            "message": "What color was the apple John ate?",
+            "guard_decision": "allow",
+            "frame": True,
+            "summarize": True,
+            "answer": APPLE,
+            "brief": {"summary": APPLE},
+            "frame_result": resolve_frames("What color was the apple John ate?", [frame_from_chunk("apple-1", APPLE)]),
+        }
+    )
+    assert mixed["text"].startswith(APPLE)
+    assert "Event:\nThe apple John ate was yellow." in mixed["text"]
+
+
+def test_nested_objects_conditions_and_the_wrong_apple_are_not_events():
+    picture = "John ate a picture of the apple in his house."
+    attached = "John ate the apple with Mary in his house."
+    conditional = "John ate a yellow apple if Mary cooked dinner."
+    assert frame_from_chunk("picture", picture) is None
+    assert frame_from_chunk("attached", attached) is None
+    assert frame_from_chunk("conditional", conditional) is None
+    for source, question in (
+        (picture, "Who ate the apple?"),
+        (attached, "Who ate the apple?"),
+        (conditional, "Who ate the dinner?"),
+    ):
+        result = resolve_frames(question, [])
+        reply = compose_reply(
+            {"message": question, "guard_decision": "allow", "frame": True, "answer": source, "frame_result": result}
+        )
+        assert result["status"] == "missing"
+        assert "John ate the apple." not in reply["text"]
+        assert "John ate the dinner." not in reply["text"]
+        assert reply["text"] == result["text"]
+    seller = frame_from_chunk("review-offsets", SELLER)
+    assert seller is not None
+    assert seller["patient"] == {"role": "patient", "text": "apple", "start": 30, "end": 35}
+    assert seller["sentence"][4:9] == "apple"
+    assert seller["patient"]["start"] != 4
+    assert seller["object"]["text"] == "a yellow apple"
+    assert seller["color"]["start"] == 23
+
+
+def test_a_prefixed_year_and_present_evidence_do_not_answer_a_past_question():
+    undated = frame_from_chunk("apple-1", APPLE)
+    prefixed = resolve_frames("In 2020, what color was the apple John ate?", [undated])
+    assert prefixed["status"] == "missing"
+    assert prefixed["value"] == ""
+    assert prefixed["text"] == "No stored sentence states that color in 2020."
+    assert compose_reply(
+        {
+            "message": "In 2020, what color was the apple John ate?",
+            "guard_decision": "allow",
+            "frame": True,
+            "answer": APPLE,
+            "frame_result": prefixed,
+        }
+    )["text"] == prefixed["text"]
+    present = frame_from_chunk("present", "The apple is yellow.")
+    past_question = resolve_frames("What color was the apple?", [present])
+    assert past_question["status"] == "missing"
+    assert past_question["text"] == "No stored sentence states that color in the past."
+    assert "yellow" not in past_question["text"]
+    plural = frame_from_chunk("plural", "The apples were yellow.")
+    assert resolve_frames("What color was the apples?", [plural])["text"] == "The apples were yellow."
+    odd = resolve_frames("On Tuesday, what color was the apple John ate?", [undated])
+    assert odd["status"] == "unsupported"
+    assert "yellow" not in compose_reply(
+        {
+            "message": "On Tuesday, what color was the apple John ate?",
+            "guard_decision": "allow",
+            "frame": True,
+            "answer": APPLE,
+            "frame_result": odd,
+        }
+    )["text"]
+
+
+def test_a_missing_color_is_the_reply_and_not_the_source_sentence():
+    plain = "John ate an apple in his house."
+    frame = frame_from_chunk("plain", plain)
+    assert frame is not None
+    assert frame["color"] is None
+    result = resolve_frames("What color was the apple John ate?", [frame])
+    assert result["status"] == "missing"
+    assert result["abstained"] is True
+    reply = compose_reply(
+        {
+            "message": "What color was the apple John ate?",
+            "guard_decision": "allow",
+            "frame": True,
+            "answer": plain,
+            "frame_result": result,
+        }
+    )
+    assert reply["text"] == "No stored sentence states that color in the past."
+    assert reply["body"] == plain
+    beside = compose_reply(
+        {
+            "message": "What color was the apple John ate?",
+            "guard_decision": "allow",
+            "frame": True,
+            "summarize": True,
+            "answer": plain,
+            "brief": {"summary": plain},
+            "frame_result": result,
+        }
+    )
+    assert beside["text"].startswith(plain)
+    assert "Event:\nNo stored sentence states that color in the past." in beside["text"]
