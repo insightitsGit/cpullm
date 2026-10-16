@@ -44,8 +44,13 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
     math_result = state.get("math_result") or {}
     math_text = str(math_result.get("text") or "").strip()
     math_only = bool(math_text) and state.get("math") is True and not _other_agent(state)
+    frame_result = state.get("frame_result") or {}
+    frame_text = str(frame_result.get("text") or "").strip()
+    frame_only = bool(frame_text) and state.get("frame") is True and not _other_agent(state) and not math_text
     if math_only:
         lines = [math_text]
+    elif frame_only:
+        lines = [frame_text]
     brief = state.get("brief") or {}
     if state.get("summarize") is True:
         lines.extend(["", "Summary:", brief.get("summary") or "No stored sentence to summarize."])
@@ -77,6 +82,8 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
         lines.extend(_possibility_lines(possibilities))
     if math_text and not math_only:
         lines.extend(["", "Math:", math_text])
+    if frame_text and not frame_only:
+        lines.extend(["", "Event:", frame_text])
     return {
         "preface": preface,
         "body": body,

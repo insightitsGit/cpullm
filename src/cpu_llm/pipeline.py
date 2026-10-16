@@ -327,7 +327,10 @@ class Appliance:
         explain_reasons = explain_trigger(message)
         list_reasons = list_trigger(message)
         source_reasons = source_trigger(message)
+        from cpu_llm.memory.frames import frame_trigger
+
         math_reasons = math_trigger(message, forced=math)
+        frame_reasons = frame_trigger(message)
         self._turn = {
             "propositions": list(propositions or []),
             "payment": payment,
@@ -358,6 +361,8 @@ class Appliance:
                 "source_reasons": source_reasons,
                 "math": bool(math_reasons),
                 "math_reasons": math_reasons,
+                "frame": bool(frame_reasons),
+                "frame_reasons": frame_reasons,
             }
         )
         self._previous_ids = [
@@ -434,8 +439,13 @@ def _assimilation(
     existing_id = pending.get(chunk_text.strip().lower()) or store.find_node_by_label(chunk_text)
     current = known.get(existing_id) if existing_id is not None else None
     attributes: dict[str, Any] = dict(current.attributes) if current is not None else {}
+    from cpu_llm.memory.frames import frame_from_chunk
+
+    frame = frame_from_chunk(document_id, chunk_text)
     if payload is not None:
         attributes["proposition"] = payload
+    if frame is not None:
+        attributes["event_frame"] = frame
     if tag_payload:
         attributes["taxonomy_tags"] = tag_payload
     if relation_hands and any(relation_hands.values()):
@@ -446,9 +456,10 @@ def _assimilation(
         same_proposition = current is not None and current.attributes.get("proposition") == attributes.get("proposition")
         same_tags = current is not None and current.attributes.get("taxonomy_tags") == attributes.get("taxonomy_tags")
         same_hands = current is not None and current.attributes.get("relation_hands") == attributes.get("relation_hands")
-        if payload is None and not tag_payload and not relation_hands:
+        same_frame = current is not None and current.attributes.get("event_frame") == attributes.get("event_frame")
+        if payload is None and not tag_payload and not relation_hands and frame is None:
             return None
-        if same_proposition and same_tags and same_hands:
+        if same_proposition and same_tags and same_hands and same_frame:
             return None
         node_id = existing_id
     else:
@@ -507,6 +518,7 @@ def _compile(appliance: Appliance):
     graph.add_node("compare", dict_node_adapter(_compare(appliance), hop="compare"))
     graph.add_node("brief", dict_node_adapter(_brief(appliance), hop="brief"))
     graph.add_node("math", dict_node_adapter(_math(appliance), hop="math"))
+    graph.add_node("frame", dict_node_adapter(_frame(appliance), hop="frame"))
     graph.add_node("discover", dict_node_adapter(_discover(appliance), hop="discover"))
     graph.add_edge(START, "guard")
     graph.add_conditional_edges("guard", _after_guard, {"retrieve": "retrieve", "reply": "reply"})
@@ -527,22 +539,23 @@ def _compile(appliance: Appliance):
     graph.add_conditional_edges(
         "shine",
         _after_shine,
-        {"deep": "deep", "gather": "gather", "compare": "compare", "brief": "brief", "math": "math", "reply": "reply"},
+        {"deep": "deep", "gather": "gather", "compare": "compare", "brief": "brief", "math": "math", "frame": "frame", "reply": "reply"},
     )
     graph.add_conditional_edges(
         "deep",
         _after_deep,
-        {"gather": "gather", "compare": "compare", "brief": "brief", "math": "math", "reply": "reply"},
+        {"gather": "gather", "compare": "compare", "brief": "brief", "math": "math", "frame": "frame", "reply": "reply"},
     )
     graph.add_edge("gather", "imagine")
     graph.add_conditional_edges(
         "imagine",
         _after_imagine,
-        {"compare": "compare", "brief": "brief", "math": "math", "reply": "reply"},
+        {"compare": "compare", "brief": "brief", "math": "math", "frame": "frame", "reply": "reply"},
     )
-    graph.add_conditional_edges("compare", _after_compare, {"brief": "brief", "math": "math", "reply": "reply"})
-    graph.add_conditional_edges("brief", _after_brief, {"math": "math", "reply": "reply"})
-    graph.add_edge("math", "reply")
+    graph.add_conditional_edges("compare", _after_compare, {"brief": "brief", "math": "math", "frame": "frame", "reply": "reply"})
+    graph.add_conditional_edges("brief", _after_brief, {"math": "math", "frame": "frame", "reply": "reply"})
+    graph.add_conditional_edges("math", _after_math, {"frame": "frame", "reply": "reply"})
+    graph.add_edge("frame", "reply")
     graph.add_conditional_edges("reply", _after_reply, {"discover": "discover", "end": END})
     graph.add_edge("discover", END)
     return graph.compile()
@@ -615,10 +628,21 @@ def _after_brief(state: dict[str, Any]) -> str:
     return _else_math(state, "reply")
 
 
+def _after_math(state: dict[str, Any]) -> str:
+    return _else_frame(state, "reply")
+
+
 def _else_math(state: dict[str, Any], destination: str) -> str:
     """Run the math agent before the reply when the prompt asked for a calculation."""
     if destination == "reply" and state.get("math") is True and not state.get("delivery_blocked"):
         return "math"
+    return _else_frame(state, destination)
+
+
+def _else_frame(state: dict[str, Any], destination: str) -> str:
+    """Answer from a stored event frame when the question asks for one role."""
+    if destination == "reply" and state.get("frame") is True and not state.get("delivery_blocked"):
+        return "frame"
     return destination
 
 
@@ -794,6 +818,35 @@ def _deep(appliance: Appliance):
             "possibility_count": len(possibilities),
             "deep_seeds": gathered["seeds"],
             "deep_hands": gathered["hands"],
+        }
+
+    return node
+
+
+def _frame(appliance: Appliance):
+    """Join stored event roles. The joined sentence is not a new proposition."""
+
+    del appliance
+
+    def node(state: dict[str, Any]) -> dict[str, Any]:
+        from cpu_llm.memory.frames import frame_from_chunk, resolve_frames
+
+        frames = []
+        seen: set[str] = set()
+        rows = list(state.get("passages") or [])
+        rows.extend(state.get("related") or [])
+        for row in rows:
+            document_id = str(row.get("document_id") or row.get("chunk_id") or "")
+            text = str(row.get("chunk_text") or "")
+            if not document_id or not text or document_id in seen:
+                continue
+            seen.add(document_id)
+            frame = frame_from_chunk(document_id, text)
+            if frame is not None:
+                frames.append(frame)
+        return {
+            "frame_reasons": list(state.get("frame_reasons") or []),
+            "frame_result": resolve_frames(state.get("message") or "", frames),
         }
 
     return node

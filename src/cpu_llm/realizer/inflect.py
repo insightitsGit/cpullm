@@ -30,6 +30,15 @@ _IRREGULAR = {
         "part": "done",
         "prog": "doing",
     },
+    "eat": {
+        "base": "eat",
+        "present_3s": "eats",
+        "present_pl": "eat",
+        "past": "ate",
+        "past_pl": "ate",
+        "part": "eaten",
+        "prog": "eating",
+    },
     "pass": {
         "base": "pass",
         "present_3s": "passes",

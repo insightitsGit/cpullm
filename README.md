@@ -77,7 +77,7 @@ PrismCognition + realizer + EpistemicEntailmentAuditor
 PrismShine (retrieval trace and sentence gate; no external judge)
   │
   ▼
-Optional agents, in this order: deep search → creative writing → comparison → brief → math
+Optional agents, in this order: deep search → creative writing → comparison → brief → math → event frame
   │
   ▼
 Verified reply
@@ -118,6 +118,7 @@ PrismThinker can return `answer`, `gather`, `refuse`, or `escalate`. A gather re
 | List the European lobster. | The same ranking, kept longer | Up to eight sentences |
 | Cite sources for the European lobster. | The paragraph ids that were used | A source list |
 | What is 17 times 24? | The math agent | The calculation. A question that is only arithmetic is answered with that result |
+| What color was the apple John ate? | An event frame cut from a round-tripped sentence | The color, when that word is in the retrieved sentence. A second color abstains |
 
 Those agents chain. "Deep search and compare the European lobster and Robert Boulter" gathers first, then splits the kept paragraphs by topic. "Summarize that" with no new topic words reuses the previous turn's paragraph ids. A normal follow-up such as "what about the claws?" does not.
 
@@ -372,6 +373,7 @@ cpu-llm/
     audit/                                    EpistemicEntailmentAuditor
     cognition/                                PrismCognition deliberation adapter
     agents/                                   deep_search, gather, imagine, summarize, math, reply, discovery
+    memory/frames.py                          event roles cut from a round-tripped sentence
     comparison.py                             two-topic split
     classifier.py                             which optional agent the prompt asked for
     channels.py                               six readings and the detail template
@@ -389,6 +391,7 @@ cpu-llm/
   tests/                                      the suite, including the PDF upload check
   samples/harbor-field-guide.pdf              two-page field guide used as an upload example
   docs/cpu-llm-white-paper.md                 technical white paper
+  docs/cpu-llm-v1.8-semantic-memory.md        stage 1 of span-grounded event memory
   docs/cpu-llm-v1.6.1-architecture-spec.md
 ```
 
@@ -424,6 +427,7 @@ cpu-llm/
 
 - Author: **Amin Parva**, AI Architect & Staff Applied AI Engineer ([parvaamin@gmail.com](mailto:parvaamin@gmail.com))
 - White paper: [docs/cpu-llm-white-paper.md](docs/cpu-llm-white-paper.md)
+- Design v1.8, stage 1: [docs/cpu-llm-v1.8-semantic-memory.md](docs/cpu-llm-v1.8-semantic-memory.md)
 - This repository: [https://github.com/insightitsGit/cpullm](https://github.com/insightitsGit/cpullm)
 - Retrieval engine: [https://github.com/insightitsGit/VectorPrism](https://github.com/insightitsGit/VectorPrism)
 - License: [Apache License 2.0](LICENSE)
