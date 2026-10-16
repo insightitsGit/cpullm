@@ -105,4 +105,4 @@ A stage is accepted when a labeled set of passages, including the apple sentence
 
 The unit tests in `tests/test_frames.py` cover that contract for stage 1. They are not the full labeled-corpus study.
 
-The wording model that follows this stage is [v1.9, the realizer](cpu-llm-v1.9-realizer.md). It ranks constructions a claim plan already licensed. It is not implemented. The earlier pointer note and the evidence-conditioned proposal are the review record behind that file.
+The wording model that follows this stage is [v1.9, the realizer](cpu-llm-v1.9-realizer.md). The non-neural plan and checker are implemented. No checkpoint is trained. The earlier pointer note and the evidence-conditioned proposal are the review record behind that file.

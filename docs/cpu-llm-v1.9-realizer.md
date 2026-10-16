@@ -1,6 +1,6 @@
 # cpu-llm design v1.9: the realizer
 
-**Status:** Final design for this question. No training code, no checkpoint, and no change to the spoken path.
+**Status:** Final design. N0, the plan, the constructions, and the checker, is implemented. No checkpoint is trained. The default `ask` path is unchanged. `account=True` or `realization="evidence_neural"` opts in, and the neural request falls back to this grammar because no checkpoint exists.
 
 **Date:** 2026-10-16
 
@@ -214,7 +214,7 @@ appliance.ask(question, realization="evidence_neural")  # opt-in, after N1
 
 ## 10. Where the code would go
 
-None of these files exist yet.
+N0 is the modules below, except `ranker.py`, which only selects among derivations the grammar already produced. It does not train.
 
 ```text
 src/cpu_llm/realizer/evidence_schema.py    bundle, plan, derivation

@@ -315,7 +315,11 @@ class Appliance:
         objective: Any | None = None,
         hypothesis: Any | None = None,
         causal_graph: Any | None = None,
+        realization: str = "deterministic",
+        account: bool = False,
     ) -> dict[str, Any]:
+        if realization not in {"deterministic", "evidence_neural"}:
+            raise ValueError("realization must be deterministic or evidence_neural")
         if (payment is None) != (authority is None):
             raise ValueError("a payment turn needs both a proposal and an authority snapshot")
         self._deep_tensors = {}
@@ -368,6 +372,17 @@ class Appliance:
         self._previous_ids = [
             str(item["chunk_id"]) for item in result.get("related") or [] if item.get("chunk_id")
         ]
+        if realization != "deterministic" or account:
+            from cpu_llm.realizer.ranker import apply_realization
+
+            extra = apply_realization(
+                result,
+                realization=realization,
+                account=account,
+                memory=self.memory,
+                causal_edges=list(getattr(causal_graph, "edges", None) or []),
+            )
+            result = {**result, **extra}
         return result
 
     def sleep(self, max_pairs: int = 500) -> int:
