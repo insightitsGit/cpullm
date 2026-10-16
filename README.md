@@ -392,6 +392,10 @@ cpu-llm/
   samples/harbor-field-guide.pdf              two-page field guide used as an upload example
   docs/cpu-llm-white-paper.md                 technical white paper
   docs/cpu-llm-v1.8-semantic-memory.md        stage 1 of span-grounded event memory
+  docs/cpu-llm-v1.9-realizer.md               final wording design: rank licensed constructions
+  docs/cpu-llm-v1.8-copy-realizer.md          review record: sentence copy from retrieved roles
+  docs/cpu-llm-v1.9-evidence-conditioned-realizer-proposal.md
+                                                review record: claim plan and constrained actions
   docs/cpu-llm-v1.6.1-architecture-spec.md
 ```
 
@@ -428,6 +432,9 @@ cpu-llm/
 - Author: **Amin Parva**, AI Architect & Staff Applied AI Engineer ([parvaamin@gmail.com](mailto:parvaamin@gmail.com))
 - White paper: [docs/cpu-llm-white-paper.md](docs/cpu-llm-white-paper.md)
 - Design v1.8, stage 1: [docs/cpu-llm-v1.8-semantic-memory.md](docs/cpu-llm-v1.8-semantic-memory.md)
+- Design v1.9, the realizer (final, not built): [docs/cpu-llm-v1.9-realizer.md](docs/cpu-llm-v1.9-realizer.md)
+- Design v1.8, copy realizer (review record): [docs/cpu-llm-v1.8-copy-realizer.md](docs/cpu-llm-v1.8-copy-realizer.md)
+- Design v1.9, evidence-conditioned proposal (review record): [docs/cpu-llm-v1.9-evidence-conditioned-realizer-proposal.md](docs/cpu-llm-v1.9-evidence-conditioned-realizer-proposal.md)
 - This repository: [https://github.com/insightitsGit/cpullm](https://github.com/insightitsGit/cpullm)
 - Retrieval engine: [https://github.com/insightitsGit/VectorPrism](https://github.com/insightitsGit/VectorPrism)
 - License: [Apache License 2.0](LICENSE)
