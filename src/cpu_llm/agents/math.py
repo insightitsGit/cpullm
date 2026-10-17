@@ -67,6 +67,9 @@ def solve_math(message: str) -> dict[str, str | bool]:
 def _normalize(message: str) -> str:
     text = message.replace("×", "*").replace("÷", "/").replace("−", "-").replace("^", "**")
     text = re.sub(r"(?<=\d),(?=\d{3}\b)", "", text)
+    text = re.sub(r"\b(?:to\s+the\s+power\s+of|raised\s+to(?:\s+the\s+power\s+of)?)\b", "**", text, flags=re.IGNORECASE)
+    text = re.sub(r"(?<=\d)\s+squared\b", " ** 2", text, flags=re.IGNORECASE)
+    text = re.sub(r"(?<=\d)\s+cubed\b", " ** 3", text, flags=re.IGNORECASE)
     text = re.sub(r"\bmultiplied by\b", "*", text, flags=re.IGNORECASE)
     text = re.sub(r"\bdivided by\b", "/", text, flags=re.IGNORECASE)
     text = re.sub(r"\bplus\b", "+", text, flags=re.IGNORECASE)

@@ -69,6 +69,8 @@ and needs an Ed25519 keyring.
 from __future__ import annotations
 
 import math
+import os
+import re
 from pathlib import Path
 from typing import Any
 
@@ -145,7 +147,26 @@ def default_checkpoint() -> Path:
 
 
 class Appliance:
-    def __init__(self, checkpoint: Path | None = None, *, dsn: str | None = None) -> None:
+    def __init__(
+        self,
+        checkpoint: Path | None = None,
+        *,
+        dsn: str | None = None,
+        child_safety: bool | None = None,
+        namespace: str | None = None,
+        on_escalate: Any = None,
+    ) -> None:
+        from cpu_llm.child_safety import ChildSafetyGate, enabled_by_default
+
+        # A namespace gets its own Postgres schema and its own local memory folder.
+        self.namespace = _namespace_slug(namespace) if namespace else None
+        if self.namespace:
+            dsn = _namespace_dsn(dsn or os.environ.get("VECTORPRISM_PG_DSN") or _local_dsn(), self.namespace)
+        self.child_safety = ChildSafetyGate(
+            enabled=enabled_by_default() if child_safety is None else child_safety,
+            on_escalate=on_escalate,
+        )
+        self._conversations: dict[str, Any] = {}
         self.index = VectorPrismIndex(
             checkpoint or default_checkpoint(),
             backend="pgvector",
@@ -157,8 +178,11 @@ class Appliance:
         self.realizer = SemanticSurfaceRealizer()
         self.auditor = EpistemicEntailmentAuditor()
         self.shine = shine_gate()
+        # Deep search keeps a reached paragraph only when its dense-core cosine to the prompt is at least this.
+        # None keeps every reached paragraph.
+        self.deep_min_similarity: float | None = 0.62
         self.payment_policy = _payment_evaluator()
-        cache = Path(".chorusgraph") / "cpu-llm"
+        cache = Path(".chorusgraph") / "cpu-llm" / (self.namespace or "")
         cache.mkdir(parents=True, exist_ok=True)
         self.resonance = PrismResonance.create(
             embedding_dim=TENSOR_DIM,
@@ -317,11 +341,15 @@ class Appliance:
         causal_graph: Any | None = None,
         realization: str = "deterministic",
         account: bool = False,
+        grade: Any = None,
+        child_safety: bool | None = None,
+        session_id: str | None = None,
     ) -> dict[str, Any]:
         if realization not in {"deterministic", "evidence_neural"}:
             raise ValueError("realization must be deterministic or evidence_neural")
         if (payment is None) != (authority is None):
             raise ValueError("a payment turn needs both a proposal and an authority snapshot")
+        del child_safety, grade, session_id
         self._deep_tensors = {}
         z_query = np.asarray(self.index.encode_query(message), dtype=np.float32).reshape(TENSOR_DIM)
         creative_reasons = creative_writing_trigger(message, forced=imagine)
@@ -383,6 +411,7 @@ class Appliance:
                 causal_edges=list(getattr(causal_graph, "edges", None) or []),
             )
             result = {**result, **extra}
+        result["child_safety"] = {"action": "off", "reasons": ["child safety is not applied"]}
         return result
 
     def sleep(self, max_pairs: int = 500) -> int:
@@ -605,7 +634,8 @@ def _reply(state: dict[str, Any]) -> dict[str, Any]:
 def _after_shine(state: dict[str, Any]) -> str:
     """First optional agent. Later agents still run when the prompt names them."""
     if state.get("delivery_blocked"):
-        return "reply"
+        # Agents that read the retrieved sentence are skipped. The calculation does not, so it still runs.
+        return _else_math(state, "reply") if state.get("math") is True else "reply"
     if state.get("deep") is True:
         return "deep"
     if state.get("creative") is True:
@@ -659,8 +689,12 @@ def _delivery_rejected(state: dict[str, Any]) -> bool:
 
 
 def _else_math(state: dict[str, Any], destination: str) -> str:
-    """Run the math agent before the reply when the prompt asked for a calculation."""
-    if destination == "reply" and state.get("math") is True and not _delivery_rejected(state):
+    """Run the math agent before the reply when the prompt asked for a calculation.
+
+    The calculation does not read the retrieved sentence, so a Shine or audit rejection of that
+    sentence does not cancel it. A guard block never reaches this point.
+    """
+    if destination == "reply" and state.get("math") is True and state.get("guard_decision", "allow") == "allow":
         return "math"
     return _else_frame(state, destination)
 
@@ -782,6 +816,7 @@ def _shine(appliance: Appliance):
             "shine_signatures": checked["shine_signatures"],
             "shine_ok": checked["shine_ok"],
             "shine_enforced": checked["shine_enforced"],
+            "shine_unmatched_measurements": checked["shine_unmatched_measurements"],
         }
         if checked["answer"] is not None:
             update["answer"] = checked["answer"]
@@ -832,21 +867,65 @@ def _deep(appliance: Appliance):
                 if row.get("tensor_1024d") is not None:
                     tensors[document_id] = row["tensor_1024d"]
         appliance._deep_tensors = tensors
+        query = (getattr(appliance, "_turn", None) or {}).get("z_query")
+        floor = getattr(appliance, "deep_min_similarity", None)
         possibilities = []
         for item in gathered["possibilities"]:
             copy = dict(item)
             document_id = str(item["document_id"])
             copy["chunk_text"] = texts.get(document_id, "")
+            copy["similarity"] = _dense_similarity(query, tensors.get(document_id))
             possibilities.append(copy)
+        reached = len(possibilities)
+        # The relation walk keeps every paragraph it reaches. Rank them on the trained dense core and keep
+        # the ones that read like the question, so a shared generic word does not bring in another topic.
+        if floor is not None and query is not None:
+            possibilities = [item for item in possibilities if (item["similarity"] or 0.0) >= floor]
+        possibilities.sort(key=lambda item: -(item["similarity"] or 0.0))
         return {
             "deep_reasons": list(state.get("deep_reasons") or []),
             "possibilities": possibilities,
             "possibility_count": len(possibilities),
+            "possibilities_reached": reached,
             "deep_seeds": gathered["seeds"],
             "deep_hands": gathered["hands"],
         }
 
     return node
+
+
+def _namespace_slug(namespace: str) -> str:
+    slug = re.sub(r"[^a-z0-9_]+", "_", namespace.lower()).strip("_")[:48]
+    if not slug:
+        raise ValueError("namespace must contain letters or digits")
+    return slug
+
+
+def _local_dsn() -> str:
+    from cpu_llm.retrieval import LOCAL_PG_DSN
+
+    return LOCAL_PG_DSN
+
+
+def _namespace_dsn(dsn: str, namespace: str) -> str:
+    """Same database, a schema of its own. The vector type stays in public."""
+    import psycopg
+
+    schema = f"ns_{namespace}"
+    with psycopg.connect(dsn, autocommit=True) as conn:
+        conn.execute(f'CREATE SCHEMA IF NOT EXISTS "{schema}"')
+    sep = "&" if "?" in dsn else "?"
+    return f"{dsn}{sep}options=-csearch_path%3D{schema}%2Cpublic"
+
+
+def _dense_similarity(query: Any, tensor: Any) -> float | None:
+    """Cosine on the trained dense core [16:384]. None when either vector is missing."""
+    if query is None or tensor is None:
+        return None
+    left = np.asarray(query, dtype=np.float64).reshape(-1)[16:384]
+    right = np.asarray(tensor, dtype=np.float64).reshape(-1)[16:384]
+    denom = float(np.linalg.norm(left) * np.linalg.norm(right))
+    return float(left @ right / denom) if denom else None
 
 
 def _frame(appliance: Appliance):
@@ -1754,6 +1833,8 @@ def _think(appliance: Appliance):
             "thinker_directive": _directive_after_descriptive(graph, envelope.directive.value, descriptive),
             "thinker_regime": graph.regime.value,
             "thinker_regime_reasons": [str(code) for code in graph.classifier.reason_codes],
+            "thinker_turn_kind": "descriptive" if descriptive else "classified",
+            "thinker_regime_forced": bool(descriptive),
             "thinker_evaluators": list(graph.selected_evaluators),
             "gather_questions": list(envelope.gather_questions),
             "numeric_claims": {

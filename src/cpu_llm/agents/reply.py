@@ -48,10 +48,13 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
     math_only = bool(math_text) and state.get("math") is True and not _other_agent(state) and not _delivery_holds(state)
     frame_text = frame_reply_text(state)
     frame_only = bool(frame_text) and not _other_agent(state) and not math_text
+    situation = _situation(state, math_only=math_only, frame_only=frame_only)
     if math_only:
         lines = [math_text]
     elif frame_only:
         lines = [frame_text]
+    elif situation is not None:
+        lines = [situation["text"]]
     brief = state.get("brief") or {}
     if state.get("summarize") is True:
         lines.extend(["", "Summary:", brief.get("summary") or "No stored sentence to summarize."])
@@ -92,8 +95,20 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
         "follow_ups": follow_ups,
         "next_steps": next_steps,
         "discovery_suggested": bool(report.get("discovery_suggested")),
+        "situation": situation,
         "text": "\n".join(lines).strip(),
     }
+
+
+def _situation(state: dict[str, Any], *, math_only: bool, frame_only: bool) -> dict[str, Any] | None:
+    """A rule answer from the retrieved passages. Memory, math, and a blocked delivery stay as they are."""
+    if state.get("guard_decision") not in (None, "allow"):
+        return None
+    if _delivery_holds(state) or math_only or frame_only or _other_agent(state):
+        return None
+    from cpu_llm.answering import retrieved_chunks, situation_from_chunks
+
+    return situation_from_chunks(state.get("message") or "", retrieved_chunks(state))
 
 
 def _possibility_lines(possibilities: list[dict[str, Any]]) -> list[str]:

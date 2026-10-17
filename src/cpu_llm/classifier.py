@@ -83,6 +83,14 @@ _MATH_REASONS: tuple[tuple[re.Pattern[str], str], ...] = (
         "the prompt contains an arithmetic expression",
     ),
     (
+        re.compile(
+            r"\d\s*(?:\*\*|\^)\s*\d|\d\s+(?:to\s+the\s+power\s+of|raised\s+to(?:\s+the\s+power\s+of)?)\s+\d"
+            r"|\d\s+(?:squared|cubed)\b",
+            re.IGNORECASE,
+        ),
+        "the prompt asks for a power",
+    ),
+    (
         re.compile(r"\d(?:\.\d+)?\s*(?:%|percent)\s+of\s+\d", re.IGNORECASE),
         "the prompt asks for a percentage",
     ),

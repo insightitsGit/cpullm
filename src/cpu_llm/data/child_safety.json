@@ -1,0 +1,785 @@
+{
+  "version": "cs-0.6.1",
+  "status": "unvalidated rule layer; calibrate and validate against the Retriever Labs benchmark before relying on it",
+  "enabled": true,
+  "grade_bands": {
+    "elementary": [
+      0,
+      5
+    ],
+    "middle": [
+      6,
+      8
+    ],
+    "high": [
+      9,
+      12
+    ],
+    "adult": [
+      13,
+      99
+    ]
+  },
+  "idioms": [
+    "die of embarrassment",
+    "dying of embarrassment",
+    "dying to (?:know|see|try|go|hear|meet|get)",
+    "(?:killing|crushing|nailing) it",
+    "(?:homework|test|exam|quiz|class|this|that|math|school|it|traffic|my back|my feet) (?:is|are) killing me",
+    "bored to death",
+    "scared to death",
+    "to die for",
+    "(?:laughed|laughing) so hard",
+    "i'?m dead\\b(?! serious)",
+    "(?:dead|deadly) (?:tired|serious|wrong)",
+    "kill time",
+    "killed it",
+    "die laughing",
+    "death in the family",
+    "(?:funeral|memorial) (?:leave|service)",
+    "dead ?line",
+    "disappear (?:into|in) (?:a |my |the )?(?:good )?(?:book|game|show|movie|music)",
+    "disappear for (?:the|a) (?:weekend|day|bit|while)",
+    "(?:could|would) kill for (?:a|some|an)\\b",
+    "(?:literally )?(?:going to|gonna) die if i (?:fail|don't|have to|get)\\b.{0,40}(?:lol|lmao|haha|😂)",
+    "be the death of me",
+    "end it here,? thanks",
+    "end (?:it|this) here\\b",
+    "don't want to be here,? (?:this|the) (?:class|lesson|meeting|party) is boring",
+    "give up on (?:this|that) (?:level|game|question|problem|puzzle)",
+    "suicide (?:squeeze|doors?|runs?|drills?|sprints?|lines?|king)",
+    "(?:a|the) suicide squeeze"
+  ],
+  "rules": [
+    {
+      "id": "ideation-explicit",
+      "category": "cognition",
+      "subcategory": "suicidal ideation",
+      "severity": "high",
+      "source": "NIMH warning signs; Columbia Protocol",
+      "patterns": [
+        "\\b(?:kill|killing|hurt|hurting) myself\\b",
+        "\\bsuicid(?:e|al)\\b",
+        "\\bend (?:my|it all|my own) life\\b|\\bend it all\\b",
+        "\\b(?:want|wanna|going|plan(?:ning)?|thinking about|think about|trying)\\b.{0,15}\\bto (?:die|be dead)\\b",
+        "\\bi (?:wish|want) i (?:was|were) (?:dead|never born)\\b",
+        "\\b(?:better off|be better) (?:without me|if i (?:was|were) (?:gone|dead))\\b",
+        "\\bno reason to (?:live|be alive|keep going)\\b",
+        "\\bdon'?t want to (?:live|be alive|exist|wake up)\\b",
+        "\\b(?:thinking|think|thought) (?:about|of) (?:ending|taking) my (?:own )?life\\b",
+        "\\btired of (?:living|being alive|life)\\b",
+        "\\bi (?:kinda |kind of |sort of )?want to die\\b",
+        "\\bi don't care if i die\\b",
+        "\\b(?:a|my) plan (?:for how|to|of how)\\b.{0,25}\\b(?:do it|end it|kill|die)\\b",
+        "\\bgoodbye (?:letters?|notes?|messages?) to\\b|\\bwrote (?:goodbye|suicide) (?:letters?|notes?)\\b",
+        "\\bthis is my last (?:week|day|night|time)\\b",
+        "\\bme quiero (?:morir|matar)\\b|\\bquiero (?:morir(?:me)?|matarme)\\b|\\bno quiero vivir\\b",
+        "\\bhow many (?:pills|tablets) (?:it )?(?:would|does|will|it'?d) (?:it )?take\\b",
+        "\\bsaving (?:up )?(?:(?:my|the|her|his) )?(?:mom'?s |dad'?s |parents'? )?(?:pills|medicine|meds)\\b"
+      ]
+    },
+    {
+      "id": "ideation-passive",
+      "category": "cognition",
+      "subcategory": "passive death wish",
+      "severity": "high",
+      "source": "NIMH warning signs; Joiner (perceived burdensomeness)",
+      "patterns": [
+        "\\bdon'?t want to be here anymore\\b",
+        "\\b(?:just )?want to disappear\\b",
+        "\\bwish i could (?:disappear|just disappear|stop existing|go to sleep and not wake up)\\b",
+        "\\beveryone would be better off\\b",
+        "\\bi'?m a burden\\b",
+        "\\b(?:notice|care|miss me|matter) if i (?:was|were|wasn't|weren't|was not|were not) (?:gone|here|around|alive)\\b",
+        "\\bif i (?:was|were) gone\\b",
+        "\\b(?:want|wish) (?:everything|it all|it) to (?:stop|end) (?:forever|for good|permanently)\\b",
+        "\\b(?:don't|do not|can't|cannot) see (?:a|any) (?:future|way out)\\b|\\bno future for me\\b",
+        "\\bno way out\\b(?:.{0,30}\\b(?:die|dying|dead)\\b)?",
+        "\\b(?:not|stop) existing\\b",
+        "\\bi'?m a burden\\b|\\b(?:a|such a) burden to\\b",
+        "\\bgave away (?:all )?(?:my|of my) (?:stuff|things|stuff to)\\b|\\bwon't (?:need|be needing) (?:it|them|my stuff|my things|any of it)\\b",
+        "\\bwon't be (?:a problem|around|here|a burden) (?:for|to) (?:anyone|anybody|you) (?:much )?longer\\b",
+        "\\b(?:will|'ll) (?:all )?be over soon for me\\b|\\bno point in me (?:being alive|living|existing)\\b"
+      ]
+    },
+    {
+      "id": "self-harm",
+      "category": "behavior",
+      "subcategory": "self-harm",
+      "severity": "high",
+      "source": "NIMH warning signs",
+      "patterns": [
+        "\\b(?:cut|cutting|burn|burning|harm|harming|hit|hitting|starve|starving) myself\\b",
+        "\\bself[- ]?harm(?:ing)?\\b",
+        "\\bhow (?:do i|to|can i|much|many)\\b.{0,25}\\b(?:overdose|pills to|cut deep|hang myself)\\b",
+        "\\b(?:been|started|keep|i) cutting (?:again|myself|my (?:arms?|wrists?|legs?))\\b|\\bcutting again\\b",
+        "\\bcut my (?:arms?|wrists?|legs?|skin)\\b",
+        "\\b(?:scratch|pick|bite|claw)(?:ing)? (?:at )?(?:my skin|myself)\\b.{0,25}\\bbleed",
+        "\\bhurt myself on purpose\\b|\\bhit my head (?:on|against) the wall\\b"
+      ]
+    },
+    {
+      "id": "abuse-disclosure",
+      "category": "disclosure",
+      "subcategory": "abuse",
+      "severity": "high",
+      "source": "NSPCC signs of abuse; CDC child maltreatment",
+      "patterns": [
+        "\\b(?:he|she|they|my (?:dad|mom|mum|father|mother|stepdad|stepmom|uncle|aunt|brother|sister|cousin|grandpa|grandma|coach|teacher|boyfriend|girlfriend|babysitter|neighbor))\\b.{0,25}\\b(?:hits|hit|beats|beat|chokes|choked|kicks|kicked|touches|touched|hurts|hurt) me\\b",
+        "\\b(?:abuses|abused|molests|molested) me\\b|\\bsexually (?:abused|assaulted)\\b",
+        "\\b(?:told|tells|said) (?:me )?(?:not to|i can'?t|i shouldn'?t) tell (?:anyone|anybody|my (?:mom|dad|parents|teacher))\\b",
+        "\\b(?:afraid|scared|too scared) to go home\\b",
+        "\\bbruises? (?:from|because of) (?:when )?(?:my|he|she|they|someone)\\b",
+        "\\b(?:locks?|locked) me (?:in|out of) (?:my room|the house|a room|the closet|the basement)\\b",
+        "\\b(?:haven't|hasn't|didn't|don't|won't) (?:fed|feed|given me (?:any )?food|give me (?:any )?food)\\b|\\bwithout (?:any )?food\\b.{0,20}\\b(?:days?|locked|room)\\b",
+        "\\b(?:grabbed|choked|slapped|punched|kicked|shoved) me\\b",
+        "\\b(?:adult|man|guy|grown-?up|someone|stranger)\\b.{0,30}\\b(?:online|i met online|on (?:discord|snapchat|instagram|roblox|tiktok))\\b.{0,40}\\b(?:pictures|photos|pics|nudes|meet (?:up|in person)|send (?:him|her|them))\\b",
+        "\\bhe said he'?d hurt me if i told\\b|\\b(?:our|a) secret what he does\\b",
+        "\\b(?:mi|mis) (?:papá|papa|mamá|mama|padre|madre|padrastro|madrastra)\\b.{0,20}\\b(?:me pega|me golpea|me lastima)\\b|\\bme (?:pega|golpea)\\b",
+        "\\bno food\\b.{0,40}\\b(?:no one|nobody)(?: is)? (?:home|here)\\b|\\b(?:no one|nobody) (?:feeds|fed) (?:me|us)\\b"
+      ]
+    },
+    {
+      "id": "worthlessness",
+      "category": "cognition",
+      "subcategory": "worthlessness / hopelessness",
+      "severity": "low",
+      "severity_by_band": {
+        "elementary": "low",
+        "middle": "mid",
+        "high": "mid",
+        "adult": "mid"
+      },
+      "source": "NIMH warning signs (hopelessness); age-flip subset",
+      "patterns": [
+        "\\b(?:i'?m|i am) (?:not good at anything|no good at anything|worthless|useless|a failure|a loser)\\b",
+        "\\bi'?m not good enough\\b",
+        "\\bnobody (?:likes|cares about|loves|wants) me\\b|\\beveryone hates me\\b",
+        "\\bi hate myself\\b",
+        "\\bi feel (?:hopeless|worthless|empty)\\b",
+        "\\bnobody (?:at school |in my class |here )?(?:likes|cares about|wants) me\\b",
+        "\\bcan't stop crying\\b",
+        "\\balways (?:alone|by myself)\\b.{0,20}\\bno friends\\b|\\bno friends\\b"
+      ]
+    },
+    {
+      "id": "bullying",
+      "category": "disclosure",
+      "subcategory": "bullying",
+      "severity": "mid",
+      "source": "CDC bullying; NSPCC",
+      "patterns": [
+        "\\b(?:being|getting|get|been) bullied\\b",
+        "\\b(?:they|kids|people|everyone) (?:keep |always )?(?:bully|bullies|bullying|pick on|picking on|make fun of|making fun of) me\\b",
+        "\\b(?:kids|they|someone|people|he|she)\\b.{0,15}\\b(?:pushed|shoved|tripped|punched|hit) me\\b.{0,25}\\b(?:at school|down the stairs|in the hall|on the bus)\\b"
+      ]
+    },
+    {
+      "id": "low-affect",
+      "category": "affect",
+      "subcategory": "distress",
+      "severity": "low",
+      "source": "affect (ordinary feelings; no intervention)",
+      "patterns": [
+        "\\bi(?:'m| am| feel) (?:so |really |very )?(?:sad|stressed|anxious|scared|lonely|upset|overwhelmed|nervous)\\b"
+      ]
+    },
+    {
+      "id": "ambiguous-distress",
+      "category": "affect",
+      "subcategory": "ambiguous distress",
+      "severity": "need_more_info",
+      "source": "needs more information (could be ordinary frustration)",
+      "patterns": [
+        "\\bi can'?t (?:do this|take (?:this|it)|go on) anymore\\b",
+        "\\bwhat'?s the point (?:of (?:anything|living|trying)|anymore)\\b",
+        "\\bnothing matters\\b",
+        "\\bi give up on everything\\b",
+        "\\b(?:so )?tired of everything\\b",
+        "\\bdon't care what happens to me\\b"
+      ]
+    },
+    {
+      "id": "eating-food",
+      "category": "behavior",
+      "subcategory": "disordered eating / food insecurity",
+      "severity": "mid",
+      "source": "NIMH (eating disorders); CDC food insecurity",
+      "patterns": [
+        "\\b(?:haven't|have not|not) (?:eaten|eating) (?:much |anything )?(?:for|in) days\\b",
+        "\\bmake myself (?:throw up|vomit|puke)\\b",
+        "\\b(?:starving|starve) myself\\b"
+      ]
+    }
+  ],
+  "ppra": {
+    "political affiliations or beliefs": "\\b(?:democrat|republican|political party|vote for|liberal|conservative)\\b",
+    "mental or psychological problems": "\\b(?:depress(?:ed|ion)|anxiety disorder|adhd|bipolar|therapist|therapy|mental health|eating disorder)\\b",
+    "sex behavior or attitudes": "\\b(?:sex|sexual|hook(?:ed)? up|porn)\\b",
+    "illegal, anti-social, self-incriminating or demeaning behavior": "\\b(?:stole|steal|shoplift(?:ed|ing)?|vap(?:e|ing)|weed|drunk|got arrested|did drugs|smoke pot)\\b",
+    "critical appraisals of close family": "\\bmy (?:mom|dad|mum|parents|brother|sister|family) (?:is|are) (?:stupid|mean|awful|terrible|the worst|crazy)\\b",
+    "privileged relationships": "\\bmy (?:lawyer|attorney|doctor|psychiatrist|pastor|priest|minister|rabbi|imam)\\b",
+    "religious practices or beliefs": "\\b(?:church|mosque|synagogue|temple|pray(?:ing)?|my religion|god)\\b",
+    "income": "\\b(?:how much (?:money )?my (?:parents|mom|dad) make|our income|on welfare|food stamps|we(?:'re| are) poor|can'?t afford food)\\b"
+  },
+  "response_checks": {
+    "secrecy": {
+      "hard": true,
+      "source": "golden question: secrecy",
+      "pattern": "\\b(?:i (?:won'?t|will not|wont|promise not to) tell (?:anyone|anybody|your (?:parents|mom|dad|teacher))|(?:this|it) (?:stays|will stay) between (?:us|you and me)|our (?:little )?secret|keep (?:this|it) (?:a )?secret|no one (?:has to|needs to|will ever) know)\\b"
+    },
+    "anthropomorphism": {
+      "hard": true,
+      "source": "golden question: anthropomorphism",
+      "pattern": "\\b(?:i (?:love|miss) you|i'?m your (?:friend|best friend|girlfriend|boyfriend)|as your (?:friend|best friend)|i (?:feel|felt) (?:sad|happy|lonely|hurt|scared) too|i know exactly how you feel because i)\\b"
+    },
+    "harm_reduction": {
+      "hard": true,
+      "source": "golden question: harm reduction",
+      "pattern": "\\b(?:\\d+\\s*(?:pills|tablets|mg)\\b|lethal dose|painless way|how to (?:cut|overdose|hang))"
+    },
+    "human_in_the_loop": {
+      "hard": true,
+      "applies_at": [
+        "high"
+      ],
+      "source": "golden question: human in the loop",
+      "required": "\\b(?:trusted adult|grown-?up|counselor|counsellor|teacher|parent|988|911|hotline|helpline|1-800)\\b"
+    },
+    "proportional_response": {
+      "hard": false,
+      "applies_at": [
+        "none",
+        "low"
+      ],
+      "source": "golden question: tone and proportional response",
+      "pattern": "\\b(?:988|911|crisis line|hotline|suicid\\w*|are you safe|emergency services)\\b"
+    }
+  },
+  "templates": {
+    "high": {
+      "cognition": {
+        "elementary": "I'm really glad you told me. What you're feeling matters, and you don't have to handle it alone. Please tell a grown-up you trust right now, like a parent, your teacher, or the school counselor. If you might be in danger, call 911. You can also call or text 988 to talk to someone whose job is helping kids.",
+        "default": "I'm really glad you told me, and I'm sorry you're carrying this. You deserve support from a person, not just a study tool. Please reach out today to someone you trust, like a parent, teacher, or school counselor. You can call or text 988 (Suicide & Crisis Lifeline) any time, and if you are in immediate danger, call 911."
+      },
+      "behavior": {
+        "elementary": "Thank you for telling me. You matter, and you deserve help to feel better. Please tell a grown-up you trust right away, like a parent, your teacher, or the school counselor. If you are hurt or in danger, call 911. You can also call or text 988.",
+        "default": "Thank you for telling me. You deserve care and support with this, and you don't have to deal with it alone. Please talk to someone you trust today, like a parent, teacher, or school counselor. You can call or text 988 any time, and if you are hurt or in danger, call 911."
+      },
+      "disclosure": {
+        "elementary": "Thank you for telling me. It is not your fault, and you deserve to be safe. Please tell a grown-up you trust, like your teacher or the school counselor, as soon as you can. You can also call the Childhelp hotline at 1-800-422-4453. If you are in danger right now, call 911.",
+        "default": "Thank you for telling me. What you described is not your fault, and you deserve to be safe. Please tell a trusted adult, like a teacher or school counselor, as soon as you can. You can also call the Childhelp National Child Abuse Hotline at 1-800-422-4453, and if you are in danger right now, call 911."
+      }
+    },
+    "mid": {
+      "elementary": "That sounds really hard, and it's okay to feel that way. Talking to a grown-up you trust, like a parent or your teacher, can help a lot. I'm here to help with your schoolwork whenever you're ready.",
+      "default": "That sounds really hard, and it makes sense to feel that way sometimes. Talking it through with someone you trust, like a friend, parent, teacher, or school counselor, can really help. I'm here to help with your schoolwork whenever you're ready."
+    },
+    "check_in": {
+      "elementary": "Before we keep going: how are you feeling? If something is bothering you, it's okay to talk to a grown-up you trust.",
+      "default": "Before we keep going, I want to check in: how are you doing? If something is weighing on you, talking to someone you trust can help."
+    },
+    "blocked_response": "I can't give that answer. Let's get back to your question, or you can ask it in a different way."
+  },
+  "normalize": {
+    "slang": {
+      "\\bkms\\b": "kill myself",
+      "\\bkys\\b": "kill yourself",
+      "\\bunalive\\b": "kill",
+      "\\bsewer ?slide\\b": "suicide",
+      "\\bself[- ]delete\\b": "kill myself",
+      "\\bsuicide (?:watch|bait)\\b": "suicide",
+      "\\bwanna\\b": "want to",
+      "\\bgonna\\b": "going to",
+      "\\bgotta\\b": "got to",
+      "\\bidc\\b": "i don't care",
+      "\\bidk\\b": "i don't know",
+      "\\bim\\b": "i'm",
+      "\\bive\\b": "i've",
+      "\\bdont\\b": "don't",
+      "\\bcant\\b": "can't",
+      "\\bwont\\b": "won't",
+      "\\bdoesnt\\b": "doesn't",
+      "\\bdidnt\\b": "didn't",
+      "\\bhavent\\b": "haven't",
+      "\\bisnt\\b": "isn't",
+      "\\bwnat\\b": "want",
+      "\\bwant ?2\\b": "want to",
+      "\\bded\\b": "dead",
+      "\\bu\\b": "you",
+      "\\bur\\b": "your",
+      "\\b(?:ngl|tbh|fr|rn|lowkey|highkey|lol|lmao|smh)\\b": " ",
+      "\\bto dye\\b(?! (?:my|your|her|his|the|it|them|a|some|this|that)\\b)": "to die"
+    },
+    "leet": {
+      "1": "i",
+      "3": "e",
+      "0": "o",
+      "4": "a",
+      "@": "a",
+      "$": "s",
+      "5": "s",
+      "7": "t"
+    }
+  },
+  "semantic": {
+    "enabled": true,
+    "model": "sentence-transformers/all-mpnet-base-v2",
+    "high": 0.58,
+    "nmi": 0.55,
+    "margin": 0.05,
+    "risk": [
+      {
+        "text": "I want to end my life",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "suicidal ideation"
+      },
+      {
+        "text": "I am thinking about killing myself",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "suicidal ideation"
+      },
+      {
+        "text": "I don't want to be alive anymore",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "suicidal ideation"
+      },
+      {
+        "text": "I would rather be dead",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "suicidal ideation"
+      },
+      {
+        "text": "I keep having thoughts of dying",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "suicidal ideation"
+      },
+      {
+        "text": "Life isn't worth living for me",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "suicidal ideation"
+      },
+      {
+        "text": "I wish I could stop being alive",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "suicidal ideation"
+      },
+      {
+        "text": "I want my life to be over",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "suicidal ideation"
+      },
+      {
+        "text": "I think about taking my own life",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "suicidal ideation"
+      },
+      {
+        "text": "I've decided I'm going to end things",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "suicidal ideation"
+      },
+      {
+        "text": "I'm going to do it soon and nobody can stop me",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "suicidal ideation"
+      },
+      {
+        "text": "My family would be happier if I didn't exist",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "passive death wish / burdensomeness"
+      },
+      {
+        "text": "I'm just a weight on everyone around me",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "passive death wish / burdensomeness"
+      },
+      {
+        "text": "People would be relieved if I was gone",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "passive death wish / burdensomeness"
+      },
+      {
+        "text": "I won't be around for much longer",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "passive death wish / burdensomeness"
+      },
+      {
+        "text": "I feel like I shouldn't exist",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "passive death wish / burdensomeness"
+      },
+      {
+        "text": "There's nothing left for me in the future",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "passive death wish / burdensomeness"
+      },
+      {
+        "text": "I can't picture myself getting older",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "passive death wish / burdensomeness"
+      },
+      {
+        "text": "I want to fall asleep and stay asleep forever",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "passive death wish / burdensomeness"
+      },
+      {
+        "text": "I'm done with everything for good",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "passive death wish / burdensomeness"
+      },
+      {
+        "text": "I just want the pain to end permanently",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "passive death wish / burdensomeness"
+      },
+      {
+        "text": "No one would miss me",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "passive death wish / burdensomeness"
+      },
+      {
+        "text": "It would be easier for everyone if I wasn't around",
+        "severity": "high",
+        "category": "cognition",
+        "subcategory": "passive death wish / burdensomeness"
+      },
+      {
+        "text": "I've been looking up ways to die",
+        "severity": "high",
+        "category": "behavior",
+        "subcategory": "planning / preparation"
+      },
+      {
+        "text": "I know how I would do it",
+        "severity": "high",
+        "category": "behavior",
+        "subcategory": "planning / preparation"
+      },
+      {
+        "text": "I've been collecting pills",
+        "severity": "high",
+        "category": "behavior",
+        "subcategory": "planning / preparation"
+      },
+      {
+        "text": "I've already said goodbye to my friends",
+        "severity": "high",
+        "category": "behavior",
+        "subcategory": "planning / preparation"
+      },
+      {
+        "text": "I'm giving my things away because I won't need them",
+        "severity": "high",
+        "category": "behavior",
+        "subcategory": "planning / preparation"
+      },
+      {
+        "text": "I wrote a note for my family for after I'm gone",
+        "severity": "high",
+        "category": "behavior",
+        "subcategory": "planning / preparation"
+      },
+      {
+        "text": "I hurt my body when I feel bad",
+        "severity": "high",
+        "category": "behavior",
+        "subcategory": "self-harm"
+      },
+      {
+        "text": "I've been making cuts on my arms",
+        "severity": "high",
+        "category": "behavior",
+        "subcategory": "self-harm"
+      },
+      {
+        "text": "I harm myself to cope",
+        "severity": "high",
+        "category": "behavior",
+        "subcategory": "self-harm"
+      },
+      {
+        "text": "I hit myself when I'm angry at myself",
+        "severity": "high",
+        "category": "behavior",
+        "subcategory": "self-harm"
+      },
+      {
+        "text": "I punish myself by hurting my skin",
+        "severity": "high",
+        "category": "behavior",
+        "subcategory": "self-harm"
+      },
+      {
+        "text": "I burned my arm on purpose",
+        "severity": "high",
+        "category": "behavior",
+        "subcategory": "self-harm"
+      },
+      {
+        "text": "An adult at home hurts me",
+        "severity": "high",
+        "category": "disclosure",
+        "subcategory": "abuse / neglect"
+      },
+      {
+        "text": "My parent beats me when they're angry",
+        "severity": "high",
+        "category": "disclosure",
+        "subcategory": "abuse / neglect"
+      },
+      {
+        "text": "Someone touched me in a way that felt wrong",
+        "severity": "high",
+        "category": "disclosure",
+        "subcategory": "abuse / neglect"
+      },
+      {
+        "text": "An adult told me to keep what they do to me a secret",
+        "severity": "high",
+        "category": "disclosure",
+        "subcategory": "abuse / neglect"
+      },
+      {
+        "text": "I'm afraid of what will happen when I get home",
+        "severity": "high",
+        "category": "disclosure",
+        "subcategory": "abuse / neglect"
+      },
+      {
+        "text": "My family doesn't give me enough food to eat",
+        "severity": "high",
+        "category": "disclosure",
+        "subcategory": "abuse / neglect"
+      },
+      {
+        "text": "I get locked up as a punishment",
+        "severity": "high",
+        "category": "disclosure",
+        "subcategory": "abuse / neglect"
+      },
+      {
+        "text": "I have marks where someone hit me",
+        "severity": "high",
+        "category": "disclosure",
+        "subcategory": "abuse / neglect"
+      },
+      {
+        "text": "A grown-up I met on a game asked for photos of me",
+        "severity": "high",
+        "category": "disclosure",
+        "subcategory": "abuse / neglect"
+      },
+      {
+        "text": "Someone older online wants to meet me secretly",
+        "severity": "high",
+        "category": "disclosure",
+        "subcategory": "abuse / neglect"
+      },
+      {
+        "text": "I'm useless and everyone knows it",
+        "severity": "mid",
+        "category": "cognition",
+        "subcategory": "worthlessness / isolation"
+      },
+      {
+        "text": "I hate who I am",
+        "severity": "mid",
+        "category": "cognition",
+        "subcategory": "worthlessness / isolation"
+      },
+      {
+        "text": "I don't have a single friend",
+        "severity": "mid",
+        "category": "cognition",
+        "subcategory": "worthlessness / isolation"
+      },
+      {
+        "text": "Everybody avoids me",
+        "severity": "mid",
+        "category": "cognition",
+        "subcategory": "worthlessness / isolation"
+      },
+      {
+        "text": "I feel completely alone all the time",
+        "severity": "mid",
+        "category": "cognition",
+        "subcategory": "worthlessness / isolation"
+      },
+      {
+        "text": "I'm disgusting and I hate my body",
+        "severity": "mid",
+        "category": "cognition",
+        "subcategory": "worthlessness / isolation"
+      },
+      {
+        "text": "Other kids hurt me at school",
+        "severity": "mid",
+        "category": "disclosure",
+        "subcategory": "bullying"
+      },
+      {
+        "text": "People at school keep picking on me",
+        "severity": "mid",
+        "category": "disclosure",
+        "subcategory": "bullying"
+      },
+      {
+        "text": "I get teased every day and it won't stop",
+        "severity": "mid",
+        "category": "disclosure",
+        "subcategory": "bullying"
+      },
+      {
+        "text": "Some kids threatened to beat me up",
+        "severity": "mid",
+        "category": "disclosure",
+        "subcategory": "bullying"
+      },
+      {
+        "text": "I can't handle anything anymore",
+        "severity": "need_more_info",
+        "category": "affect",
+        "subcategory": "ambiguous distress"
+      },
+      {
+        "text": "Everything feels pointless",
+        "severity": "need_more_info",
+        "category": "affect",
+        "subcategory": "ambiguous distress"
+      },
+      {
+        "text": "I'm completely exhausted with life",
+        "severity": "need_more_info",
+        "category": "affect",
+        "subcategory": "ambiguous distress"
+      },
+      {
+        "text": "I don't know how much longer I can keep going",
+        "severity": "need_more_info",
+        "category": "affect",
+        "subcategory": "ambiguous distress"
+      }
+    ],
+    "benign": [
+      "This assignment is killing me",
+      "I'm dying to see the movie",
+      "I nearly died laughing",
+      "That joke killed me",
+      "I could die of boredom in this class",
+      "We crushed it at the game",
+      "I'm so dead, my mom will be mad I'm late",
+      "The character dies at the end of the novel",
+      "Why did the hero sacrifice himself in the story?",
+      "How did soldiers die in the trenches in World War 1?",
+      "Explain how cells die during apoptosis",
+      "What killed the dinosaurs?",
+      "Write a story where a knight fights a dragon",
+      "The villain wanted to destroy the city",
+      "My goldfish died and I'm a little sad",
+      "We went to my great aunt's funeral",
+      "What is the mortality rate of malaria?",
+      "How does medicine help sick people?",
+      "How many pills are in a bottle of vitamins?",
+      "How do I cut paper into a circle?",
+      "How do I cut the cake into equal slices?",
+      "I hurt my knee playing soccer",
+      "I fell off my bike and scraped my arm",
+      "I want to disappear under my blanket and read all day",
+      "I give up on this puzzle",
+      "I'm terrible at drawing hands",
+      "I don't want to go to practice today",
+      "I'm tired after the long hike",
+      "I'm so tired, I stayed up late gaming",
+      "Can you help me with my math homework?",
+      "What is the capital of Japan?",
+      "How do I write a thesis statement?",
+      "Explain photosynthesis",
+      "What's a good strategy for studying vocabulary?",
+      "Summarize this chapter for me",
+      "How much leave do employees get when a family member dies?",
+      "What happens if an employee is injured at work?",
+      "Is a doctor's note needed after a long sick leave?",
+      "Romeo and Juliet both die at the end",
+      "In history, many people starved during the famine",
+      "Police officers sometimes have to use force",
+      "What does it mean to 'kill time'?",
+      "My brother and I fight over the TV",
+      "I'm nervous about my test tomorrow",
+      "I'm a bit lonely since my friend moved",
+      "I feel sad when it rains"
+    ]
+  },
+  "classifier": {
+    "enabled": true,
+    "path": "child_safety_clf.json",
+    "high": 0.5,
+    "check_in": 0.25,
+    "corroborate_high": true,
+    "note": "Classifier-only high escalates on its own at >= strong_high; between high and strong_high it needs a second signal (rule or anchor), otherwise it becomes a check-in. strong_high was set after seeing fresh3.",
+    "strong_high": 0.85
+  },
+  "context_downgrade": {
+    "note": "A rule-only hit inside an educational or play framing becomes a check-in (never nothing), unless the semantic layer or the classifier independently says high.",
+    "educational": "\\b(?:project|report|essay|presentation|assignment|lesson|health class|science fair|prevention|awareness|warning signs|for (?:my )?(?:science|biology|history|english|health|psychology) (?:class|project|homework)|we (?:learned|talked|read) about|in (?:the )?(?:book|novel|story|play|movie))\\b",
+    "play": "\\b(?:while (?:we were )?playing|playing (?:around|tag|football|soccer)|play[- ]?fight(?:ing)?|wrestling|at practice|in the game|by accident|accidentally|as a joke)\\b",
+    "accident": "\\b(?:while (?:cooking|cutting|chopping|shaving|baking|playing|running)|on (?:the|a) (?:stove|oven|pan|paper|knife)|by accident|accidentally|how (?:do|should) i (?:clean|treat|bandage|care for)|does (?:that|it) need a bandage|paper cut)\\b"
+  },
+  "multi_turn": {
+    "window": 5,
+    "weights": {
+      "low": 1,
+      "need_more_info": 1,
+      "mid": 2
+    },
+    "upgrade_to_mid_at": 3,
+    "escalate_on_repeated_mid": true,
+    "persist_after_high_turns": 3,
+    "note": "Risk that builds across turns is upgraded; after a high, the session stays escalated and later replies must keep a person in the loop for a few turns."
+  },
+  "audit": {
+    "log_path": ".chorusgraph/cpu-llm/safety_audit.jsonl",
+    "log_message_text": true,
+    "log_actions": [
+      "replace",
+      "check_in",
+      "blocked_output"
+    ],
+    "note": "Every non-allow decision is appended as one JSON line. Message text is logged so a person can follow up; switch off with log_message_text=false where policy requires."
+  },
+  "output_filter": {
+    "enabled": true,
+    "assume_k12_when_grade_unknown": true,
+    "note": "Applied to what the pipeline returns to K-12 learners: explicit, instructional or graphic adult content is blocked.",
+    "patterns": {
+      "sexual content": "\\b(?:porn\\w*|sexual intercourse|have sex|having sex|sex positions?|nude photos?|naked (?:pictures|photos)|explicit sexual|orgasm\\w*|erotic\\w*)\\b",
+      "drug or alcohol instructions": "\\bhow to (?:make|cook|buy|get|use|smoke|inject|snort) (?:meth|cocaine|heroin|crack|weed|marijuana|lsd|drugs|alcohol|a vape)\\b|\\b(?:recipe|instructions) for (?:meth|cocaine|heroin|lsd)\\b",
+      "weapons instructions": "\\bhow to (?:make|build) (?:a )?(?:bomb|pipe bomb|explosive|gun|silencer|molotov)\\b",
+      "self-harm methods": "\\b(?:lethal dose|painless (?:way|method)s? to die|how to (?:kill|hang|cut) (?:yourself|myself))\\b",
+      "graphic violence": "\\b(?:disembowel\\w*|decapitat\\w*|dismember\\w*|torture (?:methods|techniques))\\b"
+    }
+  }
+}

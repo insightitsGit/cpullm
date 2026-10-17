@@ -103,6 +103,80 @@ def paragraphs_from_text(text: str) -> list[str]:
     return paragraphs
 
 
+_FURNITURE = re.compile(
+    r"^\s*(?:_{4,}|={4,}.*|\d{1,2}-\d{1,3}|\d{1,2}/\d{2,4}|[ivxlc]{1,5}|page \d+(?: of \d+)?|"
+    r"\d{1,2}/\d{2,4}\s+\d{1,2}-\d{1,3}|\d{1,2}-\d{1,3}\s+\d{1,2}/\d{2,4})\s*$",
+    re.IGNORECASE,
+)
+_LABEL = re.compile(r"^\s*(?P<label>\d{1,2}[-.]\d{1,3}\.?|[a-z]\.|\(\d{1,2}\)|\([a-z]\))\s+(?P<rest>\S.*)$")
+_CHAPTER = re.compile(r"^\s*(?:CHAPTER|SECTION)\s+\w+\.?\s+.+$")
+_MAX_CHUNK = 1400
+
+
+def _label_level(label: str) -> int:
+    if re.match(r"\d{1,2}[-.]\d{1,3}\.?$", label):
+        return 1
+    if re.match(r"[a-z]\.$", label):
+        return 2
+    if re.match(r"\(\d{1,2}\)$", label):
+        return 3
+    return 4
+
+
+def structured_paragraphs(text: str) -> list[str]:
+    """Chunks for an outline extracted from a PDF.
+
+    Page numbers, dates, and rules are dropped. Hard-wrapped lines are joined.
+    Numbered items become units, and a list header ending in ':' stays with its
+    items. Every nested chunk starts with its section title. A document without
+    that numbering falls back to ordinary paragraphs.
+    """
+    lines = [ln.rstrip() for ln in text.replace("\x00", " ").replace("\r", "\n").split("\n")]
+    lines = [ln for ln in lines if ln.strip() and not _FURNITURE.match(ln)]
+    items: list[dict] = []
+    for raw in lines:
+        line = re.sub(r"\s+", " ", raw).strip()
+        found = _LABEL.match(line)
+        if found:
+            items.append({"label": found["label"], "level": _label_level(found["label"]), "text": found["rest"]})
+        elif _CHAPTER.match(line):
+            items.append({"label": "", "level": 0, "text": line})
+        elif items:
+            prev = items[-1]
+            prev["text"] = prev["text"][:-1] + line if prev["text"].endswith("-") else f"{prev['text']} {line}"
+        else:
+            items.append({"label": "", "level": 0, "text": line})
+    if sum(1 for it in items if it["level"] in {1, 2}) < 5:
+        return paragraphs_from_text(text)
+
+    chunks: list[str] = []
+    section = ""
+    index = 0
+    while index < len(items):
+        item = items[index]
+        if item["level"] == 0:
+            index += 1
+            continue
+        if item["level"] == 1:
+            title = re.split(r"(?<=[.])\s", item["text"], maxsplit=1)[0].rstrip(".")
+            section = f"{item['label'].rstrip('.')} {title}".strip()
+        body = f"{item['label']} {item['text']}".strip()
+        nxt = index + 1
+        if item["text"].rstrip().endswith(":") or len(item["text"]) < 60:
+            while nxt < len(items) and items[nxt]["level"] > item["level"]:
+                body += f" {items[nxt]['label']} {items[nxt]['text']}"
+                nxt += 1
+        prefix = f"{section}. " if section and item["level"] > 1 else ""
+        text_chunk = (prefix + body).strip()
+        while len(text_chunk) > _MAX_CHUNK:
+            cut = text_chunk.rfind(". ", 0, _MAX_CHUNK) + 1 or _MAX_CHUNK
+            chunks.append(text_chunk[:cut].strip())
+            text_chunk = (prefix + text_chunk[cut:].strip()).strip()
+        chunks.append(text_chunk)
+        index = nxt if nxt > index + 1 else index + 1
+    return [chunk for chunk in chunks if len(chunk) > 15]
+
+
 def _open_path(path: Path) -> list[SourceDocument]:
     if not path.exists():
         raise FileNotFoundError(path)
@@ -129,7 +203,7 @@ def _open_file(path: Path) -> list[SourceDocument]:
     elif suffix in {".html", ".htm"}:
         documents = [_text_document(path.stem, _html_text(path.read_text(encoding="utf-8")))]
     elif suffix == ".pdf":
-        documents = [_text_document(path.stem, _pdf_text(path))]
+        documents = [SourceDocument(path.stem, tuple(structured_paragraphs(_pdf_text(path))))]
     elif suffix == ".docx":
         documents = [_text_document(path.stem, _docx_text(path))]
     elif suffix == ".epub":

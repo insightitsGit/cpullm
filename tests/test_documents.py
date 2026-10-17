@@ -9,7 +9,7 @@ import openpyxl
 import pytest
 from pypdf import PdfReader
 
-from cpu_llm.documents import chunks_for, open_source, paragraphs_from_text
+from cpu_llm.documents import chunks_for, open_source, paragraphs_from_text, structured_paragraphs
 from cpu_llm.documents import SourceDocument
 from cpu_llm.relations import add_edges, load_edges
 
@@ -26,6 +26,21 @@ def test_a_developer_names_the_paragraphs_directly():
         ("field-guide-p0001", "The European lobster is Homarus gammarus."),
         ("field-guide-p0002", "Homarus gammarus is a species of clawed lobster."),
     ]
+
+
+def test_an_outline_keeps_the_section_title_on_each_item():
+    text = "\n".join([
+        "page 1",
+        "3-28. Travel.",
+        "a. Maximum Advance. The advance is 500 dollars.",
+        "b. Receipts. A receipt is required.",
+        "3-29. Leave.",
+        "a. Notice. Notice is required.",
+        "b. Approval. A manager approves the leave.",
+    ])
+    chunks = structured_paragraphs(text)
+    assert any(chunk.startswith("3-28. Travel.") and "Maximum Advance" in chunk and "Receipts" in chunk for chunk in chunks)
+    assert all("page 1" not in chunk for chunk in chunks)
 
 
 def test_plain_text_html_and_a_folder_keep_every_paragraph(tmp_path: Path):

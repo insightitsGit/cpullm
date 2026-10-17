@@ -6,14 +6,61 @@ exported; handbook signatures and the numeric copy check still run.
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
+from cpu_llm.measurements import _UNIT_MAP
 from prismshine.config import ShineConfig
 from prismshine.dropin import should_halt
 from prismshine.evidence.builder import bundle_from_dict
 from prismshine.gate import ShineGate
 
 SHINE_FALLBACK = "I don't have enough grounded evidence to answer that confidently."
+
+# With the judge off, Shine resolves to "flag" rather than "block". These flag gates are hard failures
+# (an unmatched fact, collapsed coverage, an unresolved contradiction), so they stop the sentence too.
+# MISSING_CAPABILITY_FLAG only says the judge is absent, so it stays a soft flag.
+HARD_FLAG_GATES = frozenset({
+    "T0_UNHEALTHY",
+    "T1_UNMATCHED_HARD_FACT",
+    "T1_UNMATCHED_FACTS",
+    "T2_COVERAGE_COLLAPSE",
+    "T2_COVERAGE_FAIL",
+    "T2_CONTRADICTION_UNRESOLVED",
+    "T2_CONTRADICTION_CUE",
+})
+
+_MEASURE = re.compile(r"(?<![\w.])(\d+(?:[.,]\d+)*)(?:\s*(?:-|–)\s*\d+(?:[.,]\d+)*)?(?:\s+([A-Za-z]+))?")
+
+
+def _measure_pairs(text: str) -> tuple[set[tuple[str, str]], set[str]]:
+    """(number, unit) pairs for numbers followed by a known unit, plus every bare number."""
+    pairs: set[tuple[str, str]] = set()
+    numbers: set[str] = set()
+    for match in _MEASURE.finditer(text):
+        number = match.group(1).replace(",", "")
+        numbers.add(number)
+        unit = _UNIT_MAP.get((match.group(2) or "").lower())
+        if unit:
+            pairs.add((number, unit))
+    return pairs, numbers
+
+
+def unmatched_measurements(answer: str | None, passages: list[str]) -> list[str]:
+    """Numbers in the answer that no passage states, or that a passage states with a different unit."""
+    if not answer:
+        return []
+    have_pairs: set[tuple[str, str]] = set()
+    have_numbers: set[str] = set()
+    for text in passages:
+        pairs, numbers = _measure_pairs(text)
+        have_pairs |= pairs
+        have_numbers |= numbers
+    pairs, numbers = _measure_pairs(answer)
+    missing = [f"{n} {u}" for n, u in sorted(pairs) if (n, u) not in have_pairs]
+    paired = {n for n, _ in pairs}
+    missing += [n for n in sorted(numbers - paired) if n not in have_numbers]
+    return missing
 
 
 def shine_gate() -> ShineGate:
@@ -94,7 +141,9 @@ def verify_grounding(
         }
     )
     verdict = gate.verify(bundle)
-    halted = should_halt(verdict, "block")
+    unmatched = unmatched_measurements(answer, [str(item["chunk_text"]) for item in related])
+    hard_flag = verdict.decision == "flag" and verdict.resolution_gate in HARD_FLAG_GATES
+    halted = should_halt(verdict, "block") or hard_flag or bool(unmatched)
     delivered = answer
     if halted and answer and not abstention:
         delivered = SHINE_FALLBACK
@@ -104,6 +153,7 @@ def verify_grounding(
         "shine_signatures": [hit.id for hit in verdict.signatures],
         "shine_ok": not halted,
         "shine_enforced": bool(halted and answer and not abstention),
+        "shine_unmatched_measurements": unmatched,
         "answer": delivered,
         "shine_notes": feedback,
     }

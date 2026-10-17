@@ -17,7 +17,9 @@ def test_a_plain_question_does_not_ask_for_math():
     assert _after_compare({"math": True, "compare": True}) == "math"
     assert _after_brief({"math": True}) == "math"
     assert _after_shine({"math": True}) == "math"
-    assert _after_shine({"delivery_blocked": True, "math": True}) == "reply"
+    assert _after_shine({"delivery_blocked": True, "math": True}) == "math"
+    assert _after_shine({"delivery_blocked": True, "math": True, "guard_decision": "block"}) == "reply"
+    assert _after_shine({"delivery_blocked": True}) == "reply"
 
 
 def test_the_math_agent_evaluates_the_expression():
@@ -28,6 +30,12 @@ def test_the_math_agent_evaluates_the_expression():
     assert solve_math("What is the sum of 1, 2, and 3?")["value"] == "6"
     assert solve_math("What is the average of 2, 4, and 6?")["value"] == "4"
     assert solve_math("What is 2^10?")["value"] == "1024"
+    assert solve_math("What is 2 to the power of 10?")["value"] == "1024"
+    assert solve_math("What is 3 raised to 4?")["value"] == "81"
+    assert solve_math("What is 10 squared?")["value"] == "100"
+    assert solve_math("What is 3 cubed?")["value"] == "27"
+    assert math_trigger("What is 2 ** 10?")
+    assert math_trigger("Ford was founded in 1903 and has 2 plants.") == []
     assert solve_math("What is 1,000 + 2?")["value"] == "1002"
     assert solve_math("What is 5 minus 12?")["value"] == "-7"
     failed = solve_math("What is 1 / 0?")
