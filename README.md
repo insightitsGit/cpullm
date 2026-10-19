@@ -1,6 +1,6 @@
 # cpu-llm
 
-**A deterministic, CPU-native epistemic reasoning appliance. Mathematically verified answers and multi-agent synthesis from indexed corpora without GPUs or hallucination.**
+**CPU-only answers and documents from the text you already stored.**
 
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![Runtime](https://img.shields.io/badge/runtime-CPU--only-2f9e7a)](src/cpu_llm/cpu_guard.py)
@@ -8,37 +8,49 @@
 [![License](https://img.shields.io/badge/license-Apache--2.0-orange)](LICENSE)
 [![GitHub](https://img.shields.io/badge/GitHub-insightitsGit%2Fcpullm-181717?logo=github)](https://github.com/insightitsGit/cpullm)
 
-> **One query in. An audited, mathematically verified assertion out.**
-> Derived directly from stored epistemic propositions and verified against source evidence spans. Zero probabilistic token guessing, zero cloud APIs, zero GPU overhead.
+cpu-llm is an open-source Python package for local document question answering. You index your own paragraphs, policies, PDFs, and spreadsheets. A later question is answered from that index on a CPU. A request that names a document and a topic, such as an email, essay, article, or report, lays the retrieved sentences into that format.
+
+The package name on PyPI is `cpu-llm`. The repository is public. The license is Apache-2.0.
 
 **Author:** [Amin Parva](mailto:parvaamin@gmail.com) · **Retrieval plane:** [VectorPrism](https://github.com/insightitsGit/VectorPrism) · **Version:** 1.7.1
 
 ---
 
-## Why cpu-llm?
+## What cpu-llm is for
 
-Modern enterprise AI faces a hard reliability barrier: **probabilistic autoregressive models (LLMs) cannot provide mathematical guarantees against hallucination.** In regulatory compliance, medical informatics, financial reporting, and statutory law, a fluent generative model is an unmonitored liability.
+People looking for a CPU LLM, a local RAG system, or a grounded alternative to a cloud chat API usually need one of these jobs. cpu-llm covers them when the words already exist in the store.
 
-`cpu-llm` is a neural-symbolic alternative. A frozen encoder stores each paragraph. The spoken sentence is rebuilt from a proposition cut out of that paragraph, and it is kept only when the rebuild matches the stored text and the auditor accepts it.
+* **Answer from your corpus.** A plain question returns a sentence rebuilt from a stored paragraph, after PrismShine and the entailment auditor accept it.
+* **Apply a stored rule.** Travel, expense, shipping, and threshold questions can return yes, no, contested, unknown, or a stated cause. The verdict comes from the retrieved rule, and the trained models only help the wording.
+* **Ask who, where, or which color.** Event-frame memory reads those roles from a sentence that round-trips.
+* **Draft a document you named.** Thirty-one stored formats include email, letter, memo, report, essay, article, blog post, press release, briefing, proposal, checklist, and FAQ. The body is the retrieved sentences about that topic. A recipient, date, or byline is filled only when a passage states it.
+* **Search, compare, summarize, or calculate.** Deep search, comparison, a brief, and arithmetic are optional steps on the same turn. The checked sentence stays in front, except when the question is only a calculation.
+* **Stay on one machine.** Retrieval and the six channel readings run on CPU. Startup clears `CUDA_VISIBLE_DEVICES` and refuses to continue if PyTorch was already imported with CUDA available. There is no Gemini client, no OpenAI client, and no decoder.
+
+```text
+your files and paragraphs → VectorPrism 1024-d index on PostgreSQL + pgvector
+                          → cpu-llm ask
+                          → a checked sentence, a rule verdict, or a filled document format
+```
+
+| | A GPU chat model | cpu-llm |
+| --- | --- | --- |
+| Where the words come from | A next-token sample | A stored sentence, a rule read from retrieved text, or a document layout of those sentences |
+| Hardware | A GPU, or a hosted GPU API | A 64-bit CPU and PostgreSQL 16 with pgvector |
+| A request to write an email or an essay | A newly composed draft | The named format, filled with sentences retrieved for that topic |
+| A question the store does not cover | A fluent guess is possible | The nearest retrieved sentence can still be quoted. Treat a bare quote as the nearest passage, and look for an explicit yes, no, or "not stated" when you need a verdict |
+
+---
+
+## Why the answer stays tied to the store
+
+A frozen encoder stores each paragraph. The spoken sentence is rebuilt from a proposition cut out of that paragraph, and it is kept only when the rebuild matches the stored text and the auditor accepts it.
 
 * **Deterministic semantic grounding.** `cpu-llm` does not sample a next-token distribution. It indexes paragraphs into 1024-dimensional tensors, cuts a proposition only when the realizer can repeat the paragraph's first sentence, and deliberates over that stored evidence. A paragraph that does not round-trip stays text. It is not given an invented triple.
 * **Audited truth invariants.** The spoken sentence is checked by PrismShine and by `EpistemicEntailmentAuditor`. A failed check withholds the sentence. If no stored sentence states a cause, the reply says so. Discovery stays off until the caller passes `discover=True`.
 * **Bare-metal CPU execution.** Retrieval and the six channel readings run on CPU. Startup clears `CUDA_VISIBLE_DEVICES` and refuses to continue if PyTorch was already imported with CUDA available. There is no Gemini client, no OpenAI client, and no decoder.
 
-```text
-stored paragraphs → VectorPrism 1024-d index
-                 → cpu-llm ask
-                 → checked sentence, plus any extra section the question asked for
-```
-
-```text
-prompt → GPU chat model → free-form tokens
-prompt → “CPU LLM” GGUF decode
-```
-
-The second picture is a different product.
-
-### What this library is for
+### How a reply is built
 
 * **A checked sentence, not a sample.** The words a caller hears are a stored sentence the realizer can rebuild. The auditor and PrismShine see that sentence. They do not see a free-form completion.
 * **One index for every source.** WikiText, the shipped artificial-intelligence primer, a PDF, a Word file, a spreadsheet, and paragraphs a developer already split land in the same pgvector index. A later question can hit any of them.
@@ -410,6 +422,42 @@ cpu-llm/
 
 ---
 
+## Questions people ask
+
+### What is cpu-llm?
+
+cpu-llm is a CPU-only Python package that answers from text you have indexed. The index is a VectorPrism 1024-dimensional store in PostgreSQL with pgvector. The spoken result is a checked sentence, a verdict read from a retrieved rule, or a document filled from those sentences.
+
+### Does cpu-llm need a GPU?
+
+cpu-llm runs on a 64-bit CPU. PostgreSQL 16 with the `vector` extension holds the index. The encoder is `sentence-transformers/all-mpnet-base-v2`, downloaded on first use and run on the CPU. Startup refuses a process where PyTorch already sees CUDA.
+
+### How is this different from a cloud chat API?
+
+A cloud chat API composes new prose. cpu-llm reads passages already in your index. Use it for handbook questions, policy thresholds, source-backed summaries, and documents whose body has to be those retrieved sentences. The [white paper](docs/cpu-llm-white-paper.md) describes the reasoning path. The [output-format design](docs/cpu-llm-output-formats-and-scale.md) describes the document layouts.
+
+### Can cpu-llm write an email, an essay, or an article?
+
+Yes, when the request names the format and the topic, and the topic is covered by the passages retrieved for that turn. The catalog has 31 formats, including email, letter, memo, report, essay, article, blog post, press release, briefing, proposal, checklist, and FAQ. A missing topic returns the catalog so you can pick a format. A missing recipient, date, or byline stays unfilled. The layout is stored in PrismCortex. A paraphrase of "write an email about …" is recognized by a semantic check and cached in ChorusGraph.
+
+### Which files can I put in the index?
+
+Plain text, Markdown, HTML, PDF, Word (`.docx`), Excel (`.xlsx`, `.xlsm`), CSV, and EPUB. A legacy `.doc` or `.xls` file is refused until you save it as `.docx` or `.xlsx`. WikiText-2 and a 70-paragraph artificial-intelligence primer ship with the package. Your files share that same index.
+
+### What does a question outside the store return?
+
+A rule the passages do not settle can come back unknown, contested, or as a request for the missing measurement. A question that matches no rule can still quote the nearest retrieved sentence. Read an explicit yes, no, or "not stated" when you need a verdict. A bare quotation is the nearest passage.
+
+### How fast is a question after the model is loaded?
+
+On the one machine measured on 13 October 2026, an Intel Core Ultra 9 275HX with 64 GB of RAM, loading took about 10 seconds. A later question took 60–66 ms, and a deep search that kept every match took about 0.6 s. Those figures are that machine's, and they predate the rule-wording models. The full table is under [Measured latency](#measured-latency).
+
+### Is cpu-llm open source?
+
+Yes. The code is Apache-2.0. The repository is [github.com/insightitsGit/cpullm](https://github.com/insightitsGit/cpullm). Install the PyPI package `cpu-llm` from a checkout with `pip install -e .` on Python 3.11 or newer. WikiText text inside the package stays under CC BY-SA 3.0 and GFDL.
+
+---
+
 ## Author
 
 **Amin Parva**, AI Architect & Staff Applied AI Engineer, wrote cpu-llm.
@@ -424,7 +472,7 @@ cpu-llm/
 
 ```bibtex
 @software{cpullm2026,
-  title  = {cpu-llm: A Deterministic CPU Epistemic Text Engine on VectorPrism},
+  title  = {cpu-llm: CPU-only answers and documents from stored text},
   author = {Amin Parva},
   year   = {2026},
   url    = {https://github.com/insightitsGit/cpullm},
