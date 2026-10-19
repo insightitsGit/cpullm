@@ -1,0 +1,29 @@
+.........F.....F.....s........................................F..F...... [ 90%]
+........                                                                 [100%]
+================================== FAILURES ===================================
+______________ test_a_typo_rewrite_and_a_prior_turn_stay_visible ______________
+C:\Users\parva\.codex\visualizations\2026\10\16\01a1437c-705e-7ec3-a08d-7ac8707a6674\audit-20261019-run3-current\tests\test_answerability.py:189: in test_a_typo_rewrite_and_a_prior_turn_stay_visible
+    assert follow is None
+E   AssertionError: assert {'query': 'What about its capital?', 'kind': 'definition', 'retrieved_candidates': [{'document_id': 'chunk-0', 'span': 'The capital of France is Paris.'}], 'answer_evidence': [], ...} is None
+______ test_binding_beats_returning_the_first_passage_on_the_frozen_set _______
+C:\Users\parva\.codex\visualizations\2026\10\16\01a1437c-705e-7ec3-a08d-7ac8707a6674\audit-20261019-run3-current\tests\test_answerability.py:307: in test_binding_beats_returning_the_first_passage_on_the_frozen_set
+    assert baseline_b["coverage"] < candidate["coverage"]
+E   assert 6 < 6
+_____________ test_a_shine_rejection_stays_the_delivered_sentence _____________
+C:\Users\parva\.codex\visualizations\2026\10\16\01a1437c-705e-7ec3-a08d-7ac8707a6674\audit-20261019-run3-current\tests\test_frames.py:141: in test_a_shine_rejection_stays_the_delivered_sentence
+    assert mixed["text"].startswith(APPLE)
+E   AssertionError: assert False
+E    +  where False = <built-in method startswith of str object at 0x0000026C4C4D1E30>('John ate a yellow apple in his house.')
+E    +    where <built-in method startswith of str object at 0x0000026C4C4D1E30> = 'No passage was retrieved.\n\nSummary:\nJohn ate a yellow apple in his house.\n\nEvent:\nThe apple John ate was yellow.'.startswith
+________ test_a_missing_color_is_the_reply_and_not_the_source_sentence ________
+C:\Users\parva\.codex\visualizations\2026\10\16\01a1437c-705e-7ec3-a08d-7ac8707a6674\audit-20261019-run3-current\tests\test_frames.py:245: in test_a_missing_color_is_the_reply_and_not_the_source_sentence
+    assert beside["text"].startswith(plain)
+E   AssertionError: assert False
+E    +  where False = <built-in method startswith of str object at 0x0000026C4C3A5A50>('John ate an apple in his house.')
+E    +    where <built-in method startswith of str object at 0x0000026C4C3A5A50> = 'No passage was retrieved.\n\nSummary:\nJohn ate an apple in his house.\n\nEvent:\nNo stored sentence states that color in the past.'.startswith
+=========================== short test summary info ===========================
+FAILED ..\..\Users\parva\.codex\visualizations\2026\10\16\01a1437c-705e-7ec3-a08d-7ac8707a6674\audit-20261019-run3-current\tests\test_answerability.py::test_a_typo_rewrite_and_a_prior_turn_stay_visible
+FAILED ..\..\Users\parva\.codex\visualizations\2026\10\16\01a1437c-705e-7ec3-a08d-7ac8707a6674\audit-20261019-run3-current\tests\test_answerability.py::test_binding_beats_returning_the_first_passage_on_the_frozen_set
+FAILED ..\..\Users\parva\.codex\visualizations\2026\10\16\01a1437c-705e-7ec3-a08d-7ac8707a6674\audit-20261019-run3-current\tests\test_frames.py::test_a_shine_rejection_stays_the_delivered_sentence
+FAILED ..\..\Users\parva\.codex\visualizations\2026\10\16\01a1437c-705e-7ec3-a08d-7ac8707a6674\audit-20261019-run3-current\tests\test_frames.py::test_a_missing_color_is_the_reply_and_not_the_source_sentence
+4 failed, 75 passed, 1 skipped, 1 deselected in 9.06s

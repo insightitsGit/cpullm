@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import re
+from dataclasses import replace
 
 from cpu_llm.clauses import _first_sentence, proposition_from_chunk
 from cpu_llm.ir.schema import EIRProposition, EdgeType
@@ -45,7 +46,12 @@ def bundle_from_chunks(
     math = _math_record(math_result or {})
     if math is not None:
         records.append(math)
-    return Bundle(records=tuple(records), causal_edges=tuple(_causal_pairs(causal_edges or [])))
+    passages = tuple(text for _document_id, text in chunks if text.strip())
+    return Bundle(
+        records=tuple(records),
+        causal_edges=tuple(_causal_pairs(causal_edges or [])),
+        passages=passages,
+    )
 
 
 def plan_for(bundle: Bundle, question: str, *, account: bool = False) -> Plan:
@@ -63,6 +69,34 @@ def plan_for(bundle: Bundle, question: str, *, account: bool = False) -> Plan:
         "question",
         _proposition_ids(bundle),
         empty="No verified epistemic evidence available.",
+    )
+
+
+def attach_ranking(bundle: Bundle, plan: Plan, question: str, spoken: str) -> tuple[Bundle, Plan, Derivation] | None:
+    """License the ranking clause. The ranker is not asked to invent one.
+
+    A stored sentence that names the order is copied. Otherwise the grammar
+    emits the fixed sentence that says the passages do not state a ranking.
+    """
+    from cpu_llm.ranking import ranking_notice
+
+    texts = list(bundle.passages) or [
+        record.source for record in bundle.records if record.kind in {"proposition", "quote", "frame"} and record.source
+    ]
+    notice = ranking_notice(question, texts, spoken=spoken)
+    if notice is None:
+        return None
+    record_id = "ranking-turn"
+    if notice["status"] == "stated" and notice["sentences"] and notice["text"] == " ".join(notice["sentences"]):
+        record, derivation = _copied_ranking(record_id, notice["sentences"])
+    else:
+        record, derivation = _grammar_ranking(record_id, f"Ranking: {notice['text']}")
+    if derivation is None:
+        return None
+    return (
+        replace(bundle, records=bundle.records + (record,)),
+        replace(plan, record_ids=plan.record_ids + (record_id,)),
+        derivation,
     )
 
 
@@ -462,6 +496,34 @@ def _question_for(transformation: str, frame: dict) -> str:
     if agent and " " not in agent:
         return f"What color was the {patient} {agent} {verb}?"
     return f"What color was the {patient}?"
+
+
+def _copied_ranking(record_id: str, sentences: list[str]) -> tuple[Record, Derivation | None]:
+    body = " ".join(sentences)
+    source = f"Ranking: {body}"
+    spans: list[Span] = []
+    cursor = len("Ranking: ")
+    for sentence in sentences:
+        found = source.find(sentence, cursor)
+        if found < 0:
+            return Record(record_id, "ranking", "", source, ()), None
+        spans.append(_span(record_id, "ranking", source, (found, found + len(sentence))))
+        cursor = found + len(sentence)
+    record = Record(record_id, "ranking", "", source, tuple(spans))
+    actions = _bind_clause("stored_ranking", source, spans)
+    if actions is None:
+        return record, None
+    return record, _finish(record, "stored_ranking", actions, allowed=("ranking",), required=("ranking",))
+
+
+def _grammar_ranking(record_id: str, sentence: str) -> tuple[Record, Derivation]:
+    record = Record(record_id, "ranking", "", sentence, ())
+    actions = (
+        Action("CHOOSE_CONSTRUCTION", "ranking_gap"),
+        Action("EMIT_GRAMMAR", "ranking_gap", surface=sentence),
+        Action("STOP", "ranking_gap"),
+    )
+    return record, _finish(record, "ranking_gap", actions, allowed=(), required=())
 
 
 def _copy_all(record: Record, construction_id: str, role: str) -> Derivation | None:

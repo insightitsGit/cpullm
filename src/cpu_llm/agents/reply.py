@@ -5,8 +5,12 @@ preface, the open questions, the follow-ups, the next steps, and the six
 channel readings stay on the reply for the caller. They are not written into
 the spoken text. A follow-up that is not in the retrieved passages is not produced.
 The checked sentence, when one exists, stays the body. This node does not
-write a new conclusion. A request that asks for a document follows a format
-from the output catalog, and that document replaces the checked sentence.
+write a new conclusion. A question in the answerability contract is spoken
+from sentences that state its relation, or the turn says the passages do not
+settle it. A ranking question keeps that sentence and adds whether a retrieved
+sentence states the order. A retrieval score is not a ranking. A request that
+asks for a document follows a format from the output catalog, and that
+document replaces the checked sentence.
 """
 
 from __future__ import annotations
@@ -38,7 +42,7 @@ _OPEN = {
 
 
 def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
-    preface = _preface(state)
+    assessment = _query_assessment(state)
     body = _body(state)
     closing = _closing(state)
     follow_ups = _follow_ups(state, body)
@@ -74,6 +78,7 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
         and not finance_text
     )
     situation = None if draft is not None else _situation(state, math_only=math_only, frame_only=frame_only)
+    situation_owns = situation is not None and not _unchecked_gap(situation, state)
     if math_only:
         lines = [math_text]
     elif finance_only:
@@ -82,8 +87,23 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
         lines = [frame_text]
     elif draft is not None:
         lines = [draft["text"]]
-    elif situation is not None:
+    elif situation_owns:
         lines = [situation["text"]]
+    owned = math_only or finance_only or frame_only or draft is not None or situation_owns
+    if owned:
+        assessment = None
+    elif assessment is not None and assessment.get("replaces_body"):
+        lines = [assessment["text"]]
+        body = assessment["text"]
+        follow_ups = _follow_ups(state, body)
+    else:
+        spoken = _model01_sentence(state)
+        if spoken:
+            lines = [spoken]
+    preface = _preface(state, assessment)
+    ranking = None if lines and "Ranking:" in lines[0] else _ranking(state, lines[0] if lines else "")
+    if ranking is not None:
+        lines.extend(["", "Ranking:", ranking["text"]])
     brief = state.get("brief") or {}
     report = state.get("channel_report") or {}
     if draft is None:
@@ -95,6 +115,8 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
             lines.extend(["", "List:", brief.get("list") or "No stored sentence to list."])
         if state.get("sources") is True:
             source_ids = list(brief.get("sources") or [])
+            if assessment is not None:
+                source_ids = [item["document_id"] for item in assessment.get("answer_evidence") or []]
             lines.extend(["", "Sources:"])
             lines.extend(f"- {document_id}" for document_id in source_ids)
             if not source_ids:
@@ -120,7 +142,7 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
             lines.extend(["", "Finance:", finance_text])
         if frame_text and not frame_only:
             lines.extend(["", "Event:", frame_text])
-    return {
+    reply = {
         "preface": preface,
         "body": body,
         "closing": closing,
@@ -129,8 +151,128 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
         "discovery_suggested": bool(report.get("discovery_suggested")),
         "situation": situation,
         "draft": draft,
+        "ranking": ranking,
         "text": "\n".join(lines).strip(),
     }
+    if assessment is not None:
+        reply["answer_status"] = assessment["answer_status"]
+        reply["answer_evidence"] = list(assessment.get("answer_evidence") or [])
+        reply["verification_scope"] = assessment.get("verification_scope")
+        reply["retrieved_candidates"] = list(assessment.get("retrieved_candidates") or [])
+        reply["producer"] = "answerability"
+        reply["query"] = assessment.get("query")
+        reply["original_query"] = assessment.get("original_query")
+        if assessment.get("supported_text"):
+            reply["supported_text"] = assessment["supported_text"]
+    return reply
+
+
+def _query_assessment(state: dict[str, Any]) -> dict[str, Any] | None:
+    """Delivery status for a question this contract can bind.
+
+    A blocked guard or an earlier Shine, audit, or grammar hold stays in
+    place. Ranking questions stay with the ranking notice.
+    """
+    if state.get("guard_decision") not in (None, "allow"):
+        return None
+    if state.get("delivery_blocked") or state.get("shine_enforced") or state.get("shine_ok") is False:
+        return None
+    from cpu_llm.answerability import assess, supported_answer
+    from cpu_llm.ranking import ranking_question
+
+    message = state.get("message") or ""
+    if ranking_question(message):
+        return None
+    rows = []
+    seen: set[str] = set()
+    for item in list(state.get("passages") or []) + list(state.get("related") or []):
+        document_id = str(item.get("document_id") or item.get("chunk_id") or "")
+        text = str(item.get("chunk_text") or item.get("text") or "").strip()
+        if not text or document_id in seen:
+            continue
+        seen.add(document_id)
+        rows.append({"document_id": document_id or f"passage-{len(rows)}", "text": text})
+    decision = assess(message, rows)
+    if decision is None:
+        return None
+    original = state.get("original_message")
+    if isinstance(original, str) and original.strip() and original.strip() != message.strip():
+        decision["original_query"] = original.strip()
+    else:
+        decision["original_query"] = None
+    prior = state.get("prior_message")
+    if isinstance(prior, str) and prior.strip():
+        decision["prior_query"] = prior.strip()
+    if decision["answer_status"] in {"insufficient_evidence", "conflicting"}:
+        decision["replaces_body"] = True
+        decision["verification_scope"] = "query"
+        return decision
+    spoken = supported_answer(message, str(state.get("answer") or ""))
+    audited = state.get("audit_passed") is True and bool(spoken)
+    if audited:
+        decision["answer_status"] = "answered"
+        decision["text"] = spoken
+        decision["supported_text"] = spoken
+        decision["verification_scope"] = "query"
+        decision["replaces_body"] = spoken.strip() != str(state.get("answer") or "").strip()
+        if decision.get("kind") != "sources":
+            decision["answer_evidence"] = _evidence_in_text(decision.get("answer_evidence") or [], spoken or "")
+        return decision
+    decision["answer_status"] = "evidence_quote"
+    decision["verification_scope"] = "retrieval"
+    decision["supported_text"] = ""
+    decision["text"] = _evidence_preview(decision.get("answer_evidence") or [])
+    body = _body(state)
+    decision["replaces_body"] = not _preview_already_shown(body, decision.get("answer_evidence") or [])
+    return decision
+
+
+def _evidence_in_text(evidence: list[dict[str, Any]], spoken: str) -> list[dict[str, Any]]:
+    folded = spoken.casefold()
+    kept = [item for item in evidence if str(item.get("span") or "").casefold() in folded]
+    return kept or list(evidence)
+
+
+def _evidence_preview(evidence: list[dict[str, Any]]) -> str:
+    lines: list[str] = []
+    for item in evidence:
+        document_id = item.get("document_id") or "passage"
+        lines.append(f"From {document_id}:\n{item.get('span') or ''}".strip())
+    return "\n".join(lines)
+
+
+def _preview_already_shown(body: str, evidence: list[dict[str, Any]]) -> bool:
+    folded = body.casefold()
+    if not evidence:
+        return False
+    return all(str(item.get("span") or "").casefold() in folded for item in evidence)
+
+
+def _unchecked_gap(situation: dict[str, Any], state: dict[str, Any]) -> bool:
+    """A rule reader that found nothing does not erase a checked sentence."""
+    if situation.get("verdict") != "NONE":
+        return False
+    return bool(str(state.get("answer") or "").strip())
+
+
+def _model01_sentence(state: dict[str, Any]) -> str:
+    """The verified Model01 sentence, when no specialist and no block owns the turn."""
+    if state.get("guard_decision") not in (None, "allow") or _delivery_holds(state):
+        return ""
+    outcome = state.get("model01") or {}
+    if outcome.get("verified") is not True:
+        return ""
+    return str(outcome.get("text") or "").strip()
+
+
+def _ranking(state: dict[str, Any], spoken: str) -> dict[str, Any] | None:
+    """The stored order, or a statement that the passages do not give one."""
+    if state.get("guard_decision") not in (None, "allow"):
+        return None
+    from cpu_llm.answering import retrieved_chunks
+    from cpu_llm.ranking import ranking_notice
+
+    return ranking_notice(state.get("message") or "", retrieved_chunks(state), spoken=spoken)
 
 
 def _draft(state: dict[str, Any]) -> dict[str, Any] | None:
@@ -201,13 +343,29 @@ def _other_agent(state: dict[str, Any]) -> bool:
     return bool(state.get("possibilities") or state.get("comparison") or state.get("imagination") or state.get("brief"))
 
 
-def _preface(state: dict[str, Any]) -> str:
+def _preface(state: dict[str, Any], assessment: dict[str, Any] | None = None) -> str:
     message = (state.get("message") or "").strip()
     if state.get("guard_decision") not in (None, "allow"):
         return f"I stopped on “{message}” before looking anything up."
     related = list(state.get("related") or [])
     if not related:
         return f"I looked for “{message}” and the index returned no passage."
+    if assessment is not None and assessment.get("replaces_body"):
+        count = len(related)
+        label = _category(related)
+        where = f" labeled {label}" if label else ""
+        noun = "passage" if count == 1 else "passages"
+        score = related[0].get("score")
+        closest = f" The closest match scores {float(score):.2f}." if isinstance(score, (int, float)) else ""
+        status = assessment.get("answer_status")
+        if status == "conflicting":
+            return f"I found {count} {noun}{where}.{closest} The stored sentences do not agree."
+        if status == "evidence_quote":
+            return (
+                f"I found {count} {noun}{where}.{closest} "
+                "The sentence below is a retrieved passage, not a checked answer."
+            )
+        return f"I found {count} {noun}{where}.{closest} They do not settle the question."
     count = len(related)
     label = _category(related)
     where = f" labeled {label}" if label else ""

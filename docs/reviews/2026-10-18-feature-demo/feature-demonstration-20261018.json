@@ -1,0 +1,1413 @@
+{
+  "namespace": "feature_demo_5dba7941222e",
+  "passages": [
+    "The harbor kestrel is a small coastal falcon.",
+    "The harbor kestrel nests in coastal cliffs.",
+    "The harbor kestrel eats small fish.",
+    "John ate a yellow apple in his house.",
+    "Business class is allowed for flights over six hours.",
+    "The flight from Boston to Paris takes eight hours.",
+    "The flight from Boston to Chicago takes two hours."
+  ],
+  "results": [
+    {
+      "case": "definition",
+      "prompt": "What is the harbor kestrel?",
+      "kwargs": {},
+      "elapsed_ms": 102.1,
+      "display_text": "The harbor kestrel is a small coastal falcon. it eats small fish.",
+      "answer": "The harbor kestrel is a small coastal falcon. it eats small fish.",
+      "related": [
+        {
+          "id": "feature-notes-p0001",
+          "text": "The harbor kestrel is a small coastal falcon."
+        },
+        {
+          "id": "feature-notes-p0002",
+          "text": "The harbor kestrel nests in coastal cliffs."
+        },
+        {
+          "id": "feature-notes-p0003",
+          "text": "The harbor kestrel eats small fish."
+        },
+        {
+          "id": "feature-notes-p0006",
+          "text": "The flight from Boston to Paris takes eight hours."
+        },
+        {
+          "id": "feature-notes-p0005",
+          "text": "Business class is allowed for flights over six hours."
+        }
+      ],
+      "audit_passed": true,
+      "shine_ok": true,
+      "shine_enforced": false,
+      "delivery_blocked": null,
+      "situation": null,
+      "draft": null,
+      "frame": null,
+      "math": null,
+      "brief": null,
+      "comparison": null,
+      "imagination": null,
+      "possibility_count": null,
+      "realization": null,
+      "typos": [],
+      "thinker_directive": "gather"
+    },
+    {
+      "case": "color",
+      "prompt": "What color was the apple John ate?",
+      "kwargs": {},
+      "elapsed_ms": 63.6,
+      "display_text": "The apple John ate was yellow.",
+      "answer": "John ate a yellow apple in his house.",
+      "related": [
+        {
+          "id": "feature-notes-p0004",
+          "text": "John ate a yellow apple in his house."
+        },
+        {
+          "id": "feature-notes-p0003",
+          "text": "The harbor kestrel eats small fish."
+        },
+        {
+          "id": "feature-notes-p0001",
+          "text": "The harbor kestrel is a small coastal falcon."
+        },
+        {
+          "id": "feature-notes-p0006",
+          "text": "The flight from Boston to Paris takes eight hours."
+        },
+        {
+          "id": "feature-notes-p0007",
+          "text": "The flight from Boston to Chicago takes two hours."
+        }
+      ],
+      "audit_passed": true,
+      "shine_ok": true,
+      "shine_enforced": false,
+      "delivery_blocked": null,
+      "situation": null,
+      "draft": null,
+      "frame": {
+        "ok": true,
+        "status": "answered",
+        "kind": "color",
+        "text": "The apple John ate was yellow.",
+        "value": "yellow",
+        "verified": true,
+        "evidence": [
+          "feature-notes-p0004"
+        ],
+        "contradictions": [],
+        "gaps": [],
+        "abstained": false,
+        "derivation": {
+          "document_id": "feature-notes-p0004",
+          "proposition_id": "prop-feature-notes-p0004",
+          "sentence": "John ate a yellow apple in his house.",
+          "offset_base": "sentence",
+          "tense": "PAST",
+          "transformation": "past_color",
+          "roles": {
+            "agent": {
+              "role": "agent",
+              "text": "John",
+              "start": 0,
+              "end": 4
+            },
+            "predicate": {
+              "role": "predicate",
+              "text": "ate",
+              "start": 5,
+              "end": 8,
+              "lemma": "eat",
+              "tense": "PAST"
+            },
+            "patient": {
+              "role": "patient",
+              "text": "apple",
+              "start": 18,
+              "end": 23
+            },
+            "color": {
+              "role": "color",
+              "text": "yellow",
+              "start": 11,
+              "end": 17
+            },
+            "location": {
+              "role": "location",
+              "text": "in his house",
+              "start": 24,
+              "end": 36
+            },
+            "time": null
+          }
+        }
+      },
+      "math": null,
+      "brief": null,
+      "comparison": null,
+      "imagination": null,
+      "possibility_count": null,
+      "realization": null,
+      "typos": [],
+      "thinker_directive": "gather"
+    },
+    {
+      "case": "location",
+      "prompt": "Where did John eat the apple?",
+      "kwargs": {},
+      "elapsed_ms": 44.7,
+      "display_text": "John ate the apple in his house.",
+      "answer": "John ate a yellow apple in his house.",
+      "related": [
+        {
+          "id": "feature-notes-p0004",
+          "text": "John ate a yellow apple in his house."
+        },
+        {
+          "id": "feature-notes-p0006",
+          "text": "The flight from Boston to Paris takes eight hours."
+        },
+        {
+          "id": "feature-notes-p0003",
+          "text": "The harbor kestrel eats small fish."
+        },
+        {
+          "id": "feature-notes-p0007",
+          "text": "The flight from Boston to Chicago takes two hours."
+        },
+        {
+          "id": "feature-notes-p0001",
+          "text": "The harbor kestrel is a small coastal falcon."
+        }
+      ],
+      "audit_passed": true,
+      "shine_ok": true,
+      "shine_enforced": false,
+      "delivery_blocked": null,
+      "situation": null,
+      "draft": null,
+      "frame": {
+        "ok": true,
+        "status": "answered",
+        "kind": "location",
+        "text": "John ate the apple in his house.",
+        "value": "in his house",
+        "verified": true,
+        "evidence": [
+          "feature-notes-p0004"
+        ],
+        "contradictions": [],
+        "gaps": [],
+        "abstained": false,
+        "derivation": {
+          "document_id": "feature-notes-p0004",
+          "proposition_id": "prop-feature-notes-p0004",
+          "sentence": "John ate a yellow apple in his house.",
+          "offset_base": "sentence",
+          "tense": "PAST",
+          "transformation": "past_location",
+          "roles": {
+            "agent": {
+              "role": "agent",
+              "text": "John",
+              "start": 0,
+              "end": 4
+            },
+            "predicate": {
+              "role": "predicate",
+              "text": "ate",
+              "start": 5,
+              "end": 8,
+              "lemma": "eat",
+              "tense": "PAST"
+            },
+            "patient": {
+              "role": "patient",
+              "text": "apple",
+              "start": 18,
+              "end": 23
+            },
+            "color": {
+              "role": "color",
+              "text": "yellow",
+              "start": 11,
+              "end": 17
+            },
+            "location": {
+              "role": "location",
+              "text": "in his house",
+              "start": 24,
+              "end": 36
+            },
+            "time": null
+          }
+        }
+      },
+      "math": null,
+      "brief": null,
+      "comparison": null,
+      "imagination": null,
+      "possibility_count": null,
+      "realization": null,
+      "typos": [],
+      "thinker_directive": "gather"
+    },
+    {
+      "case": "agent",
+      "prompt": "Who ate the apple?",
+      "kwargs": {},
+      "elapsed_ms": 49.7,
+      "display_text": "John ate the apple.",
+      "answer": "John ate a yellow apple in his house.",
+      "related": [
+        {
+          "id": "feature-notes-p0004",
+          "text": "John ate a yellow apple in his house."
+        },
+        {
+          "id": "feature-notes-p0003",
+          "text": "The harbor kestrel eats small fish."
+        },
+        {
+          "id": "feature-notes-p0001",
+          "text": "The harbor kestrel is a small coastal falcon."
+        },
+        {
+          "id": "feature-notes-p0006",
+          "text": "The flight from Boston to Paris takes eight hours."
+        },
+        {
+          "id": "feature-notes-p0007",
+          "text": "The flight from Boston to Chicago takes two hours."
+        }
+      ],
+      "audit_passed": true,
+      "shine_ok": true,
+      "shine_enforced": false,
+      "delivery_blocked": null,
+      "situation": null,
+      "draft": null,
+      "frame": {
+        "ok": true,
+        "status": "answered",
+        "kind": "agent",
+        "text": "John ate the apple.",
+        "value": "John",
+        "verified": true,
+        "evidence": [
+          "feature-notes-p0004"
+        ],
+        "contradictions": [],
+        "gaps": [],
+        "abstained": false,
+        "derivation": {
+          "document_id": "feature-notes-p0004",
+          "proposition_id": "prop-feature-notes-p0004",
+          "sentence": "John ate a yellow apple in his house.",
+          "offset_base": "sentence",
+          "tense": "PAST",
+          "transformation": "past_agent",
+          "roles": {
+            "agent": {
+              "role": "agent",
+              "text": "John",
+              "start": 0,
+              "end": 4
+            },
+            "predicate": {
+              "role": "predicate",
+              "text": "ate",
+              "start": 5,
+              "end": 8,
+              "lemma": "eat",
+              "tense": "PAST"
+            },
+            "patient": {
+              "role": "patient",
+              "text": "apple",
+              "start": 18,
+              "end": 23
+            },
+            "color": {
+              "role": "color",
+              "text": "yellow",
+              "start": 11,
+              "end": 17
+            },
+            "location": {
+              "role": "location",
+              "text": "in his house",
+              "start": 24,
+              "end": 36
+            },
+            "time": null
+          }
+        }
+      },
+      "math": null,
+      "brief": null,
+      "comparison": null,
+      "imagination": null,
+      "possibility_count": null,
+      "realization": null,
+      "typos": [],
+      "thinker_directive": "gather"
+    },
+    {
+      "case": "missing_role",
+      "prompt": "What color was the pear John ate?",
+      "kwargs": {},
+      "elapsed_ms": 52.2,
+      "display_text": "No stored sentence states that color in the past.",
+      "answer": "John ate a yellow apple in his house.",
+      "related": [
+        {
+          "id": "feature-notes-p0004",
+          "text": "John ate a yellow apple in his house."
+        },
+        {
+          "id": "feature-notes-p0003",
+          "text": "The harbor kestrel eats small fish."
+        },
+        {
+          "id": "feature-notes-p0001",
+          "text": "The harbor kestrel is a small coastal falcon."
+        },
+        {
+          "id": "feature-notes-p0006",
+          "text": "The flight from Boston to Paris takes eight hours."
+        },
+        {
+          "id": "feature-notes-p0002",
+          "text": "The harbor kestrel nests in coastal cliffs."
+        }
+      ],
+      "audit_passed": true,
+      "shine_ok": true,
+      "shine_enforced": false,
+      "delivery_blocked": null,
+      "situation": null,
+      "draft": null,
+      "frame": {
+        "ok": false,
+        "status": "missing",
+        "kind": "",
+        "text": "No stored sentence states that color in the past.",
+        "value": "",
+        "verified": false,
+        "evidence": [],
+        "contradictions": [],
+        "gaps": [
+          "No stored sentence states that color in the past."
+        ],
+        "abstained": true,
+        "derivation": null
+      },
+      "math": null,
+      "brief": null,
+      "comparison": null,
+      "imagination": null,
+      "possibility_count": null,
+      "realization": null,
+      "typos": [],
+      "thinker_directive": "gather"
+    },
+    {
+      "case": "summary",
+      "prompt": "Summarize the harbor kestrel.",
+      "kwargs": {},
+      "elapsed_ms": 51.4,
+      "display_text": "The harbor kestrel is a small coastal falcon. it eats small fish.\n\nSummary:\nThe harbor kestrel is a small coastal falcon. The harbor kestrel eats small fish.",
+      "answer": "The harbor kestrel is a small coastal falcon. it eats small fish.",
+      "related": [
+        {
+          "id": "feature-notes-p0001",
+          "text": "The harbor kestrel is a small coastal falcon."
+        },
+        {
+          "id": "feature-notes-p0003",
+          "text": "The harbor kestrel eats small fish."
+        },
+        {
+          "id": "feature-notes-p0002",
+          "text": "The harbor kestrel nests in coastal cliffs."
+        },
+        {
+          "id": "feature-notes-p0007",
+          "text": "The flight from Boston to Chicago takes two hours."
+        },
+        {
+          "id": "feature-notes-p0006",
+          "text": "The flight from Boston to Paris takes eight hours."
+        }
+      ],
+      "audit_passed": true,
+      "shine_ok": true,
+      "shine_enforced": false,
+      "delivery_blocked": null,
+      "situation": null,
+      "draft": null,
+      "frame": null,
+      "math": null,
+      "brief": {
+        "summary": "The harbor kestrel is a small coastal falcon. The harbor kestrel eats small fish.",
+        "explanation": "",
+        "list": "",
+        "sources": [
+          "feature-notes-p0001",
+          "feature-notes-p0003"
+        ],
+        "weights": [
+          1.0,
+          1.0
+        ]
+      },
+      "comparison": null,
+      "imagination": null,
+      "possibility_count": null,
+      "realization": null,
+      "typos": [],
+      "thinker_directive": "gather"
+    },
+    {
+      "case": "sources",
+      "prompt": "Cite sources for the harbor kestrel.",
+      "kwargs": {},
+      "elapsed_ms": 48.3,
+      "display_text": "The harbor kestrel is a small coastal falcon. it eats small fish.\n\nSources:\n- feature-notes-p0001\n- feature-notes-p0003\n- feature-notes-p0002\n- feature-notes-p0007\n- feature-notes-p0006",
+      "answer": "The harbor kestrel is a small coastal falcon. it eats small fish.",
+      "related": [
+        {
+          "id": "feature-notes-p0001",
+          "text": "The harbor kestrel is a small coastal falcon."
+        },
+        {
+          "id": "feature-notes-p0003",
+          "text": "The harbor kestrel eats small fish."
+        },
+        {
+          "id": "feature-notes-p0002",
+          "text": "The harbor kestrel nests in coastal cliffs."
+        },
+        {
+          "id": "feature-notes-p0007",
+          "text": "The flight from Boston to Chicago takes two hours."
+        },
+        {
+          "id": "feature-notes-p0006",
+          "text": "The flight from Boston to Paris takes eight hours."
+        }
+      ],
+      "audit_passed": true,
+      "shine_ok": true,
+      "shine_enforced": false,
+      "delivery_blocked": null,
+      "situation": null,
+      "draft": null,
+      "frame": null,
+      "math": null,
+      "brief": {
+        "summary": "",
+        "explanation": "",
+        "list": "",
+        "sources": [
+          "feature-notes-p0001",
+          "feature-notes-p0003",
+          "feature-notes-p0002",
+          "feature-notes-p0007",
+          "feature-notes-p0006"
+        ],
+        "weights": [
+          1.0,
+          1.0
+        ]
+      },
+      "comparison": null,
+      "imagination": null,
+      "possibility_count": null,
+      "realization": null,
+      "typos": [],
+      "thinker_directive": "gather"
+    },
+    {
+      "case": "deep_search",
+      "prompt": "Deep search the harbor kestrel.",
+      "kwargs": {},
+      "elapsed_ms": 58.9,
+      "display_text": "The harbor kestrel is a small coastal falcon. it eats small fish.\n\nPossibilities (3):\n- feature-notes-p0001 [harbor, kestrel, coastal, falcon, small]\n- feature-notes-p0003 [harbor, kestrel, eats, fish, small]\n- feature-notes-p0002 [harbor, kestrel, cliffs, coastal, nests]",
+      "answer": "The harbor kestrel is a small coastal falcon. it eats small fish.",
+      "related": [
+        {
+          "id": "feature-notes-p0001",
+          "text": "The harbor kestrel is a small coastal falcon."
+        },
+        {
+          "id": "feature-notes-p0003",
+          "text": "The harbor kestrel eats small fish."
+        },
+        {
+          "id": "feature-notes-p0002",
+          "text": "The harbor kestrel nests in coastal cliffs."
+        },
+        {
+          "id": "feature-notes-p0005",
+          "text": "Business class is allowed for flights over six hours."
+        },
+        {
+          "id": "feature-notes-p0007",
+          "text": "The flight from Boston to Chicago takes two hours."
+        }
+      ],
+      "audit_passed": true,
+      "shine_ok": true,
+      "shine_enforced": false,
+      "delivery_blocked": null,
+      "situation": null,
+      "draft": null,
+      "frame": null,
+      "math": null,
+      "brief": null,
+      "comparison": null,
+      "imagination": null,
+      "possibility_count": 3,
+      "realization": null,
+      "typos": [],
+      "thinker_directive": "gather"
+    },
+    {
+      "case": "creative",
+      "prompt": "Imagine the harbor kestrel.",
+      "kwargs": {},
+      "elapsed_ms": 42.7,
+      "display_text": "The harbor kestrel is a small coastal falcon. it eats small fish.\n\nImagined passage:\nThe harbor kestrel eats small fish. The harbor kestrel is a small coastal falcon.",
+      "answer": "The harbor kestrel is a small coastal falcon. it eats small fish.",
+      "related": [
+        {
+          "id": "feature-notes-p0001",
+          "text": "The harbor kestrel is a small coastal falcon."
+        },
+        {
+          "id": "feature-notes-p0002",
+          "text": "The harbor kestrel nests in coastal cliffs."
+        },
+        {
+          "id": "feature-notes-p0003",
+          "text": "The harbor kestrel eats small fish."
+        },
+        {
+          "id": "feature-notes-p0006",
+          "text": "The flight from Boston to Paris takes eight hours."
+        },
+        {
+          "id": "feature-notes-p0007",
+          "text": "The flight from Boston to Chicago takes two hours."
+        }
+      ],
+      "audit_passed": true,
+      "shine_ok": true,
+      "shine_enforced": false,
+      "delivery_blocked": null,
+      "situation": null,
+      "draft": null,
+      "frame": null,
+      "math": null,
+      "brief": null,
+      "comparison": null,
+      "imagination": {
+        "triggered": true,
+        "articles": [
+          "feature-notes"
+        ],
+        "loaded": 7,
+        "links": [
+          {
+            "chunk_id": "feature-notes-p0003",
+            "sentence": "The harbor kestrel eats small fish.",
+            "keywords": [
+              "harbor",
+              "kestrel"
+            ],
+            "relevance": 2
+          },
+          {
+            "chunk_id": "feature-notes-p0001",
+            "sentence": "The harbor kestrel is a small coastal falcon.",
+            "keywords": [
+              "harbor",
+              "kestrel"
+            ],
+            "relevance": 2
+          }
+        ],
+        "keywords": [
+          "harbor",
+          "kestrel",
+          "harbor",
+          "kestrel"
+        ],
+        "text": "The harbor kestrel eats small fish. The harbor kestrel is a small coastal falcon.",
+        "note": "A fresh arrangement of the checked sentences was drawn for this run. Each sentence was checked against its proposition and the numbers in the group.",
+        "pool": {
+          "articles": [
+            "feature-notes"
+          ],
+          "categories": {
+            "feature-notes": 817761
+          },
+          "paragraph_count": 7,
+          "word_count": 24,
+          "paragraphs": [
+            {
+              "document_id": "feature-notes-p0001",
+              "article": "feature-notes",
+              "relevance": 2,
+              "prompt_words": [
+                "harbor",
+                "kestrel"
+              ],
+              "cosine": 0.8031290583503273
+            },
+            {
+              "document_id": "feature-notes-p0002",
+              "article": "feature-notes",
+              "relevance": 2,
+              "prompt_words": [
+                "harbor",
+                "kestrel"
+              ],
+              "cosine": 0.7472718633731872
+            },
+            {
+              "document_id": "feature-notes-p0003",
+              "article": "feature-notes",
+              "relevance": 2,
+              "prompt_words": [
+                "harbor",
+                "kestrel"
+              ],
+              "cosine": 0.7438365361799739
+            },
+            {
+              "document_id": "feature-notes-p0006",
+              "article": "feature-notes",
+              "relevance": 0,
+              "prompt_words": [],
+              "cosine": 0.6202801134399396
+            },
+            {
+              "document_id": "feature-notes-p0007",
+              "article": "feature-notes",
+              "relevance": 0,
+              "prompt_words": [],
+              "cosine": 0.608130619013103
+            },
+            {
+              "document_id": "feature-notes-p0005",
+              "article": "feature-notes",
+              "relevance": 0,
+              "prompt_words": [],
+              "cosine": 0.5789920904832865
+            },
+            {
+              "document_id": "feature-notes-p0004",
+              "article": "feature-notes",
+              "relevance": 0,
+              "prompt_words": [],
+              "cosine": 0.5541059376616984
+            }
+          ],
+          "most_relevant": [
+            {
+              "word": "harbor",
+              "score": 5,
+              "paragraphs": 3
+            },
+            {
+              "word": "kestrel",
+              "score": 5,
+              "paragraphs": 3
+            },
+            {
+              "word": "coastal",
+              "score": 2,
+              "paragraphs": 2
+            },
+            {
+              "word": "small",
+              "score": 2,
+              "paragraphs": 2
+            },
+            {
+              "word": "cliffs",
+              "score": 1,
+              "paragraphs": 1
+            },
+            {
+              "word": "eats",
+              "score": 1,
+              "paragraphs": 1
+            },
+            {
+              "word": "falcon",
+              "score": 1,
+              "paragraphs": 1
+            },
+            {
+              "word": "fish",
+              "score": 1,
+              "paragraphs": 1
+            },
+            {
+              "word": "nests",
+              "score": 1,
+              "paragraphs": 1
+            },
+            {
+              "word": "allowed",
+              "score": 0,
+              "paragraphs": 1
+            },
+            {
+              "word": "apple",
+              "score": 0,
+              "paragraphs": 1
+            },
+            {
+              "word": "boston",
+              "score": 0,
+              "paragraphs": 2
+            },
+            {
+              "word": "business",
+              "score": 0,
+              "paragraphs": 1
+            },
+            {
+              "word": "chicago",
+              "score": 0,
+              "paragraphs": 1
+            },
+            {
+              "word": "class",
+              "score": 0,
+              "paragraphs": 1
+            },
+            {
+              "word": "eight",
+              "score": 0,
+              "paragraphs": 1
+            },
+            {
+              "word": "flight",
+              "score": 0,
+              "paragraphs": 2
+            },
+            {
+              "word": "flights",
+              "score": 0,
+              "paragraphs": 1
+            },
+            {
+              "word": "hours",
+              "score": 0,
+              "paragraphs": 3
+            },
+            {
+              "word": "house",
+              "score": 0,
+              "paragraphs": 1
+            },
+            {
+              "word": "john",
+              "score": 0,
+              "paragraphs": 1
+            },
+            {
+              "word": "paris",
+              "score": 0,
+              "paragraphs": 1
+            },
+            {
+              "word": "takes",
+              "score": 0,
+              "paragraphs": 2
+            },
+            {
+              "word": "yellow",
+              "score": 0,
+              "paragraphs": 1
+            }
+          ]
+        },
+        "walk": {
+          "loaded": 7,
+          "links": [
+            {
+              "chunk_id": "feature-notes-p0001",
+              "resonance": 0.8031290769577026,
+              "cosine_to_previous": null,
+              "sentence": "The harbor kestrel is a small coastal falcon.",
+              "keywords": [
+                "harbor",
+                "kestrel"
+              ]
+            },
+            {
+              "chunk_id": "feature-notes-p0003",
+              "resonance": 0.7438365817070007,
+              "cosine_to_previous": 0.8932330178043448,
+              "sentence": "The harbor kestrel eats small fish.",
+              "keywords": [
+                "harbor",
+                "kestrel"
+              ]
+            },
+            {
+              "chunk_id": "feature-notes-p0002",
+              "resonance": 0.7472719550132751,
+              "cosine_to_previous": 0.8143646915644515,
+              "sentence": "The harbor kestrel nests in coastal cliffs.",
+              "keywords": [
+                "harbor",
+                "kestrel"
+              ]
+            },
+            {
+              "chunk_id": "feature-notes-p0006",
+              "resonance": 0.6202799677848816,
+              "cosine_to_previous": 0.5438814116558603,
+              "sentence": "The flight from Boston to Paris takes eight hours.",
+              "keywords": []
+            },
+            {
+              "chunk_id": "feature-notes-p0007",
+              "resonance": 0.6081305742263794,
+              "cosine_to_previous": 0.8007360427422017,
+              "sentence": "The flight from Boston to Chicago takes two hours.",
+              "keywords": []
+            },
+            {
+              "chunk_id": "feature-notes-p0005",
+              "resonance": 0.5789922475814819,
+              "cosine_to_previous": 0.6253209384759997,
+              "sentence": "Business class is allowed for flights over six hours.",
+              "keywords": []
+            },
+            {
+              "chunk_id": "feature-notes-p0004",
+              "resonance": 0.5541059374809265,
+              "cosine_to_previous": 0.473331027235769,
+              "sentence": "John ate a yellow apple in his house.",
+              "keywords": []
+            }
+          ]
+        }
+      },
+      "possibility_count": null,
+      "realization": null,
+      "typos": [],
+      "thinker_directive": "gather"
+    },
+    {
+      "case": "comparison",
+      "prompt": "Compare the harbor kestrel and John.",
+      "kwargs": {},
+      "elapsed_ms": 51.1,
+      "display_text": "The harbor kestrel is a small coastal falcon. it eats small fish. John ate a yellow apple in his house.\n\nComparison:\nharbor kestrel:\nThe harbor kestrel is a small coastal falcon. The harbor kestrel eats small fish.\nJohn:\nJohn ate a yellow apple in his house.",
+      "answer": "The harbor kestrel is a small coastal falcon. it eats small fish. John ate a yellow apple in his house.",
+      "related": [
+        {
+          "id": "feature-notes-p0001",
+          "text": "The harbor kestrel is a small coastal falcon."
+        },
+        {
+          "id": "feature-notes-p0003",
+          "text": "The harbor kestrel eats small fish."
+        },
+        {
+          "id": "feature-notes-p0002",
+          "text": "The harbor kestrel nests in coastal cliffs."
+        },
+        {
+          "id": "feature-notes-p0004",
+          "text": "John ate a yellow apple in his house."
+        },
+        {
+          "id": "feature-notes-p0007",
+          "text": "The flight from Boston to Chicago takes two hours."
+        }
+      ],
+      "audit_passed": true,
+      "shine_ok": true,
+      "shine_enforced": false,
+      "delivery_blocked": null,
+      "situation": null,
+      "draft": null,
+      "frame": null,
+      "math": null,
+      "brief": null,
+      "comparison": {
+        "sides": [
+          {
+            "label": "harbor kestrel",
+            "text": "The harbor kestrel is a small coastal falcon. The harbor kestrel eats small fish.",
+            "articles": [
+              "feature-notes"
+            ],
+            "links": [
+              {
+                "chunk_id": "feature-notes-p0001",
+                "sentence": "The harbor kestrel is a small coastal falcon.",
+                "keywords": [
+                  "harbor",
+                  "kestrel"
+                ],
+                "relevance": 2
+              },
+              {
+                "chunk_id": "feature-notes-p0003",
+                "sentence": "The harbor kestrel eats small fish.",
+                "keywords": [
+                  "harbor",
+                  "kestrel"
+                ],
+                "relevance": 2
+              }
+            ]
+          },
+          {
+            "label": "John",
+            "text": "John ate a yellow apple in his house.",
+            "articles": [
+              "feature-notes"
+            ],
+            "links": [
+              {
+                "chunk_id": "feature-notes-p0004",
+                "sentence": "John ate a yellow apple in his house.",
+                "keywords": [
+                  "john"
+                ],
+                "relevance": 1
+              }
+            ]
+          }
+        ]
+      },
+      "imagination": null,
+      "possibility_count": null,
+      "realization": null,
+      "typos": [],
+      "thinker_directive": "gather"
+    },
+    {
+      "case": "document",
+      "prompt": "Write an email about the harbor kestrel.",
+      "kwargs": {},
+      "elapsed_ms": 36.1,
+      "display_text": "Email\nTo: Not stated in the retrieved passages.\nFrom: Not stated in the retrieved passages.\nDate: Not stated in the retrieved passages.\nSubject: the harbor kestrel\n\nThe harbor kestrel is a small coastal falcon.\nThe harbor kestrel eats small fish.\nThe harbor kestrel nests in coastal cliffs.\n\nNot stated in the retrieved passages: recipient, sender, date.",
+      "answer": "The harbor kestrel is a small coastal falcon. it eats small fish.",
+      "related": [
+        {
+          "id": "feature-notes-p0001",
+          "text": "The harbor kestrel is a small coastal falcon."
+        },
+        {
+          "id": "feature-notes-p0003",
+          "text": "The harbor kestrel eats small fish."
+        },
+        {
+          "id": "feature-notes-p0002",
+          "text": "The harbor kestrel nests in coastal cliffs."
+        },
+        {
+          "id": "feature-notes-p0007",
+          "text": "The flight from Boston to Chicago takes two hours."
+        },
+        {
+          "id": "feature-notes-p0005",
+          "text": "Business class is allowed for flights over six hours."
+        }
+      ],
+      "audit_passed": true,
+      "shine_ok": true,
+      "shine_enforced": false,
+      "delivery_blocked": null,
+      "situation": null,
+      "draft": {
+        "format": "email",
+        "topic": "the harbor kestrel",
+        "text": "Email\nTo: Not stated in the retrieved passages.\nFrom: Not stated in the retrieved passages.\nDate: Not stated in the retrieved passages.\nSubject: the harbor kestrel\n\nThe harbor kestrel is a small coastal falcon.\nThe harbor kestrel eats small fish.\nThe harbor kestrel nests in coastal cliffs.\n\nNot stated in the retrieved passages: recipient, sender, date.",
+        "missing": [
+          "to",
+          "from",
+          "date"
+        ],
+        "sources": [
+          "feature-notes-p0001",
+          "feature-notes-p0003",
+          "feature-notes-p0002"
+        ],
+        "formats": [
+          "email",
+          "letter",
+          "memo",
+          "document",
+          "report",
+          "agenda",
+          "minutes",
+          "notice",
+          "checklist",
+          "faq",
+          "outline",
+          "status",
+          "proposal",
+          "briefing",
+          "essay",
+          "article",
+          "blog",
+          "press",
+          "abstract",
+          "paper",
+          "case",
+          "newsletter",
+          "speech",
+          "biography",
+          "review",
+          "tutorial",
+          "procedure",
+          "decision",
+          "incident",
+          "invitation",
+          "post"
+        ]
+      },
+      "frame": null,
+      "math": null,
+      "brief": null,
+      "comparison": null,
+      "imagination": null,
+      "possibility_count": null,
+      "realization": null,
+      "typos": [],
+      "thinker_directive": "gather"
+    },
+    {
+      "case": "math",
+      "prompt": "What is 17 times 24?",
+      "kwargs": {},
+      "elapsed_ms": 52.6,
+      "display_text": "17*24 = 408.",
+      "answer": "Business class is allowed for flights over six hours. The harbor kestrel eats small fish. John ate a yellow apple in his house.",
+      "related": [
+        {
+          "id": "feature-notes-p0006",
+          "text": "The flight from Boston to Paris takes eight hours."
+        },
+        {
+          "id": "feature-notes-p0007",
+          "text": "The flight from Boston to Chicago takes two hours."
+        },
+        {
+          "id": "feature-notes-p0004",
+          "text": "John ate a yellow apple in his house."
+        },
+        {
+          "id": "feature-notes-p0005",
+          "text": "Business class is allowed for flights over six hours."
+        },
+        {
+          "id": "feature-notes-p0003",
+          "text": "The harbor kestrel eats small fish."
+        }
+      ],
+      "audit_passed": true,
+      "shine_ok": true,
+      "shine_enforced": false,
+      "delivery_blocked": null,
+      "situation": null,
+      "draft": null,
+      "frame": null,
+      "math": {
+        "ok": true,
+        "expression": "17*24",
+        "value": "408",
+        "text": "17*24 = 408."
+      },
+      "brief": null,
+      "comparison": null,
+      "imagination": null,
+      "possibility_count": null,
+      "realization": null,
+      "typos": [],
+      "thinker_directive": "gather"
+    },
+    {
+      "case": "rule",
+      "prompt": "Can I fly business class from Boston to Paris?",
+      "kwargs": {},
+      "elapsed_ms": 52.0,
+      "display_text": "Yes. Business class is allowed for the flight from Boston to Paris: it lasts 8 hours, and business class is allowed for flights over 6 hours.",
+      "answer": "Business class is allowed for flights over six hours.",
+      "related": [
+        {
+          "id": "feature-notes-p0005",
+          "text": "Business class is allowed for flights over six hours."
+        },
+        {
+          "id": "feature-notes-p0006",
+          "text": "The flight from Boston to Paris takes eight hours."
+        },
+        {
+          "id": "feature-notes-p0007",
+          "text": "The flight from Boston to Chicago takes two hours."
+        },
+        {
+          "id": "feature-notes-p0003",
+          "text": "The harbor kestrel eats small fish."
+        },
+        {
+          "id": "feature-notes-p0001",
+          "text": "The harbor kestrel is a small coastal falcon."
+        }
+      ],
+      "audit_passed": true,
+      "shine_ok": true,
+      "shine_enforced": false,
+      "delivery_blocked": null,
+      "situation": {
+        "verdict": "YES",
+        "text": "Yes. Business class is allowed for the flight from Boston to Paris: it lasts 8 hours, and business class is allowed for flights over 6 hours.",
+        "because": [
+          "Business class is allowed for flights over six hours.",
+          "The flight from Boston to Paris takes eight hours."
+        ],
+        "wording": {
+          "path": "deterministic"
+        }
+      },
+      "draft": null,
+      "frame": null,
+      "math": null,
+      "brief": null,
+      "comparison": null,
+      "imagination": null,
+      "possibility_count": null,
+      "realization": null,
+      "typos": [],
+      "thinker_directive": "gather"
+    },
+    {
+      "case": "outside_corpus",
+      "prompt": "What is the capital of France?",
+      "kwargs": {},
+      "elapsed_ms": 44.9,
+      "display_text": "The harbor kestrel is a small coastal falcon. it eats small fish. Business class is allowed for flights over six hours.",
+      "answer": "The harbor kestrel is a small coastal falcon. it eats small fish. Business class is allowed for flights over six hours.",
+      "related": [
+        {
+          "id": "feature-notes-p0006",
+          "text": "The flight from Boston to Paris takes eight hours."
+        },
+        {
+          "id": "feature-notes-p0001",
+          "text": "The harbor kestrel is a small coastal falcon."
+        },
+        {
+          "id": "feature-notes-p0002",
+          "text": "The harbor kestrel nests in coastal cliffs."
+        },
+        {
+          "id": "feature-notes-p0003",
+          "text": "The harbor kestrel eats small fish."
+        },
+        {
+          "id": "feature-notes-p0005",
+          "text": "Business class is allowed for flights over six hours."
+        }
+      ],
+      "audit_passed": true,
+      "shine_ok": true,
+      "shine_enforced": false,
+      "delivery_blocked": null,
+      "situation": null,
+      "draft": null,
+      "frame": null,
+      "math": null,
+      "brief": null,
+      "comparison": null,
+      "imagination": null,
+      "possibility_count": null,
+      "realization": null,
+      "typos": [],
+      "thinker_directive": "gather"
+    },
+    {
+      "case": "n0_realizer",
+      "prompt": "What color was the apple John ate?",
+      "kwargs": {
+        "realization": "evidence_neural"
+      },
+      "elapsed_ms": 39.1,
+      "display_text": "The apple John ate was yellow.",
+      "answer": "John ate a yellow apple in his house.",
+      "related": [
+        {
+          "id": "feature-notes-p0004",
+          "text": "John ate a yellow apple in his house."
+        },
+        {
+          "id": "feature-notes-p0003",
+          "text": "The harbor kestrel eats small fish."
+        },
+        {
+          "id": "feature-notes-p0001",
+          "text": "The harbor kestrel is a small coastal falcon."
+        },
+        {
+          "id": "feature-notes-p0006",
+          "text": "The flight from Boston to Paris takes eight hours."
+        },
+        {
+          "id": "feature-notes-p0007",
+          "text": "The flight from Boston to Chicago takes two hours."
+        }
+      ],
+      "audit_passed": true,
+      "shine_ok": true,
+      "shine_enforced": false,
+      "delivery_blocked": null,
+      "situation": null,
+      "draft": null,
+      "frame": {
+        "ok": true,
+        "status": "answered",
+        "kind": "color",
+        "text": "The apple John ate was yellow.",
+        "value": "yellow",
+        "verified": true,
+        "evidence": [
+          "feature-notes-p0004"
+        ],
+        "contradictions": [],
+        "gaps": [],
+        "abstained": false,
+        "derivation": {
+          "document_id": "feature-notes-p0004",
+          "proposition_id": "prop-feature-notes-p0004",
+          "sentence": "John ate a yellow apple in his house.",
+          "offset_base": "sentence",
+          "tense": "PAST",
+          "transformation": "past_color",
+          "roles": {
+            "agent": {
+              "role": "agent",
+              "text": "John",
+              "start": 0,
+              "end": 4
+            },
+            "predicate": {
+              "role": "predicate",
+              "text": "ate",
+              "start": 5,
+              "end": 8,
+              "lemma": "eat",
+              "tense": "PAST"
+            },
+            "patient": {
+              "role": "patient",
+              "text": "apple",
+              "start": 18,
+              "end": 23
+            },
+            "color": {
+              "role": "color",
+              "text": "yellow",
+              "start": 11,
+              "end": 17
+            },
+            "location": {
+              "role": "location",
+              "text": "in his house",
+              "start": 24,
+              "end": 36
+            },
+            "time": null
+          }
+        }
+      },
+      "math": null,
+      "brief": null,
+      "comparison": null,
+      "imagination": null,
+      "possibility_count": null,
+      "realization": {
+        "status": "answered",
+        "mode": "deterministic_fallback",
+        "text": "The apple John ate was yellow.",
+        "candidate_text": "The apple John ate was yellow.",
+        "verified": true,
+        "plan_id": "p-1a06e05915bc",
+        "construction_version": "n0-v1",
+        "model_checkpoint_id": null,
+        "construction_ids": [
+          "past_color"
+        ],
+        "evidence_ids": [
+          "frame-feature-notes-p0004"
+        ],
+        "span_bindings": [
+          {
+            "span_id": "frame-feature-notes-p0004:patient:18:23",
+            "role": "patient",
+            "text": "apple",
+            "record_id": "frame-feature-notes-p0004"
+          },
+          {
+            "span_id": "frame-feature-notes-p0004:agent:0:4",
+            "role": "agent",
+            "text": "John",
+            "record_id": "frame-feature-notes-p0004"
+          },
+          {
+            "span_id": "frame-feature-notes-p0004:predicate:5:8",
+            "role": "predicate",
+            "text": "ate",
+            "record_id": "frame-feature-notes-p0004"
+          },
+          {
+            "span_id": "frame-feature-notes-p0004:color:11:17",
+            "role": "color",
+            "text": "yellow",
+            "record_id": "frame-feature-notes-p0004"
+          }
+        ],
+        "reason_codes": [],
+        "realization_verified": true
+      },
+      "typos": [],
+      "thinker_directive": "gather"
+    }
+  ],
+  "scope": "Live Appliance on a seven-paragraph synthetic corpus. Not an accuracy benchmark.",
+  "startup_seconds": 9.761,
+  "ingest": {
+    "documents": 1,
+    "chunks": 7,
+    "ids": [
+      "feature-notes-p0001",
+      "feature-notes-p0002",
+      "feature-notes-p0003",
+      "feature-notes-p0004",
+      "feature-notes-p0005",
+      "feature-notes-p0006",
+      "feature-notes-p0007"
+    ],
+    "connections": 0
+  }
+}

@@ -3,13 +3,19 @@
 No checkpoint is shipped. One legal derivation is spoken as written. Several
 legal derivations break ties by construction id. Uniform scores, used only in
 tests, stay inside that same set. An untrained file is refused.
+
+The question selects the plan. It is not a span, and a retrieval score is not
+a ranking. A ranking question always keeps the licensed clause and a ranking
+clause: a copied stored order, or the grammar sentence that says no order is
+stored. Scores are not asked to choose that clause, and they cannot drop it.
 """
 
 from __future__ import annotations
 
 from typing import Any
 
-from cpu_llm.realizer.constructions import bundle_from_chunks, derivations_for, plan_for
+from cpu_llm.ranking import ranking_question
+from cpu_llm.realizer.constructions import attach_ranking, bundle_from_chunks, derivations_for, plan_for
 from cpu_llm.realizer.derivation_check import check_passage
 from cpu_llm.realizer.evidence_schema import SCHEMA, Bundle, Derivation, replay
 
@@ -51,16 +57,22 @@ def realize(
     mode = "deterministic_fallback" if CHECKPOINT_ID is None else "evidence_neural"
     if delivery_rejected:
         return _result(plan, "blocked", "", False, mode, ["delivery was already rejected"])
-    if plan.status != "answered":
-        return _result(plan, plan.status, plan.non_answer, False, mode, [plan.status or "missing"])
-    groups = derivations_for(bundle, plan)
+    groups = [] if plan.status != "answered" else derivations_for(bundle, plan)
     chosen: list[Derivation] = []
     for group in groups:
         pick = select(group, scores)
         if pick is not None:
             chosen.append(pick)
-    if plan.record_ids and len(chosen) != len(plan.record_ids):
+    if plan.status == "answered" and plan.record_ids and len(chosen) != len(plan.record_ids):
         return _result(plan, "blocked", plan.non_answer, False, mode, ["a licensed record had no legal derivation"])
+    spoken = " ".join(replay(item.actions) for item in chosen)
+    if ranking_question(question):
+        attached = attach_ranking(bundle, plan, question, spoken)
+        if attached is not None:
+            bundle, plan, derivation = attached
+            chosen.append(derivation)
+    if plan.status != "answered" and not chosen:
+        return _result(plan, plan.status, plan.non_answer, False, mode, [plan.status or "missing"])
     reasons = check_passage(bundle, plan, chosen)
     if reasons:
         return _result(plan, "blocked", "", False, mode, reasons)
@@ -70,6 +82,8 @@ def realize(
     text = " ".join(clause for clause in clauses if clause).strip()
     if not text:
         return _result(plan, "missing", "No verified epistemic evidence available.", False, mode, ["missing"])
+    if plan.status != "answered":
+        return _result(plan, plan.status, text, False, mode, [plan.status or "missing"], chosen)
     return _result(plan, "answered", text, True, mode, [], chosen)
 
 
@@ -109,6 +123,9 @@ def apply_realization(
 
 
 def _speaks(state: dict[str, Any], realization: str, account: bool, outcome: dict[str, Any]) -> bool:
+    reply = state.get("reply") or {}
+    if reply.get("answer_status") in {"insufficient_evidence", "conflicting", "evidence_quote", "answered"}:
+        return False
     if outcome["status"] not in {"answered", "missing", "ambiguous", "conflicting", "unsupported"}:
         return False
     if not outcome["text"]:

@@ -8,9 +8,9 @@
 
 cpu-llm indexes paragraphs in PostgreSQL/pgvector and retrieves them using VectorPrism. It can rebuild supported propositions, extract narrowly defined event roles, apply pattern-based rules, calculate arithmetic, and arrange retrieved sentences into named document formats. It also includes local finance-validation routines and an authenticated HTTP entry point.
 
-**Author:** [Amin Parva](mailto:parvaamin@gmail.com). **Version:** 1.8.0. The wheel on PyPI is still [cpu-llm 1.7.1](https://pypi.org/project/cpu-llm/1.7.1/). Install 1.8.0 from GitHub until that wheel is published. Question times for this checkout are in the [18 October 2026 benchmark on GitHub](https://github.com/insightitsGit/cpullm/blob/main/docs/benchmark-cpu-llm-2026-10-18.md).
+**Author:** [Amin Parva](mailto:parvaamin@gmail.com). **Package metadata:** 1.8.0. This README describes the repository implementation inspected on 2026-10-18. Pin a commit or release tag when integrating; verify [PyPI release availability](https://pypi.org/project/cpu-llm/) separately rather than assuming an installed wheel contains every checkout feature. Recorded question times are in the [18 October 2026 benchmark](docs/benchmark-cpu-llm-2026-10-18.md).
 
-**Correctness boundary:** source copying, deterministic execution, and lexical auditing are not mathematical guarantees of truth or absence of unsupported conclusions. `answer` and the user-visible `reply["text"]` can be different, with different checks. Known rule/writer, construction-checker, formatting, and capacity-accounting gaps are recorded in the [claim-verification handoff](docs/handoff-claim-verification-review.md). Use the structured outcome and its evidence, rather than treating every nonempty reply as a verified answer.
+**Correctness boundary:** source copying, deterministic execution, and lexical auditing are not mathematical guarantees of truth or absence of unsupported conclusions. `answer` and the user-visible `reply["text"]` can be different, with different checks. A retrieved neighbor is not an answer: for the supported “what is” and “capital of” shapes, `answer_status` says whether a retrieved sentence states the asked relation, and a question with no such sentence is not answered from model knowledge or from an unrelated paragraph. The counts and the remaining limits are in [the 18 October answerability note](docs/answerability-evaluation-2026-10-18.md). Known rule/writer, construction-checker, formatting, and capacity-accounting gaps are recorded in the [claim-verification handoff](docs/handoff-claim-verification-review.md). Use the structured outcome and its evidence, rather than treating every nonempty reply as a verified answer.
 
 For an agent integrating the library, start with [the consumer guide](docs/library-consumer-guide.md): complete `ask` arguments, result interpretation, credentials, HTTP contracts, and operational limitations.
 
@@ -21,7 +21,7 @@ For an agent integrating the library, start with [the consumer guide](docs/libra
 - The frozen `sentence-transformers/all-mpnet-base-v2` encoder. First use may download model assets; subsequent offline use requires those assets already cached.
 - Writable local storage for `.chorusgraph/cpu-llm/` under the process's **current working directory**, in addition to the PostgreSQL data.
 
-Install 1.8.0 from GitHub. `pip install cpu-llm` still resolves the older 1.7.1 wheel on PyPI.
+To request the repository's `v1.8.0` tag explicitly, install from GitHub:
 
 ```powershell
 python -m venv .venv
@@ -122,10 +122,11 @@ The supported grammar and explicit non-answer statuses are part of the interface
 
 The retrieval encoder and shipped `vectorprism.pt` projection are distinct from sentence generation. Dense retrieval is trained; the other subspace readings and relation signatures are not a trained fact generator.
 
-There are **two separate wording paths**:
+There are **three separate wording paths**:
 
 1. The v1.9 construction realizer has N0 plans/constructions/checking but **no trained ranker checkpoint**. `realization="evidence_neural"` currently reports deterministic fallback. It is opt-in, does not affect every plain reply, and is not a delivered neural graph decoder. `account=True` opts into an account of authorized records.
-2. The fact-bridge rule path can **automatically load local FLAN-T5 extraction and writing models** when the pattern path misses, the prompt/passages have rule cues, and model directories are found. This can happen with the default `realization="deterministic"`. Model lookup checks `FACTBRIDGE_MODELS`, then `models/` and `cpullm-factbridge/models/` relative to the package installation root. An explicit root is also supported by the low-level fact-bridge API.
+2. Model01 sentence generator (`realization="model01"`) writes the checked sentence from the prompt and the stored records. Content words are copied from licensed spans. A ranking prompt quotes a stored order, or says the passages do not state one. It loads no checkpoint. `prepare()` stores checker-approved pairs in Postgres table `model01_training_pair`, with the WikiText test split marked `test`. `train()` writes nothing while every plan has one legal sentence.
+3. The fact-bridge rule path can **automatically load local FLAN-T5 extraction and writing models** when the pattern path misses, the prompt/passages have rule cues, and model directories are found. This can happen with the default `realization="deterministic"`. Model lookup checks `FACTBRIDGE_MODELS`, then `models/` and `cpullm-factbridge/models/` relative to the package installation root. An explicit root is also supported by the low-level fact-bridge API.
 
 The latter requires external checkpoints and optional tooling such as Transformers, torch, SentencePiece, and safetensors. A missing/incompatible writer or dependency can raise during a question. The current `Appliance.ask` has no public switch that guarantees this automatic fallback is disabled; inspect deployment assets and `reply.situation.wording.path`. The learned writer currently returns a nonempty candidate without calling its verifier. Its output is not covered by the earlier `answer` audit.
 
@@ -199,6 +200,8 @@ Historical reports are evidence for their recorded checkout/environment, not a c
 - [Enterprise foundation record](docs/cpu-llm-enterprise-foundation.md): a later pipeline/upload run is recorded there.
 - [Four-sentence retrieval lab](docs/retrieval-measurement-2026-10-18.md): a small labeled run, not customer-corpus quality or a production pass threshold.
 - [Question benchmark, 18 October 2026](https://github.com/insightitsGit/cpullm/blob/main/docs/benchmark-cpu-llm-2026-10-18.md): seven questions on `DESKTOP-H3RO1EI`. Startup was 11.5 s. The middle question time was 167.0 ms. Grok and Gemini were not called.
+
+That benchmark records seven individual question times, not a repeated-run percentile study. It includes abstentions and an unrelated answer to the France-capital question; timing results are not an accuracy score.
 
 The October 13 measurement on an Intel Core Ultra 9 275HX/64 GB machine reported about 10 seconds to load, 60–66 ms median warm questions for several original modes, and 593 ms deep search. It predates rule-wording, finance, tenancy, and current concurrency changes and is **not a benchmark of this checkout**. No general minimum CPU, throughput, or p95 guarantee is established.
 

@@ -1,0 +1,147 @@
+{
+  "scope": "Direct local finance components; not Appliance.ask or external services",
+  "format_count": 31,
+  "results": {
+    "refundproof": {
+      "prompt": "Review this RefundProof finding.\nvendor: Northwind\ninvoice: INV-100\ntax charged: 120.0000\ncorrect tax: 40.0000\ndeadline: ACTIONABLE",
+      "result": {
+        "triggered": true,
+        "reasons": [
+          "the prompt asks for a RefundProof tax review"
+        ],
+        "products": [
+          "refundproof"
+        ],
+        "text": "RefundProof: Northwind INV-100: recoverable 80.0000 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 80.0000. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery.",
+        "checks": [
+          {
+            "product": "refundproof",
+            "completed": true,
+            "verdict": "BLOCKED",
+            "text": "RefundProof: Northwind INV-100: recoverable 80.0000 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 80.0000. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery.",
+            "findings": [
+              {
+                "index": 1,
+                "vendor": "Northwind",
+                "invoice_number": "INV-100",
+                "invoice_line": null,
+                "identity_key": "northwind|INV-100|",
+                "document_type": "invoice",
+                "currency": "USD",
+                "tax_charged": "120.0000",
+                "correct_tax": "40.0000",
+                "recoverable_amount": "80.0000",
+                "credit_amount": null,
+                "deadline_status": "ACTIONABLE",
+                "state": "POTENTIAL_OVERPAYMENT",
+                "duplicate_status": "unique",
+                "evidence_status": "unverified",
+                "approval_blocked": "Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence.",
+                "recovery_blocked": "Recovery requires a persisted human approval. A state name is not approval.",
+                "eligible_actionable": false,
+                "eligible_potential": true
+              }
+            ],
+            "totals": {
+              "actionable_by_currency": {},
+              "potential_by_currency": {
+                "USD": "80.0000"
+              },
+              "actionable_total": "0.0000",
+              "actionable_total_scope": "USD"
+            },
+            "limitation": "Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery."
+          }
+        ]
+      }
+    },
+    "ledgercovenant": {
+      "prompt": "Decide this LedgerCovenant test.\ntest date: 2026-03-31\ncomparator: lte\nthreshold: 4.50\nnumerator: compliance_certificate 9000000\ndenominator: compliance_certificate 2000000",
+      "result": {
+        "triggered": true,
+        "reasons": [
+          "the prompt asks for a LedgerCovenant decision"
+        ],
+        "products": [
+          "ledgercovenant"
+        ],
+        "text": "LedgerCovenant: COMPLIANT. The computed value is 4.50x and the test is lte 4.50x. compliance_certificate is the only figure. Denominator: compliance_certificate is the only figure. This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default.",
+        "checks": [
+          {
+            "product": "ledgercovenant",
+            "completed": true,
+            "verdict": "COMPLIANT",
+            "text": "LedgerCovenant: COMPLIANT. The computed value is 4.50x and the test is lte 4.50x. compliance_certificate is the only figure. Denominator: compliance_certificate is the only figure. This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default.",
+            "computed_scaled": 4500000,
+            "threshold_scaled": 4500000,
+            "headroom_scaled": 0,
+            "numerator": {
+              "status": "RESOLVED",
+              "value_scaled": 9000000000000,
+              "source": "compliance_certificate",
+              "currency": "USD",
+              "id": "numerator-1",
+              "rank": 100,
+              "lattice_version": "lattice_v1",
+              "note": "compliance_certificate is the only figure.",
+              "outranked": [],
+              "corroboration_count": 0
+            },
+            "denominator": {
+              "status": "RESOLVED",
+              "value_scaled": 2000000000000,
+              "source": "compliance_certificate",
+              "currency": "USD",
+              "id": "denominator-1",
+              "rank": 100,
+              "lattice_version": "lattice_v1",
+              "note": "compliance_certificate is the only figure.",
+              "outranked": [],
+              "corroboration_count": 0
+            },
+            "derivation": null,
+            "provisions": null,
+            "obligation": "RATIO",
+            "limitation": "This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default."
+          }
+        ]
+      }
+    },
+    "ledgerlock": {
+      "prompt": "Attest this Ledgerlock field.\ndocument type: w2_stip\ndocument id: w2-1\ndocument text: Wages 84210.00\nfield: w2_box1_wages 84210.00 confidence 0.99 span 6-14",
+      "result": {
+        "triggered": true,
+        "reasons": [
+          "the prompt asks for a Ledgerlock attestation"
+        ],
+        "products": [
+          "ledgerlock"
+        ],
+        "text": "Ledgerlock: ACCEPT. w2_box1_wages 84210.00 is ACCEPT. Confidence 0.99 clears the extraction floor and the value is inside the span. Attestation digest sha256:d428596de47761cb4ef12ef1ba7942cd47f230d96239c98e71e4e2974c59621e. This gate attests the extracted number against the span and the confidence floors. It is not underwriting, not a document-authenticity check, and not a loan-system write. The digest is SHA-256, not an Ed25519 signature.",
+        "checks": [
+          {
+            "product": "ledgerlock",
+            "completed": true,
+            "verdict": "ACCEPT",
+            "text": "Ledgerlock: ACCEPT. w2_box1_wages 84210.00 is ACCEPT. Confidence 0.99 clears the extraction floor and the value is inside the span. Attestation digest sha256:d428596de47761cb4ef12ef1ba7942cd47f230d96239c98e71e4e2974c59621e. This gate attests the extracted number against the span and the confidence floors. It is not underwriting, not a document-authenticity check, and not a loan-system write. The digest is SHA-256, not an Ed25519 signature.",
+            "fields": [
+              {
+                "field_id": "w2_box1_wages",
+                "value": "84210.00",
+                "confidence": "0.99",
+                "span_start": 6,
+                "span_end": 14,
+                "span_status": "MATCH",
+                "status": "ACCEPT",
+                "reason": "Confidence 0.99 clears the extraction floor and the value is inside the span."
+              }
+            ],
+            "digest": "d428596de47761cb4ef12ef1ba7942cd47f230d96239c98e71e4e2974c59621e",
+            "document_type": "w2_stip",
+            "limitation": "This gate attests the extracted number against the span and the confidence floors. It is not underwriting, not a document-authenticity check, and not a loan-system write. The digest is SHA-256, not an Ed25519 signature."
+          }
+        ]
+      }
+    }
+  }
+}

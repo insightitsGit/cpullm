@@ -36,11 +36,17 @@ def realization_order(
 
 
 def _in_scope(message: str, hits: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    from cpu_llm.answerability import eligible_hits
+
     named = set(title_slugs(message))
     if named:
         kept = [hit for hit in hits if article_slug(str(hit["document_id"])) in named]
         if kept:
-            return kept
+            bound = eligible_hits(message, kept)
+            return bound if bound is not None else kept
+    bound = eligible_hits(message, hits)
+    if bound is not None:
+        return bound
     words = set(_content_words(message))
     if not words:
         return list(hits)

@@ -51,10 +51,15 @@ A prompt then runs:
    the prompt. Those ranked paragraphs are passed to the realizer. Each
    generated sentence is checked by the auditor and the numeric span grammar.
    A plain question skips this step.
-10. A reply node adds a preface, follow-ups, and next steps taken from the
-    passages and the open questions. It leaves the checked sentence unchanged.
-    When creative writing ran, that passage is appended after the checked
-    sentence. Discovery still runs only when the caller asks for it.
+10. Model01 writes the sentence from the prompt and the stored records. It
+    runs after math, finance, and the event frame, and before the reply. A
+    blocked prompt skips it. A withheld sentence stays withheld.
+11. A reply node adds a preface, follow-ups, and next steps taken from the
+    passages and the open questions. It leaves the checked sentence as the
+    body. When Model01 verified a sentence and no specialist owns the turn,
+    that sentence is what is spoken. When creative writing ran, that passage
+    is appended after the checked sentence. Discovery still runs only when
+    the caller asks for it.
 
 A proposition is stored only when the source supplies one. VectorPrism's
 offline heuristic extractor can add a causal graph and numeric attributes
@@ -435,8 +440,8 @@ class Appliance:
         caller: Any | None = None,
         as_of: int | None = None,
     ) -> dict[str, Any]:
-        if realization not in {"deterministic", "evidence_neural"}:
-            raise ValueError("realization must be deterministic or evidence_neural")
+        if realization not in {"deterministic", "evidence_neural", "model01"}:
+            raise ValueError("realization must be deterministic, evidence_neural, or model01")
         if (payment is None) != (authority is None):
             raise ValueError("a payment turn needs both a proposal and an authority snapshot")
         del child_safety, grade, session_id
@@ -518,7 +523,7 @@ class Appliance:
         self._previous_ids = [
             str(item["chunk_id"]) for item in result.get("related") or [] if item.get("chunk_id")
         ]
-        if realization != "deterministic" or account:
+        if realization == "evidence_neural" or account:
             from cpu_llm.realizer.ranker import apply_realization
 
             extra = apply_realization(
@@ -800,6 +805,7 @@ def _compile(appliance: Appliance):
     graph.add_node("math", dict_node_adapter(_math(appliance), hop="math"))
     graph.add_node("finance", dict_node_adapter(_finance(appliance), hop="finance"))
     graph.add_node("frame", dict_node_adapter(_frame(appliance), hop="frame"))
+    graph.add_node("model01", dict_node_adapter(_model01, hop="model01"))
     graph.add_node("discover", dict_node_adapter(_discover(appliance), hop="discover"))
     graph.add_edge(START, "guard")
     graph.add_conditional_edges("guard", _after_guard, {"retrieve": "retrieve", "reply": "reply"})
@@ -828,6 +834,7 @@ def _compile(appliance: Appliance):
             "math": "math",
             "finance": "finance",
             "frame": "frame",
+            "model01": "model01",
             "reply": "reply",
         },
     )
@@ -841,6 +848,7 @@ def _compile(appliance: Appliance):
             "math": "math",
             "finance": "finance",
             "frame": "frame",
+            "model01": "model01",
             "reply": "reply",
         },
     )
@@ -854,20 +862,28 @@ def _compile(appliance: Appliance):
             "math": "math",
             "finance": "finance",
             "frame": "frame",
+            "model01": "model01",
             "reply": "reply",
         },
     )
     graph.add_conditional_edges(
         "compare",
         _after_compare,
-        {"brief": "brief", "math": "math", "finance": "finance", "frame": "frame", "reply": "reply"},
+        {"brief": "brief", "math": "math", "finance": "finance", "frame": "frame", "model01": "model01", "reply": "reply"},
     )
     graph.add_conditional_edges(
-        "brief", _after_brief, {"math": "math", "finance": "finance", "frame": "frame", "reply": "reply"}
+        "brief",
+        _after_brief,
+        {"math": "math", "finance": "finance", "frame": "frame", "model01": "model01", "reply": "reply"},
     )
-    graph.add_conditional_edges("math", _after_math, {"finance": "finance", "frame": "frame", "reply": "reply"})
-    graph.add_conditional_edges("finance", _after_finance, {"frame": "frame", "reply": "reply"})
-    graph.add_edge("frame", "reply")
+    graph.add_conditional_edges(
+        "math", _after_math, {"finance": "finance", "frame": "frame", "model01": "model01", "reply": "reply"}
+    )
+    graph.add_conditional_edges(
+        "finance", _after_finance, {"frame": "frame", "model01": "model01", "reply": "reply"}
+    )
+    graph.add_edge("frame", "model01")
+    graph.add_edge("model01", "reply")
     graph.add_conditional_edges("reply", _after_reply, {"discover": "discover", "end": END})
     graph.add_edge("discover", END)
     return graph.compile()
@@ -894,7 +910,20 @@ def _after_guard(state: dict[str, Any]) -> str:
 
 
 def _reply(state: dict[str, Any]) -> dict[str, Any]:
-    return {"reply": compose_reply(state)}
+    reply = compose_reply(state)
+    update: dict[str, Any] = {"reply": reply}
+    status = reply.get("answer_status")
+    if not status:
+        return update
+    update["answer_status"] = status
+    update["answer_evidence"] = list(reply.get("answer_evidence") or [])
+    update["verification_scope"] = reply.get("verification_scope")
+    update["retrieved_candidates"] = list(reply.get("retrieved_candidates") or [])
+    if status in {"insufficient_evidence", "conflicting", "evidence_quote"}:
+        update["answer"] = None
+    elif status == "answered" and reply.get("supported_text"):
+        update["answer"] = reply["supported_text"]
+    return update
 
 
 def _after_shine(state: dict[str, Any]) -> str:
@@ -982,10 +1011,39 @@ def _else_finance(state: dict[str, Any], destination: str) -> str:
 
 
 def _else_frame(state: dict[str, Any], destination: str) -> str:
-    """Answer from a stored event frame when the question asks for one role."""
+    """Answer from a stored event frame, then let Model01 write the sentence."""
+    if destination == "reply" and state.get("guard_decision") not in (None, "allow"):
+        return "reply"
     if destination == "reply" and state.get("frame") is True and not _delivery_rejected(state):
         return "frame"
+    if destination == "reply":
+        return "model01"
     return destination
+
+
+def _model01(state: dict[str, Any]) -> dict[str, Any]:
+    """The sentence generator. It runs after the specialists and before the reply."""
+    from cpu_llm.model01.generator import generate
+
+    rejected = _delivery_rejected(state)
+    chunks = [
+        (str(item.get("chunk_id") or ""), str(item.get("chunk_text") or ""))
+        for item in state.get("related") or []
+        if item.get("chunk_id") and item.get("chunk_text")
+    ]
+    attributes = {
+        str(item.get("chunk_id")): item["attributes"]
+        for item in state.get("related") or []
+        if item.get("chunk_id") and isinstance(item.get("attributes"), dict)
+    }
+    outcome = generate(
+        str(state.get("message") or ""),
+        chunks,
+        attributes=attributes or None,
+        math_result=state.get("math_result") if isinstance(state.get("math_result"), dict) else None,
+        delivery_rejected=rejected,
+    )
+    return {"model01": outcome}
 
 
 def _wants_brief(state: dict[str, Any]) -> bool:
@@ -1395,10 +1453,16 @@ def _brief(appliance: Appliance):
             if document_id not in source_ids:
                 source_ids.append(document_id)
         if state.get("sources") is True and not source_ids:
-            for item in state.get("related") or []:
-                document_id = str(item.get("chunk_id") or "")
-                if document_id and document_id not in source_ids:
-                    source_ids.append(document_id)
+            from cpu_llm.answerability import supporting_ids
+
+            bound = supporting_ids(state.get("message") or "", list(state.get("related") or []))
+            if bound is not None:
+                source_ids = bound
+            else:
+                for item in state.get("related") or []:
+                    document_id = str(item.get("chunk_id") or "")
+                    if document_id and document_id not in source_ids:
+                        source_ids.append(document_id)
         return {
             "brief": {
                 "summary": summary,

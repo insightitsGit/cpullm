@@ -10,7 +10,7 @@ from dataclasses import dataclass
 
 from cpu_llm.ir.schema import EIRProposition
 
-SCHEMA = "n0-v1"
+SCHEMA = "n0-v2"
 
 
 @dataclass(frozen=True)
@@ -41,6 +41,7 @@ class Bundle:
     records: tuple[Record, ...]
     causal_edges: tuple[tuple[str, str], ...] = ()
     completeness: str = "shortlist-only"
+    passages: tuple[str, ...] = ()
 
     def record(self, record_id: str) -> Record | None:
         for item in self.records:

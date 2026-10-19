@@ -1,6 +1,6 @@
 # Library consumer guide for agents
 
-This guide describes the 1.8.0 tree. Pin `v1.8.0` when integrating. Inspect current signatures and run the applicable tests when updating past that tag. PyPI still serves 1.7.1 until the 1.8.0 wheel is uploaded.
+This guide describes the repository's 1.8.0 API inspected on 2026-10-18. Pin a commit or `v1.8.0` when integrating, inspect current signatures, and run the applicable tests when updating. Verify PyPI availability separately; the repository's version metadata does not establish which wheel is currently published.
 
 Read [README](../README.md) for installation and capability limits. This document supplies the integration contract, not a certificate of general correctness.
 
@@ -89,6 +89,9 @@ def response_view(result):
         "display_text": reply.get("text", ""),
         "base_answer": result.get("answer"),
         "base_audit_passed": result.get("audit_passed"),
+        "answer_status": result.get("answer_status"),
+        "answer_evidence": result.get("answer_evidence") or [],
+        "verification_scope": result.get("verification_scope"),
         "situation": reply.get("situation"),
         "draft": reply.get("draft"),
         "frame": result.get("frame_result"),
@@ -100,6 +103,10 @@ def response_view(result):
 ```
 
 This helper only organizes data. `held=False` or `base_audit_passed=True` is not proof that a rule conclusion, draft header, or learned wording is correct.
+
+For a “what is” or “which X is the Y of Z” question, also read `answer_status`. `answered` means the spoken sentences state that relation and the base audit accepted them. `insufficient_evidence` means the retrieved rows do not state it; `reply.text` is then “The retrieved passages do not settle that.” or “No passage was retrieved.” `conflicting` means two stored values were found and neither was chosen. `evidence_quote` means a binding sentence was retrieved but was not the audited answer, so the text is a labeled passage preview. `answer_evidence` lists the document id and sentence for that status. `retrieved_candidates` lists what retrieval returned, including rows that do not support the claim. `audit_passed` still means only that a base sentence matched a stored proposition. `thinker_directive` is the thinker route; in the 18 October feature demonstration every prompt, including supported answers, stayed `gather`, so `gather` is not an abstention signal.
+
+That contract does not cover arithmetic, event frames, ranking questions, or rule questions. Those keep their own producers. A checked sentence is not replaced by a rule reader that returns verdict `NONE`. The frozen comparison is in [the 18 October answerability note](answerability-evaluation-2026-10-18.md).
 
 `reply.situation.verdict` can be `YES`, `NO`, `CONTESTED`, `UNKNOWN`, `CAUSE`, or `NONE`. Its `because` values are source **sentences**, not document IDs or source URLs. The current fact-bridge path may append background statements to its evidence pool; verify sentences against the original retrieved rows before treating them as citations. The current learned writer also lacks a candidate-verification call. See the [correctness handoff](handoff-claim-verification-review.md).
 
