@@ -244,3 +244,7 @@ def test_a_missing_color_is_the_reply_and_not_the_source_sentence():
     )
     assert beside["text"].startswith(plain)
     assert "Event:\nNo stored sentence states that color in the past." in beside["text"]
+    colour = resolve_frames("What colour was the banana John ate?", [frame])
+    assert colour["status"] == "missing"
+    assert "no stored sentence" in colour["text"].casefold()
+    assert frame_trigger("What colour was the banana John ate?")

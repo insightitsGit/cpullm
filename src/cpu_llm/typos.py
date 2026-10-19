@@ -26,6 +26,9 @@ from cpu_llm.channels import _STOP
 
 TYPO_MIN_COSINE = 0.45
 TYPO_MARGIN = 0.05
+# Spelling variants that select a question shape. A corpus that contains one
+# of them must not rewrite the other, or the frame parser never sees the question.
+_PROTECTED = frozenset({"color", "colour"})
 _TOKEN = re.compile(r"[A-Za-z]{4,}")
 _cache_key: tuple[str, int, int] | None = None
 _cache_grams: dict[str, Counter[str]] = {}
@@ -55,11 +58,11 @@ def correct_message(
         parts.append(text[cursor : match.start()])
         cursor = match.end()
         folded = token.casefold()
-        if folded in grams or folded in _STOP:
+        if folded in grams or folded in _STOP or folded in _PROTECTED:
             parts.append(token)
             continue
         chosen = _nearest(folded, grams, lengths)
-        if chosen is None:
+        if chosen is None or _same_inflection(folded, chosen):
             parts.append(token)
             continue
         written = _match_case(token, chosen)
@@ -93,6 +96,16 @@ def _vocabulary(
     _cache_grams = grams
     _cache_lengths = lengths
     return grams, lengths
+
+
+def _same_inflection(token: str, chosen: str) -> bool:
+    """True when the candidate is another form of the same word, not a misspelling."""
+    from cpu_llm.realizer.inflect import surface_tokens
+
+    if chosen in surface_tokens(token):
+        return True
+    stem = token[:-1] if token.endswith("s") and not token.endswith("ss") else token
+    return chosen in surface_tokens(stem)
 
 
 def _nearest(

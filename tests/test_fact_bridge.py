@@ -23,7 +23,7 @@ FACTS = [
 ]
 QUESTIONS = [
     ("Can I fly business class from Los Angeles to Tokyo?", "YES"),
-    ("Can I fly business class from Los Angeles to Phoenix?", "NO"),
+    ("Can I fly business class from Los Angeles to Phoenix?", "UNKNOWN"),
     ("Is economy class required from Los Angeles to Phoenix?", "YES"),
     ("Is economy class required from Los Angeles to Tokyo?", "NO"),
     ("Can I fly business class from Los Angeles to Paris?", "UNKNOWN"),
@@ -58,7 +58,10 @@ def test_each_verdict_has_its_own_sentence():
         child_safety=False,
     )
     assert yes.text.startswith("Yes.") and "11 hours" in yes.text and "over 6 hours" in yes.text
-    assert no.text.startswith("No.") and "2 hours" in no.text
+    assert no.verdict == "UNKNOWN" and "2 hours" in no.text and "only" not in no.text.casefold()
+    forbidden = answer("Is business class forbidden from Los Angeles to Tokyo?", chunks, child_safety=False)
+    assert forbidden.verdict == "NO" and forbidden.text.startswith("No.")
+    assert "allowed" in forbidden.text.casefold() and not forbidden.text.startswith("Yes.")
     assert unknown.text.startswith("It depends")
     assert cause.text.startswith("Because long flights cause fatigue")
     assert none.verdict == "NONE" and "couldn't find a rule" in none.text

@@ -317,6 +317,70 @@ def test_binding_beats_returning_the_first_passage_on_the_frozen_set():
     assert candidate["citation_hits"] == candidate["coverage"]
 
 
+def test_a_diet_question_uses_the_eating_sentence_and_not_the_nest():
+    reply = compose_reply(
+        _state(
+            "What does the harbor kestrel eat?",
+            [("nest", _NESTS), ("eat", _EATS), ("kind", _KESTREL)],
+            answer=f"{_EATS} it is a small coastal falcon.",
+            audit_passed=True,
+        )
+    )
+    assert "eats small fish" in reply["text"]
+    assert "coastal cliffs" not in reply["text"]
+    assert [item["document_id"] for item in reply["answer_evidence"]] == ["eat"]
+    heron = assess(
+        "What does the blue heron eat?",
+        [_EATS, "The blue heron eats small fish."],
+    )
+    assert heron is not None and heron["answer_status"] == "answered"
+    assert heron["text"] == "The blue heron eats small fish."
+
+
+def test_a_nesting_question_quotes_that_birds_place():
+    kestrel = assess(
+        "Where does the harbor kestrel nest?",
+        [_KESTREL, _EATS, _NESTS, "The blue heron nests in tall trees."],
+    )
+    heron = assess(
+        "Where does the blue heron nest?",
+        [_NESTS, "The blue heron nests in tall trees.", "The blue heron eats small fish."],
+    )
+    assert kestrel is not None and "coastal cliffs" in kestrel["text"]
+    assert "tall trees" not in kestrel["text"]
+    assert heron is not None and "tall trees" in heron["text"]
+    assert "coastal cliffs" not in heron["text"]
+    reply = compose_reply(
+        _state(
+            "Where does the harbor kestrel nest?",
+            [("kind", _KESTREL), ("eat", _EATS), ("nest", _NESTS)],
+            answer=f"{_KESTREL} it eats small fish.",
+            audit_passed=True,
+        )
+    )
+    assert "coastal cliffs" in reply["text"]
+    assert "eats small fish" not in reply["text"]
+
+
+def test_a_missing_weight_is_not_the_birds_definition_or_another_animals_weight():
+    reply = compose_reply(
+        _state(
+            "How much does the harbor kestrel weigh?",
+            [
+                ("kind", _KESTREL),
+                ("eat", _EATS),
+                ("lobster", "The European lobster weighs nine kilograms."),
+            ],
+            answer=f"{_KESTREL} it eats small fish. The European lobster weighs nine kilograms.",
+            audit_passed=True,
+        )
+    )
+    assert reply["answer_status"] == "insufficient_evidence"
+    assert reply["text"] == _UNSETTLED
+    assert "lobster" not in reply["text"].casefold()
+    assert "falcon" not in reply["text"].casefold()
+
+
 def _frozen_fixtures() -> list[dict]:
     seven = _chunks(*[(f"p{index}", text) for index, text in enumerate(_SEVEN)])
     return [

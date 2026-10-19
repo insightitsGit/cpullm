@@ -31,7 +31,7 @@ _YEAR = r"(?:1[89]|20)\d{2}"
 _YEAR_PREFIX = rf"(?:[Ii]n (?P<prefix_year>{_YEAR}),\s+)?"
 _YEAR_SUFFIX = rf"(?: [Ii]n (?P<suffix_year>{_YEAR}))?"
 _COLOR_QUESTION = re.compile(
-    rf"^{_YEAR_PREFIX}[Ww]hat color was the (?P<patient>[A-Za-z]+)"
+    rf"^{_YEAR_PREFIX}[Ww]hat colou?r was the (?P<patient>[A-Za-z]+)"
     rf"(?: (?P<agent>[A-Za-z]+) (?P<verb>[A-Za-z]+))?{_YEAR_SUFFIX}\??$"
 )
 _WHERE_QUESTION = re.compile(
@@ -42,7 +42,7 @@ _WHO_QUESTION = re.compile(
     rf"^{_YEAR_PREFIX}[Ww]ho (?P<verb>[A-Za-z]+) the (?P<patient>[A-Za-z]+){_YEAR_SUFFIX}\??$"
 )
 _NOT_QUESTION = re.compile(r"^[Ww]hat did (?P<agent>[A-Za-z]+) not (?P<verb>[A-Za-z]+)\??$")
-_FRAME_LIKE = re.compile(r"\bwhat color\b|\bwhere did\b|\bwho (?:ate|eat|eats|eaten)\b", re.IGNORECASE)
+_FRAME_LIKE = re.compile(r"\bwhat colou?r\b|\bwhere did\b|\bwho (?:ate|eat|eats|eaten)\b", re.IGNORECASE)
 _BETTER = re.compile(r"\b(?:better|worse|best|worst)\b", re.IGNORECASE)
 _TOKEN = re.compile(r"[A-Za-z0-9]+(?:'[A-Za-z]+)?")
 _FUNCTION = frozenset("the a an".split())

@@ -38,6 +38,15 @@ _SOURCES = re.compile(
     r"^(?:cite\s+)?sources?\s+for\s+(?P<rest>.+?)\s*\??$",
     re.IGNORECASE,
 )
+_DOES = re.compile(
+    r"^(?P<wh>what|where)\s+does\s+(?P<subject>.+?)\s+(?P<verb>[a-z]+)\s*\??$",
+    re.IGNORECASE,
+)
+_WEIGHT = re.compile(
+    r"^how\s+much\s+does\s+(?P<subject>.+?)\s+weigh\s*\??$",
+    re.IGNORECASE,
+)
+_WEIGHT_WORD = re.compile(r"\b(?:weighs?|weight|kilograms?|grams?|pounds?|ounces?)\b", re.IGNORECASE)
 _NEGATED = re.compile(r"\b(?:not|never|no|n't)\b", re.IGNORECASE)
 _CONDITIONAL = re.compile(r"\bif\b", re.IGNORECASE)
 _DETERMINER = re.compile(r"^(?:the|a|an)\s+", re.IGNORECASE)
@@ -53,6 +62,23 @@ def parse_query(message: str) -> dict[str, str] | None:
     text = " ".join((message or "").strip().split())
     if not text:
         return None
+    does = _DOES.match(text)
+    if does:
+        subject = _subject_phrase(does.group("subject"))
+        verb = does.group("verb").casefold()
+        if subject and verb:
+            return {
+                "kind": "relation",
+                "subject": subject,
+                "verb": verb,
+                "relation": "location" if does.group("wh").casefold() == "where" else "action",
+                "raw": text,
+            }
+    weight = _WEIGHT.match(text)
+    if weight:
+        subject = _subject_phrase(weight.group("subject"))
+        if subject:
+            return {"kind": "weight", "subject": subject, "raw": text}
     sources = _SOURCES.match(text)
     if sources:
         subject = _subject_phrase(sources.group("rest"))
@@ -125,6 +151,23 @@ def assess(message: str, chunks: list[Any]) -> dict[str, Any] | None:
         }
     if plan["kind"] == "attribute":
         return {**base, **_attribute_decision(plan, rows)}
+    if plan["kind"] in {"relation", "weight"}:
+        bindings = _relation_bindings(plan, rows)
+        if not bindings:
+            return {
+                **base,
+                "answer_status": "insufficient_evidence",
+                "reason": "no_binding",
+                "text": _UNSETTLED,
+            }
+        sentences = _unique([item["span"] for item in bindings])
+        return {
+            **base,
+            "answer_status": "answered",
+            "reason": "relation_stated",
+            "text": " ".join(sentences),
+            "answer_evidence": bindings,
+        }
     bindings = _subject_bindings(plan, rows)
     if not bindings:
         return {
@@ -257,9 +300,53 @@ def _subject_bindings(plan: dict[str, str], rows: list[dict[str, str]]) -> list[
     return bindings
 
 
+def _relation_bindings(plan: dict[str, str], rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    bindings: list[dict[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+    for row in rows:
+        for sentence in _sentences(row["text"]):
+            if not _relation_sentence(plan, sentence):
+                continue
+            key = (row["document_id"], sentence)
+            if key in seen:
+                continue
+            seen.add(key)
+            bindings.append({"document_id": row["document_id"], "span": sentence})
+    return bindings
+
+
+def _relation_sentence(plan: dict[str, str], sentence: str) -> bool:
+    subject = plan.get("subject") or ""
+    if not _subject_sentence(subject, sentence):
+        return False
+    if plan["kind"] == "weight":
+        return _WEIGHT_WORD.search(sentence) is not None
+    verb = plan.get("verb") or ""
+    forms = _verb_forms(verb)
+    if not forms:
+        return False
+    words = {token.casefold() for token in re.findall(r"[A-Za-z']+", sentence)}
+    if not forms & words:
+        return False
+    if plan.get("relation") == "location":
+        return re.search(rf"\b(?:{'|'.join(sorted(forms))})\s+in\b", sentence, re.IGNORECASE) is not None
+    return True
+
+
+def _verb_forms(verb: str) -> set[str]:
+    from cpu_llm.realizer.inflect import surface_tokens
+
+    lemma = verb.casefold()
+    if lemma.endswith("s") and not lemma.endswith("ss") and lemma[:-1]:
+        lemma = lemma[:-1]
+    return surface_tokens(lemma) | {verb.casefold()}
+
+
 def _text_binds(plan: dict[str, str], text: str) -> bool:
     if plan["kind"] == "attribute":
         return any(_attribute_value(plan, sentence) is not None for sentence in _sentences(text))
+    if plan["kind"] in {"relation", "weight"}:
+        return any(_relation_sentence(plan, sentence) for sentence in _sentences(text))
     subject = plan.get("subject") or ""
     return any(_subject_sentence(subject, sentence) for sentence in _sentences(text))
 

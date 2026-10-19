@@ -41,6 +41,21 @@ def test_two_equally_close_words_are_not_a_guess():
     assert changes == []
 
 
+def test_a_question_verb_is_not_rewritten_into_its_inflection():
+    text, changes = correct_message("Where does the harbor kestrel nest?", {"nests": {}, "kestrel": {}})
+    assert text == "Where does the harbor kestrel nest?"
+    assert changes == []
+
+
+def test_color_is_not_rewritten_to_the_corpus_spelling():
+    text, changes = correct_message("What color was the banana John ate?", {"colour": {}, "yellow": {}})
+    assert text == "What color was the banana John ate?"
+    assert changes == []
+    other, other_changes = correct_message("What colour was the banana John ate?", {"color": {}, "yellow": {}})
+    assert other == "What colour was the banana John ate?"
+    assert other_changes == []
+
+
 def test_an_empty_index_leaves_the_question():
     text, changes = correct_message("What is the lobstor?", {})
     assert text == "What is the lobstor?"

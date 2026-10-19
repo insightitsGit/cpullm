@@ -413,6 +413,12 @@ def _opinion(rule: Rule, fact: Optional[Fact]) -> tuple[Optional[str], Optional[
     holds = verdict is ConditionEval.EVAL_TRUE
     if rule.modality == "forbidden":
         return ("NO" if holds else None), value
+    if rule.modality == "allowed" and not holds:
+        # "Allowed for flights over six hours" permits that case. It does not
+        # forbid the others, unless the source itself says "only".
+        if re.search(r"\bonly\b", rule.source or "", re.IGNORECASE):
+            return "NO", value
+        return "OPEN", value
     return ("YES" if holds else "NO"), value
 
 
@@ -455,7 +461,17 @@ def _fact_plan(f: Fact, value: Optional[float], rule: Optional[Rule]) -> dict:
     return out
 
 
+def _asked_modality(question: str) -> str:
+    """The modality the question asks about, not the modality stored in a rule."""
+    if re.search(r"\b(?:forbidden|prohibited|banned|not allowed|not permitted)\b", question, re.IGNORECASE):
+        return "forbidden"
+    if re.search(r"\b(?:required|mandatory|must)\b", question, re.IGNORECASE):
+        return "required"
+    return "allowed"
+
+
 def _plan(verdict: str, question: str, **parts) -> dict:
+    parts.setdefault("asked", _asked_modality(question))
     return {"verdict": verdict, "question": question, **{k: v for k, v in parts.items() if v is not None}}
 
 
@@ -497,14 +513,31 @@ def _reason(question: str, ex: Extraction) -> Answer:
         for k, v in categories_of(f, ex.isa).items():
             cats.setdefault(k, v)
     opinions = []
+    opens = []
     for r in rules:
         if r.category not in cats:
             continue
         fact = next((f for f in facts if f.metric == r.metric), None)
         verdict, value = _opinion(r, fact)
+        if verdict == "OPEN":
+            opens.append((r, fact, value))
+            continue
         if verdict:
             opinions.append((verdict, r, fact, value))
     if not opinions:
+        if opens:
+            r, f, value = opens[0]
+            sources = [r.source] + ([f.source] if f else [])
+            return Answer(
+                "UNKNOWN",
+                "The retrieved passages do not settle that.",
+                sources,
+                plan=_plan(
+                    "UNKNOWN", q, entity=f.entity if f else facts[0].entity,
+                    rule=_rule_plan(r), fact=_fact_plan(f, value, r) if f else None,
+                    gap="sufficient_allowance",
+                ),
+            )
         return Answer("NONE", "No retrieved rule applies to this kind of thing.",
                       plan=_plan("NONE", q, reason="no_matching_category", entity=facts[0].entity))
 
@@ -531,6 +564,16 @@ def _reason(question: str, ex: Extraction) -> Answer:
                                           rules=[dict(_rule_plan(r), outcome=v) for v, r, *_ in opinions]))
     if "YES" in kinds:
         _, r, f, value = next(o for o in opinions if o[0] == "YES")
+        if _asked_modality(q) == "forbidden" and r.modality != "forbidden":
+            return Answer(
+                "NO",
+                "No.",
+                sources + cats.get(r.category, []),
+                plan=_plan(
+                    "NO", q, entity=f.entity, rule=_rule_plan(r), fact=_fact_plan(f, value, r),
+                    via=cats.get(r.category) or None,
+                ),
+            )
         also = [{"rule": _rule_plan(r2), "fact": _fact_plan(f2, v2, r2)}
                 for k, r2, f2, v2 in opinions if k == "YES" and r2 is not r and f2 is not None and f2 is not f]
         text, audited = _derive(r, f, value)

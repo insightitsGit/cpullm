@@ -250,6 +250,13 @@ def wordings(plan: dict) -> list[str]:
     cats = _plural_noun(rule["category"])
     lim = limit(rule)
     if v == "UNKNOWN":
+        if plan.get("gap") == "sufficient_allowance" and fact:
+            ent = _the(fact["entity"])
+            has = fact_clause(fact)
+            return [
+                f"The retrieved passages do not settle that. {_cap(ent)} {has}, and {obj} {be} allowed for {cats} {lim}.",
+                f"It is not settled. {obj} {be} allowed for {cats} {lim}, and {_cap(ent)} {has}.",
+            ]
         if plan.get("missing") == "unit_conversion" and fact:
             ent = _the(fact["entity"])
             return [f"I can't tell. {_cap(obj)} {be} {adj} for {cats} {lim}, but {ent} {fact_clause(fact)}, "
@@ -288,6 +295,11 @@ def wordings(plan: dict) -> list[str]:
             f"Yes, you can use {obj} for {ent}. It {has}, which meets the rule for {cats} {lim}.{also}{n0}",
         ]
     # NO
+    if plan.get("asked") == "forbidden" and rule["modality"] != "forbidden":
+        return [
+            f"No. {_cap(obj)} {be} {adj} for {ent}: it {has}, and {obj} {be} {adj} for {cats} {lim}.{also}{n0}",
+            f"No. The rule makes {obj} {adj} for {cats} {lim}, and {ent} {has}.{also}{n1}",
+        ]
     if rule["modality"] == "forbidden":
         return [
             f"No. {_cap(obj)} {be} not allowed for {ent}: it {has}, and {obj} {be} not allowed for {cats} {lim}.{also}{n0}",
@@ -295,7 +307,7 @@ def wordings(plan: dict) -> list[str]:
             f"No. The rule forbids {obj} for {cats} {lim}, and {ent} {has}.{also}{n0}",
         ]
     return [
-        f"No. {Ent} {has}, and {obj} {be} {adj} only for {cats} {lim}.{also}{n0}",
+        f"No. {Ent} {has}, and {obj} {be} {adj} for {cats} {lim}.{also}{n0}",
         f"No, {obj} {be} not {adj} here. {Ent} {has}, which is {not_limit(rule)}.{also}{n1}",
         f"No. The rule makes {obj} {adj} for {cats} {lim}, and {ent} {has}.{also}{n0}",
         f"No. {_cap(obj)} {be} {adj} for {cats} {lim}, but {ent} {has}.{also}{n1}",

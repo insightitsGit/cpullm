@@ -96,7 +96,7 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
         lines = [assessment["text"]]
         body = assessment["text"]
         follow_ups = _follow_ups(state, body)
-    else:
+    elif assessment is None:
         spoken = _model01_sentence(state)
         if spoken:
             lines = [spoken]
