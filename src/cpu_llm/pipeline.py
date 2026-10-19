@@ -1022,13 +1022,18 @@ def _else_frame(state: dict[str, Any], destination: str) -> str:
 
 
 def _model01(state: dict[str, Any]) -> dict[str, Any]:
-    """The sentence generator. It runs after the specialists and before the reply."""
+    """The sentence generator. It runs after the specialists and before the reply.
+
+    A retrieved paragraph that shares no word with the prompt is not a source
+    for this sentence. Math and finance still read the question.
+    """
     from cpu_llm.model01.generator import generate
 
     rejected = _delivery_rejected(state)
+    related = _passages_for_sentence(str(state.get("message") or ""), list(state.get("related") or []))
     chunks = [
         (str(item.get("chunk_id") or ""), str(item.get("chunk_text") or ""))
-        for item in state.get("related") or []
+        for item in related
         if item.get("chunk_id") and item.get("chunk_text")
     ]
     attributes = {
@@ -1044,6 +1049,30 @@ def _model01(state: dict[str, Any]) -> dict[str, Any]:
         delivery_rejected=rejected,
     )
     return {"model01": outcome}
+
+
+_MODEL01_SKIP = frozenset(
+    """
+    what which who how why when where this that these those with from into
+    about there here best worst better worse highest lowest
+    """.split()
+)
+
+
+def _passages_for_sentence(question: str, related: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Passages that share a prompt word. The others stay on the turn for the other agents."""
+    words = {
+        token.casefold()
+        for token in re.findall(r"[A-Za-z][A-Za-z'-]{3,}", question)
+        if token.casefold() not in _MODEL01_SKIP
+    }
+    if not words:
+        return []
+    return [
+        item
+        for item in related
+        if any(word in str(item.get("chunk_text") or "").casefold() for word in words)
+    ]
 
 
 def _wants_brief(state: dict[str, Any]) -> bool:

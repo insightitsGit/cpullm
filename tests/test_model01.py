@@ -103,6 +103,23 @@ def _delete_test_rows() -> None:
         conn.commit()
 
 
+def test_model01_does_not_copy_an_unrelated_passage():
+    from cpu_llm.pipeline import _model01
+
+    update = _model01(
+        {
+            "message": "What is Mary?",
+            "guard_decision": "allow",
+            "related": [
+                {"chunk_id": "mary", "chunk_text": "Mary baked a cake."},
+                {"chunk_id": "other", "chunk_text": "Kinberg supported a number of changes to the liturgy."},
+            ],
+        }
+    )
+    assert update["model01"]["text"] == "Mary baked a cake."
+    assert "Kinberg" not in update["model01"]["text"]
+
+
 def test_model01_is_the_step_before_the_reply():
     from cpu_llm.pipeline import _after_finance, _after_math, _after_shine
 
