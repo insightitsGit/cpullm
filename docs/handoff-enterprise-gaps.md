@@ -3,8 +3,8 @@
 **ID:** HO-cpullm-003  
 **Date:** 2026-10-18  
 **Baseline:** `fdb4d78` on `main`, plus the source-delete, cued category list, and uncovered-decision reply in the working tree if those are not committed yet.  
-**Status:** Problems stated. Solutions are not chosen.  
-**Audience:** An agent who will design these gaps and then implement the design.
+**Status:** Superseded for implementation by [DES-cpullm-004](cpu-llm-enterprise-foundation.md). This file remains the problem statement.  
+**Audience:** An agent implementing DES-cpullm-004. Do not treat a later write-up as the spec when it conflicts with that design.
 
 ## Assignment
 

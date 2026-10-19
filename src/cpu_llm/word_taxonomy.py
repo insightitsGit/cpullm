@@ -189,7 +189,7 @@ def _recalled_documents(resonance: PrismResonance, slug: str, word: str, limit: 
     return ordered
 
 
-def taxonomize_words(index: dict[str, dict[str, list[str]]]) -> PrismRAG:
+def taxonomize_words(index: dict[str, dict[str, list[str]]], tenant_id: str = "cpu-llm") -> PrismRAG:
     """Register every stored word under its article with PrismRAG."""
     categories: list[dict[str, str]] = []
     rules: list[dict[str, str]] = []
@@ -209,7 +209,7 @@ def taxonomize_words(index: dict[str, dict[str, list[str]]]) -> PrismRAG:
         rules.append({"word": categories[0]["slug"], "category_slug": categories[0]["slug"]})
     rag = PrismRAG(
         mapping={"categories": categories or [{"slug": "untagged", "label": "untagged"}], "rules": rules or [{"word": "untagged", "category_slug": "untagged"}]},
-        tenant_id="cpu-llm",
+        tenant_id=tenant_id,
     )
     records = [
         {"word": word, "text": word, "category_hint": slug}
@@ -228,6 +228,7 @@ def bind_word_taxonomy(
     *,
     tags_path: Path,
     amplitudes: list[np.ndarray] | None = None,
+    tenant_id: str = "cpu-llm",
 ) -> dict[str, Any]:
     """Tag every content word and checkpoint the resonance ledger.
 
@@ -240,7 +241,7 @@ def bind_word_taxonomy(
 
     incoming = word_index(chunks)
     merged = merge_word_index(tags_path, incoming)
-    rag = taxonomize_words(incoming)
+    rag = taxonomize_words(incoming, tenant_id)
     seen_tags: set[str] = set()
     stamped: list[np.ndarray] = []
     for (document_id, text), tensor in zip(chunks, tensors):

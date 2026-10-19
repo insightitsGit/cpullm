@@ -87,6 +87,7 @@ from prismthinker.adapters.vectorprism import RetrievedDocument, from_vectorpris
 from prismthinker.config import EngineConfig
 from prismthinker.core.schemas import EpistemicRegime, ReasoningContext
 
+from cpu_llm.access import AccessError, CallerContext, StorageError, TenantNotFoundError, keep_allowed
 from cpu_llm.agents.discovery import run_discovery
 from cpu_llm.agents.imagine import compose_imagination
 from cpu_llm.agents.reply import compose_reply
@@ -162,8 +163,14 @@ class Appliance:
 
         # A namespace gets its own Postgres schema and its own local memory folder.
         self.namespace = _namespace_slug(namespace) if namespace else None
+        self.tenant_id = self.namespace or "cpu-llm"
         if self.namespace:
-            dsn = _namespace_dsn(dsn or os.environ.get("VECTORPRISM_PG_DSN") or _local_dsn(), self.namespace)
+            try:
+                dsn = _namespace_dsn(dsn or os.environ.get("VECTORPRISM_PG_DSN") or _local_dsn(), self.namespace)
+            except AccessError:
+                raise
+            except Exception as exc:
+                raise StorageError("the database schema could not be opened") from exc
         self.child_safety = ChildSafetyGate(
             enabled=enabled_by_default() if child_safety is None else child_safety,
             on_escalate=on_escalate,
@@ -193,7 +200,7 @@ class Appliance:
             coherence_threshold=-1.0,
             auto_sleep=False,
         )
-        self.memory = SqliteGraphStore(cache / "graph_store.db", tenant_id="cpu-llm")
+        self.memory = SqliteGraphStore(cache / "graph_store.db", tenant_id=self.tenant_id)
         install_output_formats(self.memory)
         self.format_sense = FormatSense(self.memory, self._encode_sense)
         self.word_tags_path = cache / "word_tags.json"
@@ -368,6 +375,7 @@ class Appliance:
         grade: Any = None,
         child_safety: bool | None = None,
         session_id: str | None = None,
+        caller: Any | None = None,
     ) -> dict[str, Any]:
         if realization not in {"deterministic", "evidence_neural"}:
             raise ValueError("realization must be deterministic or evidence_neural")
@@ -375,10 +383,14 @@ class Appliance:
             raise ValueError("a payment turn needs both a proposal and an authority snapshot")
         del child_safety, grade, session_id
         self._deep_tensors = {}
+        context = _caller_for(self, caller)
+        refused = empty_scope_result(self.tenant_id, message, context)
+        if refused is not None:
+            return refused
         from cpu_llm.typos import correct_message
 
         original_message = message
-        message, typos = correct_message(message, self.word_tags)
+        message, typos = correct_message(message, self.word_tags, tenant_id=self.tenant_id)
         z_query = np.asarray(self.index.encode_query(message), dtype=np.float32).reshape(TENSOR_DIM)
         creative_reasons = creative_writing_trigger(message, forced=imagine)
         deep_reasons = deep_search_trigger(message, forced=deep)
@@ -406,11 +418,15 @@ class Appliance:
             "hypothesis": hypothesis,
             "causal_graph": causal_graph,
             "z_query": z_query,
+            "allowed_sources": None if context is None else context.allowed_sources,
         }
         result = self.graph.invoke(
             {
                 "message": message,
-                "tenant_id": "cpu-llm",
+                "tenant_id": self.tenant_id,
+                "caller_id": None if context is None else context.caller_id,
+                "request_id": None if context is None else context.request_id,
+                "allowed_sources": None if context is None else sorted(context.allowed_sources),
                 "discover": discover,
                 "creative": bool(creative_reasons),
                 "creative_reasons": creative_reasons,
@@ -453,6 +469,10 @@ class Appliance:
             result = {**result, **extra}
         result["child_safety"] = {"action": "off", "reasons": ["child safety is not applied"]}
         result["typos"] = typos
+        result["tenant_id"] = self.tenant_id
+        if context is not None:
+            result["caller_id"] = context.caller_id
+            result["request_id"] = context.request_id
         if typos:
             result["original_message"] = original_message
         return result
@@ -586,8 +606,47 @@ def _stored_proposition(store: SqliteGraphStore, chunk_text: str, tensor: np.nda
     return None
 
 
+def graph_identity(tenant_id: str) -> tuple[str, str]:
+    """The Chorus graph tenant and id for one appliance."""
+    return tenant_id, f"appliance_{tenant_id}"
+
+
+def empty_scope_result(tenant_id: str, message: str, context: CallerContext | None) -> dict[str, Any] | None:
+    """The empty-retrieval reply when this caller may read no source.
+
+    Returned before typo correction and before ``encode_query``. ``None`` means
+    the turn may continue.
+    """
+    if context is None or context.allowed_sources:
+        return None
+    reply = compose_reply(
+        {"message": message, "guard_decision": "allow", "related": [], "tenant_id": tenant_id}
+    )
+    return {
+        "answer": None,
+        "reply": reply,
+        "related": [],
+        "tenant_id": tenant_id,
+        "caller_id": context.caller_id,
+        "request_id": context.request_id,
+        "access_error": "allowed_sources_empty",
+        "typos": [],
+    }
+
+
+def _caller_for(appliance: Appliance, caller: Any | None) -> CallerContext | None:
+    if caller is None:
+        return None
+    if not isinstance(caller, CallerContext):
+        raise TypeError("caller must be a CallerContext")
+    if caller.tenant_id != appliance.tenant_id:
+        raise TenantNotFoundError("the caller is not a member of this appliance")
+    return caller
+
+
 def _compile(appliance: Appliance):
-    graph = Graph(tenant_id="cpu-llm", graph_id="appliance")
+    tenant_id, graph_id = graph_identity(appliance.tenant_id)
+    graph = Graph(tenant_id=tenant_id, graph_id=graph_id)
     graph.add_node("guard", dict_node_adapter(_guard(appliance), hop="guard"))
     graph.add_node("retrieve", dict_node_adapter(_retrieve(appliance), hop="retrieve"))
     graph.add_node("resonate", dict_node_adapter(_resonate(appliance), hop="resonate"))
@@ -832,7 +891,11 @@ def _identity_anchor(appliance: Appliance) -> tuple[bool, np.ndarray]:
 
 def _catalog(appliance: Appliance):
     def node(state: dict[str, Any]) -> dict[str, Any]:
-        labeled = label_retrieval(state.get("message") or "", list(state.get("related") or []))
+        labeled = label_retrieval(
+            state.get("message") or "",
+            list(state.get("related") or []),
+            tenant_id=str(state.get("tenant_id") or appliance.tenant_id),
+        )
         return {
             "related": labeled["related"],
             "query_category": labeled["query_category"],
@@ -902,6 +965,8 @@ def _deep(appliance: Appliance):
             gathered = collect_possibilities(state.get("message") or "", appliance.word_tags, edges)
         texts: dict[str, str] = {}
         tensors: dict[str, Any] = {}
+        allowed = state.get("allowed_sources")
+        gathered["possibilities"] = keep_allowed(list(gathered["possibilities"]), allowed)
         ids = [item["document_id"] for item in gathered["possibilities"]]
         if ids and hasattr(appliance.index.db, "get_by_ids"):
             for row in appliance.index.db.get_by_ids(ids):
@@ -1461,6 +1526,7 @@ def _bind_stored_words(appliance: Appliance, chunks: list[tuple[str, str]], tens
         chunks,
         tensors,
         tags_path=appliance.word_tags_path,
+        tenant_id=appliance.tenant_id,
     )
     appliance.word_tags = bound["index"]
 
@@ -1529,11 +1595,16 @@ def _retrieve(appliance: Appliance):
         if z_query is None:
             z_query = np.asarray(appliance.index.encode_query(message), dtype=np.float32).reshape(TENSOR_DIM)
             turn["z_query"] = z_query
-        hits = appliance.index.search(message, top_k=5, query_tensor=z_query)
+        allowed = (appliance._turn or {}).get("allowed_sources")
+        if allowed is None:
+            hits = appliance.index.search(message, top_k=5, query_tensor=z_query)
+        else:
+            hits = appliance.index.search_allowed(message, set(allowed), top_k=5, query_tensor=z_query)
         named = _hits_for_named_article(appliance.index, message, hits)
         if named:
             hits = named
         hits = _with_tagged_paragraphs(appliance, message, hits)
+        hits = keep_allowed(hits, allowed)
         turn["hits"] = hits
         appliance._turn = turn
         return {

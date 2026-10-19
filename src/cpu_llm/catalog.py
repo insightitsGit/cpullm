@@ -94,7 +94,11 @@ def mapping_for(chunks: list[dict[str, Any]]) -> dict[str, list[dict[str, str]]]
     return {"categories": categories, "rules": rules}
 
 
-def label_retrieval(query: str, related: list[dict[str, Any]]) -> dict[str, Any]:
+def label_retrieval(
+    query: str,
+    related: list[dict[str, Any]],
+    tenant_id: str = "cpu-llm",
+) -> dict[str, Any]:
     """Ingest the shortlist with PrismRAG and attach each chunk's category."""
     if not related:
         return {
@@ -104,7 +108,7 @@ def label_retrieval(query: str, related: list[dict[str, Any]]) -> dict[str, Any]
             "rag_retrieval_mode": "empty",
         }
     mapping = mapping_for(related)
-    rag = PrismRAG(mapping=mapping, tenant_id="cpu-llm")
+    rag = PrismRAG(mapping=mapping, tenant_id=tenant_id)
     rag.ingest(
         records=[
             {

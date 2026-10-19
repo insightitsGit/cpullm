@@ -282,6 +282,9 @@ with Appliance() as appliance:
 | `propositions` | `None` | Overrides the stored propositions for this turn |
 | `payment`, `authority` | both or neither | A payment turn needs both a proposal and an authority snapshot |
 | `objective`, `hypothesis`, `causal_graph` | `None` | Caller-owned. The appliance does not invent them |
+| `caller` | `None` | A `CallerContext`. An empty source list returns the empty-retrieval sentence before encoding. `None` leaves the single-tenant scope unchanged |
+
+A named namespace keeps its graph, word index, and format-sense cache under `.chorusgraph/cpu-llm/<namespace>/`, and the graph's tenant id is that namespace. The default tenant stays `.chorusgraph/cpu-llm/` with tenant id `cpu-llm`. `cpu_llm.entry.Entry` checks a local secret file with `hmac.compare_digest` before `ingest`, `ask`, or `delete_source`. A source outside that caller's list is not searched. The design is [docs/cpu-llm-enterprise-foundation.md](docs/cpu-llm-enterprise-foundation.md). Phases 2–5 in that document are not built.
 
 `ingest` accepts a path, a folder of accepted files, a `SourceDocument`, or a list of those. It returns `documents`, `chunks`, `ids`, and `connections`. Reading the same source again replaces rows whose ids share that source's prefix. `catalog_chunks` is the same write when the caller already has `(document_id, paragraph)` pairs. `sleep` refreshes relation tails on stored tensors.
 
@@ -379,6 +382,8 @@ cpu-llm/
   src/cpu_llm/
     pipeline.py                               Appliance: ask, ingest, delete_source, catalog_chunks, sleep
     source_delete.py                          remove one source from the index and the graph
+    access.py                                 caller, tenant, and which sources that caller may read
+    entry.py                                  local credential check before ingest, ask, and delete
     typos.py                                  correct a question word from stored chunk words
     ingest.py                                 WikiText and the primer loader
     documents.py                              file, folder, and spreadsheet readers
@@ -418,7 +423,8 @@ cpu-llm/
   docs/cpu-llm-v1.6.1-architecture-spec.md
   docs/cpu-llm-output-formats-and-scale.md    document formats, semantic trigger, and scale
   docs/test-results-2026-10-18.md             suite record: 180 passed, 17 Postgres setup errors
-  docs/handoff-enterprise-gaps.md             open designs: tenant, access, API, concurrency, memory stages
+  docs/handoff-enterprise-gaps.md             problem statement for the enterprise gaps
+  docs/cpu-llm-enterprise-foundation.md       accepted design: tenant boundary around the engine
 ```
 
 `cpu-llm-ingest` is the console script for `python -m cpu_llm.ingest`.

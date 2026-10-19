@@ -105,6 +105,65 @@ class VectorPrismIndex:
             hits = _order_by_dense_core(hits, vector)
         return hits[:top_k]
 
+    def search_allowed(
+        self,
+        query: str,
+        allowed: frozenset[str] | set[str],
+        top_k: int = 5,
+        *,
+        query_tensor: object | None = None,
+    ) -> list[dict]:
+        """Nearest chunks whose document id is inside ``allowed``.
+
+        The installed ``RetrievalEngine.search`` cannot take a document-id
+        predicate. This query adds that predicate to the WHERE clause, then
+        orders by the dense-core distance and applies LIMIT. A forbidden row
+        therefore cannot fill the five. ``allowed`` empty returns nothing and
+        does not scan.
+        """
+        scope = frozenset(allowed)
+        if not scope:
+            return []
+        if not hasattr(self.db, "conn"):
+            raise ValueError("a source scope requires the pgvector backend")
+        vector = self.encode_query(query) if query_tensor is None else query_tensor
+        clause, clause_params = _allowed_clause(scope)
+        _widen_dense_beam(self.db)
+        query_vector = np.asarray(vector, dtype=np.float32).reshape(-1)
+        dense = PSMTensorContract.DENSE_CORE
+        dense_slice = query_vector[dense.start : dense.end]
+        flags = getattr(self.pipeline, "enabled_channels", None) or {}
+        auxiliary = ("relational", "disentangled", "hyperbolic", "causal")
+        dense_only = not any(_channel_on(flags, name) for name in auxiliary)
+        fetch = max(top_k, 32) if dense_only else top_k
+        where = "epistemic_truth >= %s AND anchor_dist <= %s AND " + clause
+        params: list[object] = [0.0, 0.85, *clause_params]
+        model_version = getattr(self.engine, "model_version", None)
+        if model_version is not None:
+            where += " AND model_version = %s"
+            params.append(int(model_version))
+        params.extend([dense_slice, fetch])
+        with self.db.conn.cursor() as cursor:
+            cursor.execute(
+                f"""
+                SELECT document_id, chunk_text, tensor_1024d
+                FROM psm_document_embeddings
+                WHERE {where}
+                ORDER BY dense_core_slice <=> %s
+                LIMIT %s
+                """,
+                tuple(params),
+            )
+            rows = cursor.fetchall()
+        hits = [_chunk_row(row) for row in rows]
+        hits = [hit for hit in hits if _row_in_scope(str(hit["document_id"]), scope)]
+        if dense_only:
+            hits = _order_by_dense_core(hits, vector)
+        for hit in hits:
+            if "final_score" not in hit:
+                hit["final_score"] = 0.0
+        return hits[:top_k]
+
     def chunks_for_articles(self, document_ids: list[str]) -> list[dict]:
         """Every stored paragraph of the articles named by ``document_ids``.
 
@@ -219,6 +278,33 @@ class VectorPrismIndex:
             )
             deleted = cursor.rowcount
         return int(deleted or 0)
+
+
+def _allowed_clause(allowed: frozenset[str]) -> tuple[str, list[object]]:
+    """A bound predicate for document ids. It belongs in WHERE, before LIMIT."""
+    exact: list[str] = []
+    likes: list[str] = []
+    params: list[object] = []
+    for item in sorted(allowed):
+        if re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*-p", item):
+            likes.append("document_id LIKE %s ESCAPE '\\'")
+            params.append(_like_prefix(item))
+        elif re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", item):
+            exact.append(item)
+        else:
+            raise ValueError("an allowed source must be a document id or an id prefix ending in -p")
+    parts: list[str] = []
+    if exact:
+        parts.append("document_id = ANY(%s)")
+        params.insert(0, exact)
+    parts.extend(likes)
+    if not parts:
+        raise ValueError("an allowed source must be a document id or an id prefix ending in -p")
+    return "(" + " OR ".join(parts) + ")", params
+
+
+def _row_in_scope(document_id: str, allowed: frozenset[str]) -> bool:
+    return any(document_id == item or document_id.startswith(item) for item in allowed)
 
 
 def _like_prefix(stem: str) -> str:

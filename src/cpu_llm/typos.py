@@ -27,15 +27,24 @@ from cpu_llm.channels import _STOP
 TYPO_MIN_COSINE = 0.45
 TYPO_MARGIN = 0.05
 _TOKEN = re.compile(r"[A-Za-z]{4,}")
-_cache_key: tuple[int, int] | None = None
+_cache_key: tuple[str, int, int] | None = None
 _cache_grams: dict[str, Counter[str]] = {}
 _cache_lengths: dict[int, list[str]] = {}
 
 
-def correct_message(message: str, word_index: dict[str, Any] | None) -> tuple[str, list[dict[str, str]]]:
-    """Return the rewritten question and each replacement ``{"from", "to"}``."""
+def correct_message(
+    message: str,
+    word_index: dict[str, Any] | None,
+    *,
+    tenant_id: str = "cpu-llm",
+) -> tuple[str, list[dict[str, str]]]:
+    """Return the rewritten question and each replacement ``{"from", "to"}``.
+
+    ``tenant_id`` selects the cache. One tenant's vocabulary is not reused for
+    another tenant in the same process.
+    """
     text = message or ""
-    grams, lengths = _vocabulary(word_index)
+    grams, lengths = _vocabulary(word_index, tenant_id)
     if not grams:
         return text, []
     parts: list[str] = []
@@ -60,11 +69,14 @@ def correct_message(message: str, word_index: dict[str, Any] | None) -> tuple[st
     return "".join(parts), changes
 
 
-def _vocabulary(word_index: dict[str, Any] | None) -> tuple[dict[str, Counter[str]], dict[int, list[str]]]:
+def _vocabulary(
+    word_index: dict[str, Any] | None,
+    tenant_id: str = "cpu-llm",
+) -> tuple[dict[str, Counter[str]], dict[int, list[str]]]:
     global _cache_key, _cache_grams, _cache_lengths
     if not word_index:
         return {}, {}
-    key = (id(word_index), len(word_index))
+    key = (tenant_id, id(word_index), len(word_index))
     if key == _cache_key:
         return _cache_grams, _cache_lengths
     grams: dict[str, Counter[str]] = {}
