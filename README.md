@@ -403,6 +403,7 @@ cpu-llm/
                                                 review record: claim plan and constrained actions
   docs/cpu-llm-v1.6.1-architecture-spec.md
   docs/cpu-llm-output-formats-and-scale.md    document formats, semantic trigger, and scale
+  docs/test-results-2026-10-18.md             suite record: 180 passed, 17 Postgres setup errors
 ```
 
 `cpu-llm-ingest` is the console script for `python -m cpu_llm.ingest`.
