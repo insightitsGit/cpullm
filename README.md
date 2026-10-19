@@ -1,549 +1,231 @@
 # cpu-llm
 
-**CPU-only answers and documents from the text you already stored.**
+**Local, CPU-based question answering and document layouts over indexed text.**
 
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
-[![Runtime](https://img.shields.io/badge/runtime-CPU--only-2f9e7a)](src/cpu_llm/cpu_guard.py)
-[![Architecture](https://img.shields.io/badge/architecture-neural--symbolic-8A2BE2)](docs/cpu-llm-v1.6.1-architecture-spec.md)
 [![License](https://img.shields.io/badge/license-Apache--2.0-orange)](LICENSE)
 [![GitHub](https://img.shields.io/badge/GitHub-insightitsGit%2Fcpullm-181717?logo=github)](https://github.com/insightitsGit/cpullm)
 
-cpu-llm is an open-source Python package for local document question answering. You index your own paragraphs, policies, PDFs, and spreadsheets. A later question is answered from that index on a CPU. A request that names a document and a topic, such as an email, essay, article, or report, lays the retrieved sentences into that format.
+cpu-llm indexes paragraphs in PostgreSQL/pgvector and retrieves them using VectorPrism. It can rebuild supported propositions, extract narrowly defined event roles, apply pattern-based rules, calculate arithmetic, and arrange retrieved sentences into named document formats. It also includes local finance-validation routines and an authenticated HTTP entry point.
 
-The package name on PyPI is `cpu-llm`. The repository is public. The license is Apache-2.0.
+**Author:** [Amin Parva](mailto:parvaamin@gmail.com). **Version:** 1.8.0. The wheel on PyPI is still [cpu-llm 1.7.1](https://pypi.org/project/cpu-llm/1.7.1/). Install 1.8.0 from GitHub until that wheel is published. Question times for this checkout are in the [18 October 2026 benchmark on GitHub](https://github.com/insightitsGit/cpullm/blob/main/docs/benchmark-cpu-llm-2026-10-18.md).
 
-**Author:** [Amin Parva](mailto:parvaamin@gmail.com) · **Retrieval plane:** [VectorPrism](https://github.com/insightitsGit/VectorPrism) · **Version:** 1.7.1
+**Correctness boundary:** source copying, deterministic execution, and lexical auditing are not mathematical guarantees of truth or absence of unsupported conclusions. `answer` and the user-visible `reply["text"]` can be different, with different checks. Known rule/writer, construction-checker, formatting, and capacity-accounting gaps are recorded in the [claim-verification handoff](docs/handoff-claim-verification-review.md). Use the structured outcome and its evidence, rather than treating every nonempty reply as a verified answer.
 
----
+For an agent integrating the library, start with [the consumer guide](docs/library-consumer-guide.md): complete `ask` arguments, result interpretation, credentials, HTTP contracts, and operational limitations.
 
-## What cpu-llm is for
+## Requirements and installation
 
-People looking for a CPU LLM, a local RAG system, or a grounded alternative to a cloud chat API usually need one of these jobs. cpu-llm covers them when the words already exist in the store.
+- Python 3.11 or newer and a 64-bit CPU.
+- PostgreSQL with the `vector` extension; the documented development configuration uses PostgreSQL 16.
+- The frozen `sentence-transformers/all-mpnet-base-v2` encoder. First use may download model assets; subsequent offline use requires those assets already cached.
+- Writable local storage for `.chorusgraph/cpu-llm/` under the process's **current working directory**, in addition to the PostgreSQL data.
 
-* **Answer from your corpus.** A plain question returns a sentence rebuilt from a stored paragraph, after PrismShine and the entailment auditor accept it.
-* **Apply a stored rule.** Travel, expense, shipping, and threshold questions can return yes, no, contested, unknown, or a stated cause. The verdict comes from the retrieved rule, and the trained models only help the wording.
-* **Ask who, where, or which color.** Event-frame memory reads those roles from a sentence that round-trips.
-* **Draft a document you named.** Thirty-one stored formats include email, letter, memo, report, essay, article, blog post, press release, briefing, proposal, checklist, and FAQ. The body is the retrieved sentences about that topic. A recipient, date, or byline is filled only when a passage states it.
-* **Search, compare, summarize, or calculate.** Deep search, comparison, a brief, and arithmetic are optional steps on the same turn. The checked sentence stays in front, except when the question is only a calculation.
-* **Validate a finance check.** RefundProof reviews a sales-tax finding, LedgerCovenant decides a covenant from the figures in the question, and Ledgerlock attests an extracted mortgage number. The verdict is that check. It is not a stored proposition, a filing, a default, or a loan-system write.
-* **Stay on one machine.** Retrieval and the six channel readings run on CPU. Startup clears `CUDA_VISIBLE_DEVICES` and refuses to continue if PyTorch was already imported with CUDA available. There is no Gemini client, no OpenAI client, and no decoder.
+Install 1.8.0 from GitHub. `pip install cpu-llm` still resolves the older 1.7.1 wheel on PyPI.
 
-```text
-your files and paragraphs → VectorPrism 1024-d index on PostgreSQL + pgvector
-                          → cpu-llm ask
-                          → a checked sentence, a rule verdict, or a filled document format
-```
-
-| | A GPU chat model | cpu-llm |
-| --- | --- | --- |
-| Where the words come from | A next-token sample | A stored sentence, a rule read from retrieved text, or a document layout of those sentences |
-| Hardware | A GPU, or a hosted GPU API | A 64-bit CPU and PostgreSQL 16 with pgvector |
-| A request to write an email or an essay | A newly composed draft | The named format, filled with sentences retrieved for that topic |
-| A question the store does not cover | A fluent guess is possible | The nearest retrieved sentence can still be quoted. Treat a bare quote as the nearest passage, and look for an explicit yes, no, or "not stated" when you need a verdict |
-
----
-
-## Why the answer stays tied to the store
-
-A frozen encoder stores each paragraph. The spoken sentence is rebuilt from a proposition cut out of that paragraph, and it is kept only when the rebuild matches the stored text and the auditor accepts it.
-
-* **Deterministic semantic grounding.** `cpu-llm` does not sample a next-token distribution. It indexes paragraphs into 1024-dimensional tensors, cuts a proposition only when the realizer can repeat the paragraph's first sentence, and deliberates over that stored evidence. A paragraph that does not round-trip stays text. It is not given an invented triple.
-* **Audited truth invariants.** The spoken sentence is checked by PrismShine and by `EpistemicEntailmentAuditor`. A failed check withholds the sentence. If no stored sentence states a cause, the reply says so. Discovery stays off until the caller passes `discover=True`.
-* **Bare-metal CPU execution.** Retrieval and the six channel readings run on CPU. Startup clears `CUDA_VISIBLE_DEVICES` and refuses to continue if PyTorch was already imported with CUDA available. There is no Gemini client, no OpenAI client, and no decoder.
-
-### How a reply is built
-
-* **A checked sentence, not a sample.** The words a caller hears are a stored sentence the realizer can rebuild. The auditor and PrismShine see that sentence. They do not see a free-form completion.
-* **One index for every source.** WikiText, the shipped artificial-intelligence primer, a PDF, a Word file, a spreadsheet, and paragraphs a developer already split land in the same pgvector index. A later question can hit any of them.
-* **Agents that chain.** Deep search, creative writing, comparison, a brief (summarize, explain, list, cite), and math read what the earlier step kept. The checked sentence stays in front, except when the question is only a calculation.
-* **A calculation of its own.** Addition, multiplication, percentages, roots, and a short list of numbers run in a math agent. The number is computed. It is not stored as a proposition.
-* **Numbers that stay what they are.** A height in metres is not turned into money. A cause is quoted only when the paragraph already states one. A missing policy, target, or causal graph is left empty.
-* **CPU, after one load.** On the measured machine, loading takes about 10 seconds. A question after that is 60–66 ms, and a deep search that keeps every match is about 0.6 s.
-
----
-
-## Architectural workflow
-
-```text
-Query
-  │
-  ▼
-PrismGuard (prompt check; a blocked prompt stops at the reply)
-  │
-  ▼
-VectorPrism 1024-d index (dense core [16:384], HNSW ef_search 400, then a dense-core re-rank)
-  │
-  ▼
-PrismResonance (dense-channel interference on that shortlist; the header is a timestamp, not a coordinate)
-  │
-  ▼
-6-channel readings of the same shortlist
-    Dense · Relational · Disentangled · Hyperbolic · Identity · Causal
-  │
-  ▼
-PrismThinker (answer / gather / refuse / escalate)
-  │
-  ▼
-PrismCognition + realizer + EpistemicEntailmentAuditor
-  │
-  ▼
-PrismShine (retrieval trace and sentence gate; no external judge)
-  │
-  ▼
-Optional agents, in this order: deep search → creative writing → comparison → brief → math → finance validation → event frame
-A document order replaces that reply with a stored format. See docs/cpu-llm-output-formats-and-scale.md.
-  │
-  ▼
-Verified reply
-  │
-  ▼
-Discovery only when ask(..., discover=True)
-```
-
-The prompt is encoded once. That same 1024-d tensor is the query for the scan and for every later channel. Think goes straight to cognize. Imagine is not inserted between them.
-
-Only the dense channel was trained. Relational, disentangled, hyperbolic, and causal heads are still at initialization, and the identity anchor is unset. Those five readings are reported. They do not pick the passage. A quoted cause is not turned into a graph edge.
-
-| Channel | What the node reports | Used to pick the passage |
-|---------|----------------------|--------------------------|
-| Dense | Cosine on the trained dense core `[16:384]` | Yes |
-| Relational | A stored proposition that shares the prompt's words. Relation hands live in the tail `[480:512]` | No |
-| Disentangled | Words that appear in only one passage | No |
-| Hyperbolic | Poincaré distance, inside the open unit ball | No |
-| Identity | Names and title tokens shared with the prompt | No |
-| Causal | A sentence that already says *because*, *due to*, *caused*, or *therefore* | No |
-
-PrismThinker can return `answer`, `gather`, `refuse`, or `escalate`. A gather result still realizes the grounded sentence when a proposition exists. The open questions stay on `gather_questions`. Its five head processes start with the appliance and are reused. They do not run two questions at once.
-
----
-
-## What a question can ask
-
-`answer` is the checked sentence. The reply prints that sentence first. Extra sections appear only when the question asked for them: summary, explanation, list, or sources, then comparison, then an imagined passage, then deep-search possibilities.
-
-| Question | What runs | What the reply adds |
-|----------|-----------|---------------------|
-| What is the European lobster? | The fixed chain | The checked sentence |
-| Deep search the European lobster. | Every tagged paragraph of the seeds, plus relation-hand neighbors | A possibility list. The checked sentence stays |
-| Imagine the European lobster. | Stored sentences from the article, a different subset each run when more than one passed | An imagined passage after the checked sentence |
-| Compare the European lobster and Robert Boulter. | Each side's own stored article or the paragraphs tagged with that side | A comparison. No invented "X differs from Y" sentence |
-| Summarize the European lobster. | PrismCognition ranks stored sentences by epistemic weight, then by alignment to the question | Up to three sentences. A contradiction withholds the summary |
-| Why is the European lobster fished with pots? | Only stored sentences that state a cause | An explanation, or "No stored sentence states a cause." |
-| List the European lobster. | The same ranking, kept longer | Up to eight sentences |
-| Cite sources for the European lobster. | The paragraph ids that were used | A source list |
-| What is 17 times 24? | The math agent | The calculation. A question that is only arithmetic is answered with that result |
-| Review this RefundProof finding, with vendor, invoice, tax charged, and correct tax. | The RefundProof check | The recoverable amount, the evidence status, and the actionable total. Approval stays with a person |
-| Decide this LedgerCovenant test, with a threshold and a source for each figure. | The LedgerCovenant check | Compliant, breach, waived, ambiguous, or a conflict. Equal-rank figures are not averaged |
-| Attest this Ledgerlock field, with the document type, confidence, and span. | The Ledgerlock check | Accept, review, or refuse, plus a SHA-256 attestation digest |
-| What color was the apple John ate? | An event frame cut from a round-tripped sentence that matches the closed clause | The color, when that word is in the object. A missing color, a second color, a mismatched year, or a Shine rejection is spoken instead of a guessed color |
-| Write an email about the late shipment. | A stored output format | That format's fields. The body is the retrieved sentences about the topic. A missing recipient stays unfilled |
-
-Those agents chain. "Deep search and compare the European lobster and Robert Boulter" gathers first, then splits the kept paragraphs by topic. "Summarize that" with no new topic words reuses the previous turn's paragraph ids. A normal follow-up such as "what about the claws?" does not.
-
-Creative writing runs when the prompt says imagine, what if, story, poem, fiction, or creative writing, or when `ask(..., imagine=True)`. One eligible sentence cannot vary. `answer` stays the checked sentence.
-
-### Finance validation
-
-RefundProof, LedgerCovenant, and Ledgerlock run when the question names the check and its fields. `ask(..., finance=True)` forces the node. A definition question such as "What is RefundProof?" does not run the check. After `cpu-llm-ingest --finance`, that question is answered from `src/cpu_llm/data/finance-validation.md`.
-
-The fields can be labeled lines or a JSON object. A missing amount stays missing. A float is refused. The node does not approve a refund, declare a default, or write a loan system.
-
-```text
-Review this RefundProof finding.
-vendor: Northwind
-invoice: INV-100
-tax charged: 120.0000
-correct tax: 40.0000
-deadline: ACTIONABLE
-
-Decide this LedgerCovenant test.
-test date: 2026-03-31
-comparator: lte
-threshold: 4.50
-numerator: compliance_certificate 9000000
-denominator: compliance_certificate 2000000
-
-Attest this Ledgerlock field.
-document type: w2_stip
-document id: w2-1
-document text: Wages 84210.00
-field: w2_box1_wages 84210.00 confidence 0.99 span 6-14
-```
-
-A digest match on RefundProof means the source bytes and the rule bytes hash to the stated SHA-256 and the rule version matches. LedgerCovenant keeps the officer certificate above the audited statements, and two survivors of the precedence ladder stay ambiguous. Ledgerlock accepts a field only when its confidence clears that document's extraction floor and the span contains the value. The Ledgerlock digest is SHA-256.
-
----
-
-## The default corpus
-
-Two sources ship inside the package.
-
-**WikiText-2 raw**, the Salesforce validation and test splits. They are English Wikipedia articles that editors marked Good or Featured. The validation split is 60 articles and 1,841 paragraphs, stored under `wikitext2-`. The test split is a second set of articles with no shared title, stored under `wikitext2test-`. A proposition is stored only when the realizer can repeat the paragraph's first sentence. The rest stay text. License of that text: CC BY-SA 3.0 and GFDL, as stated in the provenance file next to the parquet. That license is the dataset's, separate from the Apache-2.0 license of this code.
-
-**An original primer on artificial intelligence**, `src/cpu_llm/data/artificial-intelligence.md`, 70 paragraphs. It is text written for this package. It is not a copy of another textbook. Each paragraph's first sentence round-trips, so a question about search, learning, a transformer, or cpu-llm itself can be answered from those paragraphs. Its ids start with `artificial-intelligence-md-`, so loading it does not delete WikiText.
-
-| Command | What it writes |
-|---------|----------------|
-| `cpu-llm-ingest` | WikiText validation, then the primer, then the finance sentences |
-| `cpu-llm-ingest --textbook` | The primer only |
-| `cpu-llm-ingest --finance` | The finance validation sentences only |
-| `cpu-llm-ingest --test` | The WikiText test split only |
-
-The same entry point is `python -m cpu_llm.ingest`.
-
----
-
-## Install
-
-Python 3.11 or newer. The GitHub repository is public. The package name on PyPI is `cpu-llm`. Install from a checkout:
-
-```bash
-git clone https://github.com/insightitsGit/cpullm.git
-cd cpullm
+```powershell
 python -m venv .venv
-.venv\Scripts\activate
-pip install -U pip
-pip install -e .
+.\.venv\Scripts\Activate.ps1
+python -m pip install -U pip
+python -m pip install "cpu-llm @ git+https://github.com/insightitsGit/cpullm.git@v1.8.0"
 ```
 
-`pip install -e .` installs the package, the trained checkpoint, the WikiText parquet files, and the primer. On Windows, import `pyarrow` before `torch` or VectorPrism. `cpu_llm.retrieval` already does that.
+For a checkout you are editing, clone the repository and use `python -m pip install -e .` instead of the Git URL.
 
-The appliance talks to PostgreSQL with the `vector` extension:
+The pins in [pyproject.toml](pyproject.toml) are authoritative. The editable install makes packaged retrieval assets and sample corpora available; it does **not** start PostgreSQL, populate its corpus, or train a realizer. It does not bundle the optional fact-bridge T5 checkpoints or declare all their optional runtime dependencies.
 
-```text
-image    pgvector/pgvector:pg16
-port     localhost:5433
-user     vectorprism
-password vectorprism
-database vectorprism
+A disposable development database can be started with Docker:
+
+```powershell
+docker run -d --name cpullm-pgvector -p 127.0.0.1:5433:5432 -e POSTGRES_USER=vectorprism -e POSTGRES_PASSWORD=vectorprism -e POSTGRES_DB=vectorprism pgvector/pgvector:pg16
 ```
+
+If that container already exists, use `docker start cpullm-pgvector`. These are development credentials. The default DSN is:
 
 ```text
 postgresql://vectorprism:vectorprism@localhost:5433/vectorprism
 ```
 
-`VECTORPRISM_PG_DSN` overrides that DSN.
+Set `VECTORPRISM_PG_DSN` or pass `Appliance(dsn=...)` to select another database. Namespace initialization needs permission to create a schema/table; extension setup also requires suitable PostgreSQL privileges. Missing database connectivity prevents constructing an `Appliance`.
 
-Pinned libraries in `pyproject.toml`:
+The code runs the encoder/retrieval on CPU and clears `CUDA_VISIBLE_DEVICES`; its CPU guard refuses a process in which an already imported PyTorch reports CUDA available. On Windows, the retrieval module imports `pyarrow` before the torch-dependent stack to avoid the observed import-order fault.
 
-| Package | Role |
-|---------|------|
-| vectorprism 0.1.3 | 1024-d encode and dense-slice search |
-| chorusgraph 1.3.0 | Turn graph |
-| prismguard 0.1.10 | Prompt check |
-| prismcognition 2.1.0 | Deliberation and summary ranking |
-| prismrag-patch 0.2.1 | Article label from the document id |
-| prismresonance 0.3.0 | Dense-core resonance |
-| prismcortex 0.4.1 | Graph memory behind the sqlite store |
-| prismmanifest 0.3.4 | Numeric span grammar on the CPU |
-| prismshine 0.2.2 | Retrieval and sentence gate, judge off |
-| prismthinker 1.2.0 | Sufficiency: answer, gather, refuse, escalate |
-| prismagenticpay 1.4.1 | Payment check when both a proposal and an authority are passed |
-
-A clean install works when those pins can be downloaded from PyPI. PrismAgenticPay 1.4.1 requires PrismThinker 1.2.0, and both are imported at startup.
-
-### Ask
-
-```python
-from cpu_llm.pipeline import Appliance
-
-with Appliance() as appliance:
-    result = appliance.ask("What is artificial intelligence?")
-
-print(result["answer"])
-print(result["reply"]["text"])
-```
-
-`answer` is the checked sentence. Shine and the auditor see `answer` only.
-
-### Index your own source
-
-A source is a file, a folder, or paragraphs you already split. `ingest` stores those paragraphs in the same index, and a later `ask` reads them with the WikiText rows and the primer. Accepted files are `.txt`, `.md`, `.html`, `.pdf`, `.docx`, `.csv`, `.xlsx`, `.xlsm`, and `.epub`. A legacy `.doc` or `.xls` file is refused. Save it as `.docx` or `.xlsx`.
+## Quick start: ingest before asking
 
 ```python
 from cpu_llm.documents import SourceDocument
 from cpu_llm.pipeline import Appliance
 
-guide = SourceDocument(
-    "field-guide",
-    (
-        "The European lobster is Homarus gammarus.",
-        "Homarus gammarus is a species of clawed lobster.",
-    ),
-)
+with Appliance(namespace="demo") as app:
+    receipt = app.ingest(SourceDocument(
+        "field-guide",
+        (
+            "The harbor kestrel is a small coastal falcon.",
+            "John ate a yellow apple in his house.",
+        ),
+    ))
+    print(receipt["ids"])  # field-guide-p0001, field-guide-p0002
 
-with Appliance() as appliance:
-    appliance.ingest(guide)
-    appliance.ingest("notes/lobster.pdf")
-    appliance.ingest("notes")
-    result = appliance.ask("What is the European lobster?")
+    result = app.ask("What is the harbor kestrel?")
+    print(result.get("answer"))
+    print((result.get("reply") or {}).get("text", ""))
+
+    frame = app.ask("What color was the apple John ate?")
+    print(frame.get("frame_result"))
 ```
 
-Reading the same source again replaces that source's paragraphs. `delete_source("notes")` removes that source's vector rows, its graph nodes, and its document ids in the word index. The resonance ledger and the shared word-relation file are left as they are. A spreadsheet with `from` and `to` columns stores each row as a paragraph and stores the pair as a connection. Other sheets become `column: value` rows and do not invent a connection.
+Use a context manager, or call `close()`, to release Thinker workers. Reuse an appliance rather than loading the encoder and worker pool for each question. A named namespace starts with its own vector table; it does not inherit the default tenant's indexed passages.
 
-`catalog_chunks` is the lower-level call when you already have `(document_id, paragraph)` pairs. Leave `ObjectiveSpec`, policy rules, and causal edges empty unless you are supplying them. The appliance does not invent them from prose.
+Sample corpora ship as files and must be ingested. The CLI loads the **default tenant**, not `namespace="demo"`:
 
-A two-page sample field guide, `samples/harbor-field-guide.pdf`, is the upload check: nine paragraphs go in, and a later question about the harbor kestrel or the marsh kite is answered from that file.
+```powershell
+cpu-llm-ingest              # WikiText validation, AI primer, finance primer
+cpu-llm-ingest --textbook   # AI primer only
+cpu-llm-ingest --finance    # finance primer only
+cpu-llm-ingest --test       # WikiText test split only
+```
 
-### Tests
+The same entry point is `python -m cpu_llm.ingest`. If multiple flags are supplied, the implementation prioritizes `--test`, then `--textbook`, then `--finance`; use one flag at a time.
 
-```bash
+## Inputs, IDs, and lifecycle
+
+`ingest` accepts a file, a directory, a `SourceDocument`, or an iterable of those. Readers support `.txt`, `.md`, `.markdown`, `.html`, `.htm`, `.pdf`, `.docx`, `.csv`, `.xlsx`, `.xlsm`, and `.epub`. These readers extract existing text; this API does not provide an OCR pipeline for scanned PDFs. Legacy `.doc` and `.xls` are unsupported.
+
+```python
+with Appliance(namespace="demo") as app:
+    receipt = app.ingest("notes/harbor-field-guide.pdf")
+    # The path must exist on the machine running the library.
+    print(receipt)  # documents, chunks, ids, connections
+```
+
+File IDs use a normalized name/stem and a paragraph number, for example `harbor-field-guide-p0001`. Retain `receipt["ids"]`; do not guess identifiers for later authorization or correction. Different files with the same normalized stem can collide within a tenant. A spreadsheet with source/target-style columns contributes text and explicit word connections; other rows become column/value text.
+
+Reingesting a source replaces vector rows sharing its source prefix. Ingestion also updates local graph/word metadata, but it is not a general versioned transaction across every store. `delete_source("field-guide")` deletes that whole source prefix, even when supplied a paragraph ID. It returns vector/graph/word-index counts and any `nodes_remaining`. It leaves resonance and the word-relations file unchanged; it is not a complete erasure receipt for every derived artifact.
+
+`correct(document_id, prior_sentence, new_sentence, actor_id=..., timestamp=...)` is a separate version/supersession operation. It retains the old graph node and closes an old vector validity interval. Replacement text must round-trip. See the [consumer guide](docs/library-consumer-guide.md#corrections-and-history) for the history contract and limits.
+
+## Available behaviors
+
+- **Plain questions:** deliberate over supported stored propositions. Only a paragraph's first sentence is considered by the proposition extractor. A paragraph that cannot be reconstructed can still be retrieved or quoted. A quotation is not a verified direct answer.
+- **Event questions:** supported color, location, and agent forms, such as `What color was the apple John ate?`, `Where did John eat the apple?`, and `Who ate the apple?`. Dates and tense constrain matching. Limited negative/conditional frame forms and paragraph-local alias helpers also exist; this is not general semantic parsing or arbitrary coreference. The query frame node operates on the retrieved passages, not an exhaustive role-index search.
+- **Rule answers:** return `YES`, `NO`, `CONTESTED`, `UNKNOWN`, `CAUSE`, or `NONE` under `reply.situation`. Pattern coverage is limited. This path still contains known implication, conflict, modality, and background-memory issues; it is not a complete policy engine.
+- **Summary/explanation/list/sources:** optional brief output over stored sentences. Explanations look for stated causes. Comparisons present per-topic evidence; they do not establish a new comparative judgment.
+- **Deep search:** expands candidate paragraphs using lexical tags/relation hands. `deep_min_similarity` defaults to `0.62`; setting it to `None` removes that additional dense-similarity floor. A shortlist is not proof that all relevant evidence or contradictions were found.
+- **Creative mode:** selects varying subsets of stored sentences. The same prompt can yield different passages; this feature is not deterministic across runs.
+- **Math:** evaluates supported arithmetic in a separate agent. A computed value is not a retrieved proposition.
+- **Document layouts:** 31 built-in formats, including email, report, checklist, essay, and FAQ. A named format/topic can replace the main reply with copied topic-related sentences. This is text layout, not DOCX/PDF export or unrestricted prose generation. Missing roles should remain unfilled; topic-to-header binding has known limitations.
+- **Finance checks:** local RefundProof, LedgerCovenant, and Ledgerlock routines consume supplied fields. They do not fetch financial records or perform external writes.
+
+The supported grammar and explicit non-answer statuses are part of the interface. A name or possessive in a sentence does not establish arbitrary identity, ownership, or causality.
+
+## Models and the meaning of deterministic
+
+The retrieval encoder and shipped `vectorprism.pt` projection are distinct from sentence generation. Dense retrieval is trained; the other subspace readings and relation signatures are not a trained fact generator.
+
+There are **two separate wording paths**:
+
+1. The v1.9 construction realizer has N0 plans/constructions/checking but **no trained ranker checkpoint**. `realization="evidence_neural"` currently reports deterministic fallback. It is opt-in, does not affect every plain reply, and is not a delivered neural graph decoder. `account=True` opts into an account of authorized records.
+2. The fact-bridge rule path can **automatically load local FLAN-T5 extraction and writing models** when the pattern path misses, the prompt/passages have rule cues, and model directories are found. This can happen with the default `realization="deterministic"`. Model lookup checks `FACTBRIDGE_MODELS`, then `models/` and `cpullm-factbridge/models/` relative to the package installation root. An explicit root is also supported by the low-level fact-bridge API.
+
+The latter requires external checkpoints and optional tooling such as Transformers, torch, SentencePiece, and safetensors. A missing/incompatible writer or dependency can raise during a question. The current `Appliance.ask` has no public switch that guarantees this automatic fallback is disabled; inspect deployment assets and `reply.situation.wording.path`. The learned writer currently returns a nonempty candidate without calling its verifier. Its output is not covered by the earlier `answer` audit.
+
+Thus, “CPU-only” does not mean “no decoder,” and default mode does not guarantee every path uses only deterministic templates. This project makes no universal truth or zero-hallucination guarantee.
+
+## Reading results correctly
+
+Always use `.get(...)` for optional fields. Access refusals and seat failures may have a different shape from normal graph results.
+
+- `reply.text`: the displayed output. It may be a base answer, quote, frame/non-answer, rule verdict, math result, finance result, or document layout.
+- `answer`: the base EIR-realized sentence or a substituted fallback. It may differ from `reply.text`.
+- `audit_passed`: the audit of the base realized propositions; it does **not** certify the entire displayed reply, source truth, document fields, or learned rule wording.
+- `shine_ok`, `shine_enforced`, `delivery_blocked`: grounding/delivery diagnostics for the checked path. Never restore a withheld candidate using a debug field.
+- `frame_result.status` / `verified`, `frame_verified`: frame-specific outcomes. `answered`, `missing`, `ambiguous`, `conflicting`, `unsupported`, and sometimes `ignored` distinguish response types.
+- `reply.situation`: rule verdict, delivered rule text, `because` source sentences, and wording-path metadata. Those sources can currently include synthesized background memory; do not equate them automatically with original retrieved citations.
+- `reply.draft`: document format/topic/text, missing fields, and source IDs. Header provenance/binding is not a universal guarantee.
+- `math_result`, `finance_result`, `realization_result`: separate component results; inspect their own fields instead of applying `audit_passed` to them.
+- `related`: retrieved items using `chunk_id`; `passages` uses `document_id`. These are paragraph IDs, not source URLs.
+- `thinker_directive`, `gather_questions`: sufficiency advice. `gather`, `refuse`, or `escalate` are not themselves a guarantee that all later display is suppressed; apply a consumer policy explicitly.
+- `typos`, `original_message`: actual query rewrites. The corrected query is used by later stages. `original_message` is present when a rewrite occurred.
+
+For applications that make decisions, separate the transport outcome, component status, actual wording, supporting source, and consumer approval policy. An HTTP 200 or a nonempty string is not an accepted factual result. See [result routing guidance](docs/library-consumer-guide.md#result-routing-for-an-agent).
+
+## Tenants, authentication, and service
+
+`Appliance(namespace="tenant_alpha")` uses a normalized namespace, PostgreSQL schema/table `ns_tenant_alpha.psm_document_embeddings`, and local files under `.chorusgraph/cpu-llm/tenant_alpha/`. The default namespace is tenant `cpu-llm`. Local paths are relative to the working directory: use a stable working directory and isolate deployments that use different DSNs.
+
+Direct Python calls are trusted integration calls. Omitting `caller` is unscoped within the selected tenant; constructing a `CallerContext` is not authentication. For source-scoped callers use exact paragraph IDs or a source prefix ending in `-p`, such as `field-guide-p`. An empty scope permits no reads. Use the authenticated `Entry`/HTTP service when callers are not already trusted.
+
+```powershell
+cpu-llm-serve --secrets credentials.json --host 127.0.0.1 --port 8765
+```
+
+The credential file contains `secret_sha256` digests plus tenant, caller, and allowed-source mappings. Requests send the actual secret in `Authorization: Bearer ...`. The service provides POST `/v1/ask`, `/v1/ingest`, `/v1/correct`, and `/v1/delete`; it is a local stdlib HTTP server without built-in TLS. The [consumer guide](docs/library-consumer-guide.md#authenticated-http-service) includes a credential-generation example, exact request fields, and error semantics.
+
+## Concurrency and scaling
+
+`ask` is synchronous and uses the appliance's main Thinker pool. Do not concurrently call `ask` on the same instance as if it were a stateless function. `ask_concurrent` provides an experimental local-seat path with a lock and Thinker per seat, returning `seat`/`request_id` on success or an error such as `other_server`/`seat_failed`. `other_server` is a capacity outcome: it does not provision or execute on another machine.
+
+The built-in HTTP entry currently forwards to `ask`, not `ask_concurrent`. Its threaded HTTP server is not proof of safe concurrent conversational use. Follow-up state, graph/index writes, reingestion, and multi-store lifecycle operations need explicit coordination. Scale counters and memory estimates have known gaps; they are not measured production capacity guarantees.
+
+## Finance checks without PostgreSQL
+
+For a supplied-field check alone, the pure local dispatcher can be used without constructing `Appliance`:
+
+```python
+from cpu_llm.finance import validate_message
+
+result = validate_message("""Attest this Ledgerlock field.
+ document type: w2_stip
+ document id: w2-1
+ document text: Wages 84210.00
+ field: w2_box1_wages 84210.00 confidence 0.99 span 6-14
+""")
+print(result["checks"])
+```
+
+Use decimal strings for numeric fields in JSON; Python/JSON floats are refused by the relevant finance validators. Ledgerlock's SHA-256 digest is not a digital signature, document-authenticity proof, underwriting decision, or loan-system update. RefundProof distinguishes potential and actionable amounts and requires its supplied evidence/approval fields for stronger states. LedgerCovenant resolves figures using its implemented precedence rules, not outside financial data. See [finance input and scope](docs/library-consumer-guide.md#finance-inputs).
+
+## Tests, measurements, and limits
+
+```powershell
 python -m pytest
 ```
 
----
+Tests under `test_pipeline.py`, parts of `test_upload.py`, and `test_tenant_isolation.py` use a real local PostgreSQL service; other tests use fixtures/fakes or pure functions. Service tests bind a local port. Optional model tests can skip when checkpoints/dependencies are absent, and can run a real local model when present. Use a fresh writable `--basetemp` if the default temporary directory is restricted.
 
-## For developers
+Historical reports are evidence for their recorded checkout/environment, not a current full-suite pass:
 
-The public entry point is `cpu_llm.pipeline.Appliance`. Construct it, ingest, ask, then close it. A `with` block closes the Thinker worker pool.
+- [October 18 suite record](docs/test-results-2026-10-18.md): 180 passes and 17 PostgreSQL setup errors in that run.
+- [Enterprise foundation record](docs/cpu-llm-enterprise-foundation.md): a later pipeline/upload run is recorded there.
+- [Four-sentence retrieval lab](docs/retrieval-measurement-2026-10-18.md): a small labeled run, not customer-corpus quality or a production pass threshold.
+- [Question benchmark, 18 October 2026](https://github.com/insightitsGit/cpullm/blob/main/docs/benchmark-cpu-llm-2026-10-18.md): seven questions on `DESKTOP-H3RO1EI`. Startup was 11.5 s. The middle question time was 167.0 ms. Grok and Gemini were not called.
 
-```python
-from cpu_llm.documents import SourceDocument
-from cpu_llm.pipeline import Appliance
+The October 13 measurement on an Intel Core Ultra 9 275HX/64 GB machine reported about 10 seconds to load, 60–66 ms median warm questions for several original modes, and 593 ms deep search. It predates rule-wording, finance, tenancy, and current concurrency changes and is **not a benchmark of this checkout**. No general minimum CPU, throughput, or p95 guarantee is established.
 
-with Appliance() as appliance:
-    appliance.ingest(SourceDocument("notes", ("The harbor kestrel is a small coastal falcon.",)))
-    result = appliance.ask("What is the harbor kestrel?")
-```
+Additional limits include narrow English extraction grammars, incomplete retrieval coverage, limited alias/coreference handling, no general code generation or translation, and no universal transaction/rollback across PostgreSQL and local stores. Accepted schemas and credentials do not constitute an independent security certification.
 
-`ask` accepts the question and these keyword arguments:
+## Source and design map
 
-| Argument | Default | Effect |
-|----------|---------|--------|
-| `discover` | `False` | Runs the discovery loop. A why question does not turn this on |
-| `imagine` | `False` | Forces creative writing |
-| `deep` | `False` | Forces deep search |
-| `math` | `False` | Forces the math agent |
-| `finance` | `False` | Forces the finance validation node |
-| `propositions` | `None` | Overrides the stored propositions for this turn |
-| `payment`, `authority` | both or neither | A payment turn needs both a proposal and an authority snapshot |
-| `objective`, `hypothesis`, `causal_graph` | `None` | Caller-owned. The appliance does not invent them |
-| `caller` | `None` | A `CallerContext`. An empty source list returns the empty-retrieval sentence before encoding. `None` leaves the single-tenant scope unchanged |
+- [pipeline.py](src/cpu_llm/pipeline.py): `Appliance`, graph order, ingestion, scoped asks, concurrency, lifecycle.
+- [reply.py](src/cpu_llm/agents/reply.py), [answering.py](src/cpu_llm/answering.py), [fact_bridge](src/fact_bridge/__init__.py): displayed-reply selection and rule inference.
+- [frames.py](src/cpu_llm/memory/frames.py), [realizer](src/cpu_llm/realizer/): role extraction, constructions, and separate verification scopes.
+- [entry.py](src/cpu_llm/entry.py), [serve.py](src/cpu_llm/serve.py), [access.py](src/cpu_llm/access.py): credentials, routes, and source scopes.
+- [Consumer guide](docs/library-consumer-guide.md): integration contract and operational examples.
+- [Semantic memory](docs/cpu-llm-v1.8-semantic-memory.md), [final v1.9 realizer design](docs/cpu-llm-v1.9-realizer.md), [enterprise foundation](docs/cpu-llm-enterprise-foundation.md), [formats/scale](docs/cpu-llm-output-formats-and-scale.md): design intent; verify implementation and tests for the supported case.
+- [Correctness handoff](docs/handoff-claim-verification-review.md): known findings and required regression checks. Earlier proposals remain historical design records.
 
-A named namespace keeps its graph, word index, and format-sense cache under `.chorusgraph/cpu-llm/<namespace>/`, and the graph's tenant id is that namespace. The default tenant stays `.chorusgraph/cpu-llm/` with tenant id `cpu-llm`. `cpu_llm.entry.Entry` checks a local credential file with `hmac.compare_digest` before `ingest`, `ask`, `correct`, or `delete_source`. The file stores `secret_sha256`, not the secret. A source outside that caller's list is not searched. `cpu-llm-serve` exposes those four calls on a local port and requires `Authorization: Bearer`. `ask` stays on the calling thread. `ask_concurrent` places a turn on a seat with its own thinker. The design is [docs/cpu-llm-enterprise-foundation.md](docs/cpu-llm-enterprise-foundation.md). A four-sentence lab measurement is [docs/retrieval-measurement-2026-10-18.md](docs/retrieval-measurement-2026-10-18.md). It is not a customer-corpus score.
+## License and attribution
 
-`ingest` accepts a path, a folder of accepted files, a `SourceDocument`, or a list of those. It returns `documents`, `chunks`, `ids`, and `connections`. Reading the same source again replaces rows whose ids share that source's prefix. `catalog_chunks` is the same write when the caller already has `(document_id, paragraph)` pairs. `sleep` refreshes relation tails on stored tensors.
+Code: Apache-2.0; see [LICENSE](LICENSE). Shipped WikiText-2 text has its own CC BY-SA 3.0/GFDL attribution in the [dataset provenance](src/cpu_llm/data/wikitext-2-raw-v1/PROVENANCE.txt). The AI and finance primers are additional packaged text, separate from WikiText. Preserve the applicable source attribution when redistributing retrieved passages.
 
-A paragraph stores a proposition when its first sentence round-trips. The shapes that do are a copula or *have*: `The harbor kestrel is a small coastal falcon.` A sentence the realizer cannot repeat is stored as text and is not spoken.
-
-File ids use the file stem: `harbor-field-guide.pdf` becomes `harbor-field-guide-p0001`. A name that still includes its suffix, such as `artificial-intelligence.md`, keeps that suffix in the slug.
-
-Read these fields on the result. The graph also returns the channel readings and the Thinker trace. The spoken string is `reply["text"]`.
-
-| Field | What it is |
-|-------|------------|
-| `answer` | The checked sentence. Shine and the auditor see this |
-| `reply["text"]` | That sentence, then Summary, Explanation, List, Sources, Comparison, Imagined passage, and Possibilities, in that order, and only when that section was asked for |
-| `audit_passed` | Whether the auditor accepted the realized sentence |
-| `thinker_directive`, `gather_questions` | Sufficiency: answer, gather, refuse, or escalate, plus the gaps |
-| `related` | The shortlist. Each item has a `chunk_id` |
-| `possibilities`, `possibility_count` | Present after deep search |
-| `comparison` | Per-side stored sentences |
-| `imagination` | The creative passage. `answer` is unchanged |
-| `math_result` | The calculated value. It is not an audited proposition |
-| `brief` | Summary, explanation, list, and source ids |
-
-`reply` also carries `preface`, `follow_ups`, and `next_steps` for the caller. Those strings are not written into `reply["text"]`.
-
----
-
-## Runtime
-
-cpu-llm runs on a CPU. It does not use a GPU.
-
-| Requirement | This release |
-|-------------|----------------|
-| Python | 3.11 or newer |
-| Processor | A 64-bit CPU. No CUDA device |
-| Encoder | `sentence-transformers/all-mpnet-base-v2`, about 418 MiB, downloaded on first use and run on the CPU |
-| Checkpoint | `vectorprism.pt`, about 3.6 MB, shipped inside the package |
-| Database | PostgreSQL 16 with the `vector` extension |
-| Questions | One `ask` at a time on the calling thread |
-
-### Measured latency
-
-These times are from one machine on 13 October 2026: an Intel Core Ultra 9 275HX with 24 cores and 64 GB of RAM, Windows 11, Python 3.12. One appliance, three runs of each prompt, after the model was already loaded and after one warmup question. Load time is not included in the question times.
-
-Starting the appliance took 9.8 seconds on the six-mode run and 10.2 seconds on the deep-search rerun. The warmup question took 233 ms. After that load, every measured question finished in under a second.
-
-| Mode | Prompt | Median | Three runs |
-|------|--------|--------|------------|
-| Normal | What is the European lobster? | 66 ms | 83, 56, 66 |
-| Explain | Why is the European lobster fished with pots? | 60 ms | 87, 60, 59 |
-| Summarize | Summarize the European lobster. | 63 ms | 72, 60, 63 |
-| Compare | Compare the European lobster and Robert Boulter. | 61 ms | 87, 61, 61 |
-| Creative | Imagine the European lobster. | 66 ms | 67, 66, 66 |
-| Deep search | Deep search the European lobster. | 593 ms | 577, 593, 629 |
-
-Deep search kept 582 possibilities and wrote a 32,639-character reply. Creative writing returned a different passage on each run. Ingesting a two-sentence note took 4.50 s, then 2.07 s, then 2.40 s, because each paragraph is encoded.
-
-This machine is the one that was measured. It is not a minimum specification.
-
-### Next release
-
-The next release is working on serving multiple threads, so one process can answer concurrent questions under heavy load. This release keeps each question on the calling thread.
-
----
-
-## Numeric spans
-
-`amount_min` is set only from a money span.
-
-| Written span | Recorded as |
-|--------------|-------------|
-| `4,399 m` | Length in metres. Not money |
-| `14,440 feet`, `14,440-foot` | Length in feet |
-| `10 million`, `exceeds 10 million`, `five million` | `amount_min = 10000000` or `5000000` |
-| `$5 m`, `£ 1.7 million` | Money, scaled by one million |
-| `28 million years`, `15 million copies` | Not money. The noun is what was counted |
-| `4,399 m` and `$ 10 million` in one paragraph | Length and money, both kept |
-
-A height in the retrieved text can still select PrismThinker's empirical regime. The threshold and the causal graph stay empty until the caller supplies them.
-
----
-
-## What this package does not do
-
-It does not rewrite a passage in a new style, translate it, write code, or pick a winner the store does not state. A finance check uses the figures written in the question, and a tie between equal sources stays unresolved. A named document format lays retrieved sentences into that format. It does not invent the body. `cpu-llm-serve` is a local authenticated service. It does not accept an anonymous upload. The default appliance, with no namespace, is the tenant `cpu-llm`. A named namespace keeps its own graph, vocabulary, and format cache. A caller credential names the sources that caller may read, and those sources are filtered before the dense-core top five. A paragraph that does not round-trip is stored and can be retrieved. It is not spoken. A correction stores a new node beside the old one. Another engine is a separate seat in `EngineManager`. `ask` itself still runs one thinker turn on the calling thread. `ask_concurrent` uses one lock and one thinker per seat.
-
----
-
-## Structure
-
-```text
-cpu-llm/
-  pyproject.toml                              package metadata, pins, cpu-llm-ingest script
-  LICENSE                                     Apache-2.0, Copyright 2026 Amin Parva
-  README.md
-  src/cpu_llm/
-    pipeline.py                               Appliance: ask, ingest, delete_source, catalog_chunks, sleep
-    source_delete.py                          remove one source from the index and the graph
-    access.py                                 caller, tenant, and which sources that caller may read
-    entry.py                                  credential check; the file stores secret_sha256
-    serve.py                                  local HTTP service in front of Entry
-    typos.py                                  correct a question word from stored chunk words
-    ingest.py                                 WikiText, the primer, and the finance sentences
-    documents.py                              file, folder, and spreadsheet readers
-    source.py                                 paragraph cuts for the shipped sources
-    finance/                                  RefundProof, LedgerCovenant, and Ledgerlock checks
-    retrieval.py                              VectorPrism encode, search, default checkpoint
-    clauses.py                                first-sentence propositions
-    realizer/                                 controlled English from a proposition
-    audit/                                    EpistemicEntailmentAuditor
-    cognition/                                PrismCognition deliberation adapter
-    agents/                                   deep_search, gather, imagine, summarize, math, finance, reply, discovery
-    memory/frames.py                          event roles cut from a round-tripped sentence
-    memory/entities.py                        aliases the paragraph itself states
-    corrections.py                            a new node and a supersession edge for a corrected sentence
-    retrieval_eval.py                         hit-rate@5 and spoken attribution, with no pass bar
-    formats.py                                output-format catalog, stored in PrismCortex
-    format_sense.py                           paraphrase trigger, cached in ChorusGraph
-    scale.py                                  chunk bytes, scale order, engine manager
-    comparison.py                             two-topic split
-    classifier.py                             which optional agent the prompt asked for
-    channels.py                               six readings and the detail template
-    measurements.py                           lengths, money spans, qualifiers
-    relations.py                              word edges and relation hands
-    word_taxonomy.py                          word → article → paragraph index
-    taxonomy.py                               tags written beside a chunk
-    thinker_pool.py                           five Thinker heads, started once
-    assembly.py                               which stored sentences are realized together
-    manifest_spans.py                         numbers in the answer must occur in the passages
-    cpu_guard.py                              refuse an already-initialized CUDA runtime
-    checkpoints/vectorprism.pt                trained projection shipped in the package
-    data/wikitext-2-raw-v1/                   shipped WikiText parquet files
-    data/artificial-intelligence.md          shipped primer, 70 paragraphs
-  tests/                                      the suite, including the PDF upload check
-  samples/harbor-field-guide.pdf              two-page field guide used as an upload example
-  docs/cpu-llm-white-paper.md                 technical white paper
-  docs/cpu-llm-v1.8-semantic-memory.md        stage 1 of span-grounded event memory
-  docs/cpu-llm-v1.9-realizer.md               final wording design: rank licensed constructions
-  docs/cpu-llm-v1.8-copy-realizer.md          review record: sentence copy from retrieved roles
-  docs/cpu-llm-v1.9-evidence-conditioned-realizer-proposal.md
-                                                review record: claim plan and constrained actions
-  docs/cpu-llm-v1.6.1-architecture-spec.md
-  docs/cpu-llm-output-formats-and-scale.md    document formats, semantic trigger, and scale
-  docs/test-results-2026-10-18.md             suite record: 180 passed, 17 Postgres setup errors
-  docs/handoff-enterprise-gaps.md             problem statement for the enterprise gaps
-  docs/cpu-llm-enterprise-foundation.md       accepted design: tenant boundary around the engine
-```
-
-`cpu-llm-ingest` is the console script for `python -m cpu_llm.ingest`.
-
----
-
-## Questions people ask
-
-### What is cpu-llm?
-
-cpu-llm is a CPU-only Python package that answers from text you have indexed. The index is a VectorPrism 1024-dimensional store in PostgreSQL with pgvector. The spoken result is a checked sentence, a verdict read from a retrieved rule, or a document filled from those sentences.
-
-### Does cpu-llm need a GPU?
-
-cpu-llm runs on a 64-bit CPU. PostgreSQL 16 with the `vector` extension holds the index. The encoder is `sentence-transformers/all-mpnet-base-v2`, downloaded on first use and run on the CPU. Startup refuses a process where PyTorch already sees CUDA.
-
-### How is this different from a cloud chat API?
-
-A cloud chat API composes new prose. cpu-llm reads passages already in your index. Use it for handbook questions, policy thresholds, source-backed summaries, and documents whose body has to be those retrieved sentences. The [white paper](docs/cpu-llm-white-paper.md) describes the reasoning path. The [output-format design](docs/cpu-llm-output-formats-and-scale.md) describes the document layouts.
-
-### Can cpu-llm write an email, an essay, or an article?
-
-Yes, when the request names the format and the topic, and the topic is covered by the passages retrieved for that turn. The catalog has 31 formats, including email, letter, memo, report, essay, article, blog post, press release, briefing, proposal, checklist, and FAQ. A missing topic returns the catalog so you can pick a format. A missing recipient, date, or byline stays unfilled. The layout is stored in PrismCortex. A paraphrase of "write an email about …" is recognized by a semantic check and cached in ChorusGraph.
-
-### Which files can I put in the index?
-
-Plain text, Markdown, HTML, PDF, Word (`.docx`), Excel (`.xlsx`, `.xlsm`), CSV, and EPUB. A legacy `.doc` or `.xls` file is refused until you save it as `.docx` or `.xlsx`. WikiText-2 and a 70-paragraph artificial-intelligence primer ship with the package. Your files share that same index.
-
-### Does a typo in the question get corrected?
-
-A word is rewritten only when the stored chunks already contain a word one edit away, including one swapped pair of letters, and that word's character n-gram cosine is at least 0.45 and clearly nearer than the next stored word. "Europen lobstor" becomes "European lobster" when those words were indexed. A word that is already stored is left as written, so "lobster" is not changed to "lobsters". The corrected question is what retrieval and the later stages see. `typos` on the result lists each rewrite. The child-safety speller is not used.
-
-### What does a question outside the store return?
-
-A rule the passages do not settle can come back unknown, contested, or as a request for the missing measurement. A decision question the passages do not cover, such as "Can I bring my dog?" next to an unrelated rule, is answered with "The retrieved passages do not settle that." A definition question with no rule still quotes the retrieved sentence.
-
-### How fast is a question after the model is loaded?
-
-On the one machine measured on 13 October 2026, an Intel Core Ultra 9 275HX with 64 GB of RAM, loading took about 10 seconds. A later question took 60–66 ms, and a deep search that kept every match took about 0.6 s. Those figures are that machine's, and they predate the rule-wording models. The full table is under [Measured latency](#measured-latency).
-
-### Is cpu-llm open source?
-
-Yes. The code is Apache-2.0. The repository is [github.com/insightitsGit/cpullm](https://github.com/insightitsGit/cpullm). Install the PyPI package `cpu-llm` from a checkout with `pip install -e .` on Python 3.11 or newer. WikiText text inside the package stays under CC BY-SA 3.0 and GFDL.
-
----
-
-## Author
-
-**Amin Parva**, AI Architect & Staff Applied AI Engineer, wrote cpu-llm.
-
-- Email: [parvaamin@gmail.com](mailto:parvaamin@gmail.com)
-- Repository: [https://github.com/insightitsGit/cpullm](https://github.com/insightitsGit/cpullm)
-- Retrieval plane: [VectorPrism](https://github.com/insightitsGit/VectorPrism)
-
----
-
-## Citation
+Amin Parva — AI Architect & Staff Applied AI Engineer — [parvaamin@gmail.com](mailto:parvaamin@gmail.com).
 
 ```bibtex
 @software{cpullm2026,
-  title  = {cpu-llm: CPU-only answers and documents from stored text},
+  title = {cpu-llm: CPU-only answers and documents from stored text},
   author = {Amin Parva},
-  year   = {2026},
-  url    = {https://github.com/insightitsGit/cpullm},
+  year = {2026},
+  url = {https://github.com/insightitsGit/cpullm},
   license = {Apache-2.0}
 }
 ```
-
----
-
-## Links
-
-- Author: **Amin Parva**, AI Architect & Staff Applied AI Engineer ([parvaamin@gmail.com](mailto:parvaamin@gmail.com))
-- White paper: [docs/cpu-llm-white-paper.md](docs/cpu-llm-white-paper.md)
-- Design v1.8, stage 1: [docs/cpu-llm-v1.8-semantic-memory.md](docs/cpu-llm-v1.8-semantic-memory.md)
-- Design v1.9, the realizer (final, not built): [docs/cpu-llm-v1.9-realizer.md](docs/cpu-llm-v1.9-realizer.md)
-- Design v1.8, copy realizer (review record): [docs/cpu-llm-v1.8-copy-realizer.md](docs/cpu-llm-v1.8-copy-realizer.md)
-- Design v1.9, evidence-conditioned proposal (review record): [docs/cpu-llm-v1.9-evidence-conditioned-realizer-proposal.md](docs/cpu-llm-v1.9-evidence-conditioned-realizer-proposal.md)
-- This repository: [https://github.com/insightitsGit/cpullm](https://github.com/insightitsGit/cpullm)
-- Retrieval engine: [https://github.com/insightitsGit/VectorPrism](https://github.com/insightitsGit/VectorPrism)
-- License: [Apache License 2.0](LICENSE)

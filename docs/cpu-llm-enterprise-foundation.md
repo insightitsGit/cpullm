@@ -2,7 +2,7 @@
 
 **ID:** DES-cpullm-004  
 **Status:** Phases 1–5 are implemented in this tree. `ask` stays on the calling thread. `ask_concurrent` is the multi-seat path, with one thinker per seat. `cpu-llm-serve` is the local authenticated service, and the credential file stores SHA-256 digests. Phase 3 records hit-rate@5 and spoken attribution and does not set a pass threshold. No customer corpus has been measured. A four-sentence lab run is recorded in [retrieval-measurement-2026-10-18.md](retrieval-measurement-2026-10-18.md). It is not a pass bar. On 18 October 2026, `python -m pytest tests/test_pipeline.py tests/test_upload.py --tb=line -q` passed on `DESKTOP-H3RO1EI` after `docker start cpullm-pgvector`.  
-**Package:** 1.7.1 until a release is cut. This document is the design version, not a PyPI version.  
+**Package:** 1.8.0 is prepared in this tree. PyPI still serves 1.7.1 until the new wheel is uploaded. This document is the design, not the wheel.  
 **Baseline:** `fdb4d78` on `main`, plus the uncommitted source delete, cued category list, uncovered-decision reply, and typo pass if those are still only in the working tree.  
 **Source handoff:** [HO-cpullm-003](handoff-enterprise-gaps.md)  
 **Author:** Amin Parva (AI Architect & Staff Applied AI Engineer)
