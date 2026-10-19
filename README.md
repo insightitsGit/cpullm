@@ -1,18 +1,24 @@
 # cpu-llm
 
-**Local, CPU-based question answering and document layouts over indexed text.**
+**A local, CPU-based library for answering questions from your documents and explicit rules.**
 
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-Apache--2.0-orange)](LICENSE)
 [![GitHub](https://img.shields.io/badge/GitHub-insightitsGit%2Fcpullm-181717?logo=github)](https://github.com/insightitsGit/cpullm)
 
-cpu-llm indexes paragraphs in PostgreSQL/pgvector and retrieves them using VectorPrism. It can rebuild supported propositions, extract narrowly defined event roles, apply pattern-based rules, calculate arithmetic, and arrange retrieved sentences into named document formats. It also includes local finance-validation routines and an authenticated HTTP entry point.
+cpu-llm is an embeddable Python library for document question answering. It indexes paragraphs in PostgreSQL/pgvector, retrieves relevant passages using VectorPrism, and produces supported answers, source quotations, or explicit nonanswers for recognized question forms. It combines trained embedding retrieval with deterministic sentence constructions, limited event-role extraction, pattern-based policy reasoning, arithmetic, and document layouts. It also includes supplied-field finance checks and an authenticated HTTP entry point.
 
-**Author:** [Amin Parva](mailto:parvaamin@gmail.com). **Package metadata:** 1.8.0. This README describes the repository implementation inspected on 2026-10-18. Pin a commit or release tag when integrating; verify [PyPI release availability](https://pypi.org/project/cpu-llm/) separately rather than assuming an installed wheel contains every checkout feature. Recorded question times are in the [18 October 2026 benchmark](docs/benchmark-cpu-llm-2026-10-18.md).
+**Author:** [Amin Parva](mailto:parvaamin@gmail.com). **Package metadata:** 1.8.0. The implementation described here was reviewed through commit [`9d6fbe8`](https://github.com/insightitsGit/cpullm/commit/9d6fbe8fabcf9dac10ec6cc409fa7852f77e948d) on 2026-10-19. That source revision includes changes after the `v1.8.0` release tag. Pin the source revision you evaluate; package version metadata alone does not identify these features or establish which wheel is published on PyPI.
 
-**Correctness boundary:** source copying, deterministic execution, and lexical auditing are not mathematical guarantees of truth or absence of unsupported conclusions. `answer` and the user-visible `reply["text"]` can be different, with different checks. A retrieved neighbor is not an answer: for the supported “what is” and “capital of” shapes, `answer_status` says whether a retrieved sentence states the asked relation, and a question with no such sentence is not answered from model knowledge or from an unrelated paragraph. The counts and the remaining limits are in [the 18 October answerability note](docs/answerability-evaluation-2026-10-18.md). Known rule/writer, construction-checker, formatting, and capacity-accounting gaps are recorded in the [claim-verification handoff](docs/handoff-claim-verification-review.md). Use the structured outcome and its evidence, rather than treating every nonempty reply as a verified answer.
+**Correctness boundary:** source copying and component checks do not guarantee source truth or that every displayed sentence answers the question. `answer`, `reply["text"]`, and component-specific verification fields have different meanings. Recognized query shapes expose answerability outcomes; other requests can use different producers or fallback behavior. Evaluate the actual reply and its supporting evidence for your application. The [latest targeted review](docs/reviews/2026-10-19/review-9d6fbe8.md) and [executed audit](docs/reviews/2026-10-19/audit.md) distinguish tested behavior, historical failures, and limits.
 
 For an agent integrating the library, start with [the consumer guide](docs/library-consumer-guide.md): complete `ask` arguments, result interpretation, credentials, HTTP contracts, and operational limitations.
+
+## Where it can be useful
+
+The intended use is a document assistant inside another application: for example, looking up facts in a manual, answering supported questions about an internal policy, or preparing a structured summary from stored passages. Local CPU execution and explicit source records can be useful when the developer wants to keep the runtime and indexed documents under their control.
+
+This is a candidate for a **bounded, human-supervised pilot**. Industry usefulness, customer time savings, and production reliability have not been established by the repository tests. Before deployment, evaluate real documents and independently written questions, including missing facts and conflicting sources, against your existing search workflow. Broad conversation, arbitrary language understanding, and a trained general-purpose sentence generator are outside the demonstrated scope.
 
 ## Requirements and installation
 
@@ -21,16 +27,16 @@ For an agent integrating the library, start with [the consumer guide](docs/libra
 - The frozen `sentence-transformers/all-mpnet-base-v2` encoder. First use may download model assets; subsequent offline use requires those assets already cached.
 - Writable local storage for `.chorusgraph/cpu-llm/` under the process's **current working directory**, in addition to the PostgreSQL data.
 
-To request the repository's `v1.8.0` tag explicitly, install from GitHub:
+To install the source revision described here:
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -U pip
-python -m pip install "cpu-llm @ git+https://github.com/insightitsGit/cpullm.git@v1.8.0"
+python -m pip install "cpu-llm @ git+https://github.com/insightitsGit/cpullm.git@9d6fbe8fabcf9dac10ec6cc409fa7852f77e948d"
 ```
 
-For a checkout you are editing, clone the repository and use `python -m pip install -e .` instead of the Git URL.
+For a checkout you are editing, clone the repository and use `python -m pip install -e .` instead of the Git URL. Installing `v1.8.0` selects an earlier implementation; do not assume it contains the later Model01 and answerability fixes documented here.
 
 The pins in [pyproject.toml](pyproject.toml) are authoritative. The editable install makes packaged retrieval assets and sample corpora available; it does **not** start PostgreSQL, populate its corpus, or train a realizer. It does not bundle the optional fact-bridge T5 checkpoints or declare all their optional runtime dependencies.
 
@@ -56,25 +62,33 @@ The code runs the encoder/retrieval on CPU and clears `CUDA_VISIBLE_DEVICES`; it
 from cpu_llm.documents import SourceDocument
 from cpu_llm.pipeline import Appliance
 
-with Appliance(namespace="demo") as app:
-    receipt = app.ingest(SourceDocument(
-        "field-guide",
-        (
-            "The harbor kestrel is a small coastal falcon.",
-            "John ate a yellow apple in his house.",
-        ),
-    ))
-    print(receipt["ids"])  # field-guide-p0001, field-guide-p0002
+def main():
+    with Appliance(namespace="demo") as app:
+        receipt = app.ingest(SourceDocument(
+            "field-guide",
+            (
+                "The harbor kestrel is a small coastal falcon.",
+                "The harbor kestrel nests in coastal cliffs.",
+                "John ate a yellow apple in his house.",
+            ),
+        ))
+        print(receipt["ids"])
 
-    result = app.ask("What is the harbor kestrel?")
-    print(result.get("answer"))
-    print((result.get("reply") or {}).get("text", ""))
+        result = app.ask("Where does the harbor kestrel nest?")
+        print((result.get("reply") or {}).get("text", ""))
+        print(result.get("answer_status"))
+        print(result.get("answer_evidence"))
 
-    frame = app.ask("What color was the apple John ate?")
-    print(frame.get("frame_result"))
+        frame = app.ask("What color was the apple John ate?")
+        print((frame.get("reply") or {}).get("text", ""))
+        print(frame.get("frame_result"))
+
+
+if __name__ == "__main__":
+    main()
 ```
 
-Use a context manager, or call `close()`, to release Thinker workers. Reuse an appliance rather than loading the encoder and worker pool for each question. A named namespace starts with its own vector table; it does not inherit the default tenant's indexed passages.
+Save the example as a Python file and run it with PostgreSQL available. Keep appliance construction inside the guarded `main()` entry point when running scripts on Windows: the Thinker pool starts child processes. Use a context manager, or call `close()`, to release workers. Reuse an appliance rather than loading the encoder and worker pool for each question. A named namespace starts with its own vector table; it does not inherit the default tenant's indexed passages. Use a namespace dedicated to your example data.
 
 Sample corpora ship as files and must be ingested. The CLI loads the **default tenant**, not `namespace="demo"`:
 
@@ -106,9 +120,9 @@ Reingesting a source replaces vector rows sharing its source prefix. Ingestion a
 
 ## Available behaviors
 
-- **Plain questions:** deliberate over supported stored propositions. Only a paragraph's first sentence is considered by the proposition extractor. A paragraph that cannot be reconstructed can still be retrieved or quoted. A quotation is not a verified direct answer.
+- **Document questions:** retrieve paragraphs and deliberate over supported stored propositions. Recognized definition, named-attribute, present-action/location, and weight questions bind to supporting sentences or report insufficient/conflicting evidence. Examples include `What is the harbor kestrel?`, `What is the capital of France?`, `Where does the harbor kestrel nest?`, and `How much does the harbor kestrel weigh?`. The proposition extractor considers a paragraph's first sentence; other text can still be retrieved or quoted. These are narrow English grammars, not arbitrary question answering.
 - **Event questions:** supported color, location, and agent forms, such as `What color was the apple John ate?`, `Where did John eat the apple?`, and `Who ate the apple?`. Dates and tense constrain matching. Limited negative/conditional frame forms and paragraph-local alias helpers also exist; this is not general semantic parsing or arbitrary coreference. The query frame node operates on the retrieved passages, not an exhaustive role-index search.
-- **Rule answers:** return `YES`, `NO`, `CONTESTED`, `UNKNOWN`, `CAUSE`, or `NONE` under `reply.situation`. Pattern coverage is limited. This path still contains known implication, conflict, modality, and background-memory issues; it is not a complete policy engine.
+- **Rule answers:** return `YES`, `NO`, `CONTESTED`, `UNKNOWN`, `CAUSE`, or `NONE` under `reply.situation`. The current path distinguishes asked permission, obligation, and prohibition; a sufficient allowance alone leaves cases outside its condition unknown. Missing measurements also produce UNKNOWN. Pattern coverage, category matching, conflict handling, and background-memory assumptions remain limited; evaluate the actual source and rule plan before using a verdict in a decision.
 - **Summary/explanation/list/sources:** optional brief output over stored sentences. Explanations look for stated causes. Comparisons present per-topic evidence; they do not establish a new comparative judgment.
 - **Deep search:** expands candidate paragraphs using lexical tags/relation hands. `deep_min_similarity` defaults to `0.62`; setting it to `None` removes that additional dense-similarity floor. A shortlist is not proof that all relevant evidence or contradictions were found.
 - **Creative mode:** selects varying subsets of stored sentences. The same prompt can yield different passages; this feature is not deterministic across runs.
@@ -124,8 +138,8 @@ The retrieval encoder and shipped `vectorprism.pt` projection are distinct from 
 
 There are **three separate wording paths**:
 
-1. The v1.9 construction realizer has N0 plans/constructions/checking but **no trained ranker checkpoint**. `realization="evidence_neural"` currently reports deterministic fallback. It is opt-in, does not affect every plain reply, and is not a delivered neural graph decoder. `account=True` opts into an account of authorized records.
-2. Model01 sentence generator is the graph node immediately before the reply, after math, finance, and the event frame. It writes the checked sentence from the prompt and the stored records. Content words are copied from licensed spans. A ranking prompt quotes a stored order, or says the passages do not state one. A blocked prompt skips the node, and a withheld sentence stays the reply. It loads no checkpoint. `prepare()` stores checker-approved pairs in Postgres table `model01_training_pair`, with the WikiText test split marked `test`. `train()` writes nothing while every plan has one legal sentence.
+1. The construction realizer associated with the v1.9 design has N0 plans/constructions/checking but **no trained ranker checkpoint**. `realization="evidence_neural"` currently reports deterministic fallback. It is opt-in, does not affect every plain reply, and is not a delivered neural graph decoder. `account=True` opts into an account of authorized records.
+2. **Model01 is a deterministic construction generator**, despite its name. It runs before the reply, after enabled specialists such as math, finance, and event frames. It builds licensed sentences from retrieved records, with entity filtering for supported prompts; reply routing decides whether its sentence, a specialist result, or a quotation is displayed. A ranking prompt quotes a stored order or reports that none is stated. It loads no trained generation checkpoint. `realization="model01"` is accepted, but the Model01 graph node already runs on the ordinary path; that argument does not enable a separate trained model. `cpu_llm.model01.corpus.prepare()` prepares and stores checker-approved records in `model01_training_pair`, marking the WikiText test split as `test`. `cpu_llm.model01.train.train()` is a training-signal survey: it runs no optimizer and always reports `checkpoint_written=False`.
 3. The fact-bridge rule path can **automatically load local FLAN-T5 extraction and writing models** when the pattern path misses, the prompt/passages have rule cues, and model directories are found. This can happen with the default `realization="deterministic"`. Model lookup checks `FACTBRIDGE_MODELS`, then `models/` and `cpullm-factbridge/models/` relative to the package installation root. An explicit root is also supported by the low-level fact-bridge API.
 
 The latter requires external checkpoints and optional tooling such as Transformers, torch, SentencePiece, and safetensors. A missing/incompatible writer or dependency can raise during a question. The current `Appliance.ask` has no public switch that guarantees this automatic fallback is disabled; inspect deployment assets and `reply.situation.wording.path`. The learned writer currently returns a nonempty candidate without calling its verifier. Its output is not covered by the earlier `answer` audit.
@@ -137,13 +151,15 @@ Thus, “CPU-only” does not mean “no decoder,” and default mode does not g
 Always use `.get(...)` for optional fields. Access refusals and seat failures may have a different shape from normal graph results.
 
 - `reply.text`: the displayed output. It may be a base answer, quote, frame/non-answer, rule verdict, math result, finance result, or document layout.
-- `answer`: the base EIR-realized sentence or a substituted fallback. It may differ from `reply.text`.
+- `answer`: the EIR answer/fallback, possibly narrowed or cleared by query assessment. It is cleared for `insufficient_evidence`, `conflicting`, and `evidence_quote` outcomes; it can differ from `reply.text` when a specialist or Model01 supplies the display.
+- `answer_status`, `answer_evidence`, `verification_scope`: present for queries handled by the answerability layer, and also copied into `reply`. Statuses include `answered`, `evidence_quote`, `insufficient_evidence`, and `conflicting`. Scope `query` records the supported query-binding checks; scope `retrieval` identifies a quote. Neither scope proves the source itself true. These fields are not universal across all response producers.
+- `__partial__`, `__node_error__`: graph-failure indicators. A failed graph can return a dictionary with no `reply`; treat this as an execution failure, not an abstention or successful answer.
 - `audit_passed`: the audit of the base realized propositions; it does **not** certify the entire displayed reply, source truth, document fields, or learned rule wording.
 - `shine_ok`, `shine_enforced`, `delivery_blocked`: grounding/delivery diagnostics for the checked path. Never restore a withheld candidate using a debug field.
 - `frame_result.status` / `verified`, `frame_verified`: frame-specific outcomes. `answered`, `missing`, `ambiguous`, `conflicting`, `unsupported`, and sometimes `ignored` distinguish response types.
 - `reply.situation`: rule verdict, delivered rule text, `because` source sentences, and wording-path metadata. Those sources can currently include synthesized background memory; do not equate them automatically with original retrieved citations.
 - `reply.draft`: document format/topic/text, missing fields, and source IDs. Header provenance/binding is not a universal guarantee.
-- `math_result`, `finance_result`, `realization_result`: separate component results; inspect their own fields instead of applying `audit_passed` to them.
+- `model01`: construction status, text, verification outcome, input records, and a null generation-checkpoint ID. Its result is not necessarily the displayed reply. `math_result`, `finance_result`, and `realization_result` likewise have their own contracts; do not apply `audit_passed` to every producer.
 - `related`: retrieved items using `chunk_id`; `passages` uses `document_id`. These are paragraph IDs, not source URLs.
 - `thinker_directive`, `gather_questions`: sufficiency advice. `gather`, `refuse`, or `escalate` are not themselves a guarantee that all later display is suppressed; apply a consumer policy explicitly.
 - `typos`, `original_message`: actual query rewrites. The corrected query is used by later stages. `original_message` is present when a rewrite occurred.
@@ -194,7 +210,28 @@ python -m pytest
 
 Tests under `test_pipeline.py`, parts of `test_upload.py`, and `test_tenant_isolation.py` use a real local PostgreSQL service; other tests use fixtures/fakes or pure functions. Service tests bind a local port. Optional model tests can skip when checkpoints/dependencies are absent, and can run a real local model when present. Use a fresh writable `--basetemp` if the default temporary directory is restricted.
 
-Historical reports are evidence for their recorded checkout/environment, not a current full-suite pass:
+Run database integration tests against a disposable test database: some tests use fixed tenant/document/model IDs and write or delete fixture records. The complete suite was not run in the latest targeted review.
+
+### What has actually been demonstrated
+
+- At `9d6fbe8`, **126 targeted tests passed**, with one fixed-ID database test deselected. Five additional live Appliance checks passed for missing duration, complete entity names, a short name, and exclusion of an unrelated passage. [Review and scope](docs/reviews/2026-10-19/review-9d6fbe8.md), [test transcript](docs/reviews/2026-10-19/pytest-9d6fbe8.txt), [live inputs and outputs](docs/reviews/2026-10-19/review-9d6fbe8-probes.json).
+- At the preceding `1183b77` revision, the **27 original diagnostic cases passed** on a 17-paragraph controlled corpus: 17 factual checks, four policy checks, four missing-fact nonanswers, and two arithmetic checks. Three repetitions through retrieval and the pipeline produced **162 measured calls without exceptions**. [Recorded benchmark](docs/reviews/2026-10-19/audit-1183b77-small/summary.json).
+- At `edf54ee`, the same 27 cases passed with both 17 and 217 paragraphs, including 200 shipped WikiText distractors. That is a small distractor test, not evidence of production-scale retrieval. [Recorded comparison and follow-up findings](docs/reviews/2026-10-19/followup-review-edf54ee.md).
+
+These are distinct source revisions. The 27-question benchmark was not repeated at `9d6fbe8`; its fixes were checked with the targeted suite and five live cases. Repetition counts are timing samples, not additional independent accuracy examples. No customer-corpus accuracy, business time savings, independent security certification, or general throughput guarantee has been established.
+
+The `1183b77` run observed a 37.6 ms median and 58.9 ms nearest-rank p95 for 81 warmed, serialized, in-process pipeline calls on an Intel Core Ultra 9 275HX workstation. Encoding was included; startup, ingestion, and HTTP overhead were excluded. The workstation was not reserved exclusively for benchmarking. These figures describe that run, not an API latency promise.
+
+To reproduce the diagnostic benchmark with installed dependencies, a cached encoder, and the development PostgreSQL service:
+
+```powershell
+python docs/reviews/2026-10-19/benchmark.py --out C:/path/to/new-audit
+python docs/reviews/2026-10-19/analyze.py C:/path/to/new-audit
+```
+
+Use a new output directory. The harness freezes source, creates a fresh namespace, and retains the corpus, expectations, raw results, source hashes, and timing samples. Review new outputs before accepting its narrow fixture scores. It is not a general semantic correctness evaluator; optional models in a nested checkout directory are not copied into the frozen benchmark.
+
+Older reports remain evidence for their recorded checkout/environment:
 
 - [October 18 suite record](docs/test-results-2026-10-18.md): 180 passes and 17 PostgreSQL setup errors in that run.
 - [Enterprise foundation record](docs/cpu-llm-enterprise-foundation.md): a later pipeline/upload run is recorded there.
@@ -203,19 +240,18 @@ Historical reports are evidence for their recorded checkout/environment, not a c
 
 That benchmark records seven individual question times, not a repeated-run percentile study. It includes abstentions and an unrelated answer to the France-capital question; timing results are not an accuracy score.
 
-The October 13 measurement on an Intel Core Ultra 9 275HX/64 GB machine reported about 10 seconds to load, 60–66 ms median warm questions for several original modes, and 593 ms deep search. It predates rule-wording, finance, tenancy, and current concurrency changes and is **not a benchmark of this checkout**. No general minimum CPU, throughput, or p95 guarantee is established.
-
 Additional limits include narrow English extraction grammars, incomplete retrieval coverage, limited alias/coreference handling, no general code generation or translation, and no universal transaction/rollback across PostgreSQL and local stores. Accepted schemas and credentials do not constitute an independent security certification.
 
 ## Source and design map
 
 - [pipeline.py](src/cpu_llm/pipeline.py): `Appliance`, graph order, ingestion, scoped asks, concurrency, lifecycle.
 - [reply.py](src/cpu_llm/agents/reply.py), [answering.py](src/cpu_llm/answering.py), [fact_bridge](src/fact_bridge/__init__.py): displayed-reply selection and rule inference.
+- [answerability.py](src/cpu_llm/answerability.py), [model01](src/cpu_llm/model01/): supported query bindings and deterministic construction generation.
 - [frames.py](src/cpu_llm/memory/frames.py), [realizer](src/cpu_llm/realizer/): role extraction, constructions, and separate verification scopes.
 - [entry.py](src/cpu_llm/entry.py), [serve.py](src/cpu_llm/serve.py), [access.py](src/cpu_llm/access.py): credentials, routes, and source scopes.
 - [Consumer guide](docs/library-consumer-guide.md): integration contract and operational examples.
 - [Semantic memory](docs/cpu-llm-v1.8-semantic-memory.md), [final v1.9 realizer design](docs/cpu-llm-v1.9-realizer.md), [enterprise foundation](docs/cpu-llm-enterprise-foundation.md), [formats/scale](docs/cpu-llm-output-formats-and-scale.md): design intent; verify implementation and tests for the supported case.
-- [Correctness handoff](docs/handoff-claim-verification-review.md): known findings and required regression checks. Earlier proposals remain historical design records.
+- [Latest targeted review](docs/reviews/2026-10-19/review-9d6fbe8.md): verified fixes and exact validation scope. The [earlier correctness handoff](docs/handoff-claim-verification-review.md) and design proposals are historical records; some findings have since been fixed, and others require separate verification.
 
 ## License and attribution
 

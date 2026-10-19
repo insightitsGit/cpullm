@@ -1,6 +1,6 @@
 # Library consumer guide for agents
 
-This guide describes the repository's 1.8.0 API inspected on 2026-10-18. Pin a commit or `v1.8.0` when integrating, inspect current signatures, and run the applicable tests when updating. Verify PyPI availability separately; the repository's version metadata does not establish which wheel is currently published.
+This guide describes the repository API reviewed through `9d6fbe8` on 2026-10-19. Package metadata remains 1.8.0, but this revision includes changes after the `v1.8.0` release tag. Pin the evaluated source commit when integrating, inspect signatures, and run applicable tests when updating. Version metadata alone does not establish which implementation a published wheel contains.
 
 Read [README](../README.md) for installation and capability limits. This document supplies the integration contract, not a certificate of general correctness.
 
@@ -15,6 +15,8 @@ with Appliance(namespace="tenant_alpha") as app:
 ```
 
 Constructor arguments are `checkpoint: Path | None`, and keyword-only `dsn`, `child_safety`, `namespace`, `on_escalate`. `dsn=None` uses `VECTORPRISM_PG_DSN` and then the development DSN in `retrieval.py`. Constructing an appliance loads the encoder/retrieval stack, connects to PostgreSQL, creates local state, and starts a reusable Thinker pool. It is not a lightweight pure-function wrapper.
+
+When running a Python script on Windows, put appliance construction and calls inside a function invoked under `if __name__ == "__main__":`; the worker pool uses child processes. The README contains a complete guarded example. The short snippets in this guide describe operations to perform inside that application entry point.
 
 Use `with` or `close()` for worker cleanup. Keep one stable working directory for a deployment: local graph, word tags/relations, resonance assets, and format cache live beneath `.chorusgraph/cpu-llm/`, with a subdirectory for named namespaces. These files are separate from PostgreSQL. Reusing the same working directory/namespace for a different DSN does not automatically isolate the local cache.
 
@@ -55,7 +57,7 @@ def ask(
 - `imagine`, `deep`, `math`, `finance`: force their respective optional agents. Other behavior is classified from the request. There are no public `summarize=`, `sources=`, or `format=` kwargs; ask for those in the message.
 - `payment`, `authority`: supply both or neither. Mismatched presence raises `ValueError`. These are the proposal/authority objects consumed by PrismAgenticPay; this is separate from local `finance_result` checks and is not a payment execution API.
 - `objective`, `hypothesis`, `causal_graph`: caller-owned PrismThinker context objects. The pipeline does not supply a missing target or causal graph merely because a passage has a number or says because. A caller causal graph is a supplied assertion, not a graph independently proved from text.
-- `realization`: exactly `"deterministic"` or `"evidence_neural"`; other values raise `ValueError`. The latter currently invokes N0 fallback because no trained construction-ranker checkpoint is shipped. It does not force every reply producer through a new neural verifier.
+- `realization`: `"deterministic"`, `"evidence_neural"`, or `"model01"`; other values raise `ValueError`. Model01 already runs as a graph node on the ordinary path, so `"model01"` does not select a separately trained model. `"evidence_neural"` invokes an additional N0 realization result with deterministic fallback because no trained construction-ranker checkpoint is shipped. It does not force every reply producer through a new neural verifier.
 - `account`: opt into the N0 full-account planning/rendering path. It can affect displayed text when no other optional agent takes precedence. It is not a general multi-record reasoning switch or a universal provenance report.
 - `grade`, `child_safety`, `session_id`: accepted but discarded by `ask` in this checkout. Normal results explicitly report child safety off. Do not assume that constructor gate objects, a session string, or these keywords enforce a safety policy or isolate conversation state.
 - `caller`: a `CallerContext` whose `tenant_id` must equal the appliance tenant. `None` means trusted, unscoped access within that tenant. A wrong type raises `TypeError`; a tenant mismatch raises `TenantNotFoundError`.
@@ -67,9 +69,9 @@ The same question need not produce identical results across installations: model
 
 There is no single universal `success` or `verified` flag. Read the following layers separately:
 
-1. **Transport/access:** catch typed exceptions from Python, or inspect HTTP status. Check returned `error` and `access_error` before assuming a normal result. Empty caller scope returns a non-answer dictionary with `access_error="allowed_sources_empty"`, empty `related`, and no query encoding; HTTP may still be 200.
+1. **Transport/access/execution:** catch typed exceptions from Python, or inspect HTTP status. Check returned `error`, `access_error`, `__partial__`, and `__node_error__` before assuming a normal result. A graph failure can return a partial dictionary without `reply`. Empty caller scope returns a non-answer dictionary with `access_error="allowed_sources_empty"`, empty `related`, and no query encoding; HTTP may still be 200.
 2. **Delivery:** inspect `guard_decision`, `delivery_blocked`, `shine_enforced`, and `shine_ok`. Treat explicit holds as authoritative. Do not use debug candidates to reconstruct a withheld response.
-3. **Actual response producer:** examine `reply.situation`, `reply.draft`, `frame_result`, `math_result`, `finance_result`, and `realization_result`. The optional keys can be absent. `reply.text` is the displayed string, while `answer`/`reply.body` refer to the earlier base answer/body.
+3. **Actual response producer:** examine `reply.situation`, `reply.draft`, `model01`, `frame_result`, `math_result`, `finance_result`, and `realization_result`. Optional keys can be absent. `reply.text` is the displayed string; `answer` can be narrowed or cleared by query assessment and can differ from the displayed specialist/Model01 result. `reply.body` is not a universal verification boundary.
 4. **Evidence and limitations:** inspect producer-specific status, evidence, verification scope, and unresolved questions. A quote from an unrelated paragraph is not an answer. Candidate retrieval does not prove completeness or uniqueness.
 5. **Application decision:** apply your own acceptance/approval policy after these checks. Do not convert a convenient displayed YES into an automated action without validating the queried proposition and source evidence.
 
@@ -79,7 +81,8 @@ A minimal integration can preserve these layers without manufacturing a single s
 def response_view(result):
     reply = result.get("reply") or {}
     return {
-        "error": result.get("error") or result.get("access_error"),
+        "error": result.get("error") or result.get("access_error") or result.get("__node_error__"),
+        "partial": bool(result.get("__partial__")),
         "held": bool(
             result.get("delivery_blocked")
             or result.get("shine_enforced")

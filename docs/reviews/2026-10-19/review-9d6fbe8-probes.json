@@ -1,0 +1,674 @@
+{
+  "commit": "9d6fbe8",
+  "namespace": "review_9d6_1468c8702a0c",
+  "corpus": [
+    "Business class is allowed for flights over six hours.",
+    "The flight from Boston to Paris weighs three tons.",
+    "Bank of America is a bank.",
+    "Research and Development is a department.",
+    "The harbor kestrel is a small coastal falcon.",
+    "The picnic was held beside a harbor.",
+    "Ada is a mathematician."
+  ],
+  "public_function": {
+    "verdict": "UNKNOWN",
+    "text": "I can't tell yet. Business class is allowed for flights over 6 hours, but I don't know the duration of the flight from Boston to Paris. Do you know it?"
+  },
+  "cases": [
+    {
+      "case": "missing_metric",
+      "question": "Can I fly business class from Boston to Paris?",
+      "expected": null,
+      "passed": true,
+      "result": {
+        "reply": {
+          "preface": "I found 5 passages labeled review-notes. The closest match scores 0.82. The sentence below is the one checked against a stored proposition.",
+          "body": "Business class is allowed for flights over six hours.",
+          "closing": "Still open: No policy rule was provided. The retrieved passages do not state a measurement. No cause is stated in the retrieved passages. No objective was provided.",
+          "follow_ups": [
+            "Within the quoted passage, allowed is something you can ask about next.",
+            "Another passage mentions kestrel: \u201cThe harbor kestrel is a small coastal falcon.\u201d",
+            "Another passage mentions America: \u201cBank of America is a bank.\u201d"
+          ],
+          "next_steps": [
+            "Supply a policy rule if this turn should be allowed or refused.",
+            "A checkable measurement has to be written in a retrieved passage.",
+            "A causal step needs a source that states one event because of another.",
+            "Supply an objective if a measurement should be scored against a target."
+          ],
+          "discovery_suggested": false,
+          "situation": {
+            "verdict": "UNKNOWN",
+            "text": "I can't tell yet. Business class is allowed for flights over 6 hours, but I don't know the duration of the flight from Boston to Paris. Do you know it?",
+            "because": [
+              "Business class is allowed for flights over six hours."
+            ],
+            "wording": {
+              "path": "deterministic"
+            }
+          },
+          "draft": null,
+          "ranking": null,
+          "text": "I can't tell yet. Business class is allowed for flights over 6 hours, but I don't know the duration of the flight from Boston to Paris. Do you know it?"
+        },
+        "answer": "Business class is allowed for flights over six hours.",
+        "model01": {
+          "status": "answered",
+          "mode": "model01",
+          "text": "Business class is allowed for flights over six hours.",
+          "candidate_text": "Business class is allowed for flights over six hours.",
+          "verified": true,
+          "plan_id": "p-50efc7932f19",
+          "construction_version": "n0-v2",
+          "model_checkpoint_id": null,
+          "construction_ids": [
+            "proposition_clause"
+          ],
+          "evidence_ids": [
+            "prop-review-notes-p0001"
+          ],
+          "span_bindings": [
+            {
+              "span_id": "prop-review-notes-p0001:subject:0:14",
+              "role": "subject",
+              "text": "Business class",
+              "record_id": "prop-review-notes-p0001"
+            },
+            {
+              "span_id": "prop-review-notes-p0001:predicate:15:17",
+              "role": "predicate",
+              "text": "is",
+              "record_id": "prop-review-notes-p0001"
+            },
+            {
+              "span_id": "prop-review-notes-p0001:object:18:52",
+              "role": "object",
+              "text": "allowed for flights over six hours",
+              "record_id": "prop-review-notes-p0001"
+            }
+          ],
+          "reason_codes": [],
+          "realization_verified": true,
+          "model_id": "model01",
+          "model_name": "Model01 sentence generator",
+          "checkpoint_id": null,
+          "inputs": {
+            "prompt": "Can I fly business class from Boston to Paris?",
+            "evidence": [
+              {
+                "record_id": "prop-review-notes-p0001",
+                "kind": "proposition",
+                "sentence": "Business class is allowed for flights over six hours.",
+                "roles": [
+                  "subject",
+                  "predicate",
+                  "object"
+                ],
+                "epistemic_weight": 1.0,
+                "polarity": "AFFIRMATIVE"
+              },
+              {
+                "record_id": "quote-review-notes-p0002",
+                "kind": "quote",
+                "sentence": "The flight from Boston to Paris weighs three tons.",
+                "roles": [
+                  "sentence"
+                ],
+                "epistemic_weight": null,
+                "polarity": null
+              }
+            ]
+          }
+        },
+        "related": [
+          {
+            "chunk_id": "review-notes-p0001",
+            "score": 0.8180655837059021,
+            "chunk_text": "Business class is allowed for flights over six hours.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0002",
+            "score": 0.7284298539161682,
+            "chunk_text": "The flight from Boston to Paris weighs three tons.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0005",
+            "score": 0.5681310892105103,
+            "chunk_text": "The harbor kestrel is a small coastal falcon.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0003",
+            "score": 0.5540787577629089,
+            "chunk_text": "Bank of America is a bank.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0006",
+            "score": 0.5202060341835022,
+            "chunk_text": "The picnic was held beside a harbor.",
+            "category": "review-notes"
+          }
+        ],
+        "__partial__": null,
+        "__node_error__": null
+      }
+    },
+    {
+      "case": "internal_of",
+      "question": "Tell me about Bank of America.",
+      "expected": "Bank of America is a bank.",
+      "passed": true,
+      "result": {
+        "reply": {
+          "preface": "I found 5 passages labeled review-notes. The closest match scores 0.93. The sentence below is the one checked against a stored proposition.",
+          "body": "Bank of America is a bank.",
+          "closing": "Still open: No policy rule was provided. The retrieved passages do not state a measurement. No cause is stated in the retrieved passages. No objective was provided.",
+          "follow_ups": [
+            "Another passage mentions Development: \u201cResearch and Development is a department.\u201d",
+            "Another passage mentions mathematician: \u201cAda is a mathematician.\u201d",
+            "Another passage mentions Business: \u201cBusiness class is allowed for flights over six hours.\u201d"
+          ],
+          "next_steps": [
+            "Supply a policy rule if this turn should be allowed or refused.",
+            "A checkable measurement has to be written in a retrieved passage.",
+            "A causal step needs a source that states one event because of another.",
+            "Supply an objective if a measurement should be scored against a target."
+          ],
+          "discovery_suggested": false,
+          "situation": null,
+          "draft": null,
+          "ranking": null,
+          "text": "Bank of America is a bank."
+        },
+        "answer": "Bank of America is a bank.",
+        "model01": {
+          "status": "answered",
+          "mode": "model01",
+          "text": "Bank of America is a bank.",
+          "candidate_text": "Bank of America is a bank.",
+          "verified": true,
+          "plan_id": "p-7f3aa4e21bc5",
+          "construction_version": "n0-v2",
+          "model_checkpoint_id": null,
+          "construction_ids": [
+            "proposition_clause"
+          ],
+          "evidence_ids": [
+            "prop-review-notes-p0003"
+          ],
+          "span_bindings": [
+            {
+              "span_id": "prop-review-notes-p0003:subject:0:15",
+              "role": "subject",
+              "text": "Bank of America",
+              "record_id": "prop-review-notes-p0003"
+            },
+            {
+              "span_id": "prop-review-notes-p0003:predicate:16:18",
+              "role": "predicate",
+              "text": "is",
+              "record_id": "prop-review-notes-p0003"
+            },
+            {
+              "span_id": "prop-review-notes-p0003:object:19:25",
+              "role": "object",
+              "text": "a bank",
+              "record_id": "prop-review-notes-p0003"
+            }
+          ],
+          "reason_codes": [],
+          "realization_verified": true,
+          "model_id": "model01",
+          "model_name": "Model01 sentence generator",
+          "checkpoint_id": null,
+          "inputs": {
+            "prompt": "Tell me about Bank of America.",
+            "evidence": [
+              {
+                "record_id": "prop-review-notes-p0003",
+                "kind": "proposition",
+                "sentence": "Bank of America is a bank.",
+                "roles": [
+                  "subject",
+                  "predicate",
+                  "object"
+                ],
+                "epistemic_weight": 1.0,
+                "polarity": "AFFIRMATIVE"
+              }
+            ]
+          },
+          "scoped_entity": "Bank of America",
+          "scoped_passages": [
+            {
+              "chunk_id": "review-notes-p0003",
+              "chunk_text": "Bank of America is a bank."
+            }
+          ]
+        },
+        "related": [
+          {
+            "chunk_id": "review-notes-p0003",
+            "score": 0.9260724782943726,
+            "chunk_text": "Bank of America is a bank.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0004",
+            "score": 0.5617531538009644,
+            "chunk_text": "Research and Development is a department.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0007",
+            "score": 0.5568017363548279,
+            "chunk_text": "Ada is a mathematician.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0001",
+            "score": 0.5434120297431946,
+            "chunk_text": "Business class is allowed for flights over six hours.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0006",
+            "score": 0.5107380151748657,
+            "chunk_text": "The picnic was held beside a harbor.",
+            "category": "review-notes"
+          }
+        ],
+        "__partial__": null,
+        "__node_error__": null
+      }
+    },
+    {
+      "case": "internal_and",
+      "question": "Tell me about Research and Development.",
+      "expected": "Research and Development is a department.",
+      "passed": true,
+      "result": {
+        "reply": {
+          "preface": "I found 5 passages labeled review-notes. The closest match scores 0.79. The sentence below is the one checked against a stored proposition.",
+          "body": "Research and Development is a department.",
+          "closing": "Still open: No policy rule was provided. The retrieved passages do not state a measurement. No cause is stated in the retrieved passages. No objective was provided.",
+          "follow_ups": [
+            "Within the quoted passage, department is something you can ask about next.",
+            "Another passage mentions mathematician: \u201cAda is a mathematician.\u201d",
+            "Another passage mentions America: \u201cBank of America is a bank.\u201d"
+          ],
+          "next_steps": [
+            "Supply a policy rule if this turn should be allowed or refused.",
+            "A checkable measurement has to be written in a retrieved passage.",
+            "A causal step needs a source that states one event because of another.",
+            "Supply an objective if a measurement should be scored against a target."
+          ],
+          "discovery_suggested": false,
+          "situation": null,
+          "draft": null,
+          "ranking": null,
+          "text": "Research and Development is a department."
+        },
+        "answer": "Research and Development is a department.",
+        "model01": {
+          "status": "answered",
+          "mode": "model01",
+          "text": "Research and Development is a department.",
+          "candidate_text": "Research and Development is a department.",
+          "verified": true,
+          "plan_id": "p-27eb32131163",
+          "construction_version": "n0-v2",
+          "model_checkpoint_id": null,
+          "construction_ids": [
+            "proposition_clause"
+          ],
+          "evidence_ids": [
+            "prop-review-notes-p0004"
+          ],
+          "span_bindings": [
+            {
+              "span_id": "prop-review-notes-p0004:subject:0:24",
+              "role": "subject",
+              "text": "Research and Development",
+              "record_id": "prop-review-notes-p0004"
+            },
+            {
+              "span_id": "prop-review-notes-p0004:predicate:25:27",
+              "role": "predicate",
+              "text": "is",
+              "record_id": "prop-review-notes-p0004"
+            },
+            {
+              "span_id": "prop-review-notes-p0004:object:28:40",
+              "role": "object",
+              "text": "a department",
+              "record_id": "prop-review-notes-p0004"
+            }
+          ],
+          "reason_codes": [],
+          "realization_verified": true,
+          "model_id": "model01",
+          "model_name": "Model01 sentence generator",
+          "checkpoint_id": null,
+          "inputs": {
+            "prompt": "Tell me about Research and Development.",
+            "evidence": [
+              {
+                "record_id": "prop-review-notes-p0004",
+                "kind": "proposition",
+                "sentence": "Research and Development is a department.",
+                "roles": [
+                  "subject",
+                  "predicate",
+                  "object"
+                ],
+                "epistemic_weight": 1.0,
+                "polarity": "AFFIRMATIVE"
+              }
+            ]
+          },
+          "scoped_entity": "Research and Development",
+          "scoped_passages": [
+            {
+              "chunk_id": "review-notes-p0004",
+              "chunk_text": "Research and Development is a department."
+            }
+          ]
+        },
+        "related": [
+          {
+            "chunk_id": "review-notes-p0004",
+            "score": 0.7947947978973389,
+            "chunk_text": "Research and Development is a department.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0007",
+            "score": 0.5703914165496826,
+            "chunk_text": "Ada is a mathematician.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0003",
+            "score": 0.5637328624725342,
+            "chunk_text": "Bank of America is a bank.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0006",
+            "score": 0.5045422315597534,
+            "chunk_text": "The picnic was held beside a harbor.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0005",
+            "score": 0.502702534198761,
+            "chunk_text": "The harbor kestrel is a small coastal falcon.",
+            "category": "review-notes"
+          }
+        ],
+        "__partial__": null,
+        "__node_error__": null
+      }
+    },
+    {
+      "case": "short_name",
+      "question": "Tell me about Ada.",
+      "expected": "Ada is a mathematician.",
+      "passed": true,
+      "result": {
+        "reply": {
+          "preface": "I found 5 passages labeled review-notes. The closest match scores 0.87. The sentence below is the one checked against a stored proposition.",
+          "body": "Ada is a mathematician.",
+          "closing": "Still open: No policy rule was provided. The retrieved passages do not state a measurement. No cause is stated in the retrieved passages. No objective was provided.",
+          "follow_ups": [
+            "Within the quoted passage, mathematician is something you can ask about next."
+          ],
+          "next_steps": [
+            "Supply a policy rule if this turn should be allowed or refused.",
+            "A checkable measurement has to be written in a retrieved passage.",
+            "A causal step needs a source that states one event because of another.",
+            "Supply an objective if a measurement should be scored against a target."
+          ],
+          "discovery_suggested": false,
+          "situation": null,
+          "draft": null,
+          "ranking": null,
+          "text": "Ada is a mathematician."
+        },
+        "answer": "Ada is a mathematician. Bank of America is a bank. Research and Development is a department. Business class is allowed for flights over six hours.",
+        "model01": {
+          "status": "answered",
+          "mode": "model01",
+          "text": "Ada is a mathematician.",
+          "candidate_text": "Ada is a mathematician.",
+          "verified": true,
+          "plan_id": "p-0faf7b9e7bdc",
+          "construction_version": "n0-v2",
+          "model_checkpoint_id": null,
+          "construction_ids": [
+            "proposition_clause"
+          ],
+          "evidence_ids": [
+            "prop-review-notes-p0007"
+          ],
+          "span_bindings": [
+            {
+              "span_id": "prop-review-notes-p0007:subject:0:3",
+              "role": "subject",
+              "text": "Ada",
+              "record_id": "prop-review-notes-p0007"
+            },
+            {
+              "span_id": "prop-review-notes-p0007:predicate:4:6",
+              "role": "predicate",
+              "text": "is",
+              "record_id": "prop-review-notes-p0007"
+            },
+            {
+              "span_id": "prop-review-notes-p0007:object:7:22",
+              "role": "object",
+              "text": "a mathematician",
+              "record_id": "prop-review-notes-p0007"
+            }
+          ],
+          "reason_codes": [],
+          "realization_verified": true,
+          "model_id": "model01",
+          "model_name": "Model01 sentence generator",
+          "checkpoint_id": null,
+          "inputs": {
+            "prompt": "Tell me about Ada.",
+            "evidence": [
+              {
+                "record_id": "prop-review-notes-p0007",
+                "kind": "proposition",
+                "sentence": "Ada is a mathematician.",
+                "roles": [
+                  "subject",
+                  "predicate",
+                  "object"
+                ],
+                "epistemic_weight": 1.0,
+                "polarity": "AFFIRMATIVE"
+              }
+            ]
+          },
+          "scoped_entity": "Ada",
+          "scoped_passages": [
+            {
+              "chunk_id": "review-notes-p0007",
+              "chunk_text": "Ada is a mathematician."
+            }
+          ]
+        },
+        "related": [
+          {
+            "chunk_id": "review-notes-p0007",
+            "score": 0.8704679608345032,
+            "chunk_text": "Ada is a mathematician.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0003",
+            "score": 0.5979291200637817,
+            "chunk_text": "Bank of America is a bank.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0004",
+            "score": 0.5706588625907898,
+            "chunk_text": "Research and Development is a department.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0001",
+            "score": 0.5072225332260132,
+            "chunk_text": "Business class is allowed for flights over six hours.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0002",
+            "score": 0.4934920370578766,
+            "chunk_text": "The flight from Boston to Paris weighs three tons.",
+            "category": "review-notes"
+          }
+        ],
+        "__partial__": null,
+        "__node_error__": null
+      }
+    },
+    {
+      "case": "exclude_picnic",
+      "question": "Tell me about the harbor kestrel.",
+      "expected": "The harbor kestrel is a small coastal falcon.",
+      "passed": true,
+      "result": {
+        "reply": {
+          "preface": "I found 5 passages labeled review-notes. The closest match scores 0.87. The sentence below is the one checked against a stored proposition.",
+          "body": "The harbor kestrel is a small coastal falcon.",
+          "closing": "Still open: No policy rule was provided. The retrieved passages do not state a measurement. No cause is stated in the retrieved passages. No objective was provided.",
+          "follow_ups": [
+            "Within the quoted passage, coastal is something you can ask about next.",
+            "Another passage mentions flight: \u201cThe flight from Boston to Paris weighs three tons.\u201d",
+            "Another passage mentions Business: \u201cBusiness class is allowed for flights over six hours.\u201d"
+          ],
+          "next_steps": [
+            "Supply a policy rule if this turn should be allowed or refused.",
+            "A checkable measurement has to be written in a retrieved passage.",
+            "A causal step needs a source that states one event because of another.",
+            "Supply an objective if a measurement should be scored against a target."
+          ],
+          "discovery_suggested": false,
+          "situation": null,
+          "draft": null,
+          "ranking": null,
+          "text": "The harbor kestrel is a small coastal falcon."
+        },
+        "answer": "The harbor kestrel is a small coastal falcon. The picnic was held beside a harbor.",
+        "model01": {
+          "status": "answered",
+          "mode": "model01",
+          "text": "The harbor kestrel is a small coastal falcon.",
+          "candidate_text": "The harbor kestrel is a small coastal falcon.",
+          "verified": true,
+          "plan_id": "p-08c958baf980",
+          "construction_version": "n0-v2",
+          "model_checkpoint_id": null,
+          "construction_ids": [
+            "proposition_clause"
+          ],
+          "evidence_ids": [
+            "prop-review-notes-p0005"
+          ],
+          "span_bindings": [
+            {
+              "span_id": "prop-review-notes-p0005:subject:0:18",
+              "role": "subject",
+              "text": "The harbor kestrel",
+              "record_id": "prop-review-notes-p0005"
+            },
+            {
+              "span_id": "prop-review-notes-p0005:predicate:19:21",
+              "role": "predicate",
+              "text": "is",
+              "record_id": "prop-review-notes-p0005"
+            },
+            {
+              "span_id": "prop-review-notes-p0005:object:22:44",
+              "role": "object",
+              "text": "a small coastal falcon",
+              "record_id": "prop-review-notes-p0005"
+            }
+          ],
+          "reason_codes": [],
+          "realization_verified": true,
+          "model_id": "model01",
+          "model_name": "Model01 sentence generator",
+          "checkpoint_id": null,
+          "inputs": {
+            "prompt": "Tell me about the harbor kestrel.",
+            "evidence": [
+              {
+                "record_id": "prop-review-notes-p0005",
+                "kind": "proposition",
+                "sentence": "The harbor kestrel is a small coastal falcon.",
+                "roles": [
+                  "subject",
+                  "predicate",
+                  "object"
+                ],
+                "epistemic_weight": 1.0,
+                "polarity": "AFFIRMATIVE"
+              }
+            ]
+          },
+          "scoped_entity": "harbor kestrel",
+          "scoped_passages": [
+            {
+              "chunk_id": "review-notes-p0005",
+              "chunk_text": "The harbor kestrel is a small coastal falcon."
+            }
+          ]
+        },
+        "related": [
+          {
+            "chunk_id": "review-notes-p0005",
+            "score": 0.870569109916687,
+            "chunk_text": "The harbor kestrel is a small coastal falcon.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0006",
+            "score": 0.6610270142555237,
+            "chunk_text": "The picnic was held beside a harbor.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0002",
+            "score": 0.6022353172302246,
+            "chunk_text": "The flight from Boston to Paris weighs three tons.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0001",
+            "score": 0.5651379227638245,
+            "chunk_text": "Business class is allowed for flights over six hours.",
+            "category": "review-notes"
+          },
+          {
+            "chunk_id": "review-notes-p0003",
+            "score": 0.5622506141662598,
+            "chunk_text": "Bank of America is a bank.",
+            "category": "review-notes"
+          }
+        ],
+        "__partial__": null,
+        "__node_error__": null
+      }
+    }
+  ]
+}
