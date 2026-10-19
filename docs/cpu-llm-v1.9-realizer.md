@@ -1,6 +1,6 @@
 # cpu-llm design v1.9: the realizer
 
-**Status:** Final design. N0, the plan, the constructions, and the checker, is implemented. No checkpoint is trained. The default `ask` path is unchanged. `account=True` or `realization="evidence_neural"` opts in, and the neural request falls back to this grammar because no checkpoint exists.
+**Status:** Final design. N0, the plan, the constructions, and the checker, is implemented. No checkpoint is trained. The default `ask` path does not call this realizer. `account=True` or `realization="evidence_neural"` opts in, and the neural request falls back to this grammar because no checkpoint exists. A document order is not this realizer. It is specified in [output formats and scale](cpu-llm-output-formats-and-scale.md).
 
 **Date:** 2026-10-16
 

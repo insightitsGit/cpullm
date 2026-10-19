@@ -56,7 +56,7 @@ class CortexSleepConsolidator:
         self.relation_edges = relation_edges
 
     def run_sleep_cycle(self, max_pairs: int = 500) -> int:
-        nodes = list(self.store.all_nodes())
+        nodes = [node for node in self.store.all_nodes() if getattr(node, "kind", "") != "output_format"]
         if len(nodes) < 2:
             self._consolidate_words()
             self._upgrade_vectors()

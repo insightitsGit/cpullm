@@ -99,6 +99,8 @@ from cpu_llm.classifier import (
     source_trigger,
     summary_trigger,
 )
+from cpu_llm.formats import draft_trigger, install_output_formats, parse_order
+from cpu_llm.format_sense import FormatSense, semantic_reason
 from cpu_llm.comparison import comparison_sides, possibilities_by_side, rows_for_side
 from cpu_llm.channels import _content_words, complexity_reasons, judge_readings, read_channel
 from cpu_llm.audit.entailment import EpistemicEntailmentAuditor
@@ -192,6 +194,8 @@ class Appliance:
             auto_sleep=False,
         )
         self.memory = SqliteGraphStore(cache / "graph_store.db", tenant_id="cpu-llm")
+        install_output_formats(self.memory)
+        self.format_sense = FormatSense(self.memory, self._encode_sense)
         self.word_tags_path = cache / "word_tags.json"
         self.word_tags = load_word_index(self.word_tags_path)
         self.relations_path = cache / "word_relations.json"
@@ -200,6 +204,10 @@ class Appliance:
         self._previous_ids: list[str] = []
         self._deep_tensors: dict[str, Any] = {}
         self.graph = _compile(self)
+
+    def _encode_sense(self, texts: list[str]):
+        """Frozen retrieval encoder. The semantic trigger uses this space, not a second model."""
+        return self.index.pipeline.encoder.encode(list(texts))
 
     def index_chunks(
         self,
@@ -363,6 +371,13 @@ class Appliance:
 
         math_reasons = math_trigger(message, forced=math)
         frame_reasons = frame_trigger(message)
+        draft_order = parse_order(message)
+        if draft_order is None and not creative_reasons:
+            draft_order = self.format_sense.classify(message)
+        if draft_order is None:
+            draft_reasons = []
+        else:
+            draft_reasons = draft_trigger(message) or [semantic_reason(draft_order)]
         self._turn = {
             "propositions": list(propositions or []),
             "payment": payment,
@@ -395,6 +410,11 @@ class Appliance:
                 "math_reasons": math_reasons,
                 "frame": bool(frame_reasons),
                 "frame_reasons": frame_reasons,
+                "draft": bool(draft_reasons),
+                "draft_reasons": draft_reasons,
+                "draft_order": None
+                if draft_order is None
+                else {"format": draft_order.format_id, "topic": draft_order.topic},
             }
         )
         self._previous_ids = [

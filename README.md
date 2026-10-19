@@ -78,6 +78,7 @@ PrismShine (retrieval trace and sentence gate; no external judge)
   │
   ▼
 Optional agents, in this order: deep search → creative writing → comparison → brief → math → event frame
+A document order replaces that reply with a stored format. See docs/cpu-llm-output-formats-and-scale.md.
   │
   ▼
 Verified reply
@@ -119,6 +120,7 @@ PrismThinker can return `answer`, `gather`, `refuse`, or `escalate`. A gather re
 | Cite sources for the European lobster. | The paragraph ids that were used | A source list |
 | What is 17 times 24? | The math agent | The calculation. A question that is only arithmetic is answered with that result |
 | What color was the apple John ate? | An event frame cut from a round-tripped sentence that matches the closed clause | The color, when that word is in the object. A missing color, a second color, a mismatched year, or a Shine rejection is spoken instead of a guessed color |
+| Write an email about the late shipment. | A stored output format | That format's fields. The body is the retrieved sentences about the topic. A missing recipient stays unfilled |
 
 Those agents chain. "Deep search and compare the European lobster and Robert Boulter" gathers first, then splits the kept paragraphs by topic. "Summarize that" with no new topic words reuses the previous turn's paragraph ids. A normal follow-up such as "what about the claws?" does not.
 
@@ -351,7 +353,7 @@ A height in the retrieved text can still select PrismThinker's empirical regime.
 
 ## What this package does not do
 
-It does not rewrite a passage in a new style, translate it, write code, or pick a winner the store does not state. It does not expose an HTTP upload API or a per-customer tenant. The tenant on this appliance is `cpu-llm`, and every source shares one pgvector index. A paragraph that does not round-trip is stored and can be retrieved. It is not spoken.
+It does not rewrite a passage in a new style, translate it, write code, or pick a winner the store does not state. A named document format lays retrieved sentences into that format. It does not invent the body. It does not expose an HTTP upload API or a per-customer tenant. The tenant on this appliance is `cpu-llm`, and every source shares one pgvector index. A paragraph that does not round-trip is stored and can be retrieved. It is not spoken. Another engine is a separate seat in `EngineManager`. `ask` itself still runs one thinker turn.
 
 ---
 
@@ -374,6 +376,9 @@ cpu-llm/
     cognition/                                PrismCognition deliberation adapter
     agents/                                   deep_search, gather, imagine, summarize, math, reply, discovery
     memory/frames.py                          event roles cut from a round-tripped sentence
+    formats.py                                output-format catalog, stored in PrismCortex
+    format_sense.py                           paraphrase trigger, cached in ChorusGraph
+    scale.py                                  chunk bytes, scale order, engine manager
     comparison.py                             two-topic split
     classifier.py                             which optional agent the prompt asked for
     channels.py                               six readings and the detail template
@@ -397,6 +402,7 @@ cpu-llm/
   docs/cpu-llm-v1.9-evidence-conditioned-realizer-proposal.md
                                                 review record: claim plan and constrained actions
   docs/cpu-llm-v1.6.1-architecture-spec.md
+  docs/cpu-llm-output-formats-and-scale.md    document formats, semantic trigger, and scale
 ```
 
 `cpu-llm-ingest` is the console script for `python -m cpu_llm.ingest`.

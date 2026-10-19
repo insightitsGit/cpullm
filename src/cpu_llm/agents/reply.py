@@ -5,7 +5,8 @@ preface, the open questions, the follow-ups, the next steps, and the six
 channel readings stay on the reply for the caller. They are not written into
 the spoken text. A follow-up that is not in the retrieved passages is not produced.
 The checked sentence, when one exists, stays the body. This node does not
-write a new conclusion.
+write a new conclusion. A request that asks for a document follows a format
+from the output catalog, and that document replaces the checked sentence.
 """
 
 from __future__ import annotations
@@ -45,49 +46,59 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
     lines = [body]
     math_result = state.get("math_result") or {}
     math_text = str(math_result.get("text") or "").strip()
-    math_only = bool(math_text) and state.get("math") is True and not _other_agent(state) and not _delivery_holds(state)
+    draft = _draft(state)
+    math_only = (
+        bool(math_text)
+        and state.get("math") is True
+        and draft is None
+        and not _other_agent(state)
+        and not _delivery_holds(state)
+    )
     frame_text = frame_reply_text(state)
-    frame_only = bool(frame_text) and not _other_agent(state) and not math_text
-    situation = _situation(state, math_only=math_only, frame_only=frame_only)
+    frame_only = bool(frame_text) and draft is None and not _other_agent(state) and not math_text
+    situation = None if draft is not None else _situation(state, math_only=math_only, frame_only=frame_only)
     if math_only:
         lines = [math_text]
     elif frame_only:
         lines = [frame_text]
+    elif draft is not None:
+        lines = [draft["text"]]
     elif situation is not None:
         lines = [situation["text"]]
     brief = state.get("brief") or {}
-    if state.get("summarize") is True:
-        lines.extend(["", "Summary:", brief.get("summary") or "No stored sentence to summarize."])
-    if state.get("explain") is True:
-        lines.extend(["", "Explanation:", brief.get("explanation") or "No stored sentence states a cause."])
-    if state.get("list") is True:
-        lines.extend(["", "List:", brief.get("list") or "No stored sentence to list."])
-    if state.get("sources") is True:
-        source_ids = list(brief.get("sources") or [])
-        lines.extend(["", "Sources:"])
-        lines.extend(f"- {document_id}" for document_id in source_ids)
-        if not source_ids:
-            lines.append("No stored paragraph was used.")
     report = state.get("channel_report") or {}
-    imagined = ""
-    if not state.get("delivery_blocked"):
-        imagined = str((state.get("imagination") or {}).get("text") or "").strip()
-    covered = list((state.get("comparison") or {}).get("sides") or [])
-    if covered:
-        lines.extend(["", "Comparison:"])
-        for side in covered:
-            lines.append(f"{side.get('label')}:")
-            lines.append(str(side.get("text") or "").strip() or "No stored sentence for this side.")
-    if imagined:
-        lines.extend(["", "Imagined passage:", imagined])
-    possibilities = list(state.get("possibilities") or [])
-    if possibilities:
-        lines.extend(["", f"Possibilities ({len(possibilities)}):"])
-        lines.extend(_possibility_lines(possibilities))
-    if math_text and not math_only:
-        lines.extend(["", "Math:", math_text])
-    if frame_text and not frame_only:
-        lines.extend(["", "Event:", frame_text])
+    if draft is None:
+        if state.get("summarize") is True:
+            lines.extend(["", "Summary:", brief.get("summary") or "No stored sentence to summarize."])
+        if state.get("explain") is True:
+            lines.extend(["", "Explanation:", brief.get("explanation") or "No stored sentence states a cause."])
+        if state.get("list") is True:
+            lines.extend(["", "List:", brief.get("list") or "No stored sentence to list."])
+        if state.get("sources") is True:
+            source_ids = list(brief.get("sources") or [])
+            lines.extend(["", "Sources:"])
+            lines.extend(f"- {document_id}" for document_id in source_ids)
+            if not source_ids:
+                lines.append("No stored paragraph was used.")
+        imagined = ""
+        if not state.get("delivery_blocked"):
+            imagined = str((state.get("imagination") or {}).get("text") or "").strip()
+        covered = list((state.get("comparison") or {}).get("sides") or [])
+        if covered:
+            lines.extend(["", "Comparison:"])
+            for side in covered:
+                lines.append(f"{side.get('label')}:")
+                lines.append(str(side.get("text") or "").strip() or "No stored sentence for this side.")
+        if imagined:
+            lines.extend(["", "Imagined passage:", imagined])
+        possibilities = list(state.get("possibilities") or [])
+        if possibilities:
+            lines.extend(["", f"Possibilities ({len(possibilities)}):"])
+            lines.extend(_possibility_lines(possibilities))
+        if math_text and not math_only:
+            lines.extend(["", "Math:", math_text])
+        if frame_text and not frame_only:
+            lines.extend(["", "Event:", frame_text])
     return {
         "preface": preface,
         "body": body,
@@ -96,8 +107,25 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
         "next_steps": next_steps,
         "discovery_suggested": bool(report.get("discovery_suggested")),
         "situation": situation,
+        "draft": draft,
         "text": "\n".join(lines).strip(),
     }
+
+
+def _draft(state: dict[str, Any]) -> dict[str, Any] | None:
+    """A formatted document when the request asks for one."""
+    if state.get("guard_decision") not in (None, "allow"):
+        return None
+    if _delivery_holds(state):
+        return None
+    from cpu_llm.formats import DraftOrder, render_draft
+
+    rows = list(state.get("passages") or []) + list(state.get("related") or [])
+    preset = state.get("draft_order")
+    order = None
+    if isinstance(preset, dict) and preset.get("format"):
+        order = DraftOrder(str(preset["format"]), str(preset.get("topic") or ""))
+    return render_draft(state.get("message") or "", rows, order)
 
 
 def _situation(state: dict[str, Any], *, math_only: bool, frame_only: bool) -> dict[str, Any] | None:

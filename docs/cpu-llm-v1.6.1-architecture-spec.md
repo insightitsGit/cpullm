@@ -21,6 +21,12 @@
 > to words, write those relations into the stored tensors, and answer an
 > identity question from that graph. Where section 1 describes a bilinear
 > map or an O(1) subclass test, section 7 is the behavior the code runs.
+>
+> Document orders, the semantic format trigger, and engine scale are a
+> later contract. They are specified in
+> `docs/cpu-llm-output-formats-and-scale.md` and implemented in
+> `formats.py`, `format_sense.py`, and `scale.py`. Sections 1 through 7
+> are unchanged by that contract.
 
 
 
@@ -475,3 +481,9 @@ When the shortlist has no stored proposition, and the question starts with “wh
 | `tests/test_relations.py` | Hands, tail norm 0.05, creation rows, sleep tail write |
 | `tests/test_cortex_sleep.py` | Shared-category link, opposing polarity, contradiction ruin |
 | `tests/test_lexical_relations.py` | Instance edge, identity answer, blocked contradiction, cone subclass |
+
+## 8. Document orders and scale
+
+Section 7 does not describe a document order or a second engine. That contract is [output formats and scale](cpu-llm-output-formats-and-scale.md).
+
+A named format lays retrieved sentences into a fixed field list. PrismCortex stores the format record with no embedding. A paraphrase is accepted only when the frozen retrieval encoder prefers "Write {format} about {topic}" over "What is {topic}?" by at least 0.15, and that decision is cached in the ChorusGraph database. One thinker turn still owns the five heads. Another waiting turn is another engine, placed on this server or another server by `EngineManager`, and the chunk catalog moves on a CHORUS fabric frame.
