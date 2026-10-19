@@ -1,6 +1,6 @@
 # Library consumer guide for agents
 
-This guide describes the repository API reviewed through `9d6fbe8` on 2026-10-19. Package metadata remains 1.8.0, but this revision includes changes after the `v1.8.0` release tag. Pin the evaluated source commit when integrating, inspect signatures, and run applicable tests when updating. Version metadata alone does not establish which implementation a published wheel contains.
+This guide describes cpu-llm 1.9.0, the API reviewed through `9d6fbe8` on 2026-10-19. That commit is after the `v1.8.0` tag. Inspect signatures and run the applicable tests when you upgrade. `1.8.0` does not contain this contract.
 
 Read [README](../README.md) for installation and capability limits. This document supplies the integration contract, not a certificate of general correctness.
 

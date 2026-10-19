@@ -8,7 +8,7 @@
 
 cpu-llm is an embeddable Python library for document question answering. It indexes paragraphs in PostgreSQL/pgvector, retrieves relevant passages using VectorPrism, and produces supported answers, source quotations, or explicit nonanswers for recognized question forms. It combines trained embedding retrieval with deterministic sentence constructions, limited event-role extraction, pattern-based policy reasoning, arithmetic, and document layouts. It also includes supplied-field finance checks and an authenticated HTTP entry point.
 
-**Author:** [Amin Parva](mailto:parvaamin@gmail.com). **Package metadata:** 1.8.0. The implementation described here was reviewed through commit [`9d6fbe8`](https://github.com/insightitsGit/cpullm/commit/9d6fbe8fabcf9dac10ec6cc409fa7852f77e948d) on 2026-10-19. That source revision includes changes after the `v1.8.0` release tag. Pin the source revision you evaluate; package version metadata alone does not identify these features or establish which wheel is published on PyPI.
+**Author:** [Amin Parva](mailto:parvaamin@gmail.com). **Package version:** 1.9.0. This release is the implementation reviewed through commit [`9d6fbe8`](https://github.com/insightitsGit/cpullm/commit/9d6fbe8fabcf9dac10ec6cc409fa7852f77e948d) on 2026-10-19, plus the documentation in this tree. It is the version after the `v1.8.0` tag. Installing `cpu-llm==1.8.0` does not include these answerability, rule-modality, or entity-scoped reply fixes.
 
 **Correctness boundary:** source copying and component checks do not guarantee source truth or that every displayed sentence answers the question. `answer`, `reply["text"]`, and component-specific verification fields have different meanings. Recognized query shapes expose answerability outcomes; other requests can use different producers or fallback behavior. Evaluate the actual reply and its supporting evidence for your application. The [latest targeted review](docs/reviews/2026-10-19/review-9d6fbe8.md) and [executed audit](docs/reviews/2026-10-19/audit.md) distinguish tested behavior, historical failures, and limits.
 
@@ -27,16 +27,16 @@ This is a candidate for a **bounded, human-supervised pilot**. Industry usefulne
 - The frozen `sentence-transformers/all-mpnet-base-v2` encoder. First use may download model assets; subsequent offline use requires those assets already cached.
 - Writable local storage for `.chorusgraph/cpu-llm/` under the process's **current working directory**, in addition to the PostgreSQL data.
 
-To install the source revision described here:
+Install this release once `1.9.0` is on PyPI:
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -U pip
-python -m pip install "cpu-llm @ git+https://github.com/insightitsGit/cpullm.git@9d6fbe8fabcf9dac10ec6cc409fa7852f77e948d"
+python -m pip install "cpu-llm==1.9.0"
 ```
 
-For a checkout you are editing, clone the repository and use `python -m pip install -e .` instead of the Git URL. Installing `v1.8.0` selects an earlier implementation; do not assume it contains the later Model01 and answerability fixes documented here.
+From a checkout of this tree, use `python -m pip install -e .` instead. That installs the same 1.9.0 source. `1.8.0` is the previous release.
 
 The pins in [pyproject.toml](pyproject.toml) are authoritative. The editable install makes packaged retrieval assets and sample corpora available; it does **not** start PostgreSQL, populate its corpus, or train a realizer. It does not bundle the optional fact-bridge T5 checkpoints or declare all their optional runtime dependencies.
 
@@ -133,6 +133,25 @@ Reingesting a source replaces vector rows sharing its source prefix. Ingestion a
 - **Finance checks:** local RefundProof, LedgerCovenant, and Ledgerlock routines consume supplied fields. They do not fetch financial records or perform external writes.
 
 The supported grammar and explicit non-answer statuses are part of the interface. A name or possessive in a sentence does not establish arbitrary identity, ownership, or causality.
+
+## How a question moves
+
+```text
+guard
+  → retrieve → resonate → six channel readings → catalog → detail → spans
+  → think → cognize → grammar → Shine
+  → deep search, gather, imagine, compare, brief, math, finance, event frame
+  → Model01
+  → reply
+```
+
+PrismGuard can stop the turn before retrieval. Retrieval is the trained dense core. The other five readings, including Poincaré distance in `geometry/poincare.py`, are reported on that same shortlist and do not choose the passage. Think, cognize, the grammar, and Shine then check the stored proposition. Cognize rebuilds a sentence from subject, verb, and object; the auditor has to accept that rebuild.
+
+Specialists run only when the prompt selects them, in the order above. Gather loads the article’s paragraphs for an imagined passage. Math evaluates the expression in the question. Finance runs RefundProof, LedgerCovenant, or Ledgerlock on the fields in the question. An event-frame question answers color, place, or agent from a stored frame. Model01 then builds a sentence from the passages that share a word with the prompt. The reply speaks a specialist when one owns the turn. Otherwise it speaks Model01’s sentence, unless the answerability check replaces that sentence with an explicit gap such as “The retrieved passages do not settle that.”
+
+A live pass of that order spoke these results from the specialist that owned the turn: the apple-color frame, `17*24 = 408` from math, a RefundProof recoverable-amount verdict from finance, a summary section after the embedding sentence, and Model01’s stored ranking line for “the best lobster,” including `Ranking: The sentence above states the stored ranking.` “What is Mary?” produced “Mary baked a cake.” inside `model01` and “The retrieved passages do not settle that.” as the displayed reply.
+
+`Appliance.sleep()` is a separate caller-started cycle. It is not a step of `ask`. It links stored nodes that already share a taxonomy category when their relational-channel cosine is above 0.75 and PrismCognition does not call the pair a contradiction.
 
 ## Models and the meaning of deterministic
 
