@@ -400,26 +400,67 @@ def _condition(rule: Rule) -> LogicalExpressionNode:
                                  threshold_value=rule.threshold, unit=canon(rule.unit))
 
 
-def _opinion(rule: Rule, fact: Optional[Fact]) -> tuple[Optional[str], Optional[float]]:
-    """YES / NO / UNKNOWN / None (no opinion) for one rule, plus the fact value in the rule's unit."""
+def _stance(rule: Rule, fact: Optional[Fact]) -> tuple[Optional[str], Optional[float]]:
+    """What one rule supports, before the question's modality is applied.
+
+    ``permitted``, ``obligatory``, and ``prohibited`` mean the condition holds.
+    ``not_permitted`` is an allowance the source itself marks as exclusive.
+    ``not_obligatory`` is a requirement whose condition does not hold.
+    ``open`` means this rule does not settle the other cases. ``unknown`` means
+    the fact or the units are missing. ``None`` means the rule has no opinion.
+    """
     if fact is None:
-        return "UNKNOWN", None
+        return "unknown", None
     value = convert(fact.value, fact.unit, rule.unit)
     if value is None:
-        return "UNKNOWN", None
+        return "unknown", None
     verdict = evaluate_condition(_condition(rule), {rule.metric: value}, units={rule.metric: canon(rule.unit)})
     if verdict is ConditionEval.EVAL_UNKNOWN:
-        return "UNKNOWN", value
+        return "unknown", value
     holds = verdict is ConditionEval.EVAL_TRUE
     if rule.modality == "forbidden":
-        return ("NO" if holds else None), value
-    if rule.modality == "allowed" and not holds:
-        # "Allowed for flights over six hours" permits that case. It does not
-        # forbid the others, unless the source itself says "only".
+        return ("prohibited" if holds else "open"), value
+    if rule.modality == "allowed":
+        if holds:
+            return "permitted", value
         if re.search(r"\bonly\b", rule.source or "", re.IGNORECASE):
-            return "NO", value
-        return "OPEN", value
-    return ("YES" if holds else "NO"), value
+            return "not_permitted", value
+        return "open", value
+    return ("obligatory" if holds else "not_obligatory"), value
+
+
+# The asked modality is the proposition to accept or reject. A permission does
+# not answer an obligation question, and a firing prohibition answers "forbidden?"
+# with YES.
+_ASKED_VERDICT = {
+    "allowed": {
+        "permitted": "YES",
+        "obligatory": "YES",
+        "prohibited": "NO",
+        "not_permitted": "NO",
+        "not_obligatory": "OPEN",
+        "open": "OPEN",
+        "unknown": "UNKNOWN",
+    },
+    "required": {
+        "permitted": "OPEN",
+        "obligatory": "YES",
+        "prohibited": "NO",
+        "not_permitted": "NO",
+        "not_obligatory": "NO",
+        "open": "OPEN",
+        "unknown": "UNKNOWN",
+    },
+    "forbidden": {
+        "permitted": "NO",
+        "obligatory": "NO",
+        "prohibited": "YES",
+        "not_permitted": "YES",
+        "not_obligatory": "OPEN",
+        "open": "OPEN",
+        "unknown": "UNKNOWN",
+    },
+}
 
 
 def _derive(rule: Rule, fact: Fact, value: float) -> tuple[Optional[str], Optional[bool]]:
@@ -508,6 +549,7 @@ def _reason(question: str, ex: Extraction) -> Answer:
                                  f"{_OP_TEXT[r.op]} {r.threshold:g} {plural(r.unit)}, and nothing retrieved gives it.",
                       [r.source], plan=_plan("UNKNOWN", q, rule=_rule_plan(r), missing=r.metric, entity=None))
 
+    asked = _asked_modality(q)
     cats: dict[str, list[str]] = {}
     for f in facts:
         for k, v in categories_of(f, ex.isa).items():
@@ -518,16 +560,18 @@ def _reason(question: str, ex: Extraction) -> Answer:
         if r.category not in cats:
             continue
         fact = next((f for f in facts if f.metric == r.metric), None)
-        verdict, value = _opinion(r, fact)
+        stance, value = _stance(r, fact)
+        verdict = _ASKED_VERDICT[asked].get(stance) if stance else None
         if verdict == "OPEN":
-            opens.append((r, fact, value))
+            opens.append((r, fact, value, stance))
             continue
         if verdict:
-            opinions.append((verdict, r, fact, value))
+            opinions.append((verdict, stance, r, fact, value))
     if not opinions:
         if opens:
-            r, f, value = opens[0]
+            r, f, value, stance = opens[0]
             sources = [r.source] + ([f.source] if f else [])
+            gap = "permission_not_obligation" if asked == "required" else "sufficient_allowance"
             return Answer(
                 "UNKNOWN",
                 "The retrieved passages do not settle that.",
@@ -535,68 +579,66 @@ def _reason(question: str, ex: Extraction) -> Answer:
                 plan=_plan(
                     "UNKNOWN", q, entity=f.entity if f else facts[0].entity,
                     rule=_rule_plan(r), fact=_fact_plan(f, value, r) if f else None,
-                    gap="sufficient_allowance",
+                    gap=gap, stance=stance,
                 ),
             )
         return Answer("NONE", "No retrieved rule applies to this kind of thing.",
                       plan=_plan("NONE", q, reason="no_matching_category", entity=facts[0].entity))
 
-    # A rule that does not fire is silent, not a contradiction. The rules conflict only when two thresholds on the
+    # A rule that does not fire is not a contradiction. The rules conflict only when two thresholds on the
     # same measure disagree, or a forbidding rule fires next to one that permits or requires. Otherwise one firing
     # rule is enough for YES, and NO needs every applicable rule to say no.
     def _conflicting(ops) -> bool:
-        yes = [(r, f) for k, r, f, _ in ops if k == "YES"]
-        no = [(r, f) for k, r, f, _ in ops if k == "NO"]
-        forbidden_fires = any(r.modality == "forbidden" for r, _ in no)
-        same_measure = any(ry.metric == rn.metric and rn.modality != "forbidden" for ry, _ in yes for rn, _ in no)
-        return bool(yes) and (forbidden_fires or same_measure)
+        yes = [(r, f) for k, _stance_name, r, f, _ in ops if k == "YES"]
+        no = [(r, f) for k, _stance_name, r, f, _ in ops if k == "NO"]
+        forbidden_fires = any(r.modality == "forbidden" for r, _ in yes + no)
+        same_measure = any(
+            ry.metric == rn.metric and {ry.modality, rn.modality} != {"forbidden"}
+            for ry, _ in yes for rn, _ in no
+        )
+        return bool(yes) and bool(no) and (forbidden_fires or same_measure)
 
     kinds = {v for v, *_ in opinions}
     if {"YES", "NO"} <= kinds and not _conflicting(opinions):
         opinions = [o for o in opinions if o[0] == "YES"] + [o for o in opinions if o[0] not in {"YES", "NO"}]
         kinds = {v for v, *_ in opinions}
-    sources = list(dict.fromkeys(s for _, r, f, _v in opinions for s in [r.source] + ([f.source] if f else [])))
+    sources = list(dict.fromkeys(
+        s for _, _stance_name, r, f, _v in opinions for s in [r.source] + ([f.source] if f else [])
+    ))
     if {"YES", "NO"} <= kinds:
-        return Answer("CONTESTED", "The retrieved rules disagree: " + " / ".join(r.source for _, r, *_ in opinions),
+        return Answer("CONTESTED", "The retrieved rules disagree: " + " / ".join(r.source for _, _s, r, *_ in opinions),
                       sources, plan=_plan("CONTESTED", q, entity=facts[0].entity,
-                                          fact=_fact_plan(opinions[0][2], opinions[0][3], opinions[0][1])
-                                          if opinions[0][2] else None,
-                                          rules=[dict(_rule_plan(r), outcome=v) for v, r, *_ in opinions]))
+                                          fact=_fact_plan(opinions[0][3], opinions[0][4], opinions[0][2])
+                                          if opinions[0][3] else None,
+                                          rules=[dict(_rule_plan(r), outcome=v) for v, _s, r, *_ in opinions]))
     if "YES" in kinds:
-        _, r, f, value = next(o for o in opinions if o[0] == "YES")
-        if _asked_modality(q) == "forbidden" and r.modality != "forbidden":
-            return Answer(
-                "NO",
-                "No.",
-                sources + cats.get(r.category, []),
-                plan=_plan(
-                    "NO", q, entity=f.entity, rule=_rule_plan(r), fact=_fact_plan(f, value, r),
-                    via=cats.get(r.category) or None,
-                ),
-            )
+        _, stance, r, f, value = next(o for o in opinions if o[0] == "YES")
         also = [{"rule": _rule_plan(r2), "fact": _fact_plan(f2, v2, r2)}
-                for k, r2, f2, v2 in opinions if k == "YES" and r2 is not r and f2 is not None and f2 is not f]
+                for k, _s, r2, f2, v2 in opinions if k == "YES" and r2 is not r and f2 is not None and f2 is not f]
+        plan = _plan("YES", q, entity=f.entity, rule=_rule_plan(r), fact=_fact_plan(f, value, r),
+                     via=cats.get(r.category) or None, also=also or None, stance=stance)
+        if stance in {"prohibited", "not_permitted"}:
+            return Answer("YES", "Yes.", sources + cats.get(r.category, []), plan=plan)
         text, audited = _derive(r, f, value)
         if text is None:
             return Answer("UNKNOWN", "The rule matched, but the reasoner could not derive a conclusion.", sources,
                           plan=_plan("UNKNOWN", q, rule=_rule_plan(r), entity=f.entity, missing="derivation"))
         return Answer("YES", "Yes. " + text[0].upper() + text[1:], sources + cats.get(r.category, []), audited,
-                      plan=_plan("YES", q, entity=f.entity, rule=_rule_plan(r), fact=_fact_plan(f, value, r),
-                                 via=cats.get(r.category) or None, also=also or None))
+                      plan=plan)
     if "NO" in kinds:
-        _, r, f, value = next(o for o in opinions if o[0] == "NO")
+        _, stance, r, f, value = next(o for o in opinions if o[0] == "NO")
         also = [{"rule": _rule_plan(r2), "fact": _fact_plan(f2, v2, r2)}
-                for k, r2, f2, v2 in opinions if k == "NO" and r2 is not r and f2 is not None and f2 is not f
+                for k, _s, r2, f2, v2 in opinions if k == "NO" and r2 is not r and f2 is not None and f2 is not f
                 and r2.modality != "forbidden" and r.modality != "forbidden"]
+        plan = _plan("NO", q, entity=f.entity, rule=_rule_plan(r), fact=_fact_plan(f, value, r),
+                     via=cats.get(r.category) or None, also=also or None, stance=stance)
         if r.modality == "forbidden":
             return Answer("NO", f"No. {r.object.capitalize()} is forbidden for the {f.entity} ({f.value:g} "
                                 f"{plural(f.unit)} is {_OP_TEXT[r.op]} {r.threshold:g} {plural(r.unit)}).", sources,
-                          plan=_plan("NO", q, entity=f.entity, rule=_rule_plan(r), fact=_fact_plan(f, value, r),
-                                     via=cats.get(r.category) or None))
+                          plan=plan)
         return Answer("NO", f"No. The {f.entity} is {f.value:g} {plural(f.unit)}, and {r.object} is {r.modality} "
-                            f"only for {r.category}s {_OP_TEXT[r.op]} {r.threshold:g} {plural(r.unit)}.", sources,
-                      plan=_plan("NO", q, entity=f.entity, rule=_rule_plan(r), fact=_fact_plan(f, value, r),
-                                 via=cats.get(r.category) or None, also=also or None))
+                            f"for {r.category}s {_OP_TEXT[r.op]} {r.threshold:g} {plural(r.unit)}.", sources,
+                      plan=plan)
     _, r, f, _v = opinions[0]
     missing = f"the {r.metric}" if f is None else f"a {r.unit} value ({f.value:g} {plural(f.unit)} does not convert)"
     return Answer("UNKNOWN", f"Nothing retrieved gives {missing} for the {facts[0].entity}.", sources,

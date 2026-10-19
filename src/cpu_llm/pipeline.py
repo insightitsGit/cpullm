@@ -1030,7 +1030,8 @@ def _model01(state: dict[str, Any]) -> dict[str, Any]:
     from cpu_llm.model01.generator import generate
 
     rejected = _delivery_rejected(state)
-    related = _passages_for_sentence(str(state.get("message") or ""), list(state.get("related") or []))
+    message = str(state.get("message") or "")
+    related = _passages_for_sentence(message, list(state.get("related") or []))
     chunks = [
         (str(item.get("chunk_id") or ""), str(item.get("chunk_text") or ""))
         for item in related
@@ -1042,12 +1043,20 @@ def _model01(state: dict[str, Any]) -> dict[str, Any]:
         if item.get("chunk_id") and isinstance(item.get("attributes"), dict)
     }
     outcome = generate(
-        str(state.get("message") or ""),
+        message,
         chunks,
         attributes=attributes or None,
         math_result=state.get("math_result") if isinstance(state.get("math_result"), dict) else None,
         delivery_rejected=rejected,
     )
+    entity = _prompt_entity(message)
+    if entity:
+        outcome["scoped_entity"] = entity
+        outcome["scoped_passages"] = [
+            {"chunk_id": str(item.get("chunk_id") or ""), "chunk_text": str(item.get("chunk_text") or "")}
+            for item in related
+            if item.get("chunk_text")
+        ]
     return {"model01": outcome}
 
 
@@ -1055,24 +1064,70 @@ _MODEL01_SKIP = frozenset(
     """
     what which who how why when where this that these those with from into
     about there here best worst better worse highest lowest
+    tell me please describe explain show give the a an of to and or in on for
+    by as is are was were be
     """.split()
+)
+_ABOUT_ENTITY = re.compile(
+    r"^(?:please\s+)?(?:tell\s+me\s+about|describe|explain)\s+(?P<entity>.+?)\s*[.?!]*$",
+    re.IGNORECASE,
 )
 
 
 def _passages_for_sentence(question: str, related: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Passages that share a prompt word. The others stay on the turn for the other agents."""
-    words = {
-        token.casefold()
-        for token in re.findall(r"[A-Za-z][A-Za-z'-]{3,}", question)
-        if token.casefold() not in _MODEL01_SKIP
-    }
+    """Passages that name the asked entity. The others stay on the turn for the other agents.
+
+    A multi-word name has to appear as that name. ``harbor`` alone does not
+    select a sentence about a harbor. A short name such as ``Ada`` is kept.
+    """
+    entity = _prompt_entity(question)
+    if entity:
+        return [item for item in related if _entity_in_text(entity, str(item.get("chunk_text") or ""))]
+    words = _prompt_terms(question)
     if not words:
         return []
     return [
         item
         for item in related
-        if any(word in str(item.get("chunk_text") or "").casefold() for word in words)
+        if words & _text_tokens(str(item.get("chunk_text") or ""))
     ]
+
+
+def _prompt_entity(question: str) -> str:
+    """The subject a supported question names, including a short proper name."""
+    text = " ".join((question or "").strip().split())
+    about = _ABOUT_ENTITY.match(text)
+    if about:
+        return _content_phrase(about.group("entity"))
+    from cpu_llm.answerability import parse_query
+
+    plan = parse_query(text)
+    if plan is None:
+        return ""
+    return _content_phrase(str(plan.get("subject") or plan.get("entity") or ""))
+
+
+def _content_phrase(text: str) -> str:
+    tokens = [
+        token
+        for token in re.findall(r"[A-Za-z][A-Za-z'-]*", text or "")
+        if token.casefold() not in _MODEL01_SKIP and len(token) >= 2
+    ]
+    return " ".join(tokens)
+
+
+def _prompt_terms(question: str) -> set[str]:
+    return {token.casefold() for token in _content_phrase(question).split()}
+
+
+def _text_tokens(text: str) -> set[str]:
+    return {token.casefold() for token in re.findall(r"[A-Za-z][A-Za-z'-]*", text)}
+
+
+def _entity_in_text(entity: str, text: str) -> bool:
+    if not entity:
+        return False
+    return re.search(rf"(?<![A-Za-z]){re.escape(entity)}(?![A-Za-z])", text, re.IGNORECASE) is not None
 
 
 def _wants_brief(state: dict[str, Any]) -> bool:

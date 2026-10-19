@@ -362,6 +362,24 @@ def test_a_nesting_question_quotes_that_birds_place():
     assert "eats small fish" not in reply["text"]
 
 
+def test_a_nested_clause_does_not_bind_the_outer_subject():
+    fish_nests = "The harbor kestrel eats a fish that nests in coastal cliffs."
+    heron_eats = "The harbor kestrel watches a heron eat small fish."
+    fish_weighs = "The harbor kestrel watches a fish that weighs two kilograms."
+    nest = assess("Where does the harbor kestrel nest?", [fish_nests])
+    watched = assess("What does the harbor kestrel eat?", [heron_eats])
+    weight = assess("How much does the harbor kestrel weigh?", [fish_weighs])
+    assert nest is not None and nest["answer_status"] == "insufficient_evidence"
+    assert watched is not None and watched["answer_status"] == "insufficient_evidence"
+    assert weight is not None and weight["answer_status"] == "insufficient_evidence"
+    direct = assess("Where does the harbor kestrel nest?", [_NESTS])
+    diet = assess("What does the harbor kestrel eat?", [_EATS])
+    own_meal = assess("What does the harbor kestrel eat?", [fish_nests])
+    assert direct is not None and direct["answer_status"] == "answered" and "coastal cliffs" in direct["text"]
+    assert diet is not None and diet["answer_status"] == "answered" and diet["text"] == _EATS
+    assert own_meal is not None and own_meal["answer_status"] == "answered" and own_meal["text"] == fish_nests
+
+
 def test_a_missing_weight_is_not_the_birds_definition_or_another_animals_weight():
     reply = compose_reply(
         _state(

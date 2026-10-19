@@ -97,9 +97,10 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
         body = assessment["text"]
         follow_ups = _follow_ups(state, body)
     elif assessment is None:
-        spoken = _model01_sentence(state)
+        spoken = _model01_sentence(state) or _scoped_quote(state)
         if spoken:
             lines = [spoken]
+            body = spoken
     preface = _preface(state, assessment)
     ranking = None if lines and "Ranking:" in lines[0] else _ranking(state, lines[0] if lines else "")
     if ranking is not None:
@@ -263,6 +264,27 @@ def _model01_sentence(state: dict[str, Any]) -> str:
     if outcome.get("verified") is not True:
         return ""
     return str(outcome.get("text") or "").strip()
+
+
+def _scoped_quote(state: dict[str, Any]) -> str:
+    """A named entity that Model01 could not realize stays on its own passages.
+
+    The earlier body can still contain every retrieved neighbor. That body is
+    not the answer once the prompt has named one entity.
+    """
+    if state.get("guard_decision") not in (None, "allow") or _delivery_holds(state):
+        return ""
+    outcome = state.get("model01") or {}
+    if not outcome.get("scoped_entity"):
+        return ""
+    texts: list[str] = []
+    for item in outcome.get("scoped_passages") or []:
+        text = str(item.get("chunk_text") or "").strip()
+        if text and text not in texts:
+            texts.append(text)
+    if not texts:
+        return "The retrieved passages do not settle that."
+    return " ".join(texts)
 
 
 def _ranking(state: dict[str, Any], spoken: str) -> dict[str, Any] | None:

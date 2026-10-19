@@ -250,12 +250,12 @@ def wordings(plan: dict) -> list[str]:
     cats = _plural_noun(rule["category"])
     lim = limit(rule)
     if v == "UNKNOWN":
-        if plan.get("gap") == "sufficient_allowance" and fact:
+        if plan.get("gap") in {"sufficient_allowance", "permission_not_obligation"} and fact:
             ent = _the(fact["entity"])
             has = fact_clause(fact)
             return [
-                f"The retrieved passages do not settle that. {_cap(ent)} {has}, and {obj} {be} allowed for {cats} {lim}.",
-                f"It is not settled. {obj} {be} allowed for {cats} {lim}, and {_cap(ent)} {has}.",
+                f"The retrieved passages do not settle that. {_cap(ent)} {has}, and {obj} {be} {adj} for {cats} {lim}.",
+                f"It is not settled. {obj} {be} {adj} for {cats} {lim}, and {_cap(ent)} {has}.",
             ]
         if plan.get("missing") == "unit_conversion" and fact:
             ent = _the(fact["entity"])
@@ -279,6 +279,13 @@ def wordings(plan: dict) -> list[str]:
     n0, n1 = _note(plan, 0), _note(plan, 1)
     also = _also(plan)
     if v == "YES":
+        if rule["modality"] == "forbidden" or plan.get("stance") in {"prohibited", "not_permitted"}:
+            exclusive = " only" if plan.get("stance") == "not_permitted" else ""
+            return [
+                f"Yes. {_cap(obj)} {be} not allowed for {ent}: it {has}, and {obj} {be}{exclusive} {adj} for {cats} {lim}.{also}{n0}",
+                f"Yes. The rule forbids {obj} for {cats} {lim}, and {ent} {has}.{also}{n1}",
+                f"Yes, {obj} {be} forbidden for {ent}. It {has}, and the rule covers {cats} {lim}.{also}{n0}",
+            ]
         if rule["modality"] == "required":
             return [
                 f"Yes. {Ent} requires {obj}: it {has}, and {obj} {be} required for {cats} {lim}.{also}{n0}",
@@ -410,9 +417,13 @@ def verify(candidate: str, plan: dict, *, shine: bool = False) -> tuple[bool, li
         why.append(f"{v} answer asserts yes/no")
     if v == "CONTESTED" and not re.search(r"conflict|disagree|contradict", low):
         why.append("CONTESTED answer does not say the rules disagree")
-    if v == "UNKNOWN" and not re.search(r"depends|don't know|can't tell|cannot tell|not stated|nothing i have|without|tell me", low):
+    if v == "UNKNOWN" and not re.search(
+        r"depends|don't know|can't tell|cannot tell|not stated|nothing i have|without|tell me|do not settle|not settle",
+        low,
+    ):
         why.append("UNKNOWN answer does not say it is unknown")
-    if v == "YES" and re.search(r"\b(?:not allowed|isn't|is not|can't|cannot|forbid)", low):
+    prohibition = (rule or {}).get("modality") == "forbidden" or plan.get("stance") in {"prohibited", "not_permitted"}
+    if v == "YES" and not prohibition and re.search(r"\b(?:not allowed|isn't|is not|can't|cannot|forbid)", low):
         why.append("YES answer contains a negation")
 
     # 2. required slots

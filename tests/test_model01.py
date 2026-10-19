@@ -103,6 +103,38 @@ def _delete_test_rows() -> None:
         conn.commit()
 
 
+def test_model01_binds_a_whole_name_and_keeps_a_short_name():
+    from cpu_llm.agents.reply import compose_reply
+    from cpu_llm.pipeline import _model01, _passages_for_sentence
+
+    related = [
+        {"chunk_id": "bird", "chunk_text": "The harbor kestrel is a small coastal falcon."},
+        {"chunk_id": "picnic", "chunk_text": "The picnic was held beside a harbor."},
+        {"chunk_id": "ada", "chunk_text": "Ada is a mathematician."},
+        {"chunk_id": "policy", "chunk_text": "Business class is allowed for flights over six hours."},
+    ]
+    bird = _passages_for_sentence("Tell me about the harbor kestrel.", related)
+    ada = _passages_for_sentence("Tell me about Ada.", related)
+    assert [item["chunk_id"] for item in bird] == ["bird"]
+    assert [item["chunk_id"] for item in ada] == ["ada"]
+    broad = "Business class is allowed for flights over six hours. The picnic was held beside a harbor."
+    for question, kept in (
+        ("Tell me about the harbor kestrel.", "kestrel"),
+        ("Tell me about Ada.", "Ada"),
+    ):
+        state = {
+            "message": question,
+            "guard_decision": "allow",
+            "related": related,
+            "answer": broad,
+        }
+        state.update(_model01(state))
+        reply = compose_reply(state)
+        assert kept in reply["text"]
+        assert "picnic" not in reply["text"].casefold()
+        assert "business class" not in reply["text"].casefold()
+
+
 def test_model01_does_not_copy_an_unrelated_passage():
     from cpu_llm.pipeline import _model01
 

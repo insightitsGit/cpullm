@@ -69,6 +69,54 @@ def test_each_verdict_has_its_own_sentence():
     assert {yes.wording["path"], no.wording["path"]} == {"deterministic"}
 
 
+def test_each_asked_modality_uses_the_supported_stance():
+    allowance = [
+        "Business class is allowed for flights over six hours.",
+        "The flight from Boston to Paris takes eight hours.",
+        "The flight from Boston to Chicago takes two hours.",
+    ]
+    prohibition = [
+        "Business class is forbidden for flights over six hours.",
+        "The flight from Boston to Paris takes eight hours.",
+        "The flight from Boston to Chicago takes two hours.",
+    ]
+    obligation = POLICIES["original"] + FACTS
+    cases = [
+        ("Can I fly business class from Boston to Paris?", allowance, "YES"),
+        ("Is business class required from Boston to Paris?", allowance, "UNKNOWN"),
+        ("Is business class forbidden from Boston to Paris?", allowance, "NO"),
+        ("Can I fly business class from Boston to Chicago?", allowance, "UNKNOWN"),
+        ("Is business class required from Boston to Chicago?", allowance, "UNKNOWN"),
+        ("Is business class forbidden from Boston to Chicago?", allowance, "UNKNOWN"),
+        ("Is business class forbidden from Boston to Paris?", prohibition, "YES"),
+        ("Can I fly business class from Boston to Paris?", prohibition, "NO"),
+        ("Is business class required from Boston to Paris?", prohibition, "NO"),
+        ("Is business class forbidden from Boston to Chicago?", prohibition, "UNKNOWN"),
+        ("Can I fly business class from Boston to Chicago?", prohibition, "UNKNOWN"),
+        ("Is business class required from Boston to Chicago?", prohibition, "UNKNOWN"),
+        ("Is economy class required from Los Angeles to Phoenix?", obligation, "YES"),
+        ("Is economy class required from Los Angeles to Tokyo?", obligation, "NO"),
+        ("Can I fly economy class from Los Angeles to Phoenix?", obligation, "YES"),
+        ("Can I fly economy class from Los Angeles to Tokyo?", obligation, "UNKNOWN"),
+        ("Is economy class forbidden from Los Angeles to Phoenix?", obligation, "NO"),
+        ("Is economy class forbidden from Los Angeles to Tokyo?", obligation, "UNKNOWN"),
+    ]
+    for question, chunks, expected in cases:
+        result = answer(question, chunks, child_safety=False)
+        assert result.verdict == expected, (question, result.verdict, result.text)
+        if expected == "YES":
+            assert result.text.startswith("Yes.")
+        if expected == "NO":
+            assert result.text.startswith("No.")
+        if expected == "UNKNOWN":
+            assert not result.text.startswith("Yes.") and not result.text.startswith("No.")
+            assert "only" not in result.text.casefold()
+    required = answer("Is business class required from Boston to Paris?", allowance, child_safety=False)
+    assert "allowed" in required.text.casefold() and "8 hours" in required.text
+    prohibited = answer("Is business class forbidden from Boston to Paris?", prohibition, child_safety=False)
+    assert "not allowed" in prohibited.text.casefold() and "8 hours" in prohibited.text
+
+
 def test_a_purchase_joins_an_expense_rule_and_a_named_laptop_joins_its_rule():
     receipts = answer(
         "Are receipts required for the purchase from Staples?",

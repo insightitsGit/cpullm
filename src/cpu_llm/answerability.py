@@ -316,21 +316,48 @@ def _relation_bindings(plan: dict[str, str], rows: list[dict[str, str]]) -> list
 
 
 def _relation_sentence(plan: dict[str, str], sentence: str) -> bool:
+    """The asked predicate belongs to this subject in the main clause.
+
+    A verb inside "that nests" or "watches a heron eat" is another clause's
+    predicate. It does not answer the question about the outer subject.
+    """
     subject = plan.get("subject") or ""
     if not _subject_sentence(subject, sentence):
         return False
     if plan["kind"] == "weight":
-        return _WEIGHT_WORD.search(sentence) is not None
-    verb = plan.get("verb") or ""
-    forms = _verb_forms(verb)
+        return _direct_weight(subject, sentence)
+    forms = _verb_forms(plan.get("verb") or "")
     if not forms:
         return False
-    words = {token.casefold() for token in re.findall(r"[A-Za-z']+", sentence)}
-    if not forms & words:
+    return _direct_predicate(subject, sentence, forms, location=plan.get("relation") == "location")
+
+
+_PREDICATE_ADVERB = r"(?:always|often|usually|also|still)\s+"
+
+
+def _direct_predicate(subject: str, sentence: str, forms: set[str], *, location: bool) -> bool:
+    phrase = _subject_phrase(subject)
+    if not phrase or not forms:
         return False
-    if plan.get("relation") == "location":
-        return re.search(rf"\b(?:{'|'.join(sorted(forms))})\s+in\b", sentence, re.IGNORECASE) is not None
-    return True
+    verb = "|".join(re.escape(form) for form in sorted(forms))
+    tail = r"\s+in\b" if location else r"\b"
+    pattern = (
+        rf"^(?:(?:the|a|an)\s+)?{re.escape(phrase)}\s+(?:{_PREDICATE_ADVERB})?(?:{verb}){tail}"
+    )
+    return re.match(pattern, " ".join(sentence.split()), re.IGNORECASE) is not None
+
+
+def _direct_weight(subject: str, sentence: str) -> bool:
+    phrase = _subject_phrase(subject)
+    if not phrase:
+        return False
+    folded = " ".join(sentence.split())
+    patterns = (
+        rf"^(?:(?:the|a|an)\s+)?{re.escape(phrase)}\s+(?:{_PREDICATE_ADVERB})?(?:weighs|weighed)\b",
+        rf"^(?:(?:the|a|an)\s+)?{re.escape(phrase)}'s\s+weight\s+is\b",
+        rf"^the\s+weight\s+of\s+(?:(?:the|a|an)\s+)?{re.escape(phrase)}\s+is\b",
+    )
+    return any(re.match(pattern, folded, re.IGNORECASE) for pattern in patterns)
 
 
 def _verb_forms(verb: str) -> set[str]:
