@@ -20,6 +20,8 @@ from cpu_llm.comparison import comparison_sides
 from cpu_llm.realizer.inflect import surface_tokens
 
 SCHEMA = "stage1-v2"
+STAGE2 = "stage2-v1"
+_UNSETTLED = "The retrieved passages do not settle that."
 _COLORS = frozenset(
     "black blue brown gray grey green orange pink purple red white yellow".split()
 )
@@ -39,6 +41,7 @@ _WHERE_QUESTION = re.compile(
 _WHO_QUESTION = re.compile(
     rf"^{_YEAR_PREFIX}[Ww]ho (?P<verb>[A-Za-z]+) the (?P<patient>[A-Za-z]+){_YEAR_SUFFIX}\??$"
 )
+_NOT_QUESTION = re.compile(r"^[Ww]hat did (?P<agent>[A-Za-z]+) not (?P<verb>[A-Za-z]+)\??$")
 _FRAME_LIKE = re.compile(r"\bwhat color\b|\bwhere did\b|\bwho (?:ate|eat|eats|eaten)\b", re.IGNORECASE)
 _BETTER = re.compile(r"\b(?:better|worse|best|worst)\b", re.IGNORECASE)
 _TOKEN = re.compile(r"[A-Za-z0-9]+(?:'[A-Za-z]+)?")
@@ -72,8 +75,12 @@ def frame_from_chunk(document_id: str, text: str) -> dict[str, Any] | None:
     produce no frame.
     """
     sentence = _first_sentence(text or "")
-    if not sentence or _NEGATION.search(sentence):
+    if not sentence:
         return None
+    if not sentence.endswith((".", "!", "?")):
+        sentence = f"{sentence}."
+    if _NEGATION.search(sentence) or re.search(r"\sif\s", sentence, re.IGNORECASE):
+        return _stage2_frame(document_id, sentence)
     proposition = proposition_from_chunk(document_id, text)
     if proposition is None:
         return None
@@ -115,6 +122,191 @@ def frame_from_chunk(document_id: str, text: str) -> dict[str, Any] | None:
     return frame
 
 
+def stated_role(frames: list[dict[str, Any]], role: str, entity: str = "") -> str:
+    """A role span from a frame already in ``frames``.
+
+    The list is the sentences retrieval returned. A role that is not on one
+    of those frames is the existing missing sentence for that role. This does
+    not search another node and does not add a relation.
+    """
+    wanted = entity.casefold()
+    for frame in frames:
+        if not frame or frame.get("schema") not in {SCHEMA, STAGE2}:
+            continue
+        if wanted and not any(_text_is(frame.get(key), entity) for key in ("agent", "patient", "subject")):
+            continue
+        span = frame.get(role)
+        if isinstance(span, dict) and span.get("text"):
+            return str(span["text"])
+    if role == "color":
+        return "No stored sentence states that color in the past."
+    if role == "location":
+        return "No stored sentence states that location."
+    if role == "agent":
+        return "No stored sentence names who did that."
+    return "No stored sentence states that role."
+
+
+def _stage2_frame(document_id: str, sentence: str) -> dict[str, Any] | None:
+    """Negation or a condition, as spans of the stored sentence.
+
+    The affirmative stage-1 sentence stays on schema ``stage1-v2``. A negated
+    span is not rewritten as a permission. A condition stays attached to the
+    sentence that states it.
+    """
+    condition = None
+    core = sentence
+    marker = re.search(r"\sif\s", sentence, re.IGNORECASE)
+    if marker:
+        core = sentence[: marker.start()].rstrip()
+        if not core.endswith("."):
+            core = f"{core}."
+        condition = {
+            "role": "condition",
+            "text": sentence[marker.start() + 1 :].rstrip(".!?"),
+            "start": marker.start() + 1,
+            "end": len(sentence.rstrip(".!?")),
+        }
+    if not _NEGATION.search(core):
+        inner = frame_from_chunk(document_id, core)
+        if inner is None or condition is None:
+            return None
+        inner["schema"] = STAGE2
+        inner["polarity"] = "AFFIRMATIVE"
+        inner["condition"] = condition
+        inner["sentence"] = sentence
+        return inner
+    parsed = _negative_clause(core)
+    if parsed is None:
+        return None
+    frame = {
+        "schema": STAGE2,
+        "document_id": document_id,
+        "sentence": sentence,
+        "offset_base": "sentence",
+        "polarity": "NEGATIVE",
+        "condition": condition,
+        "proposition_id": None,
+        **parsed,
+    }
+    if not _bindings_ok(frame):
+        return None
+    return frame
+
+
+def _negative_clause(sentence: str) -> dict[str, Any] | None:
+    colors = "|".join(sorted(_COLORS))
+    found = re.fullmatch(
+        rf"(?P<agent>[A-Z][A-Za-z]+) did not (?P<verb>[A-Za-z]+) "
+        rf"(?P<det>a|an|the)(?: (?P<color>{colors}))? (?P<patient>[A-Za-z]+)"
+        rf"(?P<rest>.*)\.",
+        sentence,
+    )
+    if found is None:
+        return None
+    agent = found.group("agent")
+    verb = found.group("verb")
+    patient = found.group("patient")
+    color = found.group("color")
+    object_text = found.group("det")
+    if color:
+        object_text = f"{object_text} {color}"
+    object_text = f"{object_text} {patient}"
+    object_at = sentence.find(object_text)
+    if object_at < 0:
+        return None
+    rest = found.group("rest") or ""
+    location = None
+    if rest.strip():
+        location_at = sentence.find(rest.strip())
+        if location_at < 0:
+            return None
+        location = {"role": "location", "text": rest.strip(), "start": location_at, "end": location_at + len(rest.strip())}
+    return {
+        "subject": _span("subject", agent, 0),
+        "agent": _span("agent", agent, 0),
+        "predicate": {
+            "role": "predicate",
+            "text": verb,
+            "lemma": verb,
+            "tense": "PAST",
+            "start": sentence.find(f" {verb} ") + 1,
+            "end": sentence.find(f" {verb} ") + 1 + len(verb),
+        },
+        "patient": {
+            "role": "patient",
+            "text": patient,
+            "start": object_at + object_text.rfind(patient),
+            "end": object_at + object_text.rfind(patient) + len(patient),
+        },
+        "color": None
+        if color is None
+        else {
+            "role": "color",
+            "text": color,
+            "start": sentence.find(color, object_at),
+            "end": sentence.find(color, object_at) + len(color),
+        },
+        "object": {"role": "object", "text": object_text, "start": object_at, "end": object_at + len(object_text)},
+        "location": location,
+        "time": None,
+    }
+
+
+def _stage2_hold(frames: list[dict[str, Any]], wanted: dict[str, Any]) -> dict[str, Any] | None:
+    """A positive question against a negative span or an unmet condition."""
+    matched = [frame for frame in frames if frame and frame.get("schema") == STAGE2 and _stage2_same(frame, wanted)]
+    if not matched:
+        return None
+    blocked = [
+        frame
+        for frame in matched
+        if frame.get("polarity") == "NEGATIVE" or frame.get("condition")
+    ]
+    if not blocked:
+        return None
+    result = _outcome("missing", _UNSETTLED, "the stored span does not grant the asked polarity")
+    result["evidence"] = [frame["document_id"] for frame in blocked]
+    return result
+
+
+def _stage2_same(frame: dict[str, Any], wanted: dict[str, Any]) -> bool:
+    if wanted.get("patient") and not _text_is(frame.get("patient"), wanted["patient"]):
+        return False
+    if wanted.get("agent") and not _text_is(frame.get("agent"), wanted["agent"]):
+        return False
+    return True
+
+
+def _negated_answer(frames: list[dict[str, Any]], wanted: dict[str, Any]) -> dict[str, Any]:
+    matched = [
+        frame
+        for frame in frames
+        if frame
+        and frame.get("schema") == STAGE2
+        and frame.get("polarity") == "NEGATIVE"
+        and _text_is(frame.get("agent"), wanted.get("agent"))
+        and _text_is(frame.get("predicate"), wanted.get("verb"))
+    ]
+    if not matched:
+        text = _missing_text("negated", wanted)
+        return _outcome("missing", text, text)
+    frame = matched[0]
+    sentence = str(frame.get("sentence") or "")
+    result = _outcome("answered", sentence, "")
+    result.update(
+        {
+            "ok": True,
+            "kind": "negated",
+            "value": (frame.get("patient") or {}).get("text") or "",
+            "verified": True,
+            "abstained": False,
+            "evidence": [frame["document_id"]],
+        }
+    )
+    return result
+
+
 def resolve_frames(message: str, frames: list[dict[str, Any]]) -> dict[str, Any]:
     """A verified sentence, or a visible non-answer.
 
@@ -128,6 +320,11 @@ def resolve_frames(message: str, frames: list[dict[str, Any]]) -> dict[str, Any]
     if parsed["status"] == "unsupported":
         return _outcome("unsupported", "That question is not in the supported event-frame form.", parsed["gap"])
     kind = parsed["kind"]
+    if kind == "negated":
+        return _negated_answer(frames, parsed)
+    held = _stage2_hold(frames, parsed)
+    if held is not None:
+        return held
     matched = [frame for frame in frames if frame and _matches(frame, parsed)]
     if not matched:
         return _outcome("missing", _missing_text(kind, parsed), _missing_text(kind, parsed))
@@ -294,6 +491,20 @@ def _parse_question(message: str) -> dict[str, Any] | None:
     text = (message or "").strip()
     if not text or comparison_sides(text) or _BETTER.search(text):
         return None
+    negated = _NOT_QUESTION.fullmatch(text)
+    if negated is not None:
+        return {
+            "status": "supported",
+            "kind": "negated",
+            "reason": "the prompt asks for a negated span written in a stored sentence",
+            "patient": None,
+            "agent": negated.group("agent"),
+            "verb": negated.group("verb"),
+            "year": None,
+            "tense": "PAST",
+            "negative": True,
+            "gap": "",
+        }
     for kind, pattern, reason in (
         ("color", _COLOR_QUESTION, "the prompt asks for a color written in a stored sentence"),
         ("location", _WHERE_QUESTION, "the prompt asks for a location written in a stored sentence"),
@@ -458,6 +669,8 @@ def _missing_text(kind: str, wanted: dict[str, Any]) -> str:
         return "No stored sentence states that location."
     if kind == "agent":
         return "No stored sentence names who did that."
+    if kind == "negated":
+        return "No stored sentence states that."
     return "No stored sentence states that."
 
 

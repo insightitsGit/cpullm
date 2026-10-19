@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import os
 import re
+import time
 from pathlib import Path
 
 import pyarrow  # noqa: F401  # must load before torch; otherwise pyarrow faults on this machine
@@ -89,7 +90,7 @@ class VectorPrismIndex:
     def encode_query(self, query: str):
         return self.pipeline.encode_query(query)
 
-    def search(self, query: str, top_k: int = 5, *, query_tensor: object | None = None):
+    def search(self, query: str, top_k: int = 5, *, query_tensor: object | None = None, as_of: int | None = None):
         """Nearest chunks for ``query``.
 
         Pass ``query_tensor`` when the caller already encoded ``query``. The
@@ -100,7 +101,11 @@ class VectorPrismIndex:
         auxiliary = ("relational", "disentangled", "hyperbolic", "causal")
         dense_only = not any(_channel_on(flags, name) for name in auxiliary)
         fetch = max(top_k, 32) if dense_only else top_k
-        hits = self.engine.search(vector, query, top_k=fetch)
+        when = _as_of(self, as_of)
+        if when is None:
+            hits = self.engine.search(vector, query, top_k=fetch)
+        else:
+            hits = self.engine.search(vector, query, top_k=fetch, as_of=when)
         if dense_only:
             hits = _order_by_dense_core(hits, vector)
         return hits[:top_k]
@@ -112,6 +117,7 @@ class VectorPrismIndex:
         top_k: int = 5,
         *,
         query_tensor: object | None = None,
+        as_of: int | None = None,
     ) -> list[dict]:
         """Nearest chunks whose document id is inside ``allowed``.
 
@@ -142,6 +148,10 @@ class VectorPrismIndex:
         if model_version is not None:
             where += " AND model_version = %s"
             params.append(int(model_version))
+        when = _as_of(self, as_of)
+        if when is not None:
+            where += " AND valid_timestamp <= %s AND (valid_to_timestamp IS NULL OR valid_to_timestamp > %s)"
+            params.extend([when, when])
         params.extend([dense_slice, fetch])
         with self.db.conn.cursor() as cursor:
             cursor.execute(
@@ -163,6 +173,30 @@ class VectorPrismIndex:
             if "final_score" not in hit:
                 hit["final_score"] = 0.0
         return hits[:top_k]
+
+    def retire_document(self, document_id: str, timestamp: int) -> None:
+        """Close the open validity interval of one vector row.
+
+        Later searches pass ``as_of`` so a closed row drops out of the current
+        interval. The row stays in the table.
+        """
+        self._history = True
+        if not hasattr(self.db, "conn"):
+            retired = getattr(self, "_retired", None)
+            if retired is None:
+                self._retired = {}
+            self._retired[document_id] = int(timestamp)
+            return
+        with self.db.conn.cursor() as cursor:
+            cursor.execute(
+                """
+                UPDATE psm_document_embeddings
+                SET valid_to_timestamp = %s
+                WHERE document_id = %s AND valid_to_timestamp IS NULL
+                """,
+                (int(timestamp), document_id),
+            )
+        self.db.conn.commit()
 
     def chunks_for_articles(self, document_ids: list[str]) -> list[dict]:
         """Every stored paragraph of the articles named by ``document_ids``.
@@ -278,6 +312,14 @@ class VectorPrismIndex:
             )
             deleted = cursor.rowcount
         return int(deleted or 0)
+
+
+def _as_of(index: VectorPrismIndex, as_of: int | None) -> int | None:
+    if as_of is not None:
+        return int(as_of)
+    if getattr(index, "_history", False):
+        return int(time.time())
+    return None
 
 
 def _allowed_clause(allowed: frozenset[str]) -> tuple[str, list[object]]:

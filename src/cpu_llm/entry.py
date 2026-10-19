@@ -63,6 +63,17 @@ class Entry:
         _require_source(context, prefix)
         return self._appliance_for(context.tenant_id).ingest(source)
 
+    def correct(self, secret: str, document_id: str, prior_sentence: str, new_sentence: str, **kwargs: Any) -> dict[str, Any]:
+        context = self.authenticate(secret)
+        _require_source(context, source_prefix(document_id))
+        return self._appliance_for(context.tenant_id).correct(
+            document_id,
+            prior_sentence,
+            new_sentence,
+            caller=context,
+            **kwargs,
+        )
+
     def delete_source(self, secret: str, source: str) -> dict[str, Any]:
         context = self.authenticate(secret)
         _require_source(context, source_prefix(source))

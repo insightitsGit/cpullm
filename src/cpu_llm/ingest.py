@@ -11,11 +11,12 @@ from cpu_llm.clauses import propositions_for
 from cpu_llm.documents import SourceDocument, replace_prefix
 from cpu_llm.pipeline import Appliance
 from cpu_llm.retrieval import VectorPrismIndex, default_checkpoint
-from cpu_llm.source import test_chunks, textbook_chunks, validation_chunks
+from cpu_llm.source import finance_chunks, test_chunks, textbook_chunks, validation_chunks
 
 SOURCE_PREFIX = "wikitext2-"
 TEST_PREFIX = "wikitext2test-"
 TEXTBOOK_PREFIX = replace_prefix(SourceDocument("artificial-intelligence.md", ()))
+FINANCE_PREFIX = replace_prefix(SourceDocument("finance-validation.md", ()))
 
 
 def ingest_source(
@@ -54,6 +55,14 @@ def train_textbook(appliance: Appliance) -> tuple[int, int]:
     return _train_split(appliance, textbook_chunks(), TEXTBOOK_PREFIX)
 
 
+def train_finance(appliance: Appliance) -> tuple[int, int]:
+    """Save the finance validation sentences.
+
+    The file uses its own id prefix, so this does not replace WikiText or the primer.
+    """
+    return _train_split(appliance, finance_chunks(), FINANCE_PREFIX)
+
+
 def _train_split(
     appliance: Appliance,
     rows: list[tuple[str, str, str]],
@@ -74,9 +83,12 @@ def main() -> None:
             _report(*train_wikitext_test(appliance), TEST_PREFIX)
         elif "--textbook" in sys.argv:
             _report(*train_textbook(appliance), TEXTBOOK_PREFIX)
+        elif "--finance" in sys.argv:
+            _report(*train_finance(appliance), FINANCE_PREFIX)
         else:
             _report(*train_wikitext(appliance), SOURCE_PREFIX)
             _report(*train_textbook(appliance), TEXTBOOK_PREFIX)
+            _report(*train_finance(appliance), FINANCE_PREFIX)
     finally:
         appliance.close()
 

@@ -46,19 +46,38 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
     lines = [body]
     math_result = state.get("math_result") or {}
     math_text = str(math_result.get("text") or "").strip()
+    finance_result = state.get("finance_result") or {}
+    finance_text = str(finance_result.get("text") or "").strip()
     draft = _draft(state)
     math_only = (
         bool(math_text)
         and state.get("math") is True
         and draft is None
+        and not finance_text
+        and not _other_agent(state)
+        and not _delivery_holds(state)
+    )
+    finance_only = (
+        bool(finance_text)
+        and state.get("finance") is True
+        and draft is None
+        and not math_text
         and not _other_agent(state)
         and not _delivery_holds(state)
     )
     frame_text = frame_reply_text(state)
-    frame_only = bool(frame_text) and draft is None and not _other_agent(state) and not math_text
+    frame_only = (
+        bool(frame_text)
+        and draft is None
+        and not _other_agent(state)
+        and not math_text
+        and not finance_text
+    )
     situation = None if draft is not None else _situation(state, math_only=math_only, frame_only=frame_only)
     if math_only:
         lines = [math_text]
+    elif finance_only:
+        lines = [finance_text]
     elif frame_only:
         lines = [frame_text]
     elif draft is not None:
@@ -97,6 +116,8 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
             lines.extend(_possibility_lines(possibilities))
         if math_text and not math_only:
             lines.extend(["", "Math:", math_text])
+        if finance_text and not finance_only:
+            lines.extend(["", "Finance:", finance_text])
         if frame_text and not frame_only:
             lines.extend(["", "Event:", frame_text])
     return {
@@ -134,6 +155,9 @@ def _situation(state: dict[str, Any], *, math_only: bool, frame_only: bool) -> d
         return None
     if _delivery_holds(state) or math_only or frame_only or _other_agent(state):
         return None
+    conflict = state.get("correction_conflict")
+    if isinstance(conflict, dict) and conflict.get("text"):
+        return conflict
     from cpu_llm.answering import retrieved_chunks, situation_from_chunks
 
     return situation_from_chunks(state.get("message") or "", retrieved_chunks(state))

@@ -164,6 +164,17 @@ def source_trigger(message: str) -> list[str]:
     return _matched(message, _SOURCE_REASONS)
 
 
+def finance_trigger(message: str, *, forced: bool = False) -> list[str]:
+    """Reasons to run RefundProof, LedgerCovenant, or Ledgerlock.
+
+    A definition question stays on the retrieved sentence. ``forced`` records
+    that the caller turned the check on.
+    """
+    from cpu_llm.finance.triggers import finance_trigger as _finance_trigger
+
+    return _finance_trigger(message, forced=forced)
+
+
 def math_trigger(message: str, *, forced: bool = False) -> list[str]:
     """Reasons to evaluate arithmetic instead of only retrieving a sentence.
 

@@ -95,6 +95,7 @@ from cpu_llm.classifier import (
     creative_writing_trigger,
     deep_search_trigger,
     explain_trigger,
+    finance_trigger,
     list_trigger,
     math_trigger,
     source_trigger,
@@ -337,6 +338,39 @@ class Appliance:
             "connections": connections,
         }
 
+    def correct(
+        self,
+        document_id: str,
+        prior_sentence: str,
+        new_sentence: str,
+        *,
+        actor_id: str,
+        timestamp: int,
+        caller: Any | None = None,
+    ) -> dict[str, Any]:
+        """Store a round-tripped replacement beside the old sentence.
+
+        The old node stays. The vector row's validity interval closes at
+        ``timestamp``. A caller whose source list excludes this document is
+        refused before the graph is written.
+        """
+        from cpu_llm.access import SourceForbidden, source_allowed
+        from cpu_llm.corrections import apply_correction
+        from cpu_llm.source_delete import source_prefix
+
+        context = _caller_for(self, caller)
+        if context is not None and not source_allowed(source_prefix(document_id), context.allowed_sources):
+            raise SourceForbidden("that source is outside this caller's scope")
+        return apply_correction(
+            self.memory,
+            self.index,
+            document_id=document_id,
+            prior_sentence=prior_sentence,
+            new_sentence=new_sentence,
+            actor_id=actor_id,
+            timestamp=timestamp,
+        )
+
     def delete_source(self, source: str) -> dict[str, Any]:
         """Remove one source from the vector index, the graph, and the word index.
 
@@ -365,6 +399,7 @@ class Appliance:
         imagine: bool = False,
         deep: bool = False,
         math: bool = False,
+        finance: bool = False,
         payment: Any | None = None,
         authority: Any | None = None,
         objective: Any | None = None,
@@ -376,6 +411,7 @@ class Appliance:
         child_safety: bool | None = None,
         session_id: str | None = None,
         caller: Any | None = None,
+        as_of: int | None = None,
     ) -> dict[str, Any]:
         if realization not in {"deterministic", "evidence_neural"}:
             raise ValueError("realization must be deterministic or evidence_neural")
@@ -402,6 +438,7 @@ class Appliance:
         from cpu_llm.memory.frames import frame_trigger
 
         math_reasons = math_trigger(message, forced=math)
+        finance_reasons = finance_trigger(message, forced=finance)
         frame_reasons = frame_trigger(message)
         draft_order = parse_order(message)
         if draft_order is None and not creative_reasons:
@@ -419,6 +456,7 @@ class Appliance:
             "causal_graph": causal_graph,
             "z_query": z_query,
             "allowed_sources": None if context is None else context.allowed_sources,
+            "as_of": as_of,
         }
         result = self.graph.invoke(
             {
@@ -444,6 +482,8 @@ class Appliance:
                 "source_reasons": source_reasons,
                 "math": bool(math_reasons),
                 "math_reasons": math_reasons,
+                "finance": bool(finance_reasons),
+                "finance_reasons": finance_reasons,
                 "frame": bool(frame_reasons),
                 "frame_reasons": frame_reasons,
                 "draft": bool(draft_reasons),
@@ -666,6 +706,7 @@ def _compile(appliance: Appliance):
     graph.add_node("compare", dict_node_adapter(_compare(appliance), hop="compare"))
     graph.add_node("brief", dict_node_adapter(_brief(appliance), hop="brief"))
     graph.add_node("math", dict_node_adapter(_math(appliance), hop="math"))
+    graph.add_node("finance", dict_node_adapter(_finance(appliance), hop="finance"))
     graph.add_node("frame", dict_node_adapter(_frame(appliance), hop="frame"))
     graph.add_node("discover", dict_node_adapter(_discover(appliance), hop="discover"))
     graph.add_edge(START, "guard")
@@ -687,22 +728,53 @@ def _compile(appliance: Appliance):
     graph.add_conditional_edges(
         "shine",
         _after_shine,
-        {"deep": "deep", "gather": "gather", "compare": "compare", "brief": "brief", "math": "math", "frame": "frame", "reply": "reply"},
+        {
+            "deep": "deep",
+            "gather": "gather",
+            "compare": "compare",
+            "brief": "brief",
+            "math": "math",
+            "finance": "finance",
+            "frame": "frame",
+            "reply": "reply",
+        },
     )
     graph.add_conditional_edges(
         "deep",
         _after_deep,
-        {"gather": "gather", "compare": "compare", "brief": "brief", "math": "math", "frame": "frame", "reply": "reply"},
+        {
+            "gather": "gather",
+            "compare": "compare",
+            "brief": "brief",
+            "math": "math",
+            "finance": "finance",
+            "frame": "frame",
+            "reply": "reply",
+        },
     )
     graph.add_edge("gather", "imagine")
     graph.add_conditional_edges(
         "imagine",
         _after_imagine,
-        {"compare": "compare", "brief": "brief", "math": "math", "frame": "frame", "reply": "reply"},
+        {
+            "compare": "compare",
+            "brief": "brief",
+            "math": "math",
+            "finance": "finance",
+            "frame": "frame",
+            "reply": "reply",
+        },
     )
-    graph.add_conditional_edges("compare", _after_compare, {"brief": "brief", "math": "math", "frame": "frame", "reply": "reply"})
-    graph.add_conditional_edges("brief", _after_brief, {"math": "math", "frame": "frame", "reply": "reply"})
-    graph.add_conditional_edges("math", _after_math, {"frame": "frame", "reply": "reply"})
+    graph.add_conditional_edges(
+        "compare",
+        _after_compare,
+        {"brief": "brief", "math": "math", "finance": "finance", "frame": "frame", "reply": "reply"},
+    )
+    graph.add_conditional_edges(
+        "brief", _after_brief, {"math": "math", "finance": "finance", "frame": "frame", "reply": "reply"}
+    )
+    graph.add_conditional_edges("math", _after_math, {"finance": "finance", "frame": "frame", "reply": "reply"})
+    graph.add_conditional_edges("finance", _after_finance, {"frame": "frame", "reply": "reply"})
     graph.add_edge("frame", "reply")
     graph.add_conditional_edges("reply", _after_reply, {"discover": "discover", "end": END})
     graph.add_edge("discover", END)
@@ -736,8 +808,9 @@ def _reply(state: dict[str, Any]) -> dict[str, Any]:
 def _after_shine(state: dict[str, Any]) -> str:
     """First optional agent. Later agents still run when the prompt names them."""
     if state.get("delivery_blocked"):
-        # Agents that read the retrieved sentence are skipped. The calculation does not, so it still runs.
-        return _else_math(state, "reply") if state.get("math") is True else "reply"
+        # Agents that read the retrieved sentence are skipped. Math and finance
+        # read the question, so a rejected sentence does not cancel them.
+        return _else_math(state, "reply")
     if state.get("deep") is True:
         return "deep"
     if state.get("creative") is True:
@@ -778,6 +851,10 @@ def _after_brief(state: dict[str, Any]) -> str:
 
 
 def _after_math(state: dict[str, Any]) -> str:
+    return _else_finance(state, "reply")
+
+
+def _after_finance(state: dict[str, Any]) -> str:
     return _else_frame(state, "reply")
 
 
@@ -798,6 +875,17 @@ def _else_math(state: dict[str, Any], destination: str) -> str:
     """
     if destination == "reply" and state.get("math") is True and state.get("guard_decision", "allow") == "allow":
         return "math"
+    return _else_finance(state, destination)
+
+
+def _else_finance(state: dict[str, Any], destination: str) -> str:
+    """Run the finance checks before the reply when the prompt asked for one.
+
+    The check reads the fields in the question. A Shine or audit rejection of
+    the retrieved sentence does not cancel it. A guard block never reaches it.
+    """
+    if destination == "reply" and state.get("finance") is True and state.get("guard_decision", "allow") == "allow":
+        return "finance"
     return _else_frame(state, destination)
 
 
@@ -1068,6 +1156,23 @@ def _frame(appliance: Appliance):
             "frame_reasons": list(state.get("frame_reasons") or []),
             "frame_result": result,
             "frame_verified": result.get("verified") is True,
+        }
+
+    return node
+
+
+def _finance(appliance: Appliance):
+    """Validate the finance fields in the prompt. The verdict is not a proposition."""
+
+    del appliance
+
+    def node(state: dict[str, Any]) -> dict[str, Any]:
+        from cpu_llm.agents.finance import run_finance
+
+        reasons = list(state.get("finance_reasons") or [])
+        return {
+            "finance_reasons": reasons,
+            "finance_result": run_finance(state.get("message") or "", reasons=reasons),
         }
 
     return node
@@ -1596,18 +1701,25 @@ def _retrieve(appliance: Appliance):
             z_query = np.asarray(appliance.index.encode_query(message), dtype=np.float32).reshape(TENSOR_DIM)
             turn["z_query"] = z_query
         allowed = (appliance._turn or {}).get("allowed_sources")
+        as_of = (appliance._turn or {}).get("as_of")
         if allowed is None:
-            hits = appliance.index.search(message, top_k=5, query_tensor=z_query)
+            hits = appliance.index.search(message, top_k=5, query_tensor=z_query, as_of=as_of)
         else:
-            hits = appliance.index.search_allowed(message, set(allowed), top_k=5, query_tensor=z_query)
+            hits = appliance.index.search_allowed(
+                message, set(allowed), top_k=5, query_tensor=z_query, as_of=as_of
+            )
         named = _hits_for_named_article(appliance.index, message, hits)
         if named:
             hits = named
         hits = _with_tagged_paragraphs(appliance, message, hits)
         hits = keep_allowed(hits, allowed)
+        from cpu_llm.corrections import conflict_among
+
+        conflict = conflict_among(appliance.memory, hits)
         turn["hits"] = hits
         appliance._turn = turn
         return {
+            "correction_conflict": conflict,
             "passages": [
                 {
                     "document_id": hit["document_id"],

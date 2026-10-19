@@ -25,6 +25,7 @@ People looking for a CPU LLM, a local RAG system, or a grounded alternative to a
 * **Ask who, where, or which color.** Event-frame memory reads those roles from a sentence that round-trips.
 * **Draft a document you named.** Thirty-one stored formats include email, letter, memo, report, essay, article, blog post, press release, briefing, proposal, checklist, and FAQ. The body is the retrieved sentences about that topic. A recipient, date, or byline is filled only when a passage states it.
 * **Search, compare, summarize, or calculate.** Deep search, comparison, a brief, and arithmetic are optional steps on the same turn. The checked sentence stays in front, except when the question is only a calculation.
+* **Validate a finance check.** RefundProof reviews a sales-tax finding, LedgerCovenant decides a covenant from the figures in the question, and Ledgerlock attests an extracted mortgage number. The verdict is that check. It is not a stored proposition, a filing, a default, or a loan-system write.
 * **Stay on one machine.** Retrieval and the six channel readings run on CPU. Startup clears `CUDA_VISIBLE_DEVICES` and refuses to continue if PyTorch was already imported with CUDA available. There is no Gemini client, no OpenAI client, and no decoder.
 
 ```text
@@ -89,7 +90,7 @@ PrismCognition + realizer + EpistemicEntailmentAuditor
 PrismShine (retrieval trace and sentence gate; no external judge)
   │
   ▼
-Optional agents, in this order: deep search → creative writing → comparison → brief → math → event frame
+Optional agents, in this order: deep search → creative writing → comparison → brief → math → finance validation → event frame
 A document order replaces that reply with a stored format. See docs/cpu-llm-output-formats-and-scale.md.
   │
   ▼
@@ -131,12 +132,45 @@ PrismThinker can return `answer`, `gather`, `refuse`, or `escalate`. A gather re
 | List the European lobster. | The same ranking, kept longer | Up to eight sentences |
 | Cite sources for the European lobster. | The paragraph ids that were used | A source list |
 | What is 17 times 24? | The math agent | The calculation. A question that is only arithmetic is answered with that result |
+| Review this RefundProof finding, with vendor, invoice, tax charged, and correct tax. | The RefundProof check | The recoverable amount, the evidence status, and the actionable total. Approval stays with a person |
+| Decide this LedgerCovenant test, with a threshold and a source for each figure. | The LedgerCovenant check | Compliant, breach, waived, ambiguous, or a conflict. Equal-rank figures are not averaged |
+| Attest this Ledgerlock field, with the document type, confidence, and span. | The Ledgerlock check | Accept, review, or refuse, plus a SHA-256 attestation digest |
 | What color was the apple John ate? | An event frame cut from a round-tripped sentence that matches the closed clause | The color, when that word is in the object. A missing color, a second color, a mismatched year, or a Shine rejection is spoken instead of a guessed color |
 | Write an email about the late shipment. | A stored output format | That format's fields. The body is the retrieved sentences about the topic. A missing recipient stays unfilled |
 
 Those agents chain. "Deep search and compare the European lobster and Robert Boulter" gathers first, then splits the kept paragraphs by topic. "Summarize that" with no new topic words reuses the previous turn's paragraph ids. A normal follow-up such as "what about the claws?" does not.
 
 Creative writing runs when the prompt says imagine, what if, story, poem, fiction, or creative writing, or when `ask(..., imagine=True)`. One eligible sentence cannot vary. `answer` stays the checked sentence.
+
+### Finance validation
+
+RefundProof, LedgerCovenant, and Ledgerlock run when the question names the check and its fields. `ask(..., finance=True)` forces the node. A definition question such as "What is RefundProof?" does not run the check. After `cpu-llm-ingest --finance`, that question is answered from `src/cpu_llm/data/finance-validation.md`.
+
+The fields can be labeled lines or a JSON object. A missing amount stays missing. A float is refused. The node does not approve a refund, declare a default, or write a loan system.
+
+```text
+Review this RefundProof finding.
+vendor: Northwind
+invoice: INV-100
+tax charged: 120.0000
+correct tax: 40.0000
+deadline: ACTIONABLE
+
+Decide this LedgerCovenant test.
+test date: 2026-03-31
+comparator: lte
+threshold: 4.50
+numerator: compliance_certificate 9000000
+denominator: compliance_certificate 2000000
+
+Attest this Ledgerlock field.
+document type: w2_stip
+document id: w2-1
+document text: Wages 84210.00
+field: w2_box1_wages 84210.00 confidence 0.99 span 6-14
+```
+
+A digest match on RefundProof means the source bytes and the rule bytes hash to the stated SHA-256 and the rule version matches. LedgerCovenant keeps the officer certificate above the audited statements, and two survivors of the precedence ladder stay ambiguous. Ledgerlock accepts a field only when its confidence clears that document's extraction floor and the span contains the value. The Ledgerlock digest is SHA-256.
 
 ---
 
@@ -150,8 +184,9 @@ Two sources ship inside the package.
 
 | Command | What it writes |
 |---------|----------------|
-| `cpu-llm-ingest` | WikiText validation, then the primer |
+| `cpu-llm-ingest` | WikiText validation, then the primer, then the finance sentences |
 | `cpu-llm-ingest --textbook` | The primer only |
+| `cpu-llm-ingest --finance` | The finance validation sentences only |
 | `cpu-llm-ingest --test` | The WikiText test split only |
 
 The same entry point is `python -m cpu_llm.ingest`.
@@ -279,6 +314,7 @@ with Appliance() as appliance:
 | `imagine` | `False` | Forces creative writing |
 | `deep` | `False` | Forces deep search |
 | `math` | `False` | Forces the math agent |
+| `finance` | `False` | Forces the finance validation node |
 | `propositions` | `None` | Overrides the stored propositions for this turn |
 | `payment`, `authority` | both or neither | A payment turn needs both a proposal and an authority snapshot |
 | `objective`, `hypothesis`, `causal_graph` | `None` | Caller-owned. The appliance does not invent them |
@@ -368,7 +404,7 @@ A height in the retrieved text can still select PrismThinker's empirical regime.
 
 ## What this package does not do
 
-It does not rewrite a passage in a new style, translate it, write code, or pick a winner the store does not state. A named document format lays retrieved sentences into that format. It does not invent the body. It does not expose an HTTP upload API or a per-customer tenant. The tenant on this appliance is `cpu-llm`, and every source shares one pgvector index. A paragraph that does not round-trip is stored and can be retrieved. It is not spoken. Another engine is a separate seat in `EngineManager`. `ask` itself still runs one thinker turn.
+It does not rewrite a passage in a new style, translate it, write code, or pick a winner the store does not state. A finance check uses the figures written in the question, and a tie between equal sources stays unresolved. A named document format lays retrieved sentences into that format. It does not invent the body. It does not expose an HTTP upload API. The default appliance, with no namespace, is the tenant `cpu-llm`. A named namespace keeps its own graph, vocabulary, and format cache. A caller credential names the sources that caller may read, and those sources are filtered before the dense-core top five. A paragraph that does not round-trip is stored and can be retrieved. It is not spoken. A correction stores a new node beside the old one. Another engine is a separate seat in `EngineManager`. `ask` itself still runs one thinker turn. Concurrent turns use `dispatch_turn`, one lock per seat.
 
 ---
 
@@ -385,16 +421,20 @@ cpu-llm/
     access.py                                 caller, tenant, and which sources that caller may read
     entry.py                                  local credential check before ingest, ask, and delete
     typos.py                                  correct a question word from stored chunk words
-    ingest.py                                 WikiText and the primer loader
+    ingest.py                                 WikiText, the primer, and the finance sentences
     documents.py                              file, folder, and spreadsheet readers
     source.py                                 paragraph cuts for the shipped sources
+    finance/                                  RefundProof, LedgerCovenant, and Ledgerlock checks
     retrieval.py                              VectorPrism encode, search, default checkpoint
     clauses.py                                first-sentence propositions
     realizer/                                 controlled English from a proposition
     audit/                                    EpistemicEntailmentAuditor
     cognition/                                PrismCognition deliberation adapter
-    agents/                                   deep_search, gather, imagine, summarize, math, reply, discovery
+    agents/                                   deep_search, gather, imagine, summarize, math, finance, reply, discovery
     memory/frames.py                          event roles cut from a round-tripped sentence
+    memory/entities.py                        aliases the paragraph itself states
+    corrections.py                            a new node and a supersession edge for a corrected sentence
+    retrieval_eval.py                         hit-rate@5 and spoken attribution, with no pass bar
     formats.py                                output-format catalog, stored in PrismCortex
     format_sense.py                           paraphrase trigger, cached in ChorusGraph
     scale.py                                  chunk bytes, scale order, engine manager

@@ -34,7 +34,11 @@ def test_the_apple_sentence_keeps_color_and_location_as_source_slices():
     assert frame["agent"]["text"] == "John"
     assert frame["patient"]["text"] == "apple"
     assert "owner" not in frame
-    assert frame_from_chunk("apple-2", "John did not eat a yellow apple in his house.") is None
+    negated = frame_from_chunk("apple-2", "John did not eat a yellow apple in his house.")
+    assert negated is not None
+    assert negated["schema"] == "stage2-v1"
+    assert negated["polarity"] == "NEGATIVE"
+    assert negated["sentence"][negated["patient"]["start"] : negated["patient"]["end"]] == "apple"
     assert frame_from_chunk("apple-3", "John ate no yellow apple in his house.") is None
 
 
@@ -144,7 +148,13 @@ def test_nested_objects_conditions_and_the_wrong_apple_are_not_events():
     conditional = "John ate a yellow apple if Mary cooked dinner."
     assert frame_from_chunk("picture", picture) is None
     assert frame_from_chunk("attached", attached) is None
-    assert frame_from_chunk("conditional", conditional) is None
+    held = frame_from_chunk("conditional", conditional)
+    assert held is not None
+    assert held["condition"]["text"].startswith("if Mary")
+    assert held["sentence"][held["condition"]["start"] : held["condition"]["end"]] == held["condition"]["text"]
+    refused = resolve_frames("Who ate the apple?", [held])
+    assert refused["text"] == "The retrieved passages do not settle that."
+    assert "John ate the apple." not in refused["text"]
     for source, question in (
         (picture, "Who ate the apple?"),
         (attached, "Who ate the apple?"),

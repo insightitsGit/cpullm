@@ -1,7 +1,7 @@
 # cpu-llm design: enterprise foundation
 
 **ID:** DES-cpullm-004  
-**Status:** Phase 1 is implemented in this tree. Phases 2–5 are specified here and are not built.  
+**Status:** Phases 1–5 are implemented in this tree. Phase 3 records hit-rate@5 and spoken attribution and does not set a pass threshold. No customer corpus has been measured.  
 **Package:** 1.7.1 until a release is cut. This document is the design version, not a PyPI version.  
 **Baseline:** `fdb4d78` on `main`, plus the uncommitted source delete, cued category list, uncovered-decision reply, and typo pass if those are still only in the working tree.  
 **Source handoff:** [HO-cpullm-003](handoff-enterprise-gaps.md)  

@@ -35,6 +35,11 @@ def textbook_path() -> Path:
     return Path(__file__).resolve().parent / "data" / "artificial-intelligence.md"
 
 
+def finance_path() -> Path:
+    """Shipped sentences for the finance validation checks."""
+    return Path(__file__).resolve().parent / "data" / "finance-validation.md"
+
+
 def validation_path() -> Path:
     return _split_path("validation.parquet")
 
@@ -110,4 +115,18 @@ def textbook_chunks() -> list[tuple[str, str, str]]:
     text = textbook_path().read_text(encoding="utf-8")
     document = SourceDocument(textbook_path().name, tuple(paragraphs_from_text(text)))
     title = "Artificial intelligence"
+    return [(document_id, title, paragraph) for document_id, paragraph in chunks_for(document)]
+
+
+def finance_chunks() -> list[tuple[str, str, str]]:
+    """Return (document_id, title, paragraph) for the finance knowledge base.
+
+    Ids use the file slug, so ingesting the file replaces these rows and does
+    not touch WikiText or the primer.
+    """
+    from cpu_llm.documents import SourceDocument, chunks_for, paragraphs_from_text
+
+    text = finance_path().read_text(encoding="utf-8")
+    document = SourceDocument(finance_path().name, tuple(paragraphs_from_text(text)))
+    title = "Finance validation"
     return [(document_id, title, paragraph) for document_id, paragraph in chunks_for(document)]
