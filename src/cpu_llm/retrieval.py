@@ -201,6 +201,25 @@ class VectorPrismIndex:
         ]
         return self.pipeline.upsert_documents(documents, batch_size=32)
 
+    def delete_prefix(self, prefix: str) -> int:
+        """Delete stored rows whose document id starts with ``prefix``.
+
+        ``prefix`` is the ingest id prefix, such as ``notes-p``. The match is a
+        bound SQL LIKE prefix. A prefix that is not that shape is refused
+        before the database is touched.
+        """
+        if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*-p", prefix):
+            raise ValueError("source prefix must look like a document id prefix ending in -p")
+        if not hasattr(self.db, "conn"):
+            raise ValueError("deleting a source requires the pgvector backend")
+        with self.db.conn.cursor() as cursor:
+            cursor.execute(
+                "DELETE FROM psm_document_embeddings WHERE document_id LIKE %s",
+                (prefix + "%",),
+            )
+            deleted = cursor.rowcount
+        return int(deleted or 0)
+
 
 def _like_prefix(stem: str) -> str:
     escaped = stem.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")

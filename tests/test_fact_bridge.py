@@ -105,6 +105,17 @@ def test_a_purchase_joins_an_expense_rule_and_a_named_laptop_joins_its_rule():
     assert premium.verdict == "YES" and "10" in premium.text
 
 
+def test_category_memory_joins_only_when_the_passage_uses_the_word():
+    from fact_bridge import _with_memory
+
+    quiet = _with_memory(["The harbor kestrel is a small coastal falcon."])
+    assert quiet == ["The harbor kestrel is a small coastal falcon."]
+    named = _with_memory(["The new MacBook Pro costs $2,499."])
+    assert "A MacBook Pro is a laptop." in named
+    assert "A laptop is a computer." in named
+    assert "A purchase is an expense." not in named
+
+
 def test_a_paraphrase_the_regex_misses_is_read_when_the_model_is_present():
     pytest = __import__("pytest")
     pytest.importorskip("transformers")

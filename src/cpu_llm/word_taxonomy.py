@@ -83,6 +83,28 @@ def merge_word_index(
     return current
 
 
+def drop_document_prefix(index: dict[str, dict[str, list[str]]], prefix: str) -> int:
+    """Remove document ids that start with ``prefix``. Empty words are dropped."""
+    removed = 0
+    for word in list(index):
+        by_slug = index.get(word)
+        if not isinstance(by_slug, dict):
+            continue
+        for slug in list(by_slug):
+            ids = by_slug.get(slug)
+            if not isinstance(ids, list):
+                continue
+            kept = [document_id for document_id in ids if not str(document_id).startswith(prefix)]
+            removed += len(ids) - len(kept)
+            if kept:
+                by_slug[slug] = kept
+            else:
+                del by_slug[slug]
+        if not by_slug:
+            del index[word]
+    return removed
+
+
 def load_word_index(path: Path) -> dict[str, dict[str, list[str]]]:
     if not path.exists():
         return {}

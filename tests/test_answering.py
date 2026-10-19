@@ -62,6 +62,18 @@ def test_a_role_question_stays_with_the_event_frame():
     assert reply["situation"] is None
 
 
+def test_a_decision_the_passages_do_not_cover_is_not_a_quotation():
+    reply = compose_reply(
+        _state(
+            "Can I bring my dog?",
+            ["Business class is allowed for flights over six hours."],
+        )
+    )
+    assert reply["situation"]["verdict"] == "NONE"
+    assert reply["text"] == "The retrieved passages do not settle that."
+    assert "Business class" not in reply["text"]
+
+
 def test_a_passage_with_no_rule_stays_the_retrieved_sentence():
     reply = compose_reply(
         _state(

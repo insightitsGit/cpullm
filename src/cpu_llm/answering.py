@@ -3,8 +3,9 @@
 Event-frame questions stay with semantic memory. A question about a rule,
 a measurement, or a cause is answered from those passages: the regex reader
 first, then the trained extractor and writer when the regex finds no rule.
-Neither path stores a new proposition. A question the passages do not cover
-returns nothing, and the caller keeps the retrieved sentence.
+Neither path stores a new proposition. A decision the passages do not settle
+is spoken as such. Any other question the passages do not cover returns
+nothing, and the caller keeps the retrieved sentence.
 """
 
 from __future__ import annotations
@@ -21,6 +22,7 @@ _RULE_CUE = re.compile(
     r"\b(?:allowed|required|forbidden|prohibited|because|permit(?:ted)?|must|may not|shall)\b",
     re.I,
 )
+_UNSETTLED = "The retrieved passages do not settle that."
 
 
 def situation_from_chunks(
@@ -30,7 +32,11 @@ def situation_from_chunks(
     extractor=None,
     retrieve=None,
 ) -> Optional[dict[str, Any]]:
-    """YES, NO, CONTESTED, UNKNOWN, or CAUSE grounded in ``chunks``. None when no rule applies."""
+    """YES, NO, CONTESTED, UNKNOWN, or CAUSE grounded in ``chunks``.
+
+    A decision question the passages do not cover returns verdict NONE and
+    ``_UNSETTLED``. Any other uncovered question returns None.
+    """
     texts = [chunk.strip() for chunk in chunks if chunk and chunk.strip()]
     if not texts or not question.strip():
         return None
@@ -46,6 +52,8 @@ def situation_from_chunks(
     ):
         result = answer(question, texts, retrieve=retrieve, ml=True)
     if result.verdict == "NONE":
+        if _DECISION.search(question):
+            return {"verdict": "NONE", "text": _UNSETTLED, "because": [], "wording": {}}
         return None
     return {
         "verdict": result.verdict,

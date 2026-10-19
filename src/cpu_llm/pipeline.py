@@ -330,6 +330,22 @@ class Appliance:
             "connections": connections,
         }
 
+    def delete_source(self, source: str) -> dict[str, Any]:
+        """Remove one source from the vector index, the graph, and the word index.
+
+        ``source`` is a file name, a document id, or the ingest id prefix.
+        The resonance ledger and the shared word-relation file are not rebuilt.
+        """
+        from cpu_llm.source_delete import delete_stored_source
+
+        return delete_stored_source(
+            self.index,
+            self.memory,
+            self.word_tags,
+            self.word_tags_path,
+            source,
+        )
+
     def upsert(self, document_id: str, chunk_text: str) -> int:
         return self.index_chunks([(document_id, chunk_text)])
 
@@ -359,6 +375,10 @@ class Appliance:
             raise ValueError("a payment turn needs both a proposal and an authority snapshot")
         del child_safety, grade, session_id
         self._deep_tensors = {}
+        from cpu_llm.typos import correct_message
+
+        original_message = message
+        message, typos = correct_message(message, self.word_tags)
         z_query = np.asarray(self.index.encode_query(message), dtype=np.float32).reshape(TENSOR_DIM)
         creative_reasons = creative_writing_trigger(message, forced=imagine)
         deep_reasons = deep_search_trigger(message, forced=deep)
@@ -432,6 +452,9 @@ class Appliance:
             )
             result = {**result, **extra}
         result["child_safety"] = {"action": "off", "reasons": ["child safety is not applied"]}
+        result["typos"] = typos
+        if typos:
+            result["original_message"] = original_message
         return result
 
     def sleep(self, max_pairs: int = 500) -> int:

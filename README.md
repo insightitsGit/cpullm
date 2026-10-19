@@ -244,7 +244,7 @@ with Appliance() as appliance:
     result = appliance.ask("What is the European lobster?")
 ```
 
-Reading the same source again replaces that source's paragraphs. A spreadsheet with `from` and `to` columns stores each row as a paragraph and stores the pair as a connection. Other sheets become `column: value` rows and do not invent a connection.
+Reading the same source again replaces that source's paragraphs. `delete_source("notes")` removes that source's vector rows, its graph nodes, and its document ids in the word index. The resonance ledger and the shared word-relation file are left as they are. A spreadsheet with `from` and `to` columns stores each row as a paragraph and stores the pair as a connection. Other sheets become `column: value` rows and do not invent a connection.
 
 `catalog_chunks` is the lower-level call when you already have `(document_id, paragraph)` pairs. Leave `ObjectiveSpec`, policy rules, and causal edges empty unless you are supplying them. The appliance does not invent them from prose.
 
@@ -377,7 +377,9 @@ cpu-llm/
   LICENSE                                     Apache-2.0, Copyright 2026 Amin Parva
   README.md
   src/cpu_llm/
-    pipeline.py                               Appliance: ask, ingest, catalog_chunks, sleep
+    pipeline.py                               Appliance: ask, ingest, delete_source, catalog_chunks, sleep
+    source_delete.py                          remove one source from the index and the graph
+    typos.py                                  correct a question word from stored chunk words
     ingest.py                                 WikiText and the primer loader
     documents.py                              file, folder, and spreadsheet readers
     source.py                                 paragraph cuts for the shipped sources
@@ -416,6 +418,7 @@ cpu-llm/
   docs/cpu-llm-v1.6.1-architecture-spec.md
   docs/cpu-llm-output-formats-and-scale.md    document formats, semantic trigger, and scale
   docs/test-results-2026-10-18.md             suite record: 180 passed, 17 Postgres setup errors
+  docs/handoff-enterprise-gaps.md             open designs: tenant, access, API, concurrency, memory stages
 ```
 
 `cpu-llm-ingest` is the console script for `python -m cpu_llm.ingest`.
@@ -444,9 +447,13 @@ Yes, when the request names the format and the topic, and the topic is covered b
 
 Plain text, Markdown, HTML, PDF, Word (`.docx`), Excel (`.xlsx`, `.xlsm`), CSV, and EPUB. A legacy `.doc` or `.xls` file is refused until you save it as `.docx` or `.xlsx`. WikiText-2 and a 70-paragraph artificial-intelligence primer ship with the package. Your files share that same index.
 
+### Does a typo in the question get corrected?
+
+A word is rewritten only when the stored chunks already contain a word one edit away, including one swapped pair of letters, and that word's character n-gram cosine is at least 0.45 and clearly nearer than the next stored word. "Europen lobstor" becomes "European lobster" when those words were indexed. A word that is already stored is left as written, so "lobster" is not changed to "lobsters". The corrected question is what retrieval and the later stages see. `typos` on the result lists each rewrite. The child-safety speller is not used.
+
 ### What does a question outside the store return?
 
-A rule the passages do not settle can come back unknown, contested, or as a request for the missing measurement. A question that matches no rule can still quote the nearest retrieved sentence. Read an explicit yes, no, or "not stated" when you need a verdict. A bare quotation is the nearest passage.
+A rule the passages do not settle can come back unknown, contested, or as a request for the missing measurement. A decision question the passages do not cover, such as "Can I bring my dog?" next to an unrelated rule, is answered with "The retrieved passages do not settle that." A definition question with no rule still quotes the retrieved sentence.
 
 ### How fast is a question after the model is loaded?
 

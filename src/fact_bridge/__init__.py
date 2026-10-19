@@ -604,16 +604,17 @@ def answer(question: str, chunks: list[str], extractor=None, retrieve=None, hops
     return result
 
 
-# Definitions and normalized rules supplied as retrieved memory. Each sentence is cited when it is used.
-# They close joins the source wording left implicit: a purchase counted as an expense, a named laptop,
-# and an international trip stated as eligibility rather than as a flight rule.
-_MEMORY = (
-    "A purchase is an expense.",
-    "A reimbursement is an expense.",
-    "A subscription is an expense.",
-    "A MacBook Pro is a laptop.",
-    "A ThinkPad is a laptop.",
-    "A laptop is a computer.",
+# Definitions supplied only when the retrieved text already uses that word.
+# They close a join the source wording left implicit: a purchase counted as an
+# expense, or a named laptop. An international trip is handled below, and only
+# when the retrieved text states the eligibility or the London flight.
+_MEMORY_CUES = (
+    ("purchase", "A purchase is an expense."),
+    ("reimbursement", "A reimbursement is an expense."),
+    ("subscription", "A subscription is an expense."),
+    ("macbook pro", "A MacBook Pro is a laptop."),
+    ("thinkpad", "A ThinkPad is a laptop."),
+    ("laptop", "A laptop is a computer."),
 )
 _ELIGIBLE = re.compile(
     r"for more than (\d+(?:\.\d+)?) hours are eligible to book premium economy",
@@ -623,10 +624,24 @@ _LONDON = re.compile(r"flight to London", re.I)
 _LONDON_KIND = re.compile(r"flight to London is an international", re.I)
 
 
+def _cued(blob: str, cue: str) -> bool:
+    return re.search(rf"\b{re.escape(cue)}\b", blob, re.I) is not None
+
+
+def _cue_sentences(blob: str, pool: list[str], extra: list[str]) -> None:
+    for cue, sentence in _MEMORY_CUES:
+        if sentence in pool or sentence in extra:
+            continue
+        if _cued(blob, cue):
+            extra.append(sentence)
+
+
 def _with_memory(pool: list[str]) -> list[str]:
-    """Append memory sentences the retrieved text needs and does not already contain."""
+    """Append memory sentences the retrieved text already gives a cue for."""
     blob = "\n".join(pool)
-    extra = [sentence for sentence in _MEMORY if sentence not in pool]
+    extra: list[str] = []
+    _cue_sentences(blob, pool, extra)
+    _cue_sentences(blob + "\n" + "\n".join(extra), pool, extra)
     found = _ELIGIBLE.search(blob)
     if found:
         rule = f"Premium economy is allowed for international flights over {found.group(1)} hours."
