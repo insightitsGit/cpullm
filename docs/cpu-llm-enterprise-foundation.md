@@ -1,7 +1,7 @@
 # cpu-llm design: enterprise foundation
 
 **ID:** DES-cpullm-004  
-**Status:** Phases 1–5 are implemented in this tree. Phase 3 records hit-rate@5 and spoken attribution and does not set a pass threshold. No customer corpus has been measured.  
+**Status:** Phases 1–5 are implemented in this tree. `ask` stays on the calling thread. `ask_concurrent` is the multi-seat path, with one thinker per seat. `cpu-llm-serve` is the local authenticated service, and the credential file stores SHA-256 digests. Phase 3 records hit-rate@5 and spoken attribution and does not set a pass threshold. No customer corpus has been measured. A four-sentence lab run is recorded in [retrieval-measurement-2026-10-18.md](retrieval-measurement-2026-10-18.md). It is not a pass bar. On 18 October 2026, `python -m pytest tests/test_pipeline.py tests/test_upload.py --tb=line -q` passed on `DESKTOP-H3RO1EI` after `docker start cpullm-pgvector`.  
 **Package:** 1.7.1 until a release is cut. This document is the design version, not a PyPI version.  
 **Baseline:** `fdb4d78` on `main`, plus the uncommitted source delete, cued category list, uncovered-decision reply, and typo pass if those are still only in the working tree.  
 **Source handoff:** [HO-cpullm-003](handoff-enterprise-gaps.md)  
@@ -94,7 +94,7 @@ The default tenant keeps the directory `.chorusgraph/cpu-llm/` and the file `gra
 * `format_sense_cache` rows stay keyed by `(tenant_id, message_key)` using this slug.
 * Format node ids stay `output-format:{id}`. They are the shared layout catalog, installed into that tenant's store. They are not renamed.
 
-PostgreSQL keeps `_namespace_dsn`: schema `ns_<slug>`, `search_path` `ns_<slug>, public`. A missing schema is created by that function today. An explicit request for a tenant whose schema cannot be opened raises before `encode_query`. The default tenant stays on the current DSN and the `public` search path.
+PostgreSQL keeps `_namespace_dsn`: schema `ns_<slug>`, `search_path` `ns_<slug>, public`. A missing schema is created by that function today. The tenant schema also gets its own `psm_document_embeddings` table, copied from the public table's shape, because an unqualified `CREATE TABLE IF NOT EXISTS` would find the public table and both tenants would read one index. An explicit request for a tenant whose schema cannot be opened raises before `encode_query`. The default tenant stays on the current DSN and the `public` search path.
 
 The typo cache in `typos.py` is keyed by the tenant as well as the word-index object. A second tenant's words are not candidates.
 
@@ -169,6 +169,16 @@ Stage 4 reads a role only from a span that was cut from a round-tripped sentence
 One engine is the engine process plus five thinker heads, six processes. `WarmEvaluatorPool` keeps its lock for one turn on that seat. A second seat is started on this machine only when `cpu_count >= engines * 6`, which is `_place` in `scale.py`. When `_place` returns `other_server`, the turn waits for a free local seat or the result reports `other_server`. The wait does not mean a second machine was started, and it does not share the locked pool.
 
 The ChorusSpine frame keeps the 64-wide slot. It carries the request id, the tenant, the caller scope, and the chunk ids for that turn. Deep search sends every kept id. The 1024-d tensor is not copied into the frame. A seat that dies returns a typed error for that `request_id` and is started again. No timeout duration is chosen in this document.
+
+`Appliance.ask` stays on the calling thread and the appliance thinker. `Appliance.ask_concurrent` is the path that takes a seat. A second local seat is opened only when `_place` returns `this_server`, and that seat builds its own thinker. `other_server` is reported when another seat does not fit. That report does not start a machine.
+
+---
+
+## Operations
+
+Stored rows and graph nodes remain until `delete_source` removes that source, or until a correction sets `valid_to_timestamp` on the old vector row. This design does not declare a retention period. The person who starts the process operates Postgres and the `.chorusgraph` directory. `delete_source` does not rebuild the resonance ledger or `word_relations.json`.
+
+The credential file stores `secret_sha256`. `cpu-llm-serve` reads that file and checks `Authorization: Bearer` before ingest, ask, correct, or delete. The default bind is `127.0.0.1`.
 
 ---
 

@@ -1,6 +1,7 @@
 """Corrections, retrieval measurement, entity spans, and per-seat turns."""
 
 import threading
+from types import SimpleNamespace
 
 from prismcortex.adapters.reference import InMemoryGraphStore
 from prismcortex.models import DeltaOp, Node, Operation, StateDelta
@@ -9,6 +10,7 @@ from cpu_llm.agents.reply import compose_reply
 from cpu_llm.corrections import apply_correction, conflict_among
 from cpu_llm.memory.entities import bind_entities
 from cpu_llm.memory.frames import frame_from_chunk, resolve_frames, stated_role
+from cpu_llm.pipeline import Appliance, _turn_chunk_ids
 from cpu_llm.retrieval_eval import measure
 from cpu_llm.scale import EngineManager, FABRIC_WIDTH
 
@@ -270,3 +272,86 @@ def test_a_raised_turn_is_a_seat_failure_for_that_request():
     result = manager.dispatch_turn(boom, request_id="req-boom", tenant_id="tenant-a", chunk_ids=["c"])
     assert result == {"error": "seat_failed", "request_id": "req-boom", "message": "RuntimeError"}
     assert any(not seat.failed and seat.place == "this_server" for seat in manager.seats)
+
+
+def test_two_local_seats_get_different_thinkers():
+    manager = EngineManager(cpu_count=24)
+    made: list[SimpleNamespace] = []
+
+    def factory() -> SimpleNamespace:
+        thinker = SimpleNamespace(closed=False)
+        thinker.close = lambda: setattr(thinker, "closed", True)
+        made.append(thinker)
+        return thinker
+
+    manager.thinkers["engine-0"] = factory()
+    started = threading.Event()
+    release = threading.Event()
+    used: list[SimpleNamespace] = []
+
+    def hold() -> None:
+        used.append(manager.thinker_for(manager.current_seat(), factory))
+        started.set()
+        assert release.wait(2)
+
+    def other() -> None:
+        used.append(manager.thinker_for(manager.current_seat(), factory))
+
+    worker = threading.Thread(
+        target=lambda: manager.dispatch_turn(hold, request_id="seat-a", tenant_id="cpu-llm", chunk_ids=[])
+    )
+    worker.start()
+    assert started.wait(2)
+    second = manager.dispatch_turn(
+        other,
+        request_id="seat-b",
+        tenant_id="cpu-llm",
+        chunk_ids=["p1", "p2", "p3", "p4", "p5", "p6", "p7"],
+    )
+    release.set()
+    worker.join(2)
+    assert second["seat"] == "engine-1"
+    assert used[0] is not used[1]
+    assert used[0] is manager.thinkers["engine-0"]
+    assert used[1] is manager.thinkers["engine-1"]
+    frame = manager.publish_turn(
+        request_id="seat-b",
+        tenant_id="cpu-llm",
+        caller_scope=["notes-p"],
+        chunk_ids=_turn_chunk_ids(
+            {
+                "passages": [{"document_id": f"notes-p000{i}"} for i in range(7)],
+                "possibilities": [{"chunk_id": "notes-p0008"}],
+            }
+        ),
+    )
+    assert len(frame.metadata["chunk_ids"]) == 8
+    assert "tensor" not in frame.metadata
+    assert set(frame.vector_64) == {0.0}
+
+
+def test_a_failed_extra_seat_closes_only_its_thinker():
+    manager = EngineManager(cpu_count=24)
+    appliance = object.__new__(Appliance)
+    primary = SimpleNamespace(closed=False)
+    extra = SimpleNamespace(closed=False)
+    extra.close = lambda: setattr(extra, "closed", True)
+    appliance.thinker = primary
+    appliance._seats = manager
+    manager.thinkers["engine-0"] = primary
+    manager.on_seat_failed = appliance._release_seat_thinker
+    assert manager.seats[0].lock.acquire(blocking=False)
+    manager.seats[0].busy = True
+
+    def work() -> None:
+        manager.thinkers[manager.current_seat()] = extra
+        raise RuntimeError("down")
+
+    try:
+        result = manager.dispatch_turn(work, request_id="req-x", tenant_id="cpu-llm", chunk_ids=[])
+    finally:
+        manager.seats[0].busy = False
+        manager.seats[0].lock.release()
+    assert result["error"] == "seat_failed"
+    assert extra.closed is True
+    assert primary.closed is False

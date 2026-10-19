@@ -198,6 +198,9 @@ class EngineManager:
         self.spine = spine or ChorusSpine(tenant_id="cpu-llm")
         self.host = host
         self.seats: list[Seat] = [Seat(id="engine-0", place="this_server", host=host)]
+        self.thinkers: dict[str, Any] = {}
+        self._running = threading.local()
+        self.on_seat_failed: Callable[[str], None] | None = None
         self.catalog: dict[str, str] = {}
         self._waiting = 0
         self._lock = threading.Lock()
@@ -261,16 +264,77 @@ class EngineManager:
             if failed and not any(item.place == "this_server" and not item.failed for item in self.seats):
                 return {"error": "seat_failed", "request_id": request_id, "place": "this_server"}
             return {"error": "other_server", "request_id": request_id, "place": "other_server"}
+        self._running.seat_id = seat.id
         try:
             result = work()
         except Exception as exc:
             seat.failed = True
+            if self.on_seat_failed is not None:
+                self.on_seat_failed(seat.id)
             self._replace_failed(seat)
             return {"error": "seat_failed", "request_id": request_id, "message": type(exc).__name__}
         finally:
+            self._running.seat_id = None
             seat.busy = False
             seat.lock.release()
         return {"request_id": request_id, "seat": seat.id, "result": result, "chunk_ids": kept}
+
+    def current_seat(self) -> str:
+        seat_id = getattr(self._running, "seat_id", None)
+        if not seat_id:
+            raise RuntimeError("no seat is running this turn")
+        return str(seat_id)
+
+    def thinker_for(self, seat_id: str, factory: Callable[[], Any]) -> Any:
+        """The thinker that belongs to this seat.
+
+        Seat 0 is seeded by the appliance. A later seat gets its own object
+        from ``factory``, so two seats do not share one evaluator-pool lock.
+        """
+        with self._lock:
+            found = self.thinkers.get(seat_id)
+        if found is not None:
+            return found
+        created = factory()
+        with self._lock:
+            found = self.thinkers.get(seat_id)
+            if found is not None:
+                closer = getattr(created, "close", None)
+                if closer is not None:
+                    closer()
+                return found
+            self.thinkers[seat_id] = created
+            return created
+
+    def publish_turn(
+        self,
+        *,
+        request_id: str,
+        tenant_id: str,
+        caller_scope: list[str] | None = None,
+        chunk_ids: list[str] | None = None,
+    ) -> ChorusFrame:
+        """Send the turn's chunk ids on a 64-wide frame. No tensor is copied."""
+        kept = list(chunk_ids or [])
+        frame = self.spine.encode_frame(
+            envelope_id=request_id,
+            vector_64=[0.0] * FABRIC_WIDTH,
+            hop="turn",
+            artifact_ref=request_id,
+            metadata={
+                "request_id": request_id,
+                "tenant_id": tenant_id,
+                "caller_scope": list(caller_scope or []),
+                "chunk_ids": kept,
+            },
+        )
+        self.spine.deliver(frame, from_hop="engine-0", to_hop="turn")
+        self.last_turn_frame = frame
+        turns = getattr(self, "turn_frames", None)
+        if turns is None:
+            self.turn_frames = []
+        self.turn_frames.append(frame)
+        return frame
 
     def _acquire_local_seat(self) -> Seat | None:
         with self._lock:

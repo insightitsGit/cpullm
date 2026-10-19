@@ -1,15 +1,15 @@
-"""A local credential check in front of ingest, ask, and delete_source.
+"""A credential check in front of ingest, ask, correct, and delete_source.
 
-The check runs before typo correction and before the query is encoded. It is
-not a separate service. The secret file is JSON this process can read:
+The check runs before typo correction and before the query is encoded. The
+secret file stores SHA-256 digests, not the secrets:
 
 ```json
-{"credentials":[{"id":"alice","secret":"...","tenant_id":"tenant_alpha","caller_id":"alice","allowed_sources":["alpha-p"]}]}
+{"credentials":[{"id":"alice","secret_sha256":"<hex>","tenant_id":"tenant_alpha","caller_id":"alice","allowed_sources":["alpha-p"]}]}
 ```
 
-The presented secret and the stored secret are compared with
-``hmac.compare_digest`` on their SHA-256 digests, so the comparison does not
-depend on the secret length.
+``secret_sha256`` is the hex digest from ``secret_sha256(secret)``. A file
+that contains the secret itself is refused. The presented secret is hashed
+and compared with ``hmac.compare_digest``.
 """
 
 from __future__ import annotations
@@ -35,7 +35,7 @@ class Entry:
         presented = _digest(secret or "")
         matched: dict[str, Any] | None = None
         for row in self._rows:
-            if hmac.compare_digest(presented, _digest(str(row.get("secret") or ""))):
+            if hmac.compare_digest(presented, _stored_digest(row)):
                 matched = row
                 break
         if matched is None:
@@ -85,8 +85,26 @@ def _require_source(context: CallerContext, prefix: str) -> None:
         raise SourceForbidden("that source is outside this caller's scope")
 
 
+def secret_sha256(secret: str) -> str:
+    """Hex SHA-256 digest to store in the credential file."""
+    return hashlib.sha256(secret.encode("utf-8")).hexdigest()
+
+
 def _digest(secret: str) -> bytes:
     return hashlib.sha256(secret.encode("utf-8")).digest()
+
+
+def _stored_digest(row: dict[str, Any]) -> bytes:
+    if "secret" in row:
+        raise AuthenticationError("the credential file must store secret_sha256, not the secret")
+    text = str(row.get("secret_sha256") or "")
+    try:
+        digest = bytes.fromhex(text)
+    except ValueError as exc:
+        raise AuthenticationError("the credential was not accepted") from exc
+    if len(digest) != hashlib.sha256().digest_size:
+        raise AuthenticationError("the credential was not accepted")
+    return digest
 
 
 def _load(path: Path) -> list[dict[str, Any]]:
@@ -96,4 +114,7 @@ def _load(path: Path) -> list[dict[str, Any]]:
     rows = loaded.get("credentials") if isinstance(loaded, dict) else None
     if not isinstance(rows, list) or not rows:
         raise AuthenticationError("the credential file has no credentials")
-    return [row for row in rows if isinstance(row, dict)]
+    kept = [row for row in rows if isinstance(row, dict)]
+    for row in kept:
+        _stored_digest(row)
+    return kept

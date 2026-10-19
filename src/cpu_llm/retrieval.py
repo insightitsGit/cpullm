@@ -314,6 +314,33 @@ class VectorPrismIndex:
         return int(deleted or 0)
 
 
+def ensure_namespace_vectors(index: VectorPrismIndex, namespace: str) -> None:
+    """Copy the vector table into ``ns_<namespace>`` when it is not there yet.
+
+    ``search_path`` lists the tenant schema first and ``public`` second. An
+    unqualified ``CREATE TABLE IF NOT EXISTS`` finds the public table and
+    does not make a tenant table. Inserts would then land in ``public`` and
+    both tenants would read one index. This creates the tenant table from
+    the public table's shape so later reads and writes stay in the tenant schema.
+    """
+    schema = f"ns_{namespace}"
+    with index.db.conn.cursor() as cursor:
+        cursor.execute(
+            """
+            SELECT 1 FROM information_schema.tables
+            WHERE table_schema = %s AND table_name = 'psm_document_embeddings'
+            """,
+            (schema,),
+        )
+        if cursor.fetchone():
+            return
+        cursor.execute(
+            f'CREATE TABLE "{schema}".psm_document_embeddings '
+            "(LIKE public.psm_document_embeddings INCLUDING ALL)"
+        )
+    index.db.conn.commit()
+
+
 def _as_of(index: VectorPrismIndex, as_of: int | None) -> int | None:
     if as_of is not None:
         return int(as_of)

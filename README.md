@@ -320,7 +320,7 @@ with Appliance() as appliance:
 | `objective`, `hypothesis`, `causal_graph` | `None` | Caller-owned. The appliance does not invent them |
 | `caller` | `None` | A `CallerContext`. An empty source list returns the empty-retrieval sentence before encoding. `None` leaves the single-tenant scope unchanged |
 
-A named namespace keeps its graph, word index, and format-sense cache under `.chorusgraph/cpu-llm/<namespace>/`, and the graph's tenant id is that namespace. The default tenant stays `.chorusgraph/cpu-llm/` with tenant id `cpu-llm`. `cpu_llm.entry.Entry` checks a local secret file with `hmac.compare_digest` before `ingest`, `ask`, or `delete_source`. A source outside that caller's list is not searched. The design is [docs/cpu-llm-enterprise-foundation.md](docs/cpu-llm-enterprise-foundation.md). Phases 2–5 in that document are not built.
+A named namespace keeps its graph, word index, and format-sense cache under `.chorusgraph/cpu-llm/<namespace>/`, and the graph's tenant id is that namespace. The default tenant stays `.chorusgraph/cpu-llm/` with tenant id `cpu-llm`. `cpu_llm.entry.Entry` checks a local credential file with `hmac.compare_digest` before `ingest`, `ask`, `correct`, or `delete_source`. The file stores `secret_sha256`, not the secret. A source outside that caller's list is not searched. `cpu-llm-serve` exposes those four calls on a local port and requires `Authorization: Bearer`. `ask` stays on the calling thread. `ask_concurrent` places a turn on a seat with its own thinker. The design is [docs/cpu-llm-enterprise-foundation.md](docs/cpu-llm-enterprise-foundation.md). A four-sentence lab measurement is [docs/retrieval-measurement-2026-10-18.md](docs/retrieval-measurement-2026-10-18.md). It is not a customer-corpus score.
 
 `ingest` accepts a path, a folder of accepted files, a `SourceDocument`, or a list of those. It returns `documents`, `chunks`, `ids`, and `connections`. Reading the same source again replaces rows whose ids share that source's prefix. `catalog_chunks` is the same write when the caller already has `(document_id, paragraph)` pairs. `sleep` refreshes relation tails on stored tensors.
 
@@ -404,7 +404,7 @@ A height in the retrieved text can still select PrismThinker's empirical regime.
 
 ## What this package does not do
 
-It does not rewrite a passage in a new style, translate it, write code, or pick a winner the store does not state. A finance check uses the figures written in the question, and a tie between equal sources stays unresolved. A named document format lays retrieved sentences into that format. It does not invent the body. It does not expose an HTTP upload API. The default appliance, with no namespace, is the tenant `cpu-llm`. A named namespace keeps its own graph, vocabulary, and format cache. A caller credential names the sources that caller may read, and those sources are filtered before the dense-core top five. A paragraph that does not round-trip is stored and can be retrieved. It is not spoken. A correction stores a new node beside the old one. Another engine is a separate seat in `EngineManager`. `ask` itself still runs one thinker turn. Concurrent turns use `dispatch_turn`, one lock per seat.
+It does not rewrite a passage in a new style, translate it, write code, or pick a winner the store does not state. A finance check uses the figures written in the question, and a tie between equal sources stays unresolved. A named document format lays retrieved sentences into that format. It does not invent the body. `cpu-llm-serve` is a local authenticated service. It does not accept an anonymous upload. The default appliance, with no namespace, is the tenant `cpu-llm`. A named namespace keeps its own graph, vocabulary, and format cache. A caller credential names the sources that caller may read, and those sources are filtered before the dense-core top five. A paragraph that does not round-trip is stored and can be retrieved. It is not spoken. A correction stores a new node beside the old one. Another engine is a separate seat in `EngineManager`. `ask` itself still runs one thinker turn on the calling thread. `ask_concurrent` uses one lock and one thinker per seat.
 
 ---
 
@@ -419,7 +419,8 @@ cpu-llm/
     pipeline.py                               Appliance: ask, ingest, delete_source, catalog_chunks, sleep
     source_delete.py                          remove one source from the index and the graph
     access.py                                 caller, tenant, and which sources that caller may read
-    entry.py                                  local credential check before ingest, ask, and delete
+    entry.py                                  credential check; the file stores secret_sha256
+    serve.py                                  local HTTP service in front of Entry
     typos.py                                  correct a question word from stored chunk words
     ingest.py                                 WikiText, the primer, and the finance sentences
     documents.py                              file, folder, and spreadsheet readers

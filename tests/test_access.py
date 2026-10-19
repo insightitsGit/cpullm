@@ -9,7 +9,7 @@ from chorusgraph.persistence.sqlite_graph_store import SqliteGraphStore
 from prismcortex.models import DeltaOp, Node, Operation, StateDelta
 
 from cpu_llm.access import AuthenticationError, CallerContext, SourceForbidden, source_allowed
-from cpu_llm.entry import Entry
+from cpu_llm.entry import Entry, secret_sha256
 from cpu_llm.format_sense import FormatSense
 from cpu_llm.pipeline import empty_scope_result, graph_identity
 from cpu_llm.retrieval import VectorPrismIndex
@@ -105,7 +105,7 @@ def test_a_bad_credential_never_reaches_the_appliance(tmp_path):
                 "credentials": [
                     {
                         "id": "alice",
-                        "secret": "alpha-secret",
+                        "secret_sha256": secret_sha256("alpha-secret"),
                         "tenant_id": "tenant_alpha",
                         "caller_id": "alice",
                         "allowed_sources": ["alpha-p"],
@@ -180,14 +180,14 @@ def test_a_then_b_then_a_keeps_each_vocabulary(tmp_path):
                 "credentials": [
                     {
                         "id": "alice",
-                        "secret": "alpha-secret",
+                        "secret_sha256": secret_sha256("alpha-secret"),
                         "tenant_id": "tenant_alpha",
                         "caller_id": "alice",
                         "allowed_sources": ["alpha-p"],
                     },
                     {
                         "id": "bob",
-                        "secret": "beta-secret",
+                        "secret_sha256": secret_sha256("beta-secret"),
                         "tenant_id": "tenant_beta",
                         "caller_id": "bob",
                         "allowed_sources": [],

@@ -71,6 +71,8 @@ from __future__ import annotations
 import math
 import os
 import re
+import threading
+import uuid
 from pathlib import Path
 from typing import Any
 
@@ -182,8 +184,15 @@ class Appliance:
             backend="pgvector",
             dsn=dsn,
         )
+        if self.namespace:
+            from cpu_llm.retrieval import ensure_namespace_vectors
+
+            ensure_namespace_vectors(self.index, self.namespace)
         self.guard = create_checker_rules_only()
         self.thinker = WarmPrismThinker()
+        self._bound = threading.local()
+        self._seats = None
+        self._thinker_factory = WarmPrismThinker
         self.cognition = PrismCognitionSubspaceAdapter()
         self.realizer = SemanticSurfaceRealizer()
         self.auditor = EpistemicEntailmentAuditor()
@@ -390,6 +399,19 @@ class Appliance:
     def upsert(self, document_id: str, chunk_text: str) -> int:
         return self.index_chunks([(document_id, chunk_text)])
 
+    @property
+    def _turn(self) -> dict[str, Any] | None:
+        return getattr(self._bound, "turn", None)
+
+    @_turn.setter
+    def _turn(self, value: dict[str, Any] | None) -> None:
+        self._bound.turn = value
+
+    def active_thinker(self) -> WarmPrismThinker:
+        """The thinker for this thread's seat. The default ask uses the appliance thinker."""
+        bound = getattr(self._bound, "thinker", None)
+        return self.thinker if bound is None else bound
+
     def ask(
         self,
         message: str,
@@ -517,6 +539,66 @@ class Appliance:
             result["original_message"] = original_message
         return result
 
+    def ask_concurrent(self, message: str, *, request_id: str | None = None, caller: Any | None = None, thinker_factory: Any = None, **kwargs: Any) -> dict[str, Any]:
+        """Run ``ask`` on one seat lock and that seat's thinker.
+
+        The ordinary ``ask`` stays on the calling thread and the appliance
+        thinker. This path opens another local seat only when ``_place`` says
+        the machine has the CPUs for another six processes. Otherwise the
+        result is ``other_server`` and no second machine is started. A new
+        seat builds its own thinker, so it does not take the first seat's
+        evaluator-pool lock.
+        """
+        from cpu_llm.scale import EngineManager
+
+        if self._seats is None:
+            self._seats = EngineManager()
+            self._seats.thinkers["engine-0"] = self.thinker
+            self._seats.on_seat_failed = self._release_seat_thinker
+        manager: EngineManager = self._seats
+        factory = thinker_factory or self._thinker_factory
+        context = caller if caller is None else _caller_for(self, caller)
+        scope = [] if context is None else sorted(context.allowed_sources)
+        rid = request_id or (None if context is None else context.request_id) or uuid.uuid4().hex
+
+        def work() -> dict[str, Any]:
+            seat_id = manager.current_seat()
+            self._bound.thinker = manager.thinker_for(seat_id, factory)
+            try:
+                return self.ask(message, caller=caller, **kwargs)
+            finally:
+                self._bound.thinker = None
+
+        outcome = manager.dispatch_turn(
+            work,
+            request_id=rid,
+            tenant_id=self.tenant_id,
+            caller_scope=scope,
+            chunk_ids=[],
+        )
+        if outcome.get("error"):
+            return outcome
+        result = dict(outcome["result"])
+        ids = _turn_chunk_ids(result)
+        manager.publish_turn(
+            request_id=rid,
+            tenant_id=self.tenant_id,
+            caller_scope=scope,
+            chunk_ids=ids,
+        )
+        result["seat"] = outcome["seat"]
+        result["request_id"] = rid
+        return result
+
+    def _release_seat_thinker(self, seat_id: str) -> None:
+        manager = self._seats
+        if manager is None or seat_id == "engine-0":
+            return
+        thinker = manager.thinkers.pop(seat_id, None)
+        closer = getattr(thinker, "close", None)
+        if closer is not None and thinker is not self.thinker:
+            closer()
+
     def sleep(self, max_pairs: int = 500) -> int:
         """Judge stored word claims, then refresh relation tails on chunk tensors."""
         from cpu_llm.cortex_sleep import CortexSleepConsolidator
@@ -530,6 +612,16 @@ class Appliance:
         ).run_sleep_cycle(max_pairs=max_pairs)
 
     def close(self) -> None:
+        manager = self._seats
+        if manager is not None:
+            for thinker in list(manager.thinkers.values()):
+                if thinker is not self.thinker:
+                    closer = getattr(thinker, "close", None)
+                    if closer is not None:
+                        closer()
+            manager.thinkers.clear()
+            manager.close()
+            self._seats = None
         self.thinker.close()
 
     def __enter__(self) -> Appliance:
@@ -2032,6 +2124,21 @@ def _directive_after_descriptive(graph: Any, directive: str, descriptive: bool) 
     return "answer"
 
 
+def _turn_chunk_ids(result: dict[str, Any]) -> list[str]:
+    """Every passage, related row, and deep-search id on the turn. Not capped at five."""
+    ids: list[str] = []
+    seen: set[str] = set()
+    for key in ("passages", "related", "possibilities"):
+        for item in result.get(key) or []:
+            if not isinstance(item, dict):
+                continue
+            document_id = str(item.get("document_id") or item.get("chunk_id") or "")
+            if document_id and document_id not in seen:
+                seen.add(document_id)
+                ids.append(document_id)
+    return ids
+
+
 def _think(appliance: Appliance):
     def node(state: dict[str, Any]) -> dict[str, Any]:
         related = list(state.get("related") or [])
@@ -2051,9 +2158,10 @@ def _think(appliance: Appliance):
         descriptive = _descriptive_turn(state.get("message") or "", context)
         if descriptive:
             context = context.model_copy(update={"force_regime": EpistemicRegime.CLOSED_FORMAL})
-            graph = appliance.thinker.evaluate(context, config=_descriptive_config(appliance.thinker.config))
+            thinker = appliance.active_thinker()
+            graph = thinker.evaluate(context, config=_descriptive_config(thinker.config))
         else:
-            graph = appliance.thinker.evaluate(context)
+            graph = appliance.active_thinker().evaluate(context)
         envelope = to_chorusgraph(graph)
         update: dict[str, Any] = {
             "thinker_directive": _directive_after_descriptive(graph, envelope.directive.value, descriptive),
