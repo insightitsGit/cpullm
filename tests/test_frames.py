@@ -17,11 +17,11 @@ def test_a_plain_question_does_not_enter_the_frame_agent():
     assert frame_trigger("What is the European lobster?") == []
     assert frame_trigger("Is a red apple better than a yellow apple?") == []
     assert frame_trigger("Compare the European lobster and Robert Boulter.") == []
-    assert _after_shine({}) == "reply"
+    assert _after_shine({}) == "model01"
     assert _after_shine({"frame": True, "compare": True}) == "compare"
     assert _after_compare({"frame": True}) == "frame"
     assert _after_shine({"frame": True}) == "frame"
-    assert _after_shine({"delivery_blocked": True, "frame": True}) == "reply"
+    assert _after_shine({"delivery_blocked": True, "frame": True}) == "model01"
 
 
 def test_the_apple_sentence_keeps_color_and_location_as_source_slices():
@@ -112,7 +112,7 @@ def test_a_shine_rejection_stays_the_delivered_sentence():
         "answer": FALLBACK,
         "passages": [{"document_id": "review-1", "chunk_text": APPLE}],
     }
-    assert _after_shine(state) == "reply"
+    assert _after_shine(state) == "model01"
     state.update(_frame(None)(state))
     assert compose_reply(state)["text"] == FALLBACK
     blocked = compose_reply(

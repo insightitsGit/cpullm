@@ -2,6 +2,7 @@
 
 from dataclasses import replace
 
+from cpu_llm.agents.reply import compose_reply
 from cpu_llm.model01.corpus import collect_pairs, load_pairs, save_pairs
 from cpu_llm.model01.generator import apply_model01, generate
 from cpu_llm.model01.train import survey, train
@@ -100,6 +101,38 @@ def _delete_test_rows() -> None:
         with conn.cursor() as cursor:
             cursor.execute(f"DELETE FROM {TABLE} WHERE model_id = %s", ("model01-test",))
         conn.commit()
+
+
+def test_model01_is_the_step_before_the_reply():
+    from cpu_llm.pipeline import _after_finance, _after_math, _after_shine
+
+    assert _after_shine({}) == "model01"
+    assert _after_math({}) == "model01"
+    assert _after_finance({}) == "model01"
+    assert _after_shine({"guard_decision": "block"}) == "reply"
+    reply = compose_reply(
+        {
+            "message": "What did Mary bake?",
+            "guard_decision": "allow",
+            "answer": "Mary baked a cake.",
+            "related": [{"chunk_id": "mary", "chunk_text": "Mary baked a cake.", "score": 0.9}],
+            "model01": {"verified": True, "text": "Mary baked a cake.", "mode": "model01"},
+        }
+    )
+    assert reply["text"] == "Mary baked a cake."
+    ranked = compose_reply(
+        {
+            "message": "what is the best lobster?",
+            "guard_decision": "allow",
+            "answer": _SPECIES,
+            "related": [{"chunk_id": "species", "chunk_text": _SPECIES, "score": 0.9}],
+            "model01": {
+                "verified": True,
+                "text": f"{_SPECIES}\n\nRanking:\nThe retrieved passages do not state a ranking.",
+            },
+        }
+    )
+    assert ranked["text"].count("Ranking:") == 1
 
 
 def test_training_stops_when_every_plan_has_one_sentence():

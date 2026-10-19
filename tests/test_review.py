@@ -27,7 +27,7 @@ def test_a_failed_audit_is_absent_from_the_reply():
         "creative": True,
         "imagination": {"text": rejected + " An imagined scene."},
     }
-    assert _after_shine(state) == "reply"
+    assert _after_shine(state) == "model01"
     reply = compose_reply(state)
     assert rejected not in reply["text"]
     assert "Imagined passage" not in reply["text"]
@@ -56,7 +56,7 @@ def test_a_failed_number_check_is_absent_from_the_reply():
     reply = compose_reply({**state, **update})
     assert "10" not in reply["text"]
     assert "Imagined passage" not in reply["text"]
-    assert _after_shine({**state, **update}) == "reply"
+    assert _after_shine({**state, **update}) == "model01"
 
 
 def test_a_comparison_keeps_both_named_leads():

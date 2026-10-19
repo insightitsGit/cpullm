@@ -50,15 +50,15 @@ def test_a_plain_question_does_not_ask_for_finance():
     assert finance_trigger(REFUND)
     assert finance_trigger(COVENANT)
     assert finance_trigger(LOCK)
-    assert _after_shine({}) == "reply"
+    assert _after_shine({}) == "model01"
     assert _after_shine({"finance": True, "compare": True}) == "compare"
     assert _after_shine({"finance": True}) == "finance"
     assert _after_shine({"math": True, "finance": True}) == "math"
     assert _after_math({"finance": True}) == "finance"
-    assert _after_math({}) == "reply"
+    assert _after_math({}) == "model01"
     assert _after_shine({"delivery_blocked": True, "finance": True}) == "finance"
     assert _after_shine({"delivery_blocked": True, "finance": True, "guard_decision": "block"}) == "reply"
-    assert _after_shine({"delivery_blocked": True, "frame": True}) == "reply"
+    assert _after_shine({"delivery_blocked": True, "frame": True}) == "model01"
     assert _after_shine({"frame": True}) == "frame"
 
 

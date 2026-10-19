@@ -76,7 +76,7 @@ def test_the_three_prompt_modes_still_have_a_place_for_a_comparison():
     assert _after_shine({"compare": True}) == "compare"
     assert _after_shine({"compare": True, "deep": True}) == "deep"
     assert _after_shine({"compare": True, "creative": True}) == "gather"
-    assert _after_shine({}) == "reply"
+    assert _after_shine({}) == "model01"
 
 
 def test_a_prompt_that_names_two_agents_runs_both():
@@ -99,7 +99,7 @@ def test_a_prompt_that_names_two_agents_runs_both():
     assert comparison_sides(deep_creative) == []
     assert _after_deep({"deep": True, "creative": True}) == "gather"
     assert _after_imagine({"deep": True, "creative": True, "compare": True}) == "compare"
-    assert _after_deep({"deep": True}) == "reply"
+    assert _after_deep({"deep": True}) == "model01"
 
 
 def test_the_next_agent_keeps_each_topic_from_the_deep_search():

@@ -12,14 +12,14 @@ def test_a_plain_question_does_not_ask_for_math():
     assert math_trigger("The peak is 4,399 m.") == []
     assert math_trigger("What is 17 times 24?")
     assert math_trigger("What is the sum of 1, 2, and 3?")
-    assert _after_shine({}) == "reply"
+    assert _after_shine({}) == "model01"
     assert _after_shine({"math": True, "compare": True}) == "compare"
     assert _after_compare({"math": True, "compare": True}) == "math"
     assert _after_brief({"math": True}) == "math"
     assert _after_shine({"math": True}) == "math"
     assert _after_shine({"delivery_blocked": True, "math": True}) == "math"
     assert _after_shine({"delivery_blocked": True, "math": True, "guard_decision": "block"}) == "reply"
-    assert _after_shine({"delivery_blocked": True}) == "reply"
+    assert _after_shine({"delivery_blocked": True}) == "model01"
 
 
 def test_the_math_agent_evaluates_the_expression():

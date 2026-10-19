@@ -51,7 +51,7 @@ def test_the_other_prompt_shapes_are_recognized_without_turning_discovery_on():
     assert _after_shine({"summarize": True}) == "brief"
     assert _after_deep({"deep": True, "summarize": True}) == "brief"
     assert _after_compare({"summarize": True, "explain": True}) == "brief"
-    assert _after_deep({"deep": True}) == "reply"
+    assert _after_deep({"deep": True}) == "model01"
 
 
 def test_cognition_puts_the_untensed_claim_ahead_of_a_modal_tension():
