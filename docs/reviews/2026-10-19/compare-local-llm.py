@@ -41,7 +41,7 @@ EXTENSION=[
  ('duration_difference','How many hours longer is the flight from Boston to Paris than the flight from Boston to Chicago?', [10,11], '6 hours'),
  ('both_diets','Do both the harbor kestrel and the blue heron eat fish?', [3,14], 'YES, both eat small fish'),
  ('inverse_location','Which bird nests in tall trees?', [15], 'blue heron'),
- ('unstated_owner','Who owns the house where John ate the apple?', [], 'UNKNOWN: eating there does not establish ownership'),
+ ('unstated_owner','Who legally owns the house where John ate the apple?', [], 'UNKNOWN: the passage states no legal ownership'),
  ('mandatory','Is business class mandatory on the flight from Boston to Paris?', [9,10], 'UNKNOWN: allowance does not imply obligation'),
  ('prohibited','Is business class prohibited on the flight from Boston to Paris?', [9,10], 'NO: the eight-hour flight is expressly allowed'),
 ]
@@ -95,6 +95,7 @@ def prepare(out):
        'scope':'40 hand-authored diagnostic questions (27 prior regressions plus 13 new extensions), not representative accuracy. No external judge. Human review of all unique replies required.',
        'fairness':'LLM receives exactly the first library run\'s pipeline passages, in their order, with IDs. No answer, gold labels, or library reasoning is provided. Quality and evidence availability are reported separately. Library timing is full ask(); LLM timing is tokenization plus generation on saved evidence, excludes retrieval. Do not call these end-to-end equal-work latency measurements.',
        'resources':'Stages run in separate processes. Library includes encoder/graph/workers; LLM stage includes decoder/tokenizer only. Resource figures are component measurements, not total RAG memory or energy.'}
+    protocol['grading_rubric']='Manual review of every unique displayed reply against the supplied passages and question. Correct direct answers and directly supporting quotes pass; extra true source facts do not fail correctness. Unsupported conclusions, wrong entities/values, missing requested calculations, and nonresponses fail. Missing information must be explicitly acknowledged; possession language is not proof of legal ownership. Citation presence and ID validity are reported separately from answer correctness. The same semantic rubric applies to both systems; no requirement to reproduce a particular sentence.'
     write(out/'protocol.json',protocol)
     print('PREPARED',len(cases),'cases',out,flush=True)
 
