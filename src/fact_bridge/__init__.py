@@ -639,7 +639,7 @@ def _reason(question: str, ex: Extraction) -> Answer:
         return Answer("NO", f"No. The {f.entity} is {f.value:g} {plural(f.unit)}, and {r.object} is {r.modality} "
                             f"for {r.category}s {_OP_TEXT[r.op]} {r.threshold:g} {plural(r.unit)}.", sources,
                       plan=plan)
-    _, r, f, _v = opinions[0]
+    _, _stance_name, r, f, _v = opinions[0]
     missing = f"the {r.metric}" if f is None else f"a {r.unit} value ({f.value:g} {plural(f.unit)} does not convert)"
     return Answer("UNKNOWN", f"Nothing retrieved gives {missing} for the {facts[0].entity}.", sources,
                   plan=_plan("UNKNOWN", q, rule=_rule_plan(r), entity=facts[0].entity,

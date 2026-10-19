@@ -1094,17 +1094,29 @@ def _passages_for_sentence(question: str, related: list[dict[str, Any]]) -> list
 
 
 def _prompt_entity(question: str) -> str:
-    """The subject a supported question names, including a short proper name."""
+    """The subject a supported question names, including a short proper name.
+
+    Instruction words and a leading determiner are removed. Words inside the
+    name, such as ``of`` and ``and``, stay part of the name.
+    """
     text = " ".join((question or "").strip().split())
     about = _ABOUT_ENTITY.match(text)
     if about:
-        return _content_phrase(about.group("entity"))
+        return _named_entity(about.group("entity"))
     from cpu_llm.answerability import parse_query
 
     plan = parse_query(text)
     if plan is None:
         return ""
-    return _content_phrase(str(plan.get("subject") or plan.get("entity") or ""))
+    return _named_entity(str(plan.get("subject") or plan.get("entity") or ""))
+
+
+_LEADING_DETERMINER = re.compile(r"^(?:the|a|an)\s+", re.IGNORECASE)
+
+
+def _named_entity(text: str) -> str:
+    phrase = " ".join((text or "").strip().strip(" ?.!\"'").split())
+    return _LEADING_DETERMINER.sub("", phrase).strip()
 
 
 def _content_phrase(text: str) -> str:

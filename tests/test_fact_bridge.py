@@ -117,6 +117,31 @@ def test_each_asked_modality_uses_the_supported_stance():
     assert "not allowed" in prohibited.text.casefold() and "8 hours" in prohibited.text
 
 
+def test_a_missing_or_incompatible_measurement_stays_unknown():
+    missing = answer(
+        "Can I fly business class from Boston to Paris?",
+        [
+            "Business class is allowed for flights over six hours.",
+            "The flight from Boston to Paris weighs three tons.",
+        ],
+        child_safety=False,
+    )
+    assert missing.verdict == "UNKNOWN"
+    assert "duration" in missing.text.casefold()
+    assert "6 hours" in missing.text
+    incompatible = answer(
+        "Is premium handling required for the shipment from Boston?",
+        [
+            "Premium handling is required for shipments over 2 tons.",
+            "The shipment from Boston weighs 3 kilograms.",
+        ],
+        child_safety=False,
+    )
+    assert incompatible.verdict == "UNKNOWN"
+    assert "can't be compared" in incompatible.text.casefold()
+    assert "3 kilograms" in incompatible.text and "2 tons" in incompatible.text
+
+
 def test_a_purchase_joins_an_expense_rule_and_a_named_laptop_joins_its_rule():
     receipts = answer(
         "Are receipts required for the purchase from Staples?",

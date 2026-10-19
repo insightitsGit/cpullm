@@ -135,6 +135,34 @@ def test_model01_binds_a_whole_name_and_keeps_a_short_name():
         assert "business class" not in reply["text"].casefold()
 
 
+def test_a_name_keeps_its_internal_words():
+    from cpu_llm.agents.reply import compose_reply
+    from cpu_llm.pipeline import _model01, _passages_for_sentence, _prompt_entity
+
+    related = [
+        {"chunk_id": "bank", "chunk_text": "Bank of America is a bank."},
+        {"chunk_id": "department", "chunk_text": "Research and Development is a department."},
+        {"chunk_id": "bird", "chunk_text": "The harbor kestrel is a small coastal falcon."},
+        {"chunk_id": "picnic", "chunk_text": "The picnic was held beside a harbor."},
+        {"chunk_id": "ada", "chunk_text": "Ada is a mathematician."},
+    ]
+    assert _prompt_entity("Tell me about Bank of America.") == "Bank of America"
+    assert _prompt_entity("Tell me about Research and Development.") == "Research and Development"
+    assert [item["chunk_id"] for item in _passages_for_sentence("Tell me about Bank of America.", related)] == ["bank"]
+    assert [item["chunk_id"] for item in _passages_for_sentence("Tell me about Research and Development.", related)] == ["department"]
+    for question, kept in (
+        ("Tell me about Bank of America.", "Bank of America is a bank."),
+        ("Tell me about Research and Development.", "Research and Development is a department."),
+        ("Tell me about Ada.", "Ada is a mathematician."),
+        ("Tell me about the harbor kestrel.", "The harbor kestrel is a small coastal falcon."),
+    ):
+        state = {"message": question, "guard_decision": "allow", "related": related, "answer": "The picnic was held beside a harbor."}
+        state.update(_model01(state))
+        reply = compose_reply(state)
+        assert kept in reply["text"]
+        assert "picnic" not in reply["text"].casefold()
+
+
 def test_model01_does_not_copy_an_unrelated_passage():
     from cpu_llm.pipeline import _model01
 
