@@ -1,0 +1,356 @@
+{
+  "utc": "2026-10-19T07:44:57Z",
+  "head": "edf54eeebc3ba3b746b10d8ec16d905ea6b4e93f",
+  "dirty_status": "",
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "processor": "Intel64 Family 6 Model 198 Stepping 2, GenuineIntel",
+  "versions": {
+    "cpu-llm": "1.8.0",
+    "torch": "2.9.1",
+    "transformers": "4.51.3",
+    "sentence-transformers": "5.1.2",
+    "numpy": "2.4.6",
+    "psycopg": "3.3.4"
+  },
+  "namespace": "audit_a868d690ced1",
+  "repeats": 3,
+  "source_manifest": "source-sha256.json",
+  "source_root": "C:\\code\\cpullm",
+  "distractors": [],
+  "scope": "Hand-authored synthetic smoke benchmark, not representative accuracy or a competitor benchmark. Serialized warmed requests; alternating baseline/full order by repeat. Gold evidence strict all-premise recall.",
+  "corpus": [
+    {
+      "id": "audit-notes-p0001",
+      "text": "The harbor kestrel is a small coastal falcon."
+    },
+    {
+      "id": "audit-notes-p0002",
+      "text": "The harbor kestrel nests in coastal cliffs."
+    },
+    {
+      "id": "audit-notes-p0003",
+      "text": "The harbor kestrel eats small fish."
+    },
+    {
+      "id": "audit-notes-p0004",
+      "text": "John ate a yellow apple in his house."
+    },
+    {
+      "id": "audit-notes-p0005",
+      "text": "Mary ate a red pear in her garden."
+    },
+    {
+      "id": "audit-notes-p0006",
+      "text": "Paris is the capital of France."
+    },
+    {
+      "id": "audit-notes-p0007",
+      "text": "Berlin is the capital of Germany."
+    },
+    {
+      "id": "audit-notes-p0008",
+      "text": "Rome is the capital of Italy."
+    },
+    {
+      "id": "audit-notes-p0009",
+      "text": "Business class is allowed for flights over six hours."
+    },
+    {
+      "id": "audit-notes-p0010",
+      "text": "The flight from Boston to Paris takes eight hours."
+    },
+    {
+      "id": "audit-notes-p0011",
+      "text": "The flight from Boston to Chicago takes two hours."
+    },
+    {
+      "id": "audit-notes-p0012",
+      "text": "The flight from Boston to Denver takes six hours."
+    },
+    {
+      "id": "audit-notes-p0013",
+      "text": "The blue heron is a large wading bird."
+    },
+    {
+      "id": "audit-notes-p0014",
+      "text": "The blue heron eats small fish."
+    },
+    {
+      "id": "audit-notes-p0015",
+      "text": "The blue heron nests in tall trees."
+    },
+    {
+      "id": "audit-notes-p0016",
+      "text": "The apple was yellow."
+    },
+    {
+      "id": "audit-notes-p0017",
+      "text": "The pear was red."
+    }
+  ],
+  "cases": [
+    {
+      "id": "identity",
+      "question": "What is the harbor kestrel?",
+      "gold_ids": [
+        "audit-notes-p0001"
+      ],
+      "expected": "small coastal falcon",
+      "kind": "supported"
+    },
+    {
+      "id": "identity_paraphrase",
+      "question": "Describe the harbor kestrel.",
+      "gold_ids": [
+        "audit-notes-p0001"
+      ],
+      "expected": "small coastal falcon",
+      "kind": "supported"
+    },
+    {
+      "id": "bird_location",
+      "question": "Where does the harbor kestrel nest?",
+      "gold_ids": [
+        "audit-notes-p0002"
+      ],
+      "expected": "coastal cliffs",
+      "kind": "supported"
+    },
+    {
+      "id": "bird_diet",
+      "question": "What does the harbor kestrel eat?",
+      "gold_ids": [
+        "audit-notes-p0003"
+      ],
+      "expected": "small fish",
+      "kind": "supported"
+    },
+    {
+      "id": "second_identity",
+      "question": "What is the blue heron?",
+      "gold_ids": [
+        "audit-notes-p0013"
+      ],
+      "expected": "large wading bird",
+      "kind": "supported"
+    },
+    {
+      "id": "second_location",
+      "question": "Where does the blue heron nest?",
+      "gold_ids": [
+        "audit-notes-p0015"
+      ],
+      "expected": "tall trees",
+      "kind": "supported"
+    },
+    {
+      "id": "second_diet",
+      "question": "What does the blue heron eat?",
+      "gold_ids": [
+        "audit-notes-p0014"
+      ],
+      "expected": "small fish",
+      "kind": "supported"
+    },
+    {
+      "id": "event_color",
+      "question": "What color was the apple John ate?",
+      "gold_ids": [
+        "audit-notes-p0004"
+      ],
+      "expected": "yellow",
+      "kind": "supported"
+    },
+    {
+      "id": "event_where",
+      "question": "Where did John eat the apple?",
+      "gold_ids": [
+        "audit-notes-p0004"
+      ],
+      "expected": "in his house",
+      "kind": "supported"
+    },
+    {
+      "id": "event_who",
+      "question": "Who ate the apple?",
+      "gold_ids": [
+        "audit-notes-p0004"
+      ],
+      "expected": "John",
+      "kind": "supported"
+    },
+    {
+      "id": "second_color",
+      "question": "What color was the pear Mary ate?",
+      "gold_ids": [
+        "audit-notes-p0005"
+      ],
+      "expected": "red",
+      "kind": "supported"
+    },
+    {
+      "id": "second_where",
+      "question": "Where did Mary eat the pear?",
+      "gold_ids": [
+        "audit-notes-p0005"
+      ],
+      "expected": "in her garden",
+      "kind": "supported"
+    },
+    {
+      "id": "second_who",
+      "question": "Who ate the pear?",
+      "gold_ids": [
+        "audit-notes-p0005"
+      ],
+      "expected": "Mary",
+      "kind": "supported"
+    },
+    {
+      "id": "france",
+      "question": "What is the capital of France?",
+      "gold_ids": [
+        "audit-notes-p0006"
+      ],
+      "expected": "Paris",
+      "kind": "supported"
+    },
+    {
+      "id": "germany",
+      "question": "What is the capital of Germany?",
+      "gold_ids": [
+        "audit-notes-p0007"
+      ],
+      "expected": "Berlin",
+      "kind": "supported"
+    },
+    {
+      "id": "italy",
+      "question": "What is the capital of Italy?",
+      "gold_ids": [
+        "audit-notes-p0008"
+      ],
+      "expected": "Rome",
+      "kind": "supported"
+    },
+    {
+      "id": "france_paraphrase",
+      "question": "Which city is the capital of France?",
+      "gold_ids": [
+        "audit-notes-p0006"
+      ],
+      "expected": "Paris",
+      "kind": "supported"
+    },
+    {
+      "id": "rule_yes",
+      "question": "Can I fly business class from Boston to Paris?",
+      "gold_ids": [
+        "audit-notes-p0009",
+        "audit-notes-p0010"
+      ],
+      "expected": "YES: eight > six",
+      "kind": "supported"
+    },
+    {
+      "id": "rule_below",
+      "question": "Can I fly business class from Boston to Chicago?",
+      "gold_ids": [
+        "audit-notes-p0009",
+        "audit-notes-p0011"
+      ],
+      "expected": "UNKNOWN: allowed-if does not imply forbidden otherwise",
+      "kind": "supported"
+    },
+    {
+      "id": "rule_boundary",
+      "question": "Can I fly business class from Boston to Denver?",
+      "gold_ids": [
+        "audit-notes-p0009",
+        "audit-notes-p0012"
+      ],
+      "expected": "UNKNOWN: over excludes equality; no prohibition stated",
+      "kind": "supported"
+    },
+    {
+      "id": "rule_negation",
+      "question": "Is business class forbidden from Boston to Paris?",
+      "gold_ids": [
+        "audit-notes-p0009",
+        "audit-notes-p0010"
+      ],
+      "expected": "NO: expressly allowed",
+      "kind": "supported"
+    },
+    {
+      "id": "missing_country",
+      "question": "What is the capital of Spain?",
+      "gold_ids": [],
+      "expected": "explicit nonanswer; corpus contains no Spain fact",
+      "kind": "missing"
+    },
+    {
+      "id": "missing_attribute",
+      "question": "How much does the harbor kestrel weigh?",
+      "gold_ids": [],
+      "expected": "explicit nonanswer; no weight stated",
+      "kind": "missing"
+    },
+    {
+      "id": "missing_event",
+      "question": "What color was the banana John ate?",
+      "gold_ids": [],
+      "expected": "explicit nonanswer; no banana event",
+      "kind": "missing"
+    },
+    {
+      "id": "missing_agent",
+      "question": "Who ate the banana?",
+      "gold_ids": [],
+      "expected": "explicit nonanswer; no banana event",
+      "kind": "missing"
+    },
+    {
+      "id": "math_multiply",
+      "question": "What is 17 times 24?",
+      "gold_ids": [],
+      "expected": "408",
+      "kind": "math"
+    },
+    {
+      "id": "math_add",
+      "question": "What is 125 plus 37?",
+      "gold_ids": [],
+      "expected": "162",
+      "kind": "math"
+    }
+  ],
+  "startup_seconds": 9.608149799983948,
+  "ingest": {
+    "documents": 1,
+    "chunks": 17,
+    "ids": [
+      "audit-notes-p0001",
+      "audit-notes-p0002",
+      "audit-notes-p0003",
+      "audit-notes-p0004",
+      "audit-notes-p0005",
+      "audit-notes-p0006",
+      "audit-notes-p0007",
+      "audit-notes-p0008",
+      "audit-notes-p0009",
+      "audit-notes-p0010",
+      "audit-notes-p0011",
+      "audit-notes-p0012",
+      "audit-notes-p0013",
+      "audit-notes-p0014",
+      "audit-notes-p0015",
+      "audit-notes-p0016",
+      "audit-notes-p0017"
+    ],
+    "connections": 0
+  },
+  "ingest_seconds": 0.3925014999695122,
+  "snapshot_verified": true
+}

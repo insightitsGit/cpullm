@@ -1,0 +1,1212 @@
+[
+  {
+    "case": "permission_not_obligation",
+    "namespace": "review_edf_f0ea65ac0cee",
+    "corpus": [
+      "Business class is allowed for flights over six hours.",
+      "The flight from Boston to Paris takes eight hours.",
+      "The harbor kestrel watches a fish that weighs two kilograms.",
+      "The harbor kestrel eats a fish that nests in coastal cliffs.",
+      "The harbor kestrel watches a heron eat small fish.",
+      "The harbor kestrel is a small coastal falcon.",
+      "The picnic was held beside a harbor.",
+      "Ada is a mathematician."
+    ],
+    "question": "Is business class required from Boston to Paris?",
+    "expected": "UNKNOWN: permission does not require business class",
+    "result": {
+      "message": "Is business class required from Boston to Paris?",
+      "reply": {
+        "preface": "I found 5 passages labeled review-notes. The closest match scores 0.80. The sentence below is the one checked against a stored proposition.",
+        "body": "Business class is allowed for flights over six hours.",
+        "closing": "Still open: No policy rule was provided. The retrieved passages do not state a measurement. No cause is stated in the retrieved passages. No objective was provided.",
+        "follow_ups": [
+          "Within the quoted passage, allowed is something you can ask about next.",
+          "Another passage mentions kestrel: \u201cThe harbor kestrel is a small coastal falcon.\u201d",
+          "Another passage mentions picnic: \u201cThe picnic was held beside a harbor.\u201d"
+        ],
+        "next_steps": [
+          "Supply a policy rule if this turn should be allowed or refused.",
+          "A checkable measurement has to be written in a retrieved passage.",
+          "A causal step needs a source that states one event because of another.",
+          "Supply an objective if a measurement should be scored against a target."
+        ],
+        "discovery_suggested": false,
+        "situation": {
+          "verdict": "YES",
+          "text": "Yes. Business class is allowed for the flight from Boston to Paris: it lasts 8 hours, and business class is allowed for flights over 6 hours.",
+          "because": [
+            "Business class is allowed for flights over six hours.",
+            "The flight from Boston to Paris takes eight hours."
+          ],
+          "wording": {
+            "path": "deterministic"
+          }
+        },
+        "draft": null,
+        "ranking": null,
+        "text": "Yes. Business class is allowed for the flight from Boston to Paris: it lasts 8 hours, and business class is allowed for flights over 6 hours."
+      },
+      "answer": "Business class is allowed for flights over six hours.",
+      "answer_status": null,
+      "answer_evidence": null,
+      "verification_scope": null,
+      "related": [
+        {
+          "chunk_id": "review-notes-p0001",
+          "score": 0.8006682991981506,
+          "chunk_text": "Business class is allowed for flights over six hours.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0002",
+          "score": 0.7702519297599792,
+          "chunk_text": "The flight from Boston to Paris takes eight hours.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0006",
+          "score": 0.5563462376594543,
+          "chunk_text": "The harbor kestrel is a small coastal falcon.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0007",
+          "score": 0.5438617467880249,
+          "chunk_text": "The picnic was held beside a harbor.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0005",
+          "score": 0.537781834602356,
+          "chunk_text": "The harbor kestrel watches a heron eat small fish.",
+          "category": "review-notes"
+        }
+      ],
+      "model01": {
+        "status": "answered",
+        "mode": "model01",
+        "text": "Business class is allowed for flights over six hours.",
+        "candidate_text": "Business class is allowed for flights over six hours.",
+        "verified": true,
+        "plan_id": "p-d4b799786739",
+        "construction_version": "n0-v2",
+        "model_checkpoint_id": null,
+        "construction_ids": [
+          "proposition_clause"
+        ],
+        "evidence_ids": [
+          "prop-review-notes-p0001"
+        ],
+        "span_bindings": [
+          {
+            "span_id": "prop-review-notes-p0001:subject:0:14",
+            "role": "subject",
+            "text": "Business class",
+            "record_id": "prop-review-notes-p0001"
+          },
+          {
+            "span_id": "prop-review-notes-p0001:predicate:15:17",
+            "role": "predicate",
+            "text": "is",
+            "record_id": "prop-review-notes-p0001"
+          },
+          {
+            "span_id": "prop-review-notes-p0001:object:18:52",
+            "role": "object",
+            "text": "allowed for flights over six hours",
+            "record_id": "prop-review-notes-p0001"
+          }
+        ],
+        "reason_codes": [],
+        "realization_verified": true,
+        "model_id": "model01",
+        "model_name": "Model01 sentence generator",
+        "checkpoint_id": null,
+        "inputs": {
+          "prompt": "Is business class required from Boston to Paris?",
+          "evidence": [
+            {
+              "record_id": "prop-review-notes-p0001",
+              "kind": "proposition",
+              "sentence": "Business class is allowed for flights over six hours.",
+              "roles": [
+                "subject",
+                "predicate",
+                "object"
+              ],
+              "epistemic_weight": 1.0,
+              "polarity": "AFFIRMATIVE"
+            },
+            {
+              "record_id": "quote-review-notes-p0002",
+              "kind": "quote",
+              "sentence": "The flight from Boston to Paris takes eight hours.",
+              "roles": [
+                "sentence"
+              ],
+              "epistemic_weight": null,
+              "polarity": null
+            }
+          ]
+        }
+      },
+      "frame_result": null,
+      "typos": [],
+      "audit_passed": true,
+      "shine_ok": true
+    }
+  },
+  {
+    "case": "weight_wrong_subject",
+    "namespace": "review_edf_f0ea65ac0cee",
+    "corpus": [
+      "Business class is allowed for flights over six hours.",
+      "The flight from Boston to Paris takes eight hours.",
+      "The harbor kestrel watches a fish that weighs two kilograms.",
+      "The harbor kestrel eats a fish that nests in coastal cliffs.",
+      "The harbor kestrel watches a heron eat small fish.",
+      "The harbor kestrel is a small coastal falcon.",
+      "The picnic was held beside a harbor.",
+      "Ada is a mathematician."
+    ],
+    "question": "How much does the harbor kestrel weigh?",
+    "expected": "No bird weight stated; fish weight is not a binding",
+    "result": {
+      "message": "How much does the harbor kestrel weigh?",
+      "reply": {
+        "preface": "I found 5 passages labeled review-notes. The closest match scores 0.84. The sentence below is a retrieved passage, not a checked answer.",
+        "body": "From review-notes-p0003:\nThe harbor kestrel watches a fish that weighs two kilograms.",
+        "closing": "Still open: No policy rule was provided. The retrieved passages do not state a measurement. No cause is stated in the retrieved passages. No objective was provided.",
+        "follow_ups": [
+          "Another passage mentions coastal: \u201cThe harbor kestrel is a small coastal falcon.\u201d",
+          "Within the quoted passage, kilograms is something you can ask about next.",
+          "Another passage mentions cliffs: \u201cThe harbor kestrel eats a fish that nests in coastal cliffs.\u201d"
+        ],
+        "next_steps": [
+          "Supply a policy rule if this turn should be allowed or refused.",
+          "A checkable measurement has to be written in a retrieved passage.",
+          "A causal step needs a source that states one event because of another.",
+          "Supply an objective if a measurement should be scored against a target."
+        ],
+        "discovery_suggested": true,
+        "situation": null,
+        "draft": null,
+        "ranking": null,
+        "text": "From review-notes-p0003:\nThe harbor kestrel watches a fish that weighs two kilograms.",
+        "answer_status": "evidence_quote",
+        "answer_evidence": [
+          {
+            "document_id": "review-notes-p0003",
+            "span": "The harbor kestrel watches a fish that weighs two kilograms."
+          }
+        ],
+        "verification_scope": "retrieval",
+        "retrieved_candidates": [
+          {
+            "document_id": "review-notes-p0006",
+            "span": "The harbor kestrel is a small coastal falcon."
+          },
+          {
+            "document_id": "review-notes-p0003",
+            "span": "The harbor kestrel watches a fish that weighs two kilograms."
+          },
+          {
+            "document_id": "review-notes-p0004",
+            "span": "The harbor kestrel eats a fish that nests in coastal cliffs."
+          },
+          {
+            "document_id": "review-notes-p0005",
+            "span": "The harbor kestrel watches a heron eat small fish."
+          },
+          {
+            "document_id": "review-notes-p0007",
+            "span": "The picnic was held beside a harbor."
+          }
+        ],
+        "producer": "answerability",
+        "query": "How much does the harbor kestrel weigh?",
+        "original_query": null
+      },
+      "answer": null,
+      "answer_status": "evidence_quote",
+      "answer_evidence": [
+        {
+          "document_id": "review-notes-p0003",
+          "span": "The harbor kestrel watches a fish that weighs two kilograms."
+        }
+      ],
+      "verification_scope": "retrieval",
+      "related": [
+        {
+          "chunk_id": "review-notes-p0006",
+          "score": 0.8375673294067383,
+          "chunk_text": "The harbor kestrel is a small coastal falcon.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0003",
+          "score": 0.7846142649650574,
+          "chunk_text": "The harbor kestrel watches a fish that weighs two kilograms.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0004",
+          "score": 0.7566821575164795,
+          "chunk_text": "The harbor kestrel eats a fish that nests in coastal cliffs.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0005",
+          "score": 0.6979963183403015,
+          "chunk_text": "The harbor kestrel watches a heron eat small fish.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0007",
+          "score": 0.6267280578613281,
+          "chunk_text": "The picnic was held beside a harbor.",
+          "category": "review-notes"
+        }
+      ],
+      "model01": {
+        "status": "answered",
+        "mode": "model01",
+        "text": "The harbor kestrel is a small coastal falcon. The harbor kestrel eats a fish that nests in coastal cliffs. The picnic was held beside a harbor.",
+        "candidate_text": "The harbor kestrel is a small coastal falcon. The harbor kestrel eats a fish that nests in coastal cliffs. The picnic was held beside a harbor.",
+        "verified": true,
+        "plan_id": "p-6d625ac2dad6",
+        "construction_version": "n0-v2",
+        "model_checkpoint_id": null,
+        "construction_ids": [
+          "proposition_clause",
+          "proposition_clause",
+          "proposition_clause"
+        ],
+        "evidence_ids": [
+          "prop-review-notes-p0006",
+          "prop-review-notes-p0004",
+          "prop-review-notes-p0007"
+        ],
+        "span_bindings": [
+          {
+            "span_id": "prop-review-notes-p0006:subject:0:18",
+            "role": "subject",
+            "text": "The harbor kestrel",
+            "record_id": "prop-review-notes-p0006"
+          },
+          {
+            "span_id": "prop-review-notes-p0006:predicate:19:21",
+            "role": "predicate",
+            "text": "is",
+            "record_id": "prop-review-notes-p0006"
+          },
+          {
+            "span_id": "prop-review-notes-p0006:object:22:44",
+            "role": "object",
+            "text": "a small coastal falcon",
+            "record_id": "prop-review-notes-p0006"
+          },
+          {
+            "span_id": "prop-review-notes-p0004:subject:0:18",
+            "role": "subject",
+            "text": "The harbor kestrel",
+            "record_id": "prop-review-notes-p0004"
+          },
+          {
+            "span_id": "prop-review-notes-p0004:predicate:19:22",
+            "role": "predicate",
+            "text": "eat",
+            "record_id": "prop-review-notes-p0004"
+          },
+          {
+            "span_id": "prop-review-notes-p0004:object:24:59",
+            "role": "object",
+            "text": "a fish that nests in coastal cliffs",
+            "record_id": "prop-review-notes-p0004"
+          },
+          {
+            "span_id": "prop-review-notes-p0007:subject:0:10",
+            "role": "subject",
+            "text": "The picnic",
+            "record_id": "prop-review-notes-p0007"
+          },
+          {
+            "span_id": "prop-review-notes-p0007:predicate:11:14",
+            "role": "predicate",
+            "text": "was",
+            "record_id": "prop-review-notes-p0007"
+          },
+          {
+            "span_id": "prop-review-notes-p0007:object:15:35",
+            "role": "object",
+            "text": "held beside a harbor",
+            "record_id": "prop-review-notes-p0007"
+          }
+        ],
+        "reason_codes": [],
+        "realization_verified": true,
+        "model_id": "model01",
+        "model_name": "Model01 sentence generator",
+        "checkpoint_id": null,
+        "inputs": {
+          "prompt": "How much does the harbor kestrel weigh?",
+          "evidence": [
+            {
+              "record_id": "prop-review-notes-p0006",
+              "kind": "proposition",
+              "sentence": "The harbor kestrel is a small coastal falcon.",
+              "roles": [
+                "subject",
+                "predicate",
+                "object"
+              ],
+              "epistemic_weight": 1.0,
+              "polarity": "AFFIRMATIVE"
+            },
+            {
+              "record_id": "quote-review-notes-p0003",
+              "kind": "quote",
+              "sentence": "The harbor kestrel watches a fish that weighs two kilograms.",
+              "roles": [
+                "sentence"
+              ],
+              "epistemic_weight": null,
+              "polarity": null
+            },
+            {
+              "record_id": "prop-review-notes-p0004",
+              "kind": "proposition",
+              "sentence": "The harbor kestrel eats a fish that nests in coastal cliffs.",
+              "roles": [
+                "subject",
+                "predicate",
+                "object"
+              ],
+              "epistemic_weight": 1.0,
+              "polarity": "AFFIRMATIVE"
+            },
+            {
+              "record_id": "quote-review-notes-p0005",
+              "kind": "quote",
+              "sentence": "The harbor kestrel watches a heron eat small fish.",
+              "roles": [
+                "sentence"
+              ],
+              "epistemic_weight": null,
+              "polarity": null
+            },
+            {
+              "record_id": "prop-review-notes-p0007",
+              "kind": "proposition",
+              "sentence": "The picnic was held beside a harbor.",
+              "roles": [
+                "subject",
+                "predicate",
+                "object"
+              ],
+              "epistemic_weight": 1.0,
+              "polarity": "AFFIRMATIVE"
+            }
+          ]
+        }
+      },
+      "frame_result": null,
+      "typos": [],
+      "audit_passed": null,
+      "shine_ok": true
+    }
+  },
+  {
+    "case": "nest_wrong_subject",
+    "namespace": "review_edf_f0ea65ac0cee",
+    "corpus": [
+      "Business class is allowed for flights over six hours.",
+      "The flight from Boston to Paris takes eight hours.",
+      "The harbor kestrel watches a fish that weighs two kilograms.",
+      "The harbor kestrel eats a fish that nests in coastal cliffs.",
+      "The harbor kestrel watches a heron eat small fish.",
+      "The harbor kestrel is a small coastal falcon.",
+      "The picnic was held beside a harbor.",
+      "Ada is a mathematician."
+    ],
+    "question": "Where does the harbor kestrel nest?",
+    "expected": "No bird nesting location stated; fish location is not a binding",
+    "result": {
+      "message": "Where does the harbor kestrel nest?",
+      "reply": {
+        "preface": "I found 5 passages labeled review-notes. The closest match scores 0.87. The sentence below is the one checked against a stored proposition.",
+        "body": "The harbor kestrel eats a fish that nests in coastal cliffs.",
+        "closing": "Still open: No policy rule was provided. The retrieved passages do not state a measurement. No cause is stated in the retrieved passages. No objective was provided.",
+        "follow_ups": [
+          "Within the quoted passage, coastal is something you can ask about next.",
+          "Another passage mentions watches: \u201cThe harbor kestrel watches a heron eat small fish.\u201d",
+          "Another passage mentions kilograms: \u201cThe harbor kestrel watches a fish that weighs two kilograms.\u201d"
+        ],
+        "next_steps": [
+          "Supply a policy rule if this turn should be allowed or refused.",
+          "A checkable measurement has to be written in a retrieved passage.",
+          "A causal step needs a source that states one event because of another.",
+          "Supply an objective if a measurement should be scored against a target."
+        ],
+        "discovery_suggested": false,
+        "situation": null,
+        "draft": null,
+        "ranking": null,
+        "text": "The harbor kestrel eats a fish that nests in coastal cliffs.",
+        "answer_status": "answered",
+        "answer_evidence": [
+          {
+            "document_id": "review-notes-p0004",
+            "span": "The harbor kestrel eats a fish that nests in coastal cliffs."
+          }
+        ],
+        "verification_scope": "query",
+        "retrieved_candidates": [
+          {
+            "document_id": "review-notes-p0006",
+            "span": "The harbor kestrel is a small coastal falcon."
+          },
+          {
+            "document_id": "review-notes-p0004",
+            "span": "The harbor kestrel eats a fish that nests in coastal cliffs."
+          },
+          {
+            "document_id": "review-notes-p0005",
+            "span": "The harbor kestrel watches a heron eat small fish."
+          },
+          {
+            "document_id": "review-notes-p0003",
+            "span": "The harbor kestrel watches a fish that weighs two kilograms."
+          },
+          {
+            "document_id": "review-notes-p0007",
+            "span": "The picnic was held beside a harbor."
+          }
+        ],
+        "producer": "answerability",
+        "query": "Where does the harbor kestrel nest?",
+        "original_query": null,
+        "supported_text": "The harbor kestrel eats a fish that nests in coastal cliffs."
+      },
+      "answer": "The harbor kestrel eats a fish that nests in coastal cliffs.",
+      "answer_status": "answered",
+      "answer_evidence": [
+        {
+          "document_id": "review-notes-p0004",
+          "span": "The harbor kestrel eats a fish that nests in coastal cliffs."
+        }
+      ],
+      "verification_scope": "query",
+      "related": [
+        {
+          "chunk_id": "review-notes-p0006",
+          "score": 0.8684158325195312,
+          "chunk_text": "The harbor kestrel is a small coastal falcon.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0004",
+          "score": 0.8600875735282898,
+          "chunk_text": "The harbor kestrel eats a fish that nests in coastal cliffs.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0005",
+          "score": 0.758441686630249,
+          "chunk_text": "The harbor kestrel watches a heron eat small fish.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0003",
+          "score": 0.7451004981994629,
+          "chunk_text": "The harbor kestrel watches a fish that weighs two kilograms.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0007",
+          "score": 0.6662718057632446,
+          "chunk_text": "The picnic was held beside a harbor.",
+          "category": "review-notes"
+        }
+      ],
+      "model01": {
+        "status": "answered",
+        "mode": "model01",
+        "text": "The harbor kestrel is a small coastal falcon. The harbor kestrel eats a fish that nests in coastal cliffs. The picnic was held beside a harbor.",
+        "candidate_text": "The harbor kestrel is a small coastal falcon. The harbor kestrel eats a fish that nests in coastal cliffs. The picnic was held beside a harbor.",
+        "verified": true,
+        "plan_id": "p-70ffe7e825fe",
+        "construction_version": "n0-v2",
+        "model_checkpoint_id": null,
+        "construction_ids": [
+          "proposition_clause",
+          "proposition_clause",
+          "proposition_clause"
+        ],
+        "evidence_ids": [
+          "prop-review-notes-p0006",
+          "prop-review-notes-p0004",
+          "prop-review-notes-p0007"
+        ],
+        "span_bindings": [
+          {
+            "span_id": "prop-review-notes-p0006:subject:0:18",
+            "role": "subject",
+            "text": "The harbor kestrel",
+            "record_id": "prop-review-notes-p0006"
+          },
+          {
+            "span_id": "prop-review-notes-p0006:predicate:19:21",
+            "role": "predicate",
+            "text": "is",
+            "record_id": "prop-review-notes-p0006"
+          },
+          {
+            "span_id": "prop-review-notes-p0006:object:22:44",
+            "role": "object",
+            "text": "a small coastal falcon",
+            "record_id": "prop-review-notes-p0006"
+          },
+          {
+            "span_id": "prop-review-notes-p0004:subject:0:18",
+            "role": "subject",
+            "text": "The harbor kestrel",
+            "record_id": "prop-review-notes-p0004"
+          },
+          {
+            "span_id": "prop-review-notes-p0004:predicate:19:22",
+            "role": "predicate",
+            "text": "eat",
+            "record_id": "prop-review-notes-p0004"
+          },
+          {
+            "span_id": "prop-review-notes-p0004:object:24:59",
+            "role": "object",
+            "text": "a fish that nests in coastal cliffs",
+            "record_id": "prop-review-notes-p0004"
+          },
+          {
+            "span_id": "prop-review-notes-p0007:subject:0:10",
+            "role": "subject",
+            "text": "The picnic",
+            "record_id": "prop-review-notes-p0007"
+          },
+          {
+            "span_id": "prop-review-notes-p0007:predicate:11:14",
+            "role": "predicate",
+            "text": "was",
+            "record_id": "prop-review-notes-p0007"
+          },
+          {
+            "span_id": "prop-review-notes-p0007:object:15:35",
+            "role": "object",
+            "text": "held beside a harbor",
+            "record_id": "prop-review-notes-p0007"
+          }
+        ],
+        "reason_codes": [],
+        "realization_verified": true,
+        "model_id": "model01",
+        "model_name": "Model01 sentence generator",
+        "checkpoint_id": null,
+        "inputs": {
+          "prompt": "Where does the harbor kestrel nest?",
+          "evidence": [
+            {
+              "record_id": "prop-review-notes-p0006",
+              "kind": "proposition",
+              "sentence": "The harbor kestrel is a small coastal falcon.",
+              "roles": [
+                "subject",
+                "predicate",
+                "object"
+              ],
+              "epistemic_weight": 1.0,
+              "polarity": "AFFIRMATIVE"
+            },
+            {
+              "record_id": "prop-review-notes-p0004",
+              "kind": "proposition",
+              "sentence": "The harbor kestrel eats a fish that nests in coastal cliffs.",
+              "roles": [
+                "subject",
+                "predicate",
+                "object"
+              ],
+              "epistemic_weight": 1.0,
+              "polarity": "AFFIRMATIVE"
+            },
+            {
+              "record_id": "quote-review-notes-p0005",
+              "kind": "quote",
+              "sentence": "The harbor kestrel watches a heron eat small fish.",
+              "roles": [
+                "sentence"
+              ],
+              "epistemic_weight": null,
+              "polarity": null
+            },
+            {
+              "record_id": "quote-review-notes-p0003",
+              "kind": "quote",
+              "sentence": "The harbor kestrel watches a fish that weighs two kilograms.",
+              "roles": [
+                "sentence"
+              ],
+              "epistemic_weight": null,
+              "polarity": null
+            },
+            {
+              "record_id": "prop-review-notes-p0007",
+              "kind": "proposition",
+              "sentence": "The picnic was held beside a harbor.",
+              "roles": [
+                "subject",
+                "predicate",
+                "object"
+              ],
+              "epistemic_weight": 1.0,
+              "polarity": "AFFIRMATIVE"
+            }
+          ]
+        }
+      },
+      "frame_result": null,
+      "typos": [],
+      "audit_passed": true,
+      "shine_ok": true
+    }
+  },
+  {
+    "case": "model01_partial_overlap",
+    "namespace": "review_edf_f0ea65ac0cee",
+    "corpus": [
+      "Business class is allowed for flights over six hours.",
+      "The flight from Boston to Paris takes eight hours.",
+      "The harbor kestrel watches a fish that weighs two kilograms.",
+      "The harbor kestrel eats a fish that nests in coastal cliffs.",
+      "The harbor kestrel watches a heron eat small fish.",
+      "The harbor kestrel is a small coastal falcon.",
+      "The picnic was held beside a harbor.",
+      "Ada is a mathematician."
+    ],
+    "question": "Tell me about the harbor kestrel.",
+    "expected": "Do not include the picnic as an answer about the bird",
+    "result": {
+      "message": "Tell me about the harbor kestrel.",
+      "reply": {
+        "preface": "I found 5 passages labeled review-notes. The closest match scores 0.87. The sentence below is the one checked against a stored proposition.",
+        "body": "The harbor kestrel is a small coastal falcon. it eats a fish that nests in coastal cliffs. The picnic was held beside a harbor.",
+        "closing": "Still open: No policy rule was provided. The retrieved passages do not state a measurement. No cause is stated in the retrieved passages. No objective was provided.",
+        "follow_ups": [
+          "Within the quoted passage, coastal is something you can ask about next.",
+          "Another passage mentions kilograms: \u201cThe harbor kestrel watches a fish that weighs two kilograms.\u201d",
+          "Another passage mentions watches: \u201cThe harbor kestrel watches a heron eat small fish.\u201d"
+        ],
+        "next_steps": [
+          "Supply a policy rule if this turn should be allowed or refused.",
+          "A checkable measurement has to be written in a retrieved passage.",
+          "A causal step needs a source that states one event because of another.",
+          "Supply an objective if a measurement should be scored against a target."
+        ],
+        "discovery_suggested": false,
+        "situation": null,
+        "draft": null,
+        "ranking": null,
+        "text": "The harbor kestrel is a small coastal falcon. The harbor kestrel eats a fish that nests in coastal cliffs. The picnic was held beside a harbor."
+      },
+      "answer": "The harbor kestrel is a small coastal falcon. it eats a fish that nests in coastal cliffs. The picnic was held beside a harbor.",
+      "answer_status": null,
+      "answer_evidence": null,
+      "verification_scope": null,
+      "related": [
+        {
+          "chunk_id": "review-notes-p0006",
+          "score": 0.870569109916687,
+          "chunk_text": "The harbor kestrel is a small coastal falcon.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0004",
+          "score": 0.7957221269607544,
+          "chunk_text": "The harbor kestrel eats a fish that nests in coastal cliffs.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0003",
+          "score": 0.7793319225311279,
+          "chunk_text": "The harbor kestrel watches a fish that weighs two kilograms.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0005",
+          "score": 0.744306743144989,
+          "chunk_text": "The harbor kestrel watches a heron eat small fish.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0007",
+          "score": 0.6610269546508789,
+          "chunk_text": "The picnic was held beside a harbor.",
+          "category": "review-notes"
+        }
+      ],
+      "model01": {
+        "status": "answered",
+        "mode": "model01",
+        "text": "The harbor kestrel is a small coastal falcon. The harbor kestrel eats a fish that nests in coastal cliffs. The picnic was held beside a harbor.",
+        "candidate_text": "The harbor kestrel is a small coastal falcon. The harbor kestrel eats a fish that nests in coastal cliffs. The picnic was held beside a harbor.",
+        "verified": true,
+        "plan_id": "p-bca39655b0eb",
+        "construction_version": "n0-v2",
+        "model_checkpoint_id": null,
+        "construction_ids": [
+          "proposition_clause",
+          "proposition_clause",
+          "proposition_clause"
+        ],
+        "evidence_ids": [
+          "prop-review-notes-p0006",
+          "prop-review-notes-p0004",
+          "prop-review-notes-p0007"
+        ],
+        "span_bindings": [
+          {
+            "span_id": "prop-review-notes-p0006:subject:0:18",
+            "role": "subject",
+            "text": "The harbor kestrel",
+            "record_id": "prop-review-notes-p0006"
+          },
+          {
+            "span_id": "prop-review-notes-p0006:predicate:19:21",
+            "role": "predicate",
+            "text": "is",
+            "record_id": "prop-review-notes-p0006"
+          },
+          {
+            "span_id": "prop-review-notes-p0006:object:22:44",
+            "role": "object",
+            "text": "a small coastal falcon",
+            "record_id": "prop-review-notes-p0006"
+          },
+          {
+            "span_id": "prop-review-notes-p0004:subject:0:18",
+            "role": "subject",
+            "text": "The harbor kestrel",
+            "record_id": "prop-review-notes-p0004"
+          },
+          {
+            "span_id": "prop-review-notes-p0004:predicate:19:22",
+            "role": "predicate",
+            "text": "eat",
+            "record_id": "prop-review-notes-p0004"
+          },
+          {
+            "span_id": "prop-review-notes-p0004:object:24:59",
+            "role": "object",
+            "text": "a fish that nests in coastal cliffs",
+            "record_id": "prop-review-notes-p0004"
+          },
+          {
+            "span_id": "prop-review-notes-p0007:subject:0:10",
+            "role": "subject",
+            "text": "The picnic",
+            "record_id": "prop-review-notes-p0007"
+          },
+          {
+            "span_id": "prop-review-notes-p0007:predicate:11:14",
+            "role": "predicate",
+            "text": "was",
+            "record_id": "prop-review-notes-p0007"
+          },
+          {
+            "span_id": "prop-review-notes-p0007:object:15:35",
+            "role": "object",
+            "text": "held beside a harbor",
+            "record_id": "prop-review-notes-p0007"
+          }
+        ],
+        "reason_codes": [],
+        "realization_verified": true,
+        "model_id": "model01",
+        "model_name": "Model01 sentence generator",
+        "checkpoint_id": null,
+        "inputs": {
+          "prompt": "Tell me about the harbor kestrel.",
+          "evidence": [
+            {
+              "record_id": "prop-review-notes-p0006",
+              "kind": "proposition",
+              "sentence": "The harbor kestrel is a small coastal falcon.",
+              "roles": [
+                "subject",
+                "predicate",
+                "object"
+              ],
+              "epistemic_weight": 1.0,
+              "polarity": "AFFIRMATIVE"
+            },
+            {
+              "record_id": "prop-review-notes-p0004",
+              "kind": "proposition",
+              "sentence": "The harbor kestrel eats a fish that nests in coastal cliffs.",
+              "roles": [
+                "subject",
+                "predicate",
+                "object"
+              ],
+              "epistemic_weight": 1.0,
+              "polarity": "AFFIRMATIVE"
+            },
+            {
+              "record_id": "quote-review-notes-p0003",
+              "kind": "quote",
+              "sentence": "The harbor kestrel watches a fish that weighs two kilograms.",
+              "roles": [
+                "sentence"
+              ],
+              "epistemic_weight": null,
+              "polarity": null
+            },
+            {
+              "record_id": "quote-review-notes-p0005",
+              "kind": "quote",
+              "sentence": "The harbor kestrel watches a heron eat small fish.",
+              "roles": [
+                "sentence"
+              ],
+              "epistemic_weight": null,
+              "polarity": null
+            },
+            {
+              "record_id": "prop-review-notes-p0007",
+              "kind": "proposition",
+              "sentence": "The picnic was held beside a harbor.",
+              "roles": [
+                "subject",
+                "predicate",
+                "object"
+              ],
+              "epistemic_weight": 1.0,
+              "polarity": "AFFIRMATIVE"
+            }
+          ]
+        }
+      },
+      "frame_result": null,
+      "typos": [],
+      "audit_passed": true,
+      "shine_ok": true
+    }
+  },
+  {
+    "case": "model01_short_subject",
+    "namespace": "review_edf_f0ea65ac0cee",
+    "corpus": [
+      "Business class is allowed for flights over six hours.",
+      "The flight from Boston to Paris takes eight hours.",
+      "The harbor kestrel watches a fish that weighs two kilograms.",
+      "The harbor kestrel eats a fish that nests in coastal cliffs.",
+      "The harbor kestrel watches a heron eat small fish.",
+      "The harbor kestrel is a small coastal falcon.",
+      "The picnic was held beside a harbor.",
+      "Ada is a mathematician."
+    ],
+    "question": "Tell me about Ada.",
+    "expected": "Retain available Ada evidence in Model01 input",
+    "result": {
+      "message": "Tell me about Ada.",
+      "reply": {
+        "preface": "I found 5 passages labeled review-notes. The closest match scores 0.87. The sentence below is the one checked against a stored proposition.",
+        "body": "Ada is a mathematician. Business class is allowed for flights over six hours. The harbor kestrel eats a fish that nests in coastal cliffs. The picnic was held beside a harbor.",
+        "closing": "Still open: No policy rule was provided. The retrieved passages do not state a measurement. No cause is stated in the retrieved passages. No objective was provided.",
+        "follow_ups": [
+          "Within the quoted passage, mathematician is something you can ask about next."
+        ],
+        "next_steps": [
+          "Supply a policy rule if this turn should be allowed or refused.",
+          "A checkable measurement has to be written in a retrieved passage.",
+          "A causal step needs a source that states one event because of another.",
+          "Supply an objective if a measurement should be scored against a target."
+        ],
+        "discovery_suggested": false,
+        "situation": null,
+        "draft": null,
+        "ranking": null,
+        "text": "Ada is a mathematician. Business class is allowed for flights over six hours. The harbor kestrel eats a fish that nests in coastal cliffs. The picnic was held beside a harbor."
+      },
+      "answer": "Ada is a mathematician. Business class is allowed for flights over six hours. The harbor kestrel eats a fish that nests in coastal cliffs. The picnic was held beside a harbor.",
+      "answer_status": null,
+      "answer_evidence": null,
+      "verification_scope": null,
+      "related": [
+        {
+          "chunk_id": "review-notes-p0008",
+          "score": 0.8704679608345032,
+          "chunk_text": "Ada is a mathematician.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0001",
+          "score": 0.5072225332260132,
+          "chunk_text": "Business class is allowed for flights over six hours.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0002",
+          "score": 0.48665785789489746,
+          "chunk_text": "The flight from Boston to Paris takes eight hours.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0004",
+          "score": 0.4751720428466797,
+          "chunk_text": "The harbor kestrel eats a fish that nests in coastal cliffs.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0007",
+          "score": 0.47391819953918457,
+          "chunk_text": "The picnic was held beside a harbor.",
+          "category": "review-notes"
+        }
+      ],
+      "model01": {
+        "status": "missing",
+        "mode": "model01",
+        "text": "No verified epistemic evidence available.",
+        "candidate_text": "",
+        "verified": false,
+        "plan_id": "p-5b56c3b27193",
+        "construction_version": "n0-v2",
+        "model_checkpoint_id": null,
+        "construction_ids": [],
+        "evidence_ids": [],
+        "span_bindings": [],
+        "reason_codes": [
+          "missing"
+        ],
+        "realization_verified": false,
+        "model_id": "model01",
+        "model_name": "Model01 sentence generator",
+        "checkpoint_id": null,
+        "inputs": {
+          "prompt": "Tell me about Ada.",
+          "evidence": []
+        }
+      },
+      "frame_result": null,
+      "typos": [],
+      "audit_passed": true,
+      "shine_ok": true
+    }
+  },
+  {
+    "case": "prohibition_confirmation",
+    "namespace": "review_edf_db7a19a963b8",
+    "corpus": [
+      "Business class is forbidden for flights over six hours.",
+      "The flight from Boston to Paris takes eight hours."
+    ],
+    "question": "Is business class forbidden from Boston to Paris?",
+    "expected": "YES: stored prohibition applies",
+    "result": {
+      "message": "Is business class forbidden from Boston to Paris?",
+      "reply": {
+        "preface": "I found 2 passages labeled review-notes. The closest match scores 0.84. The sentence below is the one checked against a stored proposition.",
+        "body": "Business class is forbidden for flights over six hours.",
+        "closing": "Still open: No policy rule was provided. The retrieved passages do not state a measurement. No cause is stated in the retrieved passages. No objective was provided.",
+        "follow_ups": [
+          "Within the quoted passage, flights is something you can ask about next."
+        ],
+        "next_steps": [
+          "Supply a policy rule if this turn should be allowed or refused.",
+          "A checkable measurement has to be written in a retrieved passage.",
+          "A causal step needs a source that states one event because of another.",
+          "Supply an objective if a measurement should be scored against a target."
+        ],
+        "discovery_suggested": false,
+        "situation": {
+          "verdict": "NO",
+          "text": "No. Business class is not allowed for the flight from Boston to Paris: it lasts 8 hours, and business class is not allowed for flights over 6 hours.",
+          "because": [
+            "Business class is forbidden for flights over six hours.",
+            "The flight from Boston to Paris takes eight hours."
+          ],
+          "wording": {
+            "path": "deterministic"
+          }
+        },
+        "draft": null,
+        "ranking": null,
+        "text": "No. Business class is not allowed for the flight from Boston to Paris: it lasts 8 hours, and business class is not allowed for flights over 6 hours."
+      },
+      "answer": "Business class is forbidden for flights over six hours.",
+      "answer_status": null,
+      "answer_evidence": null,
+      "verification_scope": null,
+      "related": [
+        {
+          "chunk_id": "review-notes-p0001",
+          "score": 0.8350595831871033,
+          "chunk_text": "Business class is forbidden for flights over six hours.",
+          "category": "review-notes"
+        },
+        {
+          "chunk_id": "review-notes-p0002",
+          "score": 0.7561672329902649,
+          "chunk_text": "The flight from Boston to Paris takes eight hours.",
+          "category": "review-notes"
+        }
+      ],
+      "model01": {
+        "status": "answered",
+        "mode": "model01",
+        "text": "Business class is forbidden for flights over six hours.",
+        "candidate_text": "Business class is forbidden for flights over six hours.",
+        "verified": true,
+        "plan_id": "p-c5d6efecdca3",
+        "construction_version": "n0-v2",
+        "model_checkpoint_id": null,
+        "construction_ids": [
+          "proposition_clause"
+        ],
+        "evidence_ids": [
+          "prop-review-notes-p0001"
+        ],
+        "span_bindings": [
+          {
+            "span_id": "prop-review-notes-p0001:subject:0:14",
+            "role": "subject",
+            "text": "Business class",
+            "record_id": "prop-review-notes-p0001"
+          },
+          {
+            "span_id": "prop-review-notes-p0001:predicate:15:17",
+            "role": "predicate",
+            "text": "is",
+            "record_id": "prop-review-notes-p0001"
+          },
+          {
+            "span_id": "prop-review-notes-p0001:object:18:54",
+            "role": "object",
+            "text": "forbidden for flights over six hours",
+            "record_id": "prop-review-notes-p0001"
+          }
+        ],
+        "reason_codes": [],
+        "realization_verified": true,
+        "model_id": "model01",
+        "model_name": "Model01 sentence generator",
+        "checkpoint_id": null,
+        "inputs": {
+          "prompt": "Is business class forbidden from Boston to Paris?",
+          "evidence": [
+            {
+              "record_id": "prop-review-notes-p0001",
+              "kind": "proposition",
+              "sentence": "Business class is forbidden for flights over six hours.",
+              "roles": [
+                "subject",
+                "predicate",
+                "object"
+              ],
+              "epistemic_weight": 1.0,
+              "polarity": "AFFIRMATIVE"
+            },
+            {
+              "record_id": "quote-review-notes-p0002",
+              "kind": "quote",
+              "sentence": "The flight from Boston to Paris takes eight hours.",
+              "roles": [
+                "sentence"
+              ],
+              "epistemic_weight": null,
+              "polarity": null
+            }
+          ]
+        }
+      },
+      "frame_result": null,
+      "typos": [],
+      "audit_passed": true,
+      "shine_ok": true
+    }
+  },
+  {
+    "scope": "direct assessment module",
+    "question": "How much does the harbor kestrel weigh?",
+    "text": "The harbor kestrel watches a fish that weighs two kilograms.",
+    "assessment": {
+      "query": "How much does the harbor kestrel weigh?",
+      "kind": "weight",
+      "retrieved_candidates": [
+        {
+          "document_id": "chunk-0",
+          "span": "The harbor kestrel watches a fish that weighs two kilograms."
+        }
+      ],
+      "answer_evidence": [
+        {
+          "document_id": "chunk-0",
+          "span": "The harbor kestrel watches a fish that weighs two kilograms."
+        }
+      ],
+      "verification_scope": "query",
+      "answer_status": "answered",
+      "reason": "relation_stated",
+      "text": "The harbor kestrel watches a fish that weighs two kilograms."
+    }
+  },
+  {
+    "scope": "direct assessment module",
+    "question": "Where does the harbor kestrel nest?",
+    "text": "The harbor kestrel eats a fish that nests in coastal cliffs.",
+    "assessment": {
+      "query": "Where does the harbor kestrel nest?",
+      "kind": "relation",
+      "retrieved_candidates": [
+        {
+          "document_id": "chunk-0",
+          "span": "The harbor kestrel eats a fish that nests in coastal cliffs."
+        }
+      ],
+      "answer_evidence": [
+        {
+          "document_id": "chunk-0",
+          "span": "The harbor kestrel eats a fish that nests in coastal cliffs."
+        }
+      ],
+      "verification_scope": "query",
+      "answer_status": "answered",
+      "reason": "relation_stated",
+      "text": "The harbor kestrel eats a fish that nests in coastal cliffs."
+    }
+  },
+  {
+    "scope": "direct assessment module",
+    "question": "What does the harbor kestrel eat?",
+    "text": "The harbor kestrel watches a heron eat small fish.",
+    "assessment": {
+      "query": "What does the harbor kestrel eat?",
+      "kind": "relation",
+      "retrieved_candidates": [
+        {
+          "document_id": "chunk-0",
+          "span": "The harbor kestrel watches a heron eat small fish."
+        }
+      ],
+      "answer_evidence": [
+        {
+          "document_id": "chunk-0",
+          "span": "The harbor kestrel watches a heron eat small fish."
+        }
+      ],
+      "verification_scope": "query",
+      "answer_status": "answered",
+      "reason": "relation_stated",
+      "text": "The harbor kestrel watches a heron eat small fish."
+    }
+  }
+]
