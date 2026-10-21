@@ -96,7 +96,7 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
         lines = [assessment["text"]]
         body = assessment["text"]
         follow_ups = _follow_ups(state, body)
-    elif assessment is None:
+    elif assessment is None and not _brief_requested(state):
         spoken = _model01_sentence(state) or _scoped_quote(state)
         if spoken:
             lines = [spoken]
@@ -256,6 +256,11 @@ def _unchecked_gap(situation: dict[str, Any], state: dict[str, Any]) -> bool:
     return bool(str(state.get("answer") or "").strip())
 
 
+def _brief_requested(state: dict[str, Any]) -> bool:
+    """A summary, explanation, or list is the requested text, so Model01 does not replace it."""
+    return state.get("summarize") is True or state.get("explain") is True or state.get("list") is True
+
+
 def _model01_sentence(state: dict[str, Any]) -> str:
     """The verified Model01 sentence, when no specialist and no block owns the turn."""
     if state.get("guard_decision") not in (None, "allow") or _delivery_holds(state):
@@ -263,7 +268,26 @@ def _model01_sentence(state: dict[str, Any]) -> str:
     outcome = state.get("model01") or {}
     if outcome.get("verified") is not True:
         return ""
-    return str(outcome.get("text") or "").strip()
+    return _one_licensed_sentence(str(outcome.get("text") or "").strip())
+
+
+def _one_licensed_sentence(text: str) -> str:
+    """Keep the sentence that states the asked fact, and a ranking line already checked.
+
+    A second stored sentence that only shares a topic word is not added.
+    """
+    if not text:
+        return ""
+    head, marker, tail = text.partition("\n\nRanking:\n")
+    from cpu_llm.ranking import _STATED, _sentences
+
+    pieces = _sentences(head)
+    if len(pieces) <= 1 and not marker:
+        return text
+    chosen = next((item for item in pieces if _STATED.search(item)), pieces[0] if pieces else head.strip())
+    if marker:
+        return f"{chosen}\n\nRanking:\n{tail.strip()}"
+    return chosen
 
 
 def _scoped_quote(state: dict[str, Any]) -> str:
@@ -284,7 +308,7 @@ def _scoped_quote(state: dict[str, Any]) -> str:
             texts.append(text)
     if not texts:
         return "The retrieved passages do not settle that."
-    return " ".join(texts)
+    return _one_licensed_sentence(texts[0])
 
 
 def _ranking(state: dict[str, Any], spoken: str) -> dict[str, Any] | None:

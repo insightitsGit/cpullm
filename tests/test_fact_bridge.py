@@ -192,6 +192,36 @@ def test_category_memory_joins_only_when_the_passage_uses_the_word():
     assert "A purchase is an expense." not in named
 
 
+def test_a_stated_ban_and_an_upper_limit_are_read():
+    banned = answer(
+        "Can I use a calculator on the exam?",
+        ["Students may not use calculators on the exam."],
+        child_safety=False,
+    )
+    assert banned.verdict == "NO"
+    assert "calculators" in banned.text
+    assert banned.because == ["Students may not use calculators on the exam."]
+    over = answer(
+        "Can I stay for 72 hours?",
+        ["Guests may stay for up to 48 hours."],
+        child_safety=False,
+    )
+    assert over.verdict == "NO"
+    assert "48" in over.text and "72" in over.text
+    within = answer(
+        "Can I stay for 24 hours?",
+        ["Guests may stay for up to 48 hours."],
+        child_safety=False,
+    )
+    assert within.verdict == "YES"
+    other = answer(
+        "Can I bring a calculator?",
+        ["Guests may stay for up to 48 hours."],
+        child_safety=False,
+    )
+    assert other.verdict == "NONE"
+
+
 def test_a_paraphrase_the_regex_misses_is_read_when_the_model_is_present():
     pytest = __import__("pytest")
     pytest.importorskip("transformers")

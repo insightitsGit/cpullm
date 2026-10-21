@@ -756,15 +756,91 @@ def _answer(question: str, chunks: list[str], extractor=None, retrieve=None, hop
         pool += list(dict.fromkeys(new))
     grounded, rejected = ground(extractor.extract(pool), pool)
     result = reason(question, grounded)
+    if result.verdict == "NONE":
+        covered = _stated_constraint(question, pool)
+        if covered is not None:
+            result = covered
     result.rejected = rejected
     result.text = _situation_text(result)
     result.wording = {"path": "deterministic"}
     return result
 
 
+_PERMIT_ASK = re.compile(r"\b(?:can|may|could|am i allowed)\b", re.I)
+_BAN = re.compile(
+    r"\b(?:may not|must not|cannot|can't|shall not|not allowed|not permitted|prohibited|forbidden|banned)\b",
+    re.I,
+)
+_LIMIT = re.compile(
+    rf"\b(?:up to|no more than|at most|a maximum of|may not exceed|not exceeding)\s+({_NUM})\s+([A-Za-z]+)",
+    re.I,
+)
+_ASK_QTY = re.compile(rf"\b({_NUM})\s+([A-Za-z]+)\b", re.I)
+_CONSTRAINT_SKIP = frozenset(
+    "can may could this that with from about your have what when where there their would should using used "
+    "hour hours day days minute minutes week weeks".split()
+)
+
+
+def _constraint_terms(text: str) -> set[str]:
+    return {
+        singular(word.lower())
+        for word in re.findall(r"[A-Za-z][A-Za-z'-]{3,}", text)
+        if word.lower() not in _CONSTRAINT_SKIP
+    }
+
+
+def _stated_constraint(question: str, pool: list[str]) -> Optional[Answer]:
+    """A ban or an upper limit the numeric rule reader did not parse.
+
+    The sentence is quoted. A shared topic word is required, so a ban about
+    one subject is not applied to a different question.
+    """
+    if not _PERMIT_ASK.search(question):
+        return None
+    asked = _constraint_terms(question)
+    if not asked:
+        return None
+    quantity = _ASK_QTY.search(question)
+    for raw in pool:
+        sentence = raw.strip()
+        if not sentence or not (asked & _constraint_terms(sentence)):
+            continue
+        if quantity is None and _BAN.search(sentence) and not _LIMIT.search(sentence):
+            return Answer(
+                "NO",
+                f"No. {sentence}",
+                [sentence],
+                plan=_plan("NO", question, gap="categorical_ban", stance="prohibited"),
+            )
+        if quantity is None:
+            continue
+        limit = _LIMIT.search(sentence)
+        if limit is None:
+            continue
+        asked_unit = singular(quantity.group(2).lower())
+        limit_unit = singular(limit.group(2).lower())
+        if asked_unit != limit_unit:
+            continue
+        asked_value = to_number(quantity.group(1))
+        limit_value = to_number(limit.group(1))
+        shown = f"{asked_value:g} {quantity.group(2).lower()}"
+        cap = f"{limit_value:g} {limit.group(2).lower()}"
+        if asked_value <= limit_value:
+            text = f"Yes. The retrieved passage allows up to {cap}: {sentence}"
+            verdict = "YES"
+        else:
+            text = f"No. The retrieved passage allows up to {cap}, and the question asks about {shown}: {sentence}"
+            verdict = "NO"
+        return Answer(verdict, text, [sentence], plan=_plan(verdict, question, gap="stated_limit"))
+    return None
+
+
 def _situation_text(result: Answer) -> str:
     """The sentence for this verdict."""
     plan = result.plan or {}
+    if plan.get("gap") in {"categorical_ban", "stated_limit"}:
+        return result.text
     if plan.get("verdict") not in {"YES", "NO", "CONTESTED", "UNKNOWN", "CAUSE", "NONE"}:
         return result.text
     from fact_bridge.writer import wordings

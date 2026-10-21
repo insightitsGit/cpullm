@@ -212,6 +212,42 @@ def test_model01_is_the_step_before_the_reply():
     assert ranked["text"].count("Ranking:") == 1
 
 
+def test_model01_keeps_the_ranking_sentence_and_drops_a_topic_neighbor():
+    from cpu_llm.agents.reply import compose_reply
+
+    species = "Homarus gammarus is a species of clawed lobster."
+    ranked = "The European lobster is the best lobster in Europe."
+    reply = compose_reply(
+        {
+            "message": "what is the best lobster in europe?",
+            "guard_decision": "allow",
+            "answer": f"{ranked} {species}",
+            "related": [
+                {"chunk_id": "ranked", "chunk_text": ranked},
+                {"chunk_id": "species", "chunk_text": species},
+            ],
+            "model01": {"verified": True, "text": f"{ranked} {species}"},
+        }
+    )
+    assert ranked in reply["text"]
+    assert species not in reply["text"]
+    assert "Ranking:" in reply["text"]
+    summary = compose_reply(
+        {
+            "message": "Summarize the European lobster.",
+            "guard_decision": "allow",
+            "summarize": True,
+            "answer": ranked,
+            "brief": {"summary": ranked},
+            "model01": {"verified": True, "text": f"{species} {ranked}"},
+            "related": [{"chunk_id": "ranked", "chunk_text": ranked}],
+        }
+    )
+    assert summary["text"].startswith(ranked)
+    assert species not in summary["text"]
+    assert "Summary:" in summary["text"]
+
+
 def test_training_stops_when_every_plan_has_one_sentence():
     report = survey(
         [
