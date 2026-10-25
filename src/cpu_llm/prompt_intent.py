@@ -26,6 +26,9 @@ def _name(text):
 
 def _requested(message):
     patterns = [
+        ('has_lifespan', 'subject', r'how long (?:does|do|can) (?P<entity>.+?) live'),
+        ('has_lifespan', 'subject', r'how many years (?:does|do|can) (?P<entity>.+?) live'),
+        ('has_lifespan', 'subject', r'what is the (?:lifespan|longevity) of (?P<entity>.+)'),
         ('is_a', 'subject', r'what (?:kind|type|sort)(?: of [\w -]+?)? (?:is|are) (?P<entity>.+)'),
         ('has_color', 'subject', r'what colou?r (?:is|are) (?P<entity>.+)'),
         ('lives_in', 'subject', r'where (?:does|do) (?P<entity>.+?) (?:live|reside)'),
@@ -44,8 +47,11 @@ def _requested(message):
 
 def route_prompt(message, *, query_tensor=None, enabled_channels=None, prototypes=None, causal_matrix=None):
     """Evaluate every channel; retain evidence and vector availability separately."""
-    text = ' '.join(message.lower().split())
-    request = _requested(message)
+    from cpu_llm.query_dictionary import interpret_prompt
+    dictionary = interpret_prompt(message)
+    interpreted = dictionary['canonical']
+    text = ' '.join(interpreted.lower().split())
+    request = _requested(interpreted)
     cues = {
         'dense': bool(text.strip()),
         'relational': request is not None or bool(re.search(r'\b(?:whose|where|attribute|relationship|has|have)\b', text)),
@@ -74,7 +80,7 @@ def route_prompt(message, *, query_tensor=None, enabled_channels=None, prototype
         channels[name] = dict(active=cues[name], rule_supported=cues[name], head_enabled=bool(flags.get(name)),
                               prototype_score=score, weight=float(cues[name]) + soft * 0.25,
                               basis='recognized prompt form' if cues[name] else 'no explicit prompt cue')
-    return dict(schema='prompt-intent-v1', channels=channels, requested=request,
+    return dict(schema='prompt-intent-v1', channels=channels, requested=request, dictionary=dictionary,
                 vector_scope='enabled-head prototype scores are uncalibrated soft routing signals')
 
 
@@ -118,6 +124,16 @@ def select_channel_answer(message, chunks, *, intent=None):
         return _equivalent(name, value)
     selected = [fact for fact in facts if fact.relation == request['relation'] and channel in fact.channels
                 and any(matches(name, getattr(fact, request['direction'])) for name in names)]
+    joins = []
+    if request['relation'] in {'has_lifespan', 'has_color', 'lives_in', 'has'} and not selected:
+        memberships = [fact for fact in facts if fact.relation == 'is_a'
+                       and any(_equivalent(name, fact.subject) for name in names)]
+        for membership in memberships:
+            for fact in facts:
+                universal = re.fullmatch(r'(?:all|every)\s+(.+)', fact.subject, re.I)
+                if fact.relation == request['relation'] and universal and _equivalent(universal[1], membership.object):
+                    selected.append(fact)
+                    joins.append(membership)
     if request['relation'] == 'is_a' and selected:
         # Prefer an explicit taxonomic definition over descriptions such as
         # "is a highly esteemed food" elsewhere in the same article.
@@ -128,12 +144,12 @@ def select_channel_answer(message, chunks, *, intent=None):
         return dict(base, answer_status='insufficient_evidence', reason='no_matching_channel_relation',
                     text='The retrieved passages do not settle that.')
     values = {_name(f.object) for f in selected}
-    evidence = list({(f.document_id, f.sentence): dict(document_id=f.document_id, span=f.sentence) for f in selected}.values())
-    if request['relation'] == 'has_color' and len(values) > 1:
+    evidence = list({(f.document_id, f.sentence): dict(document_id=f.document_id, span=f.sentence) for f in joins + selected}.values())
+    if request['relation'] in {'has_color', 'has_lifespan'} and len(values) > 1:
         return dict(base, answer_status='conflicting', reason='conflicting_channel_values', answer_evidence=evidence,
                     text='The retrieved passages do not settle that. Stored sentences conflict: ' + ' '.join(f.sentence for f in selected))
-    return dict(base, answer_status='answered', reason='channel_relation_stated', answer_evidence=evidence,
-                text=' '.join(dict.fromkeys(f.sentence for f in selected)))
+    return dict(base, answer_status='answered', reason='universal_membership_join' if joins else 'channel_relation_stated', answer_evidence=evidence,
+                text=' '.join(dict.fromkeys(f.sentence for f in joins + selected)))
 
 
 def rank_channel_hits(hits, intent):

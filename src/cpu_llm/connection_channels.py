@@ -18,7 +18,7 @@ CHANNEL_SLICES = {
     'disentangled': C.DISENTANGLED, 'hyperbolic': C.HYPERBOLIC,
     'identity': C.IDENTITY, 'causal': C.CAUSAL_TIME,
 }
-_RELATIONS = {'is_a', 'alias_of', 'lives_in', 'has_color', 'has', 'causes', 'differs_from'}
+_RELATIONS = {'is_a', 'alias_of', 'lives_in', 'has_color', 'has', 'has_lifespan', 'causes', 'differs_from'}
 
 
 def relational_connection(fact) -> bool:

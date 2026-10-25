@@ -1,6 +1,11 @@
 # Library consumer guide for agents
 
-This guide describes cpu-llm 1.9.0, the API reviewed through `9d6fbe8` on 2026-10-19. That commit is after the `v1.8.0` tag. Inspect signatures and run the applicable tests when you upgrade. `1.8.0` does not contain this contract.
+For the current working-tree architecture and optional conversation features,
+see [the current design](current-design.md), [clarification loops](clarification-loops.md),
+and [reference resolution setup](reference-resolution.md). These describe changes
+in this checkout and do not imply that an identically numbered PyPI upload includes them.
+
+This guide describes cpu-llm 1.9.1. The targeted review of `9d6fbe8` on 2026-10-19 covers an earlier snapshot. PyPI `1.9.0` does not include the one-sentence Model01 display or the stored-ban and same-unit upper-limit reading. This version does. Inspect signatures and run the applicable tests when you upgrade. `1.8.0` and `1.9.0` do not contain this contract.
 
 Read [README](../README.md) for installation and capability limits. This document supplies the integration contract, not a certificate of general correctness.
 
@@ -112,7 +117,9 @@ For recognized definition, named-attribute, present-action/location, weight, and
 
 That contract does not cover arithmetic, event frames, ranking questions, or rule questions. Those keep their own producers. A checked sentence is not replaced by a rule reader that returns verdict `NONE`. See the [latest targeted review](reviews/2026-10-19/review-9d6fbe8.md) for verified fixes and the [18 October note](answerability-evaluation-2026-10-18.md) for the earlier, narrower comparison.
 
-`reply.situation.verdict` can be `YES`, `NO`, `CONTESTED`, `UNKNOWN`, `CAUSE`, or `NONE`. The verdict follows the modality the question asks. “Is business class forbidden?” is NO when the passages show that it is allowed, and YES when the passages state that prohibition. “Is it required?” stays `UNKNOWN` when the passages only show an allowance. A rule that says something is allowed when a condition holds does not forbid the other cases and does not add the word “only”; those cases are `UNKNOWN`. A requirement whose condition does not hold is still reported as not required by that rule. Its `because` values are source **sentences**, not document IDs or source URLs. The current fact-bridge path may append background statements to its evidence pool; verify sentences against the original retrieved rows before treating them as citations. The current learned writer also lacks a candidate-verification call. See the [correctness handoff](handoff-claim-verification-review.md).
+`reply.situation.verdict` can be `YES`, `NO`, `CONTESTED`, `UNKNOWN`, `CAUSE`, or `NONE`. The verdict follows the modality the question asks. “Is business class forbidden?” is NO when the passages show that it is allowed, and YES when the passages state that prohibition. “Is it required?” stays `UNKNOWN` when the passages only show an allowance. A rule that says something is allowed when a condition holds does not forbid the other cases and does not add the word “only”; those cases are `UNKNOWN`. A requirement whose condition does not hold is still reported as not required by that rule. When the numeric reader returns `NONE`, a permission question can still quote a stored ban that shares a topic word, or compare a quantity in the question with a stored upper limit in the same unit. A different unit is not converted there, and a ban about a different subject stays `NONE`. Its `because` values are source **sentences**, not document IDs or source URLs. The current fact-bridge path may append background statements to its evidence pool; verify sentences against the original retrieved rows before treating them as citations. The current learned writer also lacks a candidate-verification call. See the [correctness handoff](handoff-claim-verification-review.md).
+
+When no specialist owns the turn and the question is outside answerability, `reply.text` shows one Model01 sentence: the sentence that states a ranking when one does, otherwise the first licensed sentence. A later sentence that only shares a topic word is not displayed. `model01["text"]` can still be longer than that line. A ranking question adds one `Ranking:` section. A summary, explanation, or list keeps the checked sentence and appends its section.
 
 `frame_result` includes `status`, `text`, `verified`, evidence/gaps, and compatibility fields. A `verified` frame result refers to that frame transformation, not universal source truth. `realization_result` has its own status, mode, construction IDs, bindings, and verification fields; its verifier still has known construction-mutation gaps.
 

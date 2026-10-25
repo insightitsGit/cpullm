@@ -8,11 +8,25 @@
 
 cpu-llm is an embeddable Python library for document question answering. It indexes paragraphs in PostgreSQL/pgvector, retrieves relevant passages using VectorPrism, and produces supported answers, source quotations, or explicit nonanswers for recognized question forms. It combines trained embedding retrieval with deterministic sentence constructions, limited event-role extraction, pattern-based policy reasoning, arithmetic, and document layouts. It also includes supplied-field finance checks and an authenticated HTTP entry point.
 
-**Author:** [Amin Parva](mailto:parvaamin@gmail.com). **Package version:** 1.9.0, the version after the `v1.8.0` tag. A checkout of this tree is the source described here. The [targeted review](docs/reviews/2026-10-19/review-9d6fbe8.md) of commit [`9d6fbe8`](https://github.com/insightitsGit/cpullm/commit/9d6fbe8fabcf9dac10ec6cc409fa7852f77e948d) covers that snapshot and does not include the later one-sentence reply selection or the ban and upper-limit reading. Installing `cpu-llm==1.8.0` does not include the 1.9.0 answerability, rule-modality, or entity-scoped reply behavior.
+**Author:** [Amin Parva](mailto:parvaamin@gmail.com). **Package version:** 1.9.1. PyPI `1.9.0` is an earlier upload and does not include the one-sentence reply selection or the ban and upper-limit reading. This checkout is 1.9.1. The [targeted review](docs/reviews/2026-10-19/review-9d6fbe8.md) of commit [`9d6fbe8`](https://github.com/insightitsGit/cpullm/commit/9d6fbe8fabcf9dac10ec6cc409fa7852f77e948d) covers an earlier snapshot. Installing `cpu-llm==1.8.0` or `cpu-llm==1.9.0` does not include this reply and rule-reading behavior.
 
 **Correctness boundary:** source copying and component checks do not guarantee source truth or that every displayed sentence answers the question. `answer`, `reply["text"]`, and component-specific verification fields have different meanings. Recognized query shapes expose answerability outcomes; other requests can use different producers or fallback behavior. Evaluate the actual reply and its supporting evidence for your application. The [latest targeted review](docs/reviews/2026-10-19/review-9d6fbe8.md) and [executed audit](docs/reviews/2026-10-19/audit.md) distinguish tested behavior, historical failures, and limits.
 
 For an agent integrating the library, start with [the consumer guide](docs/library-consumer-guide.md): complete `ask` arguments, result interpretation, credentials, HTTP contracts, and operational limitations.
+
+## New in this checkout
+
+The [current design](docs/current-design.md) describes the implementation as of October 25, including changes not yet committed or released. The package version alone does not establish that an installed PyPI distribution includes these changes.
+
+- **Explicit connections and intent:** ingestion saves source-backed facts and channel memberships in a namespace-local knowledge graph. Recognized prompts prioritize the requested entity, relationship, and direction when selecting evidence. Multiple channels can apply to one connection.
+- **Dictionary-assisted questions:** a small, inspectable lexicon recognizes supported synonyms and equivalent expressions. It preserves the original question and can retrieve with one canonical variant. Antonyms remain distinct; this is not a complete dictionary or arbitrary semantic understanding.
+- **Missing-attribute retrieval:** for supported lifespan, location, color, and possession questions, a bounded retry searches the entity and verified connected types. A type membership plus an explicit universal rule can support a limited join; a class average or a statement about some members cannot establish an individual fact.
+- **Clarification loops:** a question such as “Which lobster is best?” asks for the user's criterion. Follow-ups retain that criterion and request comparison evidence when it is missing. The library does not invent a winner from retrieval scores.
+- **Optional reference resolution:** a CPU Coreferee adapter can bind supported uses of “it,” “them,” possessives, and demonstratives to prior user context. Ambiguous or unresolved references ask for clarification. A FastCoref adapter is also implemented, but its real model has not been validated here.
+
+The six semantic channels are dense, relational, disentangled, hyperbolic/taxonomy, identity, and causal/time. The shipped VectorPrism checkpoint enables **dense and identity**; symbolic associations in the other channels do not mean those projection heads are trained and enabled. Epistemic source support is separate metadata. Exact fact connections are stored alongside the vectors, not recoverable as a complete word network from vector coordinates. Reingest existing sources to populate the new fact graph.
+
+These additions select evidence and support bounded sentence constructions. They do not provide unrestricted sentence generation or establish missing facts. See the [supported-use-case backlog](docs/intent-support-backlog.md) for remaining gaps.
 
 ## Where it can be useful
 
@@ -27,16 +41,14 @@ This is a candidate for a **bounded, human-supervised pilot**. Industry usefulne
 - The frozen `sentence-transformers/all-mpnet-base-v2` encoder. First use may download model assets; subsequent offline use requires those assets already cached.
 - Writable local storage for `.chorusgraph/cpu-llm/` under the process's **current working directory**, in addition to the PostgreSQL data.
 
-Install this release once `1.9.0` is on PyPI:
-
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -U pip
-python -m pip install "cpu-llm==1.9.0"
+python -m pip install -e .
 ```
 
-From a checkout of this tree, use `python -m pip install -e .` instead. That installs the same 1.9.0 source. `1.8.0` is the previous release.
+Run these commands from a checkout of this repository to use the features documented here. This source identifies itself as 1.9.1; published packages can describe an earlier implementation.
 
 The pins in [pyproject.toml](pyproject.toml) are authoritative. The editable install makes packaged retrieval assets and sample corpora available; it does **not** start PostgreSQL, populate its corpus, or train a realizer. It does not bundle the optional fact-bridge T5 checkpoints or declare all their optional runtime dependencies.
 
@@ -92,6 +104,42 @@ Save the example as a Python file and run it with PostgreSQL available. Keep app
 
 The nesting query can return `answer_status="evidence_quote"`: the displayed text is a cited source passage, while `answer` is cleared. The apple-color question uses the separate frame result. Keep those response types distinct when integrating.
 
+## Follow-up questions and clarification
+
+Pass the same explicit `session_id` on related turns. Your application displays the returned question and sends the user's response back through `ask`; the library does not contact the user itself.
+
+```python
+# Inside the existing Appliance context:
+result = app.ask("Which lobster is best?", session_id="chat-1")
+print((result.get("reply") or {}).get("text", ""))
+print(result.get("needs_clarification"))
+
+# After the user supplies a criterion:
+result = app.ask("taste", session_id="chat-1")
+print((result.get("reply") or {}).get("text", ""))
+```
+
+The first turn asks what “best” means and what it is for. The next turn uses the supplied criterion; without an explicit supporting ranking, it asks for comparison evidence. User-provided `Source: ...` follow-ups remain attributed, unverified statements and are not permanently ingested as facts.
+
+Reference resolution is disabled by default. To enable the tested optional backend, install its dependencies and model assets explicitly:
+
+```powershell
+python -m pip install -e ".[coreference]"
+python -m spacy download en_core_web_sm
+python -m coreferee install en
+```
+
+Construct the appliance with `reference_backend="coreferee"` inside the guarded `main()` shown above. After ingesting relevant documents, related calls can use:
+
+```python
+app.ask("Tell me about the European lobster.", session_id="chat-2")
+result = app.ask("Where does it live?", session_id="chat-2")
+print(result.get("resolved_query"))
+print(result.get("reference_resolution"))
+```
+
+Resolving “it” identifies the requested entity; the answer still requires authorized source evidence. Multiple plausible antecedents trigger a question. Without a backend, unresolved references request an explicit name. Session state is in memory, scoped by tenant/caller/source scope/session/history date, expires after 30 minutes, and is capped at 256 sessions per state store. Restarting loses it; omitting `session_id` does not enable cross-call context. See [reference resolution](docs/reference-resolution.md) and [clarification loops](docs/clarification-loops.md) for setup, cancellation, budgets, and limits.
+
 Sample corpora ship as files and must be ingested. The CLI loads the **default tenant**, not `namespace="demo"`:
 
 ```powershell
@@ -145,7 +193,9 @@ guard
   → reply
 ```
 
-PrismGuard can stop the turn before retrieval. Retrieval is the trained dense core. The other five readings, including Poincaré distance in `geometry/poincare.py`, are reported on that same shortlist and do not choose the passage. Think, cognize, the grammar, and Shine then check the stored proposition. Cognize rebuilds a sentence from subject, verb, and object; the auditor has to accept that rebuild.
+This diagram summarizes the older core pipeline. The current request lifecycle also applies clarification, optional reference resolution, dictionary interpretation, intent routing, source-backed graph expansion, and bounded attribute retrieval repair; see the [current lifecycle](docs/current-design.md#request-lifecycle).
+
+PrismGuard can stop the turn before retrieval. Dense similarity supplies the trained retrieval core. Channel assessments and symbolic facts help prioritize supported intent and graph evidence; disabled projection heads are excluded from vector scoring. Think, cognize, the grammar, and Shine then check the stored proposition. Cognize rebuilds a sentence from subject, verb, and object; the auditor has to accept that rebuild.
 
 Specialists run only when the prompt selects them, in the order above. Gather loads the article's paragraphs for an imagined passage. Math evaluates the expression in the question, so `17*24` is reported as `17*24 = 408.` Finance runs RefundProof, LedgerCovenant, or Ledgerlock on the fields in the question. An event-frame question answers color, place, or agent from a stored frame. Model01 then builds licensed sentences from passages that share a content word with the prompt, or that contain a named entity as that name. A passage with no such word is not a source. If the prompt leaves no content word, Model01 receives no passages.
 
@@ -184,6 +234,9 @@ Always use `.get(...)` for optional fields. Access refusals and seat failures ma
 - `related`: retrieved items using `chunk_id`; `passages` uses `document_id`. These are paragraph IDs, not source URLs.
 - `thinker_directive`, `gather_questions`: sufficiency advice. `gather`, `refuse`, or `escalate` are not themselves a guarantee that all later display is suppressed; apply a consumer policy explicitly.
 - `typos`, `original_message`: actual query rewrites. The corrected query is used by later stages. `original_message` is present when a rewrite occurred.
+- `needs_clarification`, `clarification`, `user_criteria`: conversational outcomes and the missing slot. Display the clarification and submit the user's reply with the same `session_id`; do not treat it as a factual answer.
+- `resolved_query`, `reference_resolution`: the interpreted retrieval query and reference-binding diagnostics. A resolved name does not verify a fact about that entity.
+- `attribute_search`: bounded repair queries, membership evidence, budget, and outcome when supported missing-attribute retrieval runs. A completed search can still leave evidence insufficient.
 
 For applications that make decisions, separate the transport outcome, component status, actual wording, supporting source, and consumer approval policy. An HTTP 200 or a nonempty string is not an accepted factual result. See [result routing guidance](docs/library-consumer-guide.md#result-routing-for-an-agent).
 
@@ -235,6 +288,7 @@ Run database integration tests against a disposable test database: some tests us
 
 ### What has actually been demonstrated
 
+- For the October 25 working tree, **327 selected database-independent tests passed**, with one test deselected and eight test files excluded. Real CPU Coreferee checks covered five reference forms plus ambiguity and user confirmation; wheel and source-distribution builds also succeeded. Real VectorPrism retrieval and bounded attribute-repair probes were exercised separately. PostgreSQL was unavailable for this round, so these results do not establish full Appliance integration, full-suite success, general accuracy, or current end-to-end latency. The FastCoref model remains unvalidated. See the [current validation scope](docs/current-design.md).
 - At `9d6fbe8`, **126 targeted tests passed**, with one fixed-ID database test deselected. Five additional live Appliance checks passed for missing duration, complete entity names, a short name, and exclusion of an unrelated passage. [Review and scope](docs/reviews/2026-10-19/review-9d6fbe8.md), [test transcript](docs/reviews/2026-10-19/pytest-9d6fbe8.txt), [live inputs and outputs](docs/reviews/2026-10-19/review-9d6fbe8-probes.json). That count does not include the later one-sentence reply selection or the ban and upper-limit reading. Those have tests in `tests/test_model01.py` and `tests/test_fact_bridge.py`.
 - At the preceding `1183b77` revision, the **27 original diagnostic cases passed** on a 17-paragraph controlled corpus: 17 factual checks, four policy checks, four missing-fact nonanswers, and two arithmetic checks. Three repetitions through retrieval and the pipeline produced **162 measured calls without exceptions**. [Recorded benchmark](docs/reviews/2026-10-19/audit-1183b77-small/summary.json).
 - At `edf54ee`, the same 27 cases passed with both 17 and 217 paragraphs, including 200 shipped WikiText distractors. That is a small distractor test, not evidence of production-scale retrieval. [Recorded comparison and follow-up findings](docs/reviews/2026-10-19/followup-review-edf54ee.md).
@@ -265,6 +319,10 @@ Additional limits include narrow English extraction grammars, incomplete retriev
 
 ## Source and design map
 
+- [Current design](docs/current-design.md): current request lifecycle, channel semantics, storage, budgets, and validation limits.
+- [knowledge_graph.py](src/cpu_llm/knowledge_graph.py), [connection_channels.py](src/cpu_llm/connection_channels.py): explicit source facts and independent channel assessments; [graph design](docs/knowledge-graph.md).
+- [prompt_intent.py](src/cpu_llm/prompt_intent.py), [query_dictionary.py](src/cpu_llm/query_dictionary.py), [attribute_search.py](src/cpu_llm/attribute_search.py): intent, lexical variants, and bounded retrieval repair; [dictionary design](docs/dictionary-assisted-paraphrases.md), [attribute retrieval](docs/attribute-directed-retrieval.md).
+- [clarification.py](src/cpu_llm/clarification.py), [references.py](src/cpu_llm/references.py): session-local clarification and optional reference backends; [remaining use cases](docs/intent-support-backlog.md).
 - [pipeline.py](src/cpu_llm/pipeline.py): `Appliance`, graph order, ingestion, scoped asks, concurrency, lifecycle.
 - [reply.py](src/cpu_llm/agents/reply.py), [answering.py](src/cpu_llm/answering.py), [fact_bridge](src/fact_bridge/__init__.py): displayed-reply selection and rule inference.
 - [answerability.py](src/cpu_llm/answerability.py), [model01](src/cpu_llm/model01/): supported query bindings and deterministic construction generation.

@@ -166,6 +166,7 @@ class Appliance:
         child_safety: bool | None = None,
         namespace: str | None = None,
         on_escalate: Any = None,
+        reference_backend: Any = None,
     ) -> None:
         from cpu_llm.child_safety import ChildSafetyGate, enabled_by_default
 
@@ -229,6 +230,14 @@ class Appliance:
             causal_matrix=self.index.engine.causal_matrix,
             model_version=self.index.pipeline.model_version,
         )
+        from cpu_llm.clarification import ClarificationLoop
+        self.clarifications = ClarificationLoop()
+        from cpu_llm.references import ReferenceSessions, CorefereeBackend, FastCorefBackend
+        if isinstance(reference_backend, str):
+            if reference_backend not in {'coreferee', 'fastcoref'}:
+                raise ValueError('reference_backend must be coreferee, fastcoref, an adapter, or None')
+            reference_backend = CorefereeBackend() if reference_backend == 'coreferee' else FastCorefBackend()
+        self.references = ReferenceSessions(reference_backend)
         self._turn: dict[str, Any] | None = None
         self._creative_seen: dict[str, str] = {}
         self._previous_ids: list[str] = []
@@ -464,12 +473,37 @@ class Appliance:
             raise ValueError("realization must be deterministic, evidence_neural, or model01")
         if (payment is None) != (authority is None):
             raise ValueError("a payment turn needs both a proposal and an authority snapshot")
-        del child_safety, grade, session_id
+        del child_safety, grade
         self._deep_tensors = {}
         context = _caller_for(self, caller)
         refused = empty_scope_result(self.tenant_id, message, context)
         if refused is not None:
             return refused
+        from cpu_llm.clarification import scoped_session, clarification_result, supported_ranking
+        raw_message = message
+        session_key = scoped_session(self.tenant_id, None if context is None else context.caller_id,
+                                     None if context is None else context.allowed_sources, session_id, as_of)
+        plan = self.clarifications.prepare(message, key=session_key)
+        if plan['status'] != 'ready':
+            response = clarification_result(plan, message, self.tenant_id)
+            if context is not None:
+                response.update(caller_id=context.caller_id, request_id=context.request_id)
+            return response
+        message = plan['query']
+        from cpu_llm.references import ReferenceSessions
+        if not hasattr(self, 'references'):
+            self.references = ReferenceSessions()
+        reference = self.references.prepare(message, key=session_key, continuation=plan)
+        if reference['status'] in {'needs_clarification', 'insufficient_information', 'cancelled'}:
+            response = clarification_result(reference, raw_message, self.tenant_id)
+            if context is not None:
+                response.update(caller_id=context.caller_id, request_id=context.request_id)
+            return response
+        if reference.get('continuation'):
+            plan = dict(reference['continuation'])
+        message = reference['query']
+        if plan.get('criteria'):
+            plan['query'] = message
         from cpu_llm.typos import correct_message
 
         original_message = message
@@ -557,11 +591,42 @@ class Appliance:
         result["child_safety"] = {"action": "off", "reasons": ["child safety is not applied"]}
         result["typos"] = typos
         result["tenant_id"] = self.tenant_id
+        result['reference_resolution'] = reference
+        if reference['bindings']:
+            result['original_message'] = raw_message
+            result['resolved_query'] = message
         if context is not None:
             result["caller_id"] = context.caller_id
             result["request_id"] = context.request_id
         if typos:
             result["original_message"] = original_message
+        if (plan.get('criteria') and result.get('guard_decision') in (None, 'allow')
+                and not result.get('delivery_blocked') and not result.get('shine_enforced')
+                and result.get('shine_ok') is not False):
+            rows = list(result.get('passages') or [])
+            if plan.get('user_source'):
+                rows.append(dict(document_id='user-provided', chunk_text=plan['user_source']))
+            evidence = supported_ranking(plan, rows)
+            # A new quote/clarification is not the answer audited by the
+            # earlier pipeline; do not carry that verdict onto replacement text.
+            result['audit_passed'] = False
+            if evidence:
+                text = '\n'.join(f'From {item["document_id"]}:\n{item["span"]}' for item in evidence)
+                result['answer'] = None
+                result['reply'] = dict(text=text, answer_status='evidence_quote', answer_evidence=evidence,
+                                       verification_scope='source_attribution')
+                result['status'] = 'evidence_quote'
+                result['needs_clarification'] = False
+            else:
+                outcome = self.clarifications.need_evidence(plan, key=session_key)
+                result['answer'] = None
+                result['reply'] = dict(text=outcome['text'], answer_status=outcome['status'])
+                result['status'] = outcome['status']
+                result['needs_clarification'] = outcome['status'] == 'needs_clarification'
+                result['clarification'] = outcome
+            result['original_message'] = raw_message
+            result['resolved_query'] = plan['query']
+            result['user_criteria'] = plan['criteria']
         return result
 
     def ask_concurrent(self, message: str, *, request_id: str | None = None, caller: Any | None = None, thinker_factory: Any = None, **kwargs: Any) -> dict[str, Any]:
@@ -2019,12 +2084,28 @@ def _retrieve(appliance: Appliance):
             hits = appliance.index.search_allowed(
                 message, set(allowed), top_k=5, query_tensor=z_query, as_of=as_of
             )
+        # Preserve the original prompt/tensor; encode at most one equivalent
+        # expression through the same VectorPrism pipeline for extra recall.
+        seen = {str(hit['document_id']) for hit in hits}
+        for variant in intent.get('dictionary', {}).get('variants', [])[:1]:
+            variant_tensor = appliance.index.encode_query(variant)
+            if allowed is None:
+                extra = appliance.index.search(variant, top_k=5, query_tensor=variant_tensor, as_of=as_of)
+            else:
+                extra = appliance.index.search_allowed(variant, set(allowed), top_k=5, query_tensor=variant_tensor, as_of=as_of)
+            for hit in extra:
+                if str(hit['document_id']) not in seen:
+                    hits.append(hit)
+                    seen.add(str(hit['document_id']))
         named = _hits_for_named_article(appliance.index, message, hits)
         if named:
             hits = named
         hits = _with_tagged_paragraphs(appliance, message, hits)
         hits = _with_graph_paragraphs(appliance, message, hits, allowed=allowed, as_of=as_of, intent=intent)
         hits = keep_allowed(hits, allowed)
+        from cpu_llm.attribute_search import retrieve_missing_attribute
+        hits, attribute_search = retrieve_missing_attribute(
+            appliance.index, message, hits, intent, allowed=allowed, as_of=as_of)
         hits = rank_channel_hits(hits, intent)
         from cpu_llm.corrections import conflict_among
 
@@ -2034,6 +2115,7 @@ def _retrieve(appliance: Appliance):
         return {
             "correction_conflict": conflict,
             "prompt_intent": intent,
+            "attribute_search": attribute_search,
             "passages": [
                 {
                     "document_id": hit["document_id"],

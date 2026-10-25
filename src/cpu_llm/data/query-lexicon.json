@@ -1,0 +1,20 @@
+{
+  "version": "query-lexicon-v1",
+  "terms": [
+    {"word": "reside", "relation": "synonym", "target": "live", "sense": "geographic residence"},
+    {"word": "dwell", "relation": "synonym", "target": "live", "sense": "geographic residence"},
+    {"word": "hue", "relation": "synonym", "target": "color", "sense": "visual color"},
+    {"word": "habitat", "relation": "related", "target": "geographic range", "sense": "organism location"},
+    {"word": "allowed", "relation": "antonym", "target": "forbidden", "sense": "permission"},
+    {"word": "safe", "relation": "antonym", "target": "unsafe", "sense": "safety"},
+    {"word": "bank", "relation": "ambiguous", "target": "financial institution or river edge", "sense": "requires context"}
+  ],
+  "expressions": [
+    {"id": "encounter-range", "relation": "equivalent_expression", "sense": "geographic range", "pattern": "where would I encounter (?P<entity>.+)", "canonical": "Where does {entity} live?"},
+    {"id": "residence", "relation": "equivalent_expression", "sense": "geographic residence", "pattern": "where (?:does|do) (?P<entity>.+?) (?:reside|dwell)", "canonical": "Where does {entity} live?"},
+    {"id": "found-range", "relation": "equivalent_expression", "sense": "geographic range", "pattern": "where (?:is|are) (?P<entity>.+?) found", "canonical": "Where does {entity} live?"},
+    {"id": "hue", "relation": "equivalent_expression", "sense": "visual color", "pattern": "what hue (?:is|are) (?P<entity>.+)", "canonical": "What color is {entity}?"},
+    {"id": "category", "relation": "equivalent_expression", "sense": "type membership", "pattern": "which category (?:does|do) (?P<entity>.+?) belong to", "canonical": "What type is {entity}?"},
+    {"id": "bring-about", "relation": "equivalent_expression", "sense": "cause of an effect", "pattern": "what brings about (?P<entity>.+)", "canonical": "What causes {entity}?"}
+  ]
+}

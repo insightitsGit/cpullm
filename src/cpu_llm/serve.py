@@ -17,7 +17,7 @@ from cpu_llm.access import AccessError, AuthenticationError, SourceForbidden, St
 from cpu_llm.documents import SourceDocument
 from cpu_llm.entry import Entry
 
-_ASK_FIELDS = ("discover", "imagine", "deep", "math", "finance", "as_of")
+_ASK_FIELDS = ("discover", "imagine", "deep", "math", "finance", "as_of", "session_id")
 
 
 class LocalService:
@@ -42,6 +42,7 @@ def main() -> None:
     parser.add_argument("--secrets", required=True, help="JSON file of secret_sha256 credentials")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8765)
+    parser.add_argument('--reference-backend', choices=['coreferee', 'fastcoref'])
     args = parser.parse_args()
     appliances: dict[str, Any] = {}
 
@@ -50,7 +51,8 @@ def main() -> None:
 
         found = appliances.get(tenant)
         if found is None:
-            found = Appliance(namespace=None if tenant == "cpu-llm" else tenant)
+            found = Appliance(namespace=None if tenant == "cpu-llm" else tenant,
+                              reference_backend=args.reference_backend)
             appliances[tenant] = found
         return found
 

@@ -1,5 +1,8 @@
 # Source-backed relationship retrieval
 
+See [the current design](current-design.md) for the complete request lifecycle,
+conversation loops, verification scope, and remaining limitations.
+
 New ingestion through `Appliance.index_chunks`, `catalog_chunks`, or `ingest`
 stores a directed fact graph in the namespace's
 `.chorusgraph/cpu-llm/<namespace>/knowledge_graph.db`. Existing documents must
@@ -7,7 +10,8 @@ be ingested again to populate this graph; opening an old namespace does not
 backfill it. Calling VectorPrism directly does not populate it.
 
 The initial extractor accepts explicit affirmative clauses for `is_a`,
-`alias_of`, `lives_in`, `has_color`, and `has`. Each edge retains its document
+`alias_of`, `lives_in`, `has_color`, `has`, `has_lifespan`, `causes`, and
+`differs_from`. Each edge retains its document
 ID and exact supporting sentence. `has` preserves possession wording without
 assuming that every possessed object is a body part. Negated, conditional,
 modal, and unresolved pronoun claims are excluded. This is a limited rule
@@ -86,9 +90,18 @@ VectorPrism projection heads into trained multichannel ANN indexes.
 
 For supported question forms, answer selection requires the same entity (or
 an explicit alias), requested relation, direction, and supported channel. Current
-forms cover kind/type, color, location (`live`/`reside`), possession, and directed
+forms cover kind/type, lifespan, color, location (`live`/`reside`), possession, and directed
 causes, including explicit `because` sentences. The selected output quotes its
 supporting sentence rather than inventing a sentence from nearby words. Missing
 relations produce a nonanswer; incompatible color values retain a conflict.
 Other question shapes retain their existing producers. Comparative intent is
 reported but does not yet implement a general contrast answer generator.
+
+Dictionary-assisted equivalent expressions now precede this routing step.
+See [the paraphrase design](dictionary-assisted-paraphrases.md) for vocabulary,
+guards, secondary-query embedding, tests, and remaining limits, and the
+[support backlog](intent-support-backlog.md) for the other design questions.
+
+For recognized missing lifespan, location, color, and possession attributes, the agent performs a bounded
+second retrieval before concluding that evidence is insufficient. See
+[attribute-directed retrieval and applicability joins](attribute-directed-retrieval.md).

@@ -1,5 +1,8 @@
 # Technical Architecture Specification: `cpu-llm` (v1.6.1 Correctness & Soundness Patch)
 
+> Versioned historical specification. Start with [the current design](current-design.md)
+> for the current request lifecycle and verification boundaries.
+
 > The implementation of this specification is in `src/cpu_llm`.
 > Phase 1 is the EIR schema and `PrismCognitionSubspaceAdapter`.
 > Phase 2 is `SemanticSurfaceRealizer` and `EpistemicEntailmentAuditor`.

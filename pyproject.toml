@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cpu-llm"
-version = "1.9.0"
+version = "1.9.1"
 description = "CPU-only answers and documents from your stored text. Local retrieval with pgvector, and no GPU decoder."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -48,6 +48,10 @@ dependencies = [
   "python-docx>=1.1",
   "openpyxl>=3.1",
 ]
+
+[project.optional-dependencies]
+coreference = ["coreferee==1.5.0", "spacy>=3.7,<3.9"]
+fastcoreference = ["fastcoref>=2.2.3,<3"]
 
 [project.urls]
 Homepage = "https://github.com/insightitsGit/cpullm"

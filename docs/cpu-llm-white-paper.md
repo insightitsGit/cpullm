@@ -1,5 +1,10 @@
 # Technical White Paper: cpu-llm
 
+> Historical white-paper snapshot. For the implementation as of 2026-10-25,
+> including intent routing, typed graphs, retrieval repair, and conversational
+> clarification, see [the current design](current-design.md). The claims below
+> should not be read as updated validation of those newer features.
+
 **A Deterministic, Pure-CPU Epistemic Reasoning Appliance Operating Over Grounded Subspace Manifolds**
 
 **Author:** Amin Parva (AI Architect & Staff Applied AI Engineer)

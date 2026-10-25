@@ -63,6 +63,7 @@ def extract_facts(document_id: str, text: str) -> list[Fact]:
                 facts.append(Fact(alias['subject'], 'alias_of', name, document_id, sentence))
             body = alias['subject'] + ' ' + alias['tail']
         patterns = [
+            ('has_lifespan', rf"{_SUBJECT}\s+(?:can\s+)?lives?(?:\s+for)?\s+(?P<object>(?:(?:up to|at least|about|around)\s+)?\d+(?:\s*[-–]\s*\d+)?\s+(?:years?|months?|days?))"),
             ('causes', rf"{_SUBJECT}\s+causes?\s+(?P<object>.+)"),
             ('differs_from', rf"{_SUBJECT}\s+differs?\s+from\s+(?P<object>.+)"),
             ('lives_in', rf"{_SUBJECT}\s+(?:lives?|resides?|is found)\s+(?:in|across)\s+(?P<object>.+)"),
