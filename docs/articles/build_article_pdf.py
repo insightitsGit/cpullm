@@ -12,6 +12,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase.pdfmetrics import registerFontFamily
 from reportlab.platypus import (
     BaseDocTemplate,
     Frame,
@@ -72,6 +73,13 @@ def register_fonts() -> None:
     pdfmetrics.registerFont(TTFont("Calibri", str(FONT_DIR / "calibri.ttf")))
     pdfmetrics.registerFont(TTFont("Calibri-Bold", str(FONT_DIR / "calibrib.ttf")))
     pdfmetrics.registerFont(TTFont("Calibri-Italic", str(FONT_DIR / "calibrii.ttf")))
+    registerFontFamily(
+        "Calibri",
+        normal="Calibri",
+        bold="Calibri-Bold",
+        italic="Calibri-Italic",
+        boldItalic="Calibri-Bold",
+    )
 
 
 def styles() -> dict[str, ParagraphStyle]:
@@ -572,6 +580,8 @@ def main() -> None:
     # applies to the following page break, not the current page.
     story.insert(0, NextPageTemplate("later"))
     doc.build(story)
+    for name in ("_fig_cost.png", "_fig_pipeline.png", "_fig_router.png"):
+        (ROOT / name).unlink(missing_ok=True)
     print(OUT)
 
 
