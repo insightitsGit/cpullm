@@ -1970,7 +1970,7 @@ def _with_tagged_paragraphs(
     return added
 
 
-def _with_graph_paragraphs(appliance, message, hits, *, allowed=None, as_of=None):
+def _with_graph_paragraphs(appliance, message, hits, *, allowed=None, as_of=None, intent=None):
     """Load bounded, authorized evidence discovered through typed relations.
 
     Historical queries retain their existing temporal retrieval path; this
@@ -1979,7 +1979,7 @@ def _with_graph_paragraphs(appliance, message, hits, *, allowed=None, as_of=None
     graph = getattr(appliance, "knowledge_graph", None)
     if graph is None or as_of is not None or not hasattr(appliance.index.db, "get_by_ids"):
         return hits
-    facts = graph.neighborhood(message, allowed=allowed, hops=2, limit=24)
+    facts = graph.neighborhood(message, allowed=allowed, hops=2, limit=24, intent=intent)
     have = {str(hit["document_id"]) for hit in hits}
     wanted = list(dict.fromkeys(fact.document_id for fact in facts if fact.document_id not in have))[:12]
     candidates = list(hits)
@@ -2008,6 +2008,9 @@ def _retrieve(appliance: Appliance):
         if z_query is None:
             z_query = np.asarray(appliance.index.encode_query(message), dtype=np.float32).reshape(TENSOR_DIM)
             turn["z_query"] = z_query
+        from cpu_llm.prompt_intent import route_prompt, rank_channel_hits
+        intent = appliance.index.intent_for(message, query_tensor=z_query) if hasattr(appliance.index, 'intent_for') else route_prompt(message)
+        turn['prompt_intent'] = intent
         allowed = (appliance._turn or {}).get("allowed_sources")
         as_of = (appliance._turn or {}).get("as_of")
         if allowed is None:
@@ -2020,8 +2023,9 @@ def _retrieve(appliance: Appliance):
         if named:
             hits = named
         hits = _with_tagged_paragraphs(appliance, message, hits)
-        hits = _with_graph_paragraphs(appliance, message, hits, allowed=allowed, as_of=as_of)
+        hits = _with_graph_paragraphs(appliance, message, hits, allowed=allowed, as_of=as_of, intent=intent)
         hits = keep_allowed(hits, allowed)
+        hits = rank_channel_hits(hits, intent)
         from cpu_llm.corrections import conflict_among
 
         conflict = conflict_among(appliance.memory, hits)
@@ -2029,6 +2033,7 @@ def _retrieve(appliance: Appliance):
         appliance._turn = turn
         return {
             "correction_conflict": conflict,
+            "prompt_intent": intent,
             "passages": [
                 {
                     "document_id": hit["document_id"],

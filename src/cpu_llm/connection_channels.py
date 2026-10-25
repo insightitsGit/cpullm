@@ -62,7 +62,8 @@ def _vector(value):
     return vector
 
 
-def _score(name, left, right, causal_matrix):
+def channel_similarity(name, left, right, causal_matrix=None):
+    """Score one channel with its own metric; larger scores mean closer."""
     region = CHANNEL_SLICES[name]
     a, b = left[region.start:region.end], right[region.start:region.end]
     if name in {'dense', 'disentangled'}:
@@ -101,7 +102,7 @@ def evaluate_connection(fact, *, enabled_channels=None, left_tensor=None,
         predicate, basis = _PREDICATES.get(name, (lambda _: False, 'requires calibrated dense similarity'))
         symbolic = evidence and predicate(fact)
         enabled = bool(flags.get(name, False))
-        score = _score(name, left, right, causal_matrix) if enabled and left is not None and right is not None else None
+        score = channel_similarity(name, left, right, causal_matrix) if enabled and left is not None and right is not None else None
         if score is not None and not math.isfinite(score):
             score = None
         threshold = thresholds.get(name)

@@ -52,6 +52,10 @@ def extract_facts(document_id: str, text: str) -> list[Fact]:
         if _UNSAFE.search(sentence):
             continue
         body = sentence.rstrip('.!?')
+        because = re.fullmatch(r'(?P<effect>.+?)\s+because\s+(?P<cause>.+)', body, re.I)
+        if because:
+            facts.append(Fact(because['cause'], 'causes', because['effect'], document_id, sentence))
+            continue
         # Explicit alias apposition, e.g. the scientific and common names.
         alias = re.fullmatch(r"(?P<subject>[\w '’-]+), known as (?:the )?(?P<alias>[^,]+), (?P<tail>.+)", body)
         if alias:
@@ -139,7 +143,7 @@ class KnowledgeGraph:
                 conn.execute('DELETE FROM facts WHERE substr(document_id, 1, ?) = ?', (len(prefix), prefix))
 
     def neighborhood(self, question: str, *, allowed=None, hops: int = 2, limit: int = 24,
-                     channels: set[str] | None = None) -> list[Fact]:
+                     channels: set[str] | None = None, intent=None) -> list[Fact]:
         if not self.path.exists() or limit <= 0 or hops <= 0:
             return []
         with self._connect() as conn:
@@ -147,6 +151,13 @@ class KnowledgeGraph:
                     if source_allowed(row['document_id'], allowed)]
         if channels is not None:
             rows = [row for row in rows if row.channels.intersection(channels)]
+        if intent is not None:
+            request = intent.get('requested') or {}
+            weights = intent.get('channels') or {}
+            rows.sort(key=lambda row: (
+                row.relation == request.get('relation'),
+                sum(weights.get(name, {}).get('weight', 0.) for name in row.channels)), reverse=True)
+            question = request.get('entity') or question
         question = ' ' + normalize(question) + ' '
         endpoints = {normalize(value) for row in rows for value in (row.subject, row.object)}
         frontier = {value for value in endpoints if value and f' {value} ' in question}

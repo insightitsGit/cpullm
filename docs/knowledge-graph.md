@@ -66,3 +66,29 @@ apply before either operation traverses edges. Ordinary retrieval exposes the
 assessments in `graph_evidence`, including for dense hits already present; the
 six channel readings expose their matching connections. Legacy fact tables
 migrate automatically; re-ingest to compute endpoint vector scores for old rows.
+
+## Prompt intent routing and sentence selection
+
+`VectorPrismIndex.intent_for` reuses the prompt's full 1024-dimensional encoding
+and compares enabled channel slices with six cached intent prototypes. Each
+channel uses its own scoring function (cosine, negative Euclidean/Poincare
+distance, or directed causal score). Recognized prompt forms provide independent
+symbolic channel activations. Prototype scores are uncalibrated soft priorities,
+not trained intention labels, and disabled heads contribute no vector score.
+
+Ordinary retrieval now returns `prompt_intent`, prioritizes matching graph
+relationships before applying the graph budget, and reranks candidates using
+the requested relationship and channel weights. Alias connections remain
+available as bridges. Source restrictions still apply before traversal and
+before candidate ranking; historical requests still skip current-graph expansion.
+Dense retrieval supplies the initial candidates; this does not turn disabled
+VectorPrism projection heads into trained multichannel ANN indexes.
+
+For supported question forms, answer selection requires the same entity (or
+an explicit alias), requested relation, direction, and supported channel. Current
+forms cover kind/type, color, location (`live`/`reside`), possession, and directed
+causes, including explicit `because` sentences. The selected output quotes its
+supporting sentence rather than inventing a sentence from nearby words. Missing
+relations produce a nonanswer; incompatible color values retain a conflict.
+Other question shapes retain their existing producers. Comparative intent is
+reported but does not yet implement a general contrast answer generator.

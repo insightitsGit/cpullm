@@ -77,8 +77,14 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
         and not math_text
         and not finance_text
     )
+    channel_supported = assessment is not None and assessment.get('kind') == 'channel' and assessment.get('answer_status') in {'answered', 'evidence_quote', 'conflicting'}
+    if channel_supported and (state.get('frame_result') or {}).get('status') in {'missing', 'unsupported'}:
+        frame_only = False
+        frame_text = ''
     situation = None if draft is not None else _situation(state, math_only=math_only, frame_only=frame_only)
     situation_owns = situation is not None and not _unchecked_gap(situation, state)
+    if channel_supported and situation is not None and situation.get('verdict') == 'NONE':
+        situation_owns = False
     if math_only:
         lines = [math_text]
     elif finance_only:
@@ -193,7 +199,7 @@ def _query_assessment(state: dict[str, Any]) -> dict[str, Any] | None:
             continue
         seen.add(document_id)
         rows.append({"document_id": document_id or f"passage-{len(rows)}", "text": text})
-    decision = assess(message, rows)
+    decision = assess(message, rows, intent=state.get('prompt_intent'))
     if decision is None:
         return None
     original = state.get("original_message")

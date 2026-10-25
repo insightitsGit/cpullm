@@ -122,13 +122,17 @@ def parse_query(message: str) -> dict[str, str] | None:
     return {"kind": "definition", "subject": _subject_phrase(rest), "tense": tense, "raw": text}
 
 
-def assess(message: str, chunks: list[Any]) -> dict[str, Any] | None:
+def assess(message: str, chunks: list[Any], *, intent=None) -> dict[str, Any] | None:
     """Whether the supplied sentences state the asked relation.
 
     ``None`` means the question is outside this contract. ``answered`` means
     the sentences state one value. It does not mean a later audit ran, and it
     does not mean the source is true.
     """
+    from cpu_llm.prompt_intent import select_channel_answer
+    channel_answer = select_channel_answer(message, chunks, intent=intent)
+    if channel_answer is not None:
+        return channel_answer
     plan = parse_query(message)
     if plan is None:
         return None

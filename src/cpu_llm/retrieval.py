@@ -90,6 +90,16 @@ class VectorPrismIndex:
     def encode_query(self, query: str):
         return self.pipeline.encode_query(query)
 
+    def intent_for(self, query: str, *, query_tensor=None):
+        """Reuse the prompt tensor and lazily cache six routing prototypes."""
+        from cpu_llm.prompt_intent import PROTOTYPE_TEXTS, route_prompt
+        if not hasattr(self, '_intent_prototypes'):
+            vectors = self.pipeline.encode_texts(list(PROTOTYPE_TEXTS.values()))
+            self._intent_prototypes = dict(zip(PROTOTYPE_TEXTS, vectors))
+        vector = self.encode_query(query) if query_tensor is None else query_tensor
+        return route_prompt(query, query_tensor=vector, enabled_channels=self.pipeline.enabled_channels,
+                            prototypes=self._intent_prototypes, causal_matrix=self.engine.causal_matrix)
+
     def search(self, query: str, top_k: int = 5, *, query_tensor: object | None = None, as_of: int | None = None):
         """Nearest chunks for ``query``.
 
