@@ -56,12 +56,12 @@ def test_variant_is_encoded_with_same_scope_and_original_prompt_is_preserved(mon
         searches.append((text, allowed, kwargs['as_of']))
         return [] if 'encounter' in text else [dict(document_id='public-a', chunk_text='The coastal moth lives in Norway.', final_score=.8)]
     index = SimpleNamespace(encode_query=encode, search_allowed=search, db=SimpleNamespace())
-    appliance = SimpleNamespace(index=index, _turn=dict(allowed_sources={'public'}, as_of=123),
+    appliance = SimpleNamespace(index=index, _turn=dict(allowed_sources={'public-a'}, as_of=123),
                                 memory=SimpleNamespace(_nodes={}, _edges={}))
     question = 'Where would I encounter the coastal moth?'
     result = _retrieve(appliance)({'message': question})
     assert encoded == [question, 'Where does the coastal moth live?']
-    assert all(scope == {'public'} and timestamp == 123 for _,scope,timestamp in searches)
+    assert all(scope == {'public-a'} and timestamp == 123 for _,scope,timestamp in searches)
     assert result['prompt_intent']['dictionary']['original'] == question
     assert result['passages'][0]['document_id'] == 'public-a'
     assert len(route_prompt(question)['channels']) == 6

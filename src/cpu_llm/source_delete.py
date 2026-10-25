@@ -8,14 +8,12 @@ miss rows or drop edges that other sources still use.
 from __future__ import annotations
 
 import json
-import re
 from pathlib import Path
 from typing import Any
 
 from prismcortex.models import DeltaOp, Operation, Provenance, StateDelta
 
-_PREFIX = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*-p")
-_PARAGRAPH = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*-p\d{4}")
+from cpu_llm.source_ids import is_paragraph_id, is_source_prefix, matches_prefix, prefix_of
 
 
 def source_prefix(source: str) -> str:
@@ -27,14 +25,14 @@ def source_prefix(source: str) -> str:
     name = str(source or "").strip().replace("\\", "/").rsplit("/", 1)[-1]
     if not name:
         raise ValueError("a source name or id prefix is required")
-    if _PARAGRAPH.fullmatch(name):
-        return name[:-4]
-    if _PREFIX.fullmatch(name):
+    if is_paragraph_id(name):
+        return prefix_of(name)
+    if is_source_prefix(name):
         return name
     from cpu_llm.documents import SourceDocument, replace_prefix
 
     prefix = replace_prefix(SourceDocument(name, ()))
-    if not _PREFIX.fullmatch(prefix):
+    if not is_source_prefix(prefix):
         raise ValueError("the source name does not make a document id prefix")
     return prefix
 
@@ -47,11 +45,11 @@ def erase_graph_prefix(store: Any, prefix: str) -> dict[str, Any]:
     touching edges are stamped the same way, then ``forget_source`` erases both.
     Output-format nodes stay, because their ids do not use a document prefix.
     """
-    nodes = [node for node in store.all_nodes() if str(node.id).startswith(prefix)]
+    nodes = [node for node in store.all_nodes() if matches_prefix(str(node.id), prefix)]
     edges = [
         edge
         for edge in store.all_edges()
-        if str(edge.src).startswith(prefix) or str(edge.dst).startswith(prefix)
+        if matches_prefix(str(edge.src), prefix) or matches_prefix(str(edge.dst), prefix)
     ]
     provenance = Provenance(source_id=prefix)
     ops: list[DeltaOp] = []
@@ -74,7 +72,7 @@ def erase_graph_prefix(store: Any, prefix: str) -> dict[str, Any]:
     if ops:
         store.apply(StateDelta(ops=ops))
     receipt = store.forget_source(prefix) if ops else {"nodes_erased": 0, "edges_erased": 0}
-    remaining = [node.id for node in store.all_nodes() if str(node.id).startswith(prefix)]
+    remaining = [node.id for node in store.all_nodes() if matches_prefix(str(node.id), prefix)]
     return {
         "nodes_erased": int(receipt.get("nodes_erased") or 0),
         "edges_erased": int(receipt.get("edges_erased") or 0),

@@ -51,6 +51,26 @@ def test_criterion_is_not_evidence_and_wrong_criterion_cannot_answer():
     assert not supported_ranking(plan, [dict(document_id='a', chunk_text='The crab is best for taste.')])
 
 
+def test_a_short_criterion_is_not_a_new_question():
+    loop = ClarificationLoop()
+    loop.prepare('Which lobster is best?', key='a')
+    taste = loop.prepare('how it tastes', key='a')
+    assert taste['status'] == 'ready'
+    assert taste['criteria'] == 'it tastes'
+    assert 'clarification_abandoned' not in taste
+    loop.prepare('Which lobster is best?', key='b')
+    cost = loop.prepare('what it costs', key='b')
+    assert cost['status'] == 'ready' and cost['criteria'] == 'what it costs'
+    loop.prepare('Which lobster is best?', key='c')
+    price = loop.prepare('by price', key='c')
+    assert price['status'] == 'ready' and price['criteria'] == 'price'
+    loop.prepare('Which lobster is best?', key='d')
+    fresh = loop.prepare('Which lobster is cheapest?', key='d')
+    assert fresh['clarification_abandoned'] is True
+    assert fresh['query'] == 'Which lobster is cheapest?'
+    assert 'Which lobster is best' not in fresh['query']
+
+
 def test_explicit_criterion_does_not_need_a_first_question():
     plan = ClarificationLoop().prepare('Which lobster is best for taste?')
     assert plan['criteria'] == 'taste' and plan['status'] == 'ready'

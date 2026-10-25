@@ -10,14 +10,19 @@ from __future__ import annotations
 
 import argparse
 import json
+import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from typing import Any
+from typing import Any, Callable
 
 from cpu_llm.access import AccessError, AuthenticationError, SourceForbidden, StorageError
 from cpu_llm.documents import SourceDocument
 from cpu_llm.entry import Entry
 
 _ASK_FIELDS = ("discover", "imagine", "deep", "math", "finance", "as_of", "session_id")
+
+
+class UnknownRoute(Exception):
+    """The request named a path this service does not provide."""
 
 
 class LocalService:
@@ -43,20 +48,31 @@ def main() -> None:
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument('--reference-backend', choices=['coreferee', 'fastcoref'])
+    parser.add_argument(
+        "--ingest-root",
+        default=None,
+        help="Directory that path ingestion may read. Required for source paths.",
+    )
     args = parser.parse_args()
     appliances: dict[str, Any] = {}
+    cache_lock = threading.Lock()
 
-    def appliance_for(tenant: str) -> Any:
+    def build(tenant: str) -> Any:
         from cpu_llm.pipeline import Appliance
 
-        found = appliances.get(tenant)
-        if found is None:
-            found = Appliance(namespace=None if tenant == "cpu-llm" else tenant,
-                              reference_backend=args.reference_backend)
-            appliances[tenant] = found
-        return found
+        return Appliance(
+            namespace=None if tenant == "cpu-llm" else tenant,
+            reference_backend=args.reference_backend,
+        )
 
-    service = LocalService(Entry(args.secrets, appliance_for), host=args.host, port=args.port)
+    def appliance_for(tenant: str) -> Any:
+        return cached_appliance(appliances, cache_lock, tenant, build)
+
+    service = LocalService(
+        Entry(args.secrets, appliance_for, ingest_root=args.ingest_root),
+        host=args.host,
+        port=args.port,
+    )
     try:
         service.serve_forever()
     finally:
@@ -74,6 +90,8 @@ def _handler(entry: Entry) -> type[BaseHTTPRequestHandler]:
                 secret = _bearer(self.headers.get("Authorization"))
                 payload = _json_body(self)
                 status, body = _dispatch(entry, self.path, secret, payload)
+            except UnknownRoute as exc:
+                status, body = 404, {"error": "not_found", "message": str(exc)}
             except AccessError as exc:
                 status, body = _access_status(exc), exc.as_dict()
             except ValueError as exc:
@@ -116,7 +134,32 @@ def _dispatch(entry: Entry, path: str, secret: str, payload: dict[str, Any]) -> 
             actor_id=str(payload.get("actor_id") or ""),
             timestamp=int(payload["timestamp"]),
         )
-    raise ValueError("that path is not served")
+    raise UnknownRoute("that path is not served")
+
+
+def cached_appliance(
+    cache: dict[str, Any],
+    lock: threading.Lock,
+    tenant: str,
+    factory: Callable[[str], Any],
+) -> Any:
+    """Build one appliance per tenant. A duplicate build is closed."""
+    found = cache.get(tenant)
+    if found is not None:
+        return found
+    with lock:
+        found = cache.get(tenant)
+        if found is not None:
+            return found
+        created = factory(tenant)
+        current = cache.get(tenant)
+        if current is not None:
+            close = getattr(created, "close", None)
+            if close is not None:
+                close()
+            return current
+        cache[tenant] = created
+        return created
 
 
 def _source(payload: dict[str, Any]) -> Any:

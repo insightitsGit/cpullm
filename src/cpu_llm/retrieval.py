@@ -292,10 +292,11 @@ class VectorPrismIndex:
         if replace_prefix:
             if not hasattr(self.db, "conn"):
                 raise ValueError("replacing a source requires the pgvector backend")
+            predicate, parameter = _prefix_predicate(replace_prefix)
             with self.db.conn.cursor() as cursor:
                 cursor.execute(
-                    "DELETE FROM psm_document_embeddings WHERE document_id LIKE %s",
-                    (replace_prefix + "%",),
+                    f"DELETE FROM psm_document_embeddings WHERE {predicate}",
+                    (parameter,),
                 )
         if not chunks:
             return 0
@@ -312,18 +313,22 @@ class VectorPrismIndex:
     def delete_prefix(self, prefix: str) -> int:
         """Delete stored rows whose document id starts with ``prefix``.
 
-        ``prefix`` is the ingest id prefix, such as ``notes-p``. The match is a
-        bound SQL LIKE prefix. A prefix that is not that shape is refused
-        before the database is touched.
+        ``prefix`` is the ingest id prefix, such as ``notes-p``. The match is
+        that prefix plus a four-digit paragraph number, and an optional
+        correction version. A prefix that is not that shape is refused before
+        the database is touched.
         """
-        if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*-p", prefix):
+        from cpu_llm.source_ids import is_source_prefix
+
+        if not is_source_prefix(prefix):
             raise ValueError("source prefix must look like a document id prefix ending in -p")
         if not hasattr(self.db, "conn"):
             raise ValueError("deleting a source requires the pgvector backend")
+        predicate, parameter = _prefix_predicate(prefix)
         with self.db.conn.cursor() as cursor:
             cursor.execute(
-                "DELETE FROM psm_document_embeddings WHERE document_id LIKE %s",
-                (prefix + "%",),
+                f"DELETE FROM psm_document_embeddings WHERE {predicate}",
+                (parameter,),
             )
             deleted = cursor.rowcount
         return int(deleted or 0)
@@ -366,29 +371,43 @@ def _as_of(index: VectorPrismIndex, as_of: int | None) -> int | None:
 
 def _allowed_clause(allowed: frozenset[str]) -> tuple[str, list[object]]:
     """A bound predicate for document ids. It belongs in WHERE, before LIMIT."""
+    from cpu_llm.source_ids import is_source_prefix, postgres_id_pattern
+
     exact: list[str] = []
-    likes: list[str] = []
-    params: list[object] = []
+    patterns: list[str] = []
     for item in sorted(allowed):
-        if re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*-p", item):
-            likes.append("document_id LIKE %s ESCAPE '\\'")
-            params.append(_like_prefix(item))
+        if is_source_prefix(item):
+            patterns.append(postgres_id_pattern(item))
         elif re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", item):
             exact.append(item)
         else:
             raise ValueError("an allowed source must be a document id or an id prefix ending in -p")
     parts: list[str] = []
+    params: list[object] = []
     if exact:
         parts.append("document_id = ANY(%s)")
-        params.insert(0, exact)
-    parts.extend(likes)
+        params.append(exact)
+    for pattern in patterns:
+        parts.append("document_id ~ %s")
+        params.append(pattern)
     if not parts:
         raise ValueError("an allowed source must be a document id or an id prefix ending in -p")
     return "(" + " OR ".join(parts) + ")", params
 
 
 def _row_in_scope(document_id: str, allowed: frozenset[str]) -> bool:
-    return any(document_id == item or document_id.startswith(item) for item in allowed)
+    from cpu_llm.access import source_allowed
+
+    return source_allowed(document_id, allowed)
+
+
+def _prefix_predicate(prefix: str) -> tuple[str, str]:
+    """SQL predicate and bound value for rows belonging to ``prefix``."""
+    from cpu_llm.source_ids import is_source_prefix, postgres_id_pattern
+
+    if is_source_prefix(prefix):
+        return "document_id ~ %s", postgres_id_pattern(prefix)
+    return "document_id LIKE %s ESCAPE '\\'", _like_prefix(prefix)
 
 
 def _like_prefix(stem: str) -> str:

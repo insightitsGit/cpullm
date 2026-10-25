@@ -240,3 +240,24 @@ def test_graph_identity_uses_the_tenant_slug():
     assert source_allowed("alpha-p0001", frozenset({"alpha-p"}))
     assert not source_allowed("beta-p0001", frozenset({"alpha-p"}))
     assert source_allowed("beta-p0001", None)
+
+
+def test_a_source_prefix_stops_at_the_paragraph_number():
+    import re
+
+    from cpu_llm.retrieval import _allowed_clause, _row_in_scope
+
+    assert source_allowed("hr-p0001", frozenset({"hr-p"}))
+    assert source_allowed("hr-p0001-v12", frozenset({"hr-p"}))
+    assert not source_allowed("hr-policy-p0001", frozenset({"hr-p"}))
+    assert not source_allowed("agentic-ledger-p0001", {"agent"})
+    with pytest.raises(ValueError):
+        CallerContext.make("tenant", "alice", ["agent"])
+    CallerContext.make("tenant", "alice", ["hr-p", "hr-p0001"])
+    assert not _row_in_scope("hr-policy-p0001", frozenset({"hr-p"}))
+    assert _row_in_scope("hr-p0001", frozenset({"hr-p"}))
+    clause, params = _allowed_clause(frozenset({"hr-p"}))
+    assert "document_id ~ %s" in clause
+    assert re.search(params[0], "hr-policy-p0001") is None
+    assert re.search(params[0], "hr-p0001")
+    assert re.search(params[0], "hr-p0001-v170000")

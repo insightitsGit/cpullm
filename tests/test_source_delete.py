@@ -55,7 +55,8 @@ def test_delete_prefix_refuses_a_wildcard_before_sql():
         index.delete_prefix("notes_%")
     assert not hasattr(index.db.conn, "sql")
     assert index.delete_prefix("notes-p") == 3
-    assert index.db.conn.params == ("notes-p%",)
+    assert index.db.conn.params == ("^notes-p[0-9]{4}(-v[0-9]+)?$",)
+    assert "document_id ~ %s" in index.db.conn.sql
 
 
 def test_word_ids_for_that_prefix_are_dropped_and_shared_words_remain():
@@ -65,6 +66,9 @@ def test_word_ids_for_that_prefix_are_dropped_and_shared_words_remain():
     }
     assert drop_document_prefix(index, "notes-p") == 2
     assert index == {"kestrel": {"notes": ["other-p0001"]}}
+    longer = {"policy": {"hr": ["hr-p0001", "hr-policy-p0001", "hr-p0001-v12"]}}
+    assert drop_document_prefix(longer, "hr-p") == 2
+    assert longer == {"policy": {"hr": ["hr-policy-p0001"]}}
 
 
 def test_delete_removes_the_source_node_and_keeps_an_output_format(tmp_path):
@@ -107,3 +111,44 @@ def test_delete_removes_the_source_node_and_keeps_an_output_format(tmp_path):
     assert store.all_edges() == []
     assert json.loads(path.read_text(encoding="utf-8")) == {}
     store.close()
+
+
+def test_deleting_one_source_leaves_a_longer_name(tmp_path):
+    from cpu_llm.knowledge_graph import KnowledgeGraph
+    from cpu_llm.source_delete import erase_graph_prefix
+
+    store = SqliteGraphStore(tmp_path / "graph.db", tenant_id="cpu-llm")
+    store.apply(
+        StateDelta(
+            ops=[
+                DeltaOp(
+                    operation=Operation.ASSIMILATE,
+                    node=Node(id="hr-p0001", label="The handbook is a policy.", kind="chunk"),
+                    reason="test",
+                ),
+                DeltaOp(
+                    operation=Operation.ASSIMILATE,
+                    node=Node(id="hr-policy-p0001", label="The handbook is a guide.", kind="chunk"),
+                    reason="test",
+                ),
+            ]
+        )
+    )
+    erase_graph_prefix(store, "hr-p")
+    ids = {node.id for node in store.all_nodes()}
+    assert "hr-p0001" not in ids
+    assert "hr-policy-p0001" in ids
+    store.close()
+
+    graph = KnowledgeGraph(tmp_path / "facts.db")
+    graph.replace(
+        [
+            ("hr-p0001", "The handbook is a policy."),
+            ("hr-policy-p0001", "The handbook is a guide."),
+        ]
+    )
+    graph.delete_prefix("hr-p")
+    with graph._connect() as conn:
+        fact_ids = {row["document_id"] for row in conn.execute("SELECT document_id FROM facts")}
+    assert "hr-p0001" not in fact_ids
+    assert "hr-policy-p0001" in fact_ids

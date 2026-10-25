@@ -1,8 +1,8 @@
 # Current cpu-llm design
 
 Working-tree design snapshot, 2026-10-25. This describes the implementation in
-this checkout, including changes not yet committed or released. Earlier
-versioned specifications and the white paper describe historical stages.
+this checkout. A published package may be older. Earlier versioned
+specifications and the white paper describe historical stages.
 
 ## Purpose and correctness boundary
 
@@ -49,8 +49,11 @@ understanding and free-form sentence generation have not been demonstrated.
    Downstream guard/audit/grammar/Shine holds remain authoritative.
 
 The host application displays `reply.text` and returns user replies with the
-same explicit `session_id`. The library returns loop state; it does not send
-messages or run a background conversation by itself.
+same explicit `session_id`. A short criterion such as "how it tastes" or
+"by price" continues the pending ranking. A new question, including one with
+`?`, abandons it and says so with `clarification_abandoned`. The library
+returns loop state; it does not send messages or run a background conversation
+by itself.
 
 ## Six-channel representation
 
@@ -86,8 +89,9 @@ prototypes, scored with the appropriate channel metric, only for enabled heads.
   new conversation-prompt coreference adapter.
 
 The current fact graph scans its rows for lookup; bounded output is not a claim
-of indexed graph scalability. Replacement ingestion, correction, and deletion
-maintain current facts. Historical queries bypass current-graph expansion.
+of indexed graph scalability. A source prefix matches only its own paragraph
+ids, `prefix` plus four digits and an optional `-v` correction suffix.
+Replacement ingestion, correction, and deletion maintain current facts. Historical queries bypass current-graph expansion.
 Correction rows use the editor-supplied valid-from timestamp. Current vector
 search applies time filtering even on a newly opened index; it does not depend
 on whether that process performed a correction. Model01 pair storage honors

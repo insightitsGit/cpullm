@@ -17,19 +17,27 @@ from __future__ import annotations
 import hashlib
 import hmac
 import json
-from collections.abc import Callable
+from collections.abc import Callable, Iterable
 from pathlib import Path
 from typing import Any
 
 from cpu_llm.access import AuthenticationError, CallerContext, SourceForbidden, source_allowed
+from cpu_llm.documents import SourceDocument, open_source, replace_prefix
 from cpu_llm.pipeline import _namespace_slug
 from cpu_llm.source_delete import source_prefix
 
 
 class Entry:
-    def __init__(self, secrets_path: str | Path, appliance_for: Callable[[str], Any]) -> None:
+    def __init__(
+        self,
+        secrets_path: str | Path,
+        appliance_for: Callable[[str], Any],
+        *,
+        ingest_root: str | Path | None = None,
+    ) -> None:
         self._rows = _load(Path(secrets_path))
         self._appliance_for = appliance_for
+        self._ingest_root = None if ingest_root is None else Path(ingest_root).resolve()
 
     def authenticate(self, secret: str) -> CallerContext:
         presented = _digest(secret or "")
@@ -59,9 +67,33 @@ class Entry:
 
     def ingest(self, secret: str, source: Any) -> dict[str, Any]:
         context = self.authenticate(secret)
-        prefix = source_prefix(source if isinstance(source, str) else getattr(source, "name", ""))
-        _require_source(context, prefix)
-        return self._appliance_for(context.tenant_id).ingest(source)
+        documents = self._documents_for_ingest(source)
+        for document in documents:
+            _require_source(context, replace_prefix(document))
+        return self._appliance_for(context.tenant_id).ingest(documents)
+
+    def _documents_for_ingest(self, source: Any) -> list[SourceDocument]:
+        if isinstance(source, (str, Path)):
+            return open_source(self._confine(Path(source)))
+        if isinstance(source, SourceDocument):
+            return open_source(source)
+        if isinstance(source, Iterable) and not isinstance(source, (bytes, bytearray)):
+            documents: list[SourceDocument] = []
+            for item in source:
+                documents.extend(self._documents_for_ingest(item))
+            if not documents:
+                raise ValueError("the source has no paragraphs")
+            return documents
+        return open_source(source)
+
+    def _confine(self, path: Path) -> Path:
+        """Resolve a server path and keep it inside the configured ingest root."""
+        if self._ingest_root is None:
+            raise SourceForbidden("path ingest is not enabled on this service")
+        resolved = path.resolve()
+        if not resolved.is_relative_to(self._ingest_root):
+            raise SourceForbidden("that path is outside the ingest root")
+        return resolved
 
     def correct(self, secret: str, document_id: str, prior_sentence: str, new_sentence: str, **kwargs: Any) -> dict[str, Any]:
         context = self.authenticate(secret)

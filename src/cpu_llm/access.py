@@ -8,11 +8,10 @@ does not include a traceback.
 
 from __future__ import annotations
 
-import re
 import uuid
 from dataclasses import dataclass
 
-_SOURCE = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
+from cpu_llm.source_ids import id_in_prefix, is_paragraph_id, is_source_prefix
 
 
 class AccessError(Exception):
@@ -56,8 +55,10 @@ class CallerContext:
     ) -> "CallerContext":
         sources = frozenset(str(item) for item in allowed_sources)
         for item in sources:
-            if not _SOURCE.fullmatch(item):
-                raise ValueError("an allowed source must be a document id or an id prefix")
+            if not (is_source_prefix(item) or is_paragraph_id(item)):
+                raise ValueError(
+                    "an allowed source must be a source prefix ending in -p or a paragraph id"
+                )
         return CallerContext(
             tenant_id=tenant_id,
             caller_id=caller_id,
@@ -75,7 +76,11 @@ def source_allowed(document_id: str, allowed: frozenset[str] | list[str] | None)
         return True
     text = str(document_id)
     for item in allowed:
-        if text == item or text.startswith(item):
+        token = str(item)
+        if is_source_prefix(token):
+            if text == token or id_in_prefix(text, token):
+                return True
+        elif text == token:
             return True
     return False
 

@@ -220,6 +220,57 @@ def test_a_stated_ban_and_an_upper_limit_are_read():
         child_safety=False,
     )
     assert other.verdict == "NONE"
+    bags = answer("Can I bring 3 bags?", ["Passengers may bring up to 5 bags."], child_safety=False)
+    too_many = answer("Can I bring 8 bags?", ["Passengers may bring up to 5 bags."], child_safety=False)
+    assert bags.verdict == "YES"
+    assert too_many.verdict == "NO"
+
+
+def test_an_uncertain_ban_or_limit_is_not_a_verdict():
+    hedge = answer(
+        "Can I park here on weekends?",
+        ["Parking may not be available on weekends."],
+        child_safety=False,
+    )
+    relative = answer(
+        "Can I attend the meeting remotely?",
+        ["Employees who cannot attend must notify HR."],
+        child_safety=False,
+    )
+    overlap = answer(
+        "Can I bring a laptop on the plane?",
+        ["Visitors may not bring cameras into the lab."],
+        child_safety=False,
+    )
+    conditional = answer(
+        "Can I bring 4 bags?",
+        ["Passengers may bring up to 5 bags if they hold first class tickets."],
+        child_safety=False,
+    )
+    lot = answer(
+        "Can I park in lot 5 on Friday?",
+        ["Parking is not allowed in the lot."],
+        child_safety=False,
+    )
+    assert hedge.verdict == "NONE"
+    assert relative.verdict == "NONE"
+    assert overlap.verdict == "NONE"
+    assert conditional.verdict == "NONE"
+    assert lot.verdict == "NO"
+    assert "not allowed" in lot.text
+
+
+def test_a_ban_and_a_limit_for_the_same_question_are_contested():
+    both = answer(
+        "Can I bring 3 bags?",
+        [
+            "Passengers may bring up to 5 bags.",
+            "Passengers must not bring bags.",
+        ],
+        child_safety=False,
+    )
+    assert both.verdict == "CONTESTED"
+    assert len(both.because) == 2
 
 
 def test_a_paraphrase_the_regex_misses_is_read_when_the_model_is_present():

@@ -13,7 +13,10 @@ connection between those two cells.
 from __future__ import annotations
 
 import csv
+import hashlib
+import json
 import re
+import threading
 import zipfile
 from dataclasses import dataclass, field
 from html.parser import HTMLParser
@@ -228,13 +231,58 @@ def _checked(document: SourceDocument) -> SourceDocument:
     return SourceDocument(document.name.strip(), paragraphs, document.connections)
 
 
+_SLUG_LOCKS: dict[str, threading.Lock] = {}
+_SLUG_GUARD = threading.Lock()
+_PARAGRAPH_SLUG = re.compile(r"-p[0-9]{4}\Z")
+
+
 def _slug(name: str) -> str:
     path = Path(name)
     suffix = path.suffix.lower().lstrip(".")
     stem = path.stem if suffix else name
     raw = f"{stem}-{suffix}" if suffix else stem
-    slug = re.sub(r"[^a-z0-9]+", "-", raw.casefold()).strip("-")
-    return (slug or "source")[:72]
+    slug = re.sub(r"[^a-z0-9]+", "-", raw.casefold()).strip("-") or "source"
+    if len(slug) > 72:
+        digest = hashlib.sha256(slug.encode("utf-8")).hexdigest()[:8]
+        head = slug[:63].strip("-")
+        slug = f"{head}-{digest}" if head else digest
+    if _PARAGRAPH_SLUG.search(slug):
+        raise ValueError(f"a source name cannot look like a paragraph id: {name}")
+    return slug
+
+
+def claim_source_names(path: Path, names: list[str]) -> None:
+    """Remember which original name owns each slug. A second name is refused.
+
+    The same name, including a different letter case of that same name, may be
+    ingested again. A different name that normalizes to a slug already stored
+    for this tenant raises ``ValueError`` before any row is replaced.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with _SLUG_GUARD:
+        lock = _SLUG_LOCKS.get(str(path))
+        if lock is None:
+            lock = threading.Lock()
+            _SLUG_LOCKS[str(path)] = lock
+    with lock:
+        current: dict[str, str] = {}
+        if path.is_file():
+            loaded = json.loads(path.read_text(encoding="utf-8"))
+            if isinstance(loaded, dict):
+                current = {str(key): str(value) for key, value in loaded.items()}
+        pending = dict(current)
+        for name in names:
+            slug = _slug(name)
+            owner = name.casefold()
+            previous = pending.get(slug)
+            if previous is None:
+                pending[slug] = owner
+            elif previous != owner:
+                raise ValueError(
+                    f"source name {name!r} normalizes to {slug!r}, already used by another name"
+                )
+        if pending != current:
+            path.write_text(json.dumps(pending, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
 def _html_text(html: str) -> str:

@@ -17,6 +17,24 @@ from cpu_llm.answerability import _sentences
 from cpu_llm.connection_channels import evaluate_connection
 
 
+def _delete_document_prefix(conn, prefix: str) -> None:
+    from cpu_llm.source_ids import is_source_prefix, matches_prefix
+
+    if not is_source_prefix(prefix):
+        conn.execute(
+            'DELETE FROM facts WHERE substr(document_id, 1, ?) = ?',
+            (len(prefix), prefix),
+        )
+        return
+    doomed = [
+        row['document_id']
+        for row in conn.execute('SELECT DISTINCT document_id FROM facts')
+        if matches_prefix(row['document_id'], prefix)
+    ]
+    for document_id in doomed:
+        conn.execute('DELETE FROM facts WHERE document_id = ?', (document_id,))
+
+
 def normalize(text: str) -> str:
     text = re.sub(r"[^\w\s'-]", " ", text.casefold())
     return re.sub(r"^(?:a species of|the|an|a)\s+", "", " ".join(text.split())).strip()
@@ -126,7 +144,7 @@ class KnowledgeGraph:
                 tensors.update(zip(batch, vectors))
         with self._connect() as conn:
             if prefix is not None:
-                conn.execute('DELETE FROM facts WHERE substr(document_id, 1, ?) = ?', (len(prefix), prefix))
+                _delete_document_prefix(conn, prefix)
             for document_id, text in chunks:
                 conn.execute('DELETE FROM facts WHERE document_id = ?', (document_id,))
                 for fact in extracted[document_id]:
@@ -141,7 +159,7 @@ class KnowledgeGraph:
     def delete_prefix(self, prefix: str):
         if self.path.exists():
             with self._connect() as conn:
-                conn.execute('DELETE FROM facts WHERE substr(document_id, 1, ?) = ?', (len(prefix), prefix))
+                _delete_document_prefix(conn, prefix)
 
     def neighborhood(self, question: str, *, allowed=None, hops: int = 2, limit: int = 24,
                      channels: set[str] | None = None, intent=None) -> list[Fact]:

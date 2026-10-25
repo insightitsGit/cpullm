@@ -741,7 +741,8 @@ def _with_memory(pool: list[str]) -> list[str]:
 
 def _answer(question: str, chunks: list[str], extractor=None, retrieve=None, hops: int = 3) -> Answer:
     extractor = extractor or PatternExtractor()
-    pool = _with_memory(list(dict.fromkeys(s.strip() for c in chunks for s in split_sentences(c))))
+    source_pool = list(dict.fromkeys(s.strip() for c in chunks for s in split_sentences(c) if s.strip()))
+    pool = _with_memory(list(source_pool))
     asked = {question}
     for _ in range(hops if retrieve else 0):
         grounded, _ = ground(extractor.extract(pool), pool)
@@ -757,7 +758,8 @@ def _answer(question: str, chunks: list[str], extractor=None, retrieve=None, hop
     grounded, rejected = ground(extractor.extract(pool), pool)
     result = reason(question, grounded)
     if result.verdict == "NONE":
-        covered = _stated_constraint(question, pool)
+        remembered = set(_with_memory(source_pool)) - set(source_pool)
+        covered = _stated_constraint(question, [sentence for sentence in pool if sentence not in remembered])
         if covered is not None:
             result = covered
     result.rejected = rejected
@@ -768,7 +770,8 @@ def _answer(question: str, chunks: list[str], extractor=None, retrieve=None, hop
 
 _PERMIT_ASK = re.compile(r"\b(?:can|may|could|am i allowed)\b", re.I)
 _BAN = re.compile(
-    r"\b(?:may not|must not|cannot|can't|shall not|not allowed|not permitted|prohibited|forbidden|banned)\b",
+    r"\b(?:must not|cannot|can't|shall not|not allowed|not permitted|prohibited|forbidden|banned)\b"
+    r"|\bmay not\b(?!\s+(?:be|always|necessarily|exceed)\b)",
     re.I,
 )
 _LIMIT = re.compile(
@@ -776,70 +779,164 @@ _LIMIT = re.compile(
     re.I,
 )
 _ASK_QTY = re.compile(rf"\b({_NUM})\s+([A-Za-z]+)\b", re.I)
+_CONDITION = re.compile(
+    r"\b(?:if|when|unless|only|provided|except)\b|\bfor\s+(?:those|guests|members)\b",
+    re.I,
+)
+_RELATIVE = re.compile(r"\b(?:who|that|which|those who|anyone who)\b", re.I)
 _CONSTRAINT_SKIP = frozenset(
     "can may could this that with from about your have what when where there their would should using used "
     "hour hours day days minute minutes week weeks".split()
 )
+_UNIT_SKIP = frozenset("on in at the a an for of to and or by with from my our your".split())
+_CONTENT_STOP = _CONSTRAINT_SKIP | _UNIT_SKIP | frozenset(
+    "i we they he she it am is are was were be been being do does did not no nor but if then than "
+    "these those into onto over under up down out here there who which would should shall must "
+    "has had will just also only except unless provided allowed permitted forbidden prohibited banned".split()
+)
 
 
-def _constraint_terms(text: str) -> set[str]:
-    return {
-        singular(word.lower())
-        for word in re.findall(r"[A-Za-z][A-Za-z'-]{3,}", text)
-        if word.lower() not in _CONSTRAINT_SKIP
-    }
+def _constraint_lemma(word: str) -> str:
+    word = singular(word.lower())
+    if len(word) > 5 and word.endswith("ing"):
+        stem = word[:-3]
+        if len(stem) >= 3:
+            return stem
+    return word
+
+
+def _content_lemmas(text: str) -> list[str]:
+    lemmas = []
+    for word in re.findall(r"[A-Za-z][A-Za-z'-]*", text):
+        if word.lower() in _CONTENT_STOP:
+            continue
+        lemma = _constraint_lemma(word)
+        if lemma and lemma not in _CONTENT_STOP:
+            lemmas.append(lemma)
+    return lemmas
+
+
+def _question_verb(question: str) -> str:
+    for word in re.findall(r"[A-Za-z][A-Za-z'-]*", question):
+        if word.lower() in _CONTENT_STOP:
+            continue
+        return _constraint_lemma(word)
+    return ""
+
+
+def _topical(question: str, sentence: str, verb: str) -> bool:
+    shared = set(_content_lemmas(question)) & set(_content_lemmas(sentence))
+    nouns = shared - {verb} if verb else set(shared)
+    if verb and verb in _content_lemmas(sentence) and nouns:
+        return True
+    return len(shared) >= 2
+
+
+def _supports_limit(question: str, sentence: str, verb: str) -> bool:
+    if _topical(question, sentence, verb):
+        return True
+    return bool(verb) and verb in _content_lemmas(sentence)
+
+
+def _asked_quantities(question: str) -> list[tuple[float, str]]:
+    found = []
+    for match in _ASK_QTY.finditer(question):
+        unit = match.group(2).lower()
+        if unit in _UNIT_SKIP:
+            continue
+        found.append((to_number(match.group(1)), unit))
+    return found
+
+
+def _relative_ban(sentence: str, match: re.Match[str]) -> bool:
+    clause = re.split(r"[,.;:]", sentence[: match.start()])[-1]
+    return _RELATIVE.search(clause) is not None
 
 
 def _stated_constraint(question: str, pool: list[str]) -> Optional[Answer]:
     """A ban or an upper limit the numeric rule reader did not parse.
 
-    The sentence is quoted. A shared topic word is required, so a ban about
-    one subject is not applied to a different question.
+    Uncertain sentences stay unanswered. A hedge, a relative clause, a
+    condition, or a single shared word does not produce a verdict. Background
+    memory sentences are not part of this pool.
     """
     if not _PERMIT_ASK.search(question):
         return None
-    asked = _constraint_terms(question)
-    if not asked:
+    verb = _question_verb(question)
+    if not _content_lemmas(question):
         return None
-    quantity = _ASK_QTY.search(question)
+    quantities = _asked_quantities(question)
+    bans: list[str] = []
+    limits: list[tuple[str, str, str]] = []
     for raw in pool:
         sentence = raw.strip()
-        if not sentence or not (asked & _constraint_terms(sentence)):
-            continue
-        if quantity is None and _BAN.search(sentence) and not _LIMIT.search(sentence):
-            return Answer(
-                "NO",
-                f"No. {sentence}",
-                [sentence],
-                plan=_plan("NO", question, gap="categorical_ban", stance="prohibited"),
-            )
-        if quantity is None:
+        if not sentence or _CONDITION.search(sentence):
             continue
         limit = _LIMIT.search(sentence)
-        if limit is None:
+        if limit is not None and quantities and _supports_limit(question, sentence, verb):
+            limit_unit = singular(limit.group(2).lower())
+            for asked_value, asked_unit in quantities:
+                if singular(asked_unit) != limit_unit:
+                    continue
+                limit_value = to_number(limit.group(1))
+                shown = f"{asked_value:g} {asked_unit}"
+                cap = f"{limit_value:g} {limit.group(2).lower()}"
+                if asked_value <= limit_value:
+                    text = f"Yes. The retrieved passage allows up to {cap}: {sentence}"
+                    verdict = "YES"
+                else:
+                    text = (
+                        f"No. The retrieved passage allows up to {cap}, and the question "
+                        f"asks about {shown}: {sentence}"
+                    )
+                    verdict = "NO"
+                limits.append((verdict, text, sentence))
+                break
             continue
-        asked_unit = singular(quantity.group(2).lower())
-        limit_unit = singular(limit.group(2).lower())
-        if asked_unit != limit_unit:
+        ban = _BAN.search(sentence)
+        if ban is None or _relative_ban(sentence, ban) or not _topical(question, sentence, verb):
             continue
-        asked_value = to_number(quantity.group(1))
-        limit_value = to_number(limit.group(1))
-        shown = f"{asked_value:g} {quantity.group(2).lower()}"
-        cap = f"{limit_value:g} {limit.group(2).lower()}"
-        if asked_value <= limit_value:
-            text = f"Yes. The retrieved passage allows up to {cap}: {sentence}"
-            verdict = "YES"
-        else:
-            text = f"No. The retrieved passage allows up to {cap}, and the question asks about {shown}: {sentence}"
-            verdict = "NO"
-        return Answer(verdict, text, [sentence], plan=_plan(verdict, question, gap="stated_limit"))
+        bans.append(sentence)
+    if bans and limits:
+        sentences = bans + [item[2] for item in limits]
+        text = "The retrieved passages disagree. " + " ".join(sentences)
+        return Answer(
+            "CONTESTED",
+            text,
+            sentences,
+            plan=_plan("CONTESTED", question, gap="contested_constraint"),
+        )
+    if limits:
+        verdicts = {item[0] for item in limits}
+        sentences = [item[2] for item in limits]
+        if len(verdicts) > 1:
+            text = "The retrieved passages disagree. " + " ".join(sentences)
+            return Answer(
+                "CONTESTED",
+                text,
+                sentences,
+                plan=_plan("CONTESTED", question, gap="contested_constraint"),
+            )
+        return Answer(
+            limits[0][0],
+            " ".join(item[1] for item in limits),
+            sentences,
+            plan=_plan(limits[0][0], question, gap="stated_limit"),
+        )
+    if bans:
+        return Answer(
+            "NO",
+            "No. " + " ".join(bans),
+            bans,
+            plan=_plan("NO", question, gap="categorical_ban", stance="prohibited"),
+        )
     return None
 
 
 def _situation_text(result: Answer) -> str:
     """The sentence for this verdict."""
     plan = result.plan or {}
-    if plan.get("gap") in {"categorical_ban", "stated_limit"}:
+    if plan.get("gap") in {"categorical_ban", "stated_limit", "contested_constraint"}:
         return result.text
     if plan.get("verdict") not in {"YES", "NO", "CONTESTED", "UNKNOWN", "CAUSE", "NONE"}:
         return result.text

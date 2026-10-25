@@ -6,7 +6,13 @@ import time
 
 _RANK = re.compile(r'\b(?:best|worst|better|worse)\b', re.I)
 _CRITERION = re.compile(r'\b(?:for|by|based on|in terms of|according to)\s+(.+)', re.I)
+_LEADING = re.compile(r'^(?:who|what|where|when|why|how|can|which)\b', re.I)
+_CRITERION_LEAD = re.compile(r'^(?:how|by|for|based on)\s+', re.I)
 _VAGUE = {'yes', 'no', 'anything', 'everything', 'whatever', 'best', 'i dont know', "i don't know", 'not sure'}
+_TOPIC_STOP = {
+    'the', 'a', 'an', 'is', 'are', 'of', 'for', 'to', 'which', 'what', 'who', 'how',
+    'where', 'when', 'why', 'can', 'best', 'worst', 'better', 'worse',
+}
 
 
 class ClarificationLoop:
@@ -37,9 +43,10 @@ class ClarificationLoop:
                 source = text.split(':', 1)[1].strip()
                 return dict(status='ready', query=state['query'], question=state['question'],
                             criteria=state['criteria'], user_source=source, evidence_attempts=state['count'])
-            # A full new question abandons the pending request rather than
-            # being silently consumed as a preference for the previous topic.
-            if state and ('?' in text or re.match(r'^(?:who|what|where|when|why|how|can|which)\b', text, re.I)):
+            # A new question abandons the pending request. A short criterion
+            # such as "how it tastes" stays with the pending ranking.
+            abandoned = bool(state and _abandons_pending(text, state))
+            if abandoned:
                 state = None
             if state and state.get('stage') == 'evidence':
                 state['count'] += 1
@@ -48,7 +55,7 @@ class ClarificationLoop:
                 self._save(key, state)
                 return dict(status='needs_clarification', slot='evidence', text='Please provide the relevant source or data, starting with “Source:”, or ask a new question.')
             if state:
-                criteria = text
+                criteria = _criterion_text(text)
                 question = state['question']
                 count = state['count'] + 1
             elif _RANK.search(text):
@@ -56,16 +63,22 @@ class ClarificationLoop:
                 criteria = match[1].rstrip('?.!') if match else ''
                 question, count = text, 1
             else:
-                return dict(status='ready', query=message)
+                ready = dict(status='ready', query=message)
+                if abandoned:
+                    ready['clarification_abandoned'] = True
+                return ready
             vague = not criteria or criteria.casefold().strip(' .?!') in _VAGUE or len(criteria) > 500
             if vague:
                 if count >= self.max_questions:
-                    return dict(status='insufficient_information', text='I still need a specific criterion to compare them. Please restate the question with what matters to you.')
+                    return _with_abandonment(dict(status='insufficient_information', text='I still need a specific criterion to compare them. Please restate the question with what matters to you.'), abandoned)
                 self._save(key, dict(stage='criteria', question=question, count=count))
-                return dict(status='needs_clarification', slot='criteria', question=question,
-                            text='What does “best” mean for you, and what will you use it for? For example, taste, price, or size—or another criterion you choose.')
+                return _with_abandonment(dict(status='needs_clarification', slot='criteria', question=question,
+                            text='What does “best” mean for you, and what will you use it for? For example, taste, price, or size—or another criterion you choose.'), abandoned)
             query = f"{question.rstrip('?.!')} — criterion supplied by the user: {criteria}"
-            return dict(status='ready', query=query, question=question, criteria=criteria)
+            ready = dict(status='ready', query=query, question=question, criteria=criteria)
+            if abandoned:
+                ready['clarification_abandoned'] = True
+            return ready
 
     def need_evidence(self, plan, *, key=None):
         count = plan.get('evidence_attempts', 0) + 1
@@ -76,6 +89,33 @@ class ClarificationLoop:
             self._save(key, dict(stage='evidence', query=plan['query'], question=plan['question'], criteria=plan['criteria'], count=count))
         return dict(status='needs_clarification', slot='evidence', criteria=plan['criteria'],
                     text=f'I do not have evidence that establishes which is best for {plan["criteria"]}. Can you provide relevant comparison data or a source?')
+
+
+def _criterion_text(text):
+    stripped = _CRITERION_LEAD.sub('', text.strip(), count=1).strip()
+    return stripped or text.strip()
+
+
+def _abandons_pending(text, state):
+    """True when this reply is a new question rather than an answer to the pending one."""
+    if '?' in text:
+        return True
+    if state.get('stage') == 'evidence':
+        return bool(_LEADING.match(text))
+    if not _LEADING.match(text):
+        return False
+    words = re.findall(r"[A-Za-z']+", text)
+    if len(words) <= 6:
+        return False
+    topic = {word.lower() for word in re.findall(r"[A-Za-z']+", state.get('question') or '')} - _TOPIC_STOP
+    reply = {word.lower() for word in words} - _TOPIC_STOP
+    return not bool(topic & reply)
+
+
+def _with_abandonment(result, abandoned):
+    if abandoned:
+        result['clarification_abandoned'] = True
+    return result
 
 
 def scoped_session(tenant, caller, sources, session_id, as_of):
@@ -102,7 +142,10 @@ def supported_ranking(plan, rows):
 
 
 def clarification_result(outcome, message, tenant):
-    return dict(message=message, original_message=message, tenant_id=tenant, answer=None,
-                status=outcome['status'], needs_clarification=outcome['status'] == 'needs_clarification',
-                clarification=outcome, reply=dict(text=outcome['text'], answer_status=outcome['status']),
-                passages=[], related=[])
+    result = dict(message=message, original_message=message, tenant_id=tenant, answer=None,
+                  status=outcome['status'], needs_clarification=outcome['status'] == 'needs_clarification',
+                  clarification=outcome, reply=dict(text=outcome['text'], answer_status=outcome['status']),
+                  passages=[], related=[])
+    if outcome.get('clarification_abandoned'):
+        result['clarification_abandoned'] = True
+    return result

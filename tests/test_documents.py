@@ -9,8 +9,8 @@ import openpyxl
 import pytest
 from pypdf import PdfReader
 
-from cpu_llm.documents import chunks_for, open_source, paragraphs_from_text, structured_paragraphs
-from cpu_llm.documents import SourceDocument
+from cpu_llm.documents import chunks_for, claim_source_names, open_source, paragraphs_from_text, structured_paragraphs
+from cpu_llm.documents import SourceDocument, _slug
 from cpu_llm.relations import add_edges, load_edges
 
 
@@ -151,3 +151,31 @@ def _pdf(text: str) -> bytes:
         f"trailer << /Size {len(objects) + 1} /Root 1 0 R >>\nstartxref\n{xref}\n%%EOF\n".encode()
     )
     return bytes(out)
+
+
+def test_a_shorter_source_name_does_not_share_its_prefix():
+    from cpu_llm.documents import replace_prefix
+
+    assert replace_prefix(SourceDocument("hr", ("x",))) == "hr-p"
+    assert chunks_for(SourceDocument("hr-policy", ("y",)))[0][0] == "hr-policy-p0001"
+
+
+def test_two_names_cannot_claim_one_slug(tmp_path):
+    registry = tmp_path / "source_slugs.json"
+    claim_source_names(registry, ["Q3 Report.pdf"])
+    with pytest.raises(ValueError, match="already used"):
+        claim_source_names(registry, ["q3-report.pdf"])
+    claim_source_names(registry, ["Q3 Report.pdf"])
+
+
+def test_a_truncated_name_keeps_a_hash_of_the_full_name():
+    left = "quarterly-operating-review-" + ("alpha" * 20)
+    right = "quarterly-operating-review-" + ("beta" * 20)
+    assert _slug(left) != _slug(right)
+    assert len(_slug(left)) <= 72
+    assert len(_slug(right)) <= 72
+
+
+def test_a_name_that_looks_like_a_paragraph_id_is_rejected():
+    with pytest.raises(ValueError, match="paragraph id"):
+        chunks_for(SourceDocument("report-p0003", ("x",)))

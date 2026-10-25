@@ -238,11 +238,77 @@ class Appliance:
                 raise ValueError('reference_backend must be coreferee, fastcoref, an adapter, or None')
             reference_backend = CorefereeBackend() if reference_backend == 'coreferee' else FastCorefBackend()
         self.references = ReferenceSessions(reference_backend)
-        self._turn: dict[str, Any] | None = None
         self._creative_seen: dict[str, str] = {}
-        self._previous_ids: list[str] = []
-        self._deep_tensors: dict[str, Any] = {}
+        self._session_locks: dict[Any, threading.RLock] = {}
+        self._session_guard = threading.Lock()
+        self.source_slug_path = cache / "source_slugs.json"
+        self._turn = None
+        self._previous_ids = []
+        self._deep_tensors = {}
         self.graph = _compile(self)
+
+    def _slot(self, name: str, factory):
+        bound = self.__dict__.get("_bound")
+        if bound is None:
+            slots = self.__dict__.setdefault("_unbound_slots", {})
+            if name not in slots:
+                slots[name] = factory()
+            return slots[name]
+        if not hasattr(bound, name):
+            setattr(bound, name, factory())
+        return getattr(bound, name)
+
+    def _set_slot(self, name: str, value: Any) -> None:
+        bound = self.__dict__.get("_bound")
+        if bound is None:
+            self.__dict__.setdefault("_unbound_slots", {})[name] = value
+            return
+        setattr(bound, name, value)
+
+    @property
+    def _turn(self) -> dict[str, Any] | None:
+        return self._slot("turn", lambda: None)
+
+    @_turn.setter
+    def _turn(self, value: dict[str, Any] | None) -> None:
+        self._set_slot("turn", value)
+
+    @property
+    def _previous_ids(self) -> list[str]:
+        return self._slot("previous_ids", list)
+
+    @_previous_ids.setter
+    def _previous_ids(self, value: list[str]) -> None:
+        self._set_slot("previous_ids", value)
+
+    @property
+    def _deep_tensors(self) -> dict[str, Any]:
+        return self._slot("deep_tensors", dict)
+
+    @_deep_tensors.setter
+    def _deep_tensors(self, value: dict[str, Any]) -> None:
+        self._set_slot("deep_tensors", value)
+
+    def _session_turn(self, key: Any):
+        """Serialize turns that share a session. Other sessions keep their own turn state."""
+        from contextlib import nullcontext
+
+        if not key:
+            return nullcontext()
+        guard = getattr(self, "_session_guard", None)
+        if guard is None:
+            guard = threading.Lock()
+            self._session_guard = guard
+        locks = getattr(self, "_session_locks", None)
+        if locks is None:
+            locks = {}
+            self._session_locks = locks
+        with guard:
+            lock = locks.get(key)
+            if lock is None:
+                lock = threading.RLock()
+                locks[key] = lock
+        return lock
 
     def _encode_sense(self, texts: list[str]):
         """Frozen retrieval encoder. The semantic trigger uses this space, not a second model."""
@@ -352,6 +418,11 @@ class Appliance:
         from cpu_llm.relations import add_edges
 
         documents = open_source(source)
+        registry = getattr(self, "source_slug_path", None)
+        if registry is not None:
+            from cpu_llm.documents import claim_source_names
+
+            claim_source_names(registry, [document.name for document in documents])
         stored = 0
         ids: list[str] = []
         connections = 0
@@ -433,14 +504,6 @@ class Appliance:
     def upsert(self, document_id: str, chunk_text: str) -> int:
         return self.index_chunks([(document_id, chunk_text)])
 
-    @property
-    def _turn(self) -> dict[str, Any] | None:
-        return getattr(self._bound, "turn", None)
-
-    @_turn.setter
-    def _turn(self, value: dict[str, Any] | None) -> None:
-        self._bound.turn = value
-
     def active_thinker(self) -> WarmPrismThinker:
         """The thinker for this thread's seat. The default ask uses the appliance thinker."""
         bound = getattr(self._bound, "thinker", None)
@@ -483,171 +546,175 @@ class Appliance:
         raw_message = message
         session_key = scoped_session(self.tenant_id, None if context is None else context.caller_id,
                                      None if context is None else context.allowed_sources, session_id, as_of)
-        from cpu_llm.references import ReferenceSessions
-        if not hasattr(self, 'references'):
-            self.references = ReferenceSessions()
-        # Cancellation must clear both stores even when the ranking loop
-        # returns before the reference stage is reached.
-        if message.strip().casefold() in {'cancel', 'start over'}:
-            self.references.prepare(message, key=session_key)
-        plan = self.clarifications.prepare(message, key=session_key)
-        if plan['status'] != 'ready':
-            response = clarification_result(plan, message, self.tenant_id)
-            if context is not None:
-                response.update(caller_id=context.caller_id, request_id=context.request_id)
-            return response
-        message = plan['query']
-        reference = self.references.prepare(message, key=session_key, continuation=plan)
-        if reference['status'] in {'needs_clarification', 'insufficient_information', 'cancelled'}:
-            response = clarification_result(reference, raw_message, self.tenant_id)
-            if context is not None:
-                response.update(caller_id=context.caller_id, request_id=context.request_id)
-            return response
-        if reference.get('continuation'):
-            plan = dict(reference['continuation'])
-        message = reference['query']
-        if plan.get('criteria'):
-            plan['query'] = message
-            # Ranking evidence must bind to the same resolved entity as
-            # retrieval, including after a pending reference is confirmed.
-            question = plan['question']
-            for binding in sorted(reference['bindings'], key=lambda item: item['start'], reverse=True):
-                if binding['end'] <= len(question):
-                    question = question[:binding['start']] + binding['replacement'] + question[binding['end']:]
-            plan['question'] = question
-        from cpu_llm.typos import correct_message
+        with self._session_turn(session_key):
+            from cpu_llm.references import ReferenceSessions
+            if not hasattr(self, 'references'):
+                self.references = ReferenceSessions()
+            # Cancellation must clear both stores even when the ranking loop
+            # returns before the reference stage is reached.
+            if message.strip().casefold() in {'cancel', 'start over'}:
+                self.references.prepare(message, key=session_key)
+            plan = self.clarifications.prepare(message, key=session_key)
+            abandoned = bool(plan.get('clarification_abandoned'))
+            if plan['status'] != 'ready':
+                response = clarification_result(plan, message, self.tenant_id)
+                if context is not None:
+                    response.update(caller_id=context.caller_id, request_id=context.request_id)
+                return response
+            message = plan['query']
+            reference = self.references.prepare(message, key=session_key, continuation=plan)
+            if reference['status'] in {'needs_clarification', 'insufficient_information', 'cancelled'}:
+                response = clarification_result(reference, raw_message, self.tenant_id)
+                if context is not None:
+                    response.update(caller_id=context.caller_id, request_id=context.request_id)
+                return response
+            if reference.get('continuation'):
+                plan = dict(reference['continuation'])
+            message = reference['query']
+            if plan.get('criteria'):
+                plan['query'] = message
+                # Ranking evidence must bind to the same resolved entity as
+                # retrieval, including after a pending reference is confirmed.
+                question = plan['question']
+                for binding in sorted(reference['bindings'], key=lambda item: item['start'], reverse=True):
+                    if binding['end'] <= len(question):
+                        question = question[:binding['start']] + binding['replacement'] + question[binding['end']:]
+                plan['question'] = question
+            from cpu_llm.typos import correct_message
 
-        message, typos = correct_message(message, self.word_tags, tenant_id=self.tenant_id)
-        if plan.get('criteria'):
-            plan['query'] = message
-            for change in typos:
-                plan['question'] = re.sub(rf"\b{re.escape(change['from'])}\b",
-                                          lambda match: change['to'], plan['question'])
-        z_query = np.asarray(self.index.encode_query(message), dtype=np.float32).reshape(TENSOR_DIM)
-        creative_reasons = creative_writing_trigger(message, forced=imagine)
-        deep_reasons = deep_search_trigger(message, forced=deep)
-        sides = comparison_sides(message)
-        summary_reasons = summary_trigger(message)
-        explain_reasons = explain_trigger(message)
-        list_reasons = list_trigger(message)
-        source_reasons = source_trigger(message)
-        from cpu_llm.memory.frames import frame_trigger
+            message, typos = correct_message(message, self.word_tags, tenant_id=self.tenant_id)
+            if plan.get('criteria'):
+                plan['query'] = message
+                for change in typos:
+                    plan['question'] = re.sub(rf"\b{re.escape(change['from'])}\b",
+                                              lambda match: change['to'], plan['question'])
+            z_query = np.asarray(self.index.encode_query(message), dtype=np.float32).reshape(TENSOR_DIM)
+            creative_reasons = creative_writing_trigger(message, forced=imagine)
+            deep_reasons = deep_search_trigger(message, forced=deep)
+            sides = comparison_sides(message)
+            summary_reasons = summary_trigger(message)
+            explain_reasons = explain_trigger(message)
+            list_reasons = list_trigger(message)
+            source_reasons = source_trigger(message)
+            from cpu_llm.memory.frames import frame_trigger
 
-        math_reasons = math_trigger(message, forced=math)
-        finance_reasons = finance_trigger(message, forced=finance)
-        frame_reasons = frame_trigger(message)
-        draft_order = parse_order(message)
-        if draft_order is None and not creative_reasons:
-            draft_order = self.format_sense.classify(message)
-        if draft_order is None:
-            draft_reasons = []
-        else:
-            draft_reasons = draft_trigger(message) or [semantic_reason(draft_order)]
-        self._turn = {
-            "propositions": list(propositions or []),
-            "payment": payment,
-            "authority": authority,
-            "objective": objective,
-            "hypothesis": hypothesis,
-            "causal_graph": causal_graph,
-            "z_query": z_query,
-            "allowed_sources": None if context is None else context.allowed_sources,
-            "as_of": as_of,
-        }
-        result = self.graph.invoke(
-            {
-                "message": message,
-                "tenant_id": self.tenant_id,
-                "caller_id": None if context is None else context.caller_id,
-                "request_id": None if context is None else context.request_id,
-                "allowed_sources": None if context is None else sorted(context.allowed_sources),
-                "discover": discover,
-                "creative": bool(creative_reasons),
-                "creative_reasons": creative_reasons,
-                "deep": bool(deep_reasons),
-                "deep_reasons": deep_reasons,
-                "compare": bool(sides),
-                "comparison_sides": sides,
-                "summarize": bool(summary_reasons),
-                "summary_reasons": summary_reasons,
-                "explain": bool(explain_reasons),
-                "explain_reasons": explain_reasons,
-                "list": bool(list_reasons),
-                "list_reasons": list_reasons,
-                "sources": bool(source_reasons),
-                "source_reasons": source_reasons,
-                "math": bool(math_reasons),
-                "math_reasons": math_reasons,
-                "finance": bool(finance_reasons),
-                "finance_reasons": finance_reasons,
-                "frame": bool(frame_reasons),
-                "frame_reasons": frame_reasons,
-                "draft": bool(draft_reasons),
-                "draft_reasons": draft_reasons,
-                "draft_order": None
-                if draft_order is None
-                else {"format": draft_order.format_id, "topic": draft_order.topic},
-            }
-        )
-        self._previous_ids = [
-            str(item["chunk_id"]) for item in result.get("related") or [] if item.get("chunk_id")
-        ]
-        if realization == "evidence_neural" or account:
-            from cpu_llm.realizer.ranker import apply_realization
-
-            extra = apply_realization(
-                result,
-                realization=realization,
-                account=account,
-                memory=self.memory,
-                causal_edges=list(getattr(causal_graph, "edges", None) or []),
-            )
-            result = {**result, **extra}
-        result["child_safety"] = {"action": "off", "reasons": ["child safety is not applied"]}
-        result["typos"] = typos
-        result["tenant_id"] = self.tenant_id
-        result['reference_resolution'] = reference
-        if reference['bindings'] or typos:
-            result['original_message'] = raw_message
-            result['resolved_query'] = message
-        if context is not None:
-            result["caller_id"] = context.caller_id
-            result["request_id"] = context.request_id
-        if (plan.get('criteria') and result.get('guard_decision') in (None, 'allow')
-                and not result.get('delivery_blocked') and not result.get('shine_enforced')
-                and result.get('shine_ok') is not False and result.get('grammar_ok') is not False
-                and not result.get('__partial__') and not result.get('__node_error__')):
-            rows = list(result.get('passages') or [])
-            if plan.get('user_source'):
-                rows.append(dict(document_id='user-provided', chunk_text=plan['user_source']))
-            evidence = supported_ranking(plan, rows)
-            # A new quote/clarification is not the answer audited by the
-            # earlier pipeline; do not carry that verdict onto replacement text.
-            result['audit_passed'] = False
-            if evidence:
-                text = '\n'.join(f'From {item["document_id"]}:\n{item["span"]}' for item in evidence)
-                result['answer'] = None
-                result['reply'] = dict(text=text, answer_status='evidence_quote', answer_evidence=evidence,
-                                       verification_scope='source_attribution')
-                result['status'] = 'evidence_quote'
-                result['needs_clarification'] = False
+            math_reasons = math_trigger(message, forced=math)
+            finance_reasons = finance_trigger(message, forced=finance)
+            frame_reasons = frame_trigger(message)
+            draft_order = parse_order(message)
+            if draft_order is None and not creative_reasons:
+                draft_order = self.format_sense.classify(message)
+            if draft_order is None:
+                draft_reasons = []
             else:
-                outcome = self.clarifications.need_evidence(plan, key=session_key)
-                result['answer'] = None
-                result['reply'] = dict(text=outcome['text'], answer_status=outcome['status'])
-                result['status'] = outcome['status']
-                result['needs_clarification'] = outcome['status'] == 'needs_clarification'
-                result['clarification'] = outcome
-            # Keep the public fields consistent with the replacement reply;
-            # earlier answer evidence must not describe a clarification.
-            result['answer_status'] = result['reply']['answer_status']
-            result['answer_evidence'] = list(result['reply'].get('answer_evidence') or [])
-            result['supporting_evidence'] = []
-            result['verification_scope'] = result['reply'].get('verification_scope')
-            result['original_message'] = raw_message
-            result['resolved_query'] = plan['query']
-            result['user_criteria'] = plan['criteria']
-        return result
+                draft_reasons = draft_trigger(message) or [semantic_reason(draft_order)]
+            self._turn = {
+                "propositions": list(propositions or []),
+                "payment": payment,
+                "authority": authority,
+                "objective": objective,
+                "hypothesis": hypothesis,
+                "causal_graph": causal_graph,
+                "z_query": z_query,
+                "allowed_sources": None if context is None else context.allowed_sources,
+                "as_of": as_of,
+            }
+            result = self.graph.invoke(
+                {
+                    "message": message,
+                    "tenant_id": self.tenant_id,
+                    "caller_id": None if context is None else context.caller_id,
+                    "request_id": None if context is None else context.request_id,
+                    "allowed_sources": None if context is None else sorted(context.allowed_sources),
+                    "discover": discover,
+                    "creative": bool(creative_reasons),
+                    "creative_reasons": creative_reasons,
+                    "deep": bool(deep_reasons),
+                    "deep_reasons": deep_reasons,
+                    "compare": bool(sides),
+                    "comparison_sides": sides,
+                    "summarize": bool(summary_reasons),
+                    "summary_reasons": summary_reasons,
+                    "explain": bool(explain_reasons),
+                    "explain_reasons": explain_reasons,
+                    "list": bool(list_reasons),
+                    "list_reasons": list_reasons,
+                    "sources": bool(source_reasons),
+                    "source_reasons": source_reasons,
+                    "math": bool(math_reasons),
+                    "math_reasons": math_reasons,
+                    "finance": bool(finance_reasons),
+                    "finance_reasons": finance_reasons,
+                    "frame": bool(frame_reasons),
+                    "frame_reasons": frame_reasons,
+                    "draft": bool(draft_reasons),
+                    "draft_reasons": draft_reasons,
+                    "draft_order": None
+                    if draft_order is None
+                    else {"format": draft_order.format_id, "topic": draft_order.topic},
+                }
+            )
+            self._previous_ids = [
+                str(item["chunk_id"]) for item in result.get("related") or [] if item.get("chunk_id")
+            ]
+            if realization == "evidence_neural" or account:
+                from cpu_llm.realizer.ranker import apply_realization
+
+                extra = apply_realization(
+                    result,
+                    realization=realization,
+                    account=account,
+                    memory=self.memory,
+                    causal_edges=list(getattr(causal_graph, "edges", None) or []),
+                )
+                result = {**result, **extra}
+            result["child_safety"] = {"action": "off", "reasons": ["child safety is not applied"]}
+            result["typos"] = typos
+            result["tenant_id"] = self.tenant_id
+            result['reference_resolution'] = reference
+            if reference['bindings'] or typos:
+                result['original_message'] = raw_message
+                result['resolved_query'] = message
+            if context is not None:
+                result["caller_id"] = context.caller_id
+                result["request_id"] = context.request_id
+            if (plan.get('criteria') and result.get('guard_decision') in (None, 'allow')
+                    and not result.get('delivery_blocked') and not result.get('shine_enforced')
+                    and result.get('shine_ok') is not False and result.get('grammar_ok') is not False
+                    and not result.get('__partial__') and not result.get('__node_error__')):
+                rows = list(result.get('passages') or [])
+                if plan.get('user_source'):
+                    rows.append(dict(document_id='user-provided', chunk_text=plan['user_source']))
+                evidence = supported_ranking(plan, rows)
+                # A new quote/clarification is not the answer audited by the
+                # earlier pipeline; do not carry that verdict onto replacement text.
+                result['audit_passed'] = False
+                if evidence:
+                    text = '\n'.join(f'From {item["document_id"]}:\n{item["span"]}' for item in evidence)
+                    result['answer'] = None
+                    result['reply'] = dict(text=text, answer_status='evidence_quote', answer_evidence=evidence,
+                                           verification_scope='source_attribution')
+                    result['status'] = 'evidence_quote'
+                    result['needs_clarification'] = False
+                else:
+                    outcome = self.clarifications.need_evidence(plan, key=session_key)
+                    result['answer'] = None
+                    result['reply'] = dict(text=outcome['text'], answer_status=outcome['status'])
+                    result['status'] = outcome['status']
+                    result['needs_clarification'] = outcome['status'] == 'needs_clarification'
+                    result['clarification'] = outcome
+                # Keep the public fields consistent with the replacement reply;
+                # earlier answer evidence must not describe a clarification.
+                result['answer_status'] = result['reply']['answer_status']
+                result['answer_evidence'] = list(result['reply'].get('answer_evidence') or [])
+                result['supporting_evidence'] = []
+                result['verification_scope'] = result['reply'].get('verification_scope')
+                result['original_message'] = raw_message
+                result['resolved_query'] = plan['query']
+                result['user_criteria'] = plan['criteria']
+            if abandoned:
+                result['clarification_abandoned'] = True
+            return result
 
     def ask_concurrent(self, message: str, *, request_id: str | None = None, caller: Any | None = None, thinker_factory: Any = None, **kwargs: Any) -> dict[str, Any]:
         """Run ``ask`` on one seat lock and that seat's thinker.
