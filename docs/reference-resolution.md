@@ -59,6 +59,8 @@ reference; an exact candidate name resumes it with user-confirmed provenance.
 
 Possessives retain the possessed noun; plural pronouns require compatible plural
 antecedents. Model failures and ungrounded or partial bindings ask for clarification.
+One confirmed name cannot fill references to both a person and an object, or
+mixed gender/number groups. Such prompts require an explicitly named restatement.
 Original text remains available, and existing downstream guard/audit holds remain
 authoritative. Session turns should be submitted in order. Startup model-loading
 errors surface explicitly rather than pretending that a model was available.

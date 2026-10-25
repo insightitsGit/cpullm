@@ -9,6 +9,7 @@ out. This module writes no weights.
 from __future__ import annotations
 
 import hashlib
+import os
 import re
 from dataclasses import dataclass
 
@@ -86,7 +87,7 @@ def save_pairs(pairs: list[TrainingPair], dsn: str | None = None) -> int:
     """Replace rows for the model ids in ``pairs``. Returns the number written."""
     import psycopg
 
-    target = dsn or LOCAL_PG_DSN
+    target = dsn or os.environ.get('VECTORPRISM_PG_DSN') or LOCAL_PG_DSN
     model_ids = sorted({pair.model_id for pair in pairs})
     with psycopg.connect(target) as conn:
         with conn.cursor() as cursor:
@@ -138,7 +139,7 @@ def load_pairs(split: str | None = None, dsn: str | None = None, model_id: str =
     """Read stored pairs. ``split`` None returns every split for ``model_id``."""
     import psycopg
 
-    target = dsn or LOCAL_PG_DSN
+    target = dsn or os.environ.get('VECTORPRISM_PG_DSN') or LOCAL_PG_DSN
     query = f"""
         SELECT pair_id, model_id, split, document_id, kind, prompt, source_text, gold_text, construction_ids
         FROM {TABLE}

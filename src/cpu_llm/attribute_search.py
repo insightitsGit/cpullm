@@ -1,7 +1,7 @@
 """One bounded retrieval repair round for a recognized missing attribute."""
 from cpu_llm.access import keep_allowed
 from cpu_llm.knowledge_graph import extract_facts
-from cpu_llm.prompt_intent import _equivalent, select_channel_answer
+from cpu_llm.prompt_intent import _alias_paths, _equivalent, select_channel_answer
 
 ATTRIBUTE_TERMS = {
     'has_lifespan': 'lifespan longevity age years lived',
@@ -24,11 +24,7 @@ def retrieve_missing_attribute(index, message, hits, intent, *, allowed=None, as
         return hits, dict(report, status='already_settled')
     def connections(rows):
         facts = [fact for row in rows for fact in extract_facts(row['document_id'], row.get('chunk_text') or '')]
-        names = {request['entity']}
-        for _ in range(2):
-            for fact in facts:
-                if fact.relation == 'alias_of' and any(_equivalent(name, endpoint) for name in names for endpoint in (fact.subject, fact.object)):
-                    names.update((fact.subject, fact.object))
+        names = _alias_paths(request['entity'], facts)
         return [fact for fact in facts if fact.relation == 'is_a' and any(_equivalent(name, fact.subject) for name in names)]
     memberships = connections(hits)
     terms = ATTRIBUTE_TERMS[request['relation']]
@@ -49,11 +45,11 @@ def retrieve_missing_attribute(index, message, hits, intent, *, allowed=None, as
                 merged.append(row)
                 seen.add(row['document_id'])
         settled = select_channel_answer(message, merged, intent=intent)
+        memberships = connections(merged)
         if settled['answer_status'] in {'answered', 'conflicting'}:
             break
         # A repair query can reveal a previously missing membership edge.
         # Re-plan within the same fixed budget; never start an unbounded loop.
-        memberships = connections(merged)
         for membership in memberships:
             query = f'{membership.object} {terms}'
             if query not in executed and query not in queries:
@@ -61,5 +57,6 @@ def retrieve_missing_attribute(index, message, hits, intent, *, allowed=None, as
     decision = select_channel_answer(message, merged, intent=intent)
     return merged, dict(report, status=decision['answer_status'], queries=executed,
                         answer_reason=decision['reason'], answer_evidence=decision.get('answer_evidence', []),
+                        supporting_evidence=decision.get('supporting_evidence', []),
                         joins=[dict(subject=f.subject, relation=f.relation, object=f.object,
                                     document_id=f.document_id, sentence=f.sentence) for f in memberships])

@@ -282,7 +282,8 @@ class VectorPrismIndex:
         hit["final_score"] = 1.0
         return hit
 
-    def save_chunks(self, chunks: list[tuple[str, str]], *, replace_prefix: str | None = None) -> int:
+    def save_chunks(self, chunks: list[tuple[str, str]], *, replace_prefix: str | None = None,
+                    timestamp: int | None = None) -> int:
         """Encode chunk_text with VectorPrism and store the 1024-d rows.
 
         ``replace_prefix`` deletes previous rows for that source before insert,
@@ -299,10 +300,14 @@ class VectorPrismIndex:
         if not chunks:
             return 0
         documents = [
-            IngestDocument(document_id=document_id, chunk_text=chunk_text)
+            IngestDocument(document_id=document_id, chunk_text=chunk_text, timestamp=timestamp)
             for document_id, chunk_text in chunks
         ]
         return self.pipeline.upsert_documents(documents, batch_size=32)
+
+    def save_version(self, document_id: str, text: str, timestamp: int) -> int:
+        """Use the correction's valid-from time for its new vector interval."""
+        return self.save_chunks([(document_id, text)], timestamp=int(timestamp))
 
     def delete_prefix(self, prefix: str) -> int:
         """Delete stored rows whose document id starts with ``prefix``.
@@ -354,9 +359,9 @@ def ensure_namespace_vectors(index: VectorPrismIndex, namespace: str) -> None:
 def _as_of(index: VectorPrismIndex, as_of: int | None) -> int | None:
     if as_of is not None:
         return int(as_of)
-    if getattr(index, "_history", False):
-        return int(time.time())
-    return None
+    # Validity is persistent storage state. A restarted index must not expose
+    # retired versions just because it did not perform the original correction.
+    return int(time.time())
 
 
 def _allowed_clause(allowed: frozenset[str]) -> tuple[str, list[object]]:

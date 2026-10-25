@@ -164,6 +164,7 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
     if assessment is not None:
         reply["answer_status"] = assessment["answer_status"]
         reply["answer_evidence"] = list(assessment.get("answer_evidence") or [])
+        reply["supporting_evidence"] = list(assessment.get("supporting_evidence") or [])
         reply["verification_scope"] = assessment.get("verification_scope")
         reply["retrieved_candidates"] = list(assessment.get("retrieved_candidates") or [])
         reply["producer"] = "answerability"

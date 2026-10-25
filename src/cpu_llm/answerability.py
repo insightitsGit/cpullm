@@ -355,7 +355,8 @@ def _direct_predicate(subject: str, sentence: str, forms: set[str], *, location:
     if not phrase or not forms:
         return False
     verb = "|".join(re.escape(form) for form in sorted(forms))
-    tail = r"\s+in\b" if location else r"\b"
+    tail = (r"\s+(?:in|on|at|under|above|below|near|inside|outside|within|beside|behind|beneath|over|across)\b"
+            if location else r"\b")
     pattern = (
         rf"^(?:(?:the|a|an)\s+)?{re.escape(phrase)}\s+(?:{_PREDICATE_ADVERB})?(?:{verb}){tail}"
     )

@@ -47,6 +47,16 @@ def test_without_model_named_confirmation_is_explicit_not_automatic_inference():
     assert result['bindings'][0]['backend'] == 'user-confirmed'
 
 
+def test_one_confirmation_cannot_collapse_a_person_and_an_object():
+    sessions = ReferenceSessions()
+    assert sessions.prepare('Where did he put it?', key='a')['status'] == 'needs_clarification'
+    result = sessions.prepare('John', key='a')
+    assert result['status'] == 'needs_clarification' and result['bindings'] == []
+    assert 'each person or object' in result['text']
+    explicit = sessions.prepare('Where did John put the box?', key='a')
+    assert explicit['query'] == 'Where did John put the box?' and not explicit['bindings']
+
+
 def test_expiry_budgets_and_scope_changes_do_not_reuse_private_context():
     now = [0]
     sessions = ReferenceSessions(Backend(), ttl=10, limit=1, clock=lambda:now[0])

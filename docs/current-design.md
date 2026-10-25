@@ -88,6 +88,16 @@ prototypes, scored with the appropriate channel metric, only for enabled heads.
 The current fact graph scans its rows for lookup; bounded output is not a claim
 of indexed graph scalability. Replacement ingestion, correction, and deletion
 maintain current facts. Historical queries bypass current-graph expansion.
+Correction rows use the editor-supplied valid-from timestamp. Current vector
+search applies time filtering even on a newly opened index; it does not depend
+on whether that process performed a correction. Model01 pair storage honors
+`VECTORPRISM_PG_DSN` as well as an explicit DSN.
+Current-only article and tag expansion is also skipped for historical queries.
+For scoped or historical turns, legacy deep-search, comparison, summary, creative,
+and lexical fallback paths are limited to the current turn's filtered retrieval
+evidence. They cannot use global/current lookups or a prior caller's shortlist.
+This conservative restriction reduces expansion coverage until those older APIs
+have explicit source and temporal filtering.
 
 ## Budgets and applicability rules
 
@@ -102,6 +112,11 @@ premise plus an explicit universal `All`/`Every` rule can support the bounded
 join, with both premises retained. A group average, an ordinary unquantified
 class description, or a statement about "some" members cannot be substituted
 for the requested entity's attribute. This is not arbitrary multi-hop logic.
+Aliases have a strict two-hop identity bound independent of source order. Explicit
+class aliases can support the membership-to-rule join. Identity-binding premises
+are returned in `supporting_evidence`; class-alias and membership premises remain
+with the applicable rule evidence. Direct color/lifespan values cannot silently
+hide conflicting applicable universal rules.
 
 ## Conversation state and optional models
 
@@ -110,6 +125,8 @@ session ID, and historical timestamp. Without a session ID, pending context is
 not shared between calls. Each store caps state at 256 sessions, expires it after
 30 minutes, and bounds questioning to three attempts per stage. State is local
 to the process and is not durable. Callers should serialize turns within a session.
+`cancel` and `start over` clear both stores, even when a ranking clarification
+would otherwise return before the reference stage.
 
 Coreferee is the primary CPU-tested adapter. Fastcoref is an alternative adapter
 whose real model remains untested here. The default backend is `None`, avoiding
@@ -145,17 +162,36 @@ to ask another question. Criteria and user-supplied sources are separate from
 verified world facts. Quotes use `answer_status="evidence_quote"`; replacement
 ranking text does not inherit the prior answer's successful audit verdict.
 An early clarification returns `answer=None` with no retrieved passages.
+Ranking follow-ups keep top-level `answer_status`, `answer_evidence`, and
+`verification_scope` consistent with the replacement reply. Partial execution,
+node errors, and grammar/guard/delivery holds cannot be replaced by a ranking
+quote or clarification. Reference confirmation updates both the retrieval query
+and ranking topic; a later typo correction preserves the actual original input.
 
 ## Verification and remaining work
 
-The latest selected database-independent run passed **327 tests**, with eight
-database-dependent/mixed test files excluded and one database test deselected.
-The package built successfully. Coreferee 1.5.0 with English spaCy model 3.8.0
+The full join/response review passed **420 tests**, with two optional extraction
+checkpoint tests skipped and no tests deselected or test files excluded. This
+supersedes the earlier 356-test selection and its unavailable-database limitation.
+The run used an isolated PostgreSQL 18.1/pgvector database, a fresh working
+directory, Python 3.12.10, cached CPU model assets, disabled pytest plugin autoload,
+and offline model-download settings. Live join tests were explicitly enabled.
+Tests cover independent SQLite join-oracle comparisons, full Appliance joins,
+authorization of both premises, source replacement/deletion, correction history,
+reopening the vector index, conversation loops, and legacy pipeline integration.
+The four-case retrieval lab recorded hit-rate@5 and spoken attribution of 1.0;
+this is a tiny diagnostic corpus, not a general accuracy estimate.
+The [validation record](reviews/2026-10-25/join-review.md) links the full transcript,
+records the fixture/contract changes, and distinguishes remaining numerical
+warnings from failures. The [response cases](response-cases.md) enumerate supported
+examples, rejected joins, and open scenarios.
+The reviewed source built successfully as a wheel and source distribution.
+Earlier Coreferee 1.5.0 with English spaCy model 3.8.0
 passed real CPU smoke examples for `it`, `them`, `its`, `she`, and "that lobster",
 plus ambiguity and user confirmation. Models were installed only under ignored
 `build/coreference-deps` for these tests. This is not a broad accuracy benchmark.
 
-Live PostgreSQL integration, real Fastcoref inference, CPU latency/memory studies,
+Real Fastcoref inference, CPU latency/memory studies,
 channel calibration/training, unrestricted paraphrases, source-text coreference,
 general comparison and inference, predictions, and broad sentence construction
 remain unverified or open. No test result establishes that the library never
@@ -170,4 +206,5 @@ returns an incorrect answer. Progress and examples stay in the support backlog.
 - [Reference resolution setup and limits](reference-resolution.md)
 - [Coreference library research](coreference-options.md)
 - [Scenario backlog](intent-support-backlog.md)
+- [Response cases and join contract](response-cases.md)
 - [Integration contract](library-consumer-guide.md)

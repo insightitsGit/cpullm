@@ -19,7 +19,7 @@ with Appliance(namespace="tenant_alpha") as app:
     pass
 ```
 
-Constructor arguments are `checkpoint: Path | None`, and keyword-only `dsn`, `child_safety`, `namespace`, `on_escalate`. `dsn=None` uses `VECTORPRISM_PG_DSN` and then the development DSN in `retrieval.py`. Constructing an appliance loads the encoder/retrieval stack, connects to PostgreSQL, creates local state, and starts a reusable Thinker pool. It is not a lightweight pure-function wrapper.
+Constructor arguments are `checkpoint: Path | None`, and keyword-only `dsn`, `child_safety`, `namespace`, `on_escalate`, `reference_backend`. The optional reference backend is `None` (default), `"coreferee"`, `"fastcoref"`, or an adapter; install the required models before enabling it. `dsn=None` uses `VECTORPRISM_PG_DSN` and then the development DSN in `retrieval.py`. Constructing an appliance loads the encoder/retrieval stack, connects to PostgreSQL, creates local state, and starts a reusable Thinker pool. It is not a lightweight pure-function wrapper.
 
 When running a Python script on Windows, put appliance construction and calls inside a function invoked under `if __name__ == "__main__":`; the worker pool uses child processes. The README contains a complete guarded example. The short snippets in this guide describe operations to perform inside that application entry point.
 
@@ -64,9 +64,17 @@ def ask(
 - `objective`, `hypothesis`, `causal_graph`: caller-owned PrismThinker context objects. The pipeline does not supply a missing target or causal graph merely because a passage has a number or says because. A caller causal graph is a supplied assertion, not a graph independently proved from text.
 - `realization`: `"deterministic"`, `"evidence_neural"`, or `"model01"`; other values raise `ValueError`. Model01 already runs as a graph node on the ordinary path, so `"model01"` does not select a separately trained model. `"evidence_neural"` invokes an additional N0 realization result with deterministic fallback because no trained construction-ranker checkpoint is shipped. It does not force every reply producer through a new neural verifier.
 - `account`: opt into the N0 full-account planning/rendering path. It can affect displayed text when no other optional agent takes precedence. It is not a general multi-record reasoning switch or a universal provenance report.
-- `grade`, `child_safety`, `session_id`: accepted but discarded by `ask` in this checkout. Normal results explicitly report child safety off. Do not assume that constructor gate objects, a session string, or these keywords enforce a safety policy or isolate conversation state.
+- `grade`, `child_safety`: accepted but discarded by `ask` in this checkout. Normal results explicitly report child safety off. These keywords do not enforce a safety policy.
+- `session_id`: explicit context key for ranking clarification and reference resolution. Reuse it for related turns. State is also isolated by tenant, caller, source scope, and historical timestamp; it expires after 30 minutes and is not durable. Omitting it creates no shared context. `cancel` and `start over` clear both conversation stores. See the conversation documents linked above.
 - `caller`: a `CallerContext` whose `tenant_id` must equal the appliance tenant. `None` means trusted, unscoped access within that tenant. A wrong type raises `TypeError`; a tenant mismatch raises `TenantNotFoundError`.
 - `as_of`: optional integer timestamp passed to retrieval validity filtering. It is an advanced history selector, not a complete transactional snapshot across graph, local files, and all optional agents.
+
+Scoped or historical turns restrict legacy deep-search, comparison, summary, and
+creative agents to the current turn's authorized, time-filtered retrieval rows.
+They do not expand through current-only article/tag/lexical-memory lookups. This
+can reduce their coverage; it does not provide a historical snapshot of all stores.
+Historical initial retrieval also skips current-only article, tag, and fact-graph
+expansion. Dictionary queries and attribute retries retain `as_of` and source scope.
 
 The same question need not produce identical results across installations: model discovery, indexed data, typo vocabulary, optional modes, checkpoints, local state, and runtime versions matter. Creative selection can vary even on one installation.
 
@@ -124,6 +132,12 @@ When no specialist owns the turn and the question is outside answerability, `rep
 `frame_result` includes `status`, `text`, `verified`, evidence/gaps, and compatibility fields. A `verified` frame result refers to that frame transformation, not universal source truth. `realization_result` has its own status, mode, construction IDs, bindings, and verification fields; its verifier still has known construction-mutation gaps.
 
 `related` uses `chunk_id`, usually with `chunk_text`, score/category. `passages` uses `document_id`. Keep identifiers alongside the exact evidence snapshot. `brief.sources`, draft sources, and realization evidence IDs have different scopes; do not concatenate them into a supposedly exhaustive citation list without normalization.
+
+For channel answers, `supporting_evidence` retains explicit identity premises used
+to bind the question's name to the source's name. It is separate from the selected
+`answer_evidence`, so an alias need not be repeated as the answer sentence.
+Applicable membership and class-alias premises for a universal-rule join remain
+with its quoted evidence. See [the response-case checklist](response-cases.md).
 
 ## Ingestion and lower-level calls
 
@@ -186,7 +200,7 @@ cpu-llm-serve --secrets credentials.json --host 127.0.0.1 --port 8765
 Every route below is POST with a JSON object and `Authorization: Bearer <actual-secret>`. The process defaults to loopback; it has no built-in TLS, rate limiting, or production request-size/timeout policy.
 
 - `/v1/ingest`: `{"name":"agent-notes","paragraphs":["The harbor kestrel is a coastal falcon."]}`; alternatively `{"source":"server/path/agent-notes.pdf"}`. This is JSON ingestion, not multipart upload. The credential must allow the source prefix.
-- `/v1/ask`: `{"message":"What is the harbor kestrel?"}`. Additional forwarded fields are exactly `discover`, `imagine`, `deep`, `math`, `finance`, `as_of`. Other Python `ask` arguments are not exposed by this route; extra JSON keys are not forwarded.
+- `/v1/ask`: `{"message":"What is the harbor kestrel?"}`. Additional forwarded fields are exactly `discover`, `imagine`, `deep`, `math`, `finance`, `as_of`, `session_id`. Other Python `ask` arguments are not exposed by this route; extra JSON keys are not forwarded.
 - `/v1/correct`: `document_id`, `prior_sentence`, `new_sentence`, `actor_id`, and required integer `timestamp`. Supply the exact previous wording and actual document ID. The authenticated source scope is checked.
 - `/v1/delete`: `{"source":"agent-notes"}` deletes a whole source prefix, not one paragraph.
 
@@ -258,7 +272,11 @@ Canonical behavior and concrete valid/invalid inputs are in [test_finance.py](..
 
 The complete suite requires the PostgreSQL service, cached/downloadable encoder assets, writable temporary storage, and for service tests permission to bind a local port. Optional fact-bridge model tests may skip or run according to installed checkpoints.
 
-For the documentation update, a focused run of frames, answering, N0, access, enterprise helpers, finance, documents, and tenant-isolation tests produced **70 passes and two tenant-isolation failures caused by sandbox-denied PostgreSQL connections**. This is not a full-suite or live-isolation pass. See the historical suite records for other environments; do not reuse their counts as a fresh result.
+The October 25 join/response review ran the complete suite against isolated
+PostgreSQL 18.1/pgvector: **420 passed, 2 optional checkpoint tests skipped**, with
+no exclusions or deselections. See the [validation record](reviews/2026-10-25/join-review.md)
+and full transcript. The earlier documentation-only selection with database
+connection failures is historical and is superseded for this checkout.
 
 Common distinctions:
 

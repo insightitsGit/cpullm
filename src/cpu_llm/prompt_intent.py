@@ -84,13 +84,32 @@ def route_prompt(message, *, query_tensor=None, enabled_channels=None, prototype
                 vector_scope='enabled-head prototype scores are uncalibrated soft routing signals')
 
 
+def _entity_key(text):
+    words = _name(text).split()
+    if words and words[-1].endswith('s') and not words[-1].endswith('ss'):
+        words[-1] = words[-1][:-1]
+    return ' '.join(words)
+
+
 def _equivalent(left, right):
-    def singular(text):
-        words = _name(text).split()
-        if words and words[-1].endswith('s') and not words[-1].endswith('ss'):
-            words[-1] = words[-1][:-1]
-        return ' '.join(words)
-    return singular(left) == singular(right)
+    return _entity_key(left) == _entity_key(right)
+
+
+def _alias_paths(entity, facts, *, max_hops=2):
+    """Explicit identity paths, bounded independently of source row order."""
+    paths = {_entity_key(entity): []}
+    for _ in range(max_hops):
+        previous = dict(paths)
+        for fact in facts:
+            if fact.relation != 'alias_of' or 'identity' not in fact.channels:
+                continue
+            left, right = _entity_key(fact.subject), _entity_key(fact.object)
+            for origin, target in ((left, right), (right, left)):
+                if origin in previous and target not in paths:
+                    paths[target] = previous[origin] + [fact]
+        if len(paths) == len(previous):
+            break
+    return paths
 
 
 def select_channel_answer(message, chunks, *, intent=None):
@@ -108,12 +127,10 @@ def select_channel_answer(message, chunks, *, intent=None):
             document_id = str(row.get('document_id') or row.get('chunk_id') or f'chunk-{index}')
             text = str(row.get('text') or row.get('chunk_text') or '')
         facts.extend(extract_facts(document_id, text))
-    names = {request['entity']}
-    # Alias equivalence only; shared taxonomy is not identity.
-    for _ in range(2):
-        for fact in facts:
-            if fact.relation == 'alias_of' and any(_equivalent(name, endpoint) for name in names for endpoint in (fact.subject, fact.object)):
-                names.update((_name(fact.subject), _name(fact.object)))
+    # Alias equivalence only; shared taxonomy is not identity. Preserve the
+    # identity premises used to bind the question to the source's name.
+    aliases = _alias_paths(request['entity'], facts)
+    names = set(aliases)
     channel = {'is_a': 'hyperbolic', 'causes': 'causal'}.get(request['relation'], 'relational')
     def matches(name, value):
         if request['relation'] == 'causes' and request['direction'] == 'object':
@@ -124,16 +141,22 @@ def select_channel_answer(message, chunks, *, intent=None):
         return _equivalent(name, value)
     selected = [fact for fact in facts if fact.relation == request['relation'] and channel in fact.channels
                 and any(matches(name, getattr(fact, request['direction'])) for name in names)]
+    alias_evidence = [edge for fact in selected for name in names
+                      if matches(name, getattr(fact, request['direction'])) for edge in aliases[name]]
     joins = []
-    if request['relation'] in {'has_lifespan', 'has_color', 'lives_in', 'has'} and not selected:
+    if request['relation'] in {'has_lifespan', 'has_color', 'lives_in', 'has'}:
         memberships = [fact for fact in facts if fact.relation == 'is_a'
                        and any(_equivalent(name, fact.subject) for name in names)]
         for membership in memberships:
+            types = _alias_paths(membership.object, facts)
             for fact in facts:
                 universal = re.fullmatch(r'(?:all|every)\s+(.+)', fact.subject, re.I)
-                if fact.relation == request['relation'] and universal and _equivalent(universal[1], membership.object):
+                if (fact.relation == request['relation'] and channel in fact.channels
+                        and universal and _entity_key(universal[1]) in types):
                     selected.append(fact)
                     joins.append(membership)
+                    joins.extend(types[_entity_key(universal[1])])
+                    alias_evidence.extend(aliases[_entity_key(membership.subject)])
     if request['relation'] == 'is_a' and selected:
         # Prefer an explicit taxonomic definition over descriptions such as
         # "is a highly esteemed food" elsewhere in the same article.
@@ -144,7 +167,10 @@ def select_channel_answer(message, chunks, *, intent=None):
         return dict(base, answer_status='insufficient_evidence', reason='no_matching_channel_relation',
                     text='The retrieved passages do not settle that.')
     values = {_name(f.object) for f in selected}
-    evidence = list({(f.document_id, f.sentence): dict(document_id=f.document_id, span=f.sentence) for f in joins + selected}.values())
+    evidence = list({(f.document_id, f.sentence): dict(document_id=f.document_id, span=f.sentence)
+                     for f in joins + selected}.values())
+    base['supporting_evidence'] = list({(f.document_id, f.sentence): dict(document_id=f.document_id, span=f.sentence)
+                                       for f in alias_evidence}.values())
     if request['relation'] in {'has_color', 'has_lifespan'} and len(values) > 1:
         return dict(base, answer_status='conflicting', reason='conflicting_channel_values', answer_evidence=evidence,
                     text='The retrieved passages do not settle that. Stored sentences conflict: ' + ' '.join(f.sentence for f in selected))

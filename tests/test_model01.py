@@ -92,12 +92,13 @@ def test_a_pair_round_trips_through_postgres():
 
 
 def _delete_test_rows() -> None:
+    import os
     import psycopg
 
     from cpu_llm.model01.corpus import TABLE
     from cpu_llm.retrieval import LOCAL_PG_DSN
 
-    with psycopg.connect(LOCAL_PG_DSN) as conn:
+    with psycopg.connect(os.environ.get('VECTORPRISM_PG_DSN') or LOCAL_PG_DSN) as conn:
         with conn.cursor() as cursor:
             cursor.execute(f"DELETE FROM {TABLE} WHERE model_id = %s", ("model01-test",))
         conn.commit()

@@ -181,6 +181,21 @@ class ReferenceSessions:
                                 b += suffix.end()
                         extended.append((a,b))
                     spans = extended
+                    families = {'he':'male', 'him':'male', 'his':'male',
+                                'she':'female', 'her':'female',
+                                'they':'plural', 'them':'plural', 'their':'plural'}
+                    groups = {families.get(original[a:b].lower(), 'entity') for a,b in spans}
+                    if len(groups) > 1:
+                        # One name cannot identify both a person and an object,
+                        # or several differently gendered/numbered references.
+                        state['attempts'] = state.get('attempts', 0) + 1
+                        if state['attempts'] >= 3:
+                            return dict(status='insufficient_information',
+                                text='Please restate the question with every entity named.', bindings=[])
+                        self._save(key, state)
+                        return dict(status='needs_clarification', slot='reference',
+                            text='Please restate the question with each person or object named explicitly.',
+                            candidates=pending['candidates'], bindings=[])
                     bindings = [dict(start=a, end=b, antecedent=choices[0], replacement=choices[0] + ("'s" if original[a:b].lower() in {'its','their','his'} else ''), backend='user-confirmed') for a,b in spans]
                 else:
                     state['attempts'] = state.get('attempts', 0) + 1

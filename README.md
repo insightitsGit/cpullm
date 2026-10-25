@@ -246,6 +246,8 @@ For applications that make decisions, separate the transport outcome, component 
 
 Direct Python calls are trusted integration calls. Omitting `caller` is unscoped within the selected tenant; constructing a `CallerContext` is not authentication. For source-scoped callers use exact paragraph IDs or a source prefix ending in `-p`, such as `field-guide-p`. An empty scope permits no reads. Use the authenticated `Entry`/HTTP service when callers are not already trusted.
 
+Scoped and historical turns limit legacy deep-search, summary, comparison, and creative expansion to this turn's filtered retrieval evidence. Historical queries also skip current-only article/tag/fact-graph expansion. This can reduce recall; `as_of` is not a transactional snapshot across all stores.
+
 ```powershell
 cpu-llm-serve --secrets credentials.json --host 127.0.0.1 --port 8765
 ```
@@ -288,7 +290,7 @@ Run database integration tests against a disposable test database: some tests us
 
 ### What has actually been demonstrated
 
-- For the October 25 working tree, **327 selected database-independent tests passed**, with one test deselected and eight test files excluded. Real CPU Coreferee checks covered five reference forms plus ambiguity and user confirmation; wheel and source-distribution builds also succeeded. Real VectorPrism retrieval and bounded attribute-repair probes were exercised separately. PostgreSQL was unavailable for this round, so these results do not establish full Appliance integration, full-suite success, general accuracy, or current end-to-end latency. The FastCoref model remains unvalidated. See the [current validation scope](docs/current-design.md).
+- For the October 25 join/response review, the **full suite passed 420 tests**, with two optional extraction-checkpoint tests skipped and no test files excluded or tests deselected. This used isolated PostgreSQL 18.1/pgvector and cached CPU encoder assets, including seven live join/lifecycle/history tests. The four-question diagnostic lab recorded hit-rate@5 and spoken attribution of 1.0; this is not a broad accuracy estimate. Wheel and source builds succeeded. Earlier real Coreferee smoke tests covered five reference forms plus ambiguity and user confirmation; FastCoref remains unvalidated. See the [validation record and transcript](docs/reviews/2026-10-25/join-review.md) and [response-case checklist](docs/response-cases.md).
 - At `9d6fbe8`, **126 targeted tests passed**, with one fixed-ID database test deselected. Five additional live Appliance checks passed for missing duration, complete entity names, a short name, and exclusion of an unrelated passage. [Review and scope](docs/reviews/2026-10-19/review-9d6fbe8.md), [test transcript](docs/reviews/2026-10-19/pytest-9d6fbe8.txt), [live inputs and outputs](docs/reviews/2026-10-19/review-9d6fbe8-probes.json). That count does not include the later one-sentence reply selection or the ban and upper-limit reading. Those have tests in `tests/test_model01.py` and `tests/test_fact_bridge.py`.
 - At the preceding `1183b77` revision, the **27 original diagnostic cases passed** on a 17-paragraph controlled corpus: 17 factual checks, four policy checks, four missing-fact nonanswers, and two arithmetic checks. Three repetitions through retrieval and the pipeline produced **162 measured calls without exceptions**. [Recorded benchmark](docs/reviews/2026-10-19/audit-1183b77-small/summary.json).
 - At `edf54ee`, the same 27 cases passed with both 17 and 217 paragraphs, including 200 shipped WikiText distractors. That is a small distractor test, not evidence of production-scale retrieval. [Recorded comparison and follow-up findings](docs/reviews/2026-10-19/followup-review-edf54ee.md).
@@ -320,6 +322,7 @@ Additional limits include narrow English extraction grammars, incomplete retriev
 ## Source and design map
 
 - [Current design](docs/current-design.md): current request lifecycle, channel semantics, storage, budgets, and validation limits.
+- [Response cases](docs/response-cases.md): evidence-join semantics, covered examples, and cases still missing.
 - [knowledge_graph.py](src/cpu_llm/knowledge_graph.py), [connection_channels.py](src/cpu_llm/connection_channels.py): explicit source facts and independent channel assessments; [graph design](docs/knowledge-graph.md).
 - [prompt_intent.py](src/cpu_llm/prompt_intent.py), [query_dictionary.py](src/cpu_llm/query_dictionary.py), [attribute_search.py](src/cpu_llm/attribute_search.py): intent, lexical variants, and bounded retrieval repair; [dictionary design](docs/dictionary-assisted-paraphrases.md), [attribute retrieval](docs/attribute-directed-retrieval.md).
 - [clarification.py](src/cpu_llm/clarification.py), [references.py](src/cpu_llm/references.py): session-local clarification and optional reference backends; [remaining use cases](docs/intent-support-backlog.md).

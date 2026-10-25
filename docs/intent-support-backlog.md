@@ -4,6 +4,10 @@ Architecture and verification snapshot: [current design](current-design.md),
 updated 2026-10-25. The statuses below separate bounded implementations from
 general language capabilities that remain open.
 
+The [response-case review](response-cases.md) records concrete covered examples,
+rejected joins, and additional missing cases such as numerical reconciliation,
+exception scope, and ambiguity between edibility, permission, and personal safety.
+
 Track these categories until they have been addressed and verified. Recording
 a category does not mean its implementation has started. Do not mark one done
 without a reproducible example, expected behavior, and regression coverage.

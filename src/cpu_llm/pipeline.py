@@ -483,6 +483,13 @@ class Appliance:
         raw_message = message
         session_key = scoped_session(self.tenant_id, None if context is None else context.caller_id,
                                      None if context is None else context.allowed_sources, session_id, as_of)
+        from cpu_llm.references import ReferenceSessions
+        if not hasattr(self, 'references'):
+            self.references = ReferenceSessions()
+        # Cancellation must clear both stores even when the ranking loop
+        # returns before the reference stage is reached.
+        if message.strip().casefold() in {'cancel', 'start over'}:
+            self.references.prepare(message, key=session_key)
         plan = self.clarifications.prepare(message, key=session_key)
         if plan['status'] != 'ready':
             response = clarification_result(plan, message, self.tenant_id)
@@ -490,9 +497,6 @@ class Appliance:
                 response.update(caller_id=context.caller_id, request_id=context.request_id)
             return response
         message = plan['query']
-        from cpu_llm.references import ReferenceSessions
-        if not hasattr(self, 'references'):
-            self.references = ReferenceSessions()
         reference = self.references.prepare(message, key=session_key, continuation=plan)
         if reference['status'] in {'needs_clarification', 'insufficient_information', 'cancelled'}:
             response = clarification_result(reference, raw_message, self.tenant_id)
@@ -504,10 +508,21 @@ class Appliance:
         message = reference['query']
         if plan.get('criteria'):
             plan['query'] = message
+            # Ranking evidence must bind to the same resolved entity as
+            # retrieval, including after a pending reference is confirmed.
+            question = plan['question']
+            for binding in sorted(reference['bindings'], key=lambda item: item['start'], reverse=True):
+                if binding['end'] <= len(question):
+                    question = question[:binding['start']] + binding['replacement'] + question[binding['end']:]
+            plan['question'] = question
         from cpu_llm.typos import correct_message
 
-        original_message = message
         message, typos = correct_message(message, self.word_tags, tenant_id=self.tenant_id)
+        if plan.get('criteria'):
+            plan['query'] = message
+            for change in typos:
+                plan['question'] = re.sub(rf"\b{re.escape(change['from'])}\b",
+                                          lambda match: change['to'], plan['question'])
         z_query = np.asarray(self.index.encode_query(message), dtype=np.float32).reshape(TENSOR_DIM)
         creative_reasons = creative_writing_trigger(message, forced=imagine)
         deep_reasons = deep_search_trigger(message, forced=deep)
@@ -592,17 +607,16 @@ class Appliance:
         result["typos"] = typos
         result["tenant_id"] = self.tenant_id
         result['reference_resolution'] = reference
-        if reference['bindings']:
+        if reference['bindings'] or typos:
             result['original_message'] = raw_message
             result['resolved_query'] = message
         if context is not None:
             result["caller_id"] = context.caller_id
             result["request_id"] = context.request_id
-        if typos:
-            result["original_message"] = original_message
         if (plan.get('criteria') and result.get('guard_decision') in (None, 'allow')
                 and not result.get('delivery_blocked') and not result.get('shine_enforced')
-                and result.get('shine_ok') is not False):
+                and result.get('shine_ok') is not False and result.get('grammar_ok') is not False
+                and not result.get('__partial__') and not result.get('__node_error__')):
             rows = list(result.get('passages') or [])
             if plan.get('user_source'):
                 rows.append(dict(document_id='user-provided', chunk_text=plan['user_source']))
@@ -624,6 +638,12 @@ class Appliance:
                 result['status'] = outcome['status']
                 result['needs_clarification'] = outcome['status'] == 'needs_clarification'
                 result['clarification'] = outcome
+            # Keep the public fields consistent with the replacement reply;
+            # earlier answer evidence must not describe a clarification.
+            result['answer_status'] = result['reply']['answer_status']
+            result['answer_evidence'] = list(result['reply'].get('answer_evidence') or [])
+            result['supporting_evidence'] = []
+            result['verification_scope'] = result['reply'].get('verification_scope')
             result['original_message'] = raw_message
             result['resolved_query'] = plan['query']
             result['user_criteria'] = plan['criteria']
@@ -1002,6 +1022,7 @@ def _reply(state: dict[str, Any]) -> dict[str, Any]:
         return update
     update["answer_status"] = status
     update["answer_evidence"] = list(reply.get("answer_evidence") or [])
+    update["supporting_evidence"] = list(reply.get("supporting_evidence") or [])
     update["verification_scope"] = reply.get("verification_scope")
     update["retrieved_candidates"] = list(reply.get("retrieved_candidates") or [])
     if status in {"insufficient_evidence", "conflicting", "evidence_quote"}:
@@ -1382,18 +1403,32 @@ def _deep(appliance: Appliance):
         from cpu_llm.agents.deep_search import collect_possibilities
         from cpu_llm.relations import load_edges
 
-        edges = load_edges(appliance.relations_path)
         sides = list(state.get("comparison_sides") or [])
-        if sides:
-            gathered = possibilities_by_side(sides, appliance.word_tags, edges, appliance.index)
-        else:
-            gathered = collect_possibilities(state.get("message") or "", appliance.word_tags, edges)
+        restricted = _restricted_rows(appliance, state)
         texts: dict[str, str] = {}
         tensors: dict[str, Any] = {}
+        if restricted is not None:
+            # Current word metadata and article lookups have no historical
+            # validity or intermediate-edge authorization contract.
+            gathered = dict(seeds=[], hands={}, possibilities=[])
+            for row in restricted:
+                document_id = str(row['document_id'])
+                texts[document_id] = str(row.get('chunk_text') or '')
+                if row.get('tensor_1024d') is not None:
+                    tensors[document_id] = row['tensor_1024d']
+                for side in sides or [None]:
+                    if side is not None and not set(_content_words(side)).intersection(_content_words(texts[document_id])):
+                        continue
+                    gathered['possibilities'].append(dict(document_id=document_id,
+                        article=article_slug(document_id), matched_words=[], via=['retrieved'], side=side))
+        else:
+            edges = load_edges(appliance.relations_path)
+            gathered = (possibilities_by_side(sides, appliance.word_tags, edges, appliance.index) if sides
+                        else collect_possibilities(state.get("message") or "", appliance.word_tags, edges))
         allowed = state.get("allowed_sources")
         gathered["possibilities"] = keep_allowed(list(gathered["possibilities"]), allowed)
         ids = [item["document_id"] for item in gathered["possibilities"]]
-        if ids and hasattr(appliance.index.db, "get_by_ids"):
+        if restricted is None and ids and hasattr(appliance.index.db, "get_by_ids"):
             for row in appliance.index.db.get_by_ids(ids):
                 document_id = str(row["document_id"])
                 texts[document_id] = str(row.get("chunk_text") or "")
@@ -1674,6 +1709,9 @@ def _sentence_lines(text: str) -> list[str]:
 def _brief_rows(appliance: Appliance, state: dict[str, Any]) -> list[dict[str, Any]]:
     from cpu_llm.agents.summarize import topic_words
 
+    restricted = _restricted_rows(appliance, state)
+    if restricted is not None:
+        return restricted
     rows = _possibility_rows(state, tensors=appliance._deep_tensors)
     if rows:
         return rows
@@ -1700,8 +1738,11 @@ def _gather(appliance: Appliance):
     def node(state: dict[str, Any]) -> dict[str, Any]:
         from cpu_llm.agents.gather import gather_article
 
-        rows = _possibility_rows(state, tensors=appliance._deep_tensors)
-        if not rows:
+        restricted = _restricted_rows(appliance, state)
+        rows = restricted
+        if restricted is None:
+            rows = _possibility_rows(state, tensors=appliance._deep_tensors)
+        if not rows and restricted is None:
             related = list(state.get("related") or [])
             rows = appliance.index.chunks_for_articles([item["chunk_id"] for item in related])
             if not rows:
@@ -1774,10 +1815,12 @@ def _imagine(appliance: Appliance):
             return {
                 "imagination": compose_imagination(state.get("message") or "", [], {}),
             }
-        rows = _possibility_rows(state, tensors=appliance._deep_tensors) or (appliance._turn or {}).get("gathered_rows")
-        if not rows:
+        restricted = _restricted_rows(appliance, state)
+        rows = restricted if restricted is not None else (
+            _possibility_rows(state, tensors=appliance._deep_tensors) or (appliance._turn or {}).get("gathered_rows"))
+        if not rows and restricted is None:
             rows = appliance.index.chunks_for_articles([item["chunk_id"] for item in related])
-        if not rows:
+        if not rows and restricted is None:
             rows = _shortlist_rows(appliance, related)
         turn = appliance._turn or {}
         query = turn.get("z_query")
@@ -1854,8 +1897,25 @@ def _possibility_rows(
     return rows
 
 
+def _restricted_rows(appliance: Appliance, state: dict[str, Any]) -> list[dict[str, Any]] | None:
+    """Use only this turn's scoped/time-filtered retrieval for legacy agents.
+
+    None permits the ordinary current, unscoped article expansion. An empty
+    list explicitly prohibits a fallback to other sessions or current rows.
+    """
+    turn = getattr(appliance, '_turn', None) or {}
+    allowed = turn.get('allowed_sources', state.get('allowed_sources'))
+    if allowed is None and turn.get('as_of') is None:
+        return None
+    return keep_allowed(list(turn.get('hits') or []), allowed)
+
+
 def _rows_for_agent(appliance: Appliance, state: dict[str, Any], side: str) -> list[dict[str, Any]]:
     """Prefer the chunks deep search already returned for this topic."""
+    restricted = _restricted_rows(appliance, state)
+    if restricted is not None:
+        words = set(_content_words(side))
+        return [row for row in restricted if not words or words.intersection(_content_words(row.get('chunk_text') or ''))]
     rows = _possibility_rows(state, side, appliance._deep_tensors)
     if rows:
         return rows
@@ -2097,10 +2157,14 @@ def _retrieve(appliance: Appliance):
                 if str(hit['document_id']) not in seen:
                     hits.append(hit)
                     seen.add(str(hit['document_id']))
-        named = _hits_for_named_article(appliance.index, message, hits)
-        if named:
-            hits = named
-        hits = _with_tagged_paragraphs(appliance, message, hits)
+        hits = keep_allowed(hits, allowed)
+        # These legacy lookup helpers read current rows without a validity
+        # predicate. Historical turns must use only time-filtered searches.
+        if as_of is None:
+            named = _hits_for_named_article(appliance.index, message, hits, allowed)
+            if named:
+                hits = named
+            hits = _with_tagged_paragraphs(appliance, message, hits)
         hits = _with_graph_paragraphs(appliance, message, hits, allowed=allowed, as_of=as_of, intent=intent)
         hits = keep_allowed(hits, allowed)
         from cpu_llm.attribute_search import retrieve_missing_attribute
@@ -2130,7 +2194,7 @@ def _retrieve(appliance: Appliance):
     return node
 
 
-def _hits_for_named_article(index, message: str, hits: list[dict[str, Any]]) -> list[dict[str, Any]] | None:
+def _hits_for_named_article(index, message: str, hits: list[dict[str, Any]], allowed=None) -> list[dict[str, Any]] | None:
     """Keep every article the question names, once that article's lead is stored.
 
     Neighbors from unnamed articles are left out. Each lead is added when the
@@ -2142,7 +2206,7 @@ def _hits_for_named_article(index, message: str, hits: list[dict[str, Any]]) -> 
     found = False
     for slug in title_slugs(message):
         lead = index.lead_for_slug(slug)
-        if lead is None:
+        if lead is None or not keep_allowed([lead], allowed):
             continue
         found = True
         kept = [hit for hit in hits if article_slug(str(hit["document_id"])) == slug]
@@ -2535,6 +2599,8 @@ def _cognize(appliance: Appliance):
             paired_ids = realization_order(state.get("message") or "", ordered_hits, stored_by_id)
             paired = [stored_by_id[chunk_id] for chunk_id in paired_ids]
             if not paired:
+                if _restricted_rows(appliance, state) is not None:
+                    return {"cognition_status": "needs_evidence_propositions"}
                 lexical = _lexical_evidence(appliance.memory, state.get("message") or "")
                 if not lexical:
                     return {"cognition_status": "needs_evidence_propositions"}

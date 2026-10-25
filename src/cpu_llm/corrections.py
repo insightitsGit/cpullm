@@ -80,7 +80,9 @@ def apply_correction(
     memory.apply(StateDelta(ops=ops))
     if hasattr(index, "retire_document"):
         index.retire_document(document_id, int(timestamp))
-    if hasattr(index, "save_chunks"):
+    if hasattr(index, "save_version"):
+        index.save_version(new_id, body, int(timestamp))
+    elif hasattr(index, "save_chunks"):
         index.save_chunks([(new_id, body)])
     return {
         "document_id": document_id,

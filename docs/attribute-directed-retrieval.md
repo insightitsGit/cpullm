@@ -33,6 +33,10 @@ The analogy is an evidence join, with an applicability constraint:
 - A verified `X is_a Y` plus an explicit universal `All Y`/`Every Y` lifespan
   rule can answer by quoting both premises. This first implementation supports
   one type-membership hop and up to two alias hops, not arbitrary inheritance.
+- Explicit aliases can bind the class named by a universal rule to the membership
+  class. Alias traversal has a fixed two-hop bound independent of source order;
+  identity premises remain in `supporting_evidence`, and class-alias premises
+  needed by the join are retained with the quoted membership/rule evidence.
 - The same universal-rule applicability check supports the other three
   recognized attributes. Ordinary class descriptions are never treated as
   universal inheritance rules.
@@ -40,6 +44,9 @@ The analogy is an evidence join, with an applicability constraint:
   related evidence, but does not establish X's lifespan.
 - Membership cannot be reversed, and an incidental word connection is not a
   type-membership premise. Conflicting direct values retain a conflict.
+- A direct color/lifespan fact does not hide a conflicting applicable universal
+  rule. Such evidence remains conflicting rather than silently preferring the
+  direct sentence.
 
 ## Limits
 
@@ -50,3 +57,6 @@ are source assertions, not independently established biological truths.
 Evidence-qualified sentences are quoted rather than replaced by an invented
 species-specific statistic. Attributes outside the four recognized relations
 and complex inference remain open.
+
+See [the response-case review](response-cases.md) for the independent SQLite
+`INNER JOIN` test oracle, live PostgreSQL cases, and remaining response gaps.
