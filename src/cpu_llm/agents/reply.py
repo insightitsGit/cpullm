@@ -223,8 +223,9 @@ def _query_assessment(state: dict[str, Any]) -> dict[str, Any] | None:
     decision["verification_scope"] = "retrieval"
     decision["supported_text"] = ""
     decision["text"] = _evidence_preview(decision.get("answer_evidence") or [])
-    body = _body(state)
-    decision["replaces_body"] = not _preview_already_shown(body, decision.get("answer_evidence") or [])
+    # A paragraph containing the answer can also contain unrelated facts.
+    # Deliver the bound sentences rather than keeping that whole paragraph.
+    decision["replaces_body"] = True
     return decision
 
 

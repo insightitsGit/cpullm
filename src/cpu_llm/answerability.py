@@ -297,6 +297,10 @@ def _subject_bindings(plan: dict[str, str], rows: list[dict[str, str]]) -> list[
                 continue
             seen.add(key)
             bindings.append({"document_id": row["document_id"], "span": sentence})
+    if plan["kind"] == "definition":
+        definitions = [item for item in bindings if _definition_sentence(plan, item["span"])]
+        if definitions:
+            return definitions[:1]
     return bindings
 
 
@@ -326,6 +330,13 @@ def _relation_sentence(plan: dict[str, str], sentence: str) -> bool:
         return False
     if plan["kind"] == "weight":
         return _direct_weight(subject, sentence)
+    if plan.get("relation") == "location" and plan.get("verb") == "live":
+        # A named species' definition may state its range without "lives in".
+        # Require the explicit subject/alias and a geographic range clause.
+        if _definition_sentence({"subject": subject}, sentence) and re.search(
+            r"\b(?:species|animal|bird|mammal|fish|lobster)\b.*\bfrom\s+", sentence, re.IGNORECASE
+        ):
+            return True
     forms = _verb_forms(plan.get("verb") or "")
     if not forms:
         return False
@@ -410,7 +421,18 @@ def _subject_sentence(subject: str, sentence: str) -> bool:
     known = re.search(r"\bknown as\b", folded)
     if known and _complete_phrase(sentence[known.start() :], phrase):
         return True
-    return re.match(rf"^(?:(?:the|a|an)\s+)?{re.escape(phrase)}\b", folded) is not None
+    if re.search(rf"\b(?:is|are)\s+(?:(?:the|a|an)\s+)?{re.escape(phrase)}[.!?]?$", sentence, re.IGNORECASE):
+        return True
+    return re.match(rf"^(?:(?:the|a|an)\s+)?{re.escape(phrase)}\b", folded, re.IGNORECASE) is not None
+
+
+def _definition_sentence(plan: dict[str, str], sentence: str) -> bool:
+    phrase = re.escape(_subject_phrase(plan.get("subject") or ""))
+    copula = r"(?:was|were)" if plan.get("tense") == "past" else r"(?:is|are)"
+    return bool(re.match(
+        rf"^(?:(?:the|a|an)\s+)?{phrase}(?:,\s*[^,]+,)?\s+{copula}\b", sentence, re.IGNORECASE
+    ) or re.search(r"\bknown as\b", sentence, re.IGNORECASE)
+        or re.search(rf"\b{copula}\s+(?:(?:the|a|an)\s+)?{phrase}[.!?]?$", sentence, re.IGNORECASE))
 
 
 def _complete_phrase(text: str, phrase: str) -> bool:

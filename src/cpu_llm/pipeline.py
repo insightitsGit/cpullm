@@ -221,6 +221,14 @@ class Appliance:
         self.word_tags_path = cache / "word_tags.json"
         self.word_tags = load_word_index(self.word_tags_path)
         self.relations_path = cache / "word_relations.json"
+        from cpu_llm.knowledge_graph import KnowledgeGraph
+        self.knowledge_graph = KnowledgeGraph(
+            cache / "knowledge_graph.db",
+            enabled_channels=self.index.pipeline.enabled_channels,
+            encode_texts=self.index.pipeline.encode_texts,
+            causal_matrix=self.index.engine.causal_matrix,
+            model_version=self.index.pipeline.model_version,
+        )
         self._turn: dict[str, Any] | None = None
         self._creative_seen: dict[str, str] = {}
         self._previous_ids: list[str] = []
@@ -245,6 +253,8 @@ class Appliance:
         bound = propositions or {}
         stored: list[tuple[str, np.ndarray]] = []
         edges = _passage_edges(self, chunks)
+        if getattr(self, "knowledge_graph", None) is not None:
+            self.knowledge_graph.replace(chunks)
         indexer = _taxonomy_indexer(self)
         for document_id, chunk_text in chunks:
             self.index.upsert(document_id, chunk_text)
@@ -282,6 +292,8 @@ class Appliance:
         again so the graph node keeps the same tensor the row stores.
         """
         self.index.save_chunks(chunks, replace_prefix=replace_prefix)
+        if getattr(self, "knowledge_graph", None) is not None:
+            self.knowledge_graph.replace(chunks, prefix=replace_prefix)
         bound = propositions or {}
         texts = [text for _document_id, text in chunks]
         vectors: list[Any] = []
@@ -375,7 +387,7 @@ class Appliance:
         context = _caller_for(self, caller)
         if context is not None and not source_allowed(source_prefix(document_id), context.allowed_sources):
             raise SourceForbidden("that source is outside this caller's scope")
-        return apply_correction(
+        result = apply_correction(
             self.memory,
             self.index,
             document_id=document_id,
@@ -384,6 +396,10 @@ class Appliance:
             actor_id=actor_id,
             timestamp=timestamp,
         )
+        if getattr(self, "knowledge_graph", None) is not None:
+            self.knowledge_graph.delete_prefix(document_id + "-v")
+            self.knowledge_graph.replace([(document_id, ""), (result["new_id"], new_sentence)])
+        return result
 
     def delete_source(self, source: str) -> dict[str, Any]:
         """Remove one source from the vector index, the graph, and the word index.
@@ -393,13 +409,17 @@ class Appliance:
         """
         from cpu_llm.source_delete import delete_stored_source
 
-        return delete_stored_source(
+        result = delete_stored_source(
             self.index,
             self.memory,
             self.word_tags,
             self.word_tags_path,
             source,
         )
+        from cpu_llm.source_delete import source_prefix
+        if getattr(self, "knowledge_graph", None) is not None:
+            self.knowledge_graph.delete_prefix(source_prefix(source))
+        return result
 
     def upsert(self, document_id: str, chunk_text: str) -> int:
         return self.index_chunks([(document_id, chunk_text)])
@@ -1180,6 +1200,11 @@ def _channel(appliance: Appliance, name: str):
             anchor_set=anchor_set,
             anchor=anchor,
         )
+        reading["connections"] = [
+            {"document_id": passage["document_id"], **edge}
+            for passage in passages for edge in passage.get("graph_evidence") or []
+            if name in edge.get("channels", [])
+        ]
         readings = list(state.get("channel_readings") or [])
         readings.append(reading)
         return {"channel_readings": readings}
@@ -1212,6 +1237,7 @@ def _passages(appliance: Appliance, state: dict[str, Any]) -> list[dict[str, Any
                 "document_id": item["chunk_id"],
                 "chunk_text": item["chunk_text"],
                 "tensor": np.asarray(hit["tensor_1024d"], dtype=np.float64).reshape(-1),
+                "graph_evidence": list(hit.get("graph_evidence") or []),
             }
         )
     return passages
@@ -1944,6 +1970,36 @@ def _with_tagged_paragraphs(
     return added
 
 
+def _with_graph_paragraphs(appliance, message, hits, *, allowed=None, as_of=None):
+    """Load bounded, authorized evidence discovered through typed relations.
+
+    Historical queries retain their existing temporal retrieval path; this
+    graph contains only current facts. Paths are discovery hints, not proofs.
+    """
+    graph = getattr(appliance, "knowledge_graph", None)
+    if graph is None or as_of is not None or not hasattr(appliance.index.db, "get_by_ids"):
+        return hits
+    facts = graph.neighborhood(message, allowed=allowed, hops=2, limit=24)
+    have = {str(hit["document_id"]) for hit in hits}
+    wanted = list(dict.fromkeys(fact.document_id for fact in facts if fact.document_id not in have))[:12]
+    candidates = list(hits)
+    if wanted:
+        candidates.extend(keep_allowed(list(appliance.index.db.get_by_ids(wanted)), allowed))
+    added = []
+    for row in candidates:
+        text = str(row.get("chunk_text") or "")
+        evidence = [fact for fact in facts if fact.document_id == row["document_id"] and fact.sentence in text]
+        if not evidence:
+            if row["document_id"] in have:
+                added.append(row)
+            continue
+        added.append({**row, "final_score": row.get("final_score", 0.0), "graph_evidence": [
+            {"subject": f.subject, "relation": f.relation, "object": f.object, "sentence": f.sentence,
+             "channels": sorted(f.channels), "channel_assessment": f.channel_assessment}
+            for f in evidence]})
+    return added
+
+
 def _retrieve(appliance: Appliance):
     def node(state: dict[str, Any]) -> dict[str, Any]:
         message = state.get("message") or ""
@@ -1964,6 +2020,7 @@ def _retrieve(appliance: Appliance):
         if named:
             hits = named
         hits = _with_tagged_paragraphs(appliance, message, hits)
+        hits = _with_graph_paragraphs(appliance, message, hits, allowed=allowed, as_of=as_of)
         hits = keep_allowed(hits, allowed)
         from cpu_llm.corrections import conflict_among
 
@@ -1977,6 +2034,7 @@ def _retrieve(appliance: Appliance):
                     "document_id": hit["document_id"],
                     "chunk_text": hit["chunk_text"],
                     "final_score": float(hit["final_score"]),
+                    "graph_evidence": list(hit.get("graph_evidence") or []),
                 }
                 for hit in hits
             ]

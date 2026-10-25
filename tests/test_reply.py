@@ -49,7 +49,8 @@ def test_follow_ups_come_from_the_passages_and_change_with_them():
     lobster = compose_reply(_lobster_state())
     assert lobster["body"].startswith("From wikitext2-homarus-gammarus-p0001")
     assert "European lobster" in lobster["body"]
-    assert "proposition" in lobster["preface"]
+    assert "retrieved passage" in lobster["preface"]
+    assert lobster["verification_scope"] == "retrieval"
     assert any("exoskeleton" in item or "crustaceans" in item for item in lobster["follow_ups"])
     for item in lobster["follow_ups"]:
         quoted = item.split("“", 1)[-1].rsplit("”", 1)[0] if "“" in item else ""

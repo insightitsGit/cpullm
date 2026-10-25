@@ -36,13 +36,15 @@ def realization_order(
 
 
 def _in_scope(message: str, hits: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    from cpu_llm.answerability import eligible_hits
+    from cpu_llm.answerability import eligible_hits, parse_query
 
     named = set(title_slugs(message))
     if named:
         kept = [hit for hit in hits if article_slug(str(hit["document_id"])) in named]
         if kept:
             bound = eligible_hits(message, kept)
+            if (parse_query(message) or {}).get("kind") == "definition" and bound:
+                return kept
             return bound if bound is not None else kept
     bound = eligible_hits(message, hits)
     if bound is not None:

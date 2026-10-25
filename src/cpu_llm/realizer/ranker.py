@@ -13,6 +13,7 @@ stored. Scores are not asked to choose that clause, and they cannot drop it.
 from __future__ import annotations
 
 from typing import Any
+from dataclasses import replace
 
 from cpu_llm.ranking import ranking_question
 from cpu_llm.realizer.constructions import attach_ranking, bundle_from_chunks, derivations_for, plan_for
@@ -57,6 +58,27 @@ def realize(
     mode = "deterministic_fallback" if CHECKPOINT_ID is None else "evidence_neural"
     if delivery_rejected:
         return _result(plan, "blocked", "", False, mode, ["delivery was already rejected"])
+    if not account:
+        from cpu_llm.answerability import assess
+        from cpu_llm.realizer.constructions import _quote_record, _ids_plan
+
+        rows = []
+        for index, passage in enumerate(bundle.passages):
+            document_id = next((record.document_id for record in bundle.records
+                                if record.source and record.source in passage), f"passage-{index}")
+            rows.append({"document_id": document_id, "text": passage})
+        decision = assess(question, rows)
+        if decision is not None:
+            if decision["answer_status"] != "answered":
+                status = "conflicting" if decision["answer_status"] == "conflicting" else "missing"
+                return _result(plan, status, decision["text"], False, mode, [status])
+            records = []
+            for index, evidence in enumerate(decision["answer_evidence"]):
+                record = _quote_record(f"query-{index}-{evidence['document_id']}", evidence["span"])
+                if record is not None:
+                    records.append(replace(record, document_id=evidence["document_id"]))
+            bundle = replace(bundle, records=tuple(records))
+            plan = _ids_plan(bundle, question, "question", [record.record_id for record in records])
     groups = [] if plan.status != "answered" else derivations_for(bundle, plan)
     chosen: list[Derivation] = []
     for group in groups:
