@@ -32,9 +32,14 @@ def test_pgvector_extension_is_created_in_public(monkeypatch):
 
     calls = []
 
+    class Result:
+        def fetchone(self):
+            return None
+
     class Conn:
         def execute(self, sql, *args):
             calls.append(sql)
+            return Result()
 
         def __enter__(self):
             return self
@@ -45,4 +50,32 @@ def test_pgvector_extension_is_created_in_public(monkeypatch):
     monkeypatch.setattr(psycopg, "connect", lambda *args, **kwargs: Conn())
     _enable_pgvector("postgresql://vectorprism:secret@127.0.0.1:5434/cpullm_public")
     assert "SET search_path TO public" in calls
-    assert "CREATE EXTENSION IF NOT EXISTS vector SCHEMA public" in calls
+    assert any("CREATE EXTENSION vector SCHEMA public" in sql for sql in calls)
+
+
+def test_pgvector_extension_moves_from_a_tenant_schema(monkeypatch):
+    import psycopg
+
+    from cpu_llm.retrieval import _enable_pgvector
+
+    calls = []
+
+    class Result:
+        def fetchone(self):
+            return ("ns_cpu_llm",)
+
+    class Conn:
+        def execute(self, sql, *args):
+            calls.append(sql)
+            return Result()
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+    monkeypatch.setattr(psycopg, "connect", lambda *args, **kwargs: Conn())
+    _enable_pgvector("postgresql://vectorprism:secret@127.0.0.1:5434/cpullm_public")
+    assert any("ALTER EXTENSION vector SET SCHEMA public" in sql for sql in calls)
+    assert not any("CREATE EXTENSION" in sql for sql in calls)

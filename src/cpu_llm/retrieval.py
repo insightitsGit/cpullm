@@ -497,4 +497,17 @@ def _enable_pgvector(dsn: str) -> None:
 
     with psycopg.connect(dsn, autocommit=True) as conn:
         conn.execute("SET search_path TO public")
-        conn.execute("CREATE EXTENSION IF NOT EXISTS vector SCHEMA public")
+        found = conn.execute(
+            """
+            SELECT n.nspname
+            FROM pg_extension AS e
+            JOIN pg_namespace AS n ON n.oid = e.extnamespace
+            WHERE e.extname = 'vector'
+            """
+        ).fetchone()
+        if found is None:
+            conn.execute("CREATE EXTENSION vector SCHEMA public")
+        elif found[0] != "public":
+            # IF NOT EXISTS leaves an extension that an older tenant schema
+            # already installed. The type has to live in public.
+            conn.execute("ALTER EXTENSION vector SET SCHEMA public")

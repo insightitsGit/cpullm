@@ -529,3 +529,51 @@ def test_a_named_attribute_is_not_replaced_by_a_sense_question(tmp_path):
     blob = " ".join(" ".join(sense["words"]) for sense in spring["senses"])
     assert "clock" in blob
     assert "pond" in blob or "creek" in blob or "mountain" in blob or "forest" in blob
+    assert _sense_clarification(appliance, "Who captains the Cedar?", None) is None
+    assert _sense_clarification(appliance, "Compare the Cedar and the Rowan.", None) is None
+
+
+def test_two_kinds_of_bat_stay_ambiguous(tmp_path):
+    from types import SimpleNamespace
+
+    from cpu_llm.clarification import ClarificationLoop
+    from cpu_llm.pipeline import _sense_clarification
+
+    store = ResonanceTags(tmp_path / "bats.db")
+    store.add_chunks([
+        ("bat-m1", "The bat is a mammal."),
+        ("bat-m2", "The flying bat hunts insects."),
+        ("bat-m3", "The nocturnal bat uses echolocation."),
+        ("bat-m4", "The winged bat roosts in caves."),
+        ("bat-c1", "The bat is a wooden club."),
+        ("bat-c2", "The carved bat hits baseballs."),
+        ("bat-c3", "The oak bat cracks pitches."),
+        ("bat-c4", "The weighted bat swings hard."),
+    ])
+    appliance = SimpleNamespace(
+        resonance_tags_enabled=True,
+        resonance_tags=store,
+        clarifications=ClarificationLoop(),
+        _turn={"allowed_sources": None},
+    )
+    asked = _sense_clarification(appliance, "What kind of thing is the bat?", None)
+    assert asked["slot"] == "sense"
+    blob = " ".join(" ".join(sense["words"]) for sense in asked["senses"])
+    assert "mammal" in blob
+    assert "wooden" in blob or "club" in blob
+    assert "another meaning" not in asked["text"]
+
+
+def test_sense_choices_are_capped(tmp_path):
+    store = ResonanceTags(tmp_path / "many.db")
+    words = [
+        "alpha", "bravo", "charlie", "delta", "echo", "foxtrot", "golf", "hotel",
+        "india", "juliet", "kilo", "lima", "mike", "november", "oscar", "papa",
+        "quebec", "romeo", "sierra", "tango",
+    ]
+    store.add_chunks([(f"topic-{word}", f"The topic {word}.") for word in words])
+    result = store.recall_spread("topic")
+    assert result["status"] == "ambiguous"
+    assert len(result["senses"]) == 8
+    assert result["omitted"] == 12
+    assert all(sense["words"] for sense in result["senses"])

@@ -110,6 +110,47 @@ def test_when_a_bare_count_and_a_comparison_do_not_quote_a_stored_sentence():
         assert reply["answer_status"] == "unsupported"
         assert "white" not in reply["text"]
         assert "blue" not in reply["text"]
+        from cpu_llm.pipeline import _reply
+
+        delivered = _reply(
+            {
+                "message": question,
+                "guard_decision": "allow",
+                "answer": sentence,
+                "audit_passed": True,
+                "related": [{"chunk_id": "cedar", "chunk_text": sentence}],
+                "compare": question.startswith("Compare"),
+                "comparison": {
+                    "sides": [
+                        {"label": "the Cedar", "text": sentence},
+                        {"label": "the Rowan", "text": "The Rowan is blue."},
+                    ]
+                },
+            }
+        )
+        assert delivered["answer"] is None
+        assert delivered["audit_passed"] is False
+        assert delivered["answer_status"] == "unsupported"
+        assert delivered["answer_evidence"] == []
+
+
+def test_a_missing_captain_does_not_keep_an_unrelated_answer():
+    from cpu_llm.pipeline import _reply
+
+    delivered = _reply(
+        {
+            "message": "Who captains the Cedar?",
+            "guard_decision": "allow",
+            "frame": True,
+            "frame_result": {"status": "missing", "text": "No stored sentence names who did that."},
+            "audit_passed": True,
+            "answer": "The Cedar is white.",
+        }
+    )
+    assert delivered["answer_status"] == "missing"
+    assert delivered["answer"] is None
+    assert delivered["audit_passed"] is False
+    assert delivered["reply"]["text"] == "No stored sentence names who did that."
 
 
 def test_a_stated_cause_is_spoken_once():
@@ -128,6 +169,41 @@ def test_a_stated_cause_is_spoken_once():
     assert cause in reply["text"]
     assert reply["text"].count("Explanation:") == 0
     assert reply["text"].count(cause) == 1
+
+
+def test_a_retrieved_cause_replaces_an_unrelated_identity_sentence():
+    from cpu_llm.pipeline import _reply
+
+    cause = "The pots work because the lobster enters them."
+    identity = "The European lobster is Homarus gammarus."
+    delivered = _reply(
+        {
+            "message": "Why is the European lobster different from the American lobster?",
+            "guard_decision": "allow",
+            "audit_passed": True,
+            "answer": identity,
+            "explain": True,
+            "brief": {"explanation": ""},
+            "related": [
+                {"chunk_id": "channel-euro", "chunk_text": identity},
+                {"chunk_id": "channel-cause", "chunk_text": cause},
+            ],
+            "compare": True,
+            "comparison": {
+                "sides": [
+                    {"label": "the European lobster", "text": identity},
+                    {"label": "the American lobster", "text": "The American lobster is Homarus americanus."},
+                ]
+            },
+        }
+    )
+    assert delivered["answer"] == cause
+    assert delivered["reply"]["body"] == cause
+    assert delivered["reply"]["text"].count(cause) == 1
+    assert identity not in delivered["reply"]["text"]
+    assert "This question type is not supported yet." not in delivered["reply"]["text"]
+    assert "Explanation:" not in delivered["reply"]["text"]
+    assert delivered["answer_evidence"] == [{"document_id": "channel-cause", "span": cause}]
 
 
 def test_how_many_years_stays_a_lifespan_question():

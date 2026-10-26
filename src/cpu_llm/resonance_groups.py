@@ -228,9 +228,15 @@ class ResonanceTags:
             for unit_id in lit:
                 lit_senses.setdefault(component_of[unit_id], []).append(unit_id)
             if len(lit_senses) >= 2:
-                senses = [_sense_words(units, components[index], hubs, query) for index in lit_senses]
-                senses.sort(key=lambda item: (-len(item["words"]), item["words"]))
-                return {"status": "ambiguous", "units": [], "senses": senses}
+                senses, omitted = _label_senses(units, lit_senses, hubs, query)
+                if len(senses) >= 2:
+                    return {
+                        "status": "ambiguous",
+                        "units": [],
+                        "senses": senses,
+                        "omitted": omitted,
+                        "sense_budget": _SENSE_BUDGET,
+                    }
         by_id = {unit["unit_id"]: unit for unit in units}
         best_id = min(first, key=lambda unit_id: (-first[unit_id], unit_id))
         chosen = set(components[component_of[best_id]])
@@ -494,18 +500,44 @@ def _sense_components(units: list[dict], hubs: set[str]) -> list[list[str]]:
     return list(grouped.values())
 
 
-def _sense_words(units: list[dict], member_ids: list[str], hubs: set[str], query: list[str]) -> dict:
-    members = {unit["unit_id"] for unit in units if unit["unit_id"] in set(member_ids)}
-    counts: dict[str, int] = {}
-    for unit in units:
-        if unit["unit_id"] not in members:
+_SENSE_BUDGET = 8
+
+
+def _label_senses(
+    units: list[dict],
+    members_of: dict[int, list[str]],
+    hubs: set[str],
+    query: list[str],
+) -> tuple[list[dict], int]:
+    """One pass over the lit tags. Empty labels are dropped, and the list is capped.
+
+    A component whose only words are the query or a hub has no meaning to show.
+    ``omitted`` is how many labeled meanings did not fit in the budget.
+    """
+    query_words = set(query)
+    counts: dict[int, dict[str, int]] = {index: {} for index in members_of}
+    texts: dict[int, list[str]] = {index: [] for index in members_of}
+    by_id = {unit["unit_id"]: unit for unit in units}
+    for index, member_ids in members_of.items():
+        bucket = counts[index]
+        kept = texts[index]
+        for unit_id in member_ids:
+            unit = by_id[unit_id]
+            if len(kept) < 4:
+                kept.append(unit["text"])
+            for word in unit["words"]:
+                if word in hubs or word in query_words:
+                    continue
+                bucket[word] = bucket.get(word, 0) + 1
+    labeled = []
+    for index, member_ids in members_of.items():
+        ranked = sorted(counts[index], key=lambda word: (-counts[index][word], word))[:4]
+        if not ranked:
             continue
-        for word in unit["words"]:
-            if word in hubs or word in query:
-                continue
-            counts[word] = counts.get(word, 0) + 1
-    ranked = sorted(counts, key=lambda word: (-counts[word], word))[:4]
-    return {"words": ranked, "size": len(member_ids)}
+        labeled.append({"words": ranked, "size": len(member_ids), "texts": list(texts[index])})
+    labeled.sort(key=lambda item: (-len(item["words"]), item["words"]))
+    omitted = max(0, len(labeled) - _SENSE_BUDGET)
+    return labeled[:_SENSE_BUDGET], omitted
 
 
 def _prefix_match(document_id: str, prefix: str) -> bool:

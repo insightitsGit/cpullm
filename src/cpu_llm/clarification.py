@@ -92,12 +92,13 @@ class ClarificationLoop:
         return dict(status='needs_clarification', slot='evidence', criteria=plan['criteria'],
                     text=f'I do not have evidence that establishes which is best for {plan["criteria"]}. Can you provide relevant comparison data or a source?')
 
-    def need_sense(self, message, senses, *, key=None):
+    def need_sense(self, message, senses, *, key=None, omitted=0):
         """Ask which meaning the user intends. The words shown are the choices."""
         shown = [dict(words=list(sense.get('words') or []), size=int(sense.get('size') or 0)) for sense in senses]
         with self.lock:
             self._save(key, dict(stage='sense', question=message, senses=shown, count=1))
-        return dict(status='needs_clarification', slot='sense', question=message, senses=shown, text=_sense_text(shown))
+        return dict(status='needs_clarification', slot='sense', question=message, senses=shown,
+                    omitted=int(omitted or 0), text=_sense_text(shown, omitted=int(omitted or 0)))
 
     def _resume_sense(self, state, text, key, abandoned):
         choice = _sense_choice(text, state.get('senses') or [])
@@ -141,11 +142,15 @@ def _abandons_pending(text, state):
     return re.match(r'^(?:how|what)\s+(?:it|its|they|their)\b', text, re.I) is None
 
 
-def _sense_text(senses):
+def _sense_text(senses, omitted=0):
     lines = ['Which meaning do you mean? Reply with the number or the words that match.']
     for index, sense in enumerate(senses, start=1):
-        shown = ', '.join(sense.get('words') or []) or 'another meaning'
+        shown = ', '.join(sense.get('words') or [])
+        if not shown:
+            continue
         lines.append(f'{index}. {shown}')
+    if omitted:
+        lines.append(f'{omitted} other meanings were not listed.')
     return '\n'.join(lines)
 
 

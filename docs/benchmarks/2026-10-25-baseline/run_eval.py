@@ -11,7 +11,7 @@ Run from the repository after the disposable database is up:
     $env:HF_HUB_OFFLINE = '1'
     $env:TRANSFORMERS_OFFLINE = '1'
     $env:PYTEST_DISABLE_PLUGIN_AUTOLOAD = '1'
-    python docs/benchmarks/2026-10-25-baseline/run_eval.py
+    python docs/benchmarks/2026-10-25-baseline/run_eval.py --out build/millhaven-rerun
 """
 
 from __future__ import annotations
@@ -154,7 +154,8 @@ CASES = [
      "expect": "antonym", "must_not": ["is open"],
      "relevant_refs": [["millhaven-ferry", 12]]},
     {"id": "why-diesel", "category": "unsupported", "question": "Why does the Cedar use a diesel engine?",
-     "expect": "unsupported", "must_not": ["river current", "dawn"]},
+     "expect": "unsupported", "must_not": ["river current", "dawn"],
+     "contract_note": "The stored sentence states this cause. This case still expects the unsupported sentence. That disagreement is part of the case, not a pass."},
     {"id": "when-depart", "category": "unsupported", "question": "When does the Cedar depart?",
      "expect": "unsupported", "must_not": ["dawn", "river current"]},
     {"id": "how-many", "category": "unsupported", "question": "How many municipal ferries serve Millhaven?",
@@ -384,43 +385,62 @@ def summarize(result: dict, elapsed: float, keys_before: list[str], keys_after: 
     }
 
 
+def _phrases_present(folded: str, must: list, any_of: list) -> bool:
+    included = all(part.casefold() in folded for part in must)
+    if any_of:
+        included = included and any(part.casefold() in folded for part in any_of)
+    return included
+
+
 def judge(case: dict, summary: dict) -> dict:
     text = summary.get("text") or ""
     folded = text.casefold()
+    public = summary.get("answer")
+    public_folded = str(public or "").casefold()
     status = str(summary.get("status") or "").casefold()
     must = case.get("must_include") or []
     any_of = case.get("must_include_any") or []
     must_not = case.get("must_not") or []
-    included = all(part.casefold() in folded for part in must)
-    if any_of:
-        included = included and any(part.casefold() in folded for part in any_of)
-    forbidden = [part for part in must_not if part.casefold() in folded]
+    included = _phrases_present(folded, must, any_of)
+    # The spoken reply and the public answer are one result. A leftover
+    # answer that drops a required phrase is not complete.
+    if public not in (None, "") and not _phrases_present(public_folded, must, any_of):
+        included = False
+    claim = folded if public in (None, "") else f"{folded}\n{public_folded}"
+    forbidden = [part for part in must_not if part.casefold() in claim]
     cited = set(summary.get("evidence_ids") or []) | set(summary.get("supporting_ids") or [])
     required = set(case.get("required_ids") or [])
     clarified = bool(summary.get("needs_clarification")) or status == "needs_clarification"
     answered = status in {"answered", "evidence_quote"} and not clarified
-    abstained = status in {"insufficient_evidence", "insufficient_information"} or "do not settle" in folded
+    abstained = status in {"insufficient_evidence", "insufficient_information", "missing"} or "do not settle" in folded
     conflicted = status == "conflicting" or "stored sentences conflict" in folded
     expect = case["expect"]
     ok = False
     wrong = False
+    incomplete = False
     factual = False
+    leaked_answer = public not in (None, "")
     if summary.get("error"):
         ok = False
     elif expect == "answer":
         ok = answered and included and not forbidden
-        wrong = bool(forbidden) or (answered and not included)
+        incomplete = answered and not included and not forbidden
+        wrong = bool(forbidden)
         factual = ok
     elif expect == "abstain":
-        ok = abstained and not answered and not forbidden and not clarified
-        wrong = bool(forbidden) or answered
+        ok = abstained and not answered and not forbidden and not clarified and not leaked_answer
+        # Words inside a clarification are choices, not claims. A public answer is.
+        wrong = answered or leaked_answer or (bool(forbidden) and not clarified)
     elif expect == "clarify":
         slot_ok = not case.get("slot") or summary.get("slot") == case["slot"]
-        ok = clarified and slot_ok and summary.get("answer") is None and not forbidden
-        wrong = ((not clarified) and (answered or bool(forbidden)))
+        choice_text = folded if clarified else claim
+        choice_forbidden = [part for part in must_not if part.casefold() in choice_text]
+        ok = clarified and slot_ok and not leaked_answer and not choice_forbidden
+        wrong = (not clarified) and (answered or bool(forbidden))
+        forbidden = choice_forbidden if clarified else forbidden
     elif expect == "unsupported":
-        ok = UNSUPPORTED.casefold() in folded and not forbidden
-        wrong = bool(forbidden)
+        ok = UNSUPPORTED.casefold() in folded and not forbidden and not leaked_answer
+        wrong = bool(forbidden) or leaked_answer
     elif expect == "conflict":
         ok = conflicted and "blue" in folded and "green" in folded
         wrong = (not conflicted) and (("blue" in folded) or ("green" in folded)) and not clarified
@@ -449,6 +469,7 @@ def judge(case: dict, summary: dict) -> dict:
     return {
         "ok": bool(ok),
         "wrong": bool(wrong),
+        "incomplete": bool(incomplete),
         "factual": bool(factual),
         "expect": expect,
         "category": case.get("category"),
@@ -501,6 +522,7 @@ def aggregate(rows: list[dict]) -> dict:
     factual_rows = [row for row in rows if row["verdict"]["expect"] == "answer"]
     factual_hit = count(lambda row: row["verdict"]["expect"] == "answer" and row["verdict"]["factual"])
     wrong = count(lambda row: row["verdict"]["wrong"])
+    incomplete = count(lambda row: row["verdict"].get("incomplete"))
     cite_rows = [row for row in factual_rows if row["verdict"]["answered"] and row["verdict"]["required_ids"]]
     cite_hit = sum(1 for row in cite_rows if row["verdict"]["citation_complete"])
     clarify_rows = [row for row in rows if row["verdict"]["expect"] == "clarify"]
@@ -522,6 +544,7 @@ def aggregate(rows: list[dict]) -> dict:
         "factual_by_category": {key: {**value, "rate": rate(value["hit"], value["n"])} for key, value in sorted(by_category.items())},
         "wrong_answers": wrong,
         "wrong_answer_rate": rate(wrong, len(rows)),
+        "incomplete_answers": incomplete,
         "citation_complete": cite_hit,
         "citation_denominator": len(cite_rows),
         "citation_completeness": rate(cite_hit, len(cite_rows)),
@@ -952,10 +975,10 @@ def selftest() -> None:
     answer = judge(
         {"expect": "answer", "must_include": ["white"], "must_not": ["blue"], "required_ids": ["millhaven-ferry-p0004"]},
         {"text": "From millhaven-ferry-p0004:\nThe Cedar is white.", "status": "answered", "needs_clarification": False,
-         "answer": "x", "evidence_ids": ["millhaven-ferry-p0004"], "supporting_ids": [], "passage_ids": ["millhaven-ferry-p0004"],
+         "answer": "The Cedar is white.", "evidence_ids": ["millhaven-ferry-p0004"], "supporting_ids": [], "passage_ids": ["millhaven-ferry-p0004"],
          "pending_unchanged": True},
     )
-    assert answer["ok"] and answer["factual"] and answer["citation_complete"]
+    assert answer["ok"] and answer["factual"] and answer["citation_complete"] and not answer["incomplete"]
     missed = judge(
         {"expect": "answer", "must_include": ["white"], "required_ids": []},
         {"text": "The retrieved passages do not settle that.", "status": "insufficient_evidence",
@@ -977,13 +1000,57 @@ def selftest() -> None:
          "evidence_ids": [], "supporting_ids": [], "passage_ids": [], "pending_unchanged": True},
     )
     assert blocked["ok"] and not blocked["wrong"]
+    partial = judge(
+        {"expect": "answer", "must_include": ["life raft", "diesel engine"]},
+        {"text": "The Cedar has a diesel engine.", "status": "answered", "needs_clarification": False,
+         "answer": "The Cedar has a diesel engine.", "evidence_ids": [], "supporting_ids": [], "passage_ids": [],
+         "pending_unchanged": True},
+    )
+    assert partial["incomplete"] and not partial["wrong"] and not partial["ok"]
+    choices = judge(
+        {"expect": "abstain", "must_not": ["diesel"]},
+        {"text": "Which meaning?\n1. diesel engine", "status": "needs_clarification", "needs_clarification": True,
+         "answer": None, "slot": "sense", "evidence_ids": [], "supporting_ids": [], "passage_ids": [],
+         "pending_unchanged": True},
+    )
+    assert not choices["wrong"] and not choices["ok"]
+    missing = judge(
+        {"expect": "abstain", "must_not": ["white"]},
+        {"text": "No stored sentence names who did that.", "status": "missing", "needs_clarification": False,
+         "answer": None, "evidence_ids": [], "supporting_ids": [], "passage_ids": [],
+         "pending_unchanged": True},
+    )
+    assert missing["ok"] and missing["abstained"] and not missing["wrong"]
+    leaked = judge(
+        {"expect": "unsupported", "must_not": ["dawn"]},
+        {"text": UNSUPPORTED, "status": "unsupported", "needs_clarification": False,
+         "answer": "The Cedar departs at dawn.", "evidence_ids": [], "supporting_ids": [], "passage_ids": [],
+         "pending_unchanged": True},
+    )
+    assert leaked["wrong"] and not leaked["ok"]
     print("selftest ok")
 
 
 def main() -> int:
+    global OUT, WORK
     if "--selftest" in sys.argv:
         selftest()
         return 0
+    if "--out" not in sys.argv:
+        print("Pass --out DIR, an empty directory. This script does not write into the baseline directory.")
+        return 2
+    out_index = sys.argv.index("--out")
+    if out_index + 1 >= len(sys.argv):
+        print("--out needs a directory")
+        return 2
+    OUT = Path(sys.argv[out_index + 1]).resolve()
+    if OUT == Path(__file__).resolve().parent:
+        print("refusing to write into the baseline directory")
+        return 2
+    if OUT.exists() and any(OUT.iterdir()):
+        print(f"refusing to write into {OUT}; it is not empty")
+        return 2
+    WORK = OUT / "work"
     OUT.mkdir(parents=True, exist_ok=True)
     WORK.mkdir(parents=True, exist_ok=True)
     (WORK / "tmp").mkdir(parents=True, exist_ok=True)
@@ -1007,7 +1074,8 @@ def main() -> int:
         "scripts": SCRIPTS,
         "scoring": {
             "factual_correctness": "Turns with expect=answer whose reply states every required phrase, states none of the forbidden phrases, and is not a clarification.",
-            "wrong_answer_rate": "Share of all turns that assert a forbidden phrase or settle a fact the turn was not allowed to settle. A clarification is not a factual answer and is not a wrong answer by itself.",
+            "wrong_answer_rate": "Share of turns that assert a forbidden phrase. An incomplete required-phrase set is incomplete_answers, not a wrong answer. A clarification is not a claim.",
+            "incomplete_answers": "expect=answer turns that answered but omitted a required phrase and stated no forbidden phrase.",
             "citation_completeness": "Among expect=answer turns that did answer, the share whose evidence and supporting ids include every required id.",
             "retrieval": "Macro precision and recall of passage and related ids against the relevant ids. Clarifications, blocks, refusals, and cancellations are excluded rather than scored as empty retrieval.",
             "clarification": "Share of expect=clarify turns that ask and do not return an answer.",

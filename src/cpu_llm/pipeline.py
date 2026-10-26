@@ -1122,21 +1122,41 @@ def _after_guard(state: dict[str, Any]) -> str:
     return "reply"
 
 
+_CLEARED_STATUSES = frozenset({
+    "insufficient_evidence",
+    "conflicting",
+    "evidence_quote",
+    "unsupported",
+    "missing",
+    "ambiguous",
+})
+
+
 def _reply(state: dict[str, Any]) -> dict[str, Any]:
+    """The composed reply is what the caller is told.
+
+    An abstention or a refusal clears the earlier answer, its evidence, and
+    the audit flag. A delivered sentence replaces that earlier answer.
+    """
     reply = compose_reply(state)
     update: dict[str, Any] = {"reply": reply}
     status = reply.get("answer_status")
     if not status:
         return update
     update["answer_status"] = status
-    update["answer_evidence"] = list(reply.get("answer_evidence") or [])
-    update["supporting_evidence"] = list(reply.get("supporting_evidence") or [])
     update["verification_scope"] = reply.get("verification_scope")
     update["retrieved_candidates"] = list(reply.get("retrieved_candidates") or [])
-    if status in {"insufficient_evidence", "conflicting", "evidence_quote"}:
+    if status in _CLEARED_STATUSES:
         update["answer"] = None
-    elif status == "answered" and reply.get("supported_text"):
-        update["answer"] = reply["supported_text"]
+        update["audit_passed"] = False
+        update["answer_evidence"] = [] if status != "evidence_quote" else list(reply.get("answer_evidence") or [])
+        update["supporting_evidence"] = [] if status != "evidence_quote" else list(reply.get("supporting_evidence") or [])
+        return update
+    update["answer_evidence"] = list(reply.get("answer_evidence") or [])
+    update["supporting_evidence"] = list(reply.get("supporting_evidence") or [])
+    spoken = str(reply.get("supported_text") or reply.get("body") or "").strip()
+    if status == "answered" and spoken:
+        update["answer"] = spoken
     return update
 
 
@@ -2186,19 +2206,30 @@ def _correct_resonance_tags(appliance, document_id: str, prior_sentence: str, ne
     tags.replace_sentence(document_id, prior_sentence, new_id, new_sentence)
 
 
-_ATTRIBUTE_RELATIONS = frozenset({"has_color", "has", "has_lifespan", "lives_in", "is_a"})
+def _distinct_kinds(senses: list[dict]) -> set[str]:
+    """is-a objects stated inside the candidate meanings."""
+    from cpu_llm.knowledge_graph import extract_facts
+    from cpu_llm.prompt_intent import _name
+
+    kinds: set[str] = set()
+    for sense in senses:
+        for text in sense.get("texts") or []:
+            for fact in extract_facts("sense", text):
+                if fact.relation == "is_a":
+                    kinds.add(_name(fact.object))
+    return kinds
 
 
-def _named_attribute(message: str) -> bool:
-    """True when the question already names an attribute of one entity.
+def _should_ask_sense(_message: str, senses: list[dict]) -> bool:
+    """Ask only when the name splits into different things.
 
-    Color, kind, place, lifespan, and possession stay on the retrieval path.
-    A bare noun, such as spring, still asks which meaning.
+    Several one-sentence fragments about one entity are not several meanings.
+    Two is-a kinds are, and so is a meaning that more than one sentence shares.
+    A requested attribute does not override either of those.
     """
-    from cpu_llm.prompt_intent import route_prompt
-
-    requested = route_prompt(message).get("requested") or {}
-    return requested.get("relation") in _ATTRIBUTE_RELATIONS and bool(requested.get("entity"))
+    if len(_distinct_kinds(senses)) >= 2:
+        return True
+    return any(int(sense.get("size") or 0) >= 2 for sense in senses)
 
 
 def _sense_clarification(appliance, message: str, session_key):
@@ -2207,13 +2238,13 @@ def _sense_clarification(appliance, message: str, session_key):
     loop = getattr(appliance, "clarifications", None)
     if tags is None or loop is None or not hasattr(loop, "need_sense"):
         return None
-    if _named_attribute(message):
-        return None
     allowed = (getattr(appliance, "_turn", None) or {}).get("allowed_sources")
     result = tags.recall_spread(message, allowed=allowed)
     if result.get("status") != "ambiguous" or not result.get("senses"):
         return None
-    return loop.need_sense(message, result["senses"], key=session_key)
+    if not _should_ask_sense(message, result["senses"]):
+        return None
+    return loop.need_sense(message, result["senses"], key=session_key, omitted=int(result.get("omitted") or 0))
 
 
 def _with_resonance_paragraphs(appliance, message: str, hits: list[dict[str, Any]], *, allowed) -> list[dict[str, Any]]:

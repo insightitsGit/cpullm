@@ -229,12 +229,14 @@ def test_six_channel_nodes_quote_the_passages_and_suggest_discovery_for_a_why_qu
     complicated = appliance.ask("Why is the European lobster different from the American lobster?")
     assert complicated["discovery_suggested"] is True
     assert "discovery" not in complicated
-    assert complicated["answer"] == sentence
-    assert complicated["reply"]["body"] == sentence
-    assert complicated["reply"]["text"].startswith(sentence)
-    assert "Explanation:" in complicated["reply"]["text"]
-    assert "Comparison:" in complicated["reply"]["text"]
-    assert "discovery loop" not in complicated["reply"]["text"]
+    spoken = complicated["reply"]["text"]
+    assert complicated["answer"] == cause
+    assert complicated["reply"]["body"] == cause
+    assert spoken.count(cause) == 1
+    assert sentence not in spoken
+    assert "This question type is not supported yet." not in spoken
+    assert "Explanation:" not in spoken
+    assert "discovery loop" not in spoken
     assert "discovery loop" in complicated["channel_report"]["text"]
     assert "It stays off until you ask for it." in complicated["channel_report"]["text"]
     appliance.index.save_chunks([], replace_prefix="channel-euro")

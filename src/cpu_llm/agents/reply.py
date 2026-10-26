@@ -196,6 +196,36 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
             reply["supported_text"] = assessment["supported_text"]
     elif notice:
         reply["answer_status"] = "unsupported"
+        reply["answer_evidence"] = []
+        reply["supporting_evidence"] = []
+    elif frame_only:
+        frame_status = str((state.get("frame_result") or {}).get("status") or "")
+        if frame_status in {"missing", "ambiguous", "conflicting", "unsupported"}:
+            reply["answer_status"] = frame_status
+            reply["answer_evidence"] = []
+            reply["supporting_evidence"] = []
+    cause = _retrieved_cause(state)
+    if (
+        not notice
+        and cause
+        and _WHY.search(str(state.get("message") or ""))
+        and cause.casefold() not in reply["text"].casefold()
+        and not (situation is not None and situation.get("verdict") == "CAUSE")
+    ):
+        reply["body"] = cause
+        reply["text"] = cause
+        reply["answer_status"] = "answered"
+        reply["supported_text"] = cause
+        for item in list(state.get("related") or []) + list(state.get("passages") or []):
+            text = str(item.get("chunk_text") or item.get("text") or "").strip()
+            if text != cause:
+                continue
+            reply["answer_evidence"] = [{
+                "document_id": str(item.get("document_id") or item.get("chunk_id") or ""),
+                "span": text,
+            }]
+            reply["supporting_evidence"] = []
+            break
     return reply
 
 
@@ -242,6 +272,20 @@ def _query_assessment(state: dict[str, Any]) -> dict[str, Any] | None:
     spoken = supported_answer(message, str(state.get("answer") or ""))
     audited = state.get("audit_passed") is True and bool(spoken)
     if audited:
+        licensed = str(decision.get("text") or "").strip()
+        # A direct possession that already passed audit is not the whole answer
+        # when a membership and a universal rule are also licensed.
+        if (
+            decision.get("reason") == "universal_membership_join"
+            and spoken.casefold() in licensed.casefold()
+            and licensed.casefold() != spoken.casefold()
+        ):
+            decision["answer_status"] = "answered"
+            decision["text"] = licensed
+            decision["supported_text"] = licensed
+            decision["verification_scope"] = "query"
+            decision["replaces_body"] = True
+            return decision
         decision["answer_status"] = "answered"
         decision["text"] = spoken
         decision["supported_text"] = spoken
@@ -516,9 +560,22 @@ def _refuses_stored_copy(state: dict[str, Any], spoken: str, situation: dict[str
 def _cause_is_stated(state: dict[str, Any], spoken: str, situation: dict[str, Any] | None) -> bool:
     if situation is not None and situation.get("verdict") == "CAUSE":
         return True
-    explanation = str((state.get("brief") or {}).get("explanation") or "")
-    blob = f"{spoken}\n{state.get('answer') or ''}\n{explanation}"
-    return bool(_CAUSE_WORD.search(blob))
+    return bool(_CAUSE_WORD.search(f"{spoken}\n{_retrieved_cause(state)}"))
+
+
+def _retrieved_cause(state: dict[str, Any]) -> str:
+    """A stored sentence that states a cause, if this turn retrieved one."""
+    explanation = str((state.get("brief") or {}).get("explanation") or "").strip()
+    if _CAUSE_WORD.search(explanation):
+        return explanation
+    for item in list(state.get("related") or []) + list(state.get("passages") or []):
+        text = str(item.get("chunk_text") or item.get("text") or "").strip()
+        if _CAUSE_WORD.search(text):
+            return text
+    answer = str(state.get("answer") or "").strip()
+    if _CAUSE_WORD.search(answer):
+        return answer
+    return ""
 
 
 def _unsupported_notice(state: dict[str, Any]) -> str:

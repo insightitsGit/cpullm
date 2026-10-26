@@ -203,6 +203,8 @@ Evaluation, from the repository root, same variables:
 python docs/benchmarks/2026-10-25-baseline/run_eval.py
 ```
 
+That command recorded this directory. Repeating it now stops: pass `--out` as a new empty directory. The script refuses this baseline directory and any directory that already has files.
+
 Disposable server used here:
 
 ```powershell

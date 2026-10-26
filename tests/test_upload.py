@@ -113,9 +113,12 @@ def test_questions_about_an_uploaded_pdf_answer_from_that_file(tmp_path: Path, a
 
     explained = appliance.ask("Why is the harbor kestrel a hunter of small fish?")
     explanation = explained["reply"]["text"]
-    assert "Explanation:" in explanation
-    assert "because fishing boats leave scraps" in explanation
+    assert explanation.count("because fishing boats leave scraps") == 1
     assert "No stored sentence states a cause." not in explanation
+    assert "because fishing boats leave scraps" in (explained.get("answer") or explanation)
+    assert "small coastal falcon" not in str(explained.get("answer") or "")
+    if explained.get("answer_status") == "answered":
+        assert "because fishing boats leave scraps" in explained["answer"]
 
     summarized = appliance.ask("Summarize the harbor kestrel.")
     summary = summarized["reply"]["text"]

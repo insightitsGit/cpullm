@@ -132,6 +132,36 @@ def test_a_direct_possession_still_loads_the_universal_rule():
     assert 'fictional insect' in text
 
 
+def test_the_spoken_possession_keeps_the_licensed_join():
+    from cpu_llm.agents.reply import compose_reply
+    from cpu_llm.pipeline import _reply
+
+    state = {
+        "message": "What does the Cedar have?",
+        "guard_decision": "allow",
+        "audit_passed": True,
+        "answer": "The Cedar has a diesel engine.",
+        "related": [
+            {"chunk_id": "type", "chunk_text": "The Cedar is a municipal ferry."},
+            {"chunk_id": "rule", "chunk_text": "Every municipal ferry has a life raft."},
+            {"chunk_id": "own", "chunk_text": "The Cedar has a diesel engine."},
+        ],
+    }
+    reply = compose_reply(state)
+    assert "diesel engine" in reply["text"]
+    assert "life raft" in reply["text"]
+    assert "municipal ferry" in reply["text"]
+    delivered = _reply(state)
+    assert "life raft" in delivered["answer"]
+    assert "diesel engine" in delivered["answer"]
+    assert "municipal ferry" in delivered["answer"]
+    assert delivered["answer_status"] == "answered"
+    spans = " ".join(item.get("span") or "" for item in delivered["answer_evidence"])
+    assert "life raft" in spans
+    assert "diesel engine" in spans
+    assert "municipal ferry" in spans
+
+
 @pytest.mark.parametrize('question, rule', [
     ('Where does the fictional moth live?', 'All fictional insects live in Norway.'),
     ('What color is the fictional moth?', 'All fictional insects are blue.'),
