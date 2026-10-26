@@ -9,6 +9,7 @@ does not include a traceback.
 from __future__ import annotations
 
 import uuid
+import re
 from dataclasses import dataclass
 
 from cpu_llm.source_ids import id_in_prefix, is_paragraph_id, is_source_prefix
@@ -55,9 +56,10 @@ class CallerContext:
     ) -> "CallerContext":
         sources = frozenset(str(item) for item in allowed_sources)
         for item in sources:
-            if not (is_source_prefix(item) or is_paragraph_id(item)):
+            if not (is_source_prefix(item) or is_paragraph_id(item)
+                    or re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", item)):
                 raise ValueError(
-                    "an allowed source must be a source prefix ending in -p or a paragraph id"
+                    "an allowed source must be a document id or a source prefix ending in -p"
                 )
         return CallerContext(
             tenant_id=tenant_id,

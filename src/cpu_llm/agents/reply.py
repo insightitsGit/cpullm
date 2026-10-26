@@ -107,6 +107,10 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
         if spoken:
             lines = [spoken]
             body = spoken
+    notice = "" if audited_answer(state) or owned or assessment is not None else _unsupported_notice(state)
+    if notice:
+        lines = [notice]
+        body = notice
     preface = _preface(state, assessment)
     ranking = None if lines and "Ranking:" in lines[0] else _ranking(state, lines[0] if lines else "")
     if ranking is not None:
@@ -136,7 +140,7 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
             lines.extend(["", "Comparison:"])
             for side in covered:
                 lines.append(f"{side.get('label')}:")
-                lines.append(str(side.get("text") or "").strip() or "No stored sentence for this side.")
+                lines.append(_side_sentence(str(side.get("label") or ""), str(side.get("text") or "")))
         if imagined:
             lines.extend(["", "Imagined passage:", imagined])
         possibilities = list(state.get("possibilities") or [])
@@ -172,6 +176,8 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
         reply["original_query"] = assessment.get("original_query")
         if assessment.get("supported_text"):
             reply["supported_text"] = assessment["supported_text"]
+    elif notice:
+        reply["answer_status"] = "unsupported"
     return reply
 
 
@@ -451,6 +457,41 @@ def _preface(state: dict[str, Any], assessment: dict[str, Any] | None = None) ->
     if state.get("abstention_triggered"):
         return f"I looked for “{message}” and there was not enough evidence to state one."
     return f"I found {count} {noun}{where}.{closest}"
+
+
+def audited_answer(state: dict[str, Any]) -> bool:
+    answer = state.get("answer")
+    return isinstance(answer, str) and bool(answer.strip())
+
+
+def _unsupported_notice(state: dict[str, Any]) -> str:
+    """The fixed sentence for a question shape the realizer does not license."""
+    from cpu_llm.realizer.constructions import UNSUPPORTED_QUESTION, question_supported
+
+    if state.get("delivery_blocked") or state.get("shine_enforced"):
+        return ""
+    outcome = state.get("model01") or {}
+    if outcome.get("status") == "unsupported":
+        return str(outcome.get("text") or UNSUPPORTED_QUESTION)
+    if question_supported(str(state.get("message") or "")):
+        return ""
+    if not list(state.get("related") or []):
+        return ""
+    if _brief_requested(state) and str((state.get("brief") or {}).get("explanation") or "").strip():
+        return ""
+    return UNSUPPORTED_QUESTION
+
+
+def _side_sentence(label: str, text: str) -> str:
+    """Keep a comparison sentence that names its side. An unrelated sentence stays out."""
+    shown = text.strip()
+    if not shown:
+        return "No stored sentence for this side."
+    label_words = {word.casefold() for word in re.findall(r"[A-Za-z]{3,}", label)}
+    text_words = {word.casefold() for word in re.findall(r"[A-Za-z]{3,}", shown)}
+    if label_words and label_words.isdisjoint(text_words):
+        return "No stored sentence for this side."
+    return shown
 
 
 def _body(state: dict[str, Any]) -> str:

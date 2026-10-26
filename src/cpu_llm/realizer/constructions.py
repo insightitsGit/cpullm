@@ -63,6 +63,8 @@ def plan_for(bundle: Bundle, question: str, *, account: bool = False) -> Plan:
         return frame_plan
     if _math_licensed(question, bundle):
         return _ids_plan(bundle, question, "question", [item.record_id for item in bundle.records if item.kind == "math"])
+    if not question_supported(question):
+        return _unsupported_plan(question)
     return _ids_plan(
         bundle,
         question,
@@ -375,6 +377,43 @@ def _account_plan(bundle: Bundle, question: str, frame_plan: Plan | None) -> Pla
         tense="",
         status=status,
         non_answer=non_answer,
+    )
+
+
+UNSUPPORTED_QUESTION = "This question type is not supported yet."
+
+
+_UNSUPPORTED_SHAPE = re.compile(
+    r"\b(?:why|how come|what caused|when|how many|how much)\b",
+    re.IGNORECASE,
+)
+
+
+def question_supported(question: str) -> bool:
+    """False for a why, when, count, or comparison the proposition list cannot answer.
+
+    Frame questions and arithmetic are decided before this check. A definition,
+    attribute, relation, or ranking question stays on its own plan.
+    """
+    from cpu_llm.comparison import comparison_sides
+
+    text = question or ""
+    if _UNSUPPORTED_SHAPE.search(text):
+        return False
+    return len(comparison_sides(text)) < 2
+
+
+def _unsupported_plan(question: str) -> Plan:
+    return Plan(
+        plan_id=_plan_id("question", question, ()),
+        mode="question",
+        question=question,
+        record_ids=(),
+        required_roles=(),
+        forbidden_roles=(),
+        tense="",
+        status="unsupported",
+        non_answer=UNSUPPORTED_QUESTION,
     )
 
 

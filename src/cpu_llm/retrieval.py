@@ -184,6 +184,24 @@ class VectorPrismIndex:
                 hit["final_score"] = 0.0
         return hits[:top_k]
 
+    def current_chunks_by_ids(self, document_ids: list[str]) -> list[dict]:
+        """Load candidate rows only if their validity interval is open now."""
+        if not document_ids:
+            return []
+        if not hasattr(self.db, 'conn'):
+            retired = getattr(self, '_retired', {})
+            return [row for row in self.db.get_by_ids(document_ids)
+                    if row['document_id'] not in retired]
+        when = _as_of(self, None)
+        with self.db.conn.cursor() as cursor:
+            cursor.execute(
+                '''SELECT document_id, chunk_text, tensor_1024d
+                   FROM psm_document_embeddings
+                   WHERE document_id = ANY(%s) AND valid_timestamp <= %s
+                     AND (valid_to_timestamp IS NULL OR valid_to_timestamp > %s)''',
+                (document_ids, when, when))
+            return [_chunk_row(row) for row in cursor.fetchall()]
+
     def retire_document(self, document_id: str, timestamp: int) -> None:
         """Close the open validity interval of one vector row.
 
@@ -314,7 +332,7 @@ class VectorPrismIndex:
         """Delete stored rows whose document id starts with ``prefix``.
 
         ``prefix`` is the ingest id prefix, such as ``notes-p``. The match is
-        that prefix plus a four-digit paragraph number, and an optional
+        that prefix plus a paragraph number of at least four digits, and an optional
         correction version. A prefix that is not that shape is refused before
         the database is touched.
         """

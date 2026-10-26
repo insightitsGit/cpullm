@@ -1,6 +1,8 @@
 """A file or a hand-built document becomes the same paragraph chunks."""
 
 import csv
+import json
+import threading
 import zipfile
 from pathlib import Path
 
@@ -163,9 +165,82 @@ def test_a_shorter_source_name_does_not_share_its_prefix():
 def test_two_names_cannot_claim_one_slug(tmp_path):
     registry = tmp_path / "source_slugs.json"
     claim_source_names(registry, ["Q3 Report.pdf"])
+    before = registry.read_bytes()
     with pytest.raises(ValueError, match="already used"):
         claim_source_names(registry, ["q3-report.pdf"])
+    assert registry.read_bytes() == before
     claim_source_names(registry, ["Q3 Report.pdf"])
+    claim_source_names(registry, ["q3 report.PDF"])
+    owners = json.loads(registry.read_text(encoding="utf-8"))
+    assert owners[_slug("Q3 Report.pdf")] == "q3 report.pdf"
+
+
+def test_a_colliding_ingest_stops_before_any_paragraph_is_stored(tmp_path):
+    from cpu_llm.pipeline import Appliance
+
+    app = Appliance.__new__(Appliance)
+    app.source_slug_path = tmp_path / "source_slugs.json"
+    wrote: list[str] = []
+
+    def catalog_chunks(chunks, propositions, replace_prefix=None):
+        wrote.append(replace_prefix)
+        return len(chunks)
+
+    app.catalog_chunks = catalog_chunks
+    app.ingest(SourceDocument("Q3 Report.pdf", ("Quarterly numbers.",)))
+    assert wrote == ["q3-report-pdf-p"]
+    before = app.source_slug_path.read_bytes()
+    with pytest.raises(ValueError, match="already used"):
+        app.ingest(SourceDocument("q3-report.pdf", ("Other numbers.",)))
+    assert app.source_slug_path.read_bytes() == before
+    assert wrote == ["q3-report-pdf-p"]
+    app.ingest(SourceDocument("q3 report.PDF", ("Quarterly numbers again.",)))
+    assert wrote == ["q3-report-pdf-p", "q3-report-pdf-p"]
+
+
+def test_concurrent_claims_keep_the_registry(tmp_path):
+    registry = tmp_path / "source_slugs.json"
+
+    def claim_many(path: Path, names: list[str]) -> list[BaseException]:
+        barrier = threading.Barrier(len(names))
+        errors: list[BaseException] = []
+
+        def claim(name: str) -> None:
+            barrier.wait()
+            try:
+                claim_source_names(path, [name])
+            except BaseException as exc:
+                errors.append(exc)
+
+        threads = [threading.Thread(target=claim, args=(name,)) for name in names]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
+        return errors
+
+    distinct = [f"ledger-{number}.pdf" for number in range(8)]
+    assert claim_many(registry, distinct) == []
+    stored = json.loads(registry.read_text(encoding="utf-8"))
+    assert set(stored) == {_slug(name) for name in distinct}
+
+    claim_source_names(registry, ["Q3 Report.pdf"])
+    for _ in range(20):
+        errors = claim_many(registry, ["q3-report.pdf", "Q3-Report.PDF"])
+        assert len(errors) == 2
+        assert all(isinstance(item, ValueError) for item in errors)
+        stored = json.loads(registry.read_text(encoding="utf-8"))
+        assert stored[_slug("Q3 Report.pdf")] == "q3 report.pdf"
+        assert len(stored) == len(distinct) + 1
+
+    for round_number in range(20):
+        fresh = tmp_path / f"race-{round_number}.json"
+        errors = claim_many(fresh, ["Q3 Report.pdf", "q3-report.pdf"])
+        assert len(errors) == 1
+        assert isinstance(errors[0], ValueError)
+        stored = json.loads(fresh.read_text(encoding="utf-8"))
+        assert list(stored) == ["q3-report-pdf"]
+        assert stored["q3-report-pdf"] in {"q3 report.pdf", "q3-report.pdf"}
 
 
 def test_a_truncated_name_keeps_a_hash_of_the_full_name():

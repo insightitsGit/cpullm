@@ -72,7 +72,6 @@ class ResonanceTags:
     def __init__(self, path: str | Path) -> None:
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        self._allowed = None
         with self._connect() as conn:
             conn.executescript(
                 """
@@ -165,8 +164,13 @@ class ResonanceTags:
         prior_keys.discard("")
         removed = 0
         with self._connect() as conn:
-            rows = list(conn.execute("SELECT unit_id, text FROM unit WHERE doc_id = ?", (str(document_id),)))
-            doomed = [row["unit_id"] for row in rows if _sentence_key(row["text"]) in prior_keys]
+            # Corrections are addressed by their base id even after the first
+            # replacement. Retired versions must not remain retrieval candidates.
+            family = re.compile(re.escape(str(document_id)) + r"(?:-v[0-9]+)?\Z")
+            rows = [row for row in conn.execute("SELECT unit_id, doc_id, text FROM unit")
+                    if family.fullmatch(row["doc_id"])]
+            doomed = [row["unit_id"] for row in rows
+                      if row['doc_id'] != str(document_id) or _sentence_key(row["text"]) in prior_keys]
             combined = " ".join(_sentence_key(row["text"]) for row in rows)
             if not doomed and rows and combined == _sentence_key(prior_sentence):
                 doomed = [row["unit_id"] for row in rows]
@@ -337,8 +341,11 @@ class ResonanceTags:
         return {"status": "ok" if hits else "empty", "units": hits, "senses": []}
 
     def _load(self, allowed) -> list[dict]:
-        self._allowed = allowed
         with self._connect() as conn:
+            # Capture a request-local immutable scope in this connection's UDF.
+            scope = None if allowed is None else frozenset(allowed)
+            conn.create_function("in_scope", 1,
+                                 lambda doc_id: int(doc_in_source(doc_id, scope)), deterministic=False)
             rows = conn.execute(
                 """
                 SELECT unit.unit_id, unit.doc_id, unit.ord, unit.text
@@ -372,13 +379,7 @@ class ResonanceTags:
     def _connect(self):
         conn = sqlite3.connect(self.path)
         conn.row_factory = sqlite3.Row
-        conn.create_function("in_scope", 1, self._in_scope, deterministic=False)
         return _Closing(conn)
-
-    def _in_scope(self, doc_id: str) -> int:
-        if self._allowed is None:
-            return 1
-        return 1 if doc_in_source(doc_id, self._allowed) else 0
 
     @staticmethod
     def _delete_ids(conn, unit_ids: list[str]) -> None:

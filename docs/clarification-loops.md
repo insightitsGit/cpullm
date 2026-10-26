@@ -41,6 +41,13 @@ Pending state is in process memory, expires after 30 minutes, and is capped at
 on process restart. Concurrent turns within a single session should be submitted
 in order by the caller; operations are locked but semantic turn order is not guessed.
 
-Source access checks run before clarification. Later guard, audit, grammar,
+Source access checks and the raw-prompt guard run before clarification. Later guard, audit, grammar,
 and Shine holds cannot be overridden by a clarification or supplied source.
 Conversational criteria are preferences, not evidence about which option wins.
+
+A short criterion such as "how it tastes" binds `it` to the explicitly named
+singular subject of "Which lobster is best?" before reference resolution. This
+limited binding does not select between multiple candidate entities. A new
+question such as "What is gravity" abandons the pending ranking even without
+a question mark. Session locks count active holders and waiters and are removed
+when the last turn exits, including on exceptions.

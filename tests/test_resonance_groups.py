@@ -315,7 +315,8 @@ def test_retrieval_adds_the_matching_sense_without_changing_dense_order(tmp_path
     loop = ClarificationLoop()
     enabled.clarifications = loop
     enabled._turn = {"allowed_sources": None}
-    assert _sense_clarification(enabled, "bank", None) is None
+    assert _sense_clarification(enabled, "bank", None)['slot'] == 'sense'
+    assert not loop.pending
     question = _sense_clarification(enabled, "bank", ("tenant", "caller", (), "chat", None))
     assert question["status"] == "needs_clarification"
     assert question["slot"] == "sense"
@@ -335,6 +336,103 @@ def test_spreading_meets_the_measured_gate(tmp_path):
         check=False,
     )
     assert completed.returncode == 0, completed.stdout + completed.stderr
+
+
+def test_resonance_tags_default_off_and_true_still_wires_the_store(tmp_path):
+    import inspect
+    from types import SimpleNamespace
+
+    from cpu_llm.pipeline import Appliance, _correct_resonance_tags, _resonance_store, _store_resonance_tags
+    from cpu_llm.resonance_groups import ResonanceTags
+    from cpu_llm.source_delete import delete_stored_source
+
+    assert inspect.signature(Appliance.__init__).parameters["resonance_tags"].default is False
+    assert "_store_resonance_tags" in inspect.getsource(Appliance.catalog_chunks)
+    assert "_store_resonance_tags" in inspect.getsource(Appliance.index_chunks)
+    assert "_correct_resonance_tags" in inspect.getsource(Appliance.correct)
+    assert "_resonance_store" in inspect.getsource(Appliance.delete_source)
+
+    class Index:
+        def delete_prefix(self, prefix):
+            return 1
+
+    class Memory:
+        def all_nodes(self):
+            return []
+
+        def all_edges(self):
+            return []
+
+    path = tmp_path / "resonance_tags.db"
+    store = ResonanceTags(path)
+    enabled = SimpleNamespace(resonance_tags_enabled=True, resonance_tags=store)
+    assert _store_resonance_tags(enabled, [("notes-p0001", "The bank vault stored payroll cash.")]) == 1
+    _correct_resonance_tags(
+        enabled,
+        "notes-p0001",
+        "The bank vault stored payroll cash.",
+        "notes-p0001-v2",
+        "The bank shore met the slow current.",
+    )
+    assert _docs(path) == {"notes-p0001-v2"}
+    receipt = delete_stored_source(Index(), Memory(), {}, None, "notes-p", resonance_tags=_resonance_store(enabled))
+    assert receipt["resonance_tags"]["units"] == 1
+    assert _docs(path) == set()
+
+    disabled = SimpleNamespace(resonance_tags_enabled=False, resonance_tags=store)
+    assert _resonance_store(disabled) is None
+    assert _store_resonance_tags(disabled, [("notes-p0001", "The bank vault stored payroll cash.")]) == 0
+    _correct_resonance_tags(disabled, "notes-p0001", "old", "notes-p0001-v3", "The bank vault stored payroll cash.")
+    assert _docs(path) == set()
+
+
+def test_two_scopes_stay_apart_across_twenty_runs(tmp_path):
+    """Two callers on one store never see each other's documents."""
+    import json
+    import threading
+
+    from cpu_llm.resonance_groups import ResonanceTags
+
+    store = ResonanceTags(tmp_path / "scopes.db")
+    store.add_chunks(
+        [
+            ("a-p0001", "The bank vault stores alphatoken cash."),
+            ("a-p0002", "The bank vault holds alphatoken payroll."),
+            ("b-p0001", "The bank shore grows bravotoken reeds."),
+            ("b-p0002", "The bank shore has bravotoken sand."),
+        ]
+    )
+
+    def once() -> None:
+        barrier = threading.Barrier(2)
+        leaks: list[str] = []
+
+        def worker(prefix: str, foreign: str) -> None:
+            barrier.wait()
+            for _ in range(500):
+                result = store.recall_spread("bank", allowed={prefix})
+                if foreign in json.dumps(result):
+                    leaks.append(foreign)
+                for unit in result["units"]:
+                    if not str(unit["doc_id"]).startswith(prefix):
+                        leaks.append(str(unit["doc_id"]))
+                for sense in result["senses"]:
+                    words = sense["words"] if isinstance(sense, dict) else sense
+                    if foreign in words:
+                        leaks.append(foreign)
+
+        threads = [
+            threading.Thread(target=worker, args=("a-p", "bravotoken")),
+            threading.Thread(target=worker, args=("b-p", "alphatoken")),
+        ]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
+        assert leaks == []
+
+    for _ in range(20):
+        once()
 
 
 def test_bare_crane_stays_one_sense_while_lifted_links_them(tmp_path):

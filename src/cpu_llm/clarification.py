@@ -61,8 +61,8 @@ class ClarificationLoop:
                 self._save(key, state)
                 return dict(status='needs_clarification', slot='evidence', text='Please provide the relevant source or data, starting with “Source:”, or ask a new question.')
             if state:
-                criteria = _criterion_text(text)
                 question = state['question']
+                criteria = _criterion_text(text, question)
                 count = state['count'] + 1
             elif _RANK.search(text):
                 match = _CRITERION.search(text)
@@ -118,9 +118,16 @@ class ClarificationLoop:
         return dict(status='ready', query=query, question=state['question'], sense=choice)
 
 
-def _criterion_text(text):
+def _criterion_text(text, question=''):
     stripped = _CRITERION_LEAD.sub('', text.strip(), count=1).strip()
-    return stripped or text.strip()
+    criteria = stripped or text.strip()
+    # This binding comes from the explicit subject in the pending question,
+    # not an inferred entity from retrieved documents.
+    target = re.fullmatch(r'which\s+(.+?)\s+is\s+(?:best|worst|better|worse)[?.!]*', question.strip(), re.I)
+    if target and not re.search(r'\b(?:and|or)\b', target[1], re.I):
+        criteria = re.sub(r'\bits\b', lambda _: target[1] + "'s", criteria, flags=re.I)
+        criteria = re.sub(r'\bit\b', lambda _: target[1], criteria, flags=re.I)
+    return criteria
 
 
 def _abandons_pending(text, state):
@@ -132,7 +139,7 @@ def _abandons_pending(text, state):
     if not _LEADING.match(text):
         return False
     words = re.findall(r"[A-Za-z']+", text)
-    if len(words) <= 6:
+    if re.match(r'^(?:how|what)\s+(?:it|its|they|their)\b', text, re.I):
         return False
     topic = {word.lower() for word in re.findall(r"[A-Za-z']+", state.get('question') or '')} - _TOPIC_STOP
     reply = {word.lower() for word in words} - _TOPIC_STOP

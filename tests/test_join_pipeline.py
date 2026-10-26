@@ -42,6 +42,41 @@ def test_live_join_requires_authorization_for_each_premise(appliance):
     assert '12 years' in answered['reply']['text']
 
 
+def test_live_repeated_corrections_retire_each_version_and_its_tags(appliance):
+    original, middle, latest = ('The fictional beetle is blue.',
+                                'The fictional beetle is red.',
+                                'The fictional beetle is green.')
+    base = 'review-history-p0001'
+    appliance.catalog_chunks([(base, original)])
+    with appliance.index.db.conn.cursor() as cursor:
+        cursor.execute('UPDATE psm_document_embeddings SET valid_timestamp = %s WHERE document_id = %s',
+                       (1700010000, base))
+    appliance.index.db.conn.commit()
+    first = appliance.correct(base, original, middle, actor_id='editor', timestamp=1700010100)
+    second = appliance.correct(base, middle, latest, actor_id='editor', timestamp=1700010200)
+    candidates = appliance.index.current_chunks_by_ids([base, first['new_id'], second['new_id']])
+    assert {row['document_id'] for row in candidates} == {second['new_id']}
+    units = appliance.resonance_tags._load(None)
+    assert {row['doc_id'] for row in units if row['doc_id'].startswith(base)} == {second['new_id']}
+    with appliance.index.db.conn.cursor() as cursor:
+        cursor.execute('SELECT valid_to_timestamp FROM psm_document_embeddings WHERE document_id = %s',
+                       (first['new_id'],))
+        assert cursor.fetchone()[0] == 1700010200
+    assert 'red' in appliance.ask('What color is the fictional beetle?', as_of=1700010150)['reply']['text']
+    assert 'green' in appliance.ask('What color is the fictional beetle?')['reply']['text']
+
+
+def test_live_five_digit_source_is_scoped_and_deleted_without_prefix_collision(appliance):
+    wanted, neighbor = 'review-large-p10000', 'review-large-policy-p10000'
+    appliance.catalog_chunks([(wanted, 'The fictional orchid is purple.'),
+                              (neighbor, 'The fictional orchid is yellow.')])
+    rows = appliance.index.search_allowed('What color is the fictional orchid?', {'review-large-p'}, top_k=20)
+    assert {row['document_id'] for row in rows} == {wanted}
+    appliance.delete_source('review-large')
+    assert not appliance.index.db.get_by_ids([wanted])
+    assert appliance.index.db.get_by_ids([neighbor])
+
+
 def test_live_paraphrase_and_alias_keep_identity_provenance(appliance):
     result = appliance.ask('Where would I encounter the coastal moth?')
     assert 'Norway' in result['reply']['text']

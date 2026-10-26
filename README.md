@@ -162,7 +162,7 @@ with Appliance(namespace="demo") as app:
     print(receipt)  # documents, chunks, ids, connections
 ```
 
-File IDs use a normalized name/stem and a paragraph number, for example `harbor-field-guide-p0001`. Retain `receipt["ids"]`; do not guess identifiers for later authorization or correction. A source prefix such as `hr-p` matches only `hr-p` plus four digits, and a correction id such as `hr-p0001-v1700000000`. It does not match `hr-policy-p0001`. Two different file names that normalize to the same slug are refused. A name longer than 72 characters keeps a short hash of the full name, and a name that normalizes to a paragraph id is refused. A spreadsheet with source/target-style columns contributes text and explicit word connections; other rows become column/value text.
+File IDs use a normalized name/stem and a paragraph number, for example `harbor-field-guide-p0001`. Retain `receipt["ids"]`; do not guess identifiers for later authorization or correction. A source prefix such as `hr-p` matches only `hr-p` plus at least four digits, and a correction id such as `hr-p0001-v1700000000`. It does not match `hr-policy-p0001`. Two different file names that normalize to the same slug are refused. A name longer than 72 characters keeps a short hash of the full name, and a name that normalizes to a paragraph id is refused. A spreadsheet with source/target-style columns contributes text and explicit word connections; other rows become column/value text.
 
 Reingesting a source replaces vector, graph, and word-index rows for that source's paragraph ids. Ingestion is not a general versioned transaction across every store. `delete_source("field-guide")` deletes that source's paragraph ids, even when supplied a paragraph ID. It returns vector/graph/word-index counts and any `nodes_remaining`. It leaves resonance and the word-relations file unchanged; it is not a complete erasure receipt for every derived artifact.
 
@@ -244,7 +244,7 @@ For applications that make decisions, separate the transport outcome, component 
 
 `Appliance(namespace="tenant_alpha")` uses a normalized namespace, PostgreSQL schema/table `ns_tenant_alpha.psm_document_embeddings`, and local files under `.chorusgraph/cpu-llm/tenant_alpha/`. The default namespace is tenant `cpu-llm`. Local paths are relative to the working directory: use a stable working directory and isolate deployments that use different DSNs.
 
-Direct Python calls are trusted integration calls. Omitting `caller` is unscoped within the selected tenant; constructing a `CallerContext` is not authentication. For source-scoped callers use exact paragraph IDs or a source prefix ending in `-p`, such as `field-guide-p`. An empty scope permits no reads. Use the authenticated `Entry`/HTTP service when callers are not already trusted.
+Direct Python calls are trusted integration calls. Omitting `caller` is unscoped within the selected tenant; constructing a `CallerContext` is not authentication. For source-scoped callers use exact document IDs (including IDs supplied to `index_chunks`) or a source prefix ending in `-p`, such as `field-guide-p`. An empty scope permits no reads. Use the authenticated `Entry`/HTTP service when callers are not already trusted.
 
 Scoped and historical turns limit legacy deep-search, summary, comparison, and creative expansion to this turn's filtered retrieval evidence. Historical queries also skip current-only article/tag/fact-graph expansion. This can reduce recall; `as_of` is not a transactional snapshot across all stores.
 
@@ -350,3 +350,5 @@ Amin Parva — AI Architect & Staff Applied AI Engineer — [parvaamin@gmail.com
   license = {Apache-2.0}
 }
 ```
+
+The consolidated [October 25 review handoff](docs/reviews/2026-10-25/recent-commits-handoff.md) records the recent-commit findings, fixes, regression coverage, and remaining evaluation work.

@@ -30,6 +30,57 @@ def test_model01_names_the_prompt_and_the_stored_records():
             assert word.casefold() in "mary baked a cake"
 
 
+def test_unsupported_question_shapes_do_not_copy_an_unrelated_sentence():
+    """Why, a bare count, a comparison, and when stay unsupported.
+
+    A stored sentence that does not answer the question is not the reply.
+    A licensed definition still quotes its sentence.
+    """
+    from cpu_llm.realizer.constructions import UNSUPPORTED_QUESTION
+
+    sentence = "The harbor kestrel is a small coastal falcon."
+    questions = (
+        "Why is the oak taller?",
+        "How many falcons live here?",
+        "Compare oak and elm.",
+        "When did the falcon arrive?",
+    )
+    for question in questions:
+        result = generate(question, [("kestrel", sentence)])
+        assert result["status"] == "unsupported"
+        assert result["verified"] is False
+        assert result["text"] == UNSUPPORTED_QUESTION
+        assert sentence not in result["text"]
+        compared = question.startswith("Compare")
+        reply = compose_reply(
+            {
+                "message": question,
+                "guard_decision": "allow",
+                "related": [{"chunk_id": "kestrel", "chunk_text": sentence}],
+                "model01": result,
+                "explain": question.startswith("Why"),
+                "compare": compared,
+                "comparison": {
+                    "sides": [
+                        {"label": "oak", "text": sentence},
+                        {"label": "elm", "text": ""},
+                    ]
+                }
+                if compared
+                else {},
+            }
+        )
+        assert sentence not in reply["text"]
+        assert reply["answer_status"] == "unsupported"
+        assert UNSUPPORTED_QUESTION in reply["text"]
+        if compared:
+            assert "No stored sentence for this side." in reply["text"]
+
+    kept = generate("What is Ada North?", [("ada", "Ada North is the harbor archivist.")])
+    assert kept["status"] == "answered"
+    assert "Ada North is the harbor archivist." in kept["text"]
+
+
 def test_model01_quotes_a_stored_ranking_and_states_a_gap():
     stated = generate(
         "what is the best lobster in eroupe?",

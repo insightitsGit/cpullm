@@ -54,15 +54,15 @@ class SourceDocument:
     connections: tuple[tuple[str, str, str], ...] = field(default_factory=tuple)
 
 
-def open_source(source: str | Path | SourceDocument | Iterable[SourceDocument | str | Path]) -> list[SourceDocument]:
+def open_source(source: str | Path | SourceDocument | Iterable[SourceDocument | str | Path], *, path_check=None) -> list[SourceDocument]:
     """Read one file, one directory, one document, or a list of those."""
     if isinstance(source, SourceDocument):
         return [_checked(source)]
     if isinstance(source, (str, Path)):
-        return _open_path(Path(source))
+        return _open_path(Path(source), path_check=path_check)
     documents: list[SourceDocument] = []
     for item in source:
-        documents.extend(open_source(item))
+        documents.extend(open_source(item, path_check=path_check))
     if not documents:
         raise ValueError("the source has no paragraphs")
     return documents
@@ -180,7 +180,9 @@ def structured_paragraphs(text: str) -> list[str]:
     return [chunk for chunk in chunks if len(chunk) > 15]
 
 
-def _open_path(path: Path) -> list[SourceDocument]:
+def _open_path(path: Path, *, path_check=None) -> list[SourceDocument]:
+    if path_check is not None:
+        path = path_check(path)
     if not path.exists():
         raise FileNotFoundError(path)
     if path.is_dir():
@@ -189,6 +191,8 @@ def _open_path(path: Path) -> list[SourceDocument]:
             raise ValueError(f"{path} has no accepted file ({', '.join(sorted(_ACCEPTED))})")
         documents: list[SourceDocument] = []
         for item in files:
+            if path_check is not None:
+                item = path_check(item)
             documents.extend(_open_file(item))
         return documents
     return _open_file(path)

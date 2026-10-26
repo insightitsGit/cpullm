@@ -78,6 +78,7 @@ import os
 import re
 import threading
 import uuid
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
@@ -167,7 +168,7 @@ class Appliance:
         namespace: str | None = None,
         on_escalate: Any = None,
         reference_backend: Any = None,
-        resonance_tags: bool = True,
+        resonance_tags: bool = False,
     ) -> None:
         from cpu_llm.child_safety import ChildSafetyGate, enabled_by_default
 
@@ -243,7 +244,7 @@ class Appliance:
             reference_backend = CorefereeBackend() if reference_backend == 'coreferee' else FastCorefBackend()
         self.references = ReferenceSessions(reference_backend)
         self._creative_seen: dict[str, str] = {}
-        self._session_locks: dict[Any, threading.RLock] = {}
+        self._session_locks: dict[Any, list[Any]] = {}
         self._session_guard = threading.Lock()
         self.source_slug_path = cache / "source_slugs.json"
         self._turn = None
@@ -293,12 +294,12 @@ class Appliance:
     def _deep_tensors(self, value: dict[str, Any]) -> None:
         self._set_slot("deep_tensors", value)
 
+    @contextmanager
     def _session_turn(self, key: Any):
         """Serialize turns that share a session. Other sessions keep their own turn state."""
-        from contextlib import nullcontext
-
         if not key:
-            return nullcontext()
+            yield
+            return
         guard = getattr(self, "_session_guard", None)
         if guard is None:
             guard = threading.Lock()
@@ -308,11 +309,19 @@ class Appliance:
             locks = {}
             self._session_locks = locks
         with guard:
-            lock = locks.get(key)
-            if lock is None:
-                lock = threading.RLock()
-                locks[key] = lock
-        return lock
+            entry = locks.get(key)
+            if entry is None:
+                entry = [threading.RLock(), 0]
+                locks[key] = entry
+            entry[1] += 1  # Count holders and waiters before releasing the registry guard.
+        try:
+            with entry[0]:
+                yield
+        finally:
+            with guard:
+                entry[1] -= 1
+                if entry[1] == 0:
+                    del locks[key]
 
     def _encode_sense(self, texts: list[str]):
         """Frozen retrieval encoder. The semantic trigger uses this space, not a second model."""
@@ -551,6 +560,20 @@ class Appliance:
         refused = empty_scope_result(self.tenant_id, message, context)
         if refused is not None:
             return refused
+        # Guard the raw prompt before any conversation or source-derived early
+        # return. The graph also guards the resolved prompt before retrieval.
+        checker = getattr(self, 'guard', None) or create_checker_rules_only()
+        decision = checker.check(message)
+        if decision.decision != 'allow':
+            text = 'The prompt was blocked by PrismGuard.'
+            response = dict(message=message, original_message=message, tenant_id=self.tenant_id,
+                            guard_decision=decision.decision, guard_category=decision.matched_category,
+                            status='blocked', answer_status='blocked', answer=text,
+                            needs_clarification=False, answer_evidence=[], supporting_evidence=[])
+            response['reply'] = dict(compose_reply(response), answer_status='blocked')
+            if context is not None:
+                response.update(caller_id=context.caller_id, request_id=context.request_id)
+            return response
         from cpu_llm.clarification import scoped_session, clarification_result, supported_ranking
         raw_message = message
         session_key = scoped_session(self.tenant_id, None if context is None else context.caller_id,
@@ -628,7 +651,7 @@ class Appliance:
                 "allowed_sources": None if context is None else context.allowed_sources,
                 "as_of": as_of,
             }
-            if as_of is None:
+            if as_of is None and checker.check(message).decision == 'allow':
                 sense_outcome = _sense_clarification(self, message, session_key)
                 if sense_outcome is not None:
                     response = clarification_result(sense_outcome, raw_message, self.tenant_id)
@@ -2164,9 +2187,7 @@ def _correct_resonance_tags(appliance, document_id: str, prior_sentence: str, ne
 
 
 def _sense_clarification(appliance, message: str, session_key):
-    """Ask when one query word lights more than one sense. No session means no question is stored."""
-    if session_key is None:
-        return None
+    """Ask on ambiguity, storing the follow-up only when a session is supplied."""
     tags = _resonance_store(appliance)
     loop = getattr(appliance, "clarifications", None)
     if tags is None or loop is None or not hasattr(loop, "need_sense"):
@@ -2208,7 +2229,8 @@ def _with_resonance_paragraphs(appliance, message: str, hits: list[dict[str, Any
     if not missing:
         return hits
     added = list(hits)
-    for row in keep_allowed(list(database.get_by_ids(missing)), allowed):
+    loader = getattr(appliance.index, 'current_chunks_by_ids', database.get_by_ids)
+    for row in keep_allowed(list(loader(missing)), allowed):
         if "tensor_1024d" not in row:
             continue
         unit = evidence.get(str(row["document_id"]), {})

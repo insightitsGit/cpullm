@@ -55,7 +55,7 @@ def test_delete_prefix_refuses_a_wildcard_before_sql():
         index.delete_prefix("notes_%")
     assert not hasattr(index.db.conn, "sql")
     assert index.delete_prefix("notes-p") == 3
-    assert index.db.conn.params == ("^notes-p[0-9]{4}(-v[0-9]+)?$",)
+    assert index.db.conn.params == ("^notes-p[0-9]{4,}(-v[0-9]+)?$",)
     assert "document_id ~ %s" in index.db.conn.sql
 
 

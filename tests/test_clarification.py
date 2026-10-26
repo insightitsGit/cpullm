@@ -78,11 +78,11 @@ def test_a_short_criterion_is_not_a_new_question():
     loop.prepare('Which lobster is best?', key='a')
     taste = loop.prepare('how it tastes', key='a')
     assert taste['status'] == 'ready'
-    assert taste['criteria'] == 'it tastes'
+    assert taste['criteria'] == 'lobster tastes'
     assert 'clarification_abandoned' not in taste
     loop.prepare('Which lobster is best?', key='b')
     cost = loop.prepare('what it costs', key='b')
-    assert cost['status'] == 'ready' and cost['criteria'] == 'what it costs'
+    assert cost['status'] == 'ready' and cost['criteria'] == 'what lobster costs'
     loop.prepare('Which lobster is best?', key='c')
     price = loop.prepare('by price', key='c')
     assert price['status'] == 'ready' and price['criteria'] == 'price'

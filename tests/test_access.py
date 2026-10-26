@@ -251,8 +251,8 @@ def test_a_source_prefix_stops_at_the_paragraph_number():
     assert source_allowed("hr-p0001-v12", frozenset({"hr-p"}))
     assert not source_allowed("hr-policy-p0001", frozenset({"hr-p"}))
     assert not source_allowed("agentic-ledger-p0001", {"agent"})
-    with pytest.raises(ValueError):
-        CallerContext.make("tenant", "alice", ["agent"])
+    CallerContext.make("tenant", "alice", ["agent"])
+    assert source_allowed("agent", {"agent"})
     CallerContext.make("tenant", "alice", ["hr-p", "hr-p0001"])
     assert not _row_in_scope("hr-policy-p0001", frozenset({"hr-p"}))
     assert _row_in_scope("hr-p0001", frozenset({"hr-p"}))

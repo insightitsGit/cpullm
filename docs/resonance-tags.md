@@ -2,11 +2,11 @@
 
 Status: wired, 2026-10-25. Code: `src/cpu_llm/resonance_groups.py`.
 Tests: `tests/test_resonance_groups.py`. Measured comparison: `python tests/resonance_eval.py`.
-`Appliance(..., resonance_tags=True)` is the default. The store is
-`resonance_tags.db`, maintained on ingest, delete, and correction. Recall adds
-candidates; it does not write an answer. A tag that only shares a hub word is
-not loaded. `word_tags.json` stays. Pass `resonance_tags=False` to keep the
-previous retrieval.
+`Appliance(..., resonance_tags=False)` is the default until a real evaluation
+(section 9, phase 2) is done. Pass `resonance_tags=True` to maintain
+`resonance_tags.db` on ingest, delete, and correction and to add candidate
+passages. A recalled tag is not an answer. A tag that only shares a hub word is
+not loaded. `word_tags.json` stays.
 
 ## 1. The idea (owner's words, restated)
 
@@ -75,7 +75,7 @@ This is what stops "bank" from carrying police to the river.
 | Recall | `pipeline.py::_retrieve`, right after `_with_tagged_paragraphs` | `recall_spread(message, allowed=allowed)`; load `chunk_ids` with `get_by_ids`, then `keep_allowed` (as `_with_graph_paragraphs` does) |
 | Ambiguity | `clarification.py` | new slot `sense`: show `result.senses` words, send the user's pick back with the same `session_id` |
 | Storage path | beside `knowledge_graph.db` under `.chorusgraph/cpu-llm/<tenant>/` | `resonance_tags.db` |
-| Flag | `Appliance(..., resonance_tags=True)` | default on. `False` leaves retrieval as it was. Hub-only tags are not added to the passage list |
+| Flag | `Appliance(..., resonance_tags=False)` | default off until a real evaluation. `True` adds sense-specific candidates. Hub-only tags are not added to the passage list |
 
 What it replaces or improves: today `_with_tagged_paragraphs` only recalls inside articles
 already in the shortlist and only words the query typed (category = article, one hop,
@@ -151,9 +151,12 @@ dense retrieval already separates many of these, so do not read the gap as end-t
    written by someone who has not seen this code, ambiguous words, missing facts, and a
    dense-only baseline. Report wrong-answer rate and clarification rate separately.
 3. Resolve open decision 1 and 6; make the crane xfail pass without losing the others.
-4. (wired) On by default. Ingest, delete, and correction maintain the store. Retrieval
-   adds at most eight sense-specific chunks and asks on an ambiguous word when a
-   session id is present. Hub-only tags are not loaded, which keeps the crane senses
+4. (wired, default off) `resonance_tags=True` maintains the store on ingest, delete, and correction. Retrieval
+   adds at most eight currently valid sense-specific chunks and asks on an ambiguous
+   word. A session id stores the pending choice; without one, the caller must
+   restate the intended meaning. Scope is captured per SQLite connection, never
+   shared between requests. Repeated corrections remove earlier version tags.
+   Hub-only tags are not loaded, which keeps the crane senses
    apart at admission time. `recall_spread` itself is unchanged, so its crane xfails
    remain. `word_tags.json` stays until a real evaluation set says otherwise.
 5. Scale: replace the O(T^2) component step with indexed word-to-tag traversal capped at

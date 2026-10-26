@@ -74,7 +74,7 @@ class Entry:
 
     def _documents_for_ingest(self, source: Any) -> list[SourceDocument]:
         if isinstance(source, (str, Path)):
-            return open_source(self._confine(Path(source)))
+            return open_source(Path(source), path_check=self._confine)
         if isinstance(source, SourceDocument):
             return open_source(source)
         if isinstance(source, Iterable) and not isinstance(source, (bytes, bytearray)):

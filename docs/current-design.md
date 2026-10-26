@@ -20,7 +20,9 @@ understanding and free-form sentence generation have not been demonstrated.
 ## Request lifecycle
 
 1. Authenticate/resolve the caller and enforce source scope. Empty authorization
-   refuses the request before conversational state is used.
+   refuses the request before conversational state is used. Guard the raw prompt
+   before any conversational or source-derived clarification; guard the resolved
+   prompt again before retrieval.
 2. For subjective rankings, inspect missing criteria. A request such as "Which
    lobster is best?" asks what best means and what the user wants it for. No
    embedding or database search is performed for that early clarification.
@@ -38,8 +40,10 @@ understanding and free-form sentence generation have not been demonstrated.
    article/tag matches, sense-specific resonance tags, and a bounded authorized
    graph neighborhood. Prioritize the requested relationship, entity, and
    direction when ranking candidates. A resonance tag is a candidate passage,
-   not an answer. One query word that lights more than one sense asks which
-   meaning is intended when the turn has a session id, and does not pick.
+   not an answer. Resonance tags are off unless `resonance_tags=True`. When they
+   are on, one query word that lights more than one sense asks which meaning is
+   intended and does not pick. Without a session id the question is returned
+   but no pending follow-up is stored.
 7. If a supported attribute is missing, perform bounded retrieval repair for the
    entity and verified connected types. Re-plan when a retry discovers a useful
    membership edge, without exceeding the fixed query budget.
@@ -94,7 +98,7 @@ prototypes, scored with the appropriate channel metric, only for enabled heads.
 
 The current fact graph scans its rows for lookup; bounded output is not a claim
 of indexed graph scalability. A source prefix matches only its own paragraph
-ids, `prefix` plus four digits and an optional `-v` correction suffix.
+ids, `prefix` plus at least four digits and an optional `-v` correction suffix.
 Replacement ingestion, correction, and deletion maintain current facts. Historical queries bypass current-graph expansion.
 Correction rows use the editor-supplied valid-from timestamp. Current vector
 search applies time filtering even on a newly opened index; it does not depend
@@ -104,7 +108,8 @@ Current-only article, word-tag, and resonance-tag expansion is also skipped for
 historical queries. Resonance tags live in the namespace's `resonance_tags.db`.
 Ingest, replacement, correction, and deletion keep that file aligned with the
 source. A tag whose only overlap with the question is a hub word is not added.
-`word_tags.json` remains. `resonance_tags=False` turns this expansion off.
+`word_tags.json` remains. Resonance-tag expansion is off unless
+`resonance_tags=True`.
 For scoped or historical turns, legacy deep-search, comparison, summary, creative,
 and lexical fallback paths are limited to the current turn's filtered retrieval
 evidence. They cannot use global/current lookups or a prior caller's shortlist.
