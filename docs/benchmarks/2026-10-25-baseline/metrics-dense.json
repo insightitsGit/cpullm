@@ -1,0 +1,824 @@
+{
+  "arm": "dense",
+  "namespace": "bench_dense_05c2f1bc",
+  "resonance_tags": false,
+  "startup_s": 5.848,
+  "rss_after_startup_mb": null,
+  "ingest": {
+    "elapsed_s": 1.174,
+    "receipt": {
+      "documents": 3,
+      "chunks": 30,
+      "ids": [
+        "millhaven-ferry-p0001",
+        "millhaven-ferry-p0002",
+        "millhaven-ferry-p0003",
+        "millhaven-ferry-p0004",
+        "millhaven-ferry-p0005",
+        "millhaven-ferry-p0006",
+        "millhaven-ferry-p0007",
+        "millhaven-ferry-p0008",
+        "millhaven-ferry-p0009",
+        "millhaven-ferry-p0010",
+        "millhaven-ferry-p0011",
+        "millhaven-ferry-p0012",
+        "millhaven-ferry-p0013",
+        "millhaven-ferry-p0014",
+        "millhaven-ferry-p0015",
+        "millhaven-ferry-p0016",
+        "millhaven-ferry-p0017",
+        "millhaven-ferry-p0018",
+        "millhaven-ferry-p0019",
+        "millhaven-ferry-p0020",
+        "millhaven-ferry-p0021",
+        "millhaven-ledger-p0001",
+        "millhaven-ledger-p0002",
+        "millhaven-ledger-p0003",
+        "millhaven-senses-p0001",
+        "millhaven-senses-p0002",
+        "millhaven-senses-p0003",
+        "millhaven-senses-p0004",
+        "millhaven-senses-p0005",
+        "millhaven-senses-p0006"
+      ],
+      "connections": 0
+    },
+    "rss_mb": null
+  },
+  "rss_after_qa_mb": null,
+  "metrics": {
+    "turns": 41,
+    "factual_correct": 14,
+    "factual_denominator": 18,
+    "factual_correctness": 0.7778,
+    "factual_by_category": {
+      "ambiguous": {
+        "hit": 2,
+        "n": 2,
+        "rate": 1.0
+      },
+      "definition": {
+        "hit": 2,
+        "n": 2,
+        "rate": 1.0
+      },
+      "direct_fact": {
+        "hit": 4,
+        "n": 4,
+        "rate": 1.0
+      },
+      "join": {
+        "hit": 1,
+        "n": 2,
+        "rate": 0.5
+      },
+      "paraphrase": {
+        "hit": 2,
+        "n": 2,
+        "rate": 1.0
+      },
+      "rank-then-fuel": {
+        "hit": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "ranking": {
+        "hit": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "reference-then-name": {
+        "hit": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "scope": {
+        "hit": 2,
+        "n": 2,
+        "rate": 1.0
+      },
+      "synonym": {
+        "hit": 0,
+        "n": 1,
+        "rate": 0.0
+      }
+    },
+    "wrong_answers": 4,
+    "wrong_answer_rate": 0.0976,
+    "citation_complete": 14,
+    "citation_denominator": 15,
+    "citation_completeness": 0.9333,
+    "retrieval_cases": 18,
+    "retrieval_excluded": 2,
+    "retrieval_precision_macro": 0.2249,
+    "retrieval_recall_macro": 0.9815,
+    "clarification_appropriate": 6,
+    "clarification_denominator": 7,
+    "appropriate_clarification_rate": 0.8571,
+    "abstention_appropriate": 3,
+    "abstention_denominator": 4,
+    "appropriate_abstention_rate": 0.75,
+    "antonym": {
+      "ok": 1,
+      "factual_quote": 1,
+      "wrong": 0,
+      "n": 1
+    },
+    "unsupported_contract": {
+      "ok": 0,
+      "wrong": 3,
+      "n": 4
+    },
+    "conflict": {
+      "ok": 1,
+      "wrong": 0,
+      "n": 1
+    },
+    "conversation_completion": {
+      "completed": 4,
+      "n": 5,
+      "rate": 0.8,
+      "scripts": {
+        "rank-then-fuel": false,
+        "rank-then-ride": true,
+        "rank-then-cancel": true,
+        "rank-then-new-ferry-question": true,
+        "reference-then-name": true
+      }
+    }
+  },
+  "latency": {
+    "question": "What color is the Cedar?",
+    "warmup": 2,
+    "samples": 20,
+    "p50_s": 0.0528,
+    "p95_s": 0.0837,
+    "p99_s": 0.1109,
+    "min_s": 0.0421,
+    "max_s": 0.1177,
+    "values_s": [
+      0.0478,
+      0.0459,
+      0.0586,
+      0.1177,
+      0.0626,
+      0.0505,
+      0.0421,
+      0.0432,
+      0.0539,
+      0.0819,
+      0.0575,
+      0.0539,
+      0.0516,
+      0.0602,
+      0.059,
+      0.0454,
+      0.0515,
+      0.067,
+      0.0485,
+      0.0455
+    ]
+  },
+  "concurrent": {
+    "ok": true,
+    "ferry": {
+      "elapsed_s": 0.0934,
+      "error": null,
+      "text": "From millhaven-ferry-p0007:\nThe Rowan is blue.",
+      "answer": null,
+      "status": "evidence_quote",
+      "needs_clarification": false,
+      "slot": null,
+      "abandoned": false,
+      "guard": "allow",
+      "access_error": null,
+      "evidence_ids": [
+        "millhaven-ferry-p0007"
+      ],
+      "supporting_ids": [],
+      "passage_ids": [
+        "millhaven-ferry-p0007",
+        "millhaven-ferry-p0006",
+        "millhaven-ferry-p0015",
+        "millhaven-ferry-p0020",
+        "millhaven-ferry-p0001",
+        "millhaven-ferry-p0016",
+        "millhaven-ferry-p0005"
+      ],
+      "candidate_ids": [
+        "millhaven-ferry-p0007",
+        "millhaven-ferry-p0006",
+        "millhaven-ferry-p0015",
+        "millhaven-ferry-p0020",
+        "millhaven-ferry-p0001",
+        "millhaven-ferry-p0016",
+        "millhaven-ferry-p0005"
+      ],
+      "senses": null,
+      "requested": {
+        "relation": "has_color",
+        "direction": "subject",
+        "entity": "rowan"
+      },
+      "dictionary_status": "unchanged",
+      "pending_before": [
+        "clarification:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+        "clarification:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+        "references.states:('bench_dense_05c2f1bc', None, None, 'rank-abandon', None)",
+        "references.states:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+        "references.states:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+        "references.states:('bench_dense_05c2f1bc', None, None, 'ref-cedar', None)"
+      ],
+      "pending_after": [
+        "clarification:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+        "clarification:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+        "references.states:('bench_dense_05c2f1bc', None, None, 'rank-abandon', None)",
+        "references.states:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+        "references.states:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+        "references.states:('bench_dense_05c2f1bc', None, None, 'ref-cedar', None)"
+      ],
+      "pending_unchanged": true,
+      "partial": false,
+      "node_error": null
+    },
+    "ledger": {
+      "elapsed_s": 0.0884,
+      "error": null,
+      "text": "From millhaven-ledger-p0001:\nThe Rowan is green.",
+      "answer": null,
+      "status": "evidence_quote",
+      "needs_clarification": false,
+      "slot": null,
+      "abandoned": false,
+      "guard": "allow",
+      "access_error": null,
+      "evidence_ids": [
+        "millhaven-ledger-p0001"
+      ],
+      "supporting_ids": [],
+      "passage_ids": [
+        "millhaven-ledger-p0001",
+        "millhaven-ledger-p0003",
+        "millhaven-ledger-p0002"
+      ],
+      "candidate_ids": [
+        "millhaven-ledger-p0001"
+      ],
+      "senses": null,
+      "requested": {
+        "relation": "has_color",
+        "direction": "subject",
+        "entity": "rowan"
+      },
+      "dictionary_status": "unchanged",
+      "pending_before": [
+        "clarification:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+        "clarification:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+        "references.states:('bench_dense_05c2f1bc', None, None, 'rank-abandon', None)",
+        "references.states:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+        "references.states:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+        "references.states:('bench_dense_05c2f1bc', None, None, 'ref-cedar', None)"
+      ],
+      "pending_after": [
+        "clarification:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+        "clarification:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+        "references.states:('bench_dense_05c2f1bc', None, None, 'rank-abandon', None)",
+        "references.states:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+        "references.states:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+        "references.states:('bench_dense_05c2f1bc', None, None, 'ref-cedar', None)"
+      ],
+      "pending_unchanged": true,
+      "partial": false,
+      "node_error": null
+    },
+    "errors": {
+      "ledger": null,
+      "ferry": null
+    }
+  },
+  "lifecycle": {
+    "steps": [],
+    "correction": {
+      "ok": true,
+      "historical": {
+        "elapsed_s": 0.0377,
+        "error": null,
+        "text": "From marker-note-p0001-v1700010100:\nThe marker buoy is grey.",
+        "answer": null,
+        "status": "evidence_quote",
+        "needs_clarification": false,
+        "slot": null,
+        "abandoned": false,
+        "guard": "allow",
+        "access_error": null,
+        "evidence_ids": [
+          "marker-note-p0001-v1700010100"
+        ],
+        "supporting_ids": [],
+        "passage_ids": [
+          "marker-note-p0001-v1700010100"
+        ],
+        "candidate_ids": [
+          "marker-note-p0001-v1700010100"
+        ],
+        "senses": null,
+        "requested": {
+          "relation": "has_color",
+          "direction": "subject",
+          "entity": "marker buoy"
+        },
+        "dictionary_status": "unchanged",
+        "pending_before": [
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-abandon', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'ref-cedar', None)"
+        ],
+        "pending_after": [
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-abandon', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'ref-cedar', None)"
+        ],
+        "pending_unchanged": true,
+        "partial": false,
+        "node_error": null
+      },
+      "current": {
+        "elapsed_s": 0.0411,
+        "error": null,
+        "text": "From marker-note-p0001-v1700010200:\nThe marker buoy is yellow.",
+        "answer": null,
+        "status": "evidence_quote",
+        "needs_clarification": false,
+        "slot": null,
+        "abandoned": false,
+        "guard": "allow",
+        "access_error": null,
+        "evidence_ids": [
+          "marker-note-p0001-v1700010200"
+        ],
+        "supporting_ids": [],
+        "passage_ids": [
+          "marker-note-p0001-v1700010200",
+          "millhaven-ferry-p0015",
+          "millhaven-ferry-p0020",
+          "millhaven-ferry-p0007",
+          "millhaven-ferry-p0016"
+        ],
+        "candidate_ids": [
+          "marker-note-p0001-v1700010200",
+          "millhaven-ferry-p0015",
+          "millhaven-ferry-p0020",
+          "millhaven-ferry-p0007",
+          "millhaven-ferry-p0016"
+        ],
+        "senses": null,
+        "requested": {
+          "relation": "has_color",
+          "direction": "subject",
+          "entity": "marker buoy"
+        },
+        "dictionary_status": "unchanged",
+        "pending_before": [
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-abandon', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'ref-cedar', None)"
+        ],
+        "pending_after": [
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-abandon', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'ref-cedar', None)"
+        ],
+        "pending_unchanged": true,
+        "partial": false,
+        "node_error": null
+      },
+      "closed_valid_to": 1700010200,
+      "latest_id": "marker-note-p0001-v1700010200",
+      "tag_ids": null
+    },
+    "reingest_delete": {
+      "ok": true,
+      "before": {
+        "elapsed_s": 0.0587,
+        "error": null,
+        "text": "From dock-note-p0001:\nThe dock bell is white.",
+        "answer": null,
+        "status": "evidence_quote",
+        "needs_clarification": false,
+        "slot": null,
+        "abandoned": false,
+        "guard": "allow",
+        "access_error": null,
+        "evidence_ids": [
+          "dock-note-p0001"
+        ],
+        "supporting_ids": [],
+        "passage_ids": [
+          "dock-note-p0001",
+          "millhaven-ferry-p0004",
+          "dock-flag-p0001",
+          "millhaven-senses-p0003",
+          "millhaven-senses-p0002",
+          "millhaven-ferry-p0015"
+        ],
+        "candidate_ids": [
+          "dock-note-p0001",
+          "millhaven-ferry-p0004",
+          "dock-flag-p0001",
+          "millhaven-ferry-p0015"
+        ],
+        "senses": null,
+        "requested": {
+          "relation": "has_color",
+          "direction": "subject",
+          "entity": "dock bell"
+        },
+        "dictionary_status": "unchanged",
+        "pending_before": [
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-abandon', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'ref-cedar', None)"
+        ],
+        "pending_after": [
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-abandon', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'ref-cedar', None)"
+        ],
+        "pending_unchanged": true,
+        "partial": false,
+        "node_error": null
+      },
+      "after": {
+        "elapsed_s": 0.0505,
+        "error": null,
+        "text": "From dock-note-p0001:\nThe dock bell is red.",
+        "answer": null,
+        "status": "evidence_quote",
+        "needs_clarification": false,
+        "slot": null,
+        "abandoned": false,
+        "guard": "allow",
+        "access_error": null,
+        "evidence_ids": [
+          "dock-note-p0001"
+        ],
+        "supporting_ids": [],
+        "passage_ids": [
+          "dock-note-p0001",
+          "dock-flag-p0001",
+          "millhaven-senses-p0003",
+          "millhaven-senses-p0002",
+          "millhaven-ferry-p0015"
+        ],
+        "candidate_ids": [
+          "dock-note-p0001",
+          "dock-flag-p0001",
+          "millhaven-ferry-p0015"
+        ],
+        "senses": null,
+        "requested": {
+          "relation": "has_color",
+          "direction": "subject",
+          "entity": "dock bell"
+        },
+        "dictionary_status": "unchanged",
+        "pending_before": [
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-abandon', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'ref-cedar', None)"
+        ],
+        "pending_after": [
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-abandon', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'ref-cedar', None)"
+        ],
+        "pending_unchanged": true,
+        "partial": false,
+        "node_error": null
+      },
+      "deleted_question": {
+        "elapsed_s": 0.1078,
+        "error": null,
+        "text": "That question is not in the supported event-frame form.",
+        "answer": "The dock flag is green.",
+        "status": null,
+        "needs_clarification": false,
+        "slot": null,
+        "abandoned": false,
+        "guard": "allow",
+        "access_error": null,
+        "evidence_ids": [],
+        "supporting_ids": [],
+        "passage_ids": [
+          "dock-flag-p0001",
+          "millhaven-ledger-p0001",
+          "millhaven-senses-p0003",
+          "millhaven-senses-p0002",
+          "millhaven-ferry-p0015",
+          "marker-note-p0001-v1700010200"
+        ],
+        "candidate_ids": [],
+        "senses": null,
+        "requested": {
+          "relation": "has_color",
+          "direction": "subject",
+          "entity": "dock bell"
+        },
+        "dictionary_status": "unchanged",
+        "pending_before": [
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-abandon', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'ref-cedar', None)"
+        ],
+        "pending_after": [
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-abandon', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'ref-cedar', None)"
+        ],
+        "pending_unchanged": true,
+        "partial": false,
+        "node_error": null
+      },
+      "neighbor": {
+        "elapsed_s": 0.0628,
+        "error": null,
+        "text": "From dock-flag-p0001:\nThe dock flag is green.",
+        "answer": null,
+        "status": "evidence_quote",
+        "needs_clarification": false,
+        "slot": null,
+        "abandoned": false,
+        "guard": "allow",
+        "access_error": null,
+        "evidence_ids": [
+          "dock-flag-p0001"
+        ],
+        "supporting_ids": [],
+        "passage_ids": [
+          "dock-flag-p0001",
+          "millhaven-ledger-p0001",
+          "marker-note-p0001-v1700010200",
+          "millhaven-ferry-p0020",
+          "millhaven-ferry-p0015",
+          "millhaven-ferry-p0006"
+        ],
+        "candidate_ids": [
+          "dock-flag-p0001",
+          "millhaven-ledger-p0001",
+          "marker-note-p0001-v1700010200",
+          "millhaven-ferry-p0020",
+          "millhaven-ferry-p0015",
+          "millhaven-ferry-p0006"
+        ],
+        "senses": null,
+        "requested": {
+          "relation": "has_color",
+          "direction": "subject",
+          "entity": "dock flag"
+        },
+        "dictionary_status": "unchanged",
+        "pending_before": [
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-abandon', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'ref-cedar', None)"
+        ],
+        "pending_after": [
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "clarification:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-abandon', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-fuel', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'rank-ride', None)",
+          "references.states:('bench_dense_05c2f1bc', None, None, 'ref-cedar', None)"
+        ],
+        "pending_unchanged": true,
+        "partial": false,
+        "node_error": null
+      },
+      "delete_receipt": {
+        "prefix": "dock-note-p",
+        "vector_rows": 1,
+        "nodes_erased": 1,
+        "edges_erased": 0,
+        "nodes_remaining": [],
+        "word_ids": 3,
+        "resonance_tags": {
+          "units": 0,
+          "words": 0
+        },
+        "resonance": "unchanged",
+        "word_relations": "unchanged"
+      },
+      "first_ids": [
+        "dock-note-p0001"
+      ]
+    }
+  },
+  "restart": {
+    "startup_s": 0.645,
+    "rss_mb": null,
+    "ok": true,
+    "cedar": {
+      "elapsed_s": 0.1806,
+      "error": null,
+      "text": "From millhaven-ferry-p0004:\nThe Cedar is white.",
+      "answer": null,
+      "status": "evidence_quote",
+      "needs_clarification": false,
+      "slot": null,
+      "abandoned": false,
+      "guard": "allow",
+      "access_error": null,
+      "evidence_ids": [
+        "millhaven-ferry-p0004"
+      ],
+      "supporting_ids": [],
+      "passage_ids": [
+        "millhaven-ferry-p0004",
+        "millhaven-ferry-p0005",
+        "millhaven-ferry-p0003",
+        "millhaven-ferry-p0001",
+        "millhaven-ferry-p0006",
+        "millhaven-ferry-p0016",
+        "millhaven-ferry-p0020",
+        "millhaven-ferry-p0015",
+        "millhaven-ferry-p0013"
+      ],
+      "candidate_ids": [
+        "millhaven-ferry-p0004",
+        "millhaven-ferry-p0005",
+        "millhaven-ferry-p0003",
+        "millhaven-ferry-p0001",
+        "millhaven-ferry-p0006",
+        "millhaven-ferry-p0016",
+        "millhaven-ferry-p0020",
+        "millhaven-ferry-p0015"
+      ],
+      "senses": null,
+      "requested": {
+        "relation": "has_color",
+        "direction": "subject",
+        "entity": "cedar"
+      },
+      "dictionary_status": "unchanged",
+      "pending_before": [],
+      "pending_after": [],
+      "pending_unchanged": true,
+      "partial": false,
+      "node_error": null
+    },
+    "buoy": {
+      "elapsed_s": 0.0601,
+      "error": null,
+      "text": "From marker-note-p0001-v1700010200:\nThe marker buoy is yellow.",
+      "answer": null,
+      "status": "evidence_quote",
+      "needs_clarification": false,
+      "slot": null,
+      "abandoned": false,
+      "guard": "allow",
+      "access_error": null,
+      "evidence_ids": [
+        "marker-note-p0001-v1700010200"
+      ],
+      "supporting_ids": [],
+      "passage_ids": [
+        "marker-note-p0001-v1700010200",
+        "dock-flag-p0001",
+        "millhaven-ferry-p0015",
+        "millhaven-ferry-p0020",
+        "millhaven-ferry-p0007"
+      ],
+      "candidate_ids": [
+        "marker-note-p0001-v1700010200",
+        "dock-flag-p0001",
+        "millhaven-ferry-p0015",
+        "millhaven-ferry-p0020",
+        "millhaven-ferry-p0007"
+      ],
+      "senses": null,
+      "requested": {
+        "relation": "has_color",
+        "direction": "subject",
+        "entity": "marker buoy"
+      },
+      "dictionary_status": "unchanged",
+      "pending_before": [],
+      "pending_after": [],
+      "pending_unchanged": true,
+      "partial": false,
+      "node_error": null
+    },
+    "flag": {
+      "elapsed_s": 0.0572,
+      "error": null,
+      "text": "From dock-flag-p0001:\nThe dock flag is green.",
+      "answer": null,
+      "status": "evidence_quote",
+      "needs_clarification": false,
+      "slot": null,
+      "abandoned": false,
+      "guard": "allow",
+      "access_error": null,
+      "evidence_ids": [
+        "dock-flag-p0001"
+      ],
+      "supporting_ids": [],
+      "passage_ids": [
+        "dock-flag-p0001",
+        "millhaven-ledger-p0001",
+        "marker-note-p0001-v1700010200",
+        "millhaven-ferry-p0020",
+        "millhaven-ferry-p0015",
+        "millhaven-ferry-p0006"
+      ],
+      "candidate_ids": [
+        "dock-flag-p0001",
+        "millhaven-ledger-p0001",
+        "marker-note-p0001-v1700010200",
+        "millhaven-ferry-p0020",
+        "millhaven-ferry-p0015",
+        "millhaven-ferry-p0006"
+      ],
+      "senses": null,
+      "requested": {
+        "relation": "has_color",
+        "direction": "subject",
+        "entity": "dock flag"
+      },
+      "dictionary_status": "unchanged",
+      "pending_before": [],
+      "pending_after": [],
+      "pending_unchanged": true,
+      "partial": false,
+      "node_error": null
+    },
+    "bell": {
+      "elapsed_s": 0.0826,
+      "error": null,
+      "text": "That question is not in the supported event-frame form.",
+      "answer": "The dock flag is green.",
+      "status": null,
+      "needs_clarification": false,
+      "slot": null,
+      "abandoned": false,
+      "guard": "allow",
+      "access_error": null,
+      "evidence_ids": [],
+      "supporting_ids": [],
+      "passage_ids": [
+        "dock-flag-p0001",
+        "millhaven-ledger-p0001",
+        "millhaven-senses-p0003",
+        "millhaven-senses-p0002",
+        "millhaven-ferry-p0015",
+        "marker-note-p0001-v1700010200"
+      ],
+      "candidate_ids": [],
+      "senses": null,
+      "requested": {
+        "relation": "has_color",
+        "direction": "subject",
+        "entity": "dock bell"
+      },
+      "dictionary_status": "unchanged",
+      "pending_before": [],
+      "pending_after": [],
+      "pending_unchanged": true,
+      "partial": false,
+      "node_error": null
+    }
+  }
+}
