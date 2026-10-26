@@ -2,8 +2,12 @@
 
 The first dialogue loop handles `best`, `worst`, `better`, and `worse` requests.
 It does not infer the user's criteria from retrieved neighbors or a generic
-ranking. General ambiguity, model-assisted dialogue, and reference resolution
-remain separate work.
+ranking. Reference resolution remains separate. A resonance-tag sense question
+is a second slot on this same session: when one query word lights more than
+one sense, `clarification.slot` is `sense` and the text lists a few words for
+each meaning. Reply with the number or those words. The library does not pick
+a meaning. Without `session_id` the question is not stored, and retrieval does
+not treat the mixed senses as the answer.
 
 ## Example
 

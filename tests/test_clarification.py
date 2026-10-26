@@ -1,6 +1,28 @@
 from cpu_llm.clarification import ClarificationLoop, scoped_session, supported_ranking
 
 
+def test_a_sense_choice_is_kept_and_a_new_question_abandons_it():
+    loop = ClarificationLoop()
+    senses = [
+        dict(words=['vault', 'payroll'], size=4),
+        dict(words=['shore', 'current'], size=4),
+    ]
+    asked = loop.need_sense('bank', senses, key='chat')
+    assert asked['slot'] == 'sense'
+    assert '1. vault, payroll' in asked['text']
+    assert loop.prepare('shore', key='chat')['query'] == 'bank shore current'
+    loop.need_sense('bank', senses, key='chat')
+    abandoned = loop.prepare('Which lobster is cheapest?', key='chat')
+    assert abandoned['status'] == 'ready'
+    assert abandoned['query'] == 'Which lobster is cheapest?'
+    assert abandoned['clarification_abandoned'] is True
+    loop.need_sense('bank', senses, key='chat')
+    assert loop.prepare('1', key='chat')['sense']['words'] == ['vault', 'payroll']
+    loop.need_sense('bank', senses, key='chat')
+    assert loop.prepare('maybe later', key='chat')['slot'] == 'sense'
+    assert loop.prepare('something else', key='chat')['status'] == 'insufficient_information'
+
+
 def test_asks_for_criteria_then_preserves_user_choice():
     loop = ClarificationLoop()
     first = loop.prepare('Which lobster is best?', key='a')

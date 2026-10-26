@@ -1,4 +1,8 @@
-"""Bounded, caller-scoped clarification for underspecified ranking requests."""
+"""Bounded, caller-scoped clarification for underspecified ranking requests.
+
+A resonance-tag sense question uses the same session. It asks which meaning
+was intended and does not choose one.
+"""
 from collections import OrderedDict
 import re
 import threading
@@ -48,6 +52,8 @@ class ClarificationLoop:
             abandoned = bool(state and _abandons_pending(text, state))
             if abandoned:
                 state = None
+            if state and state.get('stage') == 'sense':
+                return self._resume_sense(state, text, key, abandoned)
             if state and state.get('stage') == 'evidence':
                 state['count'] += 1
                 if state['count'] >= self.max_questions:
@@ -90,6 +96,27 @@ class ClarificationLoop:
         return dict(status='needs_clarification', slot='evidence', criteria=plan['criteria'],
                     text=f'I do not have evidence that establishes which is best for {plan["criteria"]}. Can you provide relevant comparison data or a source?')
 
+    def need_sense(self, message, senses, *, key=None):
+        """Ask which meaning the user intends. The words shown are the choices."""
+        shown = [dict(words=list(sense.get('words') or []), size=int(sense.get('size') or 0)) for sense in senses]
+        with self.lock:
+            self._save(key, dict(stage='sense', question=message, senses=shown, count=1))
+        return dict(status='needs_clarification', slot='sense', question=message, senses=shown, text=_sense_text(shown))
+
+    def _resume_sense(self, state, text, key, abandoned):
+        choice = _sense_choice(text, state.get('senses') or [])
+        if choice is None:
+            count = state['count'] + 1
+            if count >= self.max_questions:
+                return _with_abandonment(dict(status='insufficient_information', slot='sense',
+                            text='I still need to know which meaning you mean. Please start a new question.'), abandoned)
+            self._save(key, dict(state, count=count))
+            return _with_abandonment(dict(status='needs_clarification', slot='sense', question=state['question'],
+                        senses=state['senses'], text=_sense_text(state['senses'])), abandoned)
+        words = [word for word in choice.get('words') or []]
+        query = state['question'] if not words else f"{state['question'].rstrip()} {' '.join(words)}"
+        return dict(status='ready', query=query, question=state['question'], sense=choice)
+
 
 def _criterion_text(text):
     stripped = _CRITERION_LEAD.sub('', text.strip(), count=1).strip()
@@ -110,6 +137,36 @@ def _abandons_pending(text, state):
     topic = {word.lower() for word in re.findall(r"[A-Za-z']+", state.get('question') or '')} - _TOPIC_STOP
     reply = {word.lower() for word in words} - _TOPIC_STOP
     return not bool(topic & reply)
+
+
+def _sense_text(senses):
+    lines = ['Which meaning do you mean? Reply with the number or the words that match.']
+    for index, sense in enumerate(senses, start=1):
+        shown = ', '.join(sense.get('words') or []) or 'another meaning'
+        lines.append(f'{index}. {shown}')
+    return '\n'.join(lines)
+
+
+def _sense_choice(text, senses):
+    from cpu_llm.resonance_groups import content_words
+
+    stripped = text.strip().rstrip('.')
+    number = re.fullmatch(r'\d+', stripped)
+    if number:
+        index = int(stripped) - 1
+        if 0 <= index < len(senses):
+            return senses[index]
+        return None
+    words = set(content_words(text))
+    if not words:
+        return None
+    scored = [(len(words & set(sense.get('words') or [])), sense) for sense in senses]
+    scored.sort(key=lambda item: -item[0])
+    if scored[0][0] == 0:
+        return None
+    if len(scored) > 1 and scored[0][0] == scored[1][0]:
+        return None
+    return scored[0][1]
 
 
 def _with_abandonment(result, abandoned):

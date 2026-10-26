@@ -35,8 +35,11 @@ understanding and free-form sentence generation have not been demonstrated.
    enabled-head prototype scores. These prototype scores are soft priorities,
    not calibrated intention probabilities.
 6. Retrieve dense candidates, optional equivalent-expression candidates, named
-   article/tag matches, and a bounded authorized graph neighborhood. Prioritize
-   the requested relationship, entity, and direction when ranking candidates.
+   article/tag matches, sense-specific resonance tags, and a bounded authorized
+   graph neighborhood. Prioritize the requested relationship, entity, and
+   direction when ranking candidates. A resonance tag is a candidate passage,
+   not an answer. One query word that lights more than one sense asks which
+   meaning is intended when the turn has a session id, and does not pick.
 7. If a supported attribute is missing, perform bounded retrieval repair for the
    entity and verified connected types. Re-plan when a retry discovers a useful
    membership edge, without exceeding the fixed query budget.
@@ -50,7 +53,8 @@ understanding and free-form sentence generation have not been demonstrated.
 
 The host application displays `reply.text` and returns user replies with the
 same explicit `session_id`. A short criterion such as "how it tastes" or
-"by price" continues the pending ranking. A new question, including one with
+"by price" continues the pending ranking. A numbered or worded sense choice
+continues a pending sense question. A new question, including one with
 `?`, abandons it and says so with `clarification_abandoned`. The library
 returns loop state; it does not send messages or run a background conversation
 by itself.
@@ -96,7 +100,11 @@ Correction rows use the editor-supplied valid-from timestamp. Current vector
 search applies time filtering even on a newly opened index; it does not depend
 on whether that process performed a correction. Model01 pair storage honors
 `VECTORPRISM_PG_DSN` as well as an explicit DSN.
-Current-only article and tag expansion is also skipped for historical queries.
+Current-only article, word-tag, and resonance-tag expansion is also skipped for
+historical queries. Resonance tags live in the namespace's `resonance_tags.db`.
+Ingest, replacement, correction, and deletion keep that file aligned with the
+source. A tag whose only overlap with the question is a hub word is not added.
+`word_tags.json` remains. `resonance_tags=False` turns this expansion off.
 For scoped or historical turns, legacy deep-search, comparison, summary, creative,
 and lexical fallback paths are limited to the current turn's filtered retrieval
 evidence. They cannot use global/current lookups or a prior caller's shortlist.

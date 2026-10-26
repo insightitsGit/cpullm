@@ -1,8 +1,9 @@
-"""Remove one ingested source from the vector index, the graph, and the word index.
+"""Remove one ingested source from the vector index, the graph, the word index, and resonance tags.
 
-The resonance ledger and the shared word-relation file are left in place.
+The PrismResonance ledger and the shared word-relation file are left in place.
 Those records are not keyed by document id, so deleting them here would either
-miss rows or drop edges that other sources still use.
+miss rows or drop edges that other sources still use. Resonance tags are keyed
+by paragraph id and are removed for this source only.
 """
 
 from __future__ import annotations
@@ -86,8 +87,9 @@ def delete_stored_source(
     word_tags: dict[str, dict[str, list[str]]],
     word_tags_path: Path | None,
     source: str,
+    resonance_tags: Any = None,
 ) -> dict[str, Any]:
-    """Delete one source from the index, the graph, and the word index."""
+    """Delete one source from the index, the graph, the word index, and resonance tags."""
     from cpu_llm.word_taxonomy import drop_document_prefix
 
     prefix = source_prefix(source)
@@ -97,6 +99,11 @@ def delete_stored_source(
     if word_tags_path is not None:
         word_tags_path.parent.mkdir(parents=True, exist_ok=True)
         word_tags_path.write_text(json.dumps(word_tags), encoding="utf-8")
+    tag_counts = (
+        resonance_tags.delete_prefix(prefix)
+        if resonance_tags is not None
+        else {"units": 0, "words": 0}
+    )
     return {
         "prefix": prefix,
         "vector_rows": vector_rows,
@@ -104,6 +111,7 @@ def delete_stored_source(
         "edges_erased": graph["edges_erased"],
         "nodes_remaining": graph["nodes_remaining"],
         "word_ids": word_ids,
+        "resonance_tags": {"units": int(tag_counts["units"]), "words": int(tag_counts["words"])},
         "resonance": "unchanged",
         "word_relations": "unchanged",
     }

@@ -167,6 +167,7 @@ class Appliance:
         namespace: str | None = None,
         on_escalate: Any = None,
         reference_backend: Any = None,
+        resonance_tags: bool = True,
     ) -> None:
         from cpu_llm.child_safety import ChildSafetyGate, enabled_by_default
 
@@ -231,7 +232,10 @@ class Appliance:
             model_version=self.index.pipeline.model_version,
         )
         from cpu_llm.clarification import ClarificationLoop
+        from cpu_llm.resonance_groups import ResonanceTags
         self.clarifications = ClarificationLoop()
+        self.resonance_tags_enabled = bool(resonance_tags)
+        self.resonance_tags = ResonanceTags(cache / "resonance_tags.db") if self.resonance_tags_enabled else None
         from cpu_llm.references import ReferenceSessions, CorefereeBackend, FastCorefBackend
         if isinstance(reference_backend, str):
             if reference_backend not in {'coreferee', 'fastcoref'}:
@@ -352,6 +356,7 @@ class Appliance:
                 chunks,
                 [tensor for _document_id, tensor in stored],
             )
+            _store_resonance_tags(self, chunks)
         return len(chunks)
 
     def catalog_chunks(
@@ -404,6 +409,7 @@ class Appliance:
             self.memory.apply(StateDelta(ops=ops))
         if chunks:
             _bind_stored_words(self, chunks, signed_rows)
+        _store_resonance_tags(self, chunks, replace_prefix=replace_prefix)
         return len(chunks)
 
     def ingest(self, source: str | Path | Any) -> dict[str, Any]:
@@ -479,13 +485,15 @@ class Appliance:
         if getattr(self, "knowledge_graph", None) is not None:
             self.knowledge_graph.delete_prefix(document_id + "-v")
             self.knowledge_graph.replace([(document_id, ""), (result["new_id"], new_sentence)])
+        _correct_resonance_tags(self, document_id, prior_sentence, result["new_id"], new_sentence)
         return result
 
     def delete_source(self, source: str) -> dict[str, Any]:
         """Remove one source from the vector index, the graph, and the word index.
 
         ``source`` is a file name, a document id, or the ingest id prefix.
-        The resonance ledger and the shared word-relation file are not rebuilt.
+        The PrismResonance ledger and the shared word-relation file are not rebuilt.
+        Resonance tags for the source are removed.
         """
         from cpu_llm.source_delete import delete_stored_source
 
@@ -495,6 +503,7 @@ class Appliance:
             self.word_tags,
             self.word_tags_path,
             source,
+            resonance_tags=_resonance_store(self),
         )
         from cpu_llm.source_delete import source_prefix
         if getattr(self, "knowledge_graph", None) is not None:
@@ -619,6 +628,15 @@ class Appliance:
                 "allowed_sources": None if context is None else context.allowed_sources,
                 "as_of": as_of,
             }
+            if as_of is None:
+                sense_outcome = _sense_clarification(self, message, session_key)
+                if sense_outcome is not None:
+                    response = clarification_result(sense_outcome, raw_message, self.tenant_id)
+                    if context is not None:
+                        response.update(caller_id=context.caller_id, request_id=context.request_id)
+                    if abandoned:
+                        response["clarification_abandoned"] = True
+                    return response
             result = self.graph.invoke(
                 {
                     "message": message,
@@ -2124,6 +2142,104 @@ def _signed_row(db, document_id: str, text: str, tensor: np.ndarray, edges):
     return signed, hands
 
 
+def _resonance_store(appliance):
+    """The tag store when this appliance is using resonance tags."""
+    if not getattr(appliance, "resonance_tags_enabled", False):
+        return None
+    return getattr(appliance, "resonance_tags", None)
+
+
+def _store_resonance_tags(appliance, chunks, replace_prefix=None) -> int:
+    tags = _resonance_store(appliance)
+    if tags is None:
+        return 0
+    return tags.add_chunks(list(chunks), replace_prefix=replace_prefix, consolidate=False)
+
+
+def _correct_resonance_tags(appliance, document_id: str, prior_sentence: str, new_id: str, new_sentence: str) -> None:
+    tags = _resonance_store(appliance)
+    if tags is None:
+        return
+    tags.replace_sentence(document_id, prior_sentence, new_id, new_sentence)
+
+
+def _sense_clarification(appliance, message: str, session_key):
+    """Ask when one query word lights more than one sense. No session means no question is stored."""
+    if session_key is None:
+        return None
+    tags = _resonance_store(appliance)
+    loop = getattr(appliance, "clarifications", None)
+    if tags is None or loop is None or not hasattr(loop, "need_sense"):
+        return None
+    allowed = (getattr(appliance, "_turn", None) or {}).get("allowed_sources")
+    result = tags.recall_spread(message, allowed=allowed)
+    if result.get("status") != "ambiguous" or not result.get("senses"):
+        return None
+    return loop.need_sense(message, result["senses"], key=session_key)
+
+
+def _with_resonance_paragraphs(appliance, message: str, hits: list[dict[str, Any]], *, allowed) -> list[dict[str, Any]]:
+    """Add sense-specific chunks the dense shortlist missed.
+
+    Hub-only overlaps stay out. Added rows do not outrank a dense hit: their
+    score is zero and they are appended. At most eight new chunks are loaded.
+    """
+    tags = _resonance_store(appliance)
+    database = getattr(getattr(appliance, "index", None), "db", None)
+    if tags is None or not hasattr(database, "get_by_ids"):
+        return hits
+    result = tags.recall_candidates(message, allowed=allowed)
+    if result.get("status") != "ok":
+        return hits
+    have = {str(hit.get("document_id")) for hit in hits}
+    missing: list[str] = []
+    seen: set[str] = set()
+    evidence: dict[str, dict] = {}
+    ranked = sorted(result["units"], key=lambda unit: (-float(unit["score"]), unit["unit_id"]))
+    for unit in ranked:
+        doc_id = str(unit["doc_id"])
+        evidence.setdefault(doc_id, unit)
+        if doc_id in have or doc_id in seen:
+            continue
+        seen.add(doc_id)
+        missing.append(doc_id)
+        if len(missing) >= 8:
+            break
+    if not missing:
+        return hits
+    added = list(hits)
+    for row in keep_allowed(list(database.get_by_ids(missing)), allowed):
+        if "tensor_1024d" not in row:
+            continue
+        unit = evidence.get(str(row["document_id"]), {})
+        added.append(
+            {
+                "document_id": row["document_id"],
+                "chunk_text": row["chunk_text"],
+                "tensor_1024d": np.asarray(row["tensor_1024d"], dtype=np.float32).reshape(-1),
+                "final_score": 0.0,
+                "resonance_tag": {
+                    "shared": list(unit.get("shared") or []),
+                    "expanded": bool(unit.get("expanded")),
+                    "score": float(unit.get("score") or 0.0),
+                },
+            }
+        )
+    return added
+
+
+def _passage(hit: dict) -> dict:
+    passage = {
+        "document_id": hit["document_id"],
+        "chunk_text": hit["chunk_text"],
+        "final_score": float(hit["final_score"]),
+        "graph_evidence": list(hit.get("graph_evidence") or []),
+    }
+    if hit.get("resonance_tag"):
+        passage["resonance_tag"] = dict(hit["resonance_tag"])
+    return passage
+
+
 def _with_tagged_paragraphs(
     appliance: Appliance,
     message: str,
@@ -2232,6 +2348,7 @@ def _retrieve(appliance: Appliance):
             if named:
                 hits = named
             hits = _with_tagged_paragraphs(appliance, message, hits)
+            hits = _with_resonance_paragraphs(appliance, message, hits, allowed=allowed)
         hits = _with_graph_paragraphs(appliance, message, hits, allowed=allowed, as_of=as_of, intent=intent)
         hits = keep_allowed(hits, allowed)
         from cpu_llm.attribute_search import retrieve_missing_attribute
@@ -2247,15 +2364,7 @@ def _retrieve(appliance: Appliance):
             "correction_conflict": conflict,
             "prompt_intent": intent,
             "attribute_search": attribute_search,
-            "passages": [
-                {
-                    "document_id": hit["document_id"],
-                    "chunk_text": hit["chunk_text"],
-                    "final_score": float(hit["final_score"]),
-                    "graph_evidence": list(hit.get("graph_evidence") or []),
-                }
-                for hit in hits
-            ]
+            "passages": [_passage(hit) for hit in hits]
         }
 
     return node
