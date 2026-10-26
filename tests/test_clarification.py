@@ -103,6 +103,16 @@ def test_explicit_criterion_does_not_need_a_first_question():
     assert plan['criteria'] == 'taste' and plan['status'] == 'ready'
 
 
+def test_a_plural_topic_word_matches_its_singular():
+    plan = ClarificationLoop().prepare('Which ferry is best for fuel economy?')
+    evidence = supported_ranking(plan, [dict(
+        document_id='millhaven-ferry-p0011',
+        chunk_text='The Cedar is best for fuel economy among Millhaven ferries.')])
+    assert evidence == [dict(
+        document_id='millhaven-ferry-p0011',
+        span='The Cedar is best for fuel economy among Millhaven ferries.')]
+
+
 def test_ask_returns_clarification_before_any_encoder_or_database_access():
     from cpu_llm.pipeline import Appliance
     from types import SimpleNamespace

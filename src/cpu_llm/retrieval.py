@@ -53,8 +53,11 @@ class VectorPrismIndex:
     ) -> None:
         loaded = load_checkpoint(checkpoint, map_location="cpu")
         encoder = SentenceTransformerEncoder(ENCODER_NAME, device="cpu")
+        self.dsn = None
         if backend == "pgvector":
             target = dsn or os.environ.get("VECTORPRISM_PG_DSN") or LOCAL_PG_DSN
+            # Keep the authenticated string. conn.info.dsn omits the password.
+            self.dsn = target
             _enable_pgvector(target)
             self.db = PgVectorClient(target)
             self.db.ensure_schema()
@@ -484,7 +487,14 @@ def _order_by_dense_core(hits: list, query) -> list:
 
 
 def _enable_pgvector(dsn: str) -> None:
+    """Install pgvector in ``public`` before a tenant schema can claim it.
+
+    An unqualified ``CREATE EXTENSION`` uses the first schema on
+    ``search_path``. The first namespaced appliance would otherwise install
+    ``vector`` into ``ns_<tenant>``, and later tenants could not see the type.
+    """
     import psycopg
 
     with psycopg.connect(dsn, autocommit=True) as conn:
-        conn.execute("CREATE EXTENSION IF NOT EXISTS vector")
+        conn.execute("SET search_path TO public")
+        conn.execute("CREATE EXTENSION IF NOT EXISTS vector SCHEMA public")

@@ -140,7 +140,7 @@ def test_live_correction_times_and_restart_keep_version_intervals(appliance):
     assert 'blue' in old['reply']['text'] and 'red' not in old['reply']['text']
     assert 'red' in new['reply']['text'] and 'blue' not in new['reply']['text']
     # A fresh index has no in-process _history flag. It still excludes the old row.
-    reopened = VectorPrismIndex(default_checkpoint(), backend='pgvector', dsn=appliance.index.db.conn.info.dsn)
+    reopened = VectorPrismIndex(default_checkpoint(), backend='pgvector', dsn=appliance.index.dsn)
     try:
         hits = reopened.search('What color is the fictional newt?', top_k=20)
     finally:

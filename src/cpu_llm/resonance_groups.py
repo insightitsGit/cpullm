@@ -462,6 +462,8 @@ def _sense_components(units: list[dict], hubs: set[str]) -> list[list[str]]:
 
     A third tag that shares a non-hub word with each of two tags puts those
     two in the same component. That is the two-hop case in the design.
+    Tags that contain the same non-hub word are joined directly, so the link
+    follows the word index instead of comparing every tag with every other tag.
     """
     parent = {unit["unit_id"]: unit["unit_id"] for unit in units}
 
@@ -471,15 +473,24 @@ def _sense_components(units: list[dict], hubs: set[str]) -> list[list[str]]:
             unit_id = parent[unit_id]
         return unit_id
 
-    useful = {unit["unit_id"]: {word for word in unit["words"] if word not in hubs} for unit in units}
-    ids = list(useful)
-    for left in range(len(ids)):
-        for right in range(left + 1, len(ids)):
-            if useful[ids[left]] & useful[ids[right]]:
-                parent[find(ids[right])] = find(ids[left])
+    def union(left: str, right: str) -> None:
+        root_left, root_right = find(left), find(right)
+        if root_left != root_right:
+            parent[root_right] = root_left
+
+    buckets: dict[str, list[str]] = {}
+    for unit in units:
+        for word in unit["words"]:
+            if word in hubs:
+                continue
+            buckets.setdefault(word, []).append(unit["unit_id"])
+    for members in buckets.values():
+        head = members[0]
+        for other in members[1:]:
+            union(head, other)
     grouped: dict[str, list[str]] = {}
-    for unit_id in ids:
-        grouped.setdefault(find(unit_id), []).append(unit_id)
+    for unit in units:
+        grouped.setdefault(find(unit["unit_id"]), []).append(unit["unit_id"])
     return list(grouped.values())
 
 

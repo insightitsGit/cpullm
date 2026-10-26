@@ -20,7 +20,16 @@ def retrieve_missing_attribute(index, message, hits, intent, *, allowed=None, as
         return [], dict(report, status='insufficient_evidence')
     hits = keep_allowed(hits, allowed)
     decision = select_channel_answer(message, hits, intent=intent)
-    if decision and decision['answer_status'] in {'answered', 'conflicting'}:
+    # A direct possession does not exhaust "what does it have": a membership
+    # can still license an "every … has …" rule. A lifespan or a color is one
+    # value, so a direct fact stays settled and does not search again.
+    direct_possession = (
+        request.get('relation') == 'has'
+        and decision
+        and decision['answer_status'] == 'answered'
+        and decision.get('reason') != 'universal_membership_join'
+    )
+    if decision and decision['answer_status'] in {'answered', 'conflicting'} and not direct_possession:
         return hits, dict(report, status='already_settled')
     def connections(rows):
         facts = [fact for row in rows for fact in extract_facts(row['document_id'], row.get('chunk_text') or '')]
@@ -46,14 +55,18 @@ def retrieve_missing_attribute(index, message, hits, intent, *, allowed=None, as
                 seen.add(row['document_id'])
         settled = select_channel_answer(message, merged, intent=intent)
         memberships = connections(merged)
-        if settled['answer_status'] in {'answered', 'conflicting'}:
-            break
         # A repair query can reveal a previously missing membership edge.
         # Re-plan within the same fixed budget; never start an unbounded loop.
         for membership in memberships:
             query = f'{membership.object} {terms}'
             if query not in executed and query not in queries:
                 queries.append(query)
+        if settled['answer_status'] not in {'answered', 'conflicting'}:
+            continue
+        if request.get('relation') == 'has' and settled.get('reason') != 'universal_membership_join':
+            if any(f'{membership.object} {terms}' not in executed for membership in memberships):
+                continue
+        break
     decision = select_channel_answer(message, merged, intent=intent)
     return merged, dict(report, status=decision['answer_status'], queries=executed,
                         answer_reason=decision['reason'], answer_evidence=decision.get('answer_evidence', []),

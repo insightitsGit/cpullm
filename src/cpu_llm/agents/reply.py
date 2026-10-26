@@ -113,15 +113,33 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
         body = notice
     preface = _preface(state, assessment)
     ranking = None if lines and "Ranking:" in lines[0] else _ranking(state, lines[0] if lines else "")
-    if ranking is not None:
+    refused = _refuses_stored_copy(state, "\n".join(lines), situation)
+    if refused:
+        lines = [refused]
+        body = refused
+        notice = refused
+        assessment = None
+        ranking = None
+        situation = None
+    elif ranking is not None:
         lines.extend(["", "Ranking:", ranking["text"]])
     brief = state.get("brief") or {}
     report = state.get("channel_report") or {}
-    if draft is None:
+    if refused:
+        pass
+    elif draft is None:
         if state.get("summarize") is True:
             lines.extend(["", "Summary:", brief.get("summary") or "No stored sentence to summarize."])
         if state.get("explain") is True:
-            lines.extend(["", "Explanation:", brief.get("explanation") or "No stored sentence states a cause."])
+            stored = str(brief.get("explanation") or "").strip()
+            spoken = "\n".join(lines)
+            # The body already stated this cause. A second Explanation repeats it.
+            if stored and stored.casefold() in spoken.casefold():
+                pass
+            elif re.search(r"\bbecause\b", spoken, re.IGNORECASE) and not stored:
+                pass
+            else:
+                lines.extend(["", "Explanation:", stored or "No stored sentence states a cause."])
         if state.get("list") is True:
             lines.extend(["", "List:", brief.get("list") or "No stored sentence to list."])
         if state.get("sources") is True:
@@ -462,6 +480,45 @@ def _preface(state: dict[str, Any], assessment: dict[str, Any] | None = None) ->
 def audited_answer(state: dict[str, Any]) -> bool:
     answer = state.get("answer")
     return isinstance(answer, str) and bool(answer.strip())
+
+
+_WHEN = re.compile(r"\bwhen\b", re.IGNORECASE)
+_HOW_MANY = re.compile(r"\bhow many\b", re.IGNORECASE)
+_LIFESPAN_COUNT = re.compile(r"\bhow many\s+(?:years|months|days|hours)\b", re.IGNORECASE)
+_COMPARE_ASK = re.compile(r"\b(?:compare|comparing|comparison|versus|vs\.?)\b", re.IGNORECASE)
+_WHY = re.compile(r"\b(?:why|how come|what caused)\b", re.IGNORECASE)
+_CAUSE_WORD = re.compile(r"\b(?:because|causes?)\b", re.IGNORECASE)
+
+
+def _refuses_stored_copy(state: dict[str, Any], spoken: str, situation: dict[str, Any] | None) -> str:
+    """The fixed sentence when this shape must not quote a stored sentence.
+
+    Empty when the reply may keep what it already composed. A why question
+    that states a cause keeps that cause. When, a bare count, and an explicit
+    comparison do not.
+    """
+    from cpu_llm.realizer.constructions import UNSUPPORTED_QUESTION
+
+    if state.get("guard_decision") not in (None, "allow"):
+        return ""
+    if state.get("delivery_blocked") or state.get("shine_enforced") or state.get("shine_ok") is False:
+        return ""
+    message = str(state.get("message") or "")
+    if _COMPARE_ASK.search(message) or _WHEN.search(message):
+        return UNSUPPORTED_QUESTION
+    if _HOW_MANY.search(message) and not _LIFESPAN_COUNT.search(message):
+        return UNSUPPORTED_QUESTION
+    if _WHY.search(message) and not _cause_is_stated(state, spoken, situation):
+        return UNSUPPORTED_QUESTION
+    return ""
+
+
+def _cause_is_stated(state: dict[str, Any], spoken: str, situation: dict[str, Any] | None) -> bool:
+    if situation is not None and situation.get("verdict") == "CAUSE":
+        return True
+    explanation = str((state.get("brief") or {}).get("explanation") or "")
+    blob = f"{spoken}\n{state.get('answer') or ''}\n{explanation}"
+    return bool(_CAUSE_WORD.search(blob))
 
 
 def _unsupported_notice(state: dict[str, Any]) -> str:

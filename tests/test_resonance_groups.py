@@ -474,3 +474,58 @@ def test_cluster_groups_stay_pure_and_unfragmented(tmp_path):
         for threshold in range(1, 51)
     )
     assert found
+
+
+def test_sense_components_join_through_a_shared_word():
+    from cpu_llm.resonance_groups import _sense_components
+
+    units = [
+        {"unit_id": "a", "words": {"cedar", "white"}},
+        {"unit_id": "b", "words": {"cedar", "diesel"}},
+        {"unit_id": "c", "words": {"white", "hull"}},
+        {"unit_id": "e", "words": {"hull", "diesel"}},
+        {"unit_id": "d", "words": {"spring", "clock"}},
+    ]
+    groups = {frozenset(group) for group in _sense_components(units, {"cedar"})}
+    assert frozenset({"a", "b", "c", "e"}) in groups
+    assert frozenset({"d"}) in groups
+    separate = {frozenset(group) for group in _sense_components(units[:2], {"cedar"})}
+    assert separate == {frozenset({"a"}), frozenset({"b"})}
+
+
+def test_a_named_attribute_is_not_replaced_by_a_sense_question(tmp_path):
+    from types import SimpleNamespace
+
+    from cpu_llm.clarification import ClarificationLoop
+    from cpu_llm.pipeline import _sense_clarification
+
+    store = ResonanceTags(tmp_path / "tags.db")
+    store.add_chunks([
+        ("cedar-p0001", "The Cedar is white."),
+        ("cedar-p0002", "The Cedar has a diesel engine."),
+        ("cedar-p0003", "The Cedar is found in Millhaven."),
+        ("cedar-p0004", "The Cedar departs at dawn."),
+        ("cedar-p0005", "The Cedar carries cars."),
+        ("cedar-p0006", "The Cedar uses fuel."),
+        ("cedar-p0007", "The Cedar crosses daily."),
+        ("spring-p0001", "The clock spring turns the hands."),
+        ("spring-p0002", "The spare clock spring sits in the drawer."),
+        ("spring-p0003", "The mountain spring feeds the pond."),
+        ("spring-p0004", "The forest spring joins the creek."),
+    ])
+    appliance = SimpleNamespace(
+        resonance_tags_enabled=True,
+        resonance_tags=store,
+        clarifications=ClarificationLoop(),
+        _turn={"allowed_sources": None},
+    )
+    assert _sense_clarification(appliance, "What color is the Cedar?", None) is None
+    assert _sense_clarification(appliance, "What kind of boat is the Cedar?", None) is None
+    assert _sense_clarification(appliance, "Where does the Cedar live?", None) is None
+    assert _sense_clarification(appliance, "How long does the Cedar live?", None) is None
+    assert _sense_clarification(appliance, "What does the Cedar have?", None) is None
+    spring = _sense_clarification(appliance, "What is a spring?", None)
+    assert spring["slot"] == "sense"
+    blob = " ".join(" ".join(sense["words"]) for sense in spring["senses"])
+    assert "clock" in blob
+    assert "pond" in blob or "creek" in blob or "mountain" in blob or "forest" in blob

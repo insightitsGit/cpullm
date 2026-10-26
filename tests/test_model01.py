@@ -72,13 +72,78 @@ def test_unsupported_question_shapes_do_not_copy_an_unrelated_sentence():
         )
         assert sentence not in reply["text"]
         assert reply["answer_status"] == "unsupported"
-        assert UNSUPPORTED_QUESTION in reply["text"]
+        assert reply["text"] == UNSUPPORTED_QUESTION
         if compared:
-            assert "No stored sentence for this side." in reply["text"]
+            assert "Comparison:" not in reply["text"]
 
     kept = generate("What is Ada North?", [("ada", "Ada North is the harbor archivist.")])
     assert kept["status"] == "answered"
     assert "Ada North is the harbor archivist." in kept["text"]
+
+
+def test_when_a_bare_count_and_a_comparison_do_not_quote_a_stored_sentence():
+    from cpu_llm.realizer.constructions import UNSUPPORTED_QUESTION
+
+    sentence = "The Cedar is white."
+    for question in (
+        "When does the Cedar depart?",
+        "How many municipal ferries serve Millhaven?",
+        "Compare the Cedar and the Rowan.",
+    ):
+        reply = compose_reply(
+            {
+                "message": question,
+                "guard_decision": "allow",
+                "answer": sentence,
+                "audit_passed": True,
+                "related": [{"chunk_id": "cedar", "chunk_text": sentence}],
+                "compare": question.startswith("Compare"),
+                "comparison": {
+                    "sides": [
+                        {"label": "the Cedar", "text": sentence},
+                        {"label": "the Rowan", "text": "The Rowan is blue."},
+                    ]
+                },
+            }
+        )
+        assert reply["text"] == UNSUPPORTED_QUESTION
+        assert reply["answer_status"] == "unsupported"
+        assert "white" not in reply["text"]
+        assert "blue" not in reply["text"]
+
+
+def test_a_stated_cause_is_spoken_once():
+    cause = "The Cedar uses a diesel engine because the river current is strong."
+    reply = compose_reply(
+        {
+            "message": "Why does the Cedar use a diesel engine?",
+            "guard_decision": "allow",
+            "answer": cause,
+            "audit_passed": True,
+            "explain": True,
+            "brief": {"explanation": cause},
+            "related": [{"chunk_id": "cedar", "chunk_text": cause}],
+        }
+    )
+    assert cause in reply["text"]
+    assert reply["text"].count("Explanation:") == 0
+    assert reply["text"].count(cause) == 1
+
+
+def test_how_many_years_stays_a_lifespan_question():
+    from cpu_llm.realizer.constructions import UNSUPPORTED_QUESTION
+
+    sentence = "The Cedar lives for 30 years."
+    reply = compose_reply(
+        {
+            "message": "How many years does the Cedar live?",
+            "guard_decision": "allow",
+            "answer": sentence,
+            "related": [{"chunk_id": "cedar", "chunk_text": sentence}],
+        }
+    )
+    assert "30 years" in reply["text"]
+    assert UNSUPPORTED_QUESTION not in reply["text"]
 
 
 def test_model01_quotes_a_stored_ranking_and_states_a_gap():

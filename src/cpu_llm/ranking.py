@@ -74,16 +74,32 @@ def ranking_notice(message: str, chunks: list[str], *, spoken: str = "") -> dict
     }
 
 
+def plural_stem(word: str) -> str:
+    """One stem for a singular and its plural.
+
+    ``ferries`` and ``ferry`` meet. Stripping every trailing ``s`` turns
+    ``ferries`` into ``ferrie``, which does not.
+    """
+    token = word.casefold()
+    if len(token) > 4 and token.endswith("ies"):
+        return token[:-3] + "y"
+    if len(token) > 4 and token.endswith("es") and token[-3] in "sxz":
+        return token[:-2]
+    if len(token) > 3 and token.endswith("s") and not token.endswith("ss"):
+        return token[:-1]
+    return token
+
+
 def _topic_words(message: str) -> set[str]:
     return {
-        token.casefold()
+        plural_stem(token)
         for token in _WORD.findall(message or "")
         if token.casefold() not in _TOPIC_SKIP
     }
 
 
 def _overlaps(topic: set[str], sentence: str) -> bool:
-    words = {token.casefold() for token in _WORD.findall(sentence)}
+    words = {plural_stem(token) for token in _WORD.findall(sentence)}
     return bool(topic & words)
 
 

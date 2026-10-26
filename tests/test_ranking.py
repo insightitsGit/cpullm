@@ -113,3 +113,13 @@ def test_a_definition_does_not_grow_a_ranking_clause_in_the_ranker():
     assert "Ranking:" not in result["text"]
     assert "ranking_gap" not in result["construction_ids"]
     assert "stored_ranking" not in result["construction_ids"]
+
+
+def test_a_plural_topic_matches_the_singular_in_the_question():
+    notice = ranking_notice(
+        "Which ferry is best for fuel economy?",
+        ["The Cedar is best for fuel economy among Millhaven ferries."],
+    )
+    assert notice is not None
+    assert notice["status"] == "stated"
+    assert "Millhaven ferries" in notice["text"]

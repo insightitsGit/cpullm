@@ -108,6 +108,30 @@ def test_other_supported_attributes_have_a_second_retrieval(question, terms, sou
     assert generate(question, [(r['document_id'], r['chunk_text']) for r in found])['text'] == source
 
 
+def test_a_direct_possession_still_loads_the_universal_rule():
+    initial = [
+        row('own', 'The fictional moth has a long proboscis.'),
+        row('type', 'The fictional moth is a fictional insect.'),
+    ]
+    calls = []
+
+    def search(query, **kwargs):
+        calls.append(query)
+        if query.startswith('fictional insect '):
+            return [row('rule', 'All fictional insects have wings.')]
+        return []
+
+    index = SimpleNamespace(encode_query=lambda q: np.zeros(1024), search=search)
+    question = 'What does the fictional moth have?'
+    found, report = retrieve_missing_attribute(index, question, initial, route_prompt(question))
+    assert any(call.startswith('fictional insect ') for call in calls)
+    assert report['answer_reason'] == 'universal_membership_join'
+    text = generate(question, [(r['document_id'], r['chunk_text']) for r in found])['text']
+    assert 'long proboscis' in text
+    assert 'wings' in text
+    assert 'fictional insect' in text
+
+
 @pytest.mark.parametrize('question, rule', [
     ('Where does the fictional moth live?', 'All fictional insects live in Norway.'),
     ('What color is the fictional moth?', 'All fictional insects are blue.'),

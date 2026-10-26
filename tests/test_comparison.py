@@ -113,7 +113,7 @@ def test_the_next_agent_keeps_each_topic_from_the_deep_search():
     assert [row["document_id"] for row in _possibility_rows(state, "crab")] == ["crab-1"]
 
 
-def test_the_reply_speaks_each_side():
+def test_a_comparison_question_does_not_quote_either_side():
     reply = compose_reply(
         {
             "message": "Compare Mount Elbert and Mount Everest.",
@@ -128,8 +128,7 @@ def test_the_reply_speaks_each_side():
             },
         }
     )
-    assert reply["body"] == "Mount Elbert is the highest summit of the Rocky Mountains."
-    assert "Comparison:" in reply["text"]
-    assert "Mount Elbert:" in reply["text"]
-    assert "Mount Everest:" in reply["text"]
-    assert "No stored sentence for this side." in reply["text"]
+    assert reply["text"] == "This question type is not supported yet."
+    assert reply["answer_status"] == "unsupported"
+    assert "Comparison:" not in reply["text"]
+    assert "Rocky Mountains" not in reply["text"]

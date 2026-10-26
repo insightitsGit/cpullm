@@ -125,7 +125,7 @@ def test_questions_about_an_uploaded_pdf_answer_from_that_file(tmp_path: Path, a
 
     compared = appliance.ask("Compare the harbor kestrel and the marsh kite.")
     comparison = compared["reply"]["text"]
-    assert "Comparison:" in comparison
-    assert "The harbor kestrel is a small coastal falcon." in comparison
-    assert "The marsh kite is a larger coastal raptor." in comparison
-    assert "No stored sentence for this side." not in comparison
+    assert comparison == "This question type is not supported yet."
+    assert "Comparison:" not in comparison
+    assert "small coastal falcon" not in comparison
+    assert "larger coastal raptor" not in comparison

@@ -2186,11 +2186,28 @@ def _correct_resonance_tags(appliance, document_id: str, prior_sentence: str, ne
     tags.replace_sentence(document_id, prior_sentence, new_id, new_sentence)
 
 
+_ATTRIBUTE_RELATIONS = frozenset({"has_color", "has", "has_lifespan", "lives_in", "is_a"})
+
+
+def _named_attribute(message: str) -> bool:
+    """True when the question already names an attribute of one entity.
+
+    Color, kind, place, lifespan, and possession stay on the retrieval path.
+    A bare noun, such as spring, still asks which meaning.
+    """
+    from cpu_llm.prompt_intent import route_prompt
+
+    requested = route_prompt(message).get("requested") or {}
+    return requested.get("relation") in _ATTRIBUTE_RELATIONS and bool(requested.get("entity"))
+
+
 def _sense_clarification(appliance, message: str, session_key):
     """Ask on ambiguity, storing the follow-up only when a session is supplied."""
     tags = _resonance_store(appliance)
     loop = getattr(appliance, "clarifications", None)
     if tags is None or loop is None or not hasattr(loop, "need_sense"):
+        return None
+    if _named_attribute(message):
         return None
     allowed = (getattr(appliance, "_turn", None) or {}).get("allowed_sources")
     result = tags.recall_spread(message, allowed=allowed)

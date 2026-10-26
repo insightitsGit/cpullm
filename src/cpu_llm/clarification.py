@@ -184,17 +184,17 @@ def scoped_session(tenant, caller, sources, session_id, as_of):
 def supported_ranking(plan, rows):
     """Quote only a ranking explicitly tied to the user's criterion and topic."""
     from cpu_llm.answerability import _sentences
-    from cpu_llm.ranking import _topic_words
+    from cpu_llm.ranking import _topic_words, plural_stem
     stop = {'for', 'the', 'and', 'with', 'that', 'this', 'criterion', 'terms', 'based'}
     token = r'[A-Za-z]+|\d+(?:\.\d+)?'
-    criteria = {word.lower() for word in re.findall(token, plan['criteria']) if word.lower() not in stop}
+    criteria = {plural_stem(word) for word in re.findall(token, plan['criteria']) if word.lower() not in stop}
     topic = _topic_words(_CRITERION.split(plan['question'])[0])
     evidence = []
     for row in rows:
         for sentence in _sentences(row.get('chunk_text') or ''):
-            words = {word.lower().rstrip('s') for word in re.findall(token, sentence)}
-            if (_RANK.search(sentence) and criteria and {word.rstrip('s') for word in criteria} <= words
-                    and any(word.rstrip('s') in words for word in topic)
+            words = {plural_stem(word) for word in re.findall(token, sentence)}
+            if (_RANK.search(sentence) and criteria and criteria <= words
+                    and any(plural_stem(word) in words for word in topic)
                     and not re.search(r"\b(?:not|never|if|might|may|but|whereas)\b|n't|;", sentence, re.I)):
                 evidence.append(dict(document_id=row['document_id'], span=sentence))
     return evidence
