@@ -13,10 +13,6 @@ _CRITERION = re.compile(r'\b(?:for|by|based on|in terms of|according to)\s+(.+)'
 _LEADING = re.compile(r'^(?:who|what|where|when|why|how|can|which)\b', re.I)
 _CRITERION_LEAD = re.compile(r'^(?:how|by|for|based on)\s+', re.I)
 _VAGUE = {'yes', 'no', 'anything', 'everything', 'whatever', 'best', 'i dont know', "i don't know", 'not sure'}
-_TOPIC_STOP = {
-    'the', 'a', 'an', 'is', 'are', 'of', 'for', 'to', 'which', 'what', 'who', 'how',
-    'where', 'when', 'why', 'can', 'best', 'worst', 'better', 'worse',
-}
 
 
 class ClarificationLoop:
@@ -131,19 +127,18 @@ def _criterion_text(text, question=''):
 
 
 def _abandons_pending(text, state):
-    """True when this reply is a new question rather than an answer to the pending one."""
+    """True when this reply is a new question rather than an answer to the pending one.
+
+    A question form abandons even when it repeats the pending subject. The
+    continuations ``how it ...`` and ``what it ...`` stay criteria.
+    """
     if '?' in text:
         return True
     if state.get('stage') == 'evidence':
         return bool(_LEADING.match(text))
     if not _LEADING.match(text):
         return False
-    words = re.findall(r"[A-Za-z']+", text)
-    if re.match(r'^(?:how|what)\s+(?:it|its|they|their)\b', text, re.I):
-        return False
-    topic = {word.lower() for word in re.findall(r"[A-Za-z']+", state.get('question') or '')} - _TOPIC_STOP
-    reply = {word.lower() for word in words} - _TOPIC_STOP
-    return not bool(topic & reply)
+    return re.match(r'^(?:how|what)\s+(?:it|its|they|their)\b', text, re.I) is None
 
 
 def _sense_text(senses):

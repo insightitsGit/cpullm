@@ -48,6 +48,7 @@ Conversational criteria are preferences, not evidence about which option wins.
 A short criterion such as "how it tastes" binds `it` to the explicitly named
 singular subject of "Which lobster is best?" before reference resolution. This
 limited binding does not select between multiple candidate entities. A new
-question such as "What is gravity" abandons the pending ranking even without
-a question mark. Session locks count active holders and waiters and are removed
+question abandons the pending ranking even without a question mark, including
+one that repeats the subject, such as "What is the lobster". "how it tastes"
+and "what it costs" stay criteria. Session locks count active holders and waiters and are removed
 when the last turn exits, including on exceptions.

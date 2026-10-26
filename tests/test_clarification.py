@@ -87,7 +87,12 @@ def test_a_short_criterion_is_not_a_new_question():
     price = loop.prepare('by price', key='c')
     assert price['status'] == 'ready' and price['criteria'] == 'price'
     loop.prepare('Which lobster is best?', key='d')
-    fresh = loop.prepare('Which lobster is cheapest?', key='d')
+    repeated = loop.prepare('What is the lobster', key='d')
+    assert repeated['clarification_abandoned'] is True
+    assert repeated['query'] == 'What is the lobster'
+    assert 'criteria' not in repeated
+    loop.prepare('Which lobster is best?', key='e')
+    fresh = loop.prepare('Which lobster is cheapest?', key='e')
     assert fresh['clarification_abandoned'] is True
     assert fresh['query'] == 'Which lobster is cheapest?'
     assert 'Which lobster is best' not in fresh['query']

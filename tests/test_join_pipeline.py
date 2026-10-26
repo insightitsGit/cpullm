@@ -42,11 +42,21 @@ def test_live_join_requires_authorization_for_each_premise(appliance):
     assert '12 years' in answered['reply']['text']
 
 
-def test_live_repeated_corrections_retire_each_version_and_its_tags(appliance):
+def test_live_repeated_corrections_retire_each_version_and_its_tags():
+    """Version intervals and resonance tags, with the tag store explicitly on.
+
+    The appliance default leaves resonance tags off. This check opts in so the
+    live correction still proves the current tag row and the closed interval.
+    """
     original, middle, latest = ('The fictional beetle is blue.',
                                 'The fictional beetle is red.',
                                 'The fictional beetle is green.')
     base = 'review-history-p0001'
+    with Appliance(namespace='join_audit_tags_' + uuid.uuid4().hex[:8], resonance_tags=True) as appliance:
+        _repeated_correction(appliance, base, original, middle, latest)
+
+
+def _repeated_correction(appliance, base, original, middle, latest):
     appliance.catalog_chunks([(base, original)])
     with appliance.index.db.conn.cursor() as cursor:
         cursor.execute('UPDATE psm_document_embeddings SET valid_timestamp = %s WHERE document_id = %s',
