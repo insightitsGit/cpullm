@@ -57,6 +57,17 @@ def test_one_confirmation_cannot_collapse_a_person_and_an_object():
     assert explicit['query'] == 'Where did John put the box?' and not explicit['bindings']
 
 
+def test_a_lone_name_after_the_ttl_is_a_new_definition_question():
+    now = [0]
+    sessions = ReferenceSessions(clock=lambda: now[0])
+    assert sessions.prepare('Where does it live?', key='s')['status'] == 'needs_clarification'
+    now[0] = 1801
+    result = sessions.prepare('Bramble', key='s')
+    assert result['query'] == 'What is the Bramble?'
+    assert result['status'] == 'unchanged'
+    assert result['bindings'] == []
+
+
 def test_expiry_budgets_and_scope_changes_do_not_reuse_private_context():
     now = [0]
     sessions = ReferenceSessions(Backend(), ttl=10, limit=1, clock=lambda:now[0])

@@ -171,9 +171,34 @@ def test_the_imagined_passage_follows_the_checked_sentence():
             },
         }
     )
-    assert reply["body"] == "Homarus gammarus is a species of clawed lobster."
-    assert reply["text"].index(reply["body"]) < reply["text"].index("Imagined passage:")
-    assert "body length up to 60 centimetres" in reply["text"]
+    assert reply["answer_status"] == "unsupported"
+    assert "This question type is not supported yet." in reply["text"]
+    assert "Homarus gammarus" not in reply["text"]
+    assert "body length" not in reply["text"]
+    assert "Imagined passage:" not in reply["text"]
+
+
+def test_a_poem_or_a_letter_does_not_copy_a_stored_fact():
+    from cpu_llm.realizer.constructions import UNSUPPORTED_QUESTION
+
+    poem = compose_reply({
+        "message": "Write a poem about the Vesper.",
+        "guard_decision": "allow",
+        "answer": "The Vesper is amber.",
+        "audit_passed": True,
+        "related": [{"chunk_id": "v", "chunk_text": "The Vesper is amber."}],
+    })
+    letter = compose_reply({
+        "message": "Draft a letter about the Helion.",
+        "guard_decision": "allow",
+        "draft": True,
+        "related": [{"chunk_id": "h", "chunk_text": "The Helion is gray."}],
+    })
+    assert poem["text"] == UNSUPPORTED_QUESTION
+    assert "amber" not in poem["text"]
+    assert letter["text"] == UNSUPPORTED_QUESTION
+    assert "gray" not in letter["text"]
+    assert "Letter" not in letter["text"]
 
 
 def test_a_blocked_prompt_is_not_given_passages():

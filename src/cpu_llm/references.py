@@ -5,6 +5,7 @@ import threading
 import time
 
 _REF = re.compile(r'\b(?:it|its|they|them|their|he|him|his|she|her|this|that|these|those)\b', re.I)
+_BARE_NAME = re.compile(r'(?:[Tt]he\s+)?[A-Z][A-Za-z][A-Za-z-]{1,40}\Z')
 _PLURAL = {'they', 'them', 'their', 'these', 'those'}
 
 
@@ -230,7 +231,14 @@ class ReferenceSessions:
                 for binding in sorted(bindings, key=lambda b:b['start'], reverse=True):
                     query = query[:binding['start']] + binding['replacement'] + query[binding['end']:]
             else:
-                query = prompt
+                # A lone name is a new question about what that thing is.
+                # It is not a continuation of a plan the clock already dropped.
+                bare = _BARE_NAME.fullmatch(prompt.strip())
+                if not pending and bare:
+                    name = re.sub(r'^(?:[Tt]he)\s+', '', prompt.strip())
+                    query = f'What is the {name}?'
+                else:
+                    query = prompt
             # Only user/resolved prompt context is retained, never retrieved
             # private documents or generated answers. Keep the latest topic.
             self._save(key, dict(context=query[:4000], attempts=0))

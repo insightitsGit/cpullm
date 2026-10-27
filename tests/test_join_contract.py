@@ -114,6 +114,51 @@ def test_join_preserves_numeric_bounds_and_units_without_inventing_an_exact_age(
     assert '1 year' not in answer['text']
 
 
+def test_a_named_possession_does_not_inherit_some_or_the_wrong_class():
+    nacre = [
+        ('member', 'The Nacre is a display rover.'),
+        ('some', 'Some display rovers have a beacon.'),
+        ('wrong', 'Every survey rover has a beacon.'),
+    ]
+    answer = select_channel_answer('Does the Nacre have a beacon?', [
+        dict(document_id=i, text=t) for i, t in nacre])
+    assert answer['answer_status'] == 'insufficient_evidence'
+    assert 'beacon' not in answer['text']
+    spoken = generate('Does the Nacre have a beacon?', nacre)
+    assert spoken['status'] == 'missing' and not spoken['verified']
+    assert 'beacon' not in spoken['text']
+
+    quill = [
+        ('member', 'The Quill is a display telescope.'),
+        ('wrong', 'Every survey telescope has a filter.'),
+    ]
+    quill_answer = select_channel_answer('Does the Quill have a filter?', [
+        dict(document_id=i, text=t) for i, t in quill])
+    assert quill_answer['answer_status'] == 'insufficient_evidence'
+    assert 'filter' not in quill_answer['text']
+
+
+def test_a_named_possession_keeps_a_direct_fact_and_a_matching_every():
+    camera = select_channel_answer('Does the Vesper have a camera?', [
+        dict(document_id='camera', text='The Vesper has a camera.'),
+        dict(document_id='member', text='The Vesper is a survey rover.'),
+        dict(document_id='beacon', text='Every survey rover has a beacon.'),
+    ])
+    assert camera['answer_status'] == 'answered'
+    assert camera['text'] == 'The Vesper has a camera.'
+    assert 'beacon' not in camera['text']
+
+    beacon = select_channel_answer('Does the Vesper have a beacon?', [
+        dict(document_id='member', text='The Vesper is a survey rover.'),
+        dict(document_id='rule', text='Every survey rover has a beacon.'),
+        dict(document_id='some', text='Some display rovers have a beacon.'),
+    ])
+    assert beacon['answer_status'] == 'answered'
+    assert beacon['reason'] == 'universal_membership_join'
+    assert 'Every survey rover has a beacon.' in beacon['text']
+    assert 'Some' not in beacon['text']
+
+
 def test_unimplemented_transitive_inferences_do_not_become_facts():
     ancestry = [('member', 'The fictional moth is a fictional insect.'),
                 ('class', 'The fictional insect is a fictional animal.'),

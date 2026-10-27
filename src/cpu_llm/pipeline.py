@@ -527,6 +527,24 @@ class Appliance:
         bound = getattr(self._bound, "thinker", None)
         return self.thinker if bound is None else bound
 
+    def share_session_clock(self) -> None:
+        """One clock governs clarifications, references, and parent plans."""
+        clock = self.clarifications.clock
+        if getattr(self, "references", None) is not None:
+            self.references.clock = clock
+        sessions = getattr(self, "request_sessions", None)
+        if sessions is not None:
+            sessions.clock = clock
+
+    def clear_session_state(self) -> None:
+        """Drop every in-memory pending plan. A restart must not resume one."""
+        self.clarifications.pending.clear()
+        if getattr(self, "references", None) is not None:
+            self.references.states.clear()
+        sessions = getattr(self, "request_sessions", None)
+        if sessions is not None:
+            sessions.states.clear()
+
     def ask(
         self,
         message: str,
@@ -627,7 +645,8 @@ class Appliance:
         with self._session_turn(session_key):
             from cpu_llm.references import ReferenceSessions
             if not hasattr(self, 'references'):
-                self.references = ReferenceSessions()
+                self.references = ReferenceSessions(clock=self.clarifications.clock)
+            self.share_session_clock()
             # Cancellation must clear both stores even when the ranking loop
             # returns before the reference stage is reached.
             if message.strip().casefold() in {'cancel', 'start over'}:
@@ -1218,6 +1237,7 @@ _CLEARED_STATUSES = frozenset({
     "unsupported",
     "missing",
     "ambiguous",
+    "needs_clarification",
 })
 
 
@@ -1235,6 +1255,9 @@ def _reply(state: dict[str, Any]) -> dict[str, Any]:
     update["answer_status"] = status
     update["verification_scope"] = reply.get("verification_scope")
     update["retrieved_candidates"] = list(reply.get("retrieved_candidates") or [])
+    if status == "needs_clarification":
+        update["needs_clarification"] = True
+        update["clarification"] = {"slot": "sense", "text": str(reply.get("text") or reply.get("body") or "")}
     if status in _CLEARED_STATUSES:
         update["answer"] = None
         # A source quote may keep the audit of the sentence it quotes.

@@ -172,6 +172,17 @@ def assess(message: str, chunks: list[Any], *, intent=None) -> dict[str, Any] | 
             "text": " ".join(sentences),
             "answer_evidence": bindings,
         }
+    if plan["kind"] == "definition":
+        classes = _unlinked_classes(plan.get("subject") or "", rows)
+        if len(classes) >= 2:
+            lines = ["Which meaning do you mean? Reply with the number or the words that match."]
+            lines.extend(f"{index}. {name}" for index, name in enumerate(classes, start=1))
+            return {
+                **base,
+                "answer_status": "needs_clarification",
+                "reason": "unlinked_classes",
+                "text": "\n".join(lines),
+            }
     bindings = _subject_bindings(plan, rows)
     if not bindings:
         return {
@@ -286,6 +297,43 @@ def _attribute_decision(plan: dict[str, str], rows: list[dict[str, str]]) -> dic
         "text": found[0]["span"],
         "answer_evidence": evidence,
     }
+
+
+def _unlinked_classes(subject: str, rows: list[dict[str, str]]) -> list[str]:
+    """Class names stored for ``subject`` that no source is_a edge links.
+
+    One class is a definition. Two classes with no source saying one is the
+    other are a choice, not a license to quote only the first.
+    """
+    from cpu_llm.knowledge_graph import extract_facts
+    from cpu_llm.prompt_intent import _entity_key
+
+    key = _entity_key(subject)
+    labels: list[str] = []
+    keys: list[str] = []
+    links: set[tuple[str, str]] = set()
+    for row in rows:
+        for fact in extract_facts(row["document_id"], row["text"]):
+            if fact.relation != "is_a":
+                continue
+            subject_key, object_key = _entity_key(fact.subject), _entity_key(fact.object)
+            links.add((subject_key, object_key))
+            if subject_key != key or object_key in keys:
+                continue
+            keys.append(object_key)
+            labels.append(fact.object.strip())
+    if len(keys) < 2:
+        return []
+    shown: list[str] = []
+    for index, left in enumerate(keys):
+        for right_index, right in enumerate(keys[index + 1:], start=index + 1):
+            if (left, right) in links or (right, left) in links:
+                continue
+            if labels[index] not in shown:
+                shown.append(labels[index])
+            if labels[right_index] not in shown:
+                shown.append(labels[right_index])
+    return shown
 
 
 def _subject_bindings(plan: dict[str, str], rows: list[dict[str, str]]) -> list[dict[str, str]]:

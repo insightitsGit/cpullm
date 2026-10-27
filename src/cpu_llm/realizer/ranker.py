@@ -69,6 +69,8 @@ def realize(
             rows.append({"document_id": document_id, "text": passage})
         decision = assess(question, rows)
         if decision is not None:
+            if decision["answer_status"] == "needs_clarification":
+                return _result(plan, "needs_clarification", "", False, mode, ["needs_clarification"])
             if decision["answer_status"] != "answered":
                 status = "conflicting" if decision["answer_status"] == "conflicting" else "missing"
                 return _result(plan, status, decision["text"], False, mode, [status])

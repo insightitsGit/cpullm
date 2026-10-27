@@ -96,6 +96,7 @@ def separate_request(message):
         from cpu_llm.knowledge_graph import extract_facts
         from cpu_llm.prompt_intent import _name
         entities = list(dict.fromkeys(_name(f.subject) for f in extract_facts('user-context', background.split(':', 1)[-1])))
+    ahead = [_entity(fragment.rstrip('?.!').strip()) for fragment, _, _ in pieces]
     tasks = []
     for index, (fragment, left, right) in enumerate(pieces):
         query = fragment.rstrip('?.!').strip()
@@ -103,9 +104,12 @@ def separate_request(message):
         ambiguous = False
         refs = list(_REF.finditer(_mask(query)))
         if refs:
-            # Bind singular it/its only when the prompt explicitly supplies one
-            # possible antecedent. Multiple names or plural/deictic forms ask.
-            if len(entities) == 1 and all(m[0].casefold() in {'it', 'its'} for m in refs):
+            # Bind singular it/its only when one antecedent is already named
+            # and no later task names another. A name that appears afterward,
+            # or a second name anywhere in the prompt, leaves the pronoun open
+            # so the later task is not answered before the user chooses.
+            later = [name for name in ahead[index + 1:] if name and name not in entities]
+            if len(entities) == 1 and not later and all(m[0].casefold() in {'it', 'its'} for m in refs):
                 for match in reversed(refs):
                     replacement = entities[0] + ("'s" if match[0].casefold() == 'its' else '')
                     query = query[:match.start()] + replacement + query[match.end():]
@@ -305,7 +309,8 @@ def dispatch_request(app, message, propositions, options):
         with getattr(app, '_session_guard', None) or threading.Lock():
             sessions = getattr(app, 'request_sessions', None)
             if sessions is None:
-                sessions = app.request_sessions = RequestSessions()
+                clock = getattr(getattr(app, 'clarifications', None), 'clock', time.monotonic)
+                sessions = app.request_sessions = RequestSessions(clock=clock)
         state = sessions.pop(key)
         if state and message.strip().casefold() in {'cancel', 'start over'}:
             child_options = dict(state['options'], caller=options.get('caller'), session_id=state.get('child_session_id'))

@@ -36,6 +36,14 @@ def test_summary_and_list_are_distinct_tasks():
     assert plan['tasks'][1]['query'] == "list cedar's safety equipment"
 
 
+def test_a_later_name_keeps_the_middle_pronoun_unresolved():
+    plan = separate_request('What color is the Sextant? Where does it live? What color is the Azimuth?')
+    assert plan['status'] == 'multi'
+    assert plan['tasks'][1]['reference_unresolved']
+    assert plan['tasks'][1]['query'] == 'Where does it live'
+    assert plan['tasks'][1]['bindings'] == []
+
+
 def test_multiple_entities_leave_reference_unresolved():
     plan = separate_request('What color is the Cedar? What color is the Rowan? Where does it live?')
     assert plan['tasks'][2]['reference_unresolved']
@@ -125,6 +133,23 @@ def test_cancel_clears_parent_state_and_new_questions_abandon_it():
     dispatch_request(app, 'What is gravity', None, {'session_id': 'chat'})
     assert app.calls[-1][0] == 'What is gravity'
     assert not app.request_sessions.states
+
+
+def test_clearing_session_state_drops_a_pending_reference():
+    from cpu_llm.pipeline import Appliance
+    clock = lambda: 0
+    app = SimpleNamespace(
+        clarifications=SimpleNamespace(clock=clock, pending={'s': {'touched': 0}}),
+        references=SimpleNamespace(clock=lambda: 1, states={'s': {'time': 0, 'pending': {'prompt': 'Where does it live?'}}}),
+        request_sessions=SimpleNamespace(clock=lambda: 1, states={'s': {'plan': {}}}),
+    )
+    Appliance.share_session_clock(app)
+    assert app.references.clock is clock
+    assert app.request_sessions.clock is clock
+    Appliance.clear_session_state(app)
+    assert app.clarifications.pending == {}
+    assert app.references.states == {}
+    assert app.request_sessions.states == {}
 
 
 def test_sessions_are_bounded_and_expire():

@@ -366,7 +366,9 @@ def _run_cases(app, cases: list[dict], out: Path, stem: str, corrections: dict) 
 def _reset_sessions(app, clock: Clock) -> None:
     from cpu_llm.request_planner import RequestSessions
     app.clarifications.clock = clock
-    app.clarifications.pending.clear()
+    if getattr(app, "references", None) is not None:
+        app.references.clock = clock
+    app.clear_session_state()
     app.request_sessions = RequestSessions(clock=clock)
 
 

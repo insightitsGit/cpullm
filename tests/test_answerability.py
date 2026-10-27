@@ -483,6 +483,35 @@ def _score(fixtures: list[dict], predict) -> dict[str, int]:
     }
 
 
+def test_two_unlinked_classes_ask_instead_of_quoting_one():
+    rows = [
+        {"document_id": "survey", "text": "The Lumen is a survey mark."},
+        {"document_id": "display", "text": "The Lumen is a display mark."},
+    ]
+    decision = assess("What is the Lumen?", rows)
+    assert decision["answer_status"] == "needs_clarification"
+    assert "survey mark" in decision["text"]
+    assert "display mark" in decision["text"]
+    assert "The Lumen is a display mark." not in decision["text"]
+    reply = compose_reply({
+        "message": "What is the Lumen?",
+        "guard_decision": "allow",
+        "answer": "The Lumen is a display mark.",
+        "audit_passed": True,
+        "related": [{"chunk_id": item["document_id"], "chunk_text": item["text"]} for item in rows],
+    })
+    assert reply["answer_status"] == "needs_clarification"
+    assert "Which meaning do you mean?" in reply["text"]
+    assert "The Lumen is a display mark." not in reply["text"]
+
+
+def test_one_class_is_still_the_definition():
+    rows = [{"document_id": "kind", "text": "The Vesper is a survey rover."}]
+    decision = assess("What is the Vesper?", rows)
+    assert decision["answer_status"] == "answered"
+    assert decision["text"] == "The Vesper is a survey rover."
+
+
 def _covers(fixture: dict, predicted: dict) -> bool:
     if predicted["answer_status"] != "answered":
         return False

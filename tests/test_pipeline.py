@@ -542,10 +542,12 @@ def test_creative_writing_walks_the_article_and_leaves_the_answer(
         assert link["sentence"] in texts[link["chunk_id"]]
     assert any("lobster" in link["keywords"] for link in imagined["links"])
     assert imagined['text']
-    assert imagined["text"] in creative["reply"]["text"]
+    assert "This question type is not supported yet." in creative["reply"]["text"]
+    assert imagined["text"] not in creative["reply"]["text"]
     assert not again.get('__partial__') and not again.get('__node_error__')
     assert again["imagination"]["text"] != imagined["text"]
-    assert again["imagination"]["text"] in again["reply"]["text"]
+    assert imagined["text"] not in again["reply"]["text"]
+    assert "This question type is not supported yet." in again["reply"]["text"]
 
 
 def test_prompt_injection_stops_before_retrieval(appliance: Appliance):
@@ -569,4 +571,5 @@ def test_a_named_article_is_the_answer_and_the_creative_walk(appliance: Applianc
     assert 'Robert Boulter is an English film, television and theatre actor.' in imagined['text']
     assert all(link["chunk_id"].startswith("wikitext2test-robert-boulter-") for link in imagined["links"])
     assert "James Bond" not in imagined["text"]
-    assert imagined["text"] in result["reply"]["text"]
+    assert "This question type is not supported yet." in result["reply"]["text"]
+    assert imagined["text"] not in result["reply"]["text"]

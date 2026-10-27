@@ -1,7 +1,8 @@
 """Turn the finished retrieval into a short reply.
 
-The spoken text is the checked sentence, then any imagined passage. The
-preface, the open questions, the follow-ups, the next steps, and the six
+The spoken text is the checked sentence. A poem, a letter, or an imagined
+story does not copy a stored fact into that text. The preface, the open
+questions, the follow-ups, the next steps, and the six
 channel readings stay on the reply for the caller. They are not written into
 the spoken text. A follow-up that is not in the retrieved passages is not produced.
 The checked sentence, when one exists, stays the body. This node does not
@@ -291,7 +292,7 @@ def _query_assessment(state: dict[str, Any]) -> dict[str, Any] | None:
     prior = state.get("prior_message")
     if isinstance(prior, str) and prior.strip():
         decision["prior_query"] = prior.strip()
-    if decision["answer_status"] in {"insufficient_evidence", "conflicting"}:
+    if decision["answer_status"] in {"insufficient_evidence", "conflicting", "needs_clarification"}:
         decision["replaces_body"] = True
         decision["verification_scope"] = "query"
         return decision
@@ -575,6 +576,14 @@ def _refuses_stored_copy(state: dict[str, Any], spoken: str, situation: dict[str
         return ""
     message = str(state.get("message") or "")
     if _COMPARE_ASK.search(message) or _WHEN.search(message):
+        return UNSUPPORTED_QUESTION
+    from cpu_llm.classifier import creative_writing_trigger
+    from cpu_llm.formats import parse_order
+
+    if creative_writing_trigger(message):
+        return UNSUPPORTED_QUESTION
+    order = parse_order(message)
+    if order is not None and order.format_id == "letter":
         return UNSUPPORTED_QUESTION
     if _HOW_MANY.search(message) and not _LIFESPAN_COUNT.search(message):
         return UNSUPPORTED_QUESTION

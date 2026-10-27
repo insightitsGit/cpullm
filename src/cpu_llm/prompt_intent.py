@@ -33,6 +33,7 @@ def _requested(message):
         ('has_color', 'subject', r'what colou?r (?:is|are) (?P<entity>.+)'),
         ('lives_in', 'subject', r'where (?:does|do) (?P<entity>.+?) (?:live|reside)'),
         ('has', 'subject', r'what (?:does|do) (?P<entity>.+?) have'),
+        ('has', 'subject', r'(?:does|do) (?P<entity>.+?) have (?P<object>.+)'),
         ('causes', 'object', r'what causes (?P<entity>.+)'),
         ('causes', 'subject', r'what (?:does|do) (?P<entity>.+?) cause'),
         ('causes', 'object', r'why (?:does|do|did) (?P<entity>.+)'),
@@ -42,7 +43,10 @@ def _requested(message):
     for relation, direction, pattern in patterns:
         match = re.fullmatch(pattern, text, re.I)
         if match and not re.search(r"\b(?:not|never|if)\b|n't", match['entity'], re.I):
-            return dict(relation=relation, direction=direction, entity=_name(match['entity']))
+            found = dict(relation=relation, direction=direction, entity=_name(match['entity']))
+            if match.groupdict().get('object'):
+                found['object'] = _name(match['object'])
+            return found
     return None
 
 
@@ -148,8 +152,14 @@ def select_channel_answer(message, chunks, *, intent=None):
                 return kept
             return words(name) == words(value)
         return _equivalent(name, value)
+    # "Some" and an average do not state an individual's fact. A named object
+    # ("does the Nacre have a beacon?") keeps only that object.
+    indefinite = re.compile(r'^(?:some|most|many|several|few|average)\b', re.I)
+    asked_object = request.get('object')
     selected = [fact for fact in facts if fact.relation == request['relation'] and channel in fact.channels
-                and any(matches(name, getattr(fact, request['direction'])) for name in names)]
+                and any(matches(name, getattr(fact, request['direction'])) for name in names)
+                and not indefinite.match(fact.subject.strip())
+                and (not asked_object or _equivalent(asked_object, fact.object))]
     alias_evidence = [edge for fact in selected for name in names
                       if matches(name, getattr(fact, request['direction'])) for edge in aliases[name]]
     joins = []
@@ -161,7 +171,8 @@ def select_channel_answer(message, chunks, *, intent=None):
             for fact in facts:
                 universal = re.fullmatch(r'(?:all|every)\s+(.+)', fact.subject, re.I)
                 if (fact.relation == request['relation'] and channel in fact.channels
-                        and universal and _entity_key(universal[1]) in types):
+                        and universal and _entity_key(universal[1]) in types
+                        and (not asked_object or _equivalent(asked_object, fact.object))):
                     selected.append(fact)
                     joins.append(membership)
                     joins.extend(types[_entity_key(universal[1])])
