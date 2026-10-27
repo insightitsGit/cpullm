@@ -19,6 +19,11 @@ understanding and free-form sentence generation have not been demonstrated.
 
 ## Request lifecycle
 
+An explicit compound prompt first receives a bounded [request plan](request-separation.md).
+Each separated task runs the lifecycle below with the same caller scope/history
+and an independent query. The parent retains per-task outcomes and pauses on
+clarification rather than blending all questions into one retrieval embedding.
+
 1. Authenticate/resolve the caller and enforce source scope. Empty authorization
    refuses the request before conversational state is used. Guard the raw prompt
    before any conversational or source-derived clarification; guard the resolved
@@ -67,6 +72,12 @@ returns loop state; it does not send messages or run a background conversation
 by itself.
 
 ## Six-channel representation
+
+Response depth is a separate request-local classification, exposed as
+`response_plan`. Explicit brief/detailed overviews and sentence/item limits guide
+bounded retrieval and source-backed summary/list selection. This presentation
+budget does not truncate required factual proof or imply complete topic coverage.
+See [response-depth classification](response-depth.md) for defaults and limits.
 
 The installed VectorPrism tensor is **1,024 dimensions**: a 16-value header,
 a 368-value dense core, and five 128-value slices for relational, disentangled,

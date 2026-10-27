@@ -5,6 +5,8 @@ deterministic CPU classifier. It does not load a language model. `ask()` returns
 its `response_plan` so an application and the delivery judge can inspect the
 selected detail level, presentation format, budgets, matched directives, and
 the normalized `content_query`.
+Blocked prompts and empty authorization scopes keep their fast refusal path and
+may omit the plan; classification does not run before those checks.
 
 Examples:
 
@@ -38,6 +40,9 @@ the executed query. General explanations with an explicit depth/count request an
 overview requests use source-backed summaries; causal questions retain the causal
 path. Explicit overview/list rendering uses the selected material directly, rather
 than prepending the previous unrestricted body and defeating the budget.
+Overview control phrases are protected from corpus typo correction: `Tell me
+about` must not become `Bell me about` just because a source mentions a bell.
+Typo correction still applies to the requested subject.
 
 The six-channel factual intent remains independent from response depth. Ordinary
 subject attributes such as `short claws`, `long lifespan`, and `detailed balance`
@@ -66,3 +71,13 @@ The classifier does not bypass the final evidence judge or lift any guard,
 audit, grammar, or Shine hold. The response plan is passed through the graph and
 returned alongside its judgment; coverage/completeness must not be inferred solely
 from the length of the answer.
+
+Validation on 2026-10-27: the complete working-tree suite with live PostgreSQL
+tests enabled returned **516 passed, 2 skipped, 3 expected failures**, with six
+existing NumPy warnings. Both new live response-depth tests passed. The skips need
+trained extractor checkpoints; the expected failures are the existing crane cases.
+After adding preservation of newline-sensitive untargeted requests, a focused
+classifier/finance run returned **43 passed**. Local logs are
+`build/response-policy-verified-suite.log` and
+`build/response-policy-structured.log`. This validates the combined checkout,
+including the concurrent judge fixes; it is not a new independent quality benchmark.

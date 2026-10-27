@@ -550,6 +550,41 @@ class Appliance:
         caller: Any | None = None,
         as_of: int | None = None,
     ) -> dict[str, Any]:
+        """Separate explicit compound requests; each task uses the full pipeline."""
+        from cpu_llm.request_planner import dispatch_request
+        if realization not in {"deterministic", "evidence_neural", "model01"}:
+            raise ValueError("realization must be deterministic, evidence_neural, or model01")
+        if (payment is None) != (authority is None):
+            raise ValueError("a payment turn needs both a proposal and an authority snapshot")
+        return dispatch_request(self, message, propositions, dict(
+            discover=discover, imagine=imagine, deep=deep, math=math, finance=finance,
+            payment=payment, authority=authority, objective=objective, hypothesis=hypothesis,
+            causal_graph=causal_graph, realization=realization, account=account, grade=grade,
+            child_safety=child_safety, session_id=session_id, caller=caller, as_of=as_of))
+
+    def _ask_single(
+        self,
+        message: str,
+        propositions: list[EIRProposition] | None = None,
+        *,
+        discover: bool = False,
+        imagine: bool = False,
+        deep: bool = False,
+        math: bool = False,
+        finance: bool = False,
+        payment: Any | None = None,
+        authority: Any | None = None,
+        objective: Any | None = None,
+        hypothesis: Any | None = None,
+        causal_graph: Any | None = None,
+        realization: str = "deterministic",
+        account: bool = False,
+        grade: Any = None,
+        child_safety: bool | None = None,
+        session_id: str | None = None,
+        caller: Any | None = None,
+        as_of: int | None = None,
+    ) -> dict[str, Any]:
         if realization not in {"deterministic", "evidence_neural", "model01"}:
             raise ValueError("realization must be deterministic, evidence_neural, or model01")
         if (payment is None) != (authority is None):
@@ -622,7 +657,15 @@ class Appliance:
                 plan['question'] = question
             from cpu_llm.typos import correct_message
 
-            message, typos = correct_message(message, self.word_tags, tenant_id=self.tenant_id)
+            overview_prefix = re.match(r'^(?:tell me about|describe)\s+', message, re.I) if response_plan['mode'] == 'overview' else None
+            if overview_prefix:
+                # These are request/control words, not misspelled corpus words.
+                # In a bell corpus, correcting "Tell" to "Bell" narrows an
+                # overview to one fact before the summary producer sees it.
+                topic, typos = correct_message(message[overview_prefix.end():], self.word_tags, tenant_id=self.tenant_id)
+                message = overview_prefix[0] + topic
+            else:
+                message, typos = correct_message(message, self.word_tags, tenant_id=self.tenant_id)
             if plan.get('criteria'):
                 plan['query'] = message
                 for change in typos:

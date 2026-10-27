@@ -12,7 +12,7 @@ _NUMBERS = {word: index for index, word in enumerate(
     'zero one two three four five six seven eight nine ten eleven twelve'.split())}
 _COUNT = re.compile(
     rf"\b(?:in|using|with|as|give(?: me)?|provide(?: me)?|list)\s+"
-    rf"(?P<count>{_NUMBER})\s+(?P<unit>sentences?|bullet(?: points?)?|points?|items?|words?)\b", re.I)
+    rf"(?P<count>{_NUMBER})\s+(?P<unit>sentences?|bullets?(?: points?)?|points?|items?|words?)\b", re.I)
 _BRIEF = re.compile(
     r"\b(?:briefly|concisely|in short|in brief|keep it short|be concise|"
     r"(?:a |the )?(?:short|brief|concise) (?:answer|response|summary|overview|explanation))\b", re.I)
@@ -25,9 +25,9 @@ _OVERVIEW_STYLE = re.compile(r"^(?:please\s+)?(?:give(?: me)?|provide(?: me)?|wr
 _EXPLAIN = re.compile(r"^(?:please\s+)?explain\s+", re.I)
 _STYLE_START = re.compile(r"^(?:please\s+)?(?:briefly|concisely|thoroughly|comprehensively)\s+", re.I)
 _STYLE_END = re.compile(r"[,;]?\s+(?:in detail|in depth|briefly|concisely|thoroughly|comprehensively)[.!?]*$", re.I)
-_LIMIT_END = re.compile(rf"[,;]?\s+(?:in|using|with|as)\s+{_NUMBER}\s+(?:sentences?|bullet(?: points?)?|points?|items?|words?)[.!?]*$", re.I)
-_LIMIT_START = re.compile(rf"^(?:please\s+)?(?:answer\s+)?(?:in|using|with|as)\s+{_NUMBER}\s+(?:sentences?|bullet(?: points?)?|points?|items?|words?)\s*[:,]\s*", re.I)
-_ITEM_REQUEST = re.compile(rf"^(?:please\s+)?(?:give(?: me)?|provide(?: me)?|list)\s+{_NUMBER}\s+(?:bullet(?: points?)?|points?|items?)\s+(?:about|on|of)\s+", re.I)
+_LIMIT_END = re.compile(rf"[,;]?\s+(?:in|using|with|as)\s+{_NUMBER}\s+(?:sentences?|bullets?(?: points?)?|points?|items?|words?)[.!?]*$", re.I)
+_LIMIT_START = re.compile(rf"^(?:please\s+)?(?:answer\s+)?(?:in|using|with|as)\s+{_NUMBER}\s+(?:sentences?|bullets?(?: points?)?|points?|items?|words?)\s*[:,]\s*", re.I)
+_ITEM_REQUEST = re.compile(rf"^(?:please\s+)?(?:give(?: me)?|provide(?: me)?|list)\s+{_NUMBER}\s+(?:bullets?(?: points?)?|points?|items?)\s+(?:about|on|of)\s+", re.I)
 
 
 def _number(text: str) -> int:
@@ -95,6 +95,10 @@ def classify_response_request(message: str) -> dict:
         overview = True
     if not query.strip():
         query = text
+    if not (cues or counts or overview):
+        # Untargeted requests can contain structured financial fields, source
+        # excerpts, or other newline-sensitive content. Leave them verbatim.
+        query = message or ''
     bullets = 'items' in limits or bool(re.search(r'\b(?:bullet points|bullets)\b', masked, re.I))
     return dict(schema='response-plan-v1', detail=detail,
                 explicit=bool(cues or counts or overview),

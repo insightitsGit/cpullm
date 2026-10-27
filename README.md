@@ -362,3 +362,7 @@ Amin Parva — AI Architect & Staff Applied AI Engineer — [parvaamin@gmail.com
 ```
 
 The [October 27 result note](docs/handoff-channel-evidence-results.md) records this checkout's suite, the unreplayed Millhaven change, and the remaining limits. The consolidated [October 25 review handoff](docs/reviews/2026-10-25/recent-commits-handoff.md) records the earlier commit findings.
+
+Explicit requests such as “briefly explain,” “in detail,” and “in three bullet points” produce a request-local `response_plan` with source-backed overview/list budgets. Required proof premises are preserved. See [response-depth classification](docs/response-depth.md) for supported forms and limits.
+
+Explicit multi-question prompts are separated into up to eight tasks, each with independent retrieval and evidence judgment. The returned `request_plan` and `task_results` expose answered, missing, and pending parts; clarification resumes through the same session. See [request separation](docs/request-separation.md) for shared references, long background, limits, and examples.

@@ -27,6 +27,7 @@ def test_explicit_style_is_separated_from_the_question(question, detail, query):
     'What color is the Cedar?', 'Why does the lobster have short claws?',
     'What is a long lifespan?', 'What is detailed balance?',
     'What is a short answer?', 'Describe "a comprehensive overview".',
+    'Check this refund:\nAmount: 25.00\nCurrency: USD',
 ])
 def test_subject_attributes_and_quoted_terms_do_not_change_depth(question):
     plan = classify_response_request(question)
@@ -100,6 +101,12 @@ def test_ask_passes_the_plan_and_content_query_to_the_graph():
     assert result['original_message'] == 'Explain the Cedar in detail.'
     assert result['resolved_query'] == 'Tell me about the Cedar'
 
+    # A presentation control word must not be corrected to a corpus noun.
+    app.word_tags = {'bell': {}, 'cedar': {}}
+    result = app.ask('Explain the Cedar in detail.')
+    assert result['resolved_query'] == 'Tell me about the Cedar'
+    assert result['typos'] == []
+
 
 @pytest.mark.parametrize('prompt, expected, kind', [
     ('Briefly explain the Cedar.', 1, 'summary'),
@@ -138,3 +145,17 @@ def test_requested_bullets_use_one_budgeted_list():
         response_plan=plan, list=True, brief=dict(list='\n'.join(lines)),
         related=[dict(chunk_id=str(i), chunk_text=text) for i, text in enumerate(lines)]))
     assert reply['text'] == 'List:\n' + '\n'.join('- ' + text for text in lines)
+
+
+def test_judge_accepts_bullet_presentation_but_rejects_changed_claims():
+    from cpu_llm.evidence_judge import finalize_turn
+    proof = 'The Cedar has a bell.\nThe Cedar has a deck.'
+    def check(text):
+        return finalize_turn(dict(message='Tell me about the Cedar.', guard_decision='allow',
+            list=True, answer_status='answered', answer=None,
+            brief=dict(list=proof), reply=dict(body=proof, text=text, answer_status='answered')), None)
+    valid = check('List:\n- The Cedar has a bell.\n- The Cedar has a deck.')
+    assert valid['reply']['text'].count('\n- ') == 2
+    assert valid['judgment']['outcome'] == 'answered'
+    invalid = check('List:\n- The Cedar has a bell.\n- The Cedar does not have a deck.')
+    assert 'does not' not in invalid['reply']['text']

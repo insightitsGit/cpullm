@@ -319,11 +319,14 @@ def _licensed_norms(licensed: str, evidence: list[dict]) -> set[str]:
 
 def _claim_sentences(sentence: str) -> list[str]:
     """The claim inside one surface sentence, after an attribution line or heading."""
-    raw = sentence.strip()
+    # Markdown list markers are presentation, not part of the licensed claim.
+    # Requiring whitespace preserves negative numbers and decimal quantities.
+    list_marker = r"^(?:[-*+]|\d+[.)])\s+"
+    raw = re.sub(list_marker, '', sentence.strip())
     match = _ATTRIB_CLAIM.match(raw) or _LEADING_HEADING.match(raw)
     if match:
         rest = match.group(1).strip()
-        return _sentences(rest) if rest else []
+        return [re.sub(list_marker, '', part.strip()) for part in _sentences(rest)] if rest else []
     return [raw]
 
 
