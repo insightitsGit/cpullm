@@ -58,6 +58,11 @@ requested subtopic, session-persistent style preferences, and strict word limits
 remain future work. The plan is request-local and does not carry presentation
 preferences across a later clarification reply.
 
+Explicit separated requests additionally share a combined optional-material budget;
+see [request separation](request-separation.md). It caps child overview/list budgets
+before production and persists during parent-plan clarification. It does not impose
+a hard word limit or truncate mandatory evidence after judgment.
+
 ## Validation
 
 `tests/test_response_policy.py` covers classification, false triggers, count bounds,

@@ -81,7 +81,7 @@ class FakeAppliance:
         self._session_locks = {}
     def _ask_single(self, query, propositions=None, **options):
         self.calls.append((query, options))
-        if query == 'Which ferry is best':
+        if query.removesuffix(' in detail') == 'Which ferry is best':
             return dict(answer=None, needs_clarification=True, answer_status='needs_clarification',
                         clarification=dict(slot='criteria'), reply=dict(text='Best for what?'))
         if 'longevity' in query:
@@ -167,6 +167,54 @@ def test_format_budget_does_not_discard_requested_tasks():
     assert len(result['task_results']) == 2
     assert result['response_plan']['budget_overridden_for_coverage']
     assert result['reply']['text'].startswith('- ')
+
+
+def test_global_sentence_budget_is_shared_before_generation():
+    app = FakeAppliance()
+    result = dispatch_request(app, 'Summarize the Cedar? Summarize the Rowan? Answer in three sentences.', None, {})
+    budget = result['response_plan']['combined_budget']
+    assert budget['task_allocations'] == {'q1': 2, 'q2': 1}
+    assert [options['_response_budget'] for _, options in app.calls] == [2, 1]
+    assert result['reply']['text'].count('Summarize the Cedar') == 1
+    assert budget['hard_limit'] is False
+
+
+def test_long_background_does_not_increase_combined_answer_budget():
+    app = FakeAppliance()
+    prompt = 'Context: ' + 'Maintenance notes. ' * 500 + '\nQuestions:\n'
+    prompt += 'Summarize the Cedar? Summarize the Rowan? Answer briefly.'
+    result = dispatch_request(app, prompt, None, {})
+    assert result['response_plan']['combined_budget']['task_allocations'] == {'q1': 1, 'q2': 1}
+
+
+def test_combined_renderer_never_clips_judged_proof_to_meet_budget():
+    from cpu_llm.request_planner import _aggregate
+    plan = separate_request('How long does the Cedar live? Where does it live? Answer in one sentence.')
+    proof = 'The Cedar is a ferry. Every ferry lives for 30 years. [manual-p0001, manual-p0002]'
+    evidence = [dict(document_id='manual-p0001'), dict(document_id='manual-p0002')]
+    result = _aggregate(plan, [dict(id='q1', status='answered', result=dict(
+        reply=dict(text=proof), answer_evidence=evidence))], 'test')
+    assert proof in result['reply']['text']
+    assert result['answer_evidence'] == evidence
+    assert result['task_results'][1]['status'] == 'pending'
+    assert result['response_plan']['combined_budget']['budget_overridden_for_coverage']
+
+
+def test_local_item_limit_is_not_mistaken_for_a_sentence_limit():
+    from cpu_llm.request_planner import combined_response_budget
+    plan = separate_request('Explain the Cedar in ten bullets? Explain the Rowan? Answer in detail.')
+    assert combined_response_budget(plan)['task_allocations'] == {'q1': 8, 'q2': 8}
+
+
+def test_shared_budget_retains_local_brief_limit_and_pending_allocations_on_resume():
+    app = FakeAppliance()
+    prompt = 'Which ferry is best? Explain the Cedar briefly. Answer in detail.'
+    first = dispatch_request(app, prompt, None, {'session_id': 'budget'})
+    expected = first['response_plan']['combined_budget']
+    assert expected['task_allocations']['q2'] == 1
+    resumed = dispatch_request(app, 'fuel economy', None, {'session_id': 'budget'})
+    assert resumed['response_plan']['combined_budget'] == expected
+    assert [opts['_response_budget'] for _, opts in app.calls] == [expected['task_allocations']['q1'], expected['task_allocations']['q1'], 1]
 
 
 def test_stateless_clarification_does_not_create_pending_parent_state():

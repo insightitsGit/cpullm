@@ -584,6 +584,7 @@ class Appliance:
         session_id: str | None = None,
         caller: Any | None = None,
         as_of: int | None = None,
+        _response_budget: int | None = None,
     ) -> dict[str, Any]:
         if realization not in {"deterministic", "evidence_neural", "model01"}:
             raise ValueError("realization must be deterministic, evidence_neural, or model01")
@@ -616,6 +617,10 @@ class Appliance:
         raw_message = message
         from cpu_llm.response_policy import classify_response_request
         response_plan = classify_response_request(message)
+        if _response_budget is not None:
+            response_plan['sentence_budget'] = min(response_plan['sentence_budget'], _response_budget)
+            response_plan['item_budget'] = min(response_plan['item_budget'], _response_budget)
+            response_plan['combined_task_budget'] = _response_budget
         message = response_plan['content_query']
         session_key = scoped_session(self.tenant_id, None if context is None else context.caller_id,
                                      None if context is None else context.allowed_sources, session_id, as_of)

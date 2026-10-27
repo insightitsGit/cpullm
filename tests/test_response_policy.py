@@ -107,11 +107,17 @@ def test_ask_passes_the_plan_and_content_query_to_the_graph():
     assert result['resolved_query'] == 'Tell me about the Cedar'
     assert result['typos'] == []
 
+    result = app.ask('Explain the Cedar in detail? Explain the Rowan in detail? Answer in three sentences.')
+    assert [state['response_plan']['sentence_budget'] for state in states[-2:]] == [2, 1]
+    assert [state['response_plan']['item_budget'] for state in states[-2:]] == [2, 1]
+    assert result['response_plan']['combined_budget']['optional_unit_budget'] == 3
+
 
 @pytest.mark.parametrize('prompt, expected, kind', [
     ('Briefly explain the Cedar.', 1, 'summary'),
     ('Explain the Cedar in detail.', 8, 'summary'),
     ('Explain the Cedar in three bullet points.', 3, 'list'),
+    ('Explain the Cedar in detail.', 2, 'shared_summary'),
 ])
 def test_brief_producer_uses_the_classified_budget(prompt, expected, kind, monkeypatch):
     from cpu_llm.pipeline import _brief
@@ -131,6 +137,9 @@ def test_brief_producer_uses_the_classified_budget(prompt, expected, kind, monke
                           realizer=SemanticSurfaceRealizer(),
                           auditor=SimpleNamespace(audit_delivered_output=lambda *args: True))
     plan = classify_response_request(prompt)
+    if kind == 'shared_summary':
+        plan['sentence_budget'] = 2
+        kind = 'summary'
     result = _brief(app)(dict(message=plan['content_query'], tenant_id='test', response_plan=plan,
                              summarize=kind == 'summary', list=kind == 'list'))
     assert result['brief'][kind].count('.') == expected

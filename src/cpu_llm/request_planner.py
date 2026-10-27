@@ -148,6 +148,40 @@ class RequestSessions:
                 self.states.popitem(last=False)
 
 
+def combined_response_budget(plan):
+    """Allocate optional material before generation; never clip judged proofs."""
+    from cpu_llm.response_policy import classify_response_request
+    presentation = plan.get('presentation') or {}
+    count = len(plan['tasks'])
+    detail = presentation.get('detail', 'standard')
+    limits = presentation.get('requested_limits') or {}
+    requested = min((limits[key] for key in ('sentences', 'items') if key in limits), default=None)
+    target = requested if requested is not None else {'brief': count, 'standard': 6, 'detailed': 16}[detail]
+    total = max(count, min(160, target))
+    allocations = [1] * count
+    ceilings = []
+    for task in plan['tasks']:
+        local = classify_response_request(task['query'])
+        ceiling = local['item_budget'] if local['format'] == 'bullets' else local['sentence_budget']
+        ceilings.append(ceiling if local['explicit'] else total)
+    remaining = total - count
+    while remaining:
+        changed = False
+        for index, ceiling in enumerate(ceilings):
+            if remaining and allocations[index] < ceiling:
+                allocations[index] += 1
+                remaining -= 1
+                changed = True
+        if not changed:
+            break
+    return dict(schema='combined-response-budget-v1', optional_unit_budget=total,
+                requested_unit_budget=requested, task_allocations=dict(zip(
+                    (task['id'] for task in plan['tasks']), allocations)),
+                budget_overridden_for_coverage=requested is not None and requested < count,
+                scope='optional sentences/items; outcomes, required proof and citations preserved',
+                hard_limit=False, word_limit_enforced=False)
+
+
 def _aggregate(plan, results, tenant):
     """Render only already judged child output. Every planned item is accounted for."""
     by_id = {item['id']: item for item in results}
@@ -157,12 +191,12 @@ def _aggregate(plan, results, tenant):
         if entry is None:
             entries.append(dict(id=task['id'], query=task['query'], status='pending'))
             prefix = '- ' if (plan.get('presentation') or {}).get('format') == 'bullets' else f"{len(lines) + 1}. "
-            lines.append(f"{prefix}{task['text']}\nNot executed yet; an earlier question needs attention.")
+            lines.append(f"{prefix}{task['id']}: Pending; an earlier question needs attention.")
             continue
         entries.append(entry)
         text = str((entry['result'].get('reply') or {}).get('text') or '')
         prefix = '- ' if (plan.get('presentation') or {}).get('format') == 'bullets' else f"{len(lines) + 1}. "
-        lines.append(f"{prefix}{task['text']}\n{text}")
+        lines.append(f"{prefix}{text}")
         evidence.extend(entry['result'].get('answer_evidence') or [])
         supporting.extend(entry['result'].get('supporting_evidence') or [])
     waiting = any(item['status'] == 'needs_clarification' for item in entries)
@@ -170,6 +204,7 @@ def _aggregate(plan, results, tenant):
     status = 'needs_clarification' if waiting else 'partial' if incomplete else 'answered'
     text = '\n\n'.join(lines)
     presentation = dict(plan.get('presentation') or {})
+    presentation['combined_budget'] = plan.get('combined_budget') or combined_response_budget(plan)
     requested_items = (presentation.get('requested_limits') or {}).get('items')
     if requested_items is not None and requested_items < len(entries):
         presentation['budget_overridden_for_coverage'] = True
@@ -188,11 +223,14 @@ def run_request_plan(app, plan, propositions, options, *, pending=None):
     """Execute one task at a time and suspend on the first clarification."""
     state = pending or dict(plan=plan, results=[], cursor=0, propositions=propositions,
                             options=dict(options), batch_id=uuid.uuid4().hex)
+    if 'combined_budget' not in state['plan']:
+        state['plan']['combined_budget'] = combined_response_budget(state['plan'])
     results = state['results']
     tasks = state['plan']['tasks']
     for index in range(state['cursor'], len(tasks)):
         task = tasks[index]
         child_options = dict(state['options'])
+        child_options['_response_budget'] = state['plan']['combined_budget']['task_allocations'][task['id']]
         child_options['caller'] = options.get('caller')
         parent_session = options.get('session_id')
         child_options['session_id'] = f"request:{state['batch_id']}:{task['id']}" if parent_session is not None else None

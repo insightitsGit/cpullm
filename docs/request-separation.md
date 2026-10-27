@@ -75,10 +75,29 @@ library has not independently audited a new synthesized overall claim. Render
 `reply.text` or inspect the individual task results and evidence.
 
 A trailing global style instruction such as `Answer in three bullets.` controls
-group presentation; explicit per-task style takes precedence. If a requested item
+group presentation. A combined optional-material budget is allocated before child
+execution: brief mode allows one unit per task, standard mode shares six units,
+and detailed mode shares sixteen. Every task receives at least one unit. Explicit
+global sentence/item counts replace that total (up to 160 units); local brief or
+count instructions can reduce a child's allocation. A local detailed instruction
+does not bypass the shared ceiling. Allocations persist across clarification.
+The private child budget caps both overview sentence and list item selection,
+while factual relation handling and required proof remain unchanged.
+
+For example, two overview tasks with `Answer in three sentences.` receive optional
+budgets of two and one, rather than three each. Long Context: text does not increase
+the answer budget. The aggregate renders ordered judged answers without repeating
+the full question text; original questions remain in `request_plan.tasks`.
+Pending tasks retain their task IDs and explicit notices. Inspect
+`response_plan.combined_budget` for the total, per-task allocations and scope.
+
+If a requested item
 count is smaller than the task count, all tasks remain visible and the plan marks
 `budget_overridden_for_coverage`. Required premises and citations are never cut
-to meet a formatting budget. This does not promise strict global word counts.
+to meet a formatting budget. These are producer budgets for optional material,
+not hard limits on total rendered length: direct proofs, specialist contracts,
+citations, conflicting evidence, and clarification notices can exceed them.
+Strict global word counts remain unenforced and are marked as such.
 
 ## Boundaries
 
