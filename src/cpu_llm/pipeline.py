@@ -571,6 +571,9 @@ class Appliance:
                             status='blocked', answer_status='blocked', answer=text,
                             needs_clarification=False, answer_evidence=[], supporting_evidence=[])
             response['reply'] = dict(compose_reply(response), answer_status='blocked')
+            from cpu_llm.evidence_judge import _blank
+            response['judgment'] = _blank(outcome='blocked', reasons=['guard_hold'], verification='held')
+            response['audit_passed'] = False
             if context is not None:
                 response.update(caller_id=context.caller_id, request_id=context.request_id)
             return response
@@ -655,6 +658,11 @@ class Appliance:
                 sense_outcome = _sense_clarification(self, message, session_key)
                 if sense_outcome is not None:
                     response = clarification_result(sense_outcome, raw_message, self.tenant_id)
+                    if sense_outcome.get("judgment"):
+                        response["judgment"] = sense_outcome["judgment"]
+                    response["answer"] = None
+                    response["audit_passed"] = False
+                    response["answer_evidence"] = []
                     if context is not None:
                         response.update(caller_id=context.caller_id, request_id=context.request_id)
                     if abandoned:
@@ -755,7 +763,8 @@ class Appliance:
                 result['user_criteria'] = plan['criteria']
             if abandoned:
                 result['clarification_abandoned'] = True
-            return result
+            from cpu_llm.evidence_judge import finalize_turn
+            return finalize_turn(result, getattr(self, 'shine', None))
 
     def ask_concurrent(self, message: str, *, request_id: str | None = None, caller: Any | None = None, thinker_factory: Any = None, **kwargs: Any) -> dict[str, Any]:
         """Run ``ask`` on one seat lock and that seat's thinker.
@@ -981,6 +990,21 @@ def empty_scope_result(tenant_id: str, message: str, context: CallerContext | No
         "request_id": context.request_id,
         "access_error": "allowed_sources_empty",
         "typos": [],
+        "answer_status": "blocked",
+        "audit_passed": False,
+        "answer_evidence": [],
+        "judgment": {
+            "schema": "channel-evidence-judgment-v1",
+            "entity": None,
+            "relation": None,
+            "direction": None,
+            "channels": [],
+            "outcome": "blocked",
+            "reasons": ["allowed_sources_empty"],
+            "evidence": [],
+            "supporting": [],
+            "verification": "held",
+        },
     }
 
 
@@ -1148,7 +1172,10 @@ def _reply(state: dict[str, Any]) -> dict[str, Any]:
     update["retrieved_candidates"] = list(reply.get("retrieved_candidates") or [])
     if status in _CLEARED_STATUSES:
         update["answer"] = None
-        update["audit_passed"] = False
+        # A source quote may keep the audit of the sentence it quotes.
+        # A refusal or a conflict must not.
+        if status != "evidence_quote":
+            update["audit_passed"] = False
         update["answer_evidence"] = [] if status != "evidence_quote" else list(reply.get("answer_evidence") or [])
         update["supporting_evidence"] = [] if status != "evidence_quote" else list(reply.get("supporting_evidence") or [])
         return update
@@ -2206,32 +2233,6 @@ def _correct_resonance_tags(appliance, document_id: str, prior_sentence: str, ne
     tags.replace_sentence(document_id, prior_sentence, new_id, new_sentence)
 
 
-def _distinct_kinds(senses: list[dict]) -> set[str]:
-    """is-a objects stated inside the candidate meanings."""
-    from cpu_llm.knowledge_graph import extract_facts
-    from cpu_llm.prompt_intent import _name
-
-    kinds: set[str] = set()
-    for sense in senses:
-        for text in sense.get("texts") or []:
-            for fact in extract_facts("sense", text):
-                if fact.relation == "is_a":
-                    kinds.add(_name(fact.object))
-    return kinds
-
-
-def _should_ask_sense(_message: str, senses: list[dict]) -> bool:
-    """Ask only when the name splits into different things.
-
-    Several one-sentence fragments about one entity are not several meanings.
-    Two is-a kinds are, and so is a meaning that more than one sentence shares.
-    A requested attribute does not override either of those.
-    """
-    if len(_distinct_kinds(senses)) >= 2:
-        return True
-    return any(int(sense.get("size") or 0) >= 2 for sense in senses)
-
-
 def _sense_clarification(appliance, message: str, session_key):
     """Ask on ambiguity, storing the follow-up only when a session is supplied."""
     tags = _resonance_store(appliance)
@@ -2242,9 +2243,14 @@ def _sense_clarification(appliance, message: str, session_key):
     result = tags.recall_spread(message, allowed=allowed)
     if result.get("status") != "ambiguous" or not result.get("senses"):
         return None
-    if not _should_ask_sense(message, result["senses"]):
+    from cpu_llm.evidence_judge import sense_decision
+
+    decision = sense_decision(message, result["senses"])
+    if not decision["ask"]:
         return None
-    return loop.need_sense(message, result["senses"], key=session_key, omitted=int(result.get("omitted") or 0))
+    asked = loop.need_sense(message, result["senses"], key=session_key, omitted=int(result.get("omitted") or 0))
+    asked["judgment"] = decision["judgment"]
+    return asked
 
 
 def _with_resonance_paragraphs(appliance, message: str, hits: list[dict[str, Any]], *, allowed) -> list[dict[str, Any]]:

@@ -136,6 +136,8 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
             # The body already stated this cause. A second Explanation repeats it.
             if stored and stored.casefold() in spoken.casefold():
                 pass
+            elif "do not settle" in spoken.casefold():
+                pass
             elif re.search(r"\bbecause\b", spoken, re.IGNORECASE) and not stored:
                 pass
             else:
@@ -204,7 +206,7 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
             reply["answer_status"] = frame_status
             reply["answer_evidence"] = []
             reply["supporting_evidence"] = []
-    cause = _retrieved_cause(state)
+    cause = _bound_cause(state)
     if (
         not notice
         and cause
@@ -553,29 +555,49 @@ def _refuses_stored_copy(state: dict[str, Any], spoken: str, situation: dict[str
     if _HOW_MANY.search(message) and not _LIFESPAN_COUNT.search(message):
         return UNSUPPORTED_QUESTION
     if _WHY.search(message) and not _cause_is_stated(state, spoken, situation):
-        return UNSUPPORTED_QUESTION
+        from cpu_llm.prompt_intent import route_prompt
+
+        request = (route_prompt(message).get("requested") or {})
+        if request.get("relation") != "causes":
+            return UNSUPPORTED_QUESTION
     return ""
 
 
 def _cause_is_stated(state: dict[str, Any], spoken: str, situation: dict[str, Any] | None) -> bool:
     if situation is not None and situation.get("verdict") == "CAUSE":
         return True
-    return bool(_CAUSE_WORD.search(f"{spoken}\n{_retrieved_cause(state)}"))
+    bound = _bound_cause(state)
+    if not bound:
+        return False
+    return bound.casefold() in f"{spoken}\n{state.get('answer') or ''}".casefold() or bool(bound)
 
 
-def _retrieved_cause(state: dict[str, Any]) -> str:
-    """A stored sentence that states a cause, if this turn retrieved one."""
-    explanation = str((state.get("brief") or {}).get("explanation") or "").strip()
-    if _CAUSE_WORD.search(explanation):
-        return explanation
-    for item in list(state.get("related") or []) + list(state.get("passages") or []):
+def _bound_cause(state: dict[str, Any]) -> str:
+    """A cause sentence only when it states the asked effect.
+
+    A retrieved because-sentence about a different subject or action is not
+    this question's cause.
+    """
+    from cpu_llm.prompt_intent import route_prompt, select_channel_answer
+
+    message = str(state.get("message") or "")
+    intent = state.get("prompt_intent") or route_prompt(message)
+    request = (intent or {}).get("requested") or {}
+    if request.get("relation") != "causes":
+        return ""
+    rows = []
+    seen: set[str] = set()
+    for item in list(state.get("passages") or []) + list(state.get("related") or []):
+        document_id = str(item.get("document_id") or item.get("chunk_id") or "")
         text = str(item.get("chunk_text") or item.get("text") or "").strip()
-        if _CAUSE_WORD.search(text):
-            return text
-    answer = str(state.get("answer") or "").strip()
-    if _CAUSE_WORD.search(answer):
-        return answer
-    return ""
+        if not text or document_id in seen:
+            continue
+        seen.add(document_id)
+        rows.append({"document_id": document_id or f"passage-{len(rows)}", "text": text})
+    decision = select_channel_answer(message, rows, intent=intent)
+    if not decision or decision.get("answer_status") != "answered":
+        return ""
+    return str(decision.get("text") or "").strip()
 
 
 def _unsupported_notice(state: dict[str, Any]) -> str:

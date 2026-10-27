@@ -230,12 +230,10 @@ def test_six_channel_nodes_quote_the_passages_and_suggest_discovery_for_a_why_qu
     assert complicated["discovery_suggested"] is True
     assert "discovery" not in complicated
     spoken = complicated["reply"]["text"]
-    assert complicated["answer"] == cause
-    assert complicated["reply"]["body"] == cause
-    assert spoken.count(cause) == 1
-    assert sentence not in spoken
+    assert complicated["reply"]["body"] == "The retrieved passages do not settle that."
+    assert complicated["answer"] is None
+    assert cause not in complicated["reply"]["body"]
     assert "This question type is not supported yet." not in spoken
-    assert "Explanation:" not in spoken
     assert "discovery loop" not in spoken
     assert "discovery loop" in complicated["channel_report"]["text"]
     assert "It stays off until you ask for it." in complicated["channel_report"]["text"]

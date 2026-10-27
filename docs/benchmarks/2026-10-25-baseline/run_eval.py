@@ -155,7 +155,8 @@ CASES = [
      "relevant_refs": [["millhaven-ferry", 12]]},
     {"id": "why-diesel", "category": "unsupported", "question": "Why does the Cedar use a diesel engine?",
      "expect": "unsupported", "must_not": ["river current", "dawn"],
-     "contract_note": "The stored sentence states this cause. This case still expects the unsupported sentence. That disagreement is part of the case, not a pass."},
+     "sourced_cause": "The Cedar uses a diesel engine because the river current is strong.",
+     "contract_note": "The stored sentence states this cause. This case still expects the unsupported sentence. Quoting that sentence is a contract disagreement, not a false claim."},
     {"id": "when-depart", "category": "unsupported", "question": "When does the Cedar depart?",
      "expect": "unsupported", "must_not": ["dawn", "river current"]},
     {"id": "how-many", "category": "unsupported", "question": "How many municipal ferries serve Millhaven?",
@@ -419,6 +420,7 @@ def judge(case: dict, summary: dict) -> dict:
     wrong = False
     incomplete = False
     factual = False
+    contract_disagreement = False
     leaked_answer = public not in (None, "")
     if summary.get("error"):
         ok = False
@@ -439,8 +441,16 @@ def judge(case: dict, summary: dict) -> dict:
         wrong = (not clarified) and (answered or bool(forbidden))
         forbidden = choice_forbidden if clarified else forbidden
     elif expect == "unsupported":
-        ok = UNSUPPORTED.casefold() in folded and not forbidden and not leaked_answer
-        wrong = bool(forbidden) or leaked_answer
+        sourced = str(case.get("sourced_cause") or "").casefold()
+        quotes_source = bool(sourced) and sourced in claim
+        if quotes_source:
+            outside = claim.replace(sourced, " ")
+            forbidden = [part for part in must_not if part.casefold() in outside]
+        ok = UNSUPPORTED.casefold() in folded and not forbidden and not leaked_answer and not quotes_source
+        wrong = (bool(forbidden) or leaked_answer) and not quotes_source
+        if quotes_source:
+            contract_disagreement = True
+            wrong = bool(forbidden)
     elif expect == "conflict":
         ok = conflicted and "blue" in folded and "green" in folded
         wrong = (not conflicted) and (("blue" in folded) or ("green" in folded)) and not clarified
@@ -470,6 +480,7 @@ def judge(case: dict, summary: dict) -> dict:
         "ok": bool(ok),
         "wrong": bool(wrong),
         "incomplete": bool(incomplete),
+        "contract_disagreement": bool(contract_disagreement),
         "factual": bool(factual),
         "expect": expect,
         "category": case.get("category"),
@@ -523,6 +534,7 @@ def aggregate(rows: list[dict]) -> dict:
     factual_hit = count(lambda row: row["verdict"]["expect"] == "answer" and row["verdict"]["factual"])
     wrong = count(lambda row: row["verdict"]["wrong"])
     incomplete = count(lambda row: row["verdict"].get("incomplete"))
+    contract_disagreement = count(lambda row: row["verdict"].get("contract_disagreement"))
     cite_rows = [row for row in factual_rows if row["verdict"]["answered"] and row["verdict"]["required_ids"]]
     cite_hit = sum(1 for row in cite_rows if row["verdict"]["citation_complete"])
     clarify_rows = [row for row in rows if row["verdict"]["expect"] == "clarify"]
@@ -545,6 +557,7 @@ def aggregate(rows: list[dict]) -> dict:
         "wrong_answers": wrong,
         "wrong_answer_rate": rate(wrong, len(rows)),
         "incomplete_answers": incomplete,
+        "contract_disagreements": contract_disagreement,
         "citation_complete": cite_hit,
         "citation_denominator": len(cite_rows),
         "citation_completeness": rate(cite_hit, len(cite_rows)),

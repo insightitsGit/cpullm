@@ -36,6 +36,7 @@ def _requested(message):
         ('causes', 'object', r'what causes (?P<entity>.+)'),
         ('causes', 'subject', r'what (?:does|do) (?P<entity>.+?) cause'),
         ('causes', 'object', r'why (?:does|do|did) (?P<entity>.+)'),
+        ('causes', 'object', r'why (?:is|are|was|were) (?P<entity>.+)'),
     ]
     text = ' '.join(message.strip().rstrip('?.!').split())
     for relation, direction, pattern in patterns:
@@ -136,7 +137,15 @@ def select_channel_answer(message, chunks, *, intent=None):
         if request['relation'] == 'causes' and request['direction'] == 'object':
             # Match the complete effect, allowing simple verb agreement.
             def words(text):
-                return [word[:-1] if word.endswith('s') and not word.endswith('ss') else word for word in _name(text).split()]
+                skip = {"is", "are", "was", "were", "be"}
+                kept = []
+                for word in _name(text).split():
+                    if word in skip:
+                        continue
+                    if word.endswith("s") and not word.endswith("ss"):
+                        word = word[:-1]
+                    kept.append(word)
+                return kept
             return words(name) == words(value)
         return _equivalent(name, value)
     selected = [fact for fact in facts if fact.relation == request['relation'] and channel in fact.channels

@@ -1,6 +1,6 @@
 # Current cpu-llm design
 
-Working-tree design snapshot, 2026-10-25. This describes the implementation in
+Working-tree design snapshot, 2026-10-27. This describes the implementation in
 this checkout. A published package may be older. Earlier versioned
 specifications and the white paper describe historical stages.
 
@@ -41,9 +41,12 @@ understanding and free-form sentence generation have not been demonstrated.
    graph neighborhood. Prioritize the requested relationship, entity, and
    direction when ranking candidates. A resonance tag is a candidate passage,
    not an answer. Resonance tags are off unless `resonance_tags=True`. When they
-   are on, one query word that lights more than one sense asks which meaning is
-   intended and does not pick. Without a session id the question is returned
-   but no pending follow-up is stored.
+   are on, a sense question is asked only when stored classes name two referents
+   or the question never names one. Several facts about one entity, including
+   color, engine, place, and departure, are not several meanings. Cluster size
+   is not a meaning. Without a session id the question is returned but no
+   pending follow-up is stored. Channel prototype scores route; they do not
+   prove the relationship.
 7. If a supported attribute is missing, perform bounded retrieval repair for the
    entity and verified connected types. Re-plan when a retry discovers a useful
    membership edge, without exceeding the fixed query budget.
@@ -165,6 +168,35 @@ app.ask("taste", session_id="chat-1")  # retrieves, or asks for supporting evide
 
 See the setup document before enabling a backend. Resolving "it" does not by
 itself distinguish edibility, permission, and individual safety in "Can I eat it?".
+
+## Delivery judgment
+
+`judgment` (`channel-evidence-judgment-v1`) is the delivery decision. It records
+the requested entity, relationship, and direction; which channels were active
+because the question form said so and which heads were enabled; the outcome;
+reason codes; accepted evidence spans; and supporting proof edges. Outcomes are
+`answered`, `evidence_quote`, `clarification`, `insufficient_evidence`,
+`conflicting`, `unsupported`, and `blocked`. Prototype scores are copied only
+as uncalibrated routing signals.
+
+The same decision is attached before an early sense clarification and again
+after ranking quotes, realization, and other `ask()` replacements. Reply
+rendering does not get a second vote. Replacing the licensed body with a
+different sentence withholds the answer (`final_text_not_in_evidence`) and
+clears `audit_passed`. A sentence appended after that body is removed
+(`appended_text_removed`) and the licensed body stays. `shine_final` is the
+grounding record for the text that left `ask()`. It is not the earlier
+grounding node's metadata. When that node already accepted the licensed claim
+and the claim is still in the reply, `shine_final.reused_graph_verdict` is
+true; attribution lines are not scored as a new answer. A Shine hold is not
+lifted because some other stored sentence looks useful. An empty-retrieval
+abstention keeps its abstention sentence and is not checked again. Math,
+finance, frames, summaries, lists, sources, and drafts keep their own evidence
+contracts when the question has no ordinary factual relation.
+
+A because-sentence answers only the effect it states. The same sentence does
+not answer a different subject or a different action. When, a bare count, and
+an explicit comparison stay the fixed unsupported sentence.
 
 ## Response contract
 
