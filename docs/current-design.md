@@ -181,18 +181,24 @@ as uncalibrated routing signals.
 
 The same decision is attached before an early sense clarification and again
 after ranking quotes, realization, and other `ask()` replacements. Reply
-rendering does not get a second vote. Replacing the licensed body with a
-different sentence withholds the answer (`final_text_not_in_evidence`) and
-clears `audit_passed`. A sentence appended after that body is removed
-(`appended_text_removed`) and the licensed body stays. `shine_final` is the
-grounding record for the text that left `ask()`. It is not the earlier
-grounding node's metadata. When that node already accepted the licensed claim
-and the claim is still in the reply, `shine_final.reused_graph_verdict` is
-true; attribution lines are not scored as a new answer. A Shine hold is not
-lifted because some other stored sentence looks useful. An empty-retrieval
-abstention keeps its abstention sentence and is not checked again. Math,
-finance, frames, summaries, lists, sources, and drafts keep their own evidence
-contracts when the question has no ordinary factual relation.
+rendering does not get a second vote. A delivered claim must be the same
+sentence as a licensed one, including polarity. A negation, an added clause,
+or a sentence about a different entity is withheld
+(`final_text_not_in_evidence` or `selector_rejected`). A claim inserted before
+or after the licensed body is removed (`prefixed_text_removed`,
+`appended_text_removed`) and the licensed body stays. A recognized request
+with no matching evidence does not keep an earlier answer about another
+entity. A conflict is the public reply: `answer` is empty, the status is
+`conflicting`, and both source sentences stay visible as disagreement. A
+summary, math result, or other specialist reply is checked against the text
+that producer returned. A later sentence that is not in that proof is removed,
+and a replaced number or sentence is put back to the producer text. `shine_final`
+is the grounding record for the claims actually delivered. It is not the
+earlier grounding node's metadata. That earlier acceptance is reused only when
+those delivered claims are the licensed sentences. A Shine hold clears
+`reply.text`, `reply.body`, `supported_text`, and nested evidence together.
+The rejected wording is kept only on `rejected_candidate`. An empty-retrieval
+abstention keeps its abstention sentence and is not checked again.
 
 A because-sentence answers only the effect it states. The same sentence does
 not answer a different subject or a different action. When, a bare count, and

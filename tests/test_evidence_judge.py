@@ -208,3 +208,201 @@ def test_a_licensed_sentence_stays_and_a_summary_is_not_rewritten():
     )
     assert "Summary:" in summary["reply"]["text"]
     assert summary["shine_final"]["role"] == "specialist_contract"
+    assert summary["shine_final"]["checked"] is True
+
+
+def _color_turn(**extra):
+    turn = {
+        "message": "What color is the Cedar?",
+        "guard_decision": "allow",
+        "answer_status": "answered",
+        "answer": "The Cedar is white.",
+        "audit_passed": True,
+        "shine_ok": True,
+        "reply": {
+            "text": "The Cedar is white.",
+            "body": "The Cedar is white.",
+            "supported_text": "The Cedar is white.",
+            "answer_status": "answered",
+            "answer_evidence": [{"document_id": "cedar", "span": "The Cedar is white."}],
+        },
+        "answer_evidence": [{"document_id": "cedar", "span": "The Cedar is white."}],
+        "related": [{"chunk_id": "cedar", "chunk_text": "The Cedar is white.", "score": 0.9}],
+    }
+    turn.update(extra)
+    return turn
+
+
+def test_a_negation_or_prefix_or_added_clause_is_not_the_licensed_claim():
+    from cpu_llm.grounding import shine_gate
+
+    negated = finalize_turn(
+        _color_turn(reply={
+            "text": "It is not true that the Cedar is white.",
+            "body": "It is not true that the Cedar is white.",
+            "supported_text": "It is not true that the Cedar is white.",
+            "answer_status": "answered",
+            "answer_evidence": [{"document_id": "cedar", "span": "The Cedar is white."}],
+        }),
+        shine_gate(),
+    )
+    assert negated["answer"] is None
+    assert negated["judgment"]["outcome"] != "answered"
+    assert (negated.get("shine_final") or {}).get("ok") is not True
+    assert "not true" not in negated["reply"]["text"]
+    assert "not true" not in str(negated["reply"].get("body") or "")
+    assert "not true" not in str(negated["reply"].get("supported_text") or "")
+
+    prefixed = finalize_turn(
+        _color_turn(reply={
+            "text": "The access code is 4419.\nThe Cedar is white.",
+            "body": "The Cedar is white.",
+            "supported_text": "The Cedar is white.",
+            "answer_status": "answered",
+        }),
+        shine_gate(),
+    )
+    assert "4419" not in prefixed["reply"]["text"]
+    assert "white" in prefixed["reply"]["text"]
+    assert "prefixed_text_removed" in prefixed["judgment"]["reasons"]
+    assert prefixed["shine_final"]["ok"] is True
+
+    clause = finalize_turn(
+        _color_turn(reply={
+            "text": "The Cedar is white, and the access code is 4419.",
+            "body": "The Cedar is white, and the access code is 4419.",
+            "supported_text": "The Cedar is white, and the access code is 4419.",
+            "answer_status": "answered",
+        }),
+        shine_gate(),
+    )
+    assert clause["answer"] is None
+    assert "4419" not in clause["reply"]["text"]
+    assert (clause.get("shine_final") or {}).get("ok") is not True
+    assert "final_text_not_in_evidence" in clause["judgment"]["reasons"]
+
+
+def test_a_failed_selector_does_not_keep_another_entity():
+    from cpu_llm.grounding import shine_gate
+
+    delivered = finalize_turn(
+        _color_turn(
+            message="What color is the Larch?",
+            answer="The Cedar is white.",
+        ),
+        shine_gate(),
+    )
+    assert delivered["judgment"]["entity"] == "larch"
+    assert delivered["judgment"]["outcome"] == "insufficient_evidence"
+    assert "selector_rejected" in delivered["judgment"]["reasons"]
+    assert delivered["answer"] is None
+    assert "Cedar" not in delivered["reply"]["text"]
+    assert "white" not in delivered["reply"]["text"]
+    assert (delivered.get("shine_final") or {}).get("ok") is not True
+    assert delivered["answer_evidence"] == []
+
+
+def test_a_conflict_replaces_the_asserted_color():
+    delivered = finalize_turn(
+        {
+            "message": "What color is the Cedar?",
+            "guard_decision": "allow",
+            "answer_status": "answered",
+            "answer": "The Cedar is white.",
+            "audit_passed": True,
+            "reply": {
+                "text": "The Cedar is white.",
+                "body": "The Cedar is white.",
+                "supported_text": "The Cedar is white.",
+                "answer_status": "answered",
+            },
+            "related": [
+                {"chunk_id": "white", "chunk_text": "The Cedar is white."},
+                {"chunk_id": "red", "chunk_text": "The Cedar is red."},
+            ],
+        },
+        None,
+    )
+    assert delivered["judgment"]["outcome"] == "conflicting"
+    assert delivered["answer"] is None
+    assert delivered["answer_status"] == "conflicting"
+    assert "white" in delivered["reply"]["text"] and "red" in delivered["reply"]["text"]
+    assert delivered["reply"]["body"] == delivered["reply"]["text"]
+    assert {item["span"] for item in delivered["answer_evidence"]} == {
+        "The Cedar is white.",
+        "The Cedar is red.",
+    }
+
+
+def test_a_specialist_proof_rejects_a_later_sentence():
+    summary = finalize_turn(
+        {
+            "message": "Summarize the Cedar.",
+            "guard_decision": "allow",
+            "summarize": True,
+            "answer_status": "answered",
+            "answer": "The Cedar is white.",
+            "brief": {"summary": "The Cedar is white."},
+            "reply": {
+                "text": "Summary:\nThe Cedar is white.\nThe access code is 4419.",
+                "body": "The Cedar is white.",
+                "answer_status": "answered",
+            },
+        },
+        None,
+    )
+    assert "4419" not in summary["reply"]["text"]
+    assert "The Cedar is white." in summary["reply"]["text"]
+    assert summary["shine_final"]["role"] == "specialist_contract"
+    assert summary["shine_final"]["checked"] is True
+
+    math = finalize_turn(
+        {
+            "message": "What is 17*24?",
+            "guard_decision": "allow",
+            "math": True,
+            "answer_status": "answered",
+            "math_result": {"text": "17*24 = 408."},
+            "reply": {
+                "text": "17*24 = 999.",
+                "body": "17*24 = 999.",
+                "supported_text": "17*24 = 999.",
+                "answer_status": "answered",
+                "answer_evidence": [{"document_id": "math", "span": "17*24 = 999."}],
+            },
+        },
+        None,
+    )
+    assert "999" not in math["reply"]["text"]
+    assert "999" not in str(math["reply"].get("body") or "")
+    assert "999" not in str(math["reply"].get("supported_text") or "")
+    assert "408" in math["reply"]["text"]
+    assert math["reply"]["answer_evidence"] == []
+    assert "specialist_text_replaced" in math["judgment"]["reasons"]
+
+
+def test_a_shine_hold_clears_every_public_field(monkeypatch):
+    def hold(*_args, **_kwargs):
+        return {
+            "shine_decision": "block",
+            "shine_resolution_gate": "FUSION_BLOCK",
+            "shine_ok": False,
+            "answer": "I don't have enough grounded evidence to answer that confidently.",
+        }
+
+    monkeypatch.setattr("cpu_llm.grounding.verify_grounding", hold)
+    delivered = finalize_turn(_color_turn(shine_ok=False), object())
+    assert delivered["answer"] is None
+    assert delivered["audit_passed"] is False
+    assert delivered["answer_status"] == "insufficient_evidence"
+    assert delivered["answer_evidence"] == []
+    assert delivered["supporting_evidence"] == []
+    assert delivered["verification_scope"] == "held"
+    assert "white" not in delivered["reply"]["text"]
+    assert "white" not in str(delivered["reply"].get("body") or "")
+    assert "white" not in str(delivered["reply"].get("supported_text") or "")
+    assert delivered["reply"]["answer_evidence"] == []
+    assert delivered["reply"]["supporting_evidence"] == []
+    assert delivered["judgment"]["verification"] == "shine_held"
+    assert delivered["judgment"]["evidence"] == []
+    assert "white" in delivered["rejected_candidate"]["body"]

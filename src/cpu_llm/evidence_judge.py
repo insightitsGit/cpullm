@@ -21,7 +21,18 @@ _FIXED = (
     "no stored sentence names who did that.",
     "which meaning do you mean?",
 )
-_SPECIALISTS = ("summarize", "math", "finance", "frame", "draft", "creative", "list", "sources")
+_SPECIALISTS = ("summarize", "explain", "math", "finance", "frame", "draft", "creative", "list", "sources")
+_UNSETTLED = "The retrieved passages do not settle that."
+_HEADING = re.compile(
+    r"^(?:summary|explanation|list|sources|math|finance|event|comparison|imagined passage|ranking|possibilities(?: \(\d+\))?)\s*:$",
+    re.IGNORECASE,
+)
+_ATTRIB_ONLY = re.compile(r"^from\s+\S+:$", re.IGNORECASE)
+_ATTRIB_CLAIM = re.compile(r"^from\s+\S+:\s*(.+)$", re.IGNORECASE | re.DOTALL)
+_LEADING_HEADING = re.compile(
+    r"^(?:summary|explanation|list|sources|math|finance|event|comparison|imagined passage|ranking|possibilities(?: \(\d+\))?)\s*:\s*(.*)$",
+    re.IGNORECASE | re.DOTALL,
+)
 
 
 def _blank(**extra: Any) -> dict[str, Any]:
@@ -167,6 +178,37 @@ def _spans(result: dict[str, Any], selected: dict | None) -> tuple[list[dict], l
     return kept_evidence, kept_supporting, licensed.strip()
 
 
+def _specialist_proof(result: dict[str, Any]) -> str:
+    """Text the specialist itself produced. A flag without this text is not a proof."""
+    brief = result.get("brief") if isinstance(result.get("brief"), dict) else {}
+    parts: list[str] = []
+    if result.get("summarize") is True:
+        parts.append(str(brief.get("summary") or ""))
+    if result.get("explain") is True:
+        parts.append(str(brief.get("explanation") or ""))
+    if result.get("list") is True:
+        parts.append(str(brief.get("list") or ""))
+    if result.get("sources") is True:
+        parts.extend(str(item) for item in list(brief.get("sources") or []))
+    if result.get("math") is True:
+        parts.append(str((result.get("math_result") or {}).get("text") or ""))
+    if result.get("finance") is True:
+        parts.append(str((result.get("finance_result") or {}).get("text") or ""))
+    if result.get("frame") is True:
+        parts.append(str((result.get("frame_result") or {}).get("text") or ""))
+    if result.get("draft") is True:
+        draft = result.get("draft")
+        if not isinstance(draft, dict):
+            draft = (result.get("reply") or {}).get("draft") if isinstance(result.get("reply"), dict) else {}
+        parts.append(str((draft or {}).get("text") or ""))
+    if result.get("creative") is True:
+        parts.append(str((result.get("imagination") or {}).get("text") or ""))
+    checked = str(result.get("answer") or "").strip()
+    if checked and any(result.get(flag) is True for flag in ("summarize", "explain", "list", "sources")):
+        parts.append(checked)
+    return " ".join(part.strip() for part in parts if part and str(part).strip())
+
+
 def judge_delivery(result: dict[str, Any]) -> dict[str, Any]:
     """The structured decision for text the pipeline has already retrieved.
 
@@ -191,17 +233,32 @@ def judge_delivery(result: dict[str, Any]) -> dict[str, Any]:
     reply = result.get("reply") if isinstance(result.get("reply"), dict) else {}
     status = str(result.get("answer_status") or reply.get("answer_status") or "")
     if any(result.get(flag) is True for flag in _SPECIALISTS) and request.get("relation") is None:
-        return _blank(
-            channels=_channels(intent),
-            outcome=status or "answered",
-            reasons=["specialist_contract"],
-            verification="specialist_contract",
-        )
-    selected = None
+        proof = _specialist_proof(result)
+        if proof:
+            return _blank(
+                channels=_channels(intent),
+                outcome=status or "answered",
+                reasons=["specialist_contract"],
+                verification="specialist_contract",
+                licensed_text=proof,
+            )
     rows = _rows(result)
-    if request and rows:
-        selected = select_channel_answer(message, rows, intent=intent)
-    if selected and selected.get("answer_status") not in {"answered", "conflicting", "evidence_quote"}:
+    if request:
+        selected = select_channel_answer(message, rows, intent=intent) if rows else {
+            "answer_status": "insufficient_evidence",
+            "reason": "no_matching_channel_relation",
+        }
+        if selected.get("answer_status") not in {"answered", "conflicting", "evidence_quote"}:
+            return _blank(
+                entity=request.get("entity"),
+                relation=request.get("relation"),
+                direction=request.get("direction"),
+                channels=_channels(intent),
+                outcome="insufficient_evidence",
+                reasons=[str(selected.get("reason") or "no_matching_channel_relation"), "selector_rejected"],
+                verification="selector_rejected",
+            )
+    else:
         selected = None
     evidence, supporting, licensed = _spans(result, selected)
     outcome = {
@@ -234,91 +291,212 @@ def _sentences(text: str) -> list[str]:
     return [part.strip() for part in _SENTENCE.findall(text or "") if part.strip()]
 
 
-def _allowed(sentence: str, licensed: str, evidence: list[dict]) -> bool:
-    folded = sentence.casefold().strip(" -:")
-    if not folded or folded.endswith(":"):
+def _norm(text: str) -> str:
+    return re.sub(r"\s+", " ", text.casefold()).strip(" .")
+
+
+def _chrome(sentence: str) -> bool:
+    raw = sentence.strip()
+    if not raw or _HEADING.match(raw) or _ATTRIB_ONLY.match(raw):
         return True
-    if any(folded.startswith(fixed) or fixed in folded for fixed in _FIXED):
+    if raw.endswith(":") and " is " not in raw.casefold() and not re.search(r"\d", raw):
         return True
-    if folded.startswith("from ") and ":" in folded:
-        return True
-    if licensed and folded in licensed.casefold():
-        return True
-    for item in evidence:
-        span = str(item.get("span") or "").casefold()
-        if span and (folded in span or span in folded):
-            return True
     return False
 
 
-def _without_unlicensed(text: str, licensed: str, evidence: list[dict]) -> tuple[str, list[str]]:
+def _fixed(sentence: str) -> bool:
+    folded = _norm(sentence)
+    return any(folded == _norm(phrase) for phrase in _FIXED)
+
+
+def _licensed_norms(licensed: str, evidence: list[dict]) -> set[str]:
+    norms = {_norm(sentence) for sentence in _sentences(licensed)}
+    for item in evidence:
+        norms.update(_norm(sentence) for sentence in _sentences(str(item.get("span") or "")))
+    norms.discard("")
+    return norms
+
+
+def _claim_sentences(sentence: str) -> list[str]:
+    """The claim inside one surface sentence, after an attribution line or heading."""
+    raw = sentence.strip()
+    match = _ATTRIB_CLAIM.match(raw) or _LEADING_HEADING.match(raw)
+    if match:
+        rest = match.group(1).strip()
+        return _sentences(rest) if rest else []
+    return [raw]
+
+
+def _unlicensed(text: str, norms: set[str]) -> list[str]:
+    """Claims that are not exactly a licensed sentence.
+
+    A longer sentence that merely contains the licensed words is a different
+    claim. Negation and an added clause therefore do not inherit the license.
+    """
+    rejected = []
+    for sentence in _sentences(text):
+        if _chrome(sentence) or _fixed(sentence):
+            continue
+        for claim in _claim_sentences(sentence):
+            if _chrome(claim) or _fixed(claim):
+                continue
+            if _norm(claim) not in norms:
+                rejected.append(claim.strip())
+    return rejected
+
+
+def _without_unlicensed(text: str, norms: set[str]) -> tuple[str, list[str]]:
+    """Drop unlicensed claims. A heading stays with the licensed sentence under it."""
     removed: list[str] = []
-
-    def replace(match: re.Match[str]) -> str:
-        sentence = match.group(0)
-        if _allowed(sentence, licensed, evidence):
-            return sentence
-        removed.append(sentence.strip())
-        return ""
-
-    cleaned = _SENTENCE.sub(replace, text)
-    cleaned = re.sub(r"[ \t]+\n", "\n", cleaned)
-    cleaned = re.sub(r"\n{3,}", "\n\n", cleaned).strip()
+    kept_lines: list[str] = []
+    for line in text.splitlines():
+        if not line.strip() or _chrome(line.strip()):
+            kept_lines.append(line)
+            continue
+        if not _unlicensed(line, norms):
+            kept_lines.append(line)
+            continue
+        kept = [sentence.strip() for sentence in _sentences(line) if not _unlicensed(sentence, norms)]
+        removed.extend(sentence.strip() for sentence in _sentences(line) if _unlicensed(sentence, norms))
+        if kept:
+            kept_lines.append(" ".join(kept))
+    cleaned = re.sub(r"\n{3,}", "\n\n", "\n".join(kept_lines)).strip()
     return cleaned, removed
 
 
-def _reject_unlicensed(result: dict[str, Any], judgment: dict[str, Any]) -> dict[str, Any]:
-    """Drop a sentence the decision did not license.
+def _reply_of(result: dict[str, Any]) -> dict[str, Any]:
+    reply = result.get("reply")
+    return dict(reply) if isinstance(reply, dict) else {}
 
-    A replacement of the decision is withheld. An appended sentence is removed
-    and the licensed body stays. Attribution lines and section headings are
-    not claims.
-    """
-    if judgment.get("verification") == "specialist_contract":
+
+def _note_rejected(result: dict[str, Any], reply: dict[str, Any]) -> None:
+    result["rejected_candidate"] = {
+        "text": reply.get("text"),
+        "body": reply.get("body"),
+        "supported_text": reply.get("supported_text"),
+        "answer_evidence": list(reply.get("answer_evidence") or []),
+        "supporting_evidence": list(reply.get("supporting_evidence") or []),
+    }
+
+
+def _publish(
+    result: dict[str, Any],
+    *,
+    text: str,
+    status: str,
+    evidence: list[dict],
+    supporting: list[dict],
+    scope: str,
+    answer: str | None,
+) -> dict[str, Any]:
+    previous = _reply_of(result)
+    _note_rejected(result, previous)
+    reply = dict(previous)
+    reply["text"] = text
+    reply["body"] = text
+    reply["supported_text"] = "" if answer is None else answer
+    reply["answer_status"] = status
+    reply["answer_evidence"] = list(evidence)
+    reply["supporting_evidence"] = list(supporting)
+    reply["verification_scope"] = scope
+    result["reply"] = reply
+    result["answer"] = answer
+    result["answer_status"] = status
+    result["audit_passed"] = False
+    result["answer_evidence"] = list(evidence)
+    result["supporting_evidence"] = list(supporting)
+    result["verification_scope"] = scope
+    result["needs_clarification"] = False
+    return result
+
+
+def _withhold(result: dict[str, Any], judgment: dict[str, Any], reason: str) -> dict[str, Any]:
+    _publish(
+        result,
+        text=_UNSETTLED,
+        status="insufficient_evidence",
+        evidence=[],
+        supporting=[],
+        scope="held",
+        answer=None,
+    )
+    judgment["outcome"] = "insufficient_evidence"
+    reasons = list(judgment.get("reasons") or [])
+    if reason not in reasons:
+        reasons.append(reason)
+    judgment["reasons"] = reasons
+    if judgment.get("verification") != "selector_rejected":
+        judgment["verification"] = "rejected_replacement"
+    judgment["evidence"] = []
+    judgment["supporting"] = []
+    return result
+
+
+def _render_conflict(result: dict[str, Any], judgment: dict[str, Any]) -> dict[str, Any]:
+    """A conflict is the public reply. It is not an asserted color or value."""
+    _publish(
+        result,
+        text=str(judgment.get("licensed_text") or _UNSETTLED),
+        status="conflicting",
+        evidence=list(judgment.get("evidence") or []),
+        supporting=list(judgment.get("supporting") or []),
+        scope="query",
+        answer=None,
+    )
+    return result
+
+
+def _enforce_licensed(result: dict[str, Any], judgment: dict[str, Any]) -> dict[str, Any]:
+    """Keep a sentence only when it is exactly licensed, including its polarity."""
+    if judgment.get("outcome") in {"clarification", "blocked", "unsupported", "insufficient_evidence"}:
         return result
-    if judgment.get("outcome") in {"clarification", "blocked", "unsupported", "conflicting", "insufficient_evidence"}:
-        return result
-    reply = result.get("reply") if isinstance(result.get("reply"), dict) else {}
-    text = str(reply.get("text") or "")
-    body = str(reply.get("body") or "").strip()
     licensed = str(judgment.get("licensed_text") or "").strip()
     if not licensed:
         return result
-    evidence = list(judgment.get("evidence") or [])
+    norms = _licensed_norms(licensed, list(judgment.get("evidence") or []))
+    reply = _reply_of(result)
+    text = str(reply.get("text") or "")
+    body = str(reply.get("body") or "").strip()
+    subject = body or text
+    if _unlicensed(subject, norms):
+        if judgment.get("verification") == "specialist_contract":
+            _publish(
+                result,
+                text=licensed,
+                status=str(judgment.get("outcome") or "answered"),
+                evidence=list(judgment.get("evidence") or []),
+                supporting=list(judgment.get("supporting") or []),
+                scope="specialist_contract",
+                answer=licensed,
+            )
+            judgment["reasons"] = list(judgment.get("reasons") or []) + ["specialist_text_replaced"]
+            return result
+        return _withhold(result, judgment, "final_text_not_in_evidence")
+    cleaned, removed = _without_unlicensed(text, norms)
+    if not removed:
+        return result
+    reasons = list(judgment.get("reasons") or [])
     if body and body in text:
         head, _, tail = text.partition(body)
-        body_extra = [sentence for sentence in _sentences(body) if not _allowed(sentence, licensed, evidence)]
-        if not body_extra:
-            cleaned_tail, removed = _without_unlicensed(tail, licensed, evidence)
-            if not removed:
-                return result
-            reply = dict(reply)
-            reply["text"] = f"{head}{body}\n\n{cleaned_tail}".strip() if cleaned_tail else f"{head}{body}".strip()
-            result["reply"] = reply
-            judgment["reasons"] = list(judgment.get("reasons") or []) + ["appended_text_removed"]
-            return result
+        if _unlicensed(head, norms):
+            reasons.append("prefixed_text_removed")
+        if _unlicensed(tail, norms):
+            reasons.append("appended_text_removed")
     else:
-        body_extra = [sentence for sentence in _sentences(text) if not _allowed(sentence, licensed, evidence)]
-        if not body_extra:
-            return result
-    withheld = "The retrieved passages do not settle that."
+        reasons.append("appended_text_removed")
+    judgment["reasons"] = reasons
     reply = dict(reply)
-    reply["text"] = withheld
-    reply["body"] = withheld
-    reply["answer_status"] = "insufficient_evidence"
-    reply["answer_evidence"] = []
-    reply["supporting_evidence"] = []
+    reply["text"] = cleaned
+    if str(reply.get("supported_text") or "") and _unlicensed(str(reply.get("supported_text") or ""), norms):
+        reply["supported_text"] = body if body and not _unlicensed(body, norms) else ""
+    reply["answer_evidence"] = list(judgment.get("evidence") or [])
+    reply["supporting_evidence"] = list(judgment.get("supporting") or [])
     result["reply"] = reply
-    result["answer"] = None
-    result["answer_status"] = "insufficient_evidence"
-    result["answer_evidence"] = []
-    result["supporting_evidence"] = []
-    result["audit_passed"] = False
-    result["needs_clarification"] = False
-    judgment["outcome"] = "insufficient_evidence"
-    judgment["reasons"] = list(judgment.get("reasons") or []) + ["final_text_not_in_evidence"]
-    judgment["verification"] = "rejected_replacement"
-    judgment["evidence"] = []
+    result["answer_evidence"] = list(judgment.get("evidence") or [])
+    result["supporting_evidence"] = list(judgment.get("supporting") or [])
+    if result.get("answer") and _unlicensed(str(result.get("answer") or ""), norms):
+        result["answer"] = None
+        result["audit_passed"] = False
     return result
 
 
@@ -339,35 +517,40 @@ def finalize_turn(result: dict[str, Any], gate: Any | None) -> dict[str, Any]:
         result["shine_final"] = {"role": "final_deliverable", "applied": False, "reason": "abstention"}
         return result
     judgment = judge_delivery(result)
-    result = _reject_unlicensed(result, judgment)
+    if judgment.get("outcome") == "conflicting":
+        result = _render_conflict(result, judgment)
+    elif judgment.get("verification") == "selector_rejected":
+        result = _withhold(result, judgment, "selector_rejected")
+    else:
+        result = _enforce_licensed(result, judgment)
+    if judgment.get("verification") == "specialist_contract" and judgment.get("verification") != "rejected_replacement":
+        result["shine_final"] = {"role": "specialist_contract", "checked": True}
+        result["judgment"] = {key: value for key, value in judgment.items() if key != "licensed_text"}
+        return result
     reply = result.get("reply") if isinstance(result.get("reply"), dict) else {}
-    if judgment.get("verification") != "specialist_contract" and gate is not None and judgment["outcome"] in {"answered", "evidence_quote"}:
+    if (
+        judgment.get("verification") == "structural"
+        and gate is not None
+        and judgment["outcome"] in {"answered", "evidence_quote"}
+    ):
         from cpu_llm.grounding import verify_grounding
 
-        body = str(reply.get("body") or reply.get("supported_text") or reply.get("text") or "")
-        scores: dict[str, Any] = {}
-        for item in list(result.get("related") or []) + list(result.get("passages") or []):
-            if item.get("score") is None:
-                continue
-            for key in (item.get("chunk_id"), item.get("document_id"), item.get("chunk_text"), item.get("text")):
-                if key:
-                    scores[str(key)] = item.get("score")
-        related = []
-        for index, item in enumerate(judgment.get("evidence") or []):
-            span = str(item.get("span") or "")
-            if not span:
-                continue
-            document_id = str(item.get("document_id") or f"evidence-{index}")
-            related.append({
-                "chunk_id": document_id,
-                "chunk_text": span,
-                "score": scores.get(document_id, scores.get(span)),
-            })
-        claim = str(judgment.get("licensed_text") or "").strip()
-        shown = body or str(reply.get("text") or "")
-        # The graph already grounded this claim. Attribution lines around a
-        # quote are not a new answer, so they do not get a second, harsher bundle.
-        if result.get("shine_ok") is True and claim and claim.casefold() in shown.casefold():
+        shown = str(reply.get("text") or "")
+        delivered = [
+            claim.strip()
+            for sentence in _sentences(shown)
+            if not _chrome(sentence) and not _fixed(sentence)
+            for claim in _claim_sentences(sentence)
+            if not _chrome(claim) and not _fixed(claim)
+        ]
+        licensed_norms = _licensed_norms(
+            str(judgment.get("licensed_text") or ""),
+            list(judgment.get("evidence") or []),
+        )
+        delivered_norms = [_norm(claim) for claim in delivered]
+        if any(item not in licensed_norms for item in delivered_norms):
+            result = _withhold(result, judgment, "final_text_not_in_evidence")
+        elif result.get("shine_ok") is True and delivered_norms and all(item in licensed_norms for item in delivered_norms):
             result["shine_final"] = {
                 "role": "final_deliverable",
                 "decision": result.get("shine_decision"),
@@ -377,45 +560,61 @@ def finalize_turn(result: dict[str, Any], gate: Any | None) -> dict[str, Any]:
             }
             result["judgment"] = {key: value for key, value in judgment.items() if key != "licensed_text"}
             return result
-        if claim:
-            body = claim
-        if related and all(item.get("score") is None for item in related) and result.get("shine_ok") is not False:
-            result["shine_final"] = {
-                "role": "final_deliverable",
-                "applied": False,
-                "reason": "retrieval_score_absent",
-            }
-            result["judgment"] = {key: value for key, value in judgment.items() if key != "licensed_text"}
-            return result
-        checked = verify_grounding(
-            gate,
-            question=str(result.get("message") or " "),
-            answer=body,
-            related=related,
-            query_category=result.get("query_category"),
-            abstention=False,
-        )
-        result["shine_final"] = {
-            "decision": checked["shine_decision"],
-            "resolution_gate": checked["shine_resolution_gate"],
-            "ok": checked["shine_ok"],
-            "role": "final_deliverable",
-        }
-        if checked["shine_ok"] is False:
-            result["answer"] = None
-            result["audit_passed"] = False
-            result["answer_status"] = "insufficient_evidence"
-            result["answer_evidence"] = []
-            result["supporting_evidence"] = []
-            reply = dict(reply)
-            reply["text"] = checked["answer"] or reply.get("text")
-            reply["answer_status"] = "insufficient_evidence"
-            result["reply"] = reply
-            judgment["outcome"] = "insufficient_evidence"
-            judgment["verification"] = "shine_held"
-            judgment["reasons"] = list(judgment.get("reasons") or []) + ["shine_final_hold"]
-    elif judgment.get("verification") == "specialist_contract":
-        result["shine_final"] = {"role": "specialist_contract", "applied": False}
+        else:
+            scores: dict[str, Any] = {}
+            for item in list(result.get("related") or []) + list(result.get("passages") or []):
+                if item.get("score") is None:
+                    continue
+                for key in (item.get("chunk_id"), item.get("document_id"), item.get("chunk_text"), item.get("text")):
+                    if key:
+                        scores[str(key)] = item.get("score")
+            related = []
+            for index, item in enumerate(judgment.get("evidence") or []):
+                span = str(item.get("span") or "")
+                if not span:
+                    continue
+                document_id = str(item.get("document_id") or f"evidence-{index}")
+                related.append({
+                    "chunk_id": document_id,
+                    "chunk_text": span,
+                    "score": scores.get(document_id, scores.get(span)),
+                })
+            if related and all(item.get("score") is None for item in related) and result.get("shine_ok") is not False:
+                result["shine_final"] = {
+                    "role": "final_deliverable",
+                    "applied": False,
+                    "reason": "retrieval_score_absent",
+                }
+            else:
+                checked = verify_grounding(
+                    gate,
+                    question=str(result.get("message") or " "),
+                    answer=" ".join(delivered) or shown,
+                    related=related,
+                    query_category=result.get("query_category"),
+                    abstention=False,
+                )
+                result["shine_final"] = {
+                    "decision": checked["shine_decision"],
+                    "resolution_gate": checked["shine_resolution_gate"],
+                    "ok": checked["shine_ok"],
+                    "role": "final_deliverable",
+                }
+                if checked["shine_ok"] is False:
+                    _publish(
+                        result,
+                        text=str(checked.get("answer") or shown),
+                        status="insufficient_evidence",
+                        evidence=[],
+                        supporting=[],
+                        scope="held",
+                        answer=None,
+                    )
+                    judgment["outcome"] = "insufficient_evidence"
+                    judgment["verification"] = "shine_held"
+                    judgment["reasons"] = list(judgment.get("reasons") or []) + ["shine_final_hold"]
+                    judgment["evidence"] = []
+                    judgment["supporting"] = []
     result["judgment"] = {key: value for key, value in judgment.items() if key != "licensed_text"}
     if judgment.get("verification") in {"rejected_replacement", "shine_held"}:
         result["answer"] = None

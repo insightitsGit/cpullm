@@ -579,6 +579,9 @@ class Appliance:
             return response
         from cpu_llm.clarification import scoped_session, clarification_result, supported_ranking
         raw_message = message
+        from cpu_llm.response_policy import classify_response_request
+        response_plan = classify_response_request(message)
+        message = response_plan['content_query']
         session_key = scoped_session(self.tenant_id, None if context is None else context.caller_id,
                                      None if context is None else context.allowed_sources, session_id, as_of)
         with self._session_turn(session_key):
@@ -593,6 +596,7 @@ class Appliance:
             abandoned = bool(plan.get('clarification_abandoned'))
             if plan['status'] != 'ready':
                 response = clarification_result(plan, message, self.tenant_id)
+                response['response_plan'] = response_plan
                 if context is not None:
                     response.update(caller_id=context.caller_id, request_id=context.request_id)
                 return response
@@ -600,6 +604,7 @@ class Appliance:
             reference = self.references.prepare(message, key=session_key, continuation=plan)
             if reference['status'] in {'needs_clarification', 'insufficient_information', 'cancelled'}:
                 response = clarification_result(reference, raw_message, self.tenant_id)
+                response['response_plan'] = response_plan
                 if context is not None:
                     response.update(caller_id=context.caller_id, request_id=context.request_id)
                 return response
@@ -630,6 +635,14 @@ class Appliance:
             summary_reasons = summary_trigger(message)
             explain_reasons = explain_trigger(message)
             list_reasons = list_trigger(message)
+            if response_plan['mode'] == 'overview':
+                if response_plan['format'] == 'bullets':
+                    list_reasons = ['the response plan requests a source-backed overview in bullets']
+                    summary_reasons = []
+                else:
+                    summary_reasons = ['the response plan requests a source-backed overview']
+                    list_reasons = []
+                explain_reasons = []
             source_reasons = source_trigger(message)
             from cpu_llm.memory.frames import frame_trigger
 
@@ -651,6 +664,7 @@ class Appliance:
                 "hypothesis": hypothesis,
                 "causal_graph": causal_graph,
                 "z_query": z_query,
+                "response_plan": response_plan,
                 "allowed_sources": None if context is None else context.allowed_sources,
                 "as_of": as_of,
             }
@@ -663,6 +677,7 @@ class Appliance:
                     response["answer"] = None
                     response["audit_passed"] = False
                     response["answer_evidence"] = []
+                    response['response_plan'] = response_plan
                     if context is not None:
                         response.update(caller_id=context.caller_id, request_id=context.request_id)
                     if abandoned:
@@ -671,6 +686,7 @@ class Appliance:
             result = self.graph.invoke(
                 {
                     "message": message,
+                    "response_plan": response_plan,
                     "tenant_id": self.tenant_id,
                     "caller_id": None if context is None else context.caller_id,
                     "request_id": None if context is None else context.request_id,
@@ -721,7 +737,8 @@ class Appliance:
             result["typos"] = typos
             result["tenant_id"] = self.tenant_id
             result['reference_resolution'] = reference
-            if reference['bindings'] or typos:
+            result['response_plan'] = response_plan
+            if reference['bindings'] or typos or message != raw_message:
                 result['original_message'] = raw_message
                 result['resolved_query'] = message
             if context is not None:
@@ -1754,6 +1771,9 @@ def _brief(appliance: Appliance):
         from cpu_llm.manifest_spans import answer_numbers_allowed, build_span_grammar
 
         rows = _brief_rows(appliance, state)
+        response_plan = state.get('response_plan') or {}
+        sentence_budget = response_plan.get('sentence_budget', SUMMARY_KEEP)
+        item_budget = response_plan.get('item_budget', LIST_KEEP)
         query = (appliance._turn or {}).get("z_query")
         if query is None:
             query = np.zeros(TENSOR_DIM, dtype=np.float32)
@@ -1819,11 +1839,11 @@ def _brief(appliance: Appliance):
         explanation, explanation_sources = ("", [])
         listed, list_sources = ("", [])
         if state.get("summarize") is True:
-            summary, summary_sources = speak(ranked, SUMMARY_KEEP)
+            summary, summary_sources = speak(ranked, sentence_budget)
         if state.get("explain") is True:
-            explanation, explanation_sources = speak(cause_first(ranked, texts), SUMMARY_KEEP)
+            explanation, explanation_sources = speak(cause_first(ranked, texts), sentence_budget)
         if state.get("list") is True:
-            spoken, list_sources = speak(ranked, LIST_KEEP)
+            spoken, list_sources = speak(ranked, item_budget)
             listed = "\n".join(_sentence_lines(spoken))
         source_ids: list[str] = []
         for document_id in summary_sources + explanation_sources + list_sources:
@@ -1846,7 +1866,8 @@ def _brief(appliance: Appliance):
                 "explanation": explanation,
                 "list": listed,
                 "sources": source_ids,
-                "weights": [float(item.epistemic_weight) for item in ranked[:SUMMARY_KEEP]],
+                "weights": [float(item.epistemic_weight) for item in ranked[:max(sentence_budget, item_budget if state.get('list') else 0)]],
+                "response_plan": response_plan,
             }
         }
 
@@ -2397,11 +2418,12 @@ def _retrieve(appliance: Appliance):
         turn['prompt_intent'] = intent
         allowed = (appliance._turn or {}).get("allowed_sources")
         as_of = (appliance._turn or {}).get("as_of")
+        retrieval_budget = (turn.get('response_plan') or {}).get('retrieval_budget', 5)
         if allowed is None:
-            hits = appliance.index.search(message, top_k=5, query_tensor=z_query, as_of=as_of)
+            hits = appliance.index.search(message, top_k=retrieval_budget, query_tensor=z_query, as_of=as_of)
         else:
             hits = appliance.index.search_allowed(
-                message, set(allowed), top_k=5, query_tensor=z_query, as_of=as_of
+                message, set(allowed), top_k=retrieval_budget, query_tensor=z_query, as_of=as_of
             )
         # Preserve the original prompt/tensor; encode at most one equivalent
         # expression through the same VectorPrism pipeline for extra recall.

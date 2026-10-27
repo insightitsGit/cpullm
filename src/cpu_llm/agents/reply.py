@@ -173,6 +173,30 @@ def compose_reply(state: dict[str, Any]) -> dict[str, Any]:
             lines.extend(["", "Finance:", finance_text])
         if frame_text and not frame_only:
             lines.extend(["", "Event:", frame_text])
+    # Explicit depth/count requests use the selected overview/list directly.
+    # Do not prepend the old unbounded body and defeat the sentence budget.
+    response_plan = state.get('response_plan') or {}
+    planned = ''
+    if (response_plan.get('explicit') and not refused and not notice
+            and not _delivery_holds(state) and draft is None
+            and not math_only and not finance_only and not frame_only
+            and not state.get('explain')):
+        if state.get('list'):
+            planned = str(brief.get('list') or '').strip()
+            if planned:
+                lines = ['List:', *[f'- {item}' for item in planned.splitlines() if item.strip()]]
+        elif state.get('summarize'):
+            planned = str(brief.get('summary') or '').strip()
+            if planned:
+                lines = ['Summary:', planned]
+        if planned:
+            body = planned
+            assessment = None
+            ranking = None
+            situation = None
+            follow_ups = _follow_ups(state, body)
+            if state.get('sources') and brief.get('sources'):
+                lines.extend(['', 'Sources:', *[f'- {item}' for item in brief['sources']]])
     reply = {
         "preface": preface,
         "body": body,

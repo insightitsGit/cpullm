@@ -89,15 +89,21 @@ or the final check held it. An empty-retrieval abstention keeps its abstention
 sentence (`judgment.verification` is `abstention`). `evidence_quote` puts the
 licensed spans in `reply.text` and leaves `answer` empty. `channels` separates
 a recognized question form from an enabled vector head; a prototype score there
-is not a probability and not proof. `shine_final` is the grounding record for
-the text that left `ask()`, when that text is a factual answer. If the earlier
-grounding node already accepted the licensed claim and that claim is still
-present, `shine_final.reused_graph_verdict` is true. That record is not a new
-search. Specialist replies record `shine_final.role = "specialist_contract"`
-instead of being rewritten for lack of a color or lifespan relation. A reason
+is not a probability and not proof. `shine_final` is the grounding record for the claims that left `ask()`.
+`reused_graph_verdict: true` means those claims are the licensed sentences and
+the earlier grounding node already accepted them. A negation, a prefixed
+claim, or an added clause does not qualify. Specialist replies record
+`shine_final.role = "specialist_contract"` and `checked: true` when the
+displayed text was compared with the summary, math result, or other producer
+text. That flag alone is not a proof. A reason `prefixed_text_removed` or
 `appended_text_removed` means an extra sentence was dropped and the licensed
-body was kept. `final_text_not_in_evidence` means the body itself was replaced
-and the answer was withheld.
+body was kept. `final_text_not_in_evidence` means the body itself was not the
+licensed sentence and the answer was withheld. `selector_rejected` means the
+requested entity had no matching evidence, so an earlier sentence about a
+different entity was not returned. On `conflicting`, read `reply.text` for
+both source sentences and do not treat `answer` as a chosen value. On a Shine
+hold, `reply.body` and `supported_text` are cleared with `reply.text`.
+`rejected_candidate` is diagnostic and is not the answer.
 
 A sense clarification means the stored classes name two referents, or the
 question never picked one. It does not mean the name occurred in several
