@@ -50,11 +50,13 @@ def test_causal_direction_and_same_channel_are_not_enough():
     assert 'because cooking' in why['text']
 
 
-def test_an_average_lifespan_is_not_an_answer():
+def test_an_explicit_average_is_quoted_and_an_individual_does_not_inherit_it():
     average = 'The average display loom lives for 3 years.'
     asked = select_channel_answer('How long does the average display loom live?', [dict(document_id='avg', text=average)])
-    assert asked['answer_status'] == 'insufficient_evidence'
-    assert '3 years' not in asked['text']
+    assert asked['answer_status'] == 'answered'
+    assert asked['text'] == average
+    assert asked['decision']['request']['quantifier_scope'] == 'aggregate'
+    assert asked['decision']['proof'][0]['document_id'] == 'avg'
     individual = select_channel_answer('How long does the Wicker live?', [
         dict(document_id='kind', text='The Wicker is a survey loom.'),
         dict(document_id='rule', text='Every survey loom lives for 11 years.'),
@@ -63,6 +65,7 @@ def test_an_average_lifespan_is_not_an_answer():
     assert individual['answer_status'] == 'answered'
     assert '11 years' in individual['text']
     assert '3 years' not in individual['text']
+    assert individual['decision']['request']['quantifier_scope'] == 'individual'
 
 
 def test_a_one_word_color_answers_and_two_colors_conflict():

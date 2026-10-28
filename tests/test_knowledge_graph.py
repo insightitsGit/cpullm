@@ -13,7 +13,12 @@ def test_typed_edges_keep_direction_and_exact_source_sentences():
     assert extract_facts('bad', 'The moth is not blue. If the moth is an insect. It has wings.') == []
     copper = extract_facts('kestrel', 'The Kestrel is copper.')
     assert [(fact.relation, fact.object) for fact in copper] == [('has_color', 'copper')]
+    assert extract_facts('ready', 'The Kestrel is ready.') == []
     assert extract_facts('place', 'The Reed is found in Rim.')[0].relation == 'lives_in'
+    named = extract_facts('mauve', 'The color of the Kestrel is mauve.')
+    assert [(fact.relation, fact.object.casefold()) for fact in named] == [('has_color', 'mauve')]
+    kind = extract_facts('instrument', 'The Kestrel is a copper instrument.')
+    assert [(fact.relation, fact.object) for fact in kind] == [('is_a', 'copper instrument')]
 
 
 def test_alias_connects_named_entity_to_facts_in_another_paragraph(tmp_path):

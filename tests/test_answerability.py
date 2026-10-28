@@ -105,6 +105,10 @@ def test_a_definition_uses_the_kind_when_a_place_sentence_is_also_present():
         assert decision is not None
         assert decision["answer_status"] == "answered"
         assert decision["text"] == kind
+    only_place = assess("What is the Reed?", [place])
+    assert only_place is not None
+    assert only_place["answer_status"] == "insufficient_evidence"
+    assert "Rim" not in only_place["text"]
 
 
 def test_paraphrase_and_alias_still_bind():

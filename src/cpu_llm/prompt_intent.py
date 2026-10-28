@@ -24,14 +24,6 @@ def _name(text):
     return re.sub(r'^(?:the|an|a)\s+', '', text)
 
 
-_INDEFINITE_SUBJECT = re.compile(r'^(?:some|most|many|several|few|average)\b', re.I)
-
-
-def _indefinite_subject(text: str) -> bool:
-    """Some, most, and an average do not state one individual's fact."""
-    return bool(_INDEFINITE_SUBJECT.match(_name(text)))
-
-
 def _requested(message):
     patterns = [
         ('has_lifespan', 'subject', r'how long (?:does|do|can) (?P<entity>.+?) live'),
@@ -132,10 +124,9 @@ def select_channel_answer(message, chunks, *, intent=None):
     request = intent['requested']
     if request is None:
         return None
-    if _indefinite_subject(request['entity']):
-        return dict(query=message, kind='channel', prompt_intent=intent, retrieved_candidates=[],
-                    answer_evidence=[], verification_scope='query', answer_status='insufficient_evidence',
-                    reason='unlicensed_quantifier', text='The retrieved passages do not settle that.')
+    from cpu_llm.semantic import compile_request, decide, proof_from_facts, scope_allows
+
+    compiled = compile_request(request)
     facts = []
     for index, row in enumerate(chunks):
         if isinstance(row, str):
@@ -164,18 +155,18 @@ def select_channel_answer(message, chunks, *, intent=None):
                 return kept
             return words(name) == words(value)
         return _equivalent(name, value)
-    # "Some" and an average do not state an individual's fact. "The average"
-    # is the same quantifier once the article is removed. A named object
-    # ("does the Nacre have a beacon?") keeps only that object.
+    # An individual does not inherit some or an average. An explicit question
+    # about that average keeps the aggregate sentence and nothing else.
     asked_object = request.get('object')
+    scope = compiled.quantifier_scope
     selected = [fact for fact in facts if fact.relation == request['relation'] and channel in fact.channels
                 and any(matches(name, getattr(fact, request['direction'])) for name in names)
-                and not _indefinite_subject(fact.subject)
+                and scope_allows(scope, request['entity'], fact.subject)
                 and (not asked_object or _equivalent(asked_object, fact.object))]
     alias_evidence = [edge for fact in selected for name in names
                       if matches(name, getattr(fact, request['direction'])) for edge in aliases[name]]
     joins = []
-    if request['relation'] in {'has_lifespan', 'has_color', 'lives_in', 'has'}:
+    if scope == 'individual' and request['relation'] in {'has_lifespan', 'has_color', 'lives_in', 'has'}:
         memberships = [fact for fact in facts if fact.relation == 'is_a'
                        and any(_equivalent(name, fact.subject) for name in names)]
         for membership in memberships:
@@ -205,21 +196,37 @@ def select_channel_answer(message, chunks, *, intent=None):
             selected = selected[:1]
     base = dict(query=message, kind='channel', prompt_intent=intent, retrieved_candidates=[
         dict(document_id=f.document_id, span=f.sentence) for f in facts], answer_evidence=[], verification_scope='query')
+
+    def _attach(payload, proof_facts, outcome, reason, text):
+        payload['decision'] = decide(
+            compiled, outcome=outcome, reason=reason, text=text, proof=proof_from_facts(proof_facts),
+        ).as_dict()
+        return payload
+
     if not selected:
-        return dict(base, answer_status='insufficient_evidence',
-                    reason='chosen_class_missing' if chosen else 'no_matching_channel_relation',
-                    text='The retrieved passages do not settle that.')
+        return _attach(
+            dict(base, answer_status='insufficient_evidence',
+                 reason='chosen_class_missing' if chosen else 'no_matching_channel_relation',
+                 text='The retrieved passages do not settle that.'),
+            [], 'insufficient_evidence',
+            'chosen_class_missing' if chosen else 'no_matching_channel_relation',
+            'The retrieved passages do not settle that.')
     values = {_name(f.object) for f in selected}
     evidence = list({(f.document_id, f.sentence): dict(document_id=f.document_id, span=f.sentence)
                      for f in joins + selected}.values())
     base['supporting_evidence'] = list({(f.document_id, f.sentence): dict(document_id=f.document_id, span=f.sentence)
                                        for f in alias_evidence}.values())
     if request['relation'] in {'has_color', 'has_lifespan'} and len(values) > 1:
-        return dict(base, answer_status='conflicting', reason='conflicting_channel_values', answer_evidence=evidence,
-                    text='The retrieved passages do not settle that. Stored sentences conflict: ' + ' '.join(f.sentence for f in selected))
+        conflict_text = 'The retrieved passages do not settle that. Stored sentences conflict: ' + ' '.join(f.sentence for f in selected)
+        return _attach(
+            dict(base, answer_status='conflicting', reason='conflicting_channel_values', answer_evidence=evidence,
+                 text=conflict_text),
+            selected, 'conflicting', 'conflicting_channel_values', conflict_text)
     reason = 'chosen_class' if chosen else ('universal_membership_join' if joins else 'channel_relation_stated')
-    return dict(base, answer_status='answered', reason=reason, answer_evidence=evidence,
-                text=' '.join(dict.fromkeys(f.sentence for f in joins + selected)))
+    answered_text = ' '.join(dict.fromkeys(f.sentence for f in joins + selected))
+    return _attach(
+        dict(base, answer_status='answered', reason=reason, answer_evidence=evidence, text=answered_text),
+        joins + selected, 'answered', reason, answered_text)
 
 
 def rank_channel_hits(hits, intent):

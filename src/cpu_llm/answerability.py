@@ -494,8 +494,10 @@ def _subject_bindings(plan: dict[str, str], rows: list[dict[str, str]]) -> list[
             return plain[:1]
         if kinds:
             return kinds[:1]
-        if definitions:
-            return definitions[:1]
+        from cpu_llm.semantic import blocks_type
+
+        if definitions and all(blocks_type(item["span"]) for item in definitions):
+            return []
     return bindings
 
 
@@ -624,7 +626,9 @@ def _subject_sentence(subject: str, sentence: str) -> bool:
 
 def _kind_sentence(sentence: str) -> bool:
     """A taxonomic "is a" sentence, not a place or a one-word predicate."""
-    return re.search(r"\b(?:is|are)\s+(?:a|an)\s+\S", sentence, re.IGNORECASE) is not None
+    from cpu_llm.semantic import discharges_type
+
+    return discharges_type(sentence)
 
 
 def _definition_sentence(plan: dict[str, str], sentence: str) -> bool:
