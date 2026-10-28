@@ -558,7 +558,9 @@ def test_a_missing_selected_class_is_not_replaced_by_the_other_meaning():
 
 def test_a_kind_question_keeps_the_selected_class():
     from cpu_llm.answerability import chosen_class
-    from cpu_llm.evidence_judge import judge_delivery
+    from cpu_llm.clarification import ClarificationLoop
+    from cpu_llm.evidence_judge import finalize_turn, judge_delivery
+    from cpu_llm.pipeline import _class_clarification
 
     rows = [
         {"document_id": "survey", "text": "The Lumen is a survey mark."},
@@ -566,8 +568,24 @@ def test_a_kind_question_keeps_the_selected_class():
     ]
     question = "What kind of thing is the Lumen?"
     related = [{"chunk_id": item["document_id"], "chunk_text": item["text"]} for item in rows]
-    with chosen_class("display mark"):
-        decision = assess(question, rows)
+    asked = assess(question, rows)
+    assert asked["answer_status"] == "needs_clarification"
+    assert "2. display, mark" in asked["text"]
+    assert "The Lumen is a survey mark." not in asked["text"]
+
+    loop = ClarificationLoop()
+    stored = _class_clarification(
+        type("App", (), {"clarifications": loop})(),
+        question,
+        {"related": related},
+        "chat",
+    )
+    assert stored["slot"] == "sense"
+    ready = loop.prepare("2", key="chat")
+    assert ready["sense"]["words"] == ["display", "mark"]
+    chosen = " ".join(ready["sense"]["words"])
+    with chosen_class(chosen):
+        decision = assess(ready["question"], rows)
         reply = compose_reply({
             "message": question,
             "guard_decision": "allow",
@@ -579,18 +597,29 @@ def test_a_kind_question_keeps_the_selected_class():
             "message": question,
             "guard_decision": "allow",
             "answer_status": "answered",
-            "answer": "The Lumen is a display mark.",
+            "answer": reply["text"],
             "related": related,
-            "reply": {"text": "The Lumen is a display mark.", "answer_status": "answered"},
+            "reply": reply,
         })
+        delivered = finalize_turn({
+            "message": question,
+            "guard_decision": "allow",
+            "answer_status": reply["answer_status"],
+            "answer": reply.get("supported_text") or reply.get("body"),
+            "audit_passed": True,
+            "related": related,
+            "reply": reply,
+        }, None)
     assert decision["answer_status"] == "answered"
     assert decision["reason"] == "chosen_class"
     assert decision["text"] == "The Lumen is a display mark."
     assert "survey mark" not in decision["text"]
-    assert "The Lumen is a display mark." in reply["text"]
+    assert reply["text"] == "The Lumen is a display mark."
     assert "survey mark" not in reply["text"]
     assert judgment["licensed_text"] == "The Lumen is a display mark."
     assert "survey mark" not in judgment["licensed_text"]
+    assert delivered["reply"]["text"] == "The Lumen is a display mark."
+    assert "survey mark" not in delivered["reply"]["text"]
 
 
 def test_a_kind_question_does_not_substitute_another_class():

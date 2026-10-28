@@ -800,13 +800,14 @@ class Appliance:
             if realization == "evidence_neural" or account:
                 from cpu_llm.realizer.ranker import apply_realization
 
-                extra = apply_realization(
-                    result,
-                    realization=realization,
-                    account=account,
-                    memory=self.memory,
-                    causal_edges=list(getattr(causal_graph, "edges", None) or []),
-                )
+                with chosen_class(chosen or None):
+                    extra = apply_realization(
+                        result,
+                        realization=realization,
+                        account=account,
+                        memory=self.memory,
+                        causal_edges=list(getattr(causal_graph, "edges", None) or []),
+                    )
                 result = {**result, **extra}
             result["child_safety"] = {"action": "off", "reasons": ["child safety is not applied"]}
             result["typos"] = typos
@@ -871,7 +872,8 @@ class Appliance:
                         response['clarification_abandoned'] = True
                     return response
             from cpu_llm.evidence_judge import finalize_turn
-            return finalize_turn(result, getattr(self, 'shine', None))
+            with chosen_class(chosen or None):
+                return finalize_turn(result, getattr(self, 'shine', None))
 
     def ask_concurrent(self, message: str, *, request_id: str | None = None, caller: Any | None = None, thinker_factory: Any = None, **kwargs: Any) -> dict[str, Any]:
         """Run ``ask`` on one seat lock and that seat's thinker.

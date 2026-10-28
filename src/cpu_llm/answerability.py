@@ -143,6 +143,56 @@ def chosen_class_label() -> str | None:
     return label.strip() if isinstance(label, str) and label.strip() else None
 
 
+def _constrain_channel_class(message: str, chunks: list[Any], channel_answer: dict[str, Any]) -> dict[str, Any] | None:
+    """Keep a selected class, or ask when two classes are still open.
+
+    ``None`` means the channel answer can stand. A chosen class that is not in
+    the rows is insufficient. It is not a license to quote the other class.
+    """
+    requested = (channel_answer.get("prompt_intent") or {}).get("requested") or {}
+    if requested.get("relation") != "is_a":
+        return None
+    rows = [_row(chunk, index) for index, chunk in enumerate(chunks)]
+    rows = [row for row in rows if row["text"]]
+    subject = str(requested.get("entity") or "")
+    chosen = chosen_class_label()
+    if chosen:
+        sentence = _class_sentence(subject, chosen, rows)
+        if sentence is None:
+            return {
+                **channel_answer,
+                "answer_status": "insufficient_evidence",
+                "reason": "chosen_class_missing",
+                "text": _UNSETTLED,
+                "answer_evidence": [],
+            }
+        return {
+            **channel_answer,
+            "answer_status": "answered",
+            "reason": "chosen_class",
+            "text": sentence["span"],
+            "answer_evidence": [sentence],
+        }
+    # A taxonomic "species of" sentence is the definition. Other "is a"
+    # descriptions in the same article are not a second meaning to choose.
+    if any("is a species of" in row["text"].casefold() for row in rows):
+        return None
+    classes = _unlinked_classes(subject, rows)
+    if len(classes) < 2:
+        return None
+    from cpu_llm.clarification import _sense_text
+
+    senses = [{"words": label.split()} for label in classes]
+    return {
+        **channel_answer,
+        "answer_status": "needs_clarification",
+        "reason": "unlinked_classes",
+        "classes": list(classes),
+        "text": _sense_text(senses),
+        "answer_evidence": [],
+    }
+
+
 def assess(message: str, chunks: list[Any], *, intent=None) -> dict[str, Any] | None:
     """Whether the supplied sentences state the asked relation.
 
@@ -153,6 +203,11 @@ def assess(message: str, chunks: list[Any], *, intent=None) -> dict[str, Any] | 
     from cpu_llm.prompt_intent import select_channel_answer
     channel_answer = select_channel_answer(message, chunks, intent=intent)
     if channel_answer is not None:
+        # "What kind" is settled by the selector. Apply the selected class
+        # before that answer is returned, or the first stored class is spoken.
+        constrained = _constrain_channel_class(message, chunks, channel_answer)
+        if constrained is not None:
+            return constrained
         return channel_answer
     plan = parse_query(message)
     if plan is None:

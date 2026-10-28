@@ -297,19 +297,20 @@ def _query_assessment(state: dict[str, Any]) -> dict[str, Any] | None:
         decision["replaces_body"] = True
         decision["verification_scope"] = "query"
         return decision
+    # "What kind" is not a definition parse, so an audited sentence cannot
+    # prove the subject. The selected class is still the answer.
+    licensed = str(decision.get("text") or "").strip()
+    if decision.get("reason") == "chosen_class" and licensed:
+        decision["answer_status"] = "answered"
+        decision["text"] = licensed
+        decision["supported_text"] = licensed
+        decision["verification_scope"] = "query"
+        decision["replaces_body"] = True
+        return decision
     spoken = supported_answer(message, str(state.get("answer") or ""))
     audited = state.get("audit_passed") is True and bool(spoken)
     if audited:
         licensed = str(decision.get("text") or "").strip()
-        # The selected class is the answer. An audited sentence from the other
-        # class does not replace it.
-        if decision.get("reason") == "chosen_class" and licensed:
-            decision["answer_status"] = "answered"
-            decision["text"] = licensed
-            decision["supported_text"] = licensed
-            decision["verification_scope"] = "query"
-            decision["replaces_body"] = True
-            return decision
         # A direct possession that already passed audit is not the whole answer
         # when a membership and a universal rule are also licensed.
         if (
