@@ -486,6 +486,14 @@ def _subject_bindings(plan: dict[str, str], rows: list[dict[str, str]]) -> list[
             bindings.append({"document_id": row["document_id"], "span": sentence})
     if plan["kind"] == "definition":
         definitions = [item for item in bindings if _definition_sentence(plan, item["span"])]
+        # "What is X?" is the kind. A place or a color that also uses "is"
+        # stays available only when no kind sentence was retrieved.
+        kinds = [item for item in definitions if _kind_sentence(item["span"])]
+        plain = [item for item in kinds if "," not in item["span"]]
+        if plain:
+            return plain[:1]
+        if kinds:
+            return kinds[:1]
         if definitions:
             return definitions[:1]
     return bindings
@@ -612,6 +620,11 @@ def _subject_sentence(subject: str, sentence: str) -> bool:
     if re.search(rf"\b(?:is|are)\s+(?:(?:the|a|an)\s+)?{re.escape(phrase)}[.!?]?$", sentence, re.IGNORECASE):
         return True
     return re.match(rf"^(?:(?:the|a|an)\s+)?{re.escape(phrase)}\b", folded, re.IGNORECASE) is not None
+
+
+def _kind_sentence(sentence: str) -> bool:
+    """A taxonomic "is a" sentence, not a place or a one-word predicate."""
+    return re.search(r"\b(?:is|are)\s+(?:a|an)\s+\S", sentence, re.IGNORECASE) is not None
 
 
 def _definition_sentence(plan: dict[str, str], sentence: str) -> bool:

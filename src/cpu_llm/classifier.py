@@ -22,7 +22,7 @@ _REASONS: tuple[tuple[re.Pattern[str], str], ...] = (
         "the prompt asks for a story",
     ),
     (
-        re.compile(r"\b(?:poem|fiction|fictional)\b", re.IGNORECASE),
+        re.compile(r"\b(?:poem|fiction)\b", re.IGNORECASE),
         "the prompt asks for fiction",
     ),
     (

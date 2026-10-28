@@ -61,7 +61,17 @@ class Fact:
 
 _UNSAFE = re.compile(r"\b(?:not|no|never|if|unless|may|might|could|would|should|allegedly)\b|n't", re.I)
 _SUBJECT = r"(?P<subject>[\w][\w '’-]*?)"
-_COLORS = r"(?:black|blue|brown|gr[ae]y|green|orange|pink|purple|red|white|yellow)"
+# A one-word predicate ("is copper", "is blue") is a color. Closed-class
+# words stay out so "is found" and "is a" keep their own relations.
+_NOT_COLOR = frozenset(
+    """
+    a an the not no nor and but for with from into over such same other only
+    just like than been were was are its his her their our your who what when
+    where which while about after before under again once each both few all
+    every many much several average some most found known also very here there
+    now then this that these those
+    """.split()
+)
 
 
 def extract_facts(document_id: str, text: str) -> list[Fact]:
@@ -85,7 +95,7 @@ def extract_facts(document_id: str, text: str) -> list[Fact]:
             ('causes', rf"{_SUBJECT}\s+causes?\s+(?P<object>.+)"),
             ('differs_from', rf"{_SUBJECT}\s+differs?\s+from\s+(?P<object>.+)"),
             ('lives_in', rf"{_SUBJECT}\s+(?:lives?|resides?|is found)\s+(?:in|across)\s+(?P<object>.+)"),
-            ('has_color', rf"{_SUBJECT}\s+(?:is|are)\s+(?P<object>{_COLORS})"),
+            ('has_color', rf"{_SUBJECT}\s+(?:is|are)\s+(?P<object>[A-Za-z]+)"),
             ('has', rf"{_SUBJECT}\s+(?:has|have)\s+(?P<object>.+)"),
             ('is_a', rf"{_SUBJECT}\s+(?:is|are)\s+(?:a species of|an|a)\s+(?P<object>.+)"),
         ]
@@ -94,6 +104,8 @@ def extract_facts(document_id: str, text: str) -> list[Fact]:
             if not match or normalize(match['subject']) in {'it', 'they', 'he', 'she', 'this', 'that'}:
                 continue
             subject, obj = match['subject'], match['object']
+            if relation == 'has_color' and obj.casefold() in _NOT_COLOR:
+                continue
             if re.search(r"\b(?:that|which|who|and|or)\b", subject, re.I):
                 continue
             # Species definitions can explicitly state their geographic range.

@@ -24,6 +24,10 @@ _OVERVIEW = re.compile(r"^(?:please\s+)?(?:give(?: me)?|provide(?: me)?|write)\s
 _OVERVIEW_STYLE = re.compile(r"^(?:please\s+)?(?:give(?: me)?|provide(?: me)?|write)\s+(?:an?\s+)?(?:detailed|comprehensive|brief|short|thorough)\s+overview\s+(?:of|about)\s+", re.I)
 _EXPLAIN = re.compile(r"^(?:please\s+)?explain\s+", re.I)
 _STYLE_START = re.compile(r"^(?:please\s+)?(?:briefly|concisely|thoroughly|comprehensively)\s+", re.I)
+_STYLE_COLON = re.compile(
+    r"^(?:please\s+)?(?:briefly|concisely|thoroughly|comprehensively|in detail|in depth|in brief)\s*:\s*",
+    re.I,
+)
 _STYLE_END = re.compile(r"[,;]?\s+(?:in detail|in depth|briefly|concisely|thoroughly|comprehensively)[.!?]*$", re.I)
 _LIMIT_END = re.compile(rf"[,;]?\s+(?:in|using|with|as)\s+{_NUMBER}\s+(?:sentences?|bullets?(?: points?)?|points?|items?|words?)[.!?]*$", re.I)
 _LIMIT_START = re.compile(rf"^(?:please\s+)?(?:answer\s+)?(?:in|using|with|as)\s+{_NUMBER}\s+(?:sentences?|bullets?(?: points?)?|points?|items?|words?)\s*[:,]\s*", re.I)
@@ -76,6 +80,7 @@ def classify_response_request(message: str) -> dict:
     if cues or counts:
         for _ in range(3):
             query = _LIMIT_START.sub('', query)
+            query = _STYLE_COLON.sub('', query)
             query = _STYLE_START.sub('', query)
             query = _STYLE_END.sub('', query).rstrip(' ,;')
             query = _LIMIT_END.sub('', query).rstrip(' ,;')

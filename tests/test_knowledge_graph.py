@@ -11,6 +11,9 @@ def test_typed_edges_keep_direction_and_exact_source_sentences():
         ('is_a', 'insect'), ('lives_in', 'Norway'), ('has_color', 'blue'), ('has', 'wings')}
     assert all(f.subject == 'The coastal moth' and f.sentence in text for f in facts)
     assert extract_facts('bad', 'The moth is not blue. If the moth is an insect. It has wings.') == []
+    copper = extract_facts('kestrel', 'The Kestrel is copper.')
+    assert [(fact.relation, fact.object) for fact in copper] == [('has_color', 'copper')]
+    assert extract_facts('place', 'The Reed is found in Rim.')[0].relation == 'lives_in'
 
 
 def test_alias_connects_named_entity_to_facts_in_another_paragraph(tmp_path):

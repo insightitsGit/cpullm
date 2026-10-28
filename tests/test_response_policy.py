@@ -15,6 +15,8 @@ from cpu_llm.response_policy import classify_response_request
     ('Give a comprehensive overview of the Cedar.', 'detailed', 'Tell me about the Cedar.'),
     ('What color is the Cedar in detail?', 'detailed', 'What color is the Cedar'),
     ('In one sentence: What color is the Cedar?', 'standard', 'What color is the Cedar?'),
+    ('Briefly: What color is the Kestrel?', 'brief', 'What color is the Kestrel?'),
+    ('In detail: What color is the Quadrant?', 'detailed', 'What color is the Quadrant?'),
 ])
 def test_explicit_style_is_separated_from_the_question(question, detail, query):
     plan = classify_response_request(question)

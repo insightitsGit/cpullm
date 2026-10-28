@@ -188,7 +188,27 @@ def _instrument(app) -> None:
 def _bind_clock(app, clock: Clock) -> None:
     from cpu_llm.request_planner import RequestSessions
     app.clarifications.clock = clock
+    if getattr(app, "references", None) is not None:
+        app.references.clock = clock
     app.request_sessions = RequestSessions(clock=clock)
+    if hasattr(app, "share_session_clock"):
+        app.share_session_clock()
+
+
+def restart_process_record(script_id: str, turn: int) -> dict:
+    """An in-process continuation is not a restart measurement."""
+    return {
+        "id": script_id,
+        "turn": turn,
+        "action": "restart_process",
+        "process_restart": False,
+        "verdict": {
+            "ok": False,
+            "excluded_from_accuracy": True,
+            "restart_measurement": "unavailable",
+            "reason": "An in-memory reset is not a process restart. A restart probe must start a new process and reopen the persisted corpus.",
+        },
+    }
 
 
 def _open(namespace: str, resonance: bool, clock: Clock):
@@ -233,7 +253,10 @@ def _ingest(app, paragraphs: list[dict]) -> dict:
     elapsed = time.perf_counter() - started
     by_text = {item["text"]: item["id"] for item in paragraphs}
     corrections = {}
-    for prior, new in HISTORY.items():
+    pairs = [(item["text"], item["correction"]) for item in paragraphs if item.get("correction")]
+    if not pairs:
+        pairs = list(HISTORY.items())
+    for prior, new in pairs:
         document_id = by_text[prior]
         with app.index.db.conn.cursor() as cursor:
             cursor.execute(
@@ -370,6 +393,8 @@ def _reset_sessions(app, clock: Clock) -> None:
         app.references.clock = clock
     app.clear_session_state()
     app.request_sessions = RequestSessions(clock=clock)
+    if hasattr(app, "share_session_clock"):
+        app.share_session_clock()
 
 
 def _run_scripts(app, scripts: list[dict], out: Path, stem: str, corrections: dict) -> None:
@@ -377,20 +402,34 @@ def _run_scripts(app, scripts: list[dict], out: Path, stem: str, corrections: di
         clock = Clock()
         _reset_sessions(app, clock)
         session = script["session_id"]
+        restart_blocked = False
         for index, turn in enumerate(script["turns"], start=1):
             action = turn.get("action")
+            if restart_blocked:
+                skipped = restart_process_record(script["id"], index)
+                skipped["excluded_turn"] = True
+                _append(out / "scores" / f"{stem}-scripts.jsonl", skipped)
+                continue
             if action == "advance_clock":
                 clock.now += float(turn["seconds"])
                 _append(out / "scores" / f"{stem}-scripts.jsonl", {"id": script["id"], "turn": index, "action": action, "clock": clock.now, "verdict": {"ok": True}})
                 continue
-            if action == "reopen":
+            if action in {"reopen", "reset_memory"}:
                 _reset_sessions(app, clock)
-                _append(out / "scores" / f"{stem}-scripts.jsonl", {"id": script["id"], "turn": index, "action": "reopen_in_memory", "verdict": {"ok": True}})
+                _append(out / "scores" / f"{stem}-scripts.jsonl", {"id": script["id"], "turn": index, "action": "reset_memory", "process_restart": False, "verdict": {"ok": True}})
+                continue
+            if action == "restart_process":
+                if os.environ.get("CPULLM_BENCH_RESTART_CHILD") == "1":
+                    _reset_sessions(app, clock)
+                    _append(out / "scores" / f"{stem}-scripts.jsonl", {"id": script["id"], "turn": index, "action": "restart_process", "process_restart": True, "verdict": {"ok": True, "restart_measurement": "child_process"}})
+                    continue
+                _append(out / "scores" / f"{stem}-scripts.jsonl", restart_process_record(script["id"], index))
+                restart_blocked = True
                 continue
             target = app
             if action == "other_tenant":
                 target = _open(f"{stem}tenant", False, Clock())
-            case = dict(script, id=f"{script['id']}-t{index}", prompt=turn.get("prompt"), outcome=turn.get("outcome"), claims=turn.get("claims") or [], proof_sets=turn.get("proof_sets") or [], forbidden=turn.get("forbidden") or [], budget=turn.get("budget"), caller=turn.get("caller") or script.get("caller"))
+            case = dict(script, id=f"{script['id']}-t{index}", prompt=turn.get("prompt"), outcome=turn.get("outcome"), claims=turn.get("claims") or [], proof_sets=turn.get("proof_sets") or [], forbidden=turn.get("forbidden") or [], budget=turn.get("budget"), bindings=turn.get("bindings") or [], children=turn.get("children") or [], caller=turn.get("caller") or script.get("caller"))
             try:
                 result, trace, elapsed = _ask(target, case["prompt"], case, turn.get("session_id") or session, turn.get("as_of", script.get("as_of") if "as_of" not in turn else turn.get("as_of")))
                 verdict = score_case(case, result, trace, corrections)
@@ -572,12 +611,67 @@ def _concurrency(app, prompt: str, deadline: float) -> dict:
     return report
 
 
+def _lifecycle(app, label: str, clock: Clock) -> dict:
+    """Ingest, correct, delete, and reopen one scratch sentence. Not a timing sample."""
+    scratch_id = f"{label}-scratch"
+    prior = "The scratch tag is temporary."
+    revised = "The scratch tag is retired."
+    report = {"scratch_id": scratch_id}
+    try:
+        app.catalog_chunks([(scratch_id, prior)])
+        report["corrected"] = _convert(app.correct(scratch_id, prior, revised, actor_id="benchmark-editor", timestamp=HISTORY_CORRECTION))
+        report["deleted"] = _convert(app.delete_source(scratch_id))
+        reopened = _open(label[:24] + "re", False, clock)
+        result, _trace, _elapsed = _ask(reopened, "What is the scratch tag?", {}, "lifecycle-reopen", None)
+        text = public_fields(result)
+        report["reopened_text"] = text[:500]
+        report["retired_absent"] = "retired" not in text.casefold() and "temporary" not in text.casefold()
+    except Exception as exc:
+        report["status"] = "unavailable"
+        report["reason"] = f"{type(exc).__name__}: {exc}"
+    return report
+
+
+def _factual_probe(app, cases: list[dict], corrections: dict) -> list[dict]:
+    rows = []
+    for case in cases:
+        try:
+            result, trace, elapsed = _ask(app, case["prompt"], case, "scale-factual-" + case["id"], case.get("as_of"))
+            verdict = score_case(case, result, trace, corrections)
+            first = next((event.get("ids") or [] for event in trace or [] if event.get("event") in {"search", "search_allowed"}), [])
+            proof = [item for group in case.get("proof_sets") or [] for item in group]
+            rows.append({
+                "id": case["id"],
+                "family": case.get("family"),
+                "seconds": round(elapsed, 4),
+                "ok": verdict.get("ok"),
+                "false_assertion": verdict.get("false_assertion"),
+                "omission": verdict.get("omission"),
+                "proof_in_first_shortlist": bool(proof) and all(item in first for item in proof),
+                "first_shortlist": first[:12],
+                "proof": proof,
+            })
+        except Exception as exc:
+            rows.append({"id": case["id"], "ok": False, "error": f"{type(exc).__name__}: {exc}"})
+    return rows
+
+
 def _scale(out: Path, resonance: bool) -> None:
-    factual = [item for item in load(out / "gold")["paragraphs"] if item["role"] != "distractor"]
-    prompts = [case["prompt"] for case in load(out / "gold")["cases"] if case["split"] == "development" and case["family"] in {"direct", "join"}][:30]
+    loaded = load(out / "gold")
+    factual = [item for item in loaded["paragraphs"] if item["role"] != "distractor"]
+    direct_join = [case for case in loaded["cases"] if case["split"] == "development" and case["family"] in {"direct", "join"}]
+    prompts = [case["prompt"] for case in direct_join][:30]
+    probes = []
+    for case in direct_join:
+        if case["family"] == "join" and any(len(group) > 1 for group in case.get("proof_sets") or []):
+            probes.append(case)
+            break
+    probes.extend(case for case in direct_join if case not in probes)
+    probes = probes[:8]
+    seeds = tuple(loaded["manifest"].get("source_order_seeds") or (271027, 271101, 271102))
     _json(out / "scale" / "prompt_mix.json", prompts)
     for count in (1000, 10000):
-        for seed in (271027, 271101, 271102):
+        for seed in seeds:
             label = f"scale{count}-{seed}-{'resonance' if resonance else 'dense'}"
             deadline = time.perf_counter() + SCALE_TIMEOUT_S
             record = {"label": label, "timeout_s": SCALE_TIMEOUT_S, "complete": False, "reason": None}
@@ -590,11 +684,15 @@ def _scale(out: Path, resonance: bool) -> None:
                 app.catalog_chunks(chunks)
                 record["ingest_seconds"] = round(time.perf_counter() - started, 3)
                 record["paragraphs"] = len(chunks)
+                record["source_order_seed"] = seed
+                record["factual_probe"] = _factual_probe(app, probes, {})
+                if count == 1000 and seed == seeds[0] and not resonance:
+                    record["lifecycle"] = _lifecycle(app, label, clock)
                 times = []
                 if time.perf_counter() > deadline:
                     record["reason"] = "timeout after ingest"
                 else:
-                    if count == 1000 and seed == 271027:
+                    if count == 1000 and seed == seeds[0]:
                         record["concurrency"] = _concurrency(app, prompts[0], deadline)
                     if time.perf_counter() > deadline:
                         record["reason"] = "timeout after concurrency"
@@ -630,14 +728,20 @@ def _scale(out: Path, resonance: bool) -> None:
             print(f"scale {label} complete={record['complete']} {record.get('reason')}", flush=True)
 
 
-def _prepare(out: Path) -> dict:
+def _prepare(out: Path, corpus: str = "known") -> dict:
     gold = out / "gold"
-    manifest = dump(gold)
+    if corpus == "fresh":
+        from tools.benchmarks.request_pipeline.gold_fresh import HOLDOUT_SEED as seed
+        from tools.benchmarks.request_pipeline.gold_fresh import dump as dump_corpus
+    else:
+        seed = HOLDOUT_SEED
+        dump_corpus = dump
+    manifest = dump_corpus(gold)
     holdout_cases = [row for row in load(gold)["cases"] if row["split"] == "holdout"]
     holdout_scripts = [row for row in load(gold)["scripts"] if row["split"] == "holdout"]
     payload = json.dumps({"cases": holdout_cases, "scripts": holdout_scripts}, sort_keys=True)
     frozen = hashlib.sha256(payload.encode("utf-8")).hexdigest()
-    _json(out / "gold" / "holdout_frozen.json", {"sha256": frozen, "seed": HOLDOUT_SEED, "cases": len(holdout_cases), "scripts": len(holdout_scripts)})
+    _json(out / "gold" / "holdout_frozen.json", {"sha256": frozen, "seed": seed, "corpus": corpus, "cases": len(holdout_cases), "scripts": len(holdout_scripts)})
     fixtures = selftest()
     _json(out / "scorer" / "selftest.json", [{"name": item["name"], "passed": item["passed"]} for item in fixtures])
     source = Path(__file__).with_name("scorer.py").read_text(encoding="utf-8")
@@ -651,6 +755,7 @@ def main() -> int:
     parser.add_argument("--phase", default="all", choices=["prepare", "selftest", "dev", "holdout", "suite", "scale", "all"])
     parser.add_argument("--arm", default="both", choices=["dense", "resonance", "both"])
     parser.add_argument("--only", default="", help="case or script id to rerun")
+    parser.add_argument("--corpus", default="known", choices=["known", "fresh"])
     args = parser.parse_args()
     if args.phase == "selftest" and args.out is None:
         rows = selftest()
@@ -673,9 +778,9 @@ def main() -> int:
     else:
         os.environ["BENCH_WORKDIR"] = str(out / "work")
     if args.phase in {"prepare", "selftest", "all"} and not (out / "gold" / "manifest.json").exists():
-        _prepare(out)
+        _prepare(out, args.corpus)
     elif args.phase == "prepare":
-        _prepare(out)
+        _prepare(out, args.corpus)
     if args.phase == "selftest":
         print(f"{len(selftest())} scorer fixtures passed")
         return 0

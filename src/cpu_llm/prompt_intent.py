@@ -24,6 +24,14 @@ def _name(text):
     return re.sub(r'^(?:the|an|a)\s+', '', text)
 
 
+_INDEFINITE_SUBJECT = re.compile(r'^(?:some|most|many|several|few|average)\b', re.I)
+
+
+def _indefinite_subject(text: str) -> bool:
+    """Some, most, and an average do not state one individual's fact."""
+    return bool(_INDEFINITE_SUBJECT.match(_name(text)))
+
+
 def _requested(message):
     patterns = [
         ('has_lifespan', 'subject', r'how long (?:does|do|can) (?P<entity>.+?) live'),
@@ -124,6 +132,10 @@ def select_channel_answer(message, chunks, *, intent=None):
     request = intent['requested']
     if request is None:
         return None
+    if _indefinite_subject(request['entity']):
+        return dict(query=message, kind='channel', prompt_intent=intent, retrieved_candidates=[],
+                    answer_evidence=[], verification_scope='query', answer_status='insufficient_evidence',
+                    reason='unlicensed_quantifier', text='The retrieved passages do not settle that.')
     facts = []
     for index, row in enumerate(chunks):
         if isinstance(row, str):
@@ -152,13 +164,13 @@ def select_channel_answer(message, chunks, *, intent=None):
                 return kept
             return words(name) == words(value)
         return _equivalent(name, value)
-    # "Some" and an average do not state an individual's fact. A named object
+    # "Some" and an average do not state an individual's fact. "The average"
+    # is the same quantifier once the article is removed. A named object
     # ("does the Nacre have a beacon?") keeps only that object.
-    indefinite = re.compile(r'^(?:some|most|many|several|few|average)\b', re.I)
     asked_object = request.get('object')
     selected = [fact for fact in facts if fact.relation == request['relation'] and channel in fact.channels
                 and any(matches(name, getattr(fact, request['direction'])) for name in names)
-                and not indefinite.match(fact.subject.strip())
+                and not _indefinite_subject(fact.subject)
                 and (not asked_object or _equivalent(asked_object, fact.object))]
     alias_evidence = [edge for fact in selected for name in names
                       if matches(name, getattr(fact, request['direction'])) for edge in aliases[name]]

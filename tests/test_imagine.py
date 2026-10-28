@@ -19,6 +19,7 @@ def _tensor(*values: float) -> np.ndarray:
 def test_a_plain_question_does_not_trigger_creative_writing():
     assert creative_writing_trigger("What is the European lobster?") == []
     assert creative_writing_trigger("Why use hyperbolic embeddings?") == []
+    assert creative_writing_trigger("How long does the fictional lobster live?") == []
 
 
 def test_imagine_story_and_what_if_are_classified():

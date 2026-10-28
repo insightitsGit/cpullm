@@ -15,6 +15,7 @@ DATED = "John ate a yellow apple in his house in 2019."
 
 def test_a_plain_question_does_not_enter_the_frame_agent():
     assert frame_trigger("What is the European lobster?") == []
+    assert frame_trigger("What color is the Kestrel?") == []
     assert frame_trigger("Is a red apple better than a yellow apple?") == []
     assert frame_trigger("Compare the European lobster and Robert Boulter.") == []
     assert _after_shine({}) == "model01"

@@ -97,6 +97,16 @@ def test_shared_words_do_not_state_the_capital_relation():
     assert "nine million" not in decision["text"]
 
 
+def test_a_definition_uses_the_kind_when_a_place_sentence_is_also_present():
+    place = "The Reed is found in Rim."
+    kind = "The Reed is a display pane."
+    for rows in ([place, kind], [kind, place]):
+        decision = assess("What is the Reed?", rows)
+        assert decision is not None
+        assert decision["answer_status"] == "answered"
+        assert decision["text"] == kind
+
+
 def test_paraphrase_and_alias_still_bind():
     city = assess("Which city is the capital of France?", [_CAPITAL_ALT])
     assert city is not None and city["answer_status"] == "answered"

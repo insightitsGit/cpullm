@@ -10,7 +10,7 @@ from tools.benchmarks.request_pipeline.oracle import entailed
 
 DEV_SEED = 271027
 HOLDOUT_SEED = 271028
-CONTRACT = "request-pipeline-gold-v1"
+CONTRACT = "request-pipeline-gold-v2"
 
 DOMAINS = [
     {
@@ -199,6 +199,8 @@ def build_paragraphs() -> tuple[list[dict], list[dict]]:
         ("wh-public", "A display rover is not a survey rover."),
         ("obs-public", "A display telescope is not a survey telescope."),
         ("bot-public", "A display vine is not a survey vine."),
+        ("wh-public", "The Vesper is the best survey rover for color."),
+        ("obs-public", "The Helion is the best survey telescope for color."),
     ]
     for source, text in extras:
         add(source, text, "extra")
@@ -497,7 +499,7 @@ def build_cases(paragraphs: list[dict], rules: list[dict]) -> list[dict]:
     ]
     unsupported += [
         _case("unsupported", "wh", 4, prompt="Write a poem about the Vesper.", outcome="unsupported", claims=[], proof_sets=[], forbidden=["amber"], caller={"id": "reader-wh", "sources": ["wh-public-p"]}),
-        _case("unsupported", "obs", 5, prompt="Draft a letter about the Helion.", outcome="unsupported", claims=[], proof_sets=[], forbidden=["gray"], caller={"id": "reader-obs", "sources": ["obs-public-p"]}),
+        _case("unsupported", "obs", 5, prompt="Draft a letter about the Helion.", outcome="answer", claims=["gray"], proof_sets=[[pid("The Helion is gray.")]], forbidden=[], caller={"id": "reader-obs", "sources": ["obs-public-p"]}, bindings=[{"subject": "Helion", "relation": "has_color", "object": "gray", "direction": "subject", "polarity": "affirmative", "quantifier": "direct"}], adjudication={"prior_outcome": "unsupported", "prior_forbidden": ["gray"], "reason": "A source-backed letter is a supported draft. Gray in that letter is the stored fact, not a false assertion. Genre compliance is separate from assertion truth."}),
         _case("unsupported", "bot", 6, prompt="Imagine the Bramble in a story.", outcome="unsupported", claims=[], proof_sets=[], forbidden=["green"], caller={"id": "reader-bot", "sources": ["bot-public-p"]}),
     ]
     # Joins need 28. We have 27. Add one rejected cross join.
@@ -542,7 +544,8 @@ def build_conversations(paragraphs: list[dict]) -> list[dict]:
         ], caller=public),
         script("script-criterion-dev", "development", "criterion", "crit-dev", [
             {"prompt": "Which rover is best?", "outcome": "clarification", "claims": [], "forbidden": ["amber"]},
-            {"prompt": "color", "outcome": "quote", "claims": ["amber"], "proof_sets": [[pid("The Vesper is amber.")]], "forbidden": []},
+            {"prompt": "color", "outcome": "insufficient", "claims": [], "forbidden": [], "adjudication": {"prior_outcome": "quote", "prior_claims": ["amber"], "prior_proof": "The Vesper is amber.", "reason": "An ordinary color sentence does not establish which rover is best. Asking for ranking evidence is the supported response."}},
+            {"prompt": "Which rover is best for color?", "outcome": "answer", "claims": ["best"], "proof_sets": [[pid("The Vesper is the best survey rover for color.")]], "forbidden": [], "bindings": [{"subject": "Vesper", "relation": "best", "object": "color", "direction": "subject", "polarity": "affirmative", "quantifier": "direct"}]},
         ], caller=public),
         script("script-quote-dev", "development", "evidence_quote", "quote-dev", [
             {"prompt": "Quote the sentence that says where the Vesper lives.", "outcome": "quote", "claims": ["Orinth"], "proof_sets": [[pid("The Vesper is found in Orinth.")]], "forbidden": []},
@@ -559,17 +562,15 @@ def build_conversations(paragraphs: list[dict]) -> list[dict]:
             {"prompt": "Where does it live?", "outcome": "clarification", "claims": [], "forbidden": ["Orinth"]},
             {"prompt": "What color is the Sextant?", "outcome": "answer", "claims": ["gray"], "proof_sets": [[pid("The Sextant is gray.")]], "forbidden": ["Orinth"]},
         ], caller=public),
-        script("script-two-clarify-dev", "development", "successive_clarification", "two-dev", [
-            {"prompt": "Which one is best?", "outcome": "clarification", "claims": [], "forbidden": ["amber"]},
-            {"prompt": "the rover", "outcome": "clarification", "claims": [], "forbidden": ["amber"]},
+        script("script-two-clarify-dev", "development", "ambiguous_reference", "two-dev", [
+            {"prompt": "What color is the Sextant? What color is the Azimuth? Where does it live?", "outcome": "clarification", "claims": [], "forbidden": ["Orinth"], "adjudication": {"prior_prompts": ["Which one is best?", "the rover"], "reason": "Two plausible entities are named before the pronoun, so it has no single antecedent and must not be answered with one of their places."}},
         ], caller=public),
         script("script-first-child-dev", "development", "first_child", "first-dev", [
             {"prompt": "Where does it live? What color is the Sextant?", "outcome": "clarification", "claims": [], "forbidden": ["gray"], "pending": ["q2"]},
             {"prompt": "Vesper", "outcome": "partial", "claims": ["Orinth", "gray"], "proof_sets": [[pid("The Vesper is found in Orinth."), pid("The Sextant is gray.")]], "forbidden": [], "budget": {"hard_limit": False}},
         ], caller=public),
         script("script-middle-dev", "development", "middle_child", "middle-dev", [
-            {"prompt": "What color is the Sextant? Where does it live? What color is the Azimuth?", "outcome": "partial", "claims": ["gray"], "forbidden": ["yellow"], "pending": ["q3"]},
-            {"prompt": "Vesper", "outcome": "partial", "claims": ["Orinth", "yellow"], "proof_sets": [[pid("The Vesper is found in Orinth."), pid("The Azimuth is yellow.")]], "forbidden": []},
+            {"prompt": "What color is the Sextant? Where does it live? What color is the Azimuth?", "outcome": "partial", "claims": ["gray", "Orinth", "yellow"], "proof_sets": [[pid("The Sextant is gray."), pid("The Sextant is found in Orinth."), pid("The Azimuth is yellow.")]], "forbidden": [], "bindings": [{"subject": "Sextant", "relation": "has_color", "object": "gray", "direction": "subject", "polarity": "affirmative", "quantifier": "direct"}, {"subject": "Sextant", "relation": "lives_in", "object": "Orinth", "direction": "subject", "polarity": "affirmative", "quantifier": "direct"}, {"subject": "Azimuth", "relation": "has_color", "object": "yellow", "direction": "subject", "polarity": "affirmative", "quantifier": "direct"}], "adjudication": {"prior_outcome": "partial", "prior_claims": ["gray"], "prior_forbidden": ["yellow"], "prior_pending": ["q3"], "reason": "Sextant is the only antecedent of it. Azimuth appears later and does not leave it unresolved. Yellow is Azimuth's color."}},
         ], caller=public),
         script("script-last-dev", "development", "last_child", "last-dev", [
             {"prompt": "What color is the Sextant? Where does it live?", "outcome": "partial", "claims": ["gray"], "forbidden": []},
@@ -591,7 +592,8 @@ def build_conversations(paragraphs: list[dict]) -> list[dict]:
         ], caller={"id": "reader-obs", "sources": ["obs-public-p"]}),
         script("script-criterion-hold", "holdout", "criterion", "crit-hold", [
             {"prompt": "Which telescope is best?", "outcome": "clarification", "claims": [], "forbidden": ["gray"]},
-            {"prompt": "color", "outcome": "quote", "claims": ["gray"], "proof_sets": [[pid("The Helion is gray.")]], "forbidden": []},
+            {"prompt": "color", "outcome": "insufficient", "claims": [], "forbidden": [], "adjudication": {"prior_outcome": "quote", "prior_claims": ["gray"], "prior_proof": "The Helion is gray.", "reason": "An ordinary color sentence does not establish which telescope is best."}},
+            {"prompt": "Which telescope is best for color?", "outcome": "answer", "claims": ["best"], "proof_sets": [[pid("The Helion is the best survey telescope for color.")]], "forbidden": [], "bindings": [{"subject": "Helion", "relation": "best", "object": "color", "direction": "subject", "polarity": "affirmative", "quantifier": "direct"}]},
         ], caller={"id": "reader-obs", "sources": ["obs-public-p"]}),
         script("script-caller-hold", "holdout", "caller", "caller-hold", [
             {"prompt": "What color is the Bramble?", "outcome": "answer", "claims": ["green"], "proof_sets": [[pid("The Bramble is green.")]], "forbidden": ["moss-seal-118"], "caller": {"id": "ada", "sources": ["bot-public-p"]}},
@@ -610,9 +612,9 @@ def build_conversations(paragraphs: list[dict]) -> list[dict]:
             {"action": "advance_clock", "seconds": 1801},
             {"prompt": "Bramble", "outcome": "answer", "claims": ["survey vine"], "proof_sets": [[pid("The Bramble is a survey vine.")]], "forbidden": ["Lumenhall"]},
         ], caller={"id": "reader-bot", "sources": ["bot-public-p"]}),
-        script("script-reopen-hold", "holdout", "restart", "reopen-hold", [
+        script("script-reopen-hold", "holdout", "in_memory_reset", "reopen-hold", [
             {"prompt": "Where does it live?", "outcome": "clarification", "claims": [], "forbidden": ["Orinth"]},
-            {"action": "reopen"},
+            {"action": "reset_memory", "adjudication": {"prior_action": "reopen", "reason": "This clears in-memory plans on the same process. It is not a process restart. A restart must start a new process and reopen the persisted corpus."}},
             {"prompt": "Vesper", "outcome": "answer", "claims": ["survey rover"], "proof_sets": [[pid("The Vesper is a survey rover.")]], "forbidden": ["Orinth"]},
         ], caller=public),
         script("script-concurrent-hold", "holdout", "concurrent", "concurrent-hold", [
@@ -629,7 +631,7 @@ def build_conversations(paragraphs: list[dict]) -> list[dict]:
             {"prompt": "What color is the Crocus?", "outcome": "answer", "claims": ["white"], "proof_sets": [[pid("The Crocus is white.")]], "forbidden": ["green"]},
         ], caller={"id": "reader-bot", "sources": ["bot-public-p"]}),
         script("script-cancel-hold", "holdout", "cancel", "cancel-hold", [
-            {"prompt": "What is the Helion? Where does it live?", "outcome": "partial", "claims": ["survey telescope"], "forbidden": ["Caldera"]},
+            {"prompt": "What is the Helion? Where does it live?", "outcome": "partial", "claims": ["survey telescope", "Caldera"], "proof_sets": [[pid("The Helion is a survey telescope."), pid("The Helion is found in Caldera.")]], "forbidden": [], "bindings": [{"subject": "Helion", "relation": "is_a", "object": "survey telescope", "direction": "subject", "polarity": "affirmative", "quantifier": "direct"}, {"subject": "Helion", "relation": "lives_in", "object": "Caldera", "direction": "subject", "polarity": "affirmative", "quantifier": "direct"}], "adjudication": {"prior_claims": ["survey telescope"], "prior_forbidden": ["Caldera"], "reason": "Helion is the singular antecedent of it, so Caldera is the place answer rather than a forbidden continuation."}},
             {"prompt": "cancel", "outcome": "cancelled", "claims": [], "forbidden": ["Caldera"]},
         ], caller={"id": "reader-obs", "sources": ["obs-public-p"]}),
         script("script-last-hold", "holdout", "last_child", "last-hold", [

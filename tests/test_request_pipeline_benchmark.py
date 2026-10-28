@@ -3,7 +3,9 @@
 import tempfile
 from pathlib import Path
 
-from tools.benchmarks.request_pipeline.gold import dump
+from tools.benchmarks.request_pipeline.gold import build_cases, build_conversations, build_paragraphs, dump
+from tools.benchmarks.request_pipeline.gold_fresh import BANNED, dump as dump_fresh
+from tools.benchmarks.request_pipeline.run_eval import restart_process_record
 from tools.benchmarks.request_pipeline.scorer import selftest
 
 
@@ -24,6 +26,19 @@ def test_scorer_fixtures_cover_the_required_failures():
         "proof_exceeds_budget",
         "optional_exceeds_ceiling",
         "silent_omission",
+        "binding_match",
+        "binding_wrong_entity",
+        "binding_wrong_relation",
+        "binding_reversed_direction",
+        "binding_negated_claim",
+        "binding_licensed_every_join",
+        "binding_every_without_membership",
+        "binding_unlicensed_quantifier",
+        "retrieval_only_proof",
+        "missing_budget_metadata",
+        "child_related_is_not_proof",
+        "child_words_do_not_answer_the_parent",
+        "runtime_overflow_flag_is_not_a_measurement",
     } <= names
     assert all(row["passed"] for row in rows)
 
@@ -36,3 +51,46 @@ def test_gold_coverage_manifest_matches_the_design_counts():
     assert manifest["cases"] == 180
     assert manifest["scripts"] == 24
     assert manifest["splits"] == {"development": 120, "holdout": 60}
+    assert manifest["contract"] == "request-pipeline-gold-v2"
+    paragraphs, rules = build_paragraphs()
+    cases = build_cases(paragraphs, rules)
+    scripts = {item["id"]: item for item in build_conversations(paragraphs)}
+    letter = next(case for case in cases if case["id"] == "unsupported-obs-05")
+    assert letter["outcome"] == "answer"
+    assert letter["adjudication"]["prior_outcome"] == "unsupported"
+    middle = scripts["script-middle-dev"]["turns"][0]
+    assert middle["forbidden"] == []
+    assert "yellow" in middle["claims"]
+    assert middle["adjudication"]["prior_forbidden"] == ["yellow"]
+    cancel = scripts["script-cancel-hold"]["turns"][0]
+    assert "Caldera" in cancel["claims"]
+    assert cancel["forbidden"] == []
+    criterion = scripts["script-criterion-dev"]["turns"][1]
+    assert criterion["outcome"] == "insufficient"
+    assert scripts["script-reopen-hold"]["turns"][1]["action"] == "reset_memory"
+    ambiguous = scripts["script-two-clarify-dev"]["turns"][0]
+    assert "Sextant" in ambiguous["prompt"] and "Azimuth" in ambiguous["prompt"]
+    assert ambiguous["outcome"] == "clarification"
+
+
+def test_fresh_corpus_keeps_the_counts_and_drops_known_names():
+    with tempfile.TemporaryDirectory() as directory:
+        manifest = dump_fresh(Path(directory))
+        blob = "\n".join(path.read_text(encoding="utf-8") for path in Path(directory).glob("*.jsonl"))
+    assert manifest["cases"] == 180
+    assert manifest["scripts"] == 24
+    assert manifest["splits"] == {"development": 120, "holdout": 60}
+    assert manifest["distractors"] == 300
+    assert manifest["factual_paragraphs"] >= 120
+    assert manifest["contract"] == "request-pipeline-gold-v2-fresh"
+    assert manifest["development_seed"] == 271029
+    assert manifest["holdout_seed"] == 271030
+    for name in BANNED:
+        assert name not in blob
+
+
+def test_restart_record_is_not_a_process_restart():
+    record = restart_process_record("script-example", 2)
+    assert record["verdict"]["restart_measurement"] == "unavailable"
+    assert record["verdict"]["excluded_from_accuracy"] is True
+    assert record["process_restart"] is False

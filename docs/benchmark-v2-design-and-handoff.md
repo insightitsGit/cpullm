@@ -9,12 +9,24 @@ its headline accuracy and false-assertion counts are not accepted baselines.
 
 ## Current review and entry gates
 
+Review update at `391adbb` (2026-10-27): the unrelated-species counterexample
+described below is resolved. The exemption now requires a species definition
+bound to the requested entity or an explicit alias. The focused suite returned
+**133 passed, 3 existing expected failures**. Six controlled public `ask()` probes
+with a substituted retrieval/graph verified first/second numbered choices and a
+text choice in both dense and resonance modes, including the unrelated species
+row. No new blocking issue was found in this commit. These probes do not replace
+the new live pipeline test, full live suite, or independent benchmark. Gates for
+scorer corrections, corrected experiments and full live validation remain open.
+The following counterexample is retained as a mandatory regression, not an open
+code finding.
+
 The original numbered-choice failure now passes through the public `ask()` path:
 `What kind of thing is the Lumen?` -> choose `2` -> display mark, with no survey
 mark replacement. The focused suite returned 132 passed and three existing
 expected failures. This is development validation, not benchmark accuracy.
 
-One new blocking counterexample remains in `_constrain_channel_class`:
+The previously blocking counterexample in `_constrain_channel_class` was:
 
 ```text
 The Lumen is a survey mark.
@@ -22,11 +34,11 @@ The Lumen is a display mark.
 The European lobster is a species of crustacean.
 ```
 
-For `What kind of thing is the Lumen?`, the first two rows alone ask for a meaning.
-Adding the unrelated third row changes the answer to survey mark. The current
-species exemption checks every row rather than the requested entity. Restrict
-the exemption to relevant, identity-bound evidence and preserve genuine sense
-ambiguity. Add an end-to-end regression before the official run.
+Before `391adbb`, for `What kind of thing is the Lumen?`, the first two rows alone
+asked for a meaning, but adding the unrelated third row changed the answer to
+survey mark. The exemption now checks relevant, identity-bound evidence, and a
+new pipeline regression covers source ordering and numbered/text choices. Run
+that live regression on the official evaluation snapshot.
 
 Before freezing v2, require:
 

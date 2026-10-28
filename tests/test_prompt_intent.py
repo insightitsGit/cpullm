@@ -50,6 +50,33 @@ def test_causal_direction_and_same_channel_are_not_enough():
     assert 'because cooking' in why['text']
 
 
+def test_an_average_lifespan_is_not_an_answer():
+    average = 'The average display loom lives for 3 years.'
+    asked = select_channel_answer('How long does the average display loom live?', [dict(document_id='avg', text=average)])
+    assert asked['answer_status'] == 'insufficient_evidence'
+    assert '3 years' not in asked['text']
+    individual = select_channel_answer('How long does the Wicker live?', [
+        dict(document_id='kind', text='The Wicker is a survey loom.'),
+        dict(document_id='rule', text='Every survey loom lives for 11 years.'),
+        dict(document_id='avg', text=average),
+    ])
+    assert individual['answer_status'] == 'answered'
+    assert '11 years' in individual['text']
+    assert '3 years' not in individual['text']
+
+
+def test_a_one_word_color_answers_and_two_colors_conflict():
+    copper = select_channel_answer('What color is the Kestrel?', [dict(document_id='c', text='The Kestrel is copper.')])
+    assert copper['answer_status'] == 'answered'
+    assert copper['text'] == 'The Kestrel is copper.'
+    conflict = select_channel_answer('What color is the Kestrel?', [
+        dict(document_id='public', text='The Kestrel is copper.'),
+        dict(document_id='restricted', text='The Kestrel is crimson.'),
+    ])
+    assert conflict['answer_status'] == 'conflicting'
+    assert 'copper' in conflict['text'] and 'crimson' in conflict['text']
+
+
 def test_missing_or_conflicting_attribute_does_not_become_a_definition():
     result = generate('What color is the coastal moth?', [('a', 'The coastal moth is an insect.')])
     assert result['status'] == 'missing' and not result['verified']
