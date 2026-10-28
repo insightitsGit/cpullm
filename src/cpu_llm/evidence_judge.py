@@ -209,12 +209,27 @@ def _specialist_proof(result: dict[str, Any]) -> str:
     return " ".join(part.strip() for part in parts if part and str(part).strip())
 
 
+def _specialist_evidence(result):
+    """Producer-selected IDs only; a neighbor is not an accepted citation."""
+    selected = set((result.get('brief') or {}).get('sources') or [])
+    draft = (result.get('reply') or {}).get('draft') or {}
+    if isinstance(draft, dict):
+        selected.update(draft.get('sources') or [])
+    evidence = []
+    for row in _rows(result):
+        if row['document_id'] in selected:
+            evidence.append(dict(document_id=row['document_id'], span=row['text']))
+    return evidence
+
+
 def judge_delivery(result: dict[str, Any]) -> dict[str, Any]:
     """The structured decision for text the pipeline has already retrieved.
 
     This does not search. Rows are the turn's authorized passages.
     """
-    from cpu_llm.prompt_intent import route_prompt, select_channel_answer
+    from cpu_llm.prompt_intent import route_prompt
+    from cpu_llm.answerability import assess
+    from cpu_llm.semantic import request_contract
 
     message = str(result.get("resolved_query") or result.get("message") or "")
     intent = result.get("prompt_intent") or route_prompt(message)
@@ -232,7 +247,14 @@ def judge_delivery(result: dict[str, Any]) -> dict[str, Any]:
         )
     reply = result.get("reply") if isinstance(result.get("reply"), dict) else {}
     status = str(result.get("answer_status") or reply.get("answer_status") or "")
-    if any(result.get(flag) is True for flag in _SPECIALISTS) and request.get("relation") is None:
+    if status == 'unsupported':
+        return _blank(outcome='unsupported', reasons=['unsupported_producer_contract'], verification='not_a_factual_claim')
+    contract = request_contract(message, intent)
+    # Specialized producers own explicit math/document/event/overview tasks,
+    # not ordinary factual slots accidentally routed through another node.
+    specialist = any(result.get(flag) is True for flag in ('math', 'finance', 'draft', 'creative', 'frame'))
+    specialist = specialist or (contract is None and any(result.get(flag) is True for flag in _SPECIALISTS))
+    if specialist and request.get("relation") is None:
         proof = _specialist_proof(result)
         if proof:
             return _blank(
@@ -241,14 +263,16 @@ def judge_delivery(result: dict[str, Any]) -> dict[str, Any]:
                 reasons=["specialist_contract"],
                 verification="specialist_contract",
                 licensed_text=proof,
+                evidence=_specialist_evidence(result),
             )
     rows = _rows(result)
-    if request:
-        selected = select_channel_answer(message, rows, intent=intent) if rows else {
+    if contract is not None:
+        request = contract.as_dict()
+        selected = assess(message, rows, intent=intent) if rows else {
             "answer_status": "insufficient_evidence",
             "reason": "no_matching_channel_relation",
         }
-        if selected.get("answer_status") not in {"answered", "conflicting", "evidence_quote"}:
+        if selected.get("answer_status") not in {"answered", "conflicting", "evidence_quote", "needs_clarification"}:
             return _blank(
                 entity=request.get("entity"),
                 relation=request.get("relation"),
@@ -260,6 +284,10 @@ def judge_delivery(result: dict[str, Any]) -> dict[str, Any]:
             )
     else:
         selected = None
+        from cpu_llm.ranking import ranking_question
+        if re.match(r'^(?:what|who|where|why|how|when|which)\b', message, re.I) and not ranking_question(message):
+            return _blank(outcome='insufficient_evidence', reasons=['unsupported_factual_binding', 'selector_rejected'],
+                          verification='selector_rejected', channels=_channels(intent))
     evidence, supporting, licensed = _spans(result, selected)
     outcome = {
         "answered": "answered",
@@ -273,6 +301,9 @@ def judge_delivery(result: dict[str, Any]) -> dict[str, Any]:
     reasons = [str((selected or {}).get("reason") or status or "no_channel_relation")]
     if selected and selected.get("answer_status") == "conflicting":
         outcome = "conflicting"
+    if selected and selected.get('answer_status') == 'needs_clarification':
+        return _blank(outcome='clarification', reasons=['unresolved_meaning'], verification='not_a_factual_claim',
+                      licensed_text=selected.get('text', ''), channels=_channels(intent))
     return _blank(
         entity=request.get("entity"),
         relation=request.get("relation"),
@@ -284,6 +315,8 @@ def judge_delivery(result: dict[str, Any]) -> dict[str, Any]:
         supporting=supporting,
         verification="structural",
         licensed_text=licensed,
+        request_contract=contract.as_dict() if contract else None,
+        answer_decision=(selected or {}).get('decision'),
     )
 
 
@@ -432,6 +465,9 @@ def _withhold(result: dict[str, Any], judgment: dict[str, Any], reason: str) -> 
         judgment["verification"] = "rejected_replacement"
     judgment["evidence"] = []
     judgment["supporting"] = []
+    if judgment.get('answer_decision'):
+        judgment['answer_decision'] = dict(judgment['answer_decision'],
+            outcome='insufficient_evidence', reason=reason, text=_UNSETTLED, proof=[])
     return result
 
 
@@ -520,12 +556,25 @@ def finalize_turn(result: dict[str, Any], gate: Any | None) -> dict[str, Any]:
         result["shine_final"] = {"role": "final_deliverable", "applied": False, "reason": "abstention"}
         return result
     judgment = judge_delivery(result)
-    if judgment.get("outcome") == "conflicting":
+    if judgment.get('outcome') == 'clarification':
+        if not result.get('needs_clarification'):
+            result = _publish(result, text=judgment.get('licensed_text') or 'Please clarify the intended meaning.',
+                              status='needs_clarification', evidence=[], supporting=[], scope=None, answer=None)
+            result['needs_clarification'] = True
+            result['clarification'] = dict(slot='sense', text=result['reply']['text'])
+    elif judgment.get("outcome") == "conflicting":
         result = _render_conflict(result, judgment)
     elif judgment.get("verification") == "selector_rejected":
         result = _withhold(result, judgment, "selector_rejected")
     else:
         result = _enforce_licensed(result, judgment)
+    if judgment.get('outcome') in {'answered', 'evidence_quote', 'conflicting'}:
+        # Even when the text was unchanged, publish the same complete proof the
+        # judge accepted. Previously only rewritten replies received these IDs.
+        result['answer_evidence'] = list(judgment.get('evidence') or [])
+        result['supporting_evidence'] = list(judgment.get('supporting') or [])
+        result.setdefault('reply', {})['answer_evidence'] = result['answer_evidence']
+        result['reply']['supporting_evidence'] = result['supporting_evidence']
     if judgment.get("verification") == "specialist_contract" and judgment.get("verification") != "rejected_replacement":
         result["shine_final"] = {"role": "specialist_contract", "checked": True}
         result["judgment"] = {key: value for key, value in judgment.items() if key != "licensed_text"}
@@ -618,6 +667,10 @@ def finalize_turn(result: dict[str, Any], gate: Any | None) -> dict[str, Any]:
                     judgment["reasons"] = list(judgment.get("reasons") or []) + ["shine_final_hold"]
                     judgment["evidence"] = []
                     judgment["supporting"] = []
+                    if judgment.get('answer_decision'):
+                        judgment['answer_decision'] = dict(judgment['answer_decision'],
+                            outcome='insufficient_evidence', reason='shine_final_hold',
+                            text=str(checked.get('answer') or shown), proof=[])
     result["judgment"] = {key: value for key, value in judgment.items() if key != "licensed_text"}
     if judgment.get("verification") in {"rejected_replacement", "shine_held"}:
         result["answer"] = None

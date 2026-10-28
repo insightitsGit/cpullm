@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import re
 
-SCORER_VERSION = "request-pipeline-scorer-v2.1"
+SCORER_VERSION = "request-pipeline-scorer-v2.2"
 
 # Accepted proof lives only on these fields. Retrieval, related rows, and
 # diagnostic ids are not citations.
@@ -117,7 +117,9 @@ def map_outcome(result: dict) -> str:
 
 
 def _contains(text: str, needle: str) -> bool:
-    return needle.casefold() in text.casefold()
+    if not needle:
+        return False
+    return re.search(r"(?<!\w)" + re.escape(needle.casefold()) + r"(?!\w)", text.casefold()) is not None
 
 
 def _endorsed(result: dict, text: str) -> bool:

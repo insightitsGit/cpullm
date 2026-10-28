@@ -4,7 +4,9 @@ Architectural foundation: [general semantic answering architecture](semantic-ans
 Use its shared IR, capability ownership and proof obligations to implement the
 steps below; do not treat these steps as independent benchmark patches.
 
-Proposed 2026-10-27. **Not implemented by this document.** This turns the
+Proposed 2026-10-27. Implementation progress is recorded in
+[the implementation report](semantic-implementation-report.md); the remaining
+architectural work below is not implied complete. This turns the
 [result review](reviews/2026-10-27/benchmark-v2-results-review.md) into ordered
 engineering work. Keep the original benchmark and its gold/results immutable.
 

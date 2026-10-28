@@ -84,6 +84,12 @@ def classify_response_request(message: str) -> dict:
             query = _STYLE_START.sub('', query)
             query = _STYLE_END.sub('', query).rstrip(' ,;')
             query = _LIMIT_END.sub('', query).rstrip(' ,;')
+    # Explicit attribute requests retain their factual slot rather than becoming
+    # arbitrary summaries of the named subject.
+    query = re.sub(r'^overview\s*:\s*(?=(?:what|who|where|why|how)\b)', '', query, flags=re.I)
+    attribute = re.fullmatch(r'(?:give(?: me)? (?:a )?(?:detailed |brief )?account of|list)\s+(.+?)\s+(colou?r|shape|material)\s*[.!?]?', query, re.I)
+    if attribute:
+        query = f'What {attribute[2]} is {attribute[1]}?'
     overview = bool(_OVERVIEW.match(query) or _OVERVIEW_STYLE.match(query) or _ITEM_REQUEST.match(query))
     if overview:
         query = _OVERVIEW_STYLE.sub('Tell me about ', query)
@@ -100,7 +106,7 @@ def classify_response_request(message: str) -> dict:
         overview = True
     if not query.strip():
         query = text
-    if not (cues or counts or overview):
+    if not (cues or counts or overview) and query == text:
         # Untargeted requests can contain structured financial fields, source
         # excerpts, or other newline-sensitive content. Leave them verbatim.
         query = message or ''

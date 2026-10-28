@@ -133,14 +133,24 @@ def _paragraph(source: str, number: int, text: str, role: str) -> dict:
     }
 
 
+def history_attribute(domain):
+    return "shape" if domain["old"] in {"round", "square"} else "material"
+
+
+def history_sentence(domain, value):
+    return f"The {history_attribute(domain)} of the {domain['name']} {domain['part']} is {value}."
+
+
 def build_paragraphs() -> tuple[list[dict], list[dict]]:
     paragraphs: list[dict] = []
     rules: list[dict] = []
     counters: Counter[str] = Counter()
 
-    def add(source: str, text: str, role: str) -> str:
+    def add(source: str, text: str, role: str, correction=None) -> str:
         counters[source] += 1
         item = _paragraph(source, counters[source], text, role)
+        if correction:
+            item["correction"] = correction
         paragraphs.append(item)
         return item["id"]
 
@@ -176,7 +186,7 @@ def build_paragraphs() -> tuple[list[dict], list[dict]]:
         add(domain["restricted"], f"The {name} is {domain['restricted_color']}.", "restricted_color")
         add(domain["restricted"], f"The {domain['key']} seal code is {domain['marker']}.", "marker")
         add(domain["restricted"], f"The {domain['conflict_name']} is {domain['conflict_restricted']}.", "restricted_color")
-        add(domain["history"], f"The {name} {domain['part']} is {domain['old']}.", "history")
+        add(domain["history"], history_sentence(domain, domain["old"]), "history", correction=history_sentence(domain, domain["new"]))
         rules.append({"subject": name, "relation": "is_a", "object": domain["kind"], "quantifier": "direct"})
         rules.append({"subject": name, "relation": "has", "object": domain["has"], "quantifier": "direct"})
         rules.append({"subject": f"every {domain['kind']}", "relation": "has", "object": domain["beacon"], "quantifier": "every"})
@@ -288,7 +298,7 @@ def build_cases(paragraphs: list[dict], rules: list[dict]) -> list[dict]:
         restricted_color_id = pid(f"The {name} is {domain['restricted_color']}.")
         marker_id = pid(f"The {domain['key']} seal code is {domain['marker']}.")
         conflict_restricted_id = pid(f"The {domain['conflict_name']} is {domain['conflict_restricted']}.")
-        history_id = pid(f"The {name} {domain['part']} is {domain['old']}.")
+        history_id = pid(history_sentence(domain, domain["old"]))
         second_name, _second_kind, second_color = domain["seconds"][0]
         second_color_id = pid(f"The {second_name} is {second_color}.")
         years = entailed(rules, name, "has_lifespan")
@@ -349,8 +359,8 @@ def build_cases(paragraphs: list[dict], rules: list[dict]) -> list[dict]:
             _case("auth", domain["key"], 4, prompt=f"What is the {domain['key']} seal code?", outcome="insufficient", claims=[], proof_sets=[], forbidden=[domain["marker"]], caller=public_scope),
             _case("auth", domain["key"], 5, prompt=f"What color is the {name}?", outcome="conflict", claims=[domain["color"], domain["restricted_color"]], proof_sets=[[color_id, restricted_color_id]], forbidden=[domain["marker"]], caller=None),
             _case("auth", domain["key"], 6, prompt=f"What color is the {domain['conflict_name']}?", outcome="conflict", claims=[domain["conflict_public"], domain["conflict_restricted"]], proof_sets=[[other_color_id, conflict_restricted_id]], forbidden=[domain["marker"]], caller=None),
-            _case("auth", domain["key"], 7, prompt=f"What shape is the {name} {domain['part']}?", outcome="answer", claims=[domain["old"]], proof_sets=[[history_id]], forbidden=[domain["new"], domain["marker"]], caller=None, as_of=1_700_000_000, history=True),
-            _case("auth", domain["key"], 8, prompt=f"What shape is the {name} {domain['part']}?", outcome="answer", claims=[domain["new"]], proof_sets=[["<corrected:" + history_id + ">"]], forbidden=[domain["old"], domain["marker"]], caller=None, history=True),
+            _case("auth", domain["key"], 7, prompt=f"What {history_attribute(domain)} is the {name} {domain['part']}?", outcome="answer", claims=[domain["old"]], proof_sets=[[history_id]], forbidden=[domain["new"], domain["marker"]], caller=None, as_of=1_700_000_000, history=True),
+            _case("auth", domain["key"], 8, prompt=f"What {history_attribute(domain)} is the {name} {domain['part']}?", outcome="answer", claims=[domain["new"]], proof_sets=[["<corrected:" + history_id + ">"]], forbidden=[domain["old"], domain["marker"]], caller=None, history=True),
         ]
         unsupported += [
             _case("unsupported", domain["key"], 1, prompt=f"When did the {name} arrive?", outcome="unsupported", claims=[], proof_sets=[], forbidden=[domain["place"], domain["marker"]], caller=public_scope),
@@ -600,8 +610,8 @@ def build_conversations(paragraphs: list[dict]) -> list[dict]:
             {"prompt": "What color did I just ask?", "outcome": "insufficient", "claims": [], "forbidden": ["green"], "caller": {"id": "bea", "sources": ["bot-public-p"]}, "session_id": "caller-hold"},
         ]),
         script("script-asof-hold", "holdout", "as_of", "asof-hold", [
-            {"prompt": "What shape is the Bramble pot?", "outcome": "answer", "claims": ["clay"], "proof_sets": [[pid("The Bramble pot is clay.")]], "forbidden": ["slate"], "as_of": 1_700_000_000},
-            {"prompt": "What shape is the Bramble pot?", "outcome": "answer", "claims": ["slate"], "proof_sets": [["<corrected:" + pid("The Bramble pot is clay.") + ">"]], "forbidden": ["clay"]},
+            {"prompt": "What material is the Bramble pot?", "outcome": "answer", "claims": ["clay"], "proof_sets": [[pid("The material of the Bramble pot is clay.")]], "forbidden": ["slate"], "as_of": 1_700_000_000},
+            {"prompt": "What material is the Bramble pot?", "outcome": "answer", "claims": ["slate"], "proof_sets": [["<corrected:" + pid("The material of the Bramble pot is clay.") + ">"]], "forbidden": ["clay"]},
         ], history=True),
         script("script-tenant-hold", "holdout", "tenant", "tenant-hold", [
             {"prompt": "What color is the Helion?", "outcome": "answer", "claims": ["gray"], "proof_sets": [[pid("The Helion is gray.")]], "forbidden": []},
@@ -644,6 +654,19 @@ def build_conversations(paragraphs: list[dict]) -> list[dict]:
         raise RuntimeError(f"expected 24 scripts, found {len(scripts)}")
     if Counter(item["split"] for item in scripts) != Counter({"development": 12, "holdout": 12}):
         raise RuntimeError(Counter(item["split"] for item in scripts))
+    for conversation in scripts:
+        if conversation["id"] == "script-last-dev":
+            first = conversation["turns"][0]
+            first.update(claims=["gray", "Orinth"], proof_sets=[[pid("The Sextant is gray."), pid("The Sextant is found in Orinth.")]],
+                         adjudication={"reason": "The pronoun has one preceding entity; the final child is answerable without clarification."})
+            conversation["turns"][1]["prompt"] = "Where does the Vesper live?"
+        if conversation["id"].startswith("script-criterion-"):
+            continuation = conversation["turns"][1]
+            direct = conversation["turns"][2]
+            continuation.update(outcome="quote", claims=list(direct["claims"]),
+                                proof_sets=direct["proof_sets"], bindings=direct["bindings"],
+                                adjudication={"prior_outcome": "insufficient",
+                                  "reason": "The corpus explicitly ranks the subject best for the supplied criterion; ordinary color alone would not suffice."})
     return scripts
 
 

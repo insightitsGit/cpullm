@@ -311,6 +311,12 @@ def _query_assessment(state: dict[str, Any]) -> dict[str, Any] | None:
     audited = state.get("audit_passed") is True and bool(spoken)
     if audited:
         licensed = str(decision.get("text") or "").strip()
+        # Audit proves the stored sentence, not that it answers this request.
+        # The bound decision owns the claim and all of its proof premises.
+        if licensed and spoken.casefold().strip(' .') != licensed.casefold().strip(' .'):
+            decision.update(text=licensed, supported_text=licensed, replaces_body=True,
+                            verification_scope='query', answer_status='answered')
+            return decision
         # A direct possession that already passed audit is not the whole answer
         # when a membership and a universal rule are also licensed.
         if (

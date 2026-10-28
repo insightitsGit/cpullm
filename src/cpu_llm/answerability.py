@@ -67,6 +67,14 @@ def parse_query(message: str) -> dict[str, str] | None:
     text = " ".join((message or "").strip().split())
     if not text:
         return None
+    explicit_definition = re.fullmatch(r'(?:define\s+(.+?)|what does\s+(.+?)\s+mean)\s*[.?]?', text, re.I)
+    if explicit_definition:
+        return dict(kind='definition', subject=_subject_phrase(explicit_definition[1] or explicit_definition[2]),
+                    tense='present', raw=text)
+    named_attribute = re.fullmatch(r'what (shape|material) (is|was) (.+?)\s*\??', text, re.I)
+    if named_attribute:
+        return dict(kind='attribute', attribute=named_attribute[1].casefold(), entity=_subject_phrase(named_attribute[3]),
+                    tense='past' if named_attribute[2].casefold() == 'was' else 'present', raw=text)
     activity = re.fullmatch(r'what (?P<aux>did|does|do) (.+?) do\s*\??', text, re.I)
     if activity:
         auxiliary = activity.group('aux').casefold()
@@ -201,6 +209,22 @@ def _constrain_channel_class(message: str, chunks: list[Any], channel_answer: di
 
 
 def assess(message: str, chunks: list[Any], *, intent=None) -> dict[str, Any] | None:
+    """Shared factual decision, with the proof bound to the actual request."""
+    decision = _assess(message, chunks, intent=intent)
+    if decision is not None:
+        from cpu_llm.semantic import request_contract, decide, ProofSpan
+        request = request_contract(message, intent)
+        if request is not None:
+            proof = []
+            for field, role in [('supporting_evidence', 'identity'), ('answer_evidence', 'premise')]:
+                for span in decision.get(field) or []:
+                    proof.append(ProofSpan(str(span.get('document_id') or ''), str(span.get('span') or ''), role))
+            decision['decision'] = decide(request, outcome=decision['answer_status'], reason=decision.get('reason', ''),
+                                          text=decision.get('text', ''), proof=proof).as_dict()
+    return decision
+
+
+def _assess(message: str, chunks: list[Any], *, intent=None) -> dict[str, Any] | None:
     """Whether the supplied sentences state the asked relation.
 
     ``None`` means the question is outside this contract. ``answered`` means
@@ -499,7 +523,8 @@ def _subject_bindings(plan: dict[str, str], rows: list[dict[str, str]]) -> list[
         # "What is X?" and "What was X?" take one type or role copula.
         # A place or a bare color does not count, and neither does every
         # other sentence that happens to name the subject.
-        kinds = [item for item in definitions if _kind_sentence(item["span"])]
+        kinds = [item for item in definitions if _kind_sentence(item["span"]) or
+                 re.match(rf'^(?:(?:the|a|an)\s+)?{re.escape(subject)}\s+(?:means|refers to)\s+\S', item['span'], re.I)]
         plain = [item for item in kinds if "," not in item["span"]]
         if plain:
             return plain[:1]
@@ -725,10 +750,17 @@ def _attribute_value(plan: dict[str, str], sentence: str) -> str | None:
     entity = re.escape(plan["entity"].casefold())
     copula = "was" if plan.get("tense") == "past" else "is"
     folded = " ".join(sentence.split())
+    from cpu_llm.semantic import ATTRIBUTE_VALUES
+    if plan['attribute'].casefold() in ATTRIBUTE_VALUES:
+        bare = re.fullmatch(rf'(?:the\s+)?{entity}\s+{copula}\s+([\w-]+)[.!?]?', folded, re.I)
+        from cpu_llm.semantic import COLOR_VOCABULARY
+        ambiguous_material = bare and plan['attribute'].casefold() == 'material' and bare[1].casefold() in COLOR_VOCABULARY
+        if bare and not ambiguous_material and bare[1].casefold() in ATTRIBUTE_VALUES[plan['attribute'].casefold()]:
+            return bare[1]
     patterns = (
-        rf"\bthe {attribute} of {entity} {copula} (?P<value>[^.?!]+)",
+        rf"\bthe {attribute} of (?:the\s+)?{entity} {copula} (?P<value>[^.?!]+)",
         rf"\b{entity}'s {attribute} {copula} (?P<value>[^.?!]+)",
-        rf"^(?P<value>.+?) {copula} the {attribute} of {entity}[.?!]?$",
+        rf"^(?P<value>.+?) {copula} the {attribute} of (?:the\s+)?{entity}[.?!]?$",
     )
     for pattern in patterns:
         matched = re.search(pattern, folded, re.IGNORECASE)
@@ -765,9 +797,11 @@ def _kind_sentence(sentence: str) -> bool:
 def _definition_sentence(plan: dict[str, str], sentence: str) -> bool:
     phrase = re.escape(_subject_phrase(plan.get("subject") or ""))
     copula = r"(?:was|were)" if plan.get("tense") == "past" else r"(?:is|are)"
+    if re.match(rf'^(?:(?:the|a|an)\s+)?{phrase}\s+(?:means|refers to)\s+\S', sentence, re.I):
+        return True
     return bool(re.match(
         rf"^(?:(?:the|a|an)\s+)?{phrase}(?:,\s*[^,]+,)?\s+{copula}\b", sentence, re.IGNORECASE
-    ) or re.search(r"\bknown as\b", sentence, re.IGNORECASE)
+    ) or re.match(rf"^[\w '’-]+,\s*known as\s+[^,]+,\s*{copula}\b", sentence, re.IGNORECASE)
         or re.search(rf"\b{copula}\s+(?:(?:the|a|an)\s+)?{phrase}[.!?]?$", sentence, re.IGNORECASE))
 
 

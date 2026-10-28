@@ -8,6 +8,7 @@ from __future__ import annotations
 import re
 import numpy as np
 from cpu_llm.connection_channels import CHANNEL_SLICES, channel_similarity
+from cpu_llm.semantic import POSSESSION_VERBS
 
 PROTOTYPE_TEXTS = {
     'dense': 'Find passages relevant to this subject.',
@@ -32,8 +33,8 @@ def _requested(message):
         ('is_a', 'subject', r'what (?:kind|type|sort)(?: of [\w -]+?)? (?:is|are) (?P<entity>.+)'),
         ('has_color', 'subject', r'what colou?r (?:is|are) (?P<entity>.+)'),
         ('lives_in', 'subject', r'where (?:does|do) (?P<entity>.+?) (?:live|reside)'),
-        ('has', 'subject', r'what (?:does|do) (?P<entity>.+?) have'),
-        ('has', 'subject', r'(?:does|do) (?P<entity>.+?) have (?P<object>.+)'),
+        ('has', 'subject', rf'what (?:does|do) (?P<entity>.+?) {POSSESSION_VERBS}'),
+        ('has', 'subject', rf'(?:does|do) (?P<entity>.+?) {POSSESSION_VERBS} (?P<object>.+)'),
         ('causes', 'object', r'what causes (?P<entity>.+)'),
         ('causes', 'subject', r'what (?:does|do) (?P<entity>.+?) cause'),
         ('causes', 'object', r'why (?:does|do|did) (?P<entity>.+)'),
@@ -142,18 +143,8 @@ def select_channel_answer(message, chunks, *, intent=None):
     channel = {'is_a': 'hyperbolic', 'causes': 'causal'}.get(request['relation'], 'relational')
     def matches(name, value):
         if request['relation'] == 'causes' and request['direction'] == 'object':
-            # Match the complete effect, allowing simple verb agreement.
-            def words(text):
-                skip = {"is", "are", "was", "were", "be"}
-                kept = []
-                for word in _name(text).split():
-                    if word in skip:
-                        continue
-                    if word.endswith("s") and not word.endswith("ss"):
-                        word = word[:-1]
-                    kept.append(word)
-                return kept
-            return words(name) == words(value)
+            from cpu_llm.semantic import effects_equivalent
+            return effects_equivalent(name, value)
         return _equivalent(name, value)
     # An individual does not inherit some or an average. An explicit question
     # about that average keeps the aggregate sentence and nothing else.

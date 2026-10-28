@@ -119,10 +119,19 @@ def creative_writing_trigger(message: str, *, forced: bool = False) -> list[str]
     reasons: list[str] = []
     if forced:
         reasons.append(CALLER_REASON)
+    # Match a requested creative act, not a genre word inside a factual subject
+    # or inside quoted/background data. The topic follows the instruction head.
+    masked = re.sub(r'```[\s\S]*?```|"[^"\n]*"|“[^”\n]*”', ' ', message or '')
+    prompt = re.sub(r'^(?:please\s+)?(?:(?:can|could|would) you\s+)?', '', masked.strip(), flags=re.I)
+    head = re.split(r'\b(?:about|regarding|concerning)\b', prompt, maxsplit=1, flags=re.I)[0]
+    requested = bool(re.match(r'^(?:write|compose|create|draft|invent|narrate|imagine|make|produce)\b', prompt, re.I)
+                     or re.match(r'^tell(?: me)? (?:a |the )?(?:story|tale)\b|^what if\b', prompt, re.I))
+    if not requested:
+        return reasons
     for pattern, reason in _REASONS:
         if reason in reasons:
             continue
-        if pattern.search(message or ""):
+        if pattern.search(head):
             reasons.append(reason)
     return reasons
 

@@ -14,6 +14,14 @@ import re
 REQUEST_SCHEMA = "answer-request-v1"
 DECISION_SCHEMA = "answer-decision-v1"
 
+# These are declared equivalents for a bounded relation, not corpus synonyms.
+POSSESSION_VERBS = r'(?:have|contain|include|possess)'
+POSSESSION_SOURCE_VERBS = r'(?:has|have|contains?|includes?|possess(?:es)?)'
+ATTRIBUTE_VALUES = {
+    'shape': frozenset('round square circular triangular rectangular oval spherical cylindrical flat'.split()),
+    'material': frozenset('wood metal glass plastic steel iron brass copper oak pine clay slate maple birch cedar ash'.split()),
+}
+
 # Bare "X is Y" is a color only when Y is in this vocabulary. An explicit
 # "has color" / "the color of X is Y" construction may name a value outside it.
 COLOR_VOCABULARY = frozenset(
@@ -133,7 +141,63 @@ def discharges_type(sentence: str) -> bool:
     """A type or role copula. A place, a ranking, or a bare color does not."""
     if _PLACE.search(sentence) or _BARE_COLOR.search(sentence):
         return False
-    return _ROLE.search(sentence) is not None
+    return _ROLE.search(sentence) is not None or named_identity(sentence)
+
+
+def named_identity(sentence: str) -> bool:
+    """A bounded proper-name equality, distinct from an action or adjective."""
+    if re.search(r'\b(?:is|are|was|were)\s+(?:also\s+)?(?:called|known as|named)\s+\S', sentence, re.I):
+        return True
+    found = re.search(r'\b(?:is|are|was|were)\s+([A-Z][A-Za-z\'-]+(?:\s+[A-Za-z][A-Za-z\'-]+){1,3})[.!?]?$', sentence)
+    if not found:
+        return False
+    words = found[1].split()
+    excluded = {'in', 'on', 'at', 'from', 'with', 'for', 'and', 'or', 'not', 'very', 'ready', 'known', 'found'}
+    return not any(word.casefold() in excluded or word.casefold() in COLOR_VOCABULARY for word in words)
+
+
+def request_contract(message: str, intent=None) -> AnswerRequest | None:
+    """One adapter boundary for channel and legacy factual request parsers."""
+    from cpu_llm.prompt_intent import route_prompt
+    requested = ((intent if intent is not None else route_prompt(message)).get('requested') or {})
+    if requested:
+        return compile_request(requested)
+    from cpu_llm.answerability import parse_query
+    parsed = parse_query(message)
+    if not parsed:
+        return None
+    relation = {'definition': 'is_a', 'activity': 'activity', 'weight': 'weight'}.get(parsed['kind'])
+    if parsed['kind'] == 'attribute':
+        relation = 'attribute:' + parsed['attribute'].casefold()
+    elif parsed['kind'] == 'relation':
+        relation = parsed.get('relation', 'action') + ':' + parsed['verb']
+    elif parsed['kind'] == 'sources':
+        relation = 'sources'
+    return compile_request(dict(entity=parsed.get('subject') or parsed.get('entity') or '',
+                                relation=relation or parsed['kind'], direction='subject'))
+
+
+def effects_equivalent(left: str, right: str) -> bool:
+    """Allow one declared verb-form change; keep subject and other roles exact."""
+    from cpu_llm.realizer.inflect import surface_tokens
+    def tokens(text):
+        return [word for word in _name(text).split() if word not in {'is', 'are', 'was', 'were', 'be'}]
+    a, b = tokens(left), tokens(right)
+    if len(a) != len(b):
+        return False
+    differences = [i for i, pair in enumerate(zip(a, b)) if pair[0] != pair[1]]
+    if not differences:
+        return True
+    if len(differences) != 1 or differences[0] == 0:
+        return False
+    i = differences[0]
+    for base, value in ((a[i], b[i]), (b[i], a[i])):
+        forms = surface_tokens(base)
+        if len(base) >= 3 and base[-1] not in 'aeiouwxy' and base[-2] in 'aeiou':
+            forms.add(base + base[-1] + 'ed')
+        if value in forms:
+            return True
+    return False
 
 
 def blocks_type(sentence: str) -> bool:

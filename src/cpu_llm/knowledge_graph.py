@@ -15,7 +15,7 @@ import json
 from cpu_llm.access import source_allowed
 from cpu_llm.answerability import _sentences
 from cpu_llm.connection_channels import evaluate_connection
-from cpu_llm.semantic import COLOR_VOCABULARY
+from cpu_llm.semantic import COLOR_VOCABULARY, POSSESSION_SOURCE_VERBS
 
 
 def _delete_document_prefix(conn, prefix: str) -> None:
@@ -99,7 +99,7 @@ def extract_facts(document_id: str, text: str) -> list[Fact]:
             ('differs_from', rf"{_SUBJECT}\s+differs?\s+from\s+(?P<object>.+)"),
             ('lives_in', rf"{_SUBJECT}\s+(?:lives?|resides?|is found)\s+(?:in|across)\s+(?P<object>.+)"),
             ('has_color', rf"{_SUBJECT}\s+(?:is|are)\s+(?P<object>{_COLOR})"),
-            ('has', rf"{_SUBJECT}\s+(?:has|have)\s+(?P<object>.+)"),
+            ('has', rf"{_SUBJECT}\s+{POSSESSION_SOURCE_VERBS}\s+(?P<object>.+)"),
             ('is_a', rf"{_SUBJECT}\s+(?:is|are)\s+(?:a species of|an|a)\s+(?P<object>.+)"),
         ]
         for relation, pattern in patterns:

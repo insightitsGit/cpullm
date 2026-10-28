@@ -330,6 +330,7 @@ Additional limits include narrow English extraction grammars, incomplete retriev
 
 ## Source and design map
 
+- [Semantic implementation report](docs/semantic-implementation-report.md): shared factual assessment and final judgment, retained proof, bounded identity/attribute/wording support, evaluator corrections, live validation and remaining architectural work.
 - [Current design](docs/current-design.md): current request lifecycle, channel semantics, storage, budgets, and validation limits.
 - [Response cases](docs/response-cases.md): evidence-join semantics, covered examples, and cases still missing.
 - [knowledge_graph.py](src/cpu_llm/knowledge_graph.py), [connection_channels.py](src/cpu_llm/connection_channels.py): explicit source facts and independent channel assessments; [graph design](docs/knowledge-graph.md).

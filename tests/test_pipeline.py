@@ -476,10 +476,12 @@ def test_query_vector_is_encoded_once_and_reused(appliance: Appliance, monkeypat
         return encode_query(query)
 
     seen: dict[str, object] = {}
+    searches = []
 
     def search(query: str, top_k: int = 5, query_tensor=None, **_extra):
         seen["query"] = query
         seen["tensor"] = query_tensor
+        searches.append((query, query_tensor))
         return []
 
     monkeypatch.setattr(appliance.index, "encode_query", counted)
@@ -487,9 +489,11 @@ def test_query_vector_is_encoded_once_and_reused(appliance: Appliance, monkeypat
     message = "What is a single encoding?"
     head_pids = appliance.thinker.worker_pids()
     appliance.ask(message)
-    tensor = seen["tensor"]
-    assert calls == [message]
-    assert seen["query"] == message
+    tensor = searches[0][1]
+    assert calls[0] == message and calls.count(message) == 1
+    assert searches[0][0] == message
+    assert len(calls) <= 4  # The original encoding plus bounded distinct repair queries.
+    assert len(calls) == len(set(calls))
     assert tensor is appliance._turn["z_query"]
     assert getattr(tensor, "shape") == (1024,)
     assert head_pids == appliance.thinker.worker_pids()

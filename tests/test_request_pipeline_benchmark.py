@@ -9,6 +9,13 @@ from tools.benchmarks.request_pipeline.run_eval import restart_process_record
 from tools.benchmarks.request_pipeline.scorer import selftest
 
 
+def test_scorer_matches_whole_entity_names():
+    from tools.benchmarks.request_pipeline.scorer import _contains
+    assert _contains('Aldermere is north.', 'Aldermere')
+    assert not _contains('WestAldermere is north.', 'Aldermere')
+    assert not _contains('The clayish surface.', 'clay')
+
+
 def test_scorer_fixtures_cover_the_required_failures():
     rows = selftest()
     names = {row["name"] for row in rows}
@@ -66,7 +73,8 @@ def test_gold_coverage_manifest_matches_the_design_counts():
     assert "Caldera" in cancel["claims"]
     assert cancel["forbidden"] == []
     criterion = scripts["script-criterion-dev"]["turns"][1]
-    assert criterion["outcome"] == "insufficient"
+    assert criterion["outcome"] == "quote"
+    assert criterion["proof_sets"] and criterion["bindings"][0]["relation"] == "best"
     assert scripts["script-reopen-hold"]["turns"][1]["action"] == "reset_memory"
     ambiguous = scripts["script-two-clarify-dev"]["turns"][0]
     assert "Sextant" in ambiguous["prompt"] and "Azimuth" in ambiguous["prompt"]

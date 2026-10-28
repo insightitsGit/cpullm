@@ -1,7 +1,9 @@
 # General semantic answering architecture
 
-Proposal, 2026-10-27. Design only; no implementation or demonstrated accuracy is
-implied. This is the architectural basis for the
+Proposal, 2026-10-27, with an initial implementation described in
+[the implementation report](semantic-implementation-report.md). This remains the
+target architecture; partial migration does not demonstrate general accuracy.
+This is the architectural basis for the
 [implementation plan](benchmark-v2-improvement-design.md), not an additional list
 of benchmark-specific exceptions. Benchmark subjects and expected strings must
 never enter runtime parsing, extraction, routing or decision rules.

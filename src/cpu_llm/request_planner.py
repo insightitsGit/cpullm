@@ -27,6 +27,8 @@ def _mask(text):
 
 
 def _entity(query):
+    from cpu_llm.response_policy import classify_response_request
+    query = classify_response_request(query)['content_query']
     from cpu_llm.prompt_intent import route_prompt, _name
     from cpu_llm.answerability import parse_query
     request = route_prompt(query).get('requested') or {}
@@ -68,9 +70,12 @@ def separate_request(message):
         presentation = classify_response_request(raw[begin + style.start('text'):begin + style.end('text')])
     begin += len(re.match(r'\s*(?:\d+[.)]\s*)?', raw[begin:end])[0])
     work = masked[begin:end]
+    prefix = re.match(r'^(?:please\s+)?(?:answer\s+)?(?:in|using|with|as)\s+(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten)\s+(?:sentences?|bullets?(?: points?)?|words?)\s*[:,]\s*', work, re.I)
     ranges = []
     cursor = 0
     for match in _BOUNDARY.finditer(work):
+        if prefix and match.start() < prefix.end():
+            continue
         ranges.append((cursor, match.start()))
         cursor = match.end()
     ranges.append((cursor, len(work)))
@@ -89,7 +94,7 @@ def separate_request(message):
         return dict(base, status='needs_clarification', reason='Please add a question after Questions:.')
     if len(pieces) > MAX_TASKS:
         return dict(base, status='limit_exceeded', reason=f'Please ask at most {MAX_TASKS} questions or commands at a time.')
-    if any(not _LEADING.match(_mask(piece)) for piece, _, _ in pieces):
+    if any(not _LEADING.match(_mask(classify_response_request(piece)['content_query'])) for piece, _, _ in pieces):
         return dict(base, status='needs_clarification', reason='Please put each question or command on its own line. Label background as Context: and the requests as Questions:.')
     entities = []
     if background:
