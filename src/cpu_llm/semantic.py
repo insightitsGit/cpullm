@@ -27,10 +27,11 @@ COLOR_VOCABULARY = frozenset(
 
 _AGGREGATE = re.compile(r"^(?:some|most|many|several|few|average)\b", re.IGNORECASE)
 _UNIVERSAL = re.compile(r"^(?:every|all)\b", re.IGNORECASE)
-_ROLE = re.compile(r"\b(?:is|are)\s+(?:a|an|the)\s+(?!found\b)(?!best\b)\S", re.IGNORECASE)
-_PLACE = re.compile(r"\b(?:is|are)\s+found\b", re.IGNORECASE)
+_COPULA = r"(?:is|are|was|were)"
+_ROLE = re.compile(rf"\b{_COPULA}\s+(?:a|an|the)\s+(?!found\b)(?!best\b)\S", re.IGNORECASE)
+_PLACE = re.compile(rf"\b{_COPULA}\s+found\b", re.IGNORECASE)
 _BARE_COLOR = re.compile(
-    r"\b(?:is|are)\s+(?:" + "|".join(sorted(COLOR_VOCABULARY, key=len, reverse=True)) + r")\b[.!?]?\s*$",
+    rf"\b{_COPULA}\s+(?:" + "|".join(sorted(COLOR_VOCABULARY, key=len, reverse=True)) + r")\b[.!?]?\s*$",
     re.IGNORECASE,
 )
 
@@ -166,4 +167,22 @@ def proof_from_facts(facts: list, *, role: str = "premise") -> list[ProofSpan]:
             continue
         seen.add(key)
         spans.append(ProofSpan(document_id=key[0], span=key[1], role=role))
+    return spans
+
+
+def assemble_proof(identity: list, conclusions: list) -> list[ProofSpan]:
+    """The identity edges that bind the asked name, then the stated relation.
+
+    A conclusion about a canonical name does not by itself justify an answer
+    to an alias. The alias premise has to be in this proof, not only in a
+    side list.
+    """
+    spans = proof_from_facts(identity, role="identity")
+    seen = {(span.document_id, span.span, span.role) for span in spans}
+    for span in proof_from_facts(conclusions):
+        key = (span.document_id, span.span, span.role)
+        if key in seen:
+            continue
+        seen.add(key)
+        spans.append(span)
     return spans

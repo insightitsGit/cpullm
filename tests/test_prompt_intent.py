@@ -68,6 +68,21 @@ def test_an_explicit_average_is_quoted_and_an_individual_does_not_inherit_it():
     assert individual['decision']['request']['quantifier_scope'] == 'individual'
 
 
+def test_an_alias_color_proof_includes_the_identity_premise():
+    alias = 'Caligo marina, known as the coastal moth, is a species of insect.'
+    color = 'Caligo marina is blue.'
+    answer = select_channel_answer('What color is the coastal moth?', [
+        dict(document_id='alias', text=alias),
+        dict(document_id='color', text=color),
+    ])
+    assert answer['answer_status'] == 'answered'
+    assert answer['text'] == color
+    proof = {(step['document_id'], step['role']) for step in answer['decision']['proof']}
+    assert ('alias', 'identity') in proof
+    assert ('color', 'premise') in proof
+    assert {item['document_id'] for item in answer['supporting_evidence']} == {'alias'}
+
+
 def test_a_one_word_color_answers_and_two_colors_conflict():
     copper = select_channel_answer('What color is the Kestrel?', [dict(document_id='c', text='The Kestrel is copper.')])
     assert copper['answer_status'] == 'answered'

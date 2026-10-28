@@ -486,8 +486,9 @@ def _subject_bindings(plan: dict[str, str], rows: list[dict[str, str]]) -> list[
             bindings.append({"document_id": row["document_id"], "span": sentence})
     if plan["kind"] == "definition":
         definitions = [item for item in bindings if _definition_sentence(plan, item["span"])]
-        # "What is X?" is the kind. A place or a color that also uses "is"
-        # stays available only when no kind sentence was retrieved.
+        # "What is X?" and "What was X?" take one type or role copula.
+        # A place or a bare color does not count, and neither does every
+        # other sentence that happens to name the subject.
         kinds = [item for item in definitions if _kind_sentence(item["span"])]
         plain = [item for item in kinds if "," not in item["span"]]
         if plain:
@@ -496,8 +497,12 @@ def _subject_bindings(plan: dict[str, str], rows: list[dict[str, str]]) -> list[
             return kinds[:1]
         from cpu_llm.semantic import blocks_type
 
-        if definitions and all(blocks_type(item["span"]) for item in definitions):
-            return []
+        # A place or a bare color does not answer "what is" or "what was".
+        # Any other copula is the definition. Sentences that merely mention
+        # the subject stay out of that answer.
+        if definitions:
+            kept = [item for item in definitions if not blocks_type(item["span"])]
+            return kept[:1]
     return bindings
 
 

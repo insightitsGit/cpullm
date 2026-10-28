@@ -124,7 +124,7 @@ def select_channel_answer(message, chunks, *, intent=None):
     request = intent['requested']
     if request is None:
         return None
-    from cpu_llm.semantic import compile_request, decide, proof_from_facts, scope_allows
+    from cpu_llm.semantic import assemble_proof, compile_request, decide, scope_allows
 
     compiled = compile_request(request)
     facts = []
@@ -197,9 +197,10 @@ def select_channel_answer(message, chunks, *, intent=None):
     base = dict(query=message, kind='channel', prompt_intent=intent, retrieved_candidates=[
         dict(document_id=f.document_id, span=f.sentence) for f in facts], answer_evidence=[], verification_scope='query')
 
-    def _attach(payload, proof_facts, outcome, reason, text):
+    def _attach(payload, proof_facts, outcome, reason, text, identity=()):
         payload['decision'] = decide(
-            compiled, outcome=outcome, reason=reason, text=text, proof=proof_from_facts(proof_facts),
+            compiled, outcome=outcome, reason=reason, text=text,
+            proof=assemble_proof(list(identity), proof_facts),
         ).as_dict()
         return payload
 
@@ -221,12 +222,12 @@ def select_channel_answer(message, chunks, *, intent=None):
         return _attach(
             dict(base, answer_status='conflicting', reason='conflicting_channel_values', answer_evidence=evidence,
                  text=conflict_text),
-            selected, 'conflicting', 'conflicting_channel_values', conflict_text)
+            selected, 'conflicting', 'conflicting_channel_values', conflict_text, alias_evidence)
     reason = 'chosen_class' if chosen else ('universal_membership_join' if joins else 'channel_relation_stated')
     answered_text = ' '.join(dict.fromkeys(f.sentence for f in joins + selected))
     return _attach(
         dict(base, answer_status='answered', reason=reason, answer_evidence=evidence, text=answered_text),
-        joins + selected, 'answered', reason, answered_text)
+        joins + selected, 'answered', reason, answered_text, alias_evidence)
 
 
 def rank_channel_hits(hits, intent):

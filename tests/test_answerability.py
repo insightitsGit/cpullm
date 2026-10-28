@@ -111,6 +111,24 @@ def test_a_definition_uses_the_kind_when_a_place_sentence_is_also_present():
     assert "Rim" not in only_place["text"]
 
 
+def test_a_past_definition_is_the_former_type_not_every_sentence_about_the_subject():
+    former = "The Reed was a display pane."
+    place = "The Reed was found in Rim."
+    for rows in ([former, place], [place, former]):
+        decision = assess("What was the Reed?", rows)
+        assert decision is not None
+        assert decision["answer_status"] == "answered"
+        assert decision["text"] == former
+        assert decision["answer_evidence"] == [{"document_id": "chunk-0" if rows[0] == former else "chunk-1", "span": former}]
+    only_place = assess("What was the Reed?", [place])
+    assert only_place is not None
+    assert only_place["answer_status"] == "insufficient_evidence"
+    assert "Rim" not in only_place["text"]
+    event = assess("What is Mary?", ["Mary baked a cake."])
+    assert event is not None
+    assert event["text"] == "Mary baked a cake."
+
+
 def test_paraphrase_and_alias_still_bind():
     city = assess("Which city is the capital of France?", [_CAPITAL_ALT])
     assert city is not None and city["answer_status"] == "answered"

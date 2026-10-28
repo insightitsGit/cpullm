@@ -621,7 +621,16 @@ def _lifecycle(app, label: str, clock: Clock) -> dict:
         app.catalog_chunks([(scratch_id, prior)])
         report["corrected"] = _convert(app.correct(scratch_id, prior, revised, actor_id="benchmark-editor", timestamp=HISTORY_CORRECTION))
         report["deleted"] = _convert(app.delete_source(scratch_id))
-        reopened = _open(label[:24] + "re", False, clock)
+        # Reopen the store that was just corrected and deleted. A fresh
+        # namespace is empty for a different reason and cannot show the delete.
+        namespace = getattr(app, "namespace", None)
+        if not namespace:
+            report["status"] = "unavailable"
+            report["reason"] = "the original appliance has no namespace to reopen"
+            return report
+        report["namespace"] = namespace
+        reopened = _open(namespace, bool(getattr(app, "resonance_tags_enabled", False)), clock)
+        report["reopened_namespace"] = getattr(reopened, "namespace", None)
         result, _trace, _elapsed = _ask(reopened, "What is the scratch tag?", {}, "lifecycle-reopen", None)
         text = public_fields(result)
         report["reopened_text"] = text[:500]

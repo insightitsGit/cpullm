@@ -21,3 +21,6 @@ def test_a_place_sentence_does_not_discharge_a_type_request():
     assert not discharges_type("The Reed is found in Rim.")
     assert not discharges_type("The Reed is copper.")
     assert not discharges_type("The Sable is the best survey pane for color.")
+    assert discharges_type("The Reed was a display pane.")
+    assert not discharges_type("The Reed was found in Rim.")
+    assert not discharges_type("The Reed was copper.")

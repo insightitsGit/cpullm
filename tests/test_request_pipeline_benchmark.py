@@ -94,3 +94,42 @@ def test_restart_record_is_not_a_process_restart():
     assert record["verdict"]["restart_measurement"] == "unavailable"
     assert record["verdict"]["excluded_from_accuracy"] is True
     assert record["process_restart"] is False
+
+
+def test_lifecycle_reopens_the_store_that_was_deleted(monkeypatch):
+    from tools.benchmarks.request_pipeline import run_eval
+
+    opened = []
+
+    class Store:
+        def __init__(self, namespace):
+            self.namespace = namespace
+            self.resonance_tags_enabled = False
+
+        def catalog_chunks(self, chunks):
+            self.chunks = list(chunks)
+
+        def correct(self, *args, **kwargs):
+            return {"status": "corrected"}
+
+        def delete_source(self, source):
+            return {"deleted": source}
+
+    def fake_open(namespace, resonance, clock):
+        opened.append((namespace, resonance, clock))
+        return Store(namespace)
+
+    def fake_ask(app, prompt, case, session_id, as_of):
+        assert prompt == "What is the scratch tag?"
+        assert app.namespace == original.namespace
+        return ({"answer": "The retrieved passages do not settle that."}, [], 0.0)
+
+    monkeypatch.setattr(run_eval, "_open", fake_open)
+    monkeypatch.setattr(run_eval, "_ask", fake_ask)
+    original = Store("scale1000_271027_dense")
+    report = run_eval._lifecycle(original, "scale1000-271027-dense", clock=None)
+    assert opened == [("scale1000_271027_dense", False, None)]
+    assert report["namespace"] == original.namespace
+    assert report["reopened_namespace"] == original.namespace
+    assert report["retired_absent"] is True
+    assert report["reopened_namespace"] != "scale1000-271027-dense"[:24] + "re"
