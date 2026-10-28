@@ -143,6 +143,26 @@ def test_activity_question_does_not_quote_roles_possessions_or_uncertain_other_a
     assert assess('What did Mary do?', [text])['answer_status'] == 'insufficient_evidence'
 
 
+@pytest.mark.parametrize('question,sentence', [
+    ('What did Mary do?', 'Mary baked goods are popular.'),
+    ('What did the Reed do?', 'The Reed colored glass is rare.'),
+    ('What does Mary do?', 'Mary lives in Paris.'),
+    ('What did Mary do?', 'Mary lived in Paris.'),
+    ('What do the looms do?', 'The looms spins wool.'),
+])
+def test_activity_does_not_quote_a_modifier_or_a_residence(question, sentence):
+    decision = assess(question, [sentence])
+    assert decision['answer_status'] == 'insufficient_evidence'
+    assert sentence not in decision['text']
+
+
+def test_activity_quotes_a_main_clause_past_present_or_plural_action():
+    assert assess('What did Mary do?', ['Mary found the peg.'])['text'] == 'Mary found the peg.'
+    assert assess('What did Mary do?', ['Mary baked a cake.'])['text'] == 'Mary baked a cake.'
+    assert assess('What does Mary do?', ['Mary bakes cakes.'])['text'] == 'Mary bakes cakes.'
+    assert assess('What do the looms do?', ['The looms spin wool.'])['text'] == 'The looms spin wool.'
+
+
 def test_holds_and_conflicts_never_open_an_interpretation_loop():
     for outcome in ['conflicting', 'blocked', 'unsupported', 'answered']:
         assert inspect_gap('What is Mary?', dict(judgment=dict(outcome=outcome))) is None

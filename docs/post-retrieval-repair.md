@@ -49,13 +49,16 @@ Choosing activity reruns retrieval/assessment and may quote the action. It never
 derives `Mary is a baker` from baking. The same mechanism can offer a location,
 color, possessions or lifespan question when those facts are present instead.
 
-Activity support is deliberately limited to affirmative main clauses with the
-explicit subject and recognized simple verb morphology (regular past/present
-forms and a small declared irregular-past set). Roles, possession, negation,
-conditional/modal clauses and other subjects do not satisfy that activity request.
-Past and present requests are checked separately. This is quotation of observed
-actions, not exhaustive biography, free-form event reasoning or occupation inference.
-Unrecognized verbs/constructions can still require the user to rephrase.
+Activity support is an affirmative main clause whose first word is a finite
+verb of the asked agreement. "What did" takes a regular past or a declared
+irregular past, including found, said, saw, came, and left. "What does" takes
+the third-person present. "What do" takes the base form, so a plural subject
+can answer. A modifier in front of a later finite verb, such as "baked goods
+are" or "colored glass is", is not an action. "Lives in" and "lived for"
+stay with residence and lifespan. Roles, possession, negation, conditionals,
+modals, and other subjects do not satisfy an activity request. This quotes an
+observed action. It does not infer an occupation, and an unrecognized
+construction can still require the user to rephrase.
 
 ## Conversation and public contract
 

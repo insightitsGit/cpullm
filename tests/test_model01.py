@@ -255,6 +255,7 @@ def test_a_checked_sentence_is_kept_and_an_invented_ranking_is_not():
     )
     cake = next(pair for pair in pairs if pair.document_id == "mary" and pair.kind == "proposition")
     assert cake.gold_text == "Mary baked a cake."
+    assert cake.prompt == "What did Mary do?"
     assert "best" not in cake.gold_text.casefold()
     color = next(pair for pair in pairs if pair.document_id == "apple" and pair.prompt.startswith("What color"))
     assert color.gold_text == "The apple John ate was yellow."
@@ -273,7 +274,7 @@ def test_a_pair_round_trips_through_postgres():
         found = load_pairs(model_id="model01-test")
         assert [item.gold_text for item in found] == ["Mary baked a cake."]
         assert found[0].split == "unit"
-        assert found[0].prompt == "What is Mary?"
+        assert found[0].prompt == "What did Mary do?"
     finally:
         _delete_test_rows()
 
@@ -354,18 +355,17 @@ def test_a_name_keeps_its_internal_words():
 def test_model01_does_not_copy_an_unrelated_passage():
     from cpu_llm.pipeline import _model01
 
-    update = _model01(
-        {
-            "message": "What is Mary?",
-            "guard_decision": "allow",
-            "related": [
-                {"chunk_id": "mary", "chunk_text": "Mary baked a cake."},
-                {"chunk_id": "other", "chunk_text": "Kinberg supported a number of changes to the liturgy."},
-            ],
-        }
-    )
-    assert update["model01"]["text"] == "Mary baked a cake."
-    assert "Kinberg" not in update["model01"]["text"]
+    related = [
+        {"chunk_id": "mary", "chunk_text": "Mary baked a cake."},
+        {"chunk_id": "other", "chunk_text": "Kinberg supported a number of changes to the liturgy."},
+    ]
+    activity = _model01({"message": "What did Mary do?", "guard_decision": "allow", "related": related})
+    assert activity["model01"]["text"] == "Mary baked a cake."
+    assert "Kinberg" not in activity["model01"]["text"]
+    definition = _model01({"message": "What is Mary?", "guard_decision": "allow", "related": related})
+    assert definition["model01"]["text"] == "The retrieved passages do not settle that."
+    assert "Kinberg" not in definition["model01"]["text"]
+    assert "baked" not in definition["model01"]["text"]
 
 
 def test_model01_is_the_step_before_the_reply():

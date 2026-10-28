@@ -67,10 +67,12 @@ def parse_query(message: str) -> dict[str, str] | None:
     text = " ".join((message or "").strip().split())
     if not text:
         return None
-    activity = re.fullmatch(r'what (?:did|does|do) (.+?) do\s*\??', text, re.I)
+    activity = re.fullmatch(r'what (?P<aux>did|does|do) (.+?) do\s*\??', text, re.I)
     if activity:
-        return dict(kind='activity', subject=_subject_phrase(activity[1]), raw=text,
-                    tense='past' if re.match(r'what did\b', text, re.I) else 'present')
+        auxiliary = activity.group('aux').casefold()
+        return dict(kind='activity', subject=_subject_phrase(activity[2]), raw=text,
+                    tense='past' if auxiliary == 'did' else 'present',
+                    agreement={'did': 'past', 'does': 'singular', 'do': 'plural'}[auxiliary])
     does = _DOES.match(text)
     if does:
         subject = _subject_phrase(does.group("subject"))
@@ -483,7 +485,9 @@ def _subject_bindings(plan: dict[str, str], rows: list[dict[str, str]]) -> list[
         for sentence in _sentences(row["text"]):
             if not _subject_sentence(subject, sentence):
                 continue
-            if plan['kind'] == 'activity' and not _activity_sentence(subject, sentence, tense=plan['tense']):
+            if plan['kind'] == 'activity' and not _activity_sentence(
+                subject, sentence, agreement=plan.get('agreement') or 'singular'
+            ):
                 continue
             key = (row["document_id"], sentence)
             if key in seen:
@@ -509,21 +513,118 @@ def _subject_bindings(plan: dict[str, str], rows: list[dict[str, str]]) -> list[
     return bindings
 
 
-def _activity_sentence(subject: str, sentence: str, *, tense: str) -> bool:
-    """A bounded affirmative main-clause action, quoted without role inference."""
+# Past forms that are not stem+ed. The base is recorded so residence lemmas
+# can be recognized from either the past or the present form.
+_IRREGULAR_PAST = {
+    "ate": "eat", "made": "make", "built": "build", "taught": "teach", "wrote": "write",
+    "ran": "run", "sang": "sing", "went": "go", "bought": "buy", "sold": "sell",
+    "took": "take", "gave": "give", "found": "find", "saw": "see", "said": "say",
+    "came": "come", "left": "leave", "felt": "feel", "kept": "keep", "held": "hold",
+    "met": "meet", "paid": "pay", "heard": "hear", "sat": "sit", "spoke": "speak",
+    "began": "begin", "became": "become", "brought": "bring", "caught": "catch",
+    "chose": "choose", "drew": "draw", "drove": "drive", "fell": "fall", "fought": "fight",
+    "forgot": "forget", "grew": "grow", "hid": "hide", "hit": "hit", "hurt": "hurt",
+    "laid": "lay", "led": "lead", "lost": "lose", "meant": "mean", "put": "put",
+    "read": "read", "rose": "rise", "sent": "send", "set": "set", "shot": "shoot",
+    "slept": "sleep", "spent": "spend", "stood": "stand", "swam": "swim", "told": "tell",
+    "understood": "understand", "wore": "wear", "won": "win", "thought": "think",
+    "knew": "know", "got": "get", "let": "let", "cut": "cut", "shut": "shut",
+    "cost": "cost", "spread": "spread", "did": "do", "dwelt": "dwell",
+}
+_CLAUSE_FINITE = frozenset({"is", "are", "was", "were", "has", "have", "had", "be", "been"})
+_NOT_ACTIVITY = _CLAUSE_FINITE | frozenset("""
+    a an the and or nor but if than that which who whom when where
+    in on for with from by to of at into over after before about across
+    not no never its their his her this these those also only just
+    very more most other another known
+""".split())
+_RESIDENCE = frozenset({"live", "reside", "dwell"})
+_RESIDENCE_PREP = frozenset({"in", "for", "across", "at", "on", "inside", "near"})
+
+
+def _activity_sentence(subject: str, sentence: str, *, agreement: str) -> bool:
+    """A finite main-clause action of the asked agreement.
+
+    ``baked goods are`` is a modifier plus a later finite verb, not an action.
+    ``lives in`` and ``lived for`` stay with residence and lifespan.
+    """
     prefix = rf'^(?:(?:the|a|an)\s+)?{re.escape(_subject_phrase(subject))}\s+'
     tail = re.sub(prefix, '', sentence, count=1, flags=re.I)
     if tail == sentence or re.search(r"\b(?:not|never|no|if|unless|may|might|could|would|should)\b|n't", tail, re.I):
         return False
-    verb = re.match(r'([A-Za-z]+)\s+\S', tail)
-    if not verb:
+    tokens = [token.strip(".,;:!?\"'()[]") for token in tail.split()]
+    tokens = [token for token in tokens if token]
+    if len(tokens) < 2:
         return False
-    word = verb[1].casefold()
-    if word in {'is', 'are', 'was', 'were', 'has', 'have', 'had', 'known'}:
+    word = tokens[0].casefold()
+    if word in _NOT_ACTIVITY or _later_clause_verb(tokens[1:]):
         return False
-    if tense == 'past':
-        return word.endswith('ed') or word in {'ate', 'made', 'built', 'taught', 'wrote', 'ran', 'sang', 'went', 'bought', 'sold', 'took', 'gave'}
-    return word.endswith('s')
+    lemma = _activity_lemma(word, agreement)
+    if lemma is None:
+        return False
+    return not (lemma in _RESIDENCE and tokens[1].casefold() in _RESIDENCE_PREP)
+
+
+def _later_clause_verb(tokens: list[str]) -> bool:
+    """A finite verb after the first word owns the clause, unless it is coordinated."""
+    previous = ""
+    for token in tokens:
+        word = token.casefold()
+        if word in _CLAUSE_FINITE:
+            return True
+        if _past_lemma(word) and previous not in {"and", "or"}:
+            return True
+        previous = word
+    return False
+
+
+def _activity_lemma(word: str, agreement: str) -> str | None:
+    if agreement == "past":
+        return _past_lemma(word)
+    if agreement == "singular":
+        return _present_lemma(word)
+    if _past_lemma(word) or _present_lemma(word) or word in _NOT_ACTIVITY:
+        return None
+    if len(word) < 2 or not word.isalpha():
+        return None
+    return word
+
+
+def _past_lemma(word: str) -> str | None:
+    from cpu_llm.realizer.inflect import forms
+
+    if word in _IRREGULAR_PAST:
+        return _IRREGULAR_PAST[word]
+    if word.endswith("ied") and len(word) > 4:
+        lemma = word[:-3] + "y"
+        if forms(lemma)["past"] == word:
+            return lemma
+    if word.endswith("ed") and len(word) > 3:
+        for lemma in (word[:-1], word[:-2]):
+            if lemma and lemma != word and forms(lemma)["past"] == word:
+                return lemma
+    return None
+
+
+def _present_lemma(word: str) -> str | None:
+    from cpu_llm.realizer.inflect import _IRREGULAR, forms
+
+    if word in _CLAUSE_FINITE:
+        return None
+    for lemma, table in _IRREGULAR.items():
+        if word == table["present_3s"] and word != lemma:
+            return lemma
+    candidates: list[str] = []
+    if word.endswith("ies") and len(word) > 4:
+        candidates.append(word[:-3] + "y")
+    if word.endswith("es") and len(word) > 3:
+        candidates.append(word[:-2])
+    if word.endswith("s") and not word.endswith("ss") and len(word) > 2:
+        candidates.append(word[:-1])
+    for lemma in candidates:
+        if forms(lemma)["present_3s"] == word:
+            return lemma
+    return None
 
 
 def _relation_bindings(plan: dict[str, str], rows: list[dict[str, str]]) -> list[dict[str, str]]:
@@ -605,7 +706,10 @@ def _verb_forms(verb: str) -> set[str]:
 
 def _text_binds(plan: dict[str, str], text: str) -> bool:
     if plan['kind'] == 'activity':
-        return any(_activity_sentence(plan['subject'], sentence, tense=plan['tense']) for sentence in _sentences(text))
+        return any(
+            _activity_sentence(plan['subject'], sentence, agreement=plan.get('agreement') or 'singular')
+            for sentence in _sentences(text)
+        )
     if plan["kind"] == "attribute":
         return any(_attribute_value(plan, sentence) is not None for sentence in _sentences(text))
     if plan["kind"] in {"relation", "weight"}:

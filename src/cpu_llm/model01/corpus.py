@@ -194,8 +194,18 @@ def _proposition_pairs(bundle, document_id: str, source: str, split: str) -> lis
     subject = record.proposition.subject.raw_text.strip()
     if not subject or subject not in source:
         return []
-    prompt = f"What is {subject}?"
-    return _keep(bundle, document_id, source, split, "proposition", prompt, required=subject)
+    # A type or role still uses "what is". An event does not answer that
+    # question, so the pair asks the activity question the sentence discharges.
+    for prompt in (
+        f"What is {subject}?",
+        f"What did {subject} do?",
+        f"What does {subject} do?",
+        f"What do {subject} do?",
+    ):
+        kept = _keep(bundle, document_id, source, split, "proposition", prompt, required=subject)
+        if kept:
+            return kept
+    return []
 
 
 def _frame_pairs(bundle, document_id: str, source: str, split: str) -> list[TrainingPair]:
