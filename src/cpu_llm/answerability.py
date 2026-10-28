@@ -190,9 +190,10 @@ def assess(message: str, chunks: list[Any], *, intent=None) -> dict[str, Any] | 
     if plan["kind"] == "definition":
         classes = _unlinked_classes(plan.get("subject") or "", rows)
         chosen = _CHOSEN_CLASS.get()
-        if chosen and classes:
-            picked = _matching_class(chosen, classes)
-            sentence = _class_sentence(plan.get("subject") or "", picked, rows) if picked else None
+        if chosen:
+            # The selected meaning stays selected. Another class that happens
+            # to be in the shortlist is not a substitute for it.
+            sentence = _class_sentence(plan.get("subject") or "", chosen, rows)
             if sentence is not None:
                 return {
                     **base,
@@ -201,7 +202,13 @@ def assess(message: str, chunks: list[Any], *, intent=None) -> dict[str, Any] | 
                     "text": sentence["span"],
                     "answer_evidence": [sentence],
                 }
-        if len(classes) >= 2 and not chosen:
+            return {
+                **base,
+                "answer_status": "insufficient_evidence",
+                "reason": "chosen_class_missing",
+                "text": _UNSETTLED,
+            }
+        if len(classes) >= 2:
             from cpu_llm.clarification import _sense_text
 
             senses = [{"words": label.split()} for label in classes]
@@ -326,16 +333,6 @@ def _attribute_decision(plan: dict[str, str], rows: list[dict[str, str]]) -> dic
         "text": found[0]["span"],
         "answer_evidence": evidence,
     }
-
-
-def _matching_class(chosen: str, classes: list[str]) -> str | None:
-    from cpu_llm.prompt_intent import _entity_key
-
-    want = _entity_key(chosen)
-    for label in classes:
-        if _entity_key(label) == want:
-            return label
-    return None
 
 
 def _class_sentence(subject: str, label: str | None, rows: list[dict[str, str]]) -> dict[str, str] | None:

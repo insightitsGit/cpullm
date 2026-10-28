@@ -533,6 +533,44 @@ def test_a_named_attribute_is_not_replaced_by_a_sense_question(tmp_path):
     assert _sense_clarification(appliance, "Compare the Cedar and the Rowan.", None) is None
 
 
+def test_a_valid_choice_does_not_reopen_the_sense_question(tmp_path):
+    from types import SimpleNamespace
+
+    from cpu_llm.clarification import ClarificationLoop
+    from cpu_llm.pipeline import _open_sense_question, _sense_clarification
+
+    store = ResonanceTags(tmp_path / "bats.db")
+    store.add_chunks([
+        ("bat-m1", "The bat is a mammal."),
+        ("bat-m2", "The flying bat hunts insects."),
+        ("bat-m3", "The nocturnal bat uses echolocation."),
+        ("bat-m4", "The winged bat roosts in caves."),
+        ("bat-c1", "The bat is a wooden club."),
+        ("bat-c2", "The carved bat hits baseballs."),
+        ("bat-c3", "The oak bat cracks pitches."),
+        ("bat-c4", "The weighted bat swings hard."),
+    ])
+    appliance = SimpleNamespace(
+        resonance_tags_enabled=True,
+        resonance_tags=store,
+        clarifications=ClarificationLoop(),
+        _turn={"allowed_sources": None},
+    )
+    first = _sense_clarification(appliance, "What kind of thing is the bat?", "chat")
+    assert first["slot"] == "sense"
+    ready = appliance.clarifications.prepare("1", key="chat")
+    assert ready["status"] == "ready"
+    chosen = " ".join(ready["sense"]["words"])
+    restored = ready["question"]
+    assert restored == "What kind of thing is the bat?"
+    assert _open_sense_question(chosen, as_of=None, allowed=True) is False
+    assert _open_sense_question("", as_of=None, allowed=True) is True
+    # The restored question is still ambiguous. The gate would ask it again.
+    again = _sense_clarification(appliance, restored, "chat")
+    assert again["slot"] == "sense"
+    assert again["text"] == first["text"]
+
+
 def test_two_kinds_of_bat_stay_ambiguous(tmp_path):
     from types import SimpleNamespace
 

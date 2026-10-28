@@ -534,6 +534,39 @@ def test_one_class_is_still_the_definition():
     assert decision["text"] == "The Vesper is a survey rover."
 
 
+def test_a_missing_selected_class_is_not_replaced_by_the_other_meaning():
+    from cpu_llm.answerability import chosen_class
+
+    rows = [{"document_id": "display", "text": "The Lumen is a display mark."}]
+    with chosen_class("survey mark"):
+        decision = assess("What is the Lumen?", rows)
+        reply = compose_reply({
+            "message": "What is the Lumen?",
+            "guard_decision": "allow",
+            "answer": "The Lumen is a display mark.",
+            "audit_passed": True,
+            "related": [{"chunk_id": "display", "chunk_text": "The Lumen is a display mark."}],
+        })
+    assert decision["answer_status"] == "insufficient_evidence"
+    assert decision["reason"] == "chosen_class_missing"
+    assert decision["text"] == _UNSETTLED
+    assert "display mark" not in decision["text"]
+    assert reply["answer_status"] == "insufficient_evidence"
+    assert reply["text"] == _UNSETTLED
+    assert "display mark" not in reply["text"]
+
+
+def test_the_selected_class_answers_when_only_that_sentence_was_retrieved():
+    from cpu_llm.answerability import chosen_class
+
+    rows = [{"document_id": "survey", "text": "The Lumen is a survey mark."}]
+    with chosen_class("survey mark"):
+        decision = assess("What is the Lumen?", rows)
+    assert decision["answer_status"] == "answered"
+    assert decision["reason"] == "chosen_class"
+    assert decision["text"] == "The Lumen is a survey mark."
+
+
 def _covers(fixture: dict, predicted: dict) -> bool:
     if predicted["answer_status"] != "answered":
         return False

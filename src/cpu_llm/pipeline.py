@@ -740,7 +740,7 @@ class Appliance:
                 "allowed_sources": None if context is None else context.allowed_sources,
                 "as_of": as_of,
             }
-            if as_of is None and checker.check(message).decision == 'allow':
+            if _open_sense_question(chosen, as_of=as_of, allowed=checker.check(message).decision == 'allow'):
                 sense_outcome = _sense_clarification(self, message, session_key)
                 if sense_outcome is not None:
                     response = clarification_result(sense_outcome, raw_message, self.tenant_id)
@@ -2346,6 +2346,16 @@ def _correct_resonance_tags(appliance, document_id: str, prior_sentence: str, ne
     if tags is None:
         return
     tags.replace_sentence(document_id, prior_sentence, new_id, new_sentence)
+
+
+def _open_sense_question(chosen: str, *, as_of, allowed: bool) -> bool:
+    """Ask which meaning only when this turn has not already selected one.
+
+    A resumed ``1`` restores the original question so the definition can be
+    parsed. The ambiguity gate must not run on that restored question, or the
+    same choices are offered again before the selected meaning is applied.
+    """
+    return as_of is None and allowed and not chosen
 
 
 def _class_clarification(appliance, message: str, result: dict[str, Any], session_key):
