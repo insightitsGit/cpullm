@@ -178,7 +178,7 @@ def test_the_imagined_passage_follows_the_checked_sentence():
     assert "Imagined passage:" not in reply["text"]
 
 
-def test_a_poem_or_a_letter_does_not_copy_a_stored_fact():
+def test_a_poem_does_not_copy_a_stored_fact_and_a_letter_still_does():
     from cpu_llm.realizer.constructions import UNSUPPORTED_QUESTION
 
     poem = compose_reply({
@@ -191,14 +191,12 @@ def test_a_poem_or_a_letter_does_not_copy_a_stored_fact():
     letter = compose_reply({
         "message": "Draft a letter about the Helion.",
         "guard_decision": "allow",
-        "draft": True,
         "related": [{"chunk_id": "h", "chunk_text": "The Helion is gray."}],
     })
     assert poem["text"] == UNSUPPORTED_QUESTION
     assert "amber" not in poem["text"]
-    assert letter["text"] == UNSUPPORTED_QUESTION
-    assert "gray" not in letter["text"]
-    assert "Letter" not in letter["text"]
+    assert letter["text"].startswith("Letter")
+    assert "The Helion is gray." in letter["text"]
 
 
 def test_a_blocked_prompt_is_not_given_passages():

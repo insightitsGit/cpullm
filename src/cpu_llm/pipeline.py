@@ -660,6 +660,11 @@ class Appliance:
                     response.update(caller_id=context.caller_id, request_id=context.request_id)
                 return response
             message = plan['query']
+            chosen = ''
+            if plan.get('sense'):
+                chosen = ' '.join(str(word) for word in plan['sense'].get('words') or []).strip()
+                if isinstance(plan.get('question'), str) and plan['question'].strip():
+                    message = plan['question']
             reference = self.references.prepare(message, key=session_key, continuation=plan)
             if reference['status'] in {'needs_clarification', 'insufficient_information', 'cancelled'}:
                 response = clarification_result(reference, raw_message, self.tenant_id)
@@ -750,7 +755,10 @@ class Appliance:
                     if abandoned:
                         response["clarification_abandoned"] = True
                     return response
-            result = self.graph.invoke(
+            from cpu_llm.answerability import chosen_class
+
+            with chosen_class(chosen or None):
+                result = self.graph.invoke(
                 {
                     "message": message,
                     "response_plan": response_plan,
@@ -785,7 +793,7 @@ class Appliance:
                     if draft_order is None
                     else {"format": draft_order.format_id, "topic": draft_order.topic},
                 }
-            )
+                )
             self._previous_ids = [
                 str(item["chunk_id"]) for item in result.get("related") or [] if item.get("chunk_id")
             ]
@@ -847,6 +855,21 @@ class Appliance:
                 result['user_criteria'] = plan['criteria']
             if abandoned:
                 result['clarification_abandoned'] = True
+            if not chosen:
+                asked = _class_clarification(self, message, result, session_key)
+                if asked is not None:
+                    response = clarification_result(asked, raw_message, self.tenant_id)
+                    if asked.get('judgment'):
+                        response['judgment'] = asked['judgment']
+                    response['answer'] = None
+                    response['audit_passed'] = False
+                    response['answer_evidence'] = []
+                    response['response_plan'] = response_plan
+                    if context is not None:
+                        response.update(caller_id=context.caller_id, request_id=context.request_id)
+                    if abandoned:
+                        response['clarification_abandoned'] = True
+                    return response
             from cpu_llm.evidence_judge import finalize_turn
             return finalize_turn(result, getattr(self, 'shine', None))
 
@@ -2323,6 +2346,43 @@ def _correct_resonance_tags(appliance, document_id: str, prior_sentence: str, ne
     if tags is None:
         return
     tags.replace_sentence(document_id, prior_sentence, new_id, new_sentence)
+
+
+def _class_clarification(appliance, message: str, result: dict[str, Any], session_key):
+    """Store a numbered class choice so the next turn can resume it.
+
+    The reply can already ask. Without this record, replying ``1`` is a new
+    question and the passages look insufficient.
+    """
+    from cpu_llm.answerability import assess
+    from cpu_llm.evidence_judge import sense_decision
+
+    loop = getattr(appliance, "clarifications", None)
+    if loop is None or session_key is None or not hasattr(loop, "need_sense"):
+        return None
+    rows = []
+    seen: set[str] = set()
+    for item in list(result.get("passages") or []) + list(result.get("related") or []):
+        document_id = str(item.get("document_id") or item.get("chunk_id") or "")
+        text = str(item.get("chunk_text") or item.get("text") or "").strip()
+        if not text or document_id in seen:
+            continue
+        seen.add(document_id)
+        rows.append({"document_id": document_id or f"passage-{len(rows)}", "text": text})
+    decision = assess(message, rows)
+    classes = list((decision or {}).get("classes") or [])
+    if not decision or decision.get("reason") != "unlinked_classes" or len(classes) < 2:
+        return None
+    senses = []
+    for label in classes:
+        sentence = next(
+            (row["text"] for row in rows if label.casefold() in row["text"].casefold()),
+            "",
+        )
+        senses.append({"words": label.split(), "texts": [sentence] if sentence else [], "size": 1})
+    asked = loop.need_sense(message, senses, key=session_key)
+    asked["judgment"] = sense_decision(message, senses)["judgment"]
+    return asked
 
 
 def _sense_clarification(appliance, message: str, session_key):

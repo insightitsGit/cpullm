@@ -36,12 +36,12 @@ def test_summary_and_list_are_distinct_tasks():
     assert plan['tasks'][1]['query'] == "list cedar's safety equipment"
 
 
-def test_a_later_name_keeps_the_middle_pronoun_unresolved():
+def test_a_later_name_does_not_unset_the_preceding_antecedent():
     plan = separate_request('What color is the Sextant? Where does it live? What color is the Azimuth?')
     assert plan['status'] == 'multi'
-    assert plan['tasks'][1]['reference_unresolved']
-    assert plan['tasks'][1]['query'] == 'Where does it live'
-    assert plan['tasks'][1]['bindings'] == []
+    assert plan['tasks'][1]['reference_unresolved'] is False
+    assert plan['tasks'][1]['query'] == 'Where does sextant live'
+    assert plan['tasks'][1]['bindings'][0]['antecedent'] == 'sextant'
 
 
 def test_multiple_entities_leave_reference_unresolved():

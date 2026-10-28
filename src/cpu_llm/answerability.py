@@ -11,12 +11,17 @@ Nothing here is filled in from outside the sentences the caller supplies.
 
 from __future__ import annotations
 
+import contextvars
 import re
+from contextlib import contextmanager
 from typing import Any
 
 from cpu_llm.ranking import ranking_question
 
 _UNSETTLED = "The retrieved passages do not settle that."
+_CHOSEN_CLASS: contextvars.ContextVar[str | None] = contextvars.ContextVar(
+    "cpu_llm_chosen_class", default=None
+)
 _NONE = "No passage was retrieved."
 _WHAT = re.compile(
     r"^(?P<kind>what|who)\s+(?P<copula>is|are|was|were)\s+(?P<rest>.+?)\s*\??$",
@@ -122,6 +127,16 @@ def parse_query(message: str) -> dict[str, str] | None:
     return {"kind": "definition", "subject": _subject_phrase(rest), "tense": tense, "raw": text}
 
 
+@contextmanager
+def chosen_class(value: str | None):
+    """The class the user already picked, visible to assessment during this turn."""
+    token = _CHOSEN_CLASS.set(value or None)
+    try:
+        yield
+    finally:
+        _CHOSEN_CLASS.reset(token)
+
+
 def assess(message: str, chunks: list[Any], *, intent=None) -> dict[str, Any] | None:
     """Whether the supplied sentences state the asked relation.
 
@@ -174,14 +189,28 @@ def assess(message: str, chunks: list[Any], *, intent=None) -> dict[str, Any] | 
         }
     if plan["kind"] == "definition":
         classes = _unlinked_classes(plan.get("subject") or "", rows)
-        if len(classes) >= 2:
-            lines = ["Which meaning do you mean? Reply with the number or the words that match."]
-            lines.extend(f"{index}. {name}" for index, name in enumerate(classes, start=1))
+        chosen = _CHOSEN_CLASS.get()
+        if chosen and classes:
+            picked = _matching_class(chosen, classes)
+            sentence = _class_sentence(plan.get("subject") or "", picked, rows) if picked else None
+            if sentence is not None:
+                return {
+                    **base,
+                    "answer_status": "answered",
+                    "reason": "chosen_class",
+                    "text": sentence["span"],
+                    "answer_evidence": [sentence],
+                }
+        if len(classes) >= 2 and not chosen:
+            from cpu_llm.clarification import _sense_text
+
+            senses = [{"words": label.split()} for label in classes]
             return {
                 **base,
                 "answer_status": "needs_clarification",
                 "reason": "unlinked_classes",
-                "text": "\n".join(lines),
+                "classes": list(classes),
+                "text": _sense_text(senses),
             }
     bindings = _subject_bindings(plan, rows)
     if not bindings:
@@ -297,6 +326,32 @@ def _attribute_decision(plan: dict[str, str], rows: list[dict[str, str]]) -> dic
         "text": found[0]["span"],
         "answer_evidence": evidence,
     }
+
+
+def _matching_class(chosen: str, classes: list[str]) -> str | None:
+    from cpu_llm.prompt_intent import _entity_key
+
+    want = _entity_key(chosen)
+    for label in classes:
+        if _entity_key(label) == want:
+            return label
+    return None
+
+
+def _class_sentence(subject: str, label: str | None, rows: list[dict[str, str]]) -> dict[str, str] | None:
+    if not label:
+        return None
+    from cpu_llm.knowledge_graph import extract_facts
+    from cpu_llm.prompt_intent import _entity_key
+
+    want_subject, want_object = _entity_key(subject), _entity_key(label)
+    for row in rows:
+        for fact in extract_facts(row["document_id"], row["text"]):
+            if fact.relation != "is_a":
+                continue
+            if _entity_key(fact.subject) == want_subject and _entity_key(fact.object) == want_object:
+                return {"document_id": row["document_id"], "span": fact.sentence}
+    return None
 
 
 def _unlinked_classes(subject: str, rows: list[dict[str, str]]) -> list[str]:

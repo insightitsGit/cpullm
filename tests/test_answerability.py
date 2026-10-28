@@ -483,15 +483,19 @@ def _score(fixtures: list[dict], predict) -> dict[str, int]:
     }
 
 
-def test_two_unlinked_classes_ask_instead_of_quoting_one():
+def test_two_unlinked_classes_ask_and_the_numbered_choice_is_stored():
+    from cpu_llm.answerability import chosen_class
+    from cpu_llm.clarification import ClarificationLoop
+    from cpu_llm.pipeline import _class_clarification
+
     rows = [
         {"document_id": "survey", "text": "The Lumen is a survey mark."},
         {"document_id": "display", "text": "The Lumen is a display mark."},
     ]
     decision = assess("What is the Lumen?", rows)
     assert decision["answer_status"] == "needs_clarification"
-    assert "survey mark" in decision["text"]
-    assert "display mark" in decision["text"]
+    assert "1. survey, mark" in decision["text"]
+    assert "2. display, mark" in decision["text"]
     assert "The Lumen is a display mark." not in decision["text"]
     reply = compose_reply({
         "message": "What is the Lumen?",
@@ -503,6 +507,24 @@ def test_two_unlinked_classes_ask_instead_of_quoting_one():
     assert reply["answer_status"] == "needs_clarification"
     assert "Which meaning do you mean?" in reply["text"]
     assert "The Lumen is a display mark." not in reply["text"]
+
+    loop = ClarificationLoop()
+    asked = _class_clarification(
+        type("App", (), {"clarifications": loop})(),
+        "What is the Lumen?",
+        {"related": [{"chunk_id": item["document_id"], "chunk_text": item["text"]} for item in rows]},
+        "chat",
+    )
+    assert asked["slot"] == "sense"
+    assert loop.pending
+    ready = loop.prepare("1", key="chat")
+    assert ready["status"] == "ready"
+    assert ready["sense"]["words"] == ["survey", "mark"]
+    with chosen_class(" ".join(ready["sense"]["words"])):
+        picked = assess(ready["question"], rows)
+    assert picked["answer_status"] == "answered"
+    assert picked["text"] == "The Lumen is a survey mark."
+    assert "display mark" not in picked["text"]
 
 
 def test_one_class_is_still_the_definition():
