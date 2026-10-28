@@ -45,11 +45,33 @@ class ClarificationLoop:
                             criteria=state['criteria'], user_source=source, evidence_attempts=state['count'])
             # A new question abandons the pending request. A short criterion
             # such as "how it tastes" stays with the pending ranking.
-            abandoned = bool(state and _abandons_pending(text, state))
+            exact_interpretation = bool(state and state.get('stage') == 'interpretation' and any(
+                text.casefold().strip(' .?!') == option['query'].casefold().strip(' .?!') for option in state['options']))
+            abandoned = bool(state and not exact_interpretation and _abandons_pending(text, state))
             if abandoned:
                 state = None
             if state and state.get('stage') == 'sense':
                 return self._resume_sense(state, text, key, abandoned)
+            if state and state.get('stage') == 'interpretation':
+                options = state['options']
+                picked = None
+                if text.isdigit() and 1 <= int(text) <= len(options):
+                    picked = options[int(text) - 1]
+                else:
+                    matches = [option for option in options if text.casefold().strip(' .?!') in {
+                        option['label'].casefold(), option['query'].casefold().strip(' .?!')}]
+                    if len(matches) == 1:
+                        picked = matches[0]
+                if picked:
+                    return dict(status='ready', query=picked['query'], repair_confirmed=True,
+                                repair_original=state['question'], repair_choice=picked['label'])
+                state['count'] += 1
+                if state['count'] >= self.max_questions:
+                    return dict(status='insufficient_information', slot='interpretation',
+                                text='I could not confirm the intended question. Please restate it explicitly.')
+                self._save(key, state)
+                return dict(status='needs_clarification', slot='interpretation', options=options,
+                            text=state['text'])
             if state and state.get('stage') == 'evidence':
                 state['count'] += 1
                 if state['count'] >= self.max_questions:
@@ -99,6 +121,16 @@ class ClarificationLoop:
             self._save(key, dict(stage='sense', question=message, senses=shown, count=1))
         return dict(status='needs_clarification', slot='sense', question=message, senses=shown,
                     omitted=int(omitted or 0), text=_sense_text(shown, omitted=int(omitted or 0)))
+
+    def need_interpretation(self, message, options, *, key=None):
+        text = 'The retrieved evidence does not establish the requested definition. Did you mean:\n'
+        text += '\n'.join(f"{i}. {option['query']}" for i, option in enumerate(options, 1))
+        text += '\nChoose a number or label, or restate your question. A choice does not supply missing facts.'
+        if key is None:
+            text += ' No session is active; send the full question to continue.'
+        with self.lock:
+            self._save(key, dict(stage='interpretation', question=message, options=options, text=text, count=1))
+        return dict(status='needs_clarification', slot='interpretation', text=text, options=options)
 
     def _resume_sense(self, state, text, key, abandoned):
         choice = _sense_choice(text, state.get('senses') or [])

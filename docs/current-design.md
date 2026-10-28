@@ -19,6 +19,19 @@ understanding and free-form sentence generation have not been demonstrated.
 
 ## Request lifecycle
 
+After retrieval and final judgment, an insufficient-evidence result can enter
+the bounded [post-retrieval repair/confirmation loop](post-retrieval-repair.md).
+Clear slots stay missing-fact outcomes; a broad definition with evidence for a
+different supported relation offers explicit interpretations for user confirmation.
+It never silently converts an action into a definition or occupation.
+
+Definition questions require a supported definition/type/role construction.
+An event mentioning the subject does not satisfy that request: `Mary baked a
+cake.` cannot answer `What is Mary?` or `Who is Mary?`. A source-backed role
+such as `Mary is a harbor archivist.` can answer. Present/past question tense
+still applies. Unrecognized definition forms abstain rather than falling back
+to arbitrary sentences about the subject, even if those sentences passed audit.
+
 An explicit compound prompt first receives a bounded [request plan](request-separation.md).
 Each separated task runs the lifecycle below with the same caller scope/history
 and an independent query. The parent retains per-task outcomes and pauses on

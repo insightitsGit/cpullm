@@ -317,6 +317,11 @@ def dispatch_request(app, message, propositions, options):
             response['request_plan'] = state['plan']
             return response
         fresh_question = bool(_LEADING.match(message.strip()) and not re.match(r'^(?:how|what)\s+(?:it|its|they|their)\b', message.strip(), re.I))
+        if state:
+            current = state['results'][state['cursor']]['result']
+            choices = (current.get('clarification') or {}).get('options') or []
+            if any(message.casefold().strip(' .?!') == option.get('query', '').casefold().strip(' .?!') for option in choices):
+                fresh_question = False  # An explicitly offered question is a confirmed choice.
         if state and planned['status'] == 'single' and not fresh_question:
             state['followup'] = message
             result, remaining = run_request_plan(app, state['plan'], state['propositions'], options, pending=state)

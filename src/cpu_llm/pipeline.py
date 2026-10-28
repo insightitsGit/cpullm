@@ -873,7 +873,26 @@ class Appliance:
                     return response
             from cpu_llm.evidence_judge import finalize_turn
             with chosen_class(chosen or None):
-                return finalize_turn(result, getattr(self, 'shine', None))
+                result = finalize_turn(result, getattr(self, 'shine', None))
+            from cpu_llm.response_repair import inspect_gap
+            gap = inspect_gap(message, result, confirmed=bool(plan.get('repair_confirmed')))
+            if gap is not None:
+                result['post_retrieval'] = gap
+                if gap['ask']:
+                    outcome = self.clarifications.need_interpretation(message, gap['options'], key=session_key)
+                    response = clarification_result(outcome, raw_message, self.tenant_id)
+                    response.update(post_retrieval=gap, response_plan=response_plan,
+                                    answer_status='needs_clarification', audit_passed=False,
+                                    answer_evidence=[], supporting_evidence=[])
+                    if result.get('attribute_search'):
+                        response['attribute_search'] = result['attribute_search']
+                    from cpu_llm.evidence_judge import _blank
+                    response['judgment'] = _blank(outcome='clarification', reasons=['post_retrieval_interpretation'],
+                                                  verification='not_a_factual_claim')
+                    if context is not None:
+                        response.update(caller_id=context.caller_id, request_id=context.request_id)
+                    return response
+            return result
 
     def ask_concurrent(self, message: str, *, request_id: str | None = None, caller: Any | None = None, thinker_factory: Any = None, **kwargs: Any) -> dict[str, Any]:
         """Run ``ask`` on one seat lock and that seat's thinker.

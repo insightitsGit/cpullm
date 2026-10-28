@@ -11,6 +11,40 @@ def row(key, text):
     return dict(document_id=key, chunk_text=text, final_score=.5)
 
 
+def test_definition_gap_retrieves_identity_without_changing_the_question():
+    calls = []
+    def search(query, **kwargs):
+        calls.append((query, kwargs.get('as_of')))
+        return [row('role', 'Mary is a harbor archivist.')]
+    index = SimpleNamespace(encode_query=lambda q: np.zeros(1024), search=search)
+    question = 'What is Mary?'
+    hits, report = retrieve_missing_attribute(index, question, [row('event', 'Mary baked a cake.')], route_prompt(question), as_of=123)
+    assert report['status'] == 'answered'
+    assert len(calls) == 1 and calls[0][1] == 123
+    assert 'identity definition' in calls[0][0]
+    assert any(hit['document_id'] == 'role' for hit in hits)
+
+
+def test_definition_repair_keeps_scope_and_does_not_search_past_an_ambiguity():
+    def forbidden(*args, **kwargs):
+        raise AssertionError('ambiguous definitions should ask before any repair')
+    index = SimpleNamespace(encode_query=forbidden, search=forbidden)
+    question = 'What is the Lumen?'
+    _, report = retrieve_missing_attribute(index, question, [
+        row('a', 'The Lumen is a survey mark.'), row('b', 'The Lumen is a display mark.')], route_prompt(question))
+    assert report['status'] == 'already_settled'
+    calls = []
+    def scoped(query, allowed, **kwargs):
+        calls.append((allowed, kwargs.get('as_of')))
+        return [row('secret-p0001', 'Mary is a baker.')]
+    index = SimpleNamespace(encode_query=lambda q: np.zeros(1024), search_allowed=scoped)
+    found, report = retrieve_missing_attribute(index, 'Who is Mary?', [row('public-p0001', 'Mary baked a cake.')],
+        route_prompt('Who is Mary?'), allowed={'public-p'}, as_of=123)
+    assert calls == [({'public-p'}, 123)]
+    assert not any(r['document_id'].startswith('secret') for r in found)
+    assert report['status'] == 'insufficient_evidence'
+
+
 def test_second_search_uses_subject_then_verified_class_and_stops_at_direct_fact():
     initial = [row('type', 'The coastal moth is an insect.')]
     calls = []

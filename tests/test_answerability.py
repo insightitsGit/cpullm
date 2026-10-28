@@ -126,7 +126,59 @@ def test_a_past_definition_is_the_former_type_not_every_sentence_about_the_subje
     assert "Rim" not in only_place["text"]
     event = assess("What is Mary?", ["Mary baked a cake."])
     assert event is not None
-    assert event["text"] == "Mary baked a cake."
+    assert event["answer_status"] == "insufficient_evidence"
+    assert event["text"] == _UNSETTLED
+    assert event["answer_evidence"] == []
+
+
+def test_definition_requires_type_or_role_across_names_and_tenses():
+    for name in ("Mary", "Ada North", "the survey rover"):
+        for question in (f"What is {name}?", f"Who is {name}?", f"What was {name}?"):
+            events = [f"{name} baked a cake.", f"{name} has a bell.", f"{name} is ready."]
+            decision = assess(question, events)
+            assert decision["answer_status"] == "insufficient_evidence"
+            assert decision["answer_evidence"] == []
+            reply = compose_reply(_state(question, [(str(i), text) for i, text in enumerate(events)],
+                                         answer=events[0], audit_passed=True))
+            assert reply["answer_status"] == "insufficient_evidence"
+            assert reply["text"] == _UNSETTLED
+        for copula, question in (("is", f"Who is {name}?"), ("was", f"What was {name}?")):
+            role = f"{name} {copula} a harbor archivist."
+            for rows in ([role, *events], [*events, role]):
+                decision = assess(question, rows)
+                assert decision["answer_status"] == "answered"
+                assert decision["text"] == role
+
+
+def test_public_ask_does_not_deliver_an_audited_event_as_a_definition():
+    import threading
+    from types import SimpleNamespace
+    import numpy as np
+    from cpu_llm.pipeline import Appliance, _reply
+    from cpu_llm.clarification import ClarificationLoop
+    from cpu_llm.references import ReferenceSessions
+
+    app = Appliance.__new__(Appliance)
+    app.tenant_id = 'definition-test'
+    app._bound = threading.local()
+    app.clarifications, app.references = ClarificationLoop(), ReferenceSessions()
+    app.word_tags = {}
+    app.index = SimpleNamespace(encode_query=lambda text: np.zeros(1024))
+    app.format_sense = SimpleNamespace(classify=lambda text: None)
+
+    def graph(state):
+        state = dict(state, guard_decision='allow', answer='Mary baked a cake.',
+                     audit_passed=True, related=[dict(chunk_id='event', chunk_text='Mary baked a cake.')])
+        return dict(state, **_reply(state))
+
+    app.graph = SimpleNamespace(invoke=graph)
+    result = app.ask('What is Mary?')
+    assert result['needs_clarification'] is True
+    assert result['clarification']['slot'] == 'interpretation'
+    assert result['answer'] is None
+    assert result['audit_passed'] is False
+    assert result['judgment']['outcome'] == 'clarification'
+    assert not result.get('answer_evidence')
 
 
 def test_paraphrase_and_alias_still_bind():

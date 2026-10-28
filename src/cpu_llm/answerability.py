@@ -67,6 +67,10 @@ def parse_query(message: str) -> dict[str, str] | None:
     text = " ".join((message or "").strip().split())
     if not text:
         return None
+    activity = re.fullmatch(r'what (?:did|does|do) (.+?) do\s*\??', text, re.I)
+    if activity:
+        return dict(kind='activity', subject=_subject_phrase(activity[1]), raw=text,
+                    tense='past' if re.match(r'what did\b', text, re.I) else 'present')
     does = _DOES.match(text)
     if does:
         subject = _subject_phrase(does.group("subject"))
@@ -479,6 +483,8 @@ def _subject_bindings(plan: dict[str, str], rows: list[dict[str, str]]) -> list[
         for sentence in _sentences(row["text"]):
             if not _subject_sentence(subject, sentence):
                 continue
+            if plan['kind'] == 'activity' and not _activity_sentence(subject, sentence, tense=plan['tense']):
+                continue
             key = (row["document_id"], sentence)
             if key in seen:
                 continue
@@ -495,15 +501,29 @@ def _subject_bindings(plan: dict[str, str], rows: list[dict[str, str]]) -> list[
             return plain[:1]
         if kinds:
             return kinds[:1]
-        from cpu_llm.semantic import blocks_type
-
-        # A place or a bare color does not answer "what is" or "what was".
-        # Any other copula is the definition. Sentences that merely mention
-        # the subject stay out of that answer.
-        if definitions:
-            kept = [item for item in definitions if not blocks_type(item["span"])]
-            return kept[:1]
+        # A definition is a positive obligation. Neither mentioning the
+        # subject nor an arbitrary copula licenses a type/role answer.
+        # Keep unfamiliar forms unsupported by evidence rather than falling
+        # back to all of the subject's events or attributes.
+        return []
     return bindings
+
+
+def _activity_sentence(subject: str, sentence: str, *, tense: str) -> bool:
+    """A bounded affirmative main-clause action, quoted without role inference."""
+    prefix = rf'^(?:(?:the|a|an)\s+)?{re.escape(_subject_phrase(subject))}\s+'
+    tail = re.sub(prefix, '', sentence, count=1, flags=re.I)
+    if tail == sentence or re.search(r"\b(?:not|never|no|if|unless|may|might|could|would|should)\b|n't", tail, re.I):
+        return False
+    verb = re.match(r'([A-Za-z]+)\s+\S', tail)
+    if not verb:
+        return False
+    word = verb[1].casefold()
+    if word in {'is', 'are', 'was', 'were', 'has', 'have', 'had', 'known'}:
+        return False
+    if tense == 'past':
+        return word.endswith('ed') or word in {'ate', 'made', 'built', 'taught', 'wrote', 'ran', 'sang', 'went', 'bought', 'sold', 'took', 'gave'}
+    return word.endswith('s')
 
 
 def _relation_bindings(plan: dict[str, str], rows: list[dict[str, str]]) -> list[dict[str, str]]:
@@ -584,6 +604,8 @@ def _verb_forms(verb: str) -> set[str]:
 
 
 def _text_binds(plan: dict[str, str], text: str) -> bool:
+    if plan['kind'] == 'activity':
+        return any(_activity_sentence(plan['subject'], sentence, tense=plan['tense']) for sentence in _sentences(text))
     if plan["kind"] == "attribute":
         return any(_attribute_value(plan, sentence) is not None for sentence in _sentences(text))
     if plan["kind"] in {"relation", "weight"}:
