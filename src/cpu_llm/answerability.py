@@ -173,9 +173,10 @@ def _constrain_channel_class(message: str, chunks: list[Any], channel_answer: di
             "text": sentence["span"],
             "answer_evidence": [sentence],
         }
-    # A taxonomic "species of" sentence is the definition. Other "is a"
-    # descriptions in the same article are not a second meaning to choose.
-    if any("is a species of" in row["text"].casefold() for row in rows):
+    # A taxonomic definition of this entity, including a sentence under one of
+    # its names, is the definition. A species sentence about something else
+    # does not close a real choice between this entity's classes.
+    if _relevant_species_definition(subject, rows):
         return None
     classes = _unlinked_classes(subject, rows)
     if len(classes) < 2:
@@ -394,6 +395,27 @@ def _attribute_decision(plan: dict[str, str], rows: list[dict[str, str]]) -> dic
         "text": found[0]["span"],
         "answer_evidence": evidence,
     }
+
+
+def _relevant_species_definition(subject: str, rows: list[dict[str, str]]) -> bool:
+    """True when a species sentence is about the asked entity, not a neighbor.
+
+    Identity includes an explicit alias. An unrelated "species of" row in the
+    same shortlist is not this entity's taxonomy.
+    """
+    from cpu_llm.knowledge_graph import extract_facts
+    from cpu_llm.prompt_intent import _alias_paths, _entity_key
+
+    facts = []
+    for row in rows:
+        facts.extend(extract_facts(row["document_id"], row["text"]))
+    names = set(_alias_paths(subject, facts))
+    for fact in facts:
+        if fact.relation != "is_a" or "is a species of" not in fact.sentence.casefold():
+            continue
+        if _entity_key(fact.subject) in names:
+            return True
+    return False
 
 
 def _class_sentence(subject: str, label: str | None, rows: list[dict[str, str]]) -> dict[str, str] | None:

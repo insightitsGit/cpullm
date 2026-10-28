@@ -573,3 +573,67 @@ def test_a_named_article_is_the_answer_and_the_creative_walk(appliance: Applianc
     assert "James Bond" not in imagined["text"]
     assert "This question type is not supported yet." in result["reply"]["text"]
     assert imagined["text"] not in result["reply"]["text"]
+
+
+def _public_text(result: dict) -> str:
+    reply = result.get("reply") if isinstance(result.get("reply"), dict) else {}
+    parts = [result.get("answer"), reply.get("text"), reply.get("body"), reply.get("supported_text")]
+    return "\n".join(part for part in parts if isinstance(part, str) and part)
+
+
+def _choice_number(text: str, label: str) -> str:
+    for line in text.splitlines():
+        if label in line:
+            number = line.split(".", 1)[0].strip()
+            if number.isdigit():
+                return number
+    raise AssertionError(f"no numbered choice for {label!r} in {text!r}")
+
+
+def test_an_unrelated_species_sentence_does_not_answer_the_other_class(appliance: Appliance, monkeypatch: pytest.MonkeyPatch):
+    """A neighbor's taxonomy must not turn two Lumen classes into the first class."""
+    rows = [
+        ("lumen-survey", "The Lumen is a survey mark."),
+        ("lumen-display", "The Lumen is a display mark."),
+        ("lobster-species", "The European lobster is a species of crustacean."),
+    ]
+    for document_id, text in rows:
+        appliance.upsert(document_id, text)
+    tensors = {document_id: appliance.index.encode_chunk(text) for document_id, text in rows}
+    question = "What kind of thing is the Lumen?"
+    survey = "The Lumen is a survey mark."
+    display = "The Lumen is a display mark."
+
+    def install(order: list[tuple[str, str]]) -> None:
+        hits = [
+            {
+                "document_id": document_id,
+                "chunk_text": text,
+                "final_score": 0.9,
+                "tensor_1024d": tensors[document_id],
+            }
+            for document_id, text in order
+        ]
+        monkeypatch.setattr(appliance.index, "search", lambda *_args, **_kwargs: list(hits))
+
+    for session_id, order, selection in (
+        ("species-last", rows, "number"),
+        ("species-first", [rows[2], rows[0], rows[1]], "number"),
+        ("species-middle", [rows[0], rows[2], rows[1]], "display mark"),
+    ):
+        install(order)
+        if selection == "number":
+            first = appliance.ask(question, session_id=session_id)
+            opened = _public_text(first)
+            assert first.get("needs_clarification") is True
+            assert survey not in opened
+            assert "display, mark" in opened
+            result = appliance.ask(_choice_number(opened, "display, mark"), session_id=session_id)
+        else:
+            first = appliance.ask(question, session_id=session_id)
+            assert first.get("needs_clarification") is True
+            assert survey not in _public_text(first)
+            result = appliance.ask(selection, session_id=session_id)
+        spoken = _public_text(result)
+        assert display in spoken
+        assert survey not in spoken

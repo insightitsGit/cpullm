@@ -556,6 +556,36 @@ def test_a_missing_selected_class_is_not_replaced_by_the_other_meaning():
     assert "display mark" not in reply["text"]
 
 
+def test_an_unrelated_species_sentence_does_not_close_the_class_choice():
+    lumen = [
+        {"document_id": "survey", "text": "The Lumen is a survey mark."},
+        {"document_id": "display", "text": "The Lumen is a display mark."},
+    ]
+    lobster = {"document_id": "lobster", "text": "The European lobster is a species of crustacean."}
+    question = "What kind of thing is the Lumen?"
+    alone = assess(question, lumen)
+    assert alone["answer_status"] == "needs_clarification"
+    assert "The Lumen is a survey mark." not in alone["text"]
+    for order in (
+        lumen + [lobster],
+        [lobster] + lumen,
+        [lumen[0], lobster, lumen[1]],
+    ):
+        decision = assess(question, order)
+        assert decision["answer_status"] == "needs_clarification"
+        assert decision["reason"] == "unlinked_classes"
+        assert "1. survey, mark" in decision["text"]
+        assert "2. display, mark" in decision["text"]
+        assert "The Lumen is a survey mark." not in decision["text"]
+    alias = [
+        {"document_id": "species", "text": "Caligo marina, known as the coastal moth, is a species of insect."},
+        {"document_id": "blurb", "text": "The coastal moth is a highly valued specimen."},
+    ]
+    moth = assess("What kind of animal is the coastal moth?", alias)
+    assert moth["answer_status"] == "answered"
+    assert moth["text"] == "Caligo marina, known as the coastal moth, is a species of insect."
+
+
 def test_a_kind_question_keeps_the_selected_class():
     from cpu_llm.answerability import chosen_class
     from cpu_llm.clarification import ClarificationLoop
