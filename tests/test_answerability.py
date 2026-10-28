@@ -556,6 +556,64 @@ def test_a_missing_selected_class_is_not_replaced_by_the_other_meaning():
     assert "display mark" not in reply["text"]
 
 
+def test_a_kind_question_keeps_the_selected_class():
+    from cpu_llm.answerability import chosen_class
+    from cpu_llm.evidence_judge import judge_delivery
+
+    rows = [
+        {"document_id": "survey", "text": "The Lumen is a survey mark."},
+        {"document_id": "display", "text": "The Lumen is a display mark."},
+    ]
+    question = "What kind of thing is the Lumen?"
+    related = [{"chunk_id": item["document_id"], "chunk_text": item["text"]} for item in rows]
+    with chosen_class("display mark"):
+        decision = assess(question, rows)
+        reply = compose_reply({
+            "message": question,
+            "guard_decision": "allow",
+            "answer": "The Lumen is a survey mark.",
+            "audit_passed": True,
+            "related": related,
+        })
+        judgment = judge_delivery({
+            "message": question,
+            "guard_decision": "allow",
+            "answer_status": "answered",
+            "answer": "The Lumen is a display mark.",
+            "related": related,
+            "reply": {"text": "The Lumen is a display mark.", "answer_status": "answered"},
+        })
+    assert decision["answer_status"] == "answered"
+    assert decision["reason"] == "chosen_class"
+    assert decision["text"] == "The Lumen is a display mark."
+    assert "survey mark" not in decision["text"]
+    assert "The Lumen is a display mark." in reply["text"]
+    assert "survey mark" not in reply["text"]
+    assert judgment["licensed_text"] == "The Lumen is a display mark."
+    assert "survey mark" not in judgment["licensed_text"]
+
+
+def test_a_kind_question_does_not_substitute_another_class():
+    from cpu_llm.answerability import chosen_class
+
+    rows = [{"document_id": "survey", "text": "The Lumen is a survey mark."}]
+    with chosen_class("display mark"):
+        decision = assess("What kind of thing is the Lumen?", rows)
+        reply = compose_reply({
+            "message": "What kind of thing is the Lumen?",
+            "guard_decision": "allow",
+            "answer": "The Lumen is a survey mark.",
+            "audit_passed": True,
+            "related": [{"chunk_id": "survey", "chunk_text": "The Lumen is a survey mark."}],
+        })
+    assert decision["answer_status"] == "insufficient_evidence"
+    assert decision["reason"] == "chosen_class_missing"
+    assert decision["text"] == _UNSETTLED
+    assert "survey mark" not in decision["text"]
+    assert reply["text"] == _UNSETTLED
+    assert "survey mark" not in reply["text"]
+
+
 def test_the_selected_class_answers_when_only_that_sentence_was_retrieved():
     from cpu_llm.answerability import chosen_class
 

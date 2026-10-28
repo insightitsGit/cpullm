@@ -177,14 +177,25 @@ def select_channel_answer(message, chunks, *, intent=None):
                     joins.append(membership)
                     joins.extend(types[_entity_key(universal[1])])
                     alias_evidence.extend(aliases[_entity_key(membership.subject)])
-    if request['relation'] == 'is_a' and selected:
-        # Prefer an explicit taxonomic definition over descriptions such as
-        # "is a highly esteemed food" elsewhere in the same article.
-        selected = sorted(selected, key=lambda fact: 'is a species of' not in fact.sentence.casefold())[:1]
+    chosen = None
+    if request['relation'] == 'is_a':
+        # "What kind" is answered here, before the definition branch can see
+        # the class the user already picked. Keep that class, or withhold.
+        from cpu_llm.answerability import chosen_class_label
+
+        chosen = chosen_class_label()
+        if selected:
+            # Prefer an explicit taxonomic definition over descriptions such as
+            # "is a highly esteemed food" elsewhere in the same article.
+            selected = sorted(selected, key=lambda fact: 'is a species of' not in fact.sentence.casefold())
+            if chosen:
+                selected = [fact for fact in selected if _equivalent(chosen, fact.object)]
+            selected = selected[:1]
     base = dict(query=message, kind='channel', prompt_intent=intent, retrieved_candidates=[
         dict(document_id=f.document_id, span=f.sentence) for f in facts], answer_evidence=[], verification_scope='query')
     if not selected:
-        return dict(base, answer_status='insufficient_evidence', reason='no_matching_channel_relation',
+        return dict(base, answer_status='insufficient_evidence',
+                    reason='chosen_class_missing' if chosen else 'no_matching_channel_relation',
                     text='The retrieved passages do not settle that.')
     values = {_name(f.object) for f in selected}
     evidence = list({(f.document_id, f.sentence): dict(document_id=f.document_id, span=f.sentence)
@@ -194,7 +205,8 @@ def select_channel_answer(message, chunks, *, intent=None):
     if request['relation'] in {'has_color', 'has_lifespan'} and len(values) > 1:
         return dict(base, answer_status='conflicting', reason='conflicting_channel_values', answer_evidence=evidence,
                     text='The retrieved passages do not settle that. Stored sentences conflict: ' + ' '.join(f.sentence for f in selected))
-    return dict(base, answer_status='answered', reason='universal_membership_join' if joins else 'channel_relation_stated', answer_evidence=evidence,
+    reason = 'chosen_class' if chosen else ('universal_membership_join' if joins else 'channel_relation_stated')
+    return dict(base, answer_status='answered', reason=reason, answer_evidence=evidence,
                 text=' '.join(dict.fromkeys(f.sentence for f in joins + selected)))
 
 

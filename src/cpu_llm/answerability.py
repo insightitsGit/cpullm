@@ -137,6 +137,12 @@ def chosen_class(value: str | None):
         _CHOSEN_CLASS.reset(token)
 
 
+def chosen_class_label() -> str | None:
+    """The class selected earlier in this turn, if the user already picked one."""
+    label = _CHOSEN_CLASS.get()
+    return label.strip() if isinstance(label, str) and label.strip() else None
+
+
 def assess(message: str, chunks: list[Any], *, intent=None) -> dict[str, Any] | None:
     """Whether the supplied sentences state the asked relation.
 
