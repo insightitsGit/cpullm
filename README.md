@@ -19,6 +19,8 @@ For an agent integrating the library, start with [the consumer guide](docs/libra
 The [current design](docs/current-design.md) describes this working tree as of October 27. The delivery judgment below is in this checkout and is not yet committed or released. The saved Millhaven benchmark is the earlier clean commit `af39da6`. The package version alone does not establish that an installed PyPI distribution includes these changes.
 
 - **Explicit connections and intent:** ingestion saves source-backed facts and channel memberships in a namespace-local knowledge graph. Recognized prompts prioritize the requested entity, relationship, and direction when selecting evidence. Multiple channels can apply to one connection.
+- **Prompt interpretation:** supported conversational questions and explicit field lists compile inside `ask()` into direct, independently retrieved tasks. Original text, transformations, constraints and interpretation diagnostics remain available. The default `prompt_backend="auto"` uses a locally installed spaCy model for planning and validated attribute-query proposals, with an explicit diagnostic fallback when its optional assets are absent. Set `"spacy"` to require it or `"rules"` to disable it. See [prompt ingestion](docs/prompt-ingestion.md) for setup and limits; parser annotations are not evidence.
+- **Output layouts:** prompt flags select tables, bullets, numbering and report layouts in Markdown or HTML. Tabulate formats tables and Jinja2 renders built-in templates from judged responses and accepted source IDs; pending or missing information is preserved. See [output layout alignment](docs/output-layouts.md).
 - **Dictionary-assisted questions:** a small, inspectable lexicon recognizes supported synonyms and equivalent expressions. It preserves the original question and can retrieve with one canonical variant. Antonyms remain distinct; this is not a complete dictionary or arbitrary semantic understanding.
 - **Missing-attribute retrieval:** for supported lifespan, location, color, and possession questions, a bounded retry searches the entity and verified connected types. A type membership plus an explicit universal rule can support a limited join; a class average or a statement about some members cannot establish an individual fact.
 - **Clarification loops:** a question such as “Which lobster is best?” asks for the user's criterion. Follow-ups retain that criterion and request comparison evidence when it is missing. The library does not invent a winner from retrieval scores.
@@ -52,6 +54,18 @@ python -m pip install -e .
 Run these commands from a checkout of this repository to use the features documented here. This source identifies itself as 1.9.1; published packages can describe an earlier implementation.
 
 The pins in [pyproject.toml](pyproject.toml) are authoritative. The editable install makes packaged retrieval assets and sample corpora available; it does **not** start PostgreSQL, populate its corpus, or train a realizer. It does not bundle the optional fact-bridge T5 checkpoints or declare all their optional runtime dependencies.
+
+If an older installation fails on first ingestion with `No module named 'community'`
+or `networkx and python-louvain are required`, install its graph dependencies:
+
+```powershell
+python -m pip install "prismrag-patch[graph]==0.2.1"
+```
+
+The source dependency declaration now requests this extra automatically. The
+published 1.9.1 wheel predates this correction. See the
+[clean installation audit](docs/reviews/2026-10-28/clean-install-audit.md) for the
+reproduction, tested environment and verification limits.
 
 A disposable development database can be started with Docker:
 
@@ -330,6 +344,8 @@ Additional limits include narrow English extraction grammars, incomplete retriev
 
 ## Source and design map
 
+- [Consolidated change record, 2026-10-29](docs/change-record-2026-10-29.md): why the installation, prompt, length and rendering changes were made; implementation/API details; validation; preserved specifications and remaining work.
+- [Prompt/output benchmark v3 design](docs/benchmark-v3-design.md) and [execution handoff](docs/handoff-benchmark-v3.md): fresh paired rules/spaCy evaluation, clean-install gates, response-depth flags, rendered proof and immutable artifacts. Design only; not a completed run.
 - [Semantic implementation report](docs/semantic-implementation-report.md): shared factual assessment and final judgment, retained proof, bounded identity/attribute/wording support, evaluator corrections, live validation and remaining architectural work.
 - [Current design](docs/current-design.md): current request lifecycle, channel semantics, storage, budgets, and validation limits.
 - [Response cases](docs/response-cases.md): evidence-join semantics, covered examples, and cases still missing.

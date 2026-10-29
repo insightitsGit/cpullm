@@ -168,6 +168,7 @@ class Appliance:
         namespace: str | None = None,
         on_escalate: Any = None,
         reference_backend: Any = None,
+        prompt_backend: Any = None,
         resonance_tags: bool = False,
     ) -> None:
         from cpu_llm.child_safety import ChildSafetyGate, enabled_by_default
@@ -243,6 +244,8 @@ class Appliance:
                 raise ValueError('reference_backend must be coreferee, fastcoref, an adapter, or None')
             reference_backend = CorefereeBackend() if reference_backend == 'coreferee' else FastCorefBackend()
         self.references = ReferenceSessions(reference_backend)
+        from cpu_llm.prompt_ingestion import PromptInterpreter
+        self.prompt_interpreter = PromptInterpreter(prompt_backend)
         self._creative_seen: dict[str, str] = {}
         self._session_locks: dict[Any, list[Any]] = {}
         self._session_guard = threading.Lock()
@@ -574,11 +577,13 @@ class Appliance:
             raise ValueError("realization must be deterministic, evidence_neural, or model01")
         if (payment is None) != (authority is None):
             raise ValueError("a payment turn needs both a proposal and an authority snapshot")
-        return dispatch_request(self, message, propositions, dict(
+        result = dispatch_request(self, message, propositions, dict(
             discover=discover, imagine=imagine, deep=deep, math=math, finance=finance,
             payment=payment, authority=authority, objective=objective, hypothesis=hypothesis,
             causal_graph=causal_graph, realization=realization, account=account, grade=grade,
             child_safety=child_safety, session_id=session_id, caller=caller, as_of=as_of))
+        from cpu_llm.output_rendering import render_response
+        return render_response(result)
 
     def _ask_single(
         self,
@@ -635,6 +640,10 @@ class Appliance:
         raw_message = message
         from cpu_llm.response_policy import classify_response_request
         response_plan = classify_response_request(message)
+        from cpu_llm.prompt_ingestion import PromptInterpreter
+        interpreter = getattr(self, 'prompt_interpreter', None) or PromptInterpreter()
+        ingestion = interpreter.interpret(response_plan['content_query'])
+        response_plan['content_query'] = ingestion['query']
         if _response_budget is not None:
             response_plan['sentence_budget'] = min(response_plan['sentence_budget'], _response_budget)
             response_plan['item_budget'] = min(response_plan['item_budget'], _response_budget)
@@ -656,6 +665,7 @@ class Appliance:
             if plan['status'] != 'ready':
                 response = clarification_result(plan, message, self.tenant_id)
                 response['response_plan'] = response_plan
+                response['prompt_ingestion'] = ingestion
                 if context is not None:
                     response.update(caller_id=context.caller_id, request_id=context.request_id)
                 return response
@@ -669,6 +679,7 @@ class Appliance:
             if reference['status'] in {'needs_clarification', 'insufficient_information', 'cancelled'}:
                 response = clarification_result(reference, raw_message, self.tenant_id)
                 response['response_plan'] = response_plan
+                response['prompt_ingestion'] = ingestion
                 if context is not None:
                     response.update(caller_id=context.caller_id, request_id=context.request_id)
                 return response
@@ -700,6 +711,10 @@ class Appliance:
                 for change in typos:
                     plan['question'] = re.sub(rf"\b{re.escape(change['from'])}\b",
                                               lambda match: change['to'], plan['question'])
+            from cpu_llm.semantic import request_contract
+            effective = request_contract(message)
+            ingestion['engine_query'] = message
+            ingestion['effective_request'] = effective.as_dict() if effective else None
             z_query = np.asarray(self.index.encode_query(message), dtype=np.float32).reshape(TENSOR_DIM)
             creative_reasons = creative_writing_trigger(message, forced=imagine)
             deep_reasons = deep_search_trigger(message, forced=deep)
@@ -708,7 +723,7 @@ class Appliance:
             explain_reasons = explain_trigger(message)
             list_reasons = list_trigger(message)
             if response_plan['mode'] == 'overview':
-                if response_plan['format'] == 'bullets':
+                if response_plan['format'] in {'bullets', 'numbered'}:
                     list_reasons = ['the response plan requests a source-backed overview in bullets']
                     summary_reasons = []
                 else:
@@ -750,6 +765,7 @@ class Appliance:
                     response["audit_passed"] = False
                     response["answer_evidence"] = []
                     response['response_plan'] = response_plan
+                    response['prompt_ingestion'] = ingestion
                     if context is not None:
                         response.update(caller_id=context.caller_id, request_id=context.request_id)
                     if abandoned:
@@ -814,6 +830,7 @@ class Appliance:
             result["tenant_id"] = self.tenant_id
             result['reference_resolution'] = reference
             result['response_plan'] = response_plan
+            result['prompt_ingestion'] = ingestion
             if reference['bindings'] or typos or message != raw_message:
                 result['original_message'] = raw_message
                 result['resolved_query'] = message
@@ -866,6 +883,7 @@ class Appliance:
                     response['audit_passed'] = False
                     response['answer_evidence'] = []
                     response['response_plan'] = response_plan
+                    response['prompt_ingestion'] = ingestion
                     if context is not None:
                         response.update(caller_id=context.caller_id, request_id=context.request_id)
                     if abandoned:
@@ -882,6 +900,7 @@ class Appliance:
                     outcome = self.clarifications.need_interpretation(message, gap['options'], key=session_key)
                     response = clarification_result(outcome, raw_message, self.tenant_id)
                     response.update(post_retrieval=gap, response_plan=response_plan,
+                                    prompt_ingestion=ingestion,
                                     answer_status='needs_clarification', audit_passed=False,
                                     answer_evidence=[], supporting_evidence=[])
                     if result.get('attribute_search'):

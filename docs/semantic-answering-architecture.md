@@ -63,6 +63,11 @@ explicit unresolved interpretation, not a race where the last producer wins.
 
 ## 2. Prompt understanding as a bounded compiler
 
+The initial implemented adapter and its current limits are documented in
+[prompt ingestion](prompt-ingestion.md). It normalizes declared conversational
+syntax, expands explicit fields and optionally validates spaCy dependency proposals;
+this does not imply all stages or all natural-language constructions below are covered.
+
 Process a prompt in ordered stages:
 
 1. Enforce caller access and raw-input guards.

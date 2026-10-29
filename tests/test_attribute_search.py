@@ -11,6 +11,25 @@ def row(key, text):
     return dict(document_id=key, chunk_text=text, final_score=.5)
 
 
+@pytest.mark.parametrize('question,source,term', [
+    ('What shape is the Aster?', 'The shape of the Aster is round.', 'geometry'),
+    ('What material is the Aster?', 'The material of the Aster is brass.', 'composition'),
+    ('How much does the Aster weigh?', 'The Aster weighs 12 pounds.', 'mass'),
+    ('What is the weight of the Aster?', 'The weight of the Aster is 12 pounds.', 'mass'),
+])
+def test_shared_attribute_repairs_keep_scope_time_and_slot(question, source, term):
+    calls = []
+    def scoped(query, allowed, **kwargs):
+        calls.append((query, allowed, kwargs['as_of']))
+        return [row('public-p0001', source), row('secret-p0001', 'The Aster is blue.')]
+    index = SimpleNamespace(encode_query=lambda q: np.zeros(1024), search_allowed=scoped)
+    found, report = retrieve_missing_attribute(index, question, [], route_prompt(question), allowed={'public-p'}, as_of=123)
+    assert report['status'] == 'answered'
+    assert len(calls) == 1 and term in calls[0][0]
+    assert calls[0][1:] == ({'public-p'}, 123)
+    assert [item['document_id'] for item in found] == ['public-p0001']
+
+
 def test_definition_gap_retrieves_identity_without_changing_the_question():
     calls = []
     def search(query, **kwargs):

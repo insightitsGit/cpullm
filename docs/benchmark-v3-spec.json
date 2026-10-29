@@ -1,0 +1,35 @@
+{
+  "protocol": "prompt-output-benchmark-v3-design-1",
+  "prepared": "2026-10-29",
+  "status": "design_only_not_executed",
+  "runtime_selection": "Use the commit containing this specification and implementation when clean; otherwise freeze the complete working tree.",
+  "design": "benchmark-v3-design.md",
+  "handoff": "handoff-benchmark-v3.md",
+  "runtime_at_design": {
+    "base_head": "a9c4591",
+    "requires_working_tree_snapshot_or_new_commit": true,
+    "latest_development_suite": {"passed": 695, "skipped": 2, "expected_failures": 3},
+    "development_suite_is_benchmark_accuracy": false
+  },
+  "seeds": {"development": 291031, "holdout": 291032, "source_order": 291033, "review_sample": 291034},
+  "primary_arms": [
+    {"id": "rules", "prompt_backend": "rules", "resonance_tags": false, "reference_backend": null},
+    {"id": "spacy", "prompt_backend": "spacy", "resonance_tags": false, "reference_backend": null}
+  ],
+  "families": [
+    "conversational_normalization", "field_lists_and_task_coverage", "meaning_and_reference",
+    "joins_and_retrieval_repair", "attribute_slots", "response_depth_and_size",
+    "layout_and_media", "proof_and_display_fidelity", "access_and_history",
+    "instructions_versus_data", "existing_specialists_and_templates", "missing_conflicting_unsupported"
+  ],
+  "standalone": {"total": 240, "per_family": 20, "development_per_family": 12, "holdout_per_family": 8, "development_total": 144, "holdout_total": 96},
+  "conversations": {"scripts": 24, "groups": 6, "scripts_per_group": 4, "development_scripts": 12, "holdout_scripts": 12, "min_turns": 2, "max_turns": 4, "exact_turn_count_required_at_freeze": true},
+  "corpus": {"domains": 3, "minimum_initial_factual_paragraphs": 180, "minimum_ordinary_public_per_domain": 40, "minimum_private_per_domain": 10, "minimum_historical_prior_per_domain": 10, "distractor_paragraphs": 300, "known_names_allowed_in_fresh_splits": false},
+  "setup_matrix": ["rules_only", "spacy_without_model", "spacy_with_model", "explicit_spacy_missing_assets", "explicit_rules_no_model_load", "missing_postgres"],
+  "formats": ["markdown_table", "html_table", "markdown_report", "html_report", "bullets", "numbered", "prose"],
+  "prospective_targets": {"max_unauthorized_disclosures": 0, "max_wrong_meaning_endorsements": 0, "max_wrong_relation_endorsements": 0, "max_unlicensed_joins": 0, "endorsed_conclusion_proof_completeness": 1.0, "required_task_accounting": 1.0, "layout_fidelity": 1.0, "minimum_supported_standalone_strict_pass_per_arm": 0.9},
+  "timing": {"balanced_cases": 30, "warm_repetitions_per_case": 5, "separate_cold_start": true, "percentiles": [50, 95]},
+  "optional": {"resonance_development_cases": 60, "scale_development_cases": 24, "scale_distractor_counts": [1000, 10000], "per_arm_timeout_minutes": 30, "pool_with_core": false},
+  "review": {"all_failures_and_uncertain": true, "passing_paired_case_ids_per_family": 5, "single_agent_review_must_be_labeled": true},
+  "must_not": ["normalize_prompts_outside_ask", "use_library_as_semantic_oracle", "tune_on_holdout", "overwrite_prior_artifacts", "publish_release", "change_runtime_during_official_run", "count_unavailable_measurements_as_passes"]
+}

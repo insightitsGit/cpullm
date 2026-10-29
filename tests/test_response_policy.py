@@ -56,6 +56,42 @@ def test_latest_explicit_depth_wins_and_negated_style_is_not_a_command():
     assert classify_response_request('Explain the Cedar; do not be brief.')['detail'] == 'standard'
 
 
+@pytest.mark.parametrize('text', [
+    'Give me a long response about the Cedar.',
+    'Could you provide a detailed response about the Cedar?',
+    'I would like an extended explanation about the Cedar.',
+    'Please elaborate on the Cedar.',
+    'Tell me more about the Cedar.',
+    'Tell me about the Cedar. Please include more details.',
+])
+def test_long_response_flags_expand_supported_overviews(text):
+    plan = classify_response_request(text)
+    assert all(plan['flags'][key] for key in ('long_response', 'expand_retrieval', 'extended_overview'))
+    assert plan['flags']['markdown'] and not plan['flags']['html']
+    assert plan['retrieval_budget'] >= 12
+    assert plan['content_query'].startswith('Tell me about the Cedar')
+
+
+def test_length_flags_keep_the_factual_slot_and_scale_retrieval_for_large_requests():
+    direct = classify_response_request('What color is the Cedar? Please give a long answer.')
+    assert direct['content_query'] == 'What color is the Cedar'
+    assert direct['mode'] == 'existing_task' and direct['flags']['long_response']
+    many = classify_response_request('Explain the Cedar in 20 sentences.')
+    assert many['sentence_budget'] == 20 and many['retrieval_budget'] == 24
+    words = classify_response_request('Explain the Cedar in 300 words.')
+    assert words['flags']['long_response'] and words['sentence_budget'] == 12
+    assert not words['word_limit_enforced']
+
+
+@pytest.mark.parametrize('text', [
+    'What is a long response?', 'Describe "a long response".',
+    'Explain the Cedar; do not give a long response.',
+    'What is ```Give me a long answer```?',
+])
+def test_quoted_subject_and_negated_length_are_not_length_flags(text):
+    assert not classify_response_request(text)['flags']['long_response']
+
+
 def test_required_join_is_not_truncated_to_one_sentence():
     from cpu_llm.model01.generator import generate
     plan = classify_response_request('In one sentence: What does the Cedar have?')

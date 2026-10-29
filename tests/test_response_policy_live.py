@@ -40,3 +40,23 @@ def test_live_requested_bullet_limit_is_applied_without_padding(app):
     assert result['brief']['list'].count('.') == 3
     assert result['reply']['text'].count('\n- ') == 3
     assert result['judgment']['outcome'] in {'answered', 'evidence_quote'}
+
+
+def test_live_long_text_flags_retrieve_more_and_do_not_pad_missing_information(app):
+    result = app.ask('Give me a long response about the Meridian in 20 sentences.')
+    plan = result['response_plan']
+    assert plan['flags']['long_response'] and plan['retrieval_budget'] == 24
+    assert result['judgment']['outcome'] in {'answered', 'evidence_quote'}
+    assert 1 < result['brief']['summary'].count('.') <= 9
+    assert result['answer_evidence']
+
+
+def test_live_layout_lists_use_verified_item_boundaries(app):
+    import re
+    bullets = app.ask('Explain the Meridian as bullet points.')
+    numbered = app.ask('Explain the Meridian as a numbered list.')
+    assert bullets['task_results'][0]['result']['list']
+    assert numbered['task_results'][0]['result']['list']
+    assert len(re.findall(r'(?m)^- ', bullets['reply']['text'])) > 1
+    assert len(re.findall(r'(?m)^\d+\. ', numbered['reply']['text'])) > 1
+    assert bullets['answer_evidence'] and numbered['answer_evidence']

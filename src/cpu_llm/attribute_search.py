@@ -9,16 +9,20 @@ ATTRIBUTE_TERMS = {
     'lives_in': 'habitat geographic range location lives in',
     'has_color': 'color colour hue appearance',
     'has': 'parts features possessions has',
+    'attribute:shape': 'shape form geometry',
+    'attribute:material': 'material composition made of',
+    'weight': 'weight mass weighs',
+    'attribute:weight': 'weight mass weighs',
 }
 
 
 def retrieve_missing_attribute(index, message, hits, intent, *, allowed=None, as_of=None):
     request = intent.get('requested') or {}
     if not request:
-        from cpu_llm.answerability import parse_query
-        parsed = parse_query(message) or {}
-        if parsed.get('kind') == 'definition':
-            request = dict(relation='is_a', entity=parsed['subject'], direction='subject')
+        from cpu_llm.semantic import request_contract
+        contract = request_contract(message)
+        if contract:
+            request = contract.as_dict()
             intent = dict(intent, requested=request)
     report = dict(status='not_applicable', queries=[], joins=[], budget=dict(max_queries=3, hits_per_query=5))
     if request.get('relation') not in ATTRIBUTE_TERMS:
@@ -27,7 +31,7 @@ def retrieve_missing_attribute(index, message, hits, intent, *, allowed=None, as
         return [], dict(report, status='insufficient_evidence')
     hits = keep_allowed(hits, allowed)
     def evaluate(rows):
-        if request['relation'] == 'is_a':
+        if request['relation'] in {'is_a', 'attribute:shape', 'attribute:material', 'weight', 'attribute:weight'}:
             from cpu_llm.answerability import assess
             return assess(message, rows, intent=None)
         return select_channel_answer(message, rows, intent=intent)
@@ -44,7 +48,7 @@ def retrieve_missing_attribute(index, message, hits, intent, *, allowed=None, as
     if decision and decision['answer_status'] in {'answered', 'conflicting', 'needs_clarification'} and not direct_possession:
         return hits, dict(report, status='already_settled')
     def connections(rows):
-        if request['relation'] == 'is_a':
+        if request['relation'] in {'is_a', 'attribute:shape', 'attribute:material', 'weight', 'attribute:weight'}:
             return []  # A type's attributes do not establish the entity's definition.
         facts = [fact for row in rows for fact in extract_facts(row['document_id'], row.get('chunk_text') or '')]
         names = _alias_paths(request['entity'], facts)

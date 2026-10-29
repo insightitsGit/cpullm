@@ -14,6 +14,12 @@ Examples:
 - `Explain the Cedar in detail.` selects an overview of up to eight supported
   sentences and a twelve-candidate initial retrieval budget.
 - `Give a comprehensive overview of the Cedar.` uses the same detailed mode.
+- `Give me a long response about the Cedar.`, `Please elaborate on the Cedar.`
+  and `Tell me more about the Cedar.` select a detailed, source-backed overview.
+- `What color is the Cedar? Please give a long answer.` keeps the color slot;
+  it does not append unrelated facts to make the reply longer.
+- `Explain the Cedar in 20 sentences.` allows up to 20 supported sentences and
+  requests 24 initial retrieval candidates rather than the standard five.
 - `Explain the Cedar in three bullet points.` selects up to three supported items.
 - `In one sentence: What color is the Cedar?` preserves the factual color request;
   it does not turn it into a general overview.
@@ -30,8 +36,10 @@ Budgets are ceilings for optional source-backed overview/list material, not
 promises to fill every slot. If only two eligible facts exist, a request for eight
 does not create six more. Required proof premises, qualifications, and conflicting
 evidence are not truncated to make a direct factual answer fit a presentation
-limit. The classifier records word-count requests, but strict word-count generation
-is not implemented (`word_limit_enforced=False`). There is no global hard token
+limit. Word-count requests now inform an estimated sentence/item allocation:
+one optional unit per 25 requested words, rounded up and clamped to 1–20. Explicit
+sentence/item counts take precedence over that estimate. This is a planning
+heuristic, not strict word-count generation (`word_limit_enforced=False`). There is no global hard token
 or word cap, and existing document/specialist producers retain their contracts.
 
 Recognized presentation prefixes/suffixes are separated from the retrieval query.
@@ -49,6 +57,25 @@ subject attributes such as `short claws`, `long lifespan`, and `detailed balance
 do not request verbosity changes. Double-quoted titles/terms are masked during
 style classification. Unrecognized instructions keep defaults. This is not a
 general natural-language understanding model or a calibrated complexity score.
+
+The plan exposes three prompt-derived `flags`: `long_response`,
+`expand_retrieval` and `extended_overview`. Detailed wording or a larger explicit
+unit allocation activates the first two; the third additionally requires a
+general overview request. The existing retrieval node consumes `retrieval_budget`,
+and summary/list composition consumes the sentence/item budgets before final
+judgment. Ordinary prose uses five initial candidates, a normal detailed overview
+uses twelve, and larger requested outputs scale with the optional-unit allowance
+plus four candidates (currently up to 24 after the 20-unit clamp). Detailed bullet
+lists can therefore retrieve more candidates than detailed prose. Search-call
+and missing-attribute repair limits remain unchanged.
+
+Length instructions are recognized in explicit request positions, including a
+trailing `Please include more details.` or `Please give a long response.` These
+trailing instructions can apply to all children of a separated request. Quoted
+and fenced text and negated length directives do not activate the flags.
+These are per-request intentions, not evidence that a long answer was possible.
+For existing installs, the output is still assembled from licensed source claims
+and deterministic constructions; no free-form language decoder was added.
 
 Detailed mode increases only the initial bounded retrieval candidate count. Scope,
 historical filtering, existing graph/repair budgets, and grounding requirements
@@ -86,3 +113,12 @@ classifier/finance run returned **43 passed**. Local logs are
 `build/response-policy-verified-suite.log` and
 `build/response-policy-structured.log`. This validates the combined checkout,
 including the concurrent judge fixes; it is not a new independent quality benchmark.
+
+Latest validation on 2026-10-28 after prompt-derived long-response flags:
+**676 passed, 2 skipped, 3 expected failures** in 80.98 seconds, with the same six
+NumPy warnings. The live long-response case requested 20 sentences from a corpus
+containing nine eligible facts, verified the 24-candidate retrieval allowance,
+and returned a shorter supported summary with accepted evidence instead of
+padding. Focused regressions cover conversational length requests, scoped factual
+questions, quoted/fenced text, negation, larger sentence counts and approximate
+word-based allocation. The local full-suite log is `build/response-flags-suite.log`.

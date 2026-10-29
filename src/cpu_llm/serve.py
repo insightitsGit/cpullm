@@ -48,6 +48,7 @@ def main() -> None:
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument('--reference-backend', choices=['coreferee', 'fastcoref'])
+    parser.add_argument('--prompt-backend', choices=['auto', 'rules', 'spacy'], default='auto')
     parser.add_argument(
         "--ingest-root",
         default=None,
@@ -63,6 +64,7 @@ def main() -> None:
         return Appliance(
             namespace=None if tenant == "cpu-llm" else tenant,
             reference_backend=args.reference_backend,
+            prompt_backend=args.prompt_backend,
         )
 
     def appliance_for(tenant: str) -> Any:

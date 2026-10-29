@@ -38,6 +38,39 @@ def test_scoped_questions_have_separate_intents_and_complete_join_evidence(app):
     assert all(row['status'] in {'answered', 'evidence_quote'} for row in tasks)
 
 
+def test_human_question_and_explicit_field_list_need_no_external_wrapper(app):
+    caller = CallerContext.make(app.tenant_id, 'alice', ['iris-guide-p'])
+    single = app.ask('Could you tell me what color the Iris is?', caller=caller)
+    assert 'white' in single['reply']['text'] and 'blue' not in single['reply']['text']
+    assert single['prompt_ingestion']['effective_request']['relation'] == 'has_color'
+    result = app.ask('Tell me the color, habitat, and lifespan of the Iris.', caller=caller)
+    assert len(result['task_results']) == 3 and result['judgment']['complete']
+    assert all(task['result']['answer_evidence'] for task in result['task_results'])
+    assert all(text in result['reply']['text'] for text in ['white', 'Norway', '30 years'])
+
+
+def test_table_layout_uses_only_judged_scoped_child_responses(app):
+    caller = CallerContext.make(app.tenant_id, 'alice', ['iris-guide-p'])
+    result = app.ask('Show the color and habitat of the Iris as a table.', caller=caller)
+    assert result['reply']['format'] == 'table'
+    assert result['judgment']['complete']
+    assert len(result['rendered_response']['rows']) == 2
+    assert 'white' in result['reply']['text'] and 'Norway' in result['reply']['text']
+    assert 'blue' not in result['reply']['text']
+    assert all(row['evidence'] for row in result['rendered_response']['rows'])
+
+
+def test_html_report_template_keeps_scoped_facts_and_prompt_flags(app):
+    caller = CallerContext.make(app.tenant_id, 'alice', ['iris-guide-p'])
+    result = app.ask('Show the color and habitat of the Iris as an HTML report.', caller=caller)
+    assert result['response_plan']['flags']['html'] and result['response_plan']['flags']['report']
+    assert result['rendered_response']['template_id'] == 'report.html.j2'
+    assert result['reply']['media_type'] == 'text/html' and '<article>' in result['reply']['text']
+    assert result['judgment']['complete'] and len(result['rendered_response']['rows']) == 2
+    assert 'white' in result['reply']['text'] and 'Norway' in result['reply']['text']
+    assert 'blue' not in result['reply']['text'] and result['answer_evidence']
+
+
 def test_missing_subquestion_does_not_silently_disappear(app):
     caller = CallerContext.make(app.tenant_id, 'alice', ['iris-guide-p'])
     result = app.ask('What color is the Iris? What does it have?', caller=caller)
