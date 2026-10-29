@@ -1,0 +1,84 @@
+{
+  "status": "provisional_public_run",
+  "groups": [
+    {
+      "arm": "rules",
+      "kind": "core",
+      "total": 240,
+      "passed": 191,
+      "failures": {
+        "outcome": 40,
+        "visible_claims": 15,
+        "proof": 17,
+        "proof_binding": 17,
+        "display_structure": 8,
+        "minimum_citations": 4,
+        "minimum_visible_facts": 4
+      }
+    },
+    {
+      "arm": "rules",
+      "kind": "routing",
+      "total": 32,
+      "passed": 24,
+      "failures": {
+        "outcome": 8
+      }
+    },
+    {
+      "arm": "rules",
+      "kind": "script",
+      "total": 68,
+      "passed": 66,
+      "failures": {
+        "outcome": 2
+      }
+    },
+    {
+      "arm": "spacy",
+      "kind": "core",
+      "total": 240,
+      "passed": 195,
+      "failures": {
+        "visible_claims": 15,
+        "proof": 17,
+        "proof_binding": 17,
+        "outcome": 36,
+        "display_structure": 8,
+        "minimum_citations": 4,
+        "minimum_visible_facts": 4
+      }
+    },
+    {
+      "arm": "spacy",
+      "kind": "routing",
+      "total": 32,
+      "passed": 24,
+      "failures": {
+        "outcome": 8
+      }
+    },
+    {
+      "arm": "spacy",
+      "kind": "script",
+      "total": 68,
+      "passed": 66,
+      "failures": {
+        "outcome": 2
+      }
+    }
+  ],
+  "incomplete_gates": [
+    "gold/scorer independent review",
+    "16 controlled fixtures",
+    "setup matrix",
+    "known failure replay",
+    "warm timing repetitions",
+    "process restart lifecycle",
+    "full failure adjudication"
+  ],
+  "optional_not_run": [
+    "scale",
+    "resonance"
+  ]
+}

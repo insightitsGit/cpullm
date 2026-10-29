@@ -16,7 +16,7 @@ For an agent integrating the library, start with [the consumer guide](docs/libra
 
 ## New in this checkout
 
-The [current design](docs/current-design.md) describes this working tree as of October 27. The delivery judgment below is in this checkout and is not yet committed or released. The saved Millhaven benchmark is the earlier clean commit `af39da6`. The package version alone does not establish that an installed PyPI distribution includes these changes.
+The [current design](docs/current-design.md) describes the implementation. Prompt interpretation, output layouts, delivery judgment and flag-routing enforcement are committed in this repository; an installed PyPI distribution with the same version number may predate them. The saved Millhaven benchmark is the earlier clean commit `af39da6`.
 
 - **Explicit connections and intent:** ingestion saves source-backed facts and channel memberships in a namespace-local knowledge graph. Recognized prompts prioritize the requested entity, relationship, and direction when selecting evidence. Multiple channels can apply to one connection.
 - **Prompt interpretation:** supported conversational questions and explicit field lists compile inside `ask()` into direct, independently retrieved tasks. Original text, transformations, constraints and interpretation diagnostics remain available. The default `prompt_backend="auto"` uses a locally installed spaCy model for planning and validated attribute-query proposals, with an explicit diagnostic fallback when its optional assets are absent. Set `"spacy"` to require it or `"rules"` to disable it. See [prompt ingestion](docs/prompt-ingestion.md) for setup and limits; parser annotations are not evidence.
@@ -84,6 +84,25 @@ Set `VECTORPRISM_PG_DSN` or pass `Appliance(dsn=...)` to select another database
 The code runs the encoder/retrieval on CPU and clears `CUDA_VISIBLE_DEVICES`; its CPU guard refuses a process in which an already imported PyTorch reports CUDA available. On Windows, the retrieval module imports `pyarrow` before the torch-dependent stack to avoid the observed import-order fault.
 
 ## Quick start: ingest before asking
+
+Follow these steps in order:
+
+1. Install this checkout in a virtual environment using the commands above.
+2. Start PostgreSQL/pgvector and set `VECTORPRISM_PG_DSN` if you use a different database.
+3. Keep the packaged trained VectorPrism checkpoint available and allow the pretrained encoder assets to download on first use. For offline use, cache those assets first.
+4. Optionally install the prompt parser with `python -m pip install -e ".[prompt_nlp]"` and `python -m spacy download en_core_web_sm`. Use `prompt_backend="spacy"` to require it, or `"rules"` for the built-in interpreter. The default `"auto"` reports fallback when optional assets are missing.
+5. Ingest your documents, then ask questions about facts they actually contain. Installation alone does not load your documents.
+6. Read the visible reply, judgment and evidence together. Answer a clarification using the same `session_id` and caller scope. Treat partial execution or node errors as failures.
+
+### Training requirements and waiting times
+
+**A trained retrieval model is required; training it yourself is not required for this quick start.** The repository ships the trained `src/cpu_llm/checkpoints/vectorprism.pt` projection and uses the pretrained `all-mpnet-base-v2` encoder. Ingesting your documents builds their vectors and source-backed connections; it does not retrain either model. Reingest older documents to populate connections added by newer code.
+
+For planning on an ordinary CPU laptop, allow several minutes for dependency installation and first model downloads, seconds to a few minutes for a small document collection, and potentially much longer for thousands of paragraphs. These are rough planning ranges, not measured training benchmarks or completion guarantees. Network speed, CPU, available memory, paragraph lengths and database latency matter. The first run includes asset loading; repeated questions reuse loaded assets. Measure a representative small ingest before estimating a large one; ingestion receipts and benchmark artifacts provide elapsed times.
+
+For one measured example, the [October 29 run](docs/benchmarks/2026-10-29-prompt-output-v3/REPORT.md) took 58.64 seconds to construct the first appliance with cached encoder assets and 22.90–25.38 seconds to ingest 630 paragraphs plus apply 30 corrections. Those are setup/ingestion observations on that machine, not training times or promised performance.
+
+There is **no required training command or supported training-time estimate for a general sentence generator** in the current library. `cpu_llm.model01.train()` surveys available training signals, runs no optimizer and returns `checkpoint_written=False`; waiting longer will not produce a checkpoint. The optional fact-bridge learned extractor/writer needs separate compatible model assets and tooling. The library does not supply a validated end-to-end training recipe or measured time estimate for those models. See [Models and the meaning of deterministic](#models-and-the-meaning-of-deterministic) before enabling a learned path.
 
 ```python
 from cpu_llm.documents import SourceDocument
@@ -212,6 +231,28 @@ ask() then applies realization or a ranking follow-up, then the delivery judgmen
 The diagram is the graph inside `ask()`. Before that graph, the request can return a guard block, an empty-scope refusal, a ranking or reference clarification, or a sense clarification. Those early returns do not retrieve. After the graph, realization and a ranking quote can still replace the reply. `finalize_turn` then applies `judgment` to the text that is about to leave `ask()`. The same schema is attached to an early sense clarification. Reply composition does not get a second vote after that decision. See the [current lifecycle](docs/current-design.md#request-lifecycle) and [delivery judgment](docs/current-design.md#delivery-judgment).
 
 PrismGuard can stop the turn before retrieval. Dense similarity supplies the trained retrieval core. Channel assessments and symbolic facts help prioritize supported intent and graph evidence; disabled projection heads are excluded from vector scoring. Think, cognize, the grammar, and Shine then check the stored proposition. Cognize rebuilds a sentence from subject, verb, and object; the auditor has to accept that rebuild.
+
+### Nodes and what triggers them
+
+You normally call `ask()` once; the library interprets supported wording, separates supported compound requests and routes each task. You do not need an external prompt wrapper. Unknown fields or ambiguous references require clarification rather than guessed expansion.
+
+- **`guard`** checks the request before retrieval. An access refusal or empty source scope can end the request early.
+- **`retrieve`** searches authorized, time-valid sources. A validated long-response budget can widen retrieval; it does not automatically enable the deep-search agent.
+- **`resonate`** adds optional sense analysis when constructed with `resonance_tags=True`.
+- **`dense`, `relational`, `disentangled`, `hyperbolic`, `identity`, `causal`** assess the six channels on the normal graph path. Content questions, possession, comparisons, types, identity and why-questions respectively supply intent cues. A channel being active is neither proof nor a claim that its projection head is enabled.
+- **`catalog`, `detail`, `spans`** organize retrieved evidence and candidate details/spans on the normal path.
+- **`think`, `cognize`, `grammar`, `shine`** assess intent, proposition construction, grammatical structure and grounding on the normal path. A grounding hold prevents dependent factual specialists from using rejected claims.
+- **`deep`** handles recognized deep-search wording or `ask(..., deep=True)`; **`gather` → `imagine`** handles creative intent or `imagine=True`.
+- **`compare`** handles comparison wording. **`brief`** handles summaries, explanations, lists and source requests, using validated length/item budgets.
+- **`math`** handles recognized arithmetic or `math=True`. **`finance`** handles supported supplied-field finance requests or `finance=True`. Both use their own producer contracts.
+- **`frame`** handles supported event-role questions, such as who ate an object or where the event happened.
+- **`model01`** constructs bounded, source-licensed sentences on the ordinary path; it does not load a trained language-generation checkpoint.
+- **`reply`** composes the selected producer's response. Draft requests use this node; there is no separate draft node. **`discover`** adds follow-up suggestions only when the caller passes `discover=True`.
+- **`finalize_turn`** applies delivery judgment after composition. **`render_response`** applies requested tables, bullets, numbering or Markdown/HTML reports to judged content. These are lifecycle stages, not extra factual retrieval agents.
+
+Examples: `Tell me the color and habitat of the Aster as an HTML table` requests two factual tasks and a table renderer; `Explain the Aster in detail` requests an expanded overview; `Calculate 2 + 3` selects arithmetic. None of these creates missing source facts. A requested word count is not a guarantee of that many words when evidence is limited.
+
+For every flag, its origin, exact consumers and execution precedence, use the [complete flag-to-node mapping](docs/prompt-flag-map.md) and [enforcement contract](docs/flag-routing-review.md). Inspect returned `routing` diagnostics and child results to see what actually executed; intent flags alone do not establish execution.
 
 Specialists run only when the prompt selects them, in the order above. Gather still loads the article's paragraphs and records that walk on `imagination`. A poem or an imagined story does not copy those paragraphs into the public reply; the reply is the unsupported-question sentence. A letter still includes the topic's stored sentences. Math evaluates the expression in the question, so `17*24` is reported as `17*24 = 408.` Finance runs RefundProof, LedgerCovenant, or Ledgerlock on the fields in the question. An event-frame question answers color, place, or agent from a stored frame. Model01 then builds licensed sentences from passages that share a content word with the prompt, or that contain a named entity as that name. A passage with no such word is not a source. If the prompt leaves no content word, Model01 receives no passages.
 
@@ -346,7 +387,7 @@ Additional limits include narrow English extraction grammars, incomplete retriev
 
 - [Prompt flag mapping table](docs/prompt-flag-map.md), [machine-readable map](docs/prompt-flag-map.json), and [routing enforcement review](docs/flag-routing-review.md): prompt flags, graph consumers, priority/hold rules and actual execution diagnostics.
 - [Consolidated change record, 2026-10-29](docs/change-record-2026-10-29.md): why the installation, prompt, length and rendering changes were made; implementation/API details; validation; preserved specifications and remaining work.
-- [Prompt/output benchmark v3 design](docs/benchmark-v3-design.md) and [execution handoff](docs/handoff-benchmark-v3.md): fresh paired rules/spaCy evaluation, clean-install gates, response-depth flags, rendered proof and immutable artifacts. Design only; not a completed run.
+- [Prompt/output benchmark v3 design](docs/benchmark-v3-design.md), [execution handoff](docs/handoff-benchmark-v3.md), and [October 29 provisional results](docs/benchmarks/2026-10-29-prompt-output-v3/REPORT.md): 680 public requests recorded against `24150c6`, with raw responses and original/corrected scores. Core scores are 215/240 for rules and 219/240 for spaCy; protocol and oracle gaps remain, so these are not acceptance results.
 - [Semantic implementation report](docs/semantic-implementation-report.md): shared factual assessment and final judgment, retained proof, bounded identity/attribute/wording support, evaluator corrections, live validation and remaining architectural work.
 - [Current design](docs/current-design.md): current request lifecycle, channel semantics, storage, budgets, and validation limits.
 - [Response cases](docs/response-cases.md): evidence-join semantics, covered examples, and cases still missing.

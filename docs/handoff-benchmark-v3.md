@@ -1,5 +1,7 @@
 # Agent handoff: execute prompt/output benchmark v3
 
+Execution update, October 29: the [provisional public run](benchmarks/2026-10-29-prompt-output-v3/REPORT.md) records all 680 paired public requests against `24150c6`, plus fixed-source suite results. It preserves original and corrected scorer versions. This does **not** close the handoff: controlled fixtures, setup matrix, gold adjudication, known-failure replay, repeated timings and other gaps listed in that report remain. The new public runner is `tools/benchmarks/prompt_output_v3/run.py`; it is not yet the full protocol executor.
+
 Prepared 2026-10-29. **This is a handoff, not a completed benchmark.** No other
 agent has been started or messaged. The evaluator described below must be built;
 the existing v2 runner is not a ready-made v3 runner.
