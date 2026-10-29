@@ -443,6 +443,8 @@ def _ranking(state: dict[str, Any], spoken: str) -> dict[str, Any] | None:
 
 def _draft(state: dict[str, Any]) -> dict[str, Any] | None:
     """A formatted document when the request asks for one."""
+    if state.get('draft') is False:
+        return None
     if state.get("guard_decision") not in (None, "allow"):
         return None
     if _delivery_holds(state):

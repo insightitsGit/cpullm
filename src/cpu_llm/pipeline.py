@@ -810,6 +810,8 @@ class Appliance:
                     else {"format": draft_order.format_id, "topic": draft_order.topic},
                 }
                 )
+            from cpu_llm.flag_contract import routing_snapshot
+            result['routing'] = routing_snapshot(self._turn or {})
             self._previous_ids = [
                 str(item["chunk_id"]) for item in result.get("related") or [] if item.get("chunk_id")
             ]
@@ -884,6 +886,7 @@ class Appliance:
                     response['answer_evidence'] = []
                     response['response_plan'] = response_plan
                     response['prompt_ingestion'] = ingestion
+                    response['routing'] = result.get('routing', {})
                     if context is not None:
                         response.update(caller_id=context.caller_id, request_id=context.request_id)
                     if abandoned:
@@ -892,6 +895,7 @@ class Appliance:
             from cpu_llm.evidence_judge import finalize_turn
             with chosen_class(chosen or None):
                 result = finalize_turn(result, getattr(self, 'shine', None))
+            result.setdefault('routing', {}).setdefault('post_stages', []).append('finalize_turn')
             from cpu_llm.response_repair import inspect_gap
             gap = inspect_gap(message, result, confirmed=bool(plan.get('repair_confirmed')))
             if gap is not None:
@@ -901,6 +905,7 @@ class Appliance:
                     response = clarification_result(outcome, raw_message, self.tenant_id)
                     response.update(post_retrieval=gap, response_plan=response_plan,
                                     prompt_ingestion=ingestion,
+                                    routing=result.get('routing', {}),
                                     answer_status='needs_clarification', audit_passed=False,
                                     answer_evidence=[], supporting_evidence=[])
                     if result.get('attribute_search'):
@@ -1168,29 +1173,46 @@ def _caller_for(appliance: Appliance, caller: Any | None) -> CallerContext | Non
 def _compile(appliance: Appliance):
     tenant_id, graph_id = graph_identity(appliance.tenant_id)
     graph = Graph(tenant_id=tenant_id, graph_id=graph_id)
-    graph.add_node("guard", dict_node_adapter(_guard(appliance), hop="guard"))
-    graph.add_node("retrieve", dict_node_adapter(_retrieve(appliance), hop="retrieve"))
-    graph.add_node("resonate", dict_node_adapter(_resonate(appliance), hop="resonate"))
+    from cpu_llm.flag_contract import enforce_node_request, validate_graph_consumers, FLAG_BINDINGS
+    registered = set()
+    def register(name, function):
+        def checked(state):
+            enforce_node_request(name, state)
+            turn = getattr(appliance, '_turn', None)
+            if isinstance(turn, dict):
+                if name == 'guard':
+                    turn['routing_flags'] = {b.path: state.get(b.path.removeprefix('state.')) is True
+                                             for b in FLAG_BINDINGS if b.stage == 'graph'}
+                    turn['routing_flags'].update({'response_plan.flags.' + k: v
+                                                  for k, v in (state.get('response_plan') or {}).get('flags', {}).items()})
+                turn.setdefault('executed_nodes', []).append(name)
+            return function(state)
+        graph.add_node(name, dict_node_adapter(checked, hop=name))
+        registered.add(name)
+    register("guard", _guard(appliance))
+    register("retrieve", _retrieve(appliance))
+    register("resonate", _resonate(appliance))
     for channel_name in ("dense", "relational", "disentangled", "hyperbolic", "identity", "causal"):
-        graph.add_node(channel_name, dict_node_adapter(_channel(appliance, channel_name), hop=channel_name))
-    graph.add_node("catalog", dict_node_adapter(_catalog(appliance), hop="catalog"))
-    graph.add_node("detail", dict_node_adapter(_detail, hop="detail"))
-    graph.add_node("spans", dict_node_adapter(_spans(appliance), hop="spans"))
-    graph.add_node("think", dict_node_adapter(_think(appliance), hop="think"))
-    graph.add_node("cognize", dict_node_adapter(_cognize(appliance), hop="cognize"))
-    graph.add_node("grammar", dict_node_adapter(_grammar(appliance), hop="grammar"))
-    graph.add_node("shine", dict_node_adapter(_shine(appliance), hop="shine"))
-    graph.add_node("reply", dict_node_adapter(_reply, hop="reply"))
-    graph.add_node("imagine", dict_node_adapter(_imagine(appliance), hop="imagine"))
-    graph.add_node("gather", dict_node_adapter(_gather(appliance), hop="gather"))
-    graph.add_node("deep", dict_node_adapter(_deep(appliance), hop="deep"))
-    graph.add_node("compare", dict_node_adapter(_compare(appliance), hop="compare"))
-    graph.add_node("brief", dict_node_adapter(_brief(appliance), hop="brief"))
-    graph.add_node("math", dict_node_adapter(_math(appliance), hop="math"))
-    graph.add_node("finance", dict_node_adapter(_finance(appliance), hop="finance"))
-    graph.add_node("frame", dict_node_adapter(_frame(appliance), hop="frame"))
-    graph.add_node("model01", dict_node_adapter(_model01, hop="model01"))
-    graph.add_node("discover", dict_node_adapter(_discover(appliance), hop="discover"))
+        register(channel_name, _channel(appliance, channel_name))
+    register("catalog", _catalog(appliance))
+    register("detail", _detail)
+    register("spans", _spans(appliance))
+    register("think", _think(appliance))
+    register("cognize", _cognize(appliance))
+    register("grammar", _grammar(appliance))
+    register("shine", _shine(appliance))
+    register("reply", _reply)
+    register("imagine", _imagine(appliance))
+    register("gather", _gather(appliance))
+    register("deep", _deep(appliance))
+    register("compare", _compare(appliance))
+    register("brief", _brief(appliance))
+    register("math", _math(appliance))
+    register("finance", _finance(appliance))
+    register("frame", _frame(appliance))
+    register("model01", _model01)
+    register("discover", _discover(appliance))
+    validate_graph_consumers(registered)
     graph.add_edge(START, "guard")
     graph.add_conditional_edges("guard", _after_guard, {"retrieve": "retrieve", "reply": "reply"})
     graph.add_edge("retrieve", "resonate")
@@ -1340,64 +1362,44 @@ def _reply(state: dict[str, Any]) -> dict[str, Any]:
 
 def _after_shine(state: dict[str, Any]) -> str:
     """First optional agent. Later agents still run when the prompt names them."""
-    if state.get("delivery_blocked"):
-        # Agents that read the retrieved sentence are skipped. Math and finance
-        # read the question, so a rejected sentence does not cancel them.
-        return _else_math(state, "reply")
-    if state.get("deep") is True:
-        return "deep"
-    if state.get("creative") is True:
-        return "gather"
-    if state.get("compare") is True:
-        return "compare"
-    if _wants_brief(state):
-        return "brief"
-    return _else_math(state, "reply")
+    from cpu_llm.flag_contract import next_optional
+    return next_optional(state, 'shine')
 
 
 def _after_deep(state: dict[str, Any]) -> str:
-    if state.get("creative") is True:
-        return "gather"
-    if state.get("compare") is True:
-        return "compare"
-    if _wants_brief(state):
-        return "brief"
-    return _else_math(state, "reply")
+    from cpu_llm.flag_contract import next_optional
+    return next_optional(state, 'deep')
 
 
 def _after_imagine(state: dict[str, Any]) -> str:
-    if state.get("compare") is True:
-        return "compare"
-    if _wants_brief(state):
-        return "brief"
-    return _else_math(state, "reply")
+    from cpu_llm.flag_contract import next_optional
+    return next_optional(state, 'imagine')
 
 
 def _after_compare(state: dict[str, Any]) -> str:
-    if _wants_brief(state):
-        return "brief"
-    return _else_math(state, "reply")
+    from cpu_llm.flag_contract import next_optional
+    return next_optional(state, 'compare')
 
 
 def _after_brief(state: dict[str, Any]) -> str:
-    return _else_math(state, "reply")
+    from cpu_llm.flag_contract import next_optional
+    return next_optional(state, 'brief')
 
 
 def _after_math(state: dict[str, Any]) -> str:
-    return _else_finance(state, "reply")
+    from cpu_llm.flag_contract import next_optional
+    return next_optional(state, 'math')
 
 
 def _after_finance(state: dict[str, Any]) -> str:
-    return _else_frame(state, "reply")
+    from cpu_llm.flag_contract import next_optional
+    return next_optional(state, 'finance')
 
 
 def _delivery_rejected(state: dict[str, Any]) -> bool:
     """A Shine, audit, or grammar rejection is the final delivery decision."""
-    if state.get("delivery_blocked"):
-        return True
-    if state.get("shine_enforced"):
-        return True
-    return state.get("shine_ok") is False
+    from cpu_llm.flag_contract import delivery_held
+    return delivery_held(state)
 
 
 def _else_math(state: dict[str, Any], destination: str) -> str:
@@ -1555,7 +1557,8 @@ def _entity_in_text(entity: str, text: str) -> bool:
 
 
 def _wants_brief(state: dict[str, Any]) -> bool:
-    return any(state.get(flag) is True for flag in ("summarize", "explain", "list", "sources"))
+    from cpu_llm.flag_contract import node_requested
+    return node_requested('brief', state)
 
 
 def _after_reply(state: dict[str, Any]) -> str:

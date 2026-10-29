@@ -145,10 +145,13 @@ def deep_search_trigger(message: str, *, forced: bool = False) -> list[str]:
     reasons: list[str] = []
     if forced:
         reasons.append(DEEP_CALLER_REASON)
+    text = _control_text(message)
+    if re.match(r'^(?:what|who|where|when|which) (?:is|are|was|were)\b', text.strip(), re.I):
+        return reasons
     for pattern, reason in _DEEP_REASONS:
         if reason in reasons:
             continue
-        if pattern.search(message or ""):
+        if any(not _negated(text, match.start()) for match in pattern.finditer(text)):
             reasons.append(reason)
     return reasons
 
@@ -198,10 +201,30 @@ def math_trigger(message: str, *, forced: bool = False) -> list[str]:
 
 
 def _matched(message: str, table: tuple[tuple[re.Pattern[str], str], ...]) -> list[str]:
+    text = _control_text(message)
+    head = re.sub(r'^(?:please\s+)?(?:(?:can|could|would) you\s+)?', '', text.strip(), flags=re.I)
+    controls = {
+        id(_SUMMARY_REASONS): r'^(?:summari[sz]e|summary|give(?: me)? (?:a )?(?:brief |short |detailed )?summary|tl;dr|tldr|in short|main points|most important|briefly)\b',
+        id(_EXPLAIN_REASONS): r'^(?:explain|why|how come|what caused)\b',
+        id(_LIST_REASONS): r'^(?:list|enumerate|bullet points|bullets|(?:give|provide)(?: me)? (?:\d+ )?(?:bullet points|bullets))\b',
+        id(_SOURCE_REASONS): r'^(?:cite|sources|list (?:the )?sources)\b|[?!.;]\s*(?:please\s+)?(?:cite|include (?:the )?sources)\b',
+    }
+    if id(table) in controls and not re.search(controls[id(table)], head, re.I):
+        return []
     reasons: list[str] = []
     for pattern, reason in table:
         if reason in reasons:
             continue
-        if pattern.search(message or ""):
+        if any(not _negated(text, match.start()) for match in pattern.finditer(text)):
             reasons.append(reason)
     return reasons
+
+
+def _control_text(message):
+    return re.sub(r'```[\s\S]*?```|"[^"\n]*"|“[^”\n]*”',
+                  lambda match: ' ' * len(match[0]), message or '')
+
+
+def _negated(text, position):
+    return bool(re.search(r"\b(?:not|never|don't|do not)\s+(?:(?:run|use|give|provide|write|include|do|a|an|the)\s+)*$",
+                          text[:position], re.I))

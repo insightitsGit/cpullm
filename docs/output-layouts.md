@@ -26,6 +26,12 @@ not stripped from a question such as `Where is data stored in a table?`.
 
 ## Rendering contract
 
+The [flag mapping](prompt-flag-map.md) and [enforcement specification](flag-routing-review.md)
+classify layout/media flags as post-graph controls. They may not enable a factual
+agent or bypass a delivery hold. Runtime validators check format/media/budget
+agreement before the consumer executes. Benchmark v3 revision 2 verifies actual
+child traces and post-stage ordering separately from rendered appearance.
+
 The public `ask()` boundary renders after the existing single-task final judgment
 or aggregate per-task judgment. It does not reretrieve, select different facts,
 infer comparisons, or invent missing values. Access/guard refusals retain their

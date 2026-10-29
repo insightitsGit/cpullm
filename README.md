@@ -344,6 +344,7 @@ Additional limits include narrow English extraction grammars, incomplete retriev
 
 ## Source and design map
 
+- [Prompt flag mapping table](docs/prompt-flag-map.md), [machine-readable map](docs/prompt-flag-map.json), and [routing enforcement review](docs/flag-routing-review.md): prompt flags, graph consumers, priority/hold rules and actual execution diagnostics.
 - [Consolidated change record, 2026-10-29](docs/change-record-2026-10-29.md): why the installation, prompt, length and rendering changes were made; implementation/API details; validation; preserved specifications and remaining work.
 - [Prompt/output benchmark v3 design](docs/benchmark-v3-design.md) and [execution handoff](docs/handoff-benchmark-v3.md): fresh paired rules/spaCy evaluation, clean-install gates, response-depth flags, rendered proof and immutable artifacts. Design only; not a completed run.
 - [Semantic implementation report](docs/semantic-implementation-report.md): shared factual assessment and final judgment, retained proof, bounded identity/attribute/wording support, evaluator corrections, live validation and remaining architectural work.

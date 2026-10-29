@@ -151,7 +151,7 @@ def classify_response_request(message: str) -> dict:
     long_response = detail == 'detailed' or sentence_budget > 5 or item_budget > 8
     retrieval_budget = max(12, min(40, max(sentence_budget, item_budget if bullets else 0) + 4)) if long_response else 5
     output_format = layout['format'] or ('bullets' if bullets else 'prose')
-    return dict(schema='response-plan-v1', detail=detail,
+    plan = dict(schema='response-plan-v1', detail=detail,
                 explicit=bool(cues or counts or overview or layout['format']),
                 mode='overview' if overview else 'existing_task',
                 format=output_format, output_media=layout['output_media'],
@@ -168,3 +168,6 @@ def classify_response_request(message: str) -> dict:
                 reasons=[item[2] for item in cues] + [m[0] for m in counts] + (['overview request'] if overview else []),
                 budget_scope='optional overview/list sentences; required proof is preserved',
                 word_limit_enforced=False)
+    from cpu_llm.flag_contract import enforce_response_flags
+    enforce_response_flags(plan)
+    return plan

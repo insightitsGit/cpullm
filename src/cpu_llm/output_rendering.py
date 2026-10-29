@@ -53,6 +53,8 @@ def _cell(value):
 def render_response(result):
     """Only arrange the final claims; never select facts or complete a cell."""
     plan = result.get('response_plan') or {}
+    from cpu_llm.flag_contract import enforce_response_flags
+    enforce_response_flags(plan)
     kind = plan.get('format')
     if kind not in {'table', 'bullets', 'numbered', 'report'} or result.get('guard_decision') not in (None, 'allow'):
         return result
@@ -117,4 +119,5 @@ def render_response(result):
         rows=rows, canonical_text=canonical, text=text,
         verification='layout of judged responses; no new factual claims')
     result['reply'] = dict(result.get('reply') or {}, text=text, format=kind, media_type=media)
+    result.setdefault('routing', dict(schema='flag-routing-contract-v1', executed_nodes=[], post_stages=[])).setdefault('post_stages', []).append('render_response')
     return result

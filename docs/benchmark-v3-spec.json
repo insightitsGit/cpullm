@@ -1,5 +1,5 @@
 {
-  "protocol": "prompt-output-benchmark-v3-design-1",
+  "protocol": "prompt-output-benchmark-v3-design-2",
   "prepared": "2026-10-29",
   "status": "design_only_not_executed",
   "runtime_selection": "Use the commit containing this specification and implementation when clean; otherwise freeze the complete working tree.",
@@ -8,28 +8,234 @@
   "runtime_at_design": {
     "base_head": "a9c4591",
     "requires_working_tree_snapshot_or_new_commit": true,
-    "latest_development_suite": {"passed": 695, "skipped": 2, "expected_failures": 3},
-    "development_suite_is_benchmark_accuracy": false
+    "latest_development_suite": {
+      "passed": 709,
+      "skipped": 2,
+      "expected_failures": 3
+    },
+    "development_suite_is_benchmark_accuracy": false,
+    "most_recent_committed_implementation": "c8398a0",
+    "routing_changes_uncommitted_at_revision": true
   },
-  "seeds": {"development": 291031, "holdout": 291032, "source_order": 291033, "review_sample": 291034},
+  "seeds": {
+    "development": 291031,
+    "holdout": 291032,
+    "source_order": 291033,
+    "review_sample": 291034
+  },
   "primary_arms": [
-    {"id": "rules", "prompt_backend": "rules", "resonance_tags": false, "reference_backend": null},
-    {"id": "spacy", "prompt_backend": "spacy", "resonance_tags": false, "reference_backend": null}
+    {
+      "id": "rules",
+      "prompt_backend": "rules",
+      "resonance_tags": false,
+      "reference_backend": null
+    },
+    {
+      "id": "spacy",
+      "prompt_backend": "spacy",
+      "resonance_tags": false,
+      "reference_backend": null
+    }
   ],
   "families": [
-    "conversational_normalization", "field_lists_and_task_coverage", "meaning_and_reference",
-    "joins_and_retrieval_repair", "attribute_slots", "response_depth_and_size",
-    "layout_and_media", "proof_and_display_fidelity", "access_and_history",
-    "instructions_versus_data", "existing_specialists_and_templates", "missing_conflicting_unsupported"
+    "conversational_normalization",
+    "field_lists_and_task_coverage",
+    "meaning_and_reference",
+    "joins_and_retrieval_repair",
+    "attribute_slots",
+    "response_depth_and_size",
+    "layout_and_media",
+    "proof_and_display_fidelity",
+    "access_and_history",
+    "instructions_versus_data",
+    "existing_specialists_and_templates",
+    "missing_conflicting_unsupported"
   ],
-  "standalone": {"total": 240, "per_family": 20, "development_per_family": 12, "holdout_per_family": 8, "development_total": 144, "holdout_total": 96},
-  "conversations": {"scripts": 24, "groups": 6, "scripts_per_group": 4, "development_scripts": 12, "holdout_scripts": 12, "min_turns": 2, "max_turns": 4, "exact_turn_count_required_at_freeze": true},
-  "corpus": {"domains": 3, "minimum_initial_factual_paragraphs": 180, "minimum_ordinary_public_per_domain": 40, "minimum_private_per_domain": 10, "minimum_historical_prior_per_domain": 10, "distractor_paragraphs": 300, "known_names_allowed_in_fresh_splits": false},
-  "setup_matrix": ["rules_only", "spacy_without_model", "spacy_with_model", "explicit_spacy_missing_assets", "explicit_rules_no_model_load", "missing_postgres"],
-  "formats": ["markdown_table", "html_table", "markdown_report", "html_report", "bullets", "numbered", "prose"],
-  "prospective_targets": {"max_unauthorized_disclosures": 0, "max_wrong_meaning_endorsements": 0, "max_wrong_relation_endorsements": 0, "max_unlicensed_joins": 0, "endorsed_conclusion_proof_completeness": 1.0, "required_task_accounting": 1.0, "layout_fidelity": 1.0, "minimum_supported_standalone_strict_pass_per_arm": 0.9},
-  "timing": {"balanced_cases": 30, "warm_repetitions_per_case": 5, "separate_cold_start": true, "percentiles": [50, 95]},
-  "optional": {"resonance_development_cases": 60, "scale_development_cases": 24, "scale_distractor_counts": [1000, 10000], "per_arm_timeout_minutes": 30, "pool_with_core": false},
-  "review": {"all_failures_and_uncertain": true, "passing_paired_case_ids_per_family": 5, "single_agent_review_must_be_labeled": true},
-  "must_not": ["normalize_prompts_outside_ask", "use_library_as_semantic_oracle", "tune_on_holdout", "overwrite_prior_artifacts", "publish_release", "change_runtime_during_official_run", "count_unavailable_measurements_as_passes"]
+  "standalone": {
+    "total": 240,
+    "per_family": 20,
+    "development_per_family": 12,
+    "holdout_per_family": 8,
+    "development_total": 144,
+    "holdout_total": 96
+  },
+  "conversations": {
+    "scripts": 24,
+    "groups": 6,
+    "scripts_per_group": 4,
+    "development_scripts": 12,
+    "holdout_scripts": 12,
+    "min_turns": 2,
+    "max_turns": 4,
+    "exact_turn_count_required_at_freeze": true
+  },
+  "corpus": {
+    "domains": 3,
+    "minimum_initial_factual_paragraphs": 180,
+    "minimum_ordinary_public_per_domain": 40,
+    "minimum_private_per_domain": 10,
+    "minimum_historical_prior_per_domain": 10,
+    "distractor_paragraphs": 300,
+    "known_names_allowed_in_fresh_splits": false
+  },
+  "setup_matrix": [
+    "rules_only",
+    "spacy_without_model",
+    "spacy_with_model",
+    "explicit_spacy_missing_assets",
+    "explicit_rules_no_model_load",
+    "missing_postgres"
+  ],
+  "formats": [
+    "markdown_table",
+    "html_table",
+    "markdown_report",
+    "html_report",
+    "bullets",
+    "numbered",
+    "prose"
+  ],
+  "prospective_targets": {
+    "max_unauthorized_disclosures": 0,
+    "max_wrong_meaning_endorsements": 0,
+    "max_wrong_relation_endorsements": 0,
+    "max_unlicensed_joins": 0,
+    "endorsed_conclusion_proof_completeness": 1.0,
+    "required_task_accounting": 1.0,
+    "layout_fidelity": 1.0,
+    "minimum_supported_standalone_strict_pass_per_arm": 0.9
+  },
+  "timing": {
+    "balanced_cases": 30,
+    "warm_repetitions_per_case": 5,
+    "separate_cold_start": true,
+    "percentiles": [
+      50,
+      95
+    ]
+  },
+  "optional": {
+    "resonance_development_cases": 60,
+    "scale_development_cases": 24,
+    "scale_distractor_counts": [
+      1000,
+      10000
+    ],
+    "per_arm_timeout_minutes": 30,
+    "pool_with_core": false
+  },
+  "review": {
+    "all_failures_and_uncertain": true,
+    "passing_paired_case_ids_per_family": 5,
+    "single_agent_review_must_be_labeled": true
+  },
+  "must_not": [
+    "normalize_prompts_outside_ask",
+    "use_library_as_semantic_oracle",
+    "tune_on_holdout",
+    "overwrite_prior_artifacts",
+    "publish_release",
+    "change_runtime_during_official_run",
+    "count_unavailable_measurements_as_passes",
+    "use_runtime_routing_as_its_own_expected_oracle",
+    "pool_controlled_fixtures_with_public_quality",
+    "count_a_correct_answer_as_proof_of_correct_routing"
+  ],
+  "supersedes": "prompt-output-benchmark-v3-design-1",
+  "routing_contract": {
+    "schema": "flag-routing-contract-v1",
+    "registry": "src/cpu_llm/flag_contract.py",
+    "mapping_table": "docs/prompt-flag-map.md",
+    "mapping_json": "docs/prompt-flag-map.json",
+    "review": "docs/flag-routing-review.md",
+    "entries_at_revision": 28,
+    "freeze_registry_and_mapping_hashes": true,
+    "positive_and_negative_witnesses_per_entry": true,
+    "flag_coverage_manifest_required": true
+  },
+  "routing_extension": {
+    "case_records": 48,
+    "families": [
+      "optional_priority_and_composition",
+      "guard_and_hold_precedence",
+      "presentation_budget_consistency",
+      "false_activation",
+      "draft_and_api_boundaries",
+      "channel_signals_vs_execution",
+      "trace_and_early_return_fidelity",
+      "batch_and_render_stages"
+    ],
+    "records_per_family": 6,
+    "public_cases_per_family": 4,
+    "controlled_fixtures_per_family": 2,
+    "public_cases": 32,
+    "development_public_cases": 16,
+    "holdout_public_cases": 16,
+    "controlled_fixtures": 16,
+    "controlled_runs": "once_backend_independent_not_per_arm",
+    "core_quality_pooling": false,
+    "execution_modes": [
+      "public_live",
+      "controlled_conformance"
+    ],
+    "seeds": {
+      "development": 291035,
+      "holdout": 291036
+    },
+    "scripts": 8,
+    "development_scripts": 4,
+    "holdout_scripts": 4,
+    "script_groups": [
+      "multi_agent_precedence",
+      "hold_reset_boundaries",
+      "global_layout_pending_resume",
+      "caller_api_config_isolation"
+    ],
+    "scripts_per_group": 2,
+    "existing_exhaustive_switch_combinations": 256,
+    "count_switch_combinations_as_accuracy_cases": false,
+    "passing_public_review_ids_per_family": 2,
+    "targets": {
+      "mapped_entry_witness_coverage": 1.0,
+      "expected_routing_conformance": 1.0,
+      "max_unrequested_node_execution": 0,
+      "max_prohibited_held_node_execution": 0,
+      "max_accepted_invalid_contracts": 0
+    },
+    "required_case_gold": [
+      "execution_mode",
+      "expected_flag_values_and_origins",
+      "required_nodes",
+      "forbidden_nodes",
+      "order_constraints",
+      "hold_type_and_stage",
+      "early_return_reason",
+      "permitted_post_stages"
+    ],
+    "required_artifacts": [
+      "flag_coverage.json",
+      "graph_inventory.json",
+      "mapping_hashes.json",
+      "routing/controlled.jsonl",
+      "routing/public_by_arm",
+      "routing/scripts_by_arm",
+      "routing/node_diffs",
+      "routing/review"
+    ],
+    "development_public_cases_per_family": 2,
+    "holdout_public_cases_per_family": 2,
+    "min_script_turns": 2,
+    "max_script_turns": 4,
+    "exact_script_turn_count_required_at_freeze": true
+  },
+  "combined_public_workload": {
+    "standalone_cases_per_arm": 272,
+    "standalone_attempts_two_arms": 544,
+    "scripts_per_arm": 32,
+    "development_scripts_per_arm": 16,
+    "holdout_scripts_per_arm": 16,
+    "script_turns": "freeze_exact_total_then_run_in_both_arms",
+    "controlled_fixtures_once": 16,
+    "core_and_extension_metrics_separate": true
+  }
 }

@@ -60,3 +60,14 @@ def test_live_layout_lists_use_verified_item_boundaries(app):
     assert len(re.findall(r'(?m)^- ', bullets['reply']['text'])) > 1
     assert len(re.findall(r'(?m)^\d+\. ', numbered['reply']['text'])) > 1
     assert bullets['answer_evidence'] and numbered['answer_evidence']
+
+
+def test_live_routing_reports_actual_nodes_and_keeps_length_separate_from_deep_search(app):
+    result = app.ask('Explain the Meridian in detail.')
+    routing = result['routing']
+    assert routing['requested_flags']['response_plan.flags.expand_retrieval']
+    assert not routing['requested_flags']['state.deep']
+    assert routing['executed_nodes'].count('brief') == 1
+    assert 'retrieve' in routing['executed_nodes'] and 'think' in routing['executed_nodes']
+    assert not {'deep', 'gather', 'imagine'} & set(routing['executed_nodes'])
+    assert routing['post_stages'] == ['finalize_turn']

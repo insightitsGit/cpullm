@@ -1,6 +1,8 @@
 # Benchmark v3: prompt understanding, response depth and rendered evidence
 
 Prepared 2026-10-29. **Design and execution specification; no v3 run has occurred.**
+Protocol revision 2 adds mandatory flag-routing coverage. Core case counts stay
+unchanged; extension and conformance denominators are separate.
 The [agent handoff](handoff-benchmark-v3.md) gives the execution sequence and scope.
 [Machine-readable protocol](benchmark-v3-spec.json) fixes the intended experiment.
 This evaluates the combined changes, not just their development examples.
@@ -41,6 +43,13 @@ with six NumPy warnings. That is context, **not a benchmark score or guaranteed
 count for a later snapshot**. Execute the complete live suite on the frozen source
 and publish its actual counts, skips, expected failures and warnings. Do not
 deselect failing tests to create a clean result.
+
+Routing update: `c8398a0` contains the preceding implementation/specification, but
+the latest flag registry, enforcement and tracing are still working-tree changes.
+Their latest live validation was **709 passed, 2 skipped, 3 expected failures**,
+with six existing warnings. Include these changes in the runtime freeze. The
+[mapping table](prompt-flag-map.md), [machine-readable map](prompt-flag-map.json)
+and [enforcement review](flag-routing-review.md) are part of this protocol.
 
 ## 3. Entry gates: installation and evaluator integrity
 
@@ -183,6 +192,57 @@ Run all core cases and script turns in both primary arms. Thus there are 480
 standalone attempts plus twice the frozen script-turn count. Report scripts as
 scripts as well as turns; do not pretend dependent turns are independent samples.
 
+### Mandatory routing extension — separate from core quality
+
+Freeze **48 additional records** in eight families, six records each. Each family
+has four public live cases (two development/two holdout) and two controlled
+conformance fixtures. Thus there are **32 public cases** (16 per split), run in
+both parser arms, and **16 backend-independent controlled fixtures**, run once.
+Use the extension seeds in the protocol JSON.
+
+1. Optional priority/composition: multiple requested agents, correct order, no
+   repetition, `gather → imagine`, one `brief` for combined brief-family flags.
+2. Guard/hold precedence: raw rejection, empty source scope, and claim holds
+   rechecked after each optional stage. Math/finance can inspect supplied fields
+   after a claim hold; raw guard rejection blocks both.
+3. Presentation/budget consistency: long output versus deep search, direct slots
+   versus overviews, format/media agreement, bounded counts and invalid flag sets.
+4. False activation: quoted/fenced controls, “list archive” and similar subjects,
+   deep-search definitions, negated commands and quoted arithmetic.
+5. Draft/API boundaries: explicit false draft gate; document positives; forced
+   deep/creative/math/finance versus prompt switches; API-only discover; layout
+   cannot authorize payment objects or select an application backend.
+6. Channel signal versus execution: all six nodes evaluate despite inactive
+   signals; activation does not imply enabled heads or licensed factual proof.
+7. Trace/early-return fidelity: actual nodes, observed/unobserved traces, no
+   fabricated graph path for a mock or early clarification; request isolation.
+8. Batch/render stages: child routing, global style, pending/resume and per-task
+   holds; renderer execution after final factual judgment.
+
+Every one of the 28 registry entries needs positive and negative witnesses across
+core/extension/conformance records. Freeze `flag_coverage.json` mapping paths to
+IDs, execution modes and expected effects. Negative channel witnesses check absent
+activating cues, not pruning mandatory nodes. Label witnesses needing controlled
+state instead of natural prompts.
+
+Add **eight public routing scripts**, four per split, in four groups of two (one
+per split): multi-agent precedence across turns; hold/reset boundaries; global
+layout plus pending/resume; caller/API/config isolation. Use 2–4 turns and freeze
+the exact count. Total scripts: **32**, consisting of 24 core plus eight routing,
+with 16 per split. Keep core and extension metrics separate.
+
+Combined public workload: **272 standalone cases per arm**, or **544 paired
+attempts**, plus twice the frozen turn count of all 32 scripts. Controlled fixtures
+are not public QA attempts. Run the existing exhaustive 256-switch regression as
+conformance too, never as 256 additional accuracy samples.
+
+Controlled fixtures may inject a hold, tamper an internal plan or call a validator
+to exercise states natural prompts cannot create. Set
+`execution_mode=controlled_conformance`, record injection/expected error, and do
+not present them as unmodified public requests. Public cases use original prompts
+and declared API arguments. Never patch runtime decisions or use the route
+function under test to predict its own expected destination.
+
 ## 6. Gold records and freezing
 
 Each case needs ID/family/split, original prompt, independently authored expected
@@ -190,6 +250,12 @@ tasks/contracts, constraints that must survive, expected presentation flags/medi
 allowed outcomes, licensed typed claims and forbidden claims, minimal alternative
 proof sets, caller/source scope, as-of time, and budget expectations. Include
 expected visible rows/items and missing/pending states for compound cases.
+
+Routing gold additionally records execution mode, expected flag values/origins,
+required/forbidden nodes, order constraints, early-return reason and permitted
+post stages. Holds have an explicit type/stage. Independently author expectations
+before observing runtime flags or traces; distinguish claim-hold exceptions from
+raw guard rejection.
 
 Typed claims bind subject, predicate, object/value, direction, polarity and
 quantifier. Scope/time and identity premises belong to proof obligations. Do not
@@ -222,6 +288,19 @@ and `rendered_response`. A claim hidden in another public factual field is still
 a failure. Empty output, exception, timeout and aborted child remain in their
 denominators and have distinct categories.
 
+Capture `routing.requested_flags`, `executed_nodes`, `observed` and `post_stages`
+per child. A batch parent can record only rendering; it cannot substitute for
+child execution evidence. Check node entry, not just a true switch or a producer
+field. Early scope/guard/clarification returns may correctly lack a trace; verify
+no prohibited model/encoding/search calls occurred. Missing traces on a normal
+real graph path fail observability. `observed=True` is not a truth verdict.
+
+Check registry/JSON/Markdown agreement and registered consumer existence. Inject
+unknown/missing/nonboolean flags, format/media mismatches, invalid bounds and
+disconnected expansion; expect rejection before the wrong consumer. Verify
+explicit `draft=False` and false-control cases. Save the graph inventory and
+contract errors, not only response text.
+
 For Markdown tables, use an independent parser with fixtures for escaped pipes
 and generated line breaks, not naive `split('|')` or Tabulate itself. For HTML,
 parse with an independent DOM/HTML parser; decode entities and inspect visible
@@ -251,6 +330,14 @@ clarification/abstention/conflict; continuation completion; layout/media validit
 visible/canonical agreement; optional-budget compliance; disclosure and invalid
 inference counts. Give strict whole-case pass = all applicable dimensions pass.
 Also report script-all-turns pass. Do not merge all dimensions into one score.
+
+For the extension, report flag/consumer coverage, expected/actual activation,
+ordering/repetition, hold precedence, API isolation and trace completeness. Targets
+are 100% mapped-entry witness coverage and expected routing, zero unrequested or
+prohibited held-agent execution, and zero accepted invalid contracts. Controlled
+fixtures get conformance pass/fail counts; public cases keep per-arm results.
+Do not pool these into core semantic accuracy. All routing failures are mandatory
+review items even if the final answer happened to be correct.
 
 Report paired rules/spaCy deltas on the same cases. Keep shared-form correctness
 separate from newly supported wording. Use confidence intervals with appropriate
@@ -299,3 +386,8 @@ and failures for conversational prompts, long answers, Markdown tables, HTML
 reports and clarification/resume. Each example needs its prompt, expected intent,
 actual visible response, citations and verdict. Report lessons and rank next
 improvements by root cause, not by names/phrases in failed fixtures.
+
+Also preserve the frozen flag registry/mapping hashes, `flag_coverage.json`, graph
+inventory, `routing/controlled.jsonl`, per-arm routing public/script results,
+activation/order/hold diff reports and review of each mismatch. Take a seeded two
+passing public IDs per routing family for review, in addition to the core sample.

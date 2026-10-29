@@ -1,0 +1,293 @@
+[
+  {
+    "path": "state.deep",
+    "origin": "prompt or explicit API override",
+    "consumers": [
+      "deep"
+    ],
+    "stage": "graph",
+    "behavior": "Wider authorized search; not enabled by response length.",
+    "example": "Deep search"
+  },
+  {
+    "path": "state.creative",
+    "origin": "prompt or explicit API override",
+    "consumers": [
+      "gather",
+      "imagine"
+    ],
+    "stage": "graph",
+    "behavior": "Gather before imagination; no factual proof exemption.",
+    "example": "Imagine a story"
+  },
+  {
+    "path": "state.compare",
+    "origin": "recognized prompt / internal interpretation",
+    "consumers": [
+      "compare"
+    ],
+    "stage": "graph",
+    "behavior": "Compare explicitly named sides.",
+    "example": "Compare X and Y"
+  },
+  {
+    "path": "state.summarize",
+    "origin": "recognized prompt / internal interpretation",
+    "consumers": [
+      "brief"
+    ],
+    "stage": "graph",
+    "behavior": "Produce source-backed summary units.",
+    "example": "Summarize X"
+  },
+  {
+    "path": "state.explain",
+    "origin": "recognized prompt / internal interpretation",
+    "consumers": [
+      "brief"
+    ],
+    "stage": "graph",
+    "behavior": "Prioritize supported causal explanation.",
+    "example": "Why did X stop?"
+  },
+  {
+    "path": "state.list",
+    "origin": "recognized prompt / internal interpretation",
+    "consumers": [
+      "brief"
+    ],
+    "stage": "graph",
+    "behavior": "Produce verified list units.",
+    "example": "List X facts"
+  },
+  {
+    "path": "state.sources",
+    "origin": "recognized prompt / internal interpretation",
+    "consumers": [
+      "brief",
+      "reply"
+    ],
+    "stage": "graph",
+    "behavior": "Select and display source references.",
+    "example": "Cite the sources"
+  },
+  {
+    "path": "state.math",
+    "origin": "prompt or explicit API override",
+    "consumers": [
+      "math"
+    ],
+    "stage": "graph",
+    "behavior": "Independent arithmetic from prompt fields.",
+    "example": "Calculate 2 + 3"
+  },
+  {
+    "path": "state.finance",
+    "origin": "prompt or explicit API override",
+    "consumers": [
+      "finance"
+    ],
+    "stage": "graph",
+    "behavior": "Check supplied finance fields.",
+    "example": "Check this refund"
+  },
+  {
+    "path": "state.frame",
+    "origin": "recognized prompt / internal interpretation",
+    "consumers": [
+      "frame"
+    ],
+    "stage": "graph",
+    "behavior": "Resolve a source-backed event frame.",
+    "example": "What did John eat?"
+  },
+  {
+    "path": "state.draft",
+    "origin": "recognized prompt / internal interpretation",
+    "consumers": [
+      "reply"
+    ],
+    "stage": "graph",
+    "behavior": "Document catalog is rendered inside reply; no separate draft node.",
+    "example": "Draft a letter about X"
+  },
+  {
+    "path": "state.discover",
+    "origin": "API-only",
+    "consumers": [
+      "discover"
+    ],
+    "stage": "graph",
+    "behavior": "API-only follow-up suggestions after reply; never inferred from layout.",
+    "example": "API discover=True"
+  },
+  {
+    "path": "response_plan.flags.long_response",
+    "origin": "explicit prompt presentation or derived default",
+    "consumers": [
+      "retrieve",
+      "brief"
+    ],
+    "stage": "budget",
+    "behavior": "Derived depth/size indicator; consumers use validated numeric budgets.",
+    "example": "Long response about X"
+  },
+  {
+    "path": "response_plan.flags.expand_retrieval",
+    "origin": "explicit prompt presentation or derived default",
+    "consumers": [
+      "retrieve"
+    ],
+    "stage": "budget",
+    "behavior": "Must agree with long_response; use retrieval_budget, not the deep-search agent.",
+    "example": "Explain X in 20 sentences"
+  },
+  {
+    "path": "response_plan.flags.extended_overview",
+    "origin": "explicit prompt presentation or derived default",
+    "consumers": [
+      "brief"
+    ],
+    "stage": "budget",
+    "behavior": "Long response plus overview mode; direct factual slots are unchanged.",
+    "example": "Elaborate on X"
+  },
+  {
+    "path": "response_plan.flags.table",
+    "origin": "explicit prompt presentation or derived default",
+    "consumers": [
+      "render_response"
+    ],
+    "stage": "post_graph",
+    "behavior": "Tabulate plus built-in Jinja layout after judgment.",
+    "example": "as a table"
+  },
+  {
+    "path": "response_plan.flags.bullets",
+    "origin": "explicit prompt presentation or derived default",
+    "consumers": [
+      "brief",
+      "render_response"
+    ],
+    "stage": "presentation",
+    "behavior": "Overview uses list producer; a direct fact remains a fact.",
+    "example": "as bullet points"
+  },
+  {
+    "path": "response_plan.flags.numbered",
+    "origin": "explicit prompt presentation or derived default",
+    "consumers": [
+      "brief",
+      "render_response"
+    ],
+    "stage": "presentation",
+    "behavior": "Use verified item boundaries and numbered layout.",
+    "example": "as a numbered list"
+  },
+  {
+    "path": "response_plan.flags.report",
+    "origin": "explicit prompt presentation or derived default",
+    "consumers": [
+      "render_response"
+    ],
+    "stage": "post_graph",
+    "behavior": "Built-in task-response report; distinct from legacy draft report.",
+    "example": "as a report"
+  },
+  {
+    "path": "response_plan.flags.html",
+    "origin": "explicit prompt presentation or derived default",
+    "consumers": [
+      "render_response"
+    ],
+    "stage": "post_graph",
+    "behavior": "Escaped HTML output; does not choose a factual agent.",
+    "example": "as an HTML report"
+  },
+  {
+    "path": "response_plan.flags.markdown",
+    "origin": "explicit prompt presentation or derived default",
+    "consumers": [
+      "render_response"
+    ],
+    "stage": "post_graph",
+    "behavior": "Markdown representation; default does not force a template.",
+    "example": "as a Markdown table"
+  },
+  {
+    "path": "response_plan.flags.template_requested",
+    "origin": "explicit prompt presentation or derived default",
+    "consumers": [
+      "render_response"
+    ],
+    "stage": "post_graph",
+    "behavior": "Explicit layout indicator; validated against format/media.",
+    "example": "Please use a table"
+  },
+  {
+    "path": "prompt_intent.channels.dense.active",
+    "origin": "recognized request form / channel evidence",
+    "consumers": [
+      "retrieve",
+      "dense"
+    ],
+    "stage": "channel",
+    "behavior": "All six channel nodes evaluate; active is a signal, not a graph skip or proof.",
+    "example": "Any content query"
+  },
+  {
+    "path": "prompt_intent.channels.relational.active",
+    "origin": "recognized request form / channel evidence",
+    "consumers": [
+      "retrieve",
+      "relational"
+    ],
+    "stage": "channel",
+    "behavior": "All six channel nodes evaluate; active is a signal, not a graph skip or proof.",
+    "example": "What does X have?"
+  },
+  {
+    "path": "prompt_intent.channels.disentangled.active",
+    "origin": "recognized request form / channel evidence",
+    "consumers": [
+      "retrieve",
+      "disentangled"
+    ],
+    "stage": "channel",
+    "behavior": "All six channel nodes evaluate; active is a signal, not a graph skip or proof.",
+    "example": "How do X and Y differ?"
+  },
+  {
+    "path": "prompt_intent.channels.hyperbolic.active",
+    "origin": "recognized request form / channel evidence",
+    "consumers": [
+      "retrieve",
+      "hyperbolic"
+    ],
+    "stage": "channel",
+    "behavior": "All six channel nodes evaluate; active is a signal, not a graph skip or proof.",
+    "example": "What type is X?"
+  },
+  {
+    "path": "prompt_intent.channels.identity.active",
+    "origin": "recognized request form / channel evidence",
+    "consumers": [
+      "retrieve",
+      "identity"
+    ],
+    "stage": "channel",
+    "behavior": "All six channel nodes evaluate; active is a signal, not a graph skip or proof.",
+    "example": "Who is X?"
+  },
+  {
+    "path": "prompt_intent.channels.causal.active",
+    "origin": "recognized request form / channel evidence",
+    "consumers": [
+      "retrieve",
+      "causal"
+    ],
+    "stage": "channel",
+    "behavior": "All six channel nodes evaluate; active is a signal, not a graph skip or proof.",
+    "example": "Why did X stop?"
+  }
+]

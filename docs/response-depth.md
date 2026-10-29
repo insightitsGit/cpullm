@@ -26,6 +26,13 @@ Examples:
 
 ## Contract
 
+The [flag map](prompt-flag-map.md) connects length and expansion indicators to
+validated numeric budgets in `retrieve`/`brief`. It does not map them to the
+separate deep-search or creative agents. See the
+[routing enforcement specification](flag-routing-review.md) for precedence,
+holds and fail-closed contract checks. Benchmark v3 revision 2 independently
+tests these bindings, including trace evidence and invalid internal plans.
+
 The default detail level is `standard`. Overview/summary budgets are one sentence
 for `brief`, three for `standard`, and eight for `detailed`. List budgets are
 three, eight, and twelve respectively. Explicit sentence/item counts override

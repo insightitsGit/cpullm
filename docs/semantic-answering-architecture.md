@@ -63,6 +63,17 @@ explicit unresolved interpretation, not a race where the last producer wins.
 
 ## 2. Prompt understanding as a bounded compiler
 
+Implemented flag ownership is specified in the [mapping table](prompt-flag-map.md),
+[machine-readable registry snapshot](prompt-flag-map.json) and
+[routing enforcement review](flag-routing-review.md). This contract separates
+optional graph agents, validated numeric budgets and post-judgment layout flags.
+The registry controls optional precedence and checks mapped graph consumers;
+each optional node enforces its request and current hold before executing.
+Actual `routing` traces are diagnostic execution evidence, never factual proof.
+The architecture's independent evaluation must test those invariants and negative
+activations, not merely a correct-looking final answer. Benchmark v3 revision 2
+adds mandatory public routing cases and separately labeled conformance fixtures.
+
 The initial implemented adapter and its current limits are documented in
 [prompt ingestion](prompt-ingestion.md). It normalizes declared conversational
 syntax, expands explicit fields and optionally validates spaCy dependency proposals;

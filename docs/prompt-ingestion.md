@@ -113,6 +113,13 @@ directly inject a rewritten query: proposals must pass the same span validator.
 
 ## Diagnostic contract
 
+Flag-to-node ownership and execution precedence are governed by the
+[mapping contract](flag-routing-review.md), rather than inferred from spaCy
+annotations. The [mapping table](prompt-flag-map.md) lists actual consumers.
+Graph-backed child results expose observed routing; source/guard/clarification
+early returns may have no graph execution. See benchmark v3 revision 2 for
+required activation, hold, API-boundary and trace tests.
+
 Single-task results after interpretation contain `prompt_ingestion` with schema
 `prompt-interpretation-v1`:
 
