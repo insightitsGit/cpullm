@@ -264,6 +264,8 @@ The delivery judgment runs after that composition. If the body is not the licens
 
 ## Models and the meaning of deterministic
 
+An opt-in [stylistic companion node](docs/stylistic-generation-design.md) now constructs new wording for two verified forms: `ask(..., style="formal")` can turn “The Aster is blue.” into “The color of the Aster is blue.”; `style="friendly"` can turn “The Aster is found in coastal waters.” into “You can find the Aster in coastal waters.” Read `result["stylistic"]` for generated text, proof and verification. The canonical `reply.text` stays unchanged. This is bounded construction-based generation, not unrestricted writing; no training is needed. Other forms skip safely. See the [spec](docs/stylistic-generation-spec.json) and [smoke results](docs/benchmarks/2026-10-30-stylistic-smoke/REPORT.md).
+
 The retrieval encoder and shipped `vectorprism.pt` projection are distinct from sentence generation. Dense retrieval is trained; the other subspace readings and relation signatures are not a trained fact generator.
 
 There are **three separate wording paths**:

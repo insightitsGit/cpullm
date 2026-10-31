@@ -1,0 +1,34 @@
+{
+  "schema": "stylistic-generation-spec-v1",
+  "stage": "implemented_companion_constructions",
+  "date": "2026-10-30",
+  "python_api": "Appliance.ask(message, *, style=None)",
+  "profiles": ["formal", "friendly"],
+  "default": null,
+  "activation": "explicit_api_only_request_local",
+  "graph_nodes": ["stylistic", "style_verify"],
+  "placement": "after_canonical_dispatch_before_rendering_per_completed_child",
+  "publication": "companion_only",
+  "result_path": "stylistic",
+  "statuses": ["generated", "skipped", "rejected", "children"],
+  "constructions": [
+    {"id": "formal-color-v1", "profile": "formal", "relation": "has_color", "input": "X is COLOR.", "output": "The color of X is COLOR."},
+    {"id": "friendly-location-v1", "profile": "friendly", "relation": "lives_in", "input": "X is found in PLACE.", "output": "You can find X in PLACE."}
+  ],
+  "eligibility": {
+    "judge_verification": "structural",
+    "decision_outcome": "answered",
+    "delivery_outcomes": ["answered", "evidence_quote"],
+    "polarity": "affirmative",
+    "direction": "subject",
+    "quantifier_scope": "individual",
+    "proof": "one literal source span identical to decision text, matching accepted judge evidence",
+    "max_canonical_characters": 240,
+    "max_slot_characters": 80
+  },
+  "verification": "independent_closed_inverse_grammar_plus_snapshot_and_proof_binding",
+  "unchanged": ["reply", "answer", "answer_status", "judgment", "audit_passed", "answer_evidence", "supporting_evidence", "response-plan-v1", "flag-routing-contract-v1", "EIRProposition", "database_schema"],
+  "not_implemented": ["automatic_tone_classifier", "ten_channel_tone_and_intensity_ranking", "relationship_register_selection", "SoA_lexicon", "neural_generation", "visible_reply_replacement", "HTTP_style_parameter", "cross_turn_style_persistence"],
+  "tests": ["tests/test_stylistic.py", "tests/test_stylistic_live.py"],
+  "evaluation": "tools/benchmarks/stylistic_smoke.py"
+}

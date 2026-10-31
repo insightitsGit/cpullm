@@ -570,9 +570,13 @@ class Appliance:
         session_id: str | None = None,
         caller: Any | None = None,
         as_of: int | None = None,
+        style: str | None = None,
     ) -> dict[str, Any]:
         """Separate explicit compound requests; each task uses the full pipeline."""
         from cpu_llm.request_planner import dispatch_request
+        if style is not None:
+            from cpu_llm.stylistic.contracts import validate_profile
+            validate_profile(style)
         if realization not in {"deterministic", "evidence_neural", "model01"}:
             raise ValueError("realization must be deterministic, evidence_neural, or model01")
         if (payment is None) != (authority is None):
@@ -583,6 +587,9 @@ class Appliance:
             causal_graph=causal_graph, realization=realization, account=account, grade=grade,
             child_safety=child_safety, session_id=session_id, caller=caller, as_of=as_of))
         from cpu_llm.output_rendering import render_response
+        if style is not None:
+            from cpu_llm.stylistic import apply_style
+            result = apply_style(result, style)
         return render_response(result)
 
     def _ask_single(

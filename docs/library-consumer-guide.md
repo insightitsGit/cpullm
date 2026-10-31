@@ -29,6 +29,17 @@ Namespaces are normalized to lowercase; runs of characters outside `[a-z0-9_]` b
 
 ## Complete ask contract
 
+The optional keyword `style=None | "formal" | "friendly"` enables a bounded companion-generation node. It adds `result["stylistic"]`; it does **not** replace `reply.text`, change evidence/status fields, or enable a general language model. Read the sidecar's `status` before accessing its `text`: unsupported cases return `skipped`, failures return `rejected`, and batches use `children` with sidecars inside completed `task_results[*].result`. Formal color and friendly location constructions are the only initial forms. Profiles are explicit and request-local; repeat the keyword on a later turn if wanted. Invalid profiles raise `ValueError` before retrieval. Existing HTTP request models do not expose this argument. See the [stage-1 spec](stylistic-generation-spec.json) and [design](stylistic-generation-design.md).
+
+```python
+result = app.ask("What color is the Aster?", style="formal")
+generated = result.get("stylistic", {})
+if generated.get("status") == "generated":
+    print(generated["text"])  # Derived paraphrase; sources remain in generated["proof"].
+else:
+    print(result.get("reply", {}).get("text", ""))
+```
+
 Current signature, with annotations simplified for readability:
 
 ```python
