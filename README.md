@@ -16,7 +16,7 @@ For an agent integrating the library, start with [the consumer guide](docs/libra
 
 ## New in this checkout
 
-**Strict evidence flag:** use `ask(..., strict_evidence=True)`, the HTTP header
+**Strict evidence / “zero hallucination” mode:** use `ask(..., strict_evidence=True)`, the HTTP header
 `X-CPU-LLM-Evidence-Mode: strict`, or a first-line `[strict-evidence]` prompt
 marker. This separate path disables FLAN-T5 and other learned answer generation,
 returning literal cited source facts or abstaining. Set
@@ -24,6 +24,66 @@ returning literal cited source facts or abstaining. Set
 Version 1 supports explicit single attribute lookups, not clinical advice;
 source truth and 100% accuracy are not guaranteed. See the
 [strict evidence specification](docs/strict-evidence-spec.md).
+
+## Strict evidence: source quotations without generated facts
+
+The “zero hallucination” goal here means **no model-generated factual answer**
+in the strict path. The library copies a supported source fact exactly, including
+its numbers and units, or returns a nonanswer. It does not use FLAN-T5,
+fact-bridge, neural realization or stylistic generation for strict answers.
+Fixed status messages and source labels are application text. This is a
+quotation/provenance restriction, not a guarantee of zero errors: stored facts
+can be wrong, and contradictory prose outside the supported template can be
+missed. This feature is available in this checkout; older PyPI packages may
+not contain it.
+
+After completing the normal database and model setup below, try this fictional
+example. The exact source and question forms matter in version 1:
+
+```python
+from cpu_llm.pipeline import Appliance
+
+with Appliance(namespace="strict_demo", strict_evidence=True) as app:
+    app.upsert("demo-med-p0001", "The strength of DemoMed is 0.75 mg.")
+    result = app.ask("What is the strength of DemoMed?")
+    print(result["answer_status"])  # evidence_quote
+    print(result["reply"]["text"])  # labeled, exact source quotation
+    print(result["answer_evidence"])  # document ID, quote, offsets, chunk hash
+```
+
+For a single call on an ordinary appliance, use
+`app.ask("What is the strength of DemoMed?", strict_evidence=True)`.
+For prompt activation, put `[strict-evidence]` alone on the first line and the
+explicit question on the next line. Over HTTP, send an authenticated
+`POST /v1/ask` with either:
+
+- Header `X-CPU-LLM-Evidence-Mode: strict` and JSON
+  `{"message": "What is the strength of DemoMed?"}`.
+- JSON `{"message": "What is the strength of DemoMed?", "strict_evidence": true}`.
+
+To enforce the policy for every HTTP request, start
+`cpu-llm-serve --secrets secrets.json --strict-evidence`.
+An appliance or server enforcement setting cannot be disabled by a request.
+
+Check `answer_status` before using the result:
+
+- `evidence_quote`: literal matching source evidence is available; it is not
+  clinically validated. `answer` remains null and `audit_passed` remains false.
+- `conflicting`: matching source values disagree; neither value is selected.
+- `insufficient_evidence`: no supported match or the strict scan limit was reached.
+- `unsupported`: the question is outside the single attribute lookup contract.
+- `blocked`: the prompt guard rejected the request.
+
+Strict mode scans up to 10,000 authorized, time-valid chunks and fails closed on
+overflow. It is stateless and does not infer joins, perform calculations,
+resolve pronouns, expand long answers or render requested layouts. A question
+such as “Can I take DemoMed?” is unsupported. Pharmacy and healthcare users
+still need validated sources and separately validated clinical decision logic;
+this mode supplies traceable evidence, not a diagnosis or prescribing system.
+See [the specification](docs/strict-evidence-spec.md) and
+[validation report](docs/reviews/2026-11-02/strict-evidence-validation.md).
+
+## Other changes in this checkout
 
 The [current design](docs/current-design.md) describes the implementation. Prompt interpretation, output layouts, delivery judgment and flag-routing enforcement are committed in this repository; an installed PyPI distribution with the same version number may predate them. The saved Millhaven benchmark is the earlier clean commit `af39da6`.
 
