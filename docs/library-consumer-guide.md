@@ -29,7 +29,7 @@ Namespaces are normalized to lowercase; runs of characters outside `[a-z0-9_]` b
 
 ## Complete ask contract
 
-The optional keyword `style=None | "formal" | "friendly"` enables a bounded companion-generation node. It adds `result["stylistic"]`; it does **not** replace `reply.text`, change evidence/status fields, or enable a general language model. Read the sidecar's `status` before accessing its `text`: unsupported cases return `skipped`, failures return `rejected`, and batches use `children` with sidecars inside completed `task_results[*].result`. Formal color and friendly location constructions are the only initial forms. Profiles are explicit and request-local; repeat the keyword on a later turn if wanted. Invalid profiles raise `ValueError` before retrieval. Existing HTTP request models do not expose this argument. See the [stage-1 spec](stylistic-generation-spec.json) and [design](stylistic-generation-design.md).
+The optional keyword `style=None | <tone string> | StyleOptions(...)` enables bounded companion generation. It adds `result["stylistic"]`; it does **not** replace `reply.text`, change canonical evidence/status fields, or enable a general language model. Read `status` before accessing `text`: `generated` means new verified wording; `unchanged` means canonical wording was selected; unsupported cases skip; failures reject; and `children` means child sidecars exist without a safe aggregate. Five supported factual relations can be composed across completed tasks about the same subject. A pending task, conflict, different subject or inadequate budget prevents aggregation. Profiles are explicit and request-local; invalid controls raise `ValueError` before retrieval. Existing HTTP request models do not expose this argument. See the [stage-2 spec](stylistic-generation-spec.json) and [design](stylistic-generation-design.md).
 
 ```python
 result = app.ask("What color is the Aster?", style="formal")
@@ -39,6 +39,24 @@ if generated.get("status") == "generated":
 else:
     print(result.get("reply", {}).get("text", ""))
 ```
+
+After ingesting the relevant five facts, a longer companion can be requested with:
+
+```python
+from cpu_llm.stylistic import StyleOptions, Relationship
+
+result = app.ask(
+    "Tell me the color, habitat, shape, material, and weight of the Aster.",
+    style=StyleOptions(tone="friendly", relationship=Relationship.COLLEAGUE,
+                       max_sentences=3, clauses_per_sentence=2),
+)
+sidecar = result.get("stylistic", {})
+if sidecar.get("status") in {"generated", "unchanged"}:
+    print(sidecar["text"])
+    print(sidecar["proof"])
+```
+
+Tone channels are friendly, poetic, formal, emotional, serious, playful, melancholic, empathetic, analytical and intimate. Ten-channel mixtures use a normalized immutable `tone_weights` tuple in that order. The small factual lexicon does not contain expressive romantic/poetic prose: `tone_alignment="neutral_fallback"` reports that limitation. Relationship flags combine with bitwise OR; exclusions take precedence. For example, familial plus romantic still forbids intimate tone. Neutral/unknown relationships do not authorize intimate diction. Style cannot add facts to fill a word count; it respects the existing response sentence budget and declines a composition that cannot retain every claim.
 
 Current signature, with annotations simplified for readability:
 

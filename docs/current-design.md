@@ -4,7 +4,7 @@ Working-tree design snapshot, 2026-10-27. This describes the implementation in
 this checkout. A published package may be older. Earlier versioned
 specifications and the white paper describe historical stages.
 
-October 30 addition: [stylistic generation node](stylistic-generation-design.md), with a [stage-1 spec](stylistic-generation-spec.json). An optional `ask(style="formal" | "friendly")` produces a separately verified companion sentence after canonical dispatch and before rendering. It preserves canonical replies, reasoning nodes and proof fields. Only two closed constructions are implemented; the broader lexicon/tone-ranking design remains proposed.
+November 2 update: [stylistic generation node](stylistic-generation-design.md), with a [stage-2 spec](stylistic-generation-spec.json). Optional tone strings or `StyleOptions` produce verified companion sentences after canonical dispatch and before rendering. Five factual relations, ten curated constructions, bounded same-subject composition and tone/relationship controls are implemented. Canonical replies and existing reasoning contracts remain intact. General word generation, automatic tone inference and visible-answer promotion remain future work.
 
 ## Purpose and correctness boundary
 

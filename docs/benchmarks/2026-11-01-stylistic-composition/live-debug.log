@@ -1,0 +1,30 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____________ test_live_style_composes_five_independent_retrievals _____________
+
+    def test_live_style_composes_five_independent_retrievals():
+        with Appliance(namespace='style_long_'+uuid.uuid4().hex[:8],prompt_backend='rules') as app:
+            app.catalog_chunks([
+                ('style-long-p0001','The Aster is blue.'),
+                ('style-long-p0002','The Aster is found in coastal waters.'),
+                ('style-long-p0003','The shape of the Aster is round.'),
+                ('style-long-p0004','The material of the Aster is steel.'),
+                ('style-long-p0005','The weight of the Aster is 12.5 pounds.'),
+            ])
+            result=app.ask('Tell me the color, habitat, shape, material, and weight of the Aster.',
+                style=StyleOptions(tone='friendly',max_sentences=3))
+            side=result['stylistic']
+>           assert side['status']=='generated',(side,[(t.get('query'),t['result'].get('answer_status'),t['result'].get('judgment')) for t in result['task_results']])
+E           AssertionError: ({'profile': 'friendly', 'publication': 'companion_only', 'reason': 'incomplete_or_unsupported_children', 'schema': 's... much does the Aster weigh', 'unsupported', {'channels': [], 'direction': None, 'entity': None, 'evidence': [], ...})])
+E           assert 'children' == 'generated'
+E             
+E             - generated
+E             + children
+
+tests\test_stylistic_live.py:46: AssertionError
+---------------------------- Captured stderr call -----------------------------
+Could not reach the Hub (Cannot reach https://huggingface.co/api/models/sentence-transformers/all-mpnet-base-v2: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'sentence-transformers/all-mpnet-base-v2'.\n\rLoading weights:   0%|          | 0/199 [00:00<?, ?it/s]\rLoading weights:  21%|\u2588\u2588        | 42/199 [00:00<00:00, 383.56it/s]\rLoading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 199/199 [00:00<00:00, 1022.08it/s]
+------------------------------ Captured log call ------------------------------
+WARNING  huggingface_hub.hf_api:hf_api.py:3662 Could not reach the Hub (Cannot reach https://huggingface.co/api/models/sentence-transformers/all-mpnet-base-v2: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'sentence-transformers/all-mpnet-base-v2'.
+=========================== short test summary info ===========================
+FAILED tests/test_stylistic_live.py::test_live_style_composes_five_independent_retrievals

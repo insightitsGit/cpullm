@@ -1,0 +1,17 @@
+...........................................................F             [100%]
+================================== FAILURES ===================================
+____________ test_live_style_composes_five_independent_retrievals _____________
+tests\test_stylistic_live.py:46: in test_live_style_composes_five_independent_retrievals
+    assert side['status']=='generated',side
+E   AssertionError: {'profile': 'friendly', 'publication': 'companion_only', 'reason': 'incomplete_or_unsupported_children', 'schema': 'style-result-v2', ...}
+E   assert 'children' == 'generated'
+E     
+E     - generated
+E     + children
+---------------------------- Captured stderr call -----------------------------
+Could not reach the Hub (Cannot reach https://huggingface.co/api/models/sentence-transformers/all-mpnet-base-v2: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'sentence-transformers/all-mpnet-base-v2'.\n\rLoading weights:   0%|          | 0/199 [00:00<?, ?it/s]\rLoading weights:  29%|\u2588\u2588\u2589       | 58/199 [00:00<00:00, 572.80it/s]\rLoading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 199/199 [00:00<00:00, 1000.48it/s]
+------------------------------ Captured log call ------------------------------
+WARNING  huggingface_hub.hf_api:hf_api.py:3662 Could not reach the Hub (Cannot reach https://huggingface.co/api/models/sentence-transformers/all-mpnet-base-v2: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'sentence-transformers/all-mpnet-base-v2'.
+- generated xml file: C:\code\cpullm\docs\benchmarks\2026-11-01-stylistic-composition\targeted.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_stylistic_live.py::test_live_style_composes_five_independent_retrievals

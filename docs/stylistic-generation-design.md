@@ -1,8 +1,26 @@
 # Stylistic generation node: integration design
 
-Status: staged implementation specification, reviewed against runtime `b603485` on October 30, 2026. **Stage 1 now implements a two-construction, verified companion-output node.** The broader lexicon, ten-channel tone classifier and ranked surface-generation system below remain proposed. No production-readiness or universal meaning-invariance claim is made.
+Status: staged implementation specification. Stage 1 was committed as `dc8878b`; stage 2 extends it with related-claim composition and typed tone controls, developed November 1–2, 2026. No production-readiness or universal meaning-invariance claim is made.
 
-## Implemented stage 1 and measured scope
+## Implemented stage 2: related sentences and tone controls
+
+`StyleOptions` adds ten named tone channels, an optional normalized ten-channel mixture, bounded magnitude/valence/arousal, combined relationship flags, and sentence/clause budgets. Plain tone strings remain accepted. Controls are explicit API inputs, never inferred from the user's emotional wording or source text. Relationship exclusions accumulate: familial/formal/colleague restrictions override a romantic permission bit. A conflicting tone request yields an observable skip. Unknown relationships do not authorize intimate diction.
+
+The small construction lexicon has ten stable entries over five licensed relations: color, location, shape, material and explicit weight. Read-only NumPy struct-of-arrays stores POS masks, tone affinities, inherent register-risk flags, intensity values and genericness penalties. Multiple-POS bit intersections work. Exact relation eligibility and relationship masks run before deterministic weighted scoring, with stable ID tie-breaking. Valence distances are normalized by two. Tone affinity mass is normalized across each construction's permitted labels so a broadly tagged entry gains no automatic advantage. Inherent register risk is distinct from tone suitability.
+
+These are curated **construction** features, not a trained dictionary of arbitrary words or 128/256-dimensional lexical embeddings. Semantic eligibility is an exact relation license; its score is constant within a licensed pool. The scorer cannot purchase new meaning with a high style score. All current constructions use neutral factual language. Friendly/formal/serious/analytical preferences have matching entries; other expressive tone requests can receive `tone_alignment="neutral_fallback"`. No unsupported emotion, hyperbole or romantic premise is inserted to satisfy a tone.
+
+Completed child tasks about the same named subject can form a longer companion response. Every task must have a supported immutable frame; pending/missing/unsupported children, conflicting values, multiple subjects, canonical holds and more than eight tasks prevent aggregation. Each clause keeps its own source proof. The inverse-grammar verifier checks every claim in order and the complete proof union. Only additive `and` is allowed; `therefore`, contrast, ranking and causal links cannot be invented.
+
+Default composition uses at most three sentences and two clauses per sentence. Explicit style limits intersect the existing response sentence budget. If a budget cannot fit every claim, the node declines composition rather than truncating a condition or dropping a fact. An example from five independently retrieved facts is: “The Aster is blue, and you can find the Aster in coastal waters. The Aster has a round shape, and the Aster is made of steel. The Aster weighs 12.5 pounds.”
+
+Generation remains **companion-only**. Existing `reply.text`, answer/outcome, judgment, audit, proof, response-plan and retrieval-channel contracts retain their meanings. Metadata uses `style-result-v2` / `style-verification-v2`, with per-claim construction/score components, source IDs and tone-fallback status. `unchanged` distinguishes a valid construction that prints canonical wording from a new generated surface. Stage-1 results below are historical evidence, not the current coverage ceiling.
+
+The live composition test uncovered a frontend gap: field-list weight compiled into an event-like “How much does X weigh?” request that could return unsupported. Weight fields now compile to “What is the weight of X?”; direct simple “How much does X weigh?” prompts use the same explicitly recorded normalization. Guarded/qualified/negated requests are not rewritten. Retrieval and reasoning nodes are unchanged; the existing factual attribute producer supplies the decision.
+
+See [stage-2 evaluation](benchmarks/2026-11-01-stylistic-composition/REPORT.md) and the updated [spec](stylistic-generation-spec.json). Automatic tone extraction, broad sense-aware word embeddings, arbitrary tense/modality/negation adapters, learned diction and visible-answer promotion remain future work. Stated generation benefits are finite construction coverage and composition, not an improvement to v3 answer accuracy.
+
+## Historical stage-1 checkpoint and measured scope
 
 `Appliance.ask(..., style="formal" | "friendly")` adds an opt-in `stylistic` result. `None` takes the unchanged default path and imports/compiles no style graph. The new `stylistic -> style_verify` ChorusGraph subgraph runs after request dispatch has settled canonical judgments and repair, before rendering. On batches it visits completed child results separately. Because stage 1 emits only companion metadata, existing aggregation and visible replies remain unchanged; it does not yet implement the later publication/subgraph placement described below.
 

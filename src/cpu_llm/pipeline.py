@@ -570,7 +570,7 @@ class Appliance:
         session_id: str | None = None,
         caller: Any | None = None,
         as_of: int | None = None,
-        style: str | None = None,
+        style: Any | None = None,
     ) -> dict[str, Any]:
         """Separate explicit compound requests; each task uses the full pipeline."""
         from cpu_llm.request_planner import dispatch_request

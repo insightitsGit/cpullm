@@ -23,7 +23,7 @@ _FIELDS = {
     'color': 'What color is {entity}?', 'colour': 'What color is {entity}?',
     'shape': 'What shape is {entity}?', 'material': 'What material is {entity}?',
     'habitat': 'Where does {entity} live?', 'lifespan': 'How long does {entity} live?',
-    'weight': 'How much does {entity} weigh?', 'definition': 'What is {entity}?',
+    'weight': 'What is the weight of {entity}?', 'definition': 'What is {entity}?',
 }
 _ANNOTATION_REQUEST = re.compile(
     r'^(?:please\s+)?(?:(?:can|could|would) you\s+)?(?:give(?: me)?|provide(?: me)?|find|show(?: me)?)\s+'
@@ -74,6 +74,10 @@ def normalize_question(text: str) -> dict:
             verb = residence[3].casefold().removesuffix('s')
             query = f'{residence[1]} {auxiliary} {residence[2]} {verb}?'
             result['transformations'].append(dict(rule='indirect_residence_order'))
+    weight = re.fullmatch(r"how much does ([A-Za-z][A-Za-z '\-]{0,79}) weigh", core, re.I)
+    if weight and not re.search(r'\b(?:and|or|when|while|during|in|on|at|before|after|under|over)\b', weight[1], re.I):
+        query = f'What is the weight of {weight[1]}?'
+        result['transformations'].append(dict(rule='explicit_weight_attribute'))
     if result['transformations']:
         result.update(query=query, status='normalized')
     fields = expand_explicit_fields(result['query'])

@@ -4,7 +4,8 @@ import hashlib
 import json
 import re
 
-PROFILES = ('friendly', 'formal')
+from .profiles import TONES, options
+PROFILES = TONES
 _NAME = r"[A-Za-z][A-Za-z '\-]{0,79}"
 _COLOR = r'(?:red|blue|green|white|black|purple|yellow|orange|gray|grey|teal|amber)'
 _DISALLOWED = re.compile(r'\b(?:not|never|if|unless|and|or|before|after|may|must|all|some|every|only)\b',re.I)
@@ -22,8 +23,7 @@ class Frame:
         return hashlib.sha256(json.dumps((self.subject,self.relation,self.value,self.canonical,self.proof)).encode()).hexdigest()
 
 def validate_profile(profile):
-    if profile is not None and (not isinstance(profile,str) or profile not in PROFILES):
-        raise ValueError('style must be None, friendly, or formal')
+    if profile is not None:options(profile)
 
 def snapshot(result):
     """Only direct, single-proof decisions accepted by the existing judge qualify.
@@ -35,6 +35,7 @@ def snapshot(result):
     if (result.get('__partial__') or result.get('__node_error__') or result.get('needs_clarification')
         or result.get('delivery_blocked') or result.get('shine_enforced') or result.get('shine_ok') is False
         or result.get('guard_decision') not in (None,'allow')
+        or result.get('answer_status') not in (None,'answered','evidence_quote')
         or judgment.get('outcome') not in ('answered','evidence_quote')
         or judgment.get('verification')!='structural' or decision.get('outcome')!='answered'):
         return None
@@ -47,8 +48,12 @@ def snapshot(result):
     accepted={(p.get('document_id',''),p.get('span','')) for p in judgment.get('evidence',[])}
     if len(proof)!=1 or not proof[0][0] or proof[0][1]!=canonical or set(proof)!=accepted:return None
     relation=request.get('relation')
+    weight=r'[0-9]{1,6}(?:\.[0-9]{1,4})? (?:pounds?|kilograms?|grams?|kg|g)'
     pattern={'has_color':rf'(?P<subject>{_NAME}) is (?P<value>{_COLOR})\.',
-             'lives_in':rf'(?P<subject>{_NAME}) is found in (?P<value>{_NAME})\.'}.get(relation)
+             'lives_in':rf'(?P<subject>{_NAME}) is found in (?P<value>{_NAME})\.',
+             'attribute:shape':rf'The shape of (?P<subject>{_NAME}) is (?P<value>round|square|oval|flat)\.',
+             'attribute:material':rf'The material of (?P<subject>{_NAME}) is (?P<value>brass|wood|steel|glass|copper|iron|oak)\.',
+             'attribute:weight':rf'The weight of (?P<subject>{_NAME}) is (?P<value>{weight})\.'}.get(relation)
     if not pattern:return None
     match=re.fullmatch(pattern,canonical)
     if not match:return None

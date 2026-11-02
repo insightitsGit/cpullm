@@ -73,10 +73,10 @@ def test_batch_isolation_and_unsupported_profile_construction():
     result=dict(task_results=[dict(id='a',result=one),dict(id='b',result=two)])
     output=apply_style(result,'formal')
     assert output['task_results'][0]['result']['stylistic']['status']=='generated'
-    assert output['task_results'][1]['result']['stylistic']['status']=='skipped'
+    assert output['task_results'][1]['result']['stylistic']['status']=='unchanged'
     assert result['task_results'][0]['result']==one
 
-@pytest.mark.parametrize('value',['poetic','',False,{},['formal']])
+@pytest.mark.parametrize('value',['unknown-tone','',False,{},['formal']])
 def test_invalid_profile_is_explicit(value):
     with pytest.raises(ValueError):apply_style(accepted(),value)
 
