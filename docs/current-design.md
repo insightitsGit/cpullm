@@ -6,6 +6,8 @@ specifications and the white paper describe historical stages.
 
 November 2 update: [stylistic generation node](stylistic-generation-design.md), with a [stage-2 spec](stylistic-generation-spec.json). Optional tone strings or `StyleOptions` produce verified companion sentences after canonical dispatch and before rendering. Five factual relations, ten curated constructions, bounded same-subject composition and tone/relationship controls are implemented. Canonical replies and existing reasoning contracts remain intact. General word generation, automatic tone inference and visible-answer promotion remain future work.
 
+The [fresh live scenario audit](benchmarks/2026-11-02-stylistic-scenarios/REPORT.md) passed 49 stylistic contract scenarios per rules/spaCy arm. It also confirms a rules-only canonical wrong-relation response; contract success is not an overall answer-accuracy score.
+
 ## Purpose and correctness boundary
 
 The library answers from supplied source text on CPU. It interprets recognized

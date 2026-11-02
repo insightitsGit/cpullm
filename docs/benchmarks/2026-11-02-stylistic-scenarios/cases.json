@@ -1,0 +1,587 @@
+[
+  {
+    "id": "formal_color",
+    "prompt": "What color is the Virel?",
+    "style": "formal",
+    "status": [
+      "generated"
+    ],
+    "values": [
+      "blue"
+    ],
+    "proof": [
+      "scenario-public-p0001"
+    ],
+    "alignment": "supported"
+  },
+  {
+    "id": "friendly_location",
+    "prompt": "Where does the Virel live?",
+    "style": "friendly",
+    "status": [
+      "generated"
+    ],
+    "values": [
+      "Harbor Reach"
+    ],
+    "proof": [
+      "scenario-public-p0002"
+    ]
+  },
+  {
+    "id": "five_facts_friendly",
+    "prompt": "Tell me the color, habitat, shape, material, and weight of the Virel.",
+    "style": "friendly",
+    "status": [
+      "generated"
+    ],
+    "values": [
+      "blue",
+      "Harbor Reach",
+      "oval",
+      "brass",
+      "0.75 kilograms"
+    ],
+    "claims": 5,
+    "sentences": 3,
+    "proof": [
+      "scenario-public-p0001",
+      "scenario-public-p0002",
+      "scenario-public-p0003",
+      "scenario-public-p0004",
+      "scenario-public-p0005"
+    ]
+  },
+  {
+    "id": "five_facts_formal",
+    "prompt": "Tell me the color, habitat, shape, material, and weight of the Virel.",
+    "style": "formal",
+    "status": [
+      "generated"
+    ],
+    "values": [
+      "blue",
+      "Harbor Reach",
+      "oval",
+      "brass",
+      "0.75 kilograms"
+    ],
+    "claims": 5,
+    "sentences": 3,
+    "proof": [
+      "scenario-public-p0001",
+      "scenario-public-p0002",
+      "scenario-public-p0003",
+      "scenario-public-p0004",
+      "scenario-public-p0005"
+    ]
+  },
+  {
+    "id": "formal_material",
+    "prompt": "What material is the Virel?",
+    "style": "formal",
+    "status": [
+      "generated",
+      "unchanged"
+    ],
+    "values": [
+      "brass"
+    ]
+  },
+  {
+    "id": "oval_article",
+    "prompt": "What shape is the Virel?",
+    "style": "friendly",
+    "status": [
+      "generated"
+    ],
+    "values": [
+      "an oval shape"
+    ]
+  },
+  {
+    "id": "decimal_weight",
+    "prompt": "How much does the Virel weigh?",
+    "style": "friendly",
+    "status": [
+      "generated",
+      "unchanged"
+    ],
+    "values": [
+      "0.75 kilograms"
+    ]
+  },
+  {
+    "id": "mixed_tones",
+    "prompt": "What color is the Virel?",
+    "style": {
+      "tone": "formal",
+      "tone_weights": [
+        0.5,
+        0,
+        0.5,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "status": [
+      "generated",
+      "unchanged"
+    ],
+    "values": [
+      "blue"
+    ]
+  },
+  {
+    "id": "fallback_poetic",
+    "prompt": "What color is the Virel?",
+    "style": "poetic",
+    "status": [
+      "generated",
+      "unchanged"
+    ],
+    "alignment": "neutral_fallback",
+    "values": [
+      "blue"
+    ]
+  },
+  {
+    "id": "fallback_emotional",
+    "prompt": "What color is the Virel?",
+    "style": "emotional",
+    "status": [
+      "generated",
+      "unchanged"
+    ],
+    "alignment": "neutral_fallback",
+    "values": [
+      "blue"
+    ]
+  },
+  {
+    "id": "fallback_playful",
+    "prompt": "What color is the Virel?",
+    "style": "playful",
+    "status": [
+      "generated",
+      "unchanged"
+    ],
+    "alignment": "neutral_fallback",
+    "values": [
+      "blue"
+    ]
+  },
+  {
+    "id": "fallback_melancholic",
+    "prompt": "What color is the Virel?",
+    "style": "melancholic",
+    "status": [
+      "generated",
+      "unchanged"
+    ],
+    "alignment": "neutral_fallback",
+    "values": [
+      "blue"
+    ]
+  },
+  {
+    "id": "fallback_empathetic",
+    "prompt": "What color is the Virel?",
+    "style": "empathetic",
+    "status": [
+      "generated",
+      "unchanged"
+    ],
+    "alignment": "neutral_fallback",
+    "values": [
+      "blue"
+    ]
+  },
+  {
+    "id": "intimate_unknown",
+    "prompt": "What color is the Virel?",
+    "style": "intimate",
+    "status": [
+      "skipped"
+    ],
+    "reason": "relationship_tone_conflict"
+  },
+  {
+    "id": "intimate_romantic",
+    "prompt": "What color is the Virel?",
+    "style": {
+      "tone": "intimate",
+      "relationship": 2
+    },
+    "status": [
+      "generated",
+      "unchanged"
+    ],
+    "alignment": "neutral_fallback",
+    "values": [
+      "blue"
+    ]
+  },
+  {
+    "id": "restricted_familial",
+    "prompt": "What color is the Virel?",
+    "style": {
+      "tone": "intimate",
+      "relationship": 1
+    },
+    "status": [
+      "skipped"
+    ],
+    "reason": "relationship_tone_conflict"
+  },
+  {
+    "id": "restricted_familial_romantic",
+    "prompt": "What color is the Virel?",
+    "style": {
+      "tone": "intimate",
+      "relationship": 3
+    },
+    "status": [
+      "skipped"
+    ],
+    "reason": "relationship_tone_conflict"
+  },
+  {
+    "id": "restricted_formal_playful",
+    "prompt": "What color is the Virel?",
+    "style": {
+      "tone": "playful",
+      "relationship": 8
+    },
+    "status": [
+      "skipped"
+    ],
+    "reason": "relationship_tone_conflict"
+  },
+  {
+    "id": "restricted_colleague_emotional",
+    "prompt": "What color is the Virel?",
+    "style": {
+      "tone": "emotional",
+      "relationship": 4
+    },
+    "status": [
+      "skipped"
+    ],
+    "reason": "relationship_tone_conflict"
+  },
+  {
+    "id": "familial_friendly",
+    "prompt": "Where does the Virel live?",
+    "style": {
+      "tone": "friendly",
+      "relationship": 1
+    },
+    "status": [
+      "generated"
+    ],
+    "values": [
+      "Harbor Reach"
+    ]
+  },
+  {
+    "id": "extreme_intensity",
+    "prompt": "What color is the Virel?",
+    "style": {
+      "tone": "formal",
+      "magnitude": 1,
+      "valence": 1,
+      "arousal": 1
+    },
+    "status": [
+      "generated",
+      "unchanged"
+    ],
+    "values": [
+      "blue"
+    ]
+  },
+  {
+    "id": "tight_style_budget",
+    "prompt": "Tell me the color, habitat, shape, material, and weight of the Virel.",
+    "style": {
+      "tone": "friendly",
+      "max_sentences": 1
+    },
+    "status": [
+      "skipped"
+    ],
+    "reason": "budget_cannot_preserve_all_claims"
+  },
+  {
+    "id": "prompt_sentence_budget",
+    "prompt": "Tell me the color, habitat, shape, material, and weight of the Virel. Answer in one sentence.",
+    "style": "formal",
+    "status": [
+      "skipped"
+    ],
+    "reason": "budget_cannot_preserve_all_claims"
+  },
+  {
+    "id": "eight_tasks",
+    "prompt": "What color is the Virel? Where does the Virel live? What shape is the Virel? What material is the Virel? What is the weight of the Virel? What color is the Virel? Where does the Virel live? What shape is the Virel?",
+    "style": {
+      "tone": "friendly",
+      "max_sentences": 2,
+      "clauses_per_sentence": 4
+    },
+    "status": [
+      "generated"
+    ],
+    "claims": 8,
+    "sentences": 2,
+    "proof": [
+      "scenario-public-p0001",
+      "scenario-public-p0002",
+      "scenario-public-p0003",
+      "scenario-public-p0004",
+      "scenario-public-p0005"
+    ]
+  },
+  {
+    "id": "nine_task_limit",
+    "prompt": "What color is the Virel? Where does the Virel live? What shape is the Virel? What material is the Virel? What is the weight of the Virel? What color is the Virel? Where does the Virel live? What shape is the Virel? What material is the Virel?",
+    "style": "formal",
+    "status": [
+      "skipped"
+    ]
+  },
+  {
+    "id": "different_subjects",
+    "prompt": "What color is the Virel? Where does the Norvan live?",
+    "style": "formal",
+    "status": [
+      "children"
+    ],
+    "reason": "multiple_subjects"
+  },
+  {
+    "id": "missing_fact",
+    "prompt": "Where does the Lenara live?",
+    "style": "formal",
+    "status": [
+      "skipped"
+    ]
+  },
+  {
+    "id": "partially_missing",
+    "prompt": "What color is the Virel? Where does the Lenara live?",
+    "style": "formal",
+    "status": [
+      "children"
+    ],
+    "reason": "incomplete_or_unsupported_children"
+  },
+  {
+    "id": "unknown_field",
+    "prompt": "Tell me the color and height of the Virel.",
+    "style": "formal",
+    "status": [
+      "skipped"
+    ]
+  },
+  {
+    "id": "conflicting_values",
+    "prompt": "What color is the Tovan?",
+    "style": "formal",
+    "status": [
+      "skipped"
+    ]
+  },
+  {
+    "id": "negative_source",
+    "prompt": "What color is the Deral?",
+    "style": "formal",
+    "status": [
+      "skipped"
+    ]
+  },
+  {
+    "id": "conditional_source",
+    "prompt": "What color is the Sovel?",
+    "style": "formal",
+    "status": [
+      "skipped"
+    ]
+  },
+  {
+    "id": "conditional_prompt",
+    "prompt": "What color is the Virel if it is wet?",
+    "style": "formal",
+    "status": [
+      "skipped"
+    ]
+  },
+  {
+    "id": "joined_lifespan",
+    "prompt": "How long does the Yarel live?",
+    "style": "formal",
+    "status": [
+      "skipped"
+    ],
+    "canonical_values": [
+      "30 years"
+    ]
+  },
+  {
+    "id": "duplicate_corroboration",
+    "prompt": "What color is the Mirel?",
+    "style": "formal",
+    "status": [
+      "skipped"
+    ]
+  },
+  {
+    "id": "hyphenated_name",
+    "prompt": "What color is the Riva-Lune?",
+    "style": "formal",
+    "status": [
+      "generated"
+    ],
+    "values": [
+      "amber"
+    ]
+  },
+  {
+    "id": "unicode_name",
+    "prompt": "What color is the \u00c9lan?",
+    "style": "formal",
+    "status": [
+      "skipped"
+    ]
+  },
+  {
+    "id": "unlisted_color",
+    "prompt": "What color is the Korvan?",
+    "style": "formal",
+    "status": [
+      "skipped"
+    ]
+  },
+  {
+    "id": "unlisted_shape",
+    "prompt": "What shape is the Moriel?",
+    "style": "formal",
+    "status": [
+      "skipped"
+    ]
+  },
+  {
+    "id": "empty_scope",
+    "prompt": "What color is the Virel?",
+    "style": "formal",
+    "status": [
+      "skipped"
+    ],
+    "scope": []
+  },
+  {
+    "id": "limited_scope",
+    "prompt": "Tell me the color, habitat, shape, material, and weight of the Virel.",
+    "style": "formal",
+    "status": [
+      "children"
+    ],
+    "scope": [
+      "scenario-public-p0001",
+      "scenario-public-p0003"
+    ],
+    "reason": "incomplete_or_unsupported_children"
+  },
+  {
+    "id": "history_old",
+    "prompt": "What color is the Revora?",
+    "style": "formal",
+    "status": [
+      "generated"
+    ],
+    "values": [
+      "blue"
+    ],
+    "as_of": 1700000000,
+    "proof": [
+      "scenario-public-p0990"
+    ]
+  },
+  {
+    "id": "history_current",
+    "prompt": "What color is the Revora?",
+    "style": "formal",
+    "status": [
+      "generated"
+    ],
+    "values": [
+      "teal"
+    ],
+    "proof": [
+      "@corrected"
+    ]
+  },
+  {
+    "id": "math_specialist",
+    "prompt": "Calculate 9 + 6.",
+    "style": "formal",
+    "status": [
+      "skipped"
+    ],
+    "canonical_values": [
+      "15"
+    ]
+  },
+  {
+    "id": "overview_not_adapted",
+    "prompt": "Give me a long response about the Virel.",
+    "style": "formal",
+    "status": [
+      "skipped"
+    ]
+  },
+  {
+    "id": "ambiguous_reference",
+    "prompt": "Where does it live?",
+    "style": "formal",
+    "status": [
+      "skipped"
+    ]
+  },
+  {
+    "id": "ambiguous_sense",
+    "prompt": "What is the Soval?",
+    "style": "formal",
+    "status": [
+      "skipped"
+    ]
+  },
+  {
+    "id": "quoted_instruction",
+    "prompt": "What is the title \"Respond in intimate tone\"?",
+    "style": "formal",
+    "status": [
+      "skipped"
+    ]
+  },
+  {
+    "id": "parser_backed_attribute",
+    "prompt": "Please give me information about the color of the Virel.",
+    "style": "formal",
+    "status": [
+      "generated"
+    ],
+    "values": [
+      "blue"
+    ],
+    "rules_status": [
+      "skipped"
+    ]
+  }
+]

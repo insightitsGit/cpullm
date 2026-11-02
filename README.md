@@ -266,6 +266,8 @@ The delivery judgment runs after that composition. If the body is not the licens
 
 An opt-in [stylistic companion node](docs/stylistic-generation-design.md) constructs new wording and longer related responses from accepted facts about one subject. It supports color, location, shape, material and explicit weight. Use `style="formal"`, `style="friendly"`, or `StyleOptions` for tone mixtures, relationship constraints and sentence budgets. Read `result["stylistic"]` for generated text, per-claim proof and verification; canonical `reply.text` stays unchanged. Other expressive tones can return a labeled neutral fallback. This is bounded construction-based generation; no training is needed. Missing facts stay missing. See the [spec](docs/stylistic-generation-spec.json) and [composition results](docs/benchmarks/2026-11-01-stylistic-composition/REPORT.md).
 
+The [fresh live scenario audit](docs/benchmarks/2026-11-02-stylistic-scenarios/REPORT.md) passed 49 stylistic contract scenarios per rules/spaCy arm plus 16 layout/session tests. These are compatibility and generation-contract checks, not an overall answer-accuracy score; the audit also records a rules-only conversational interpretation failure.
+
 The retrieval encoder and shipped `vectorprism.pt` projection are distinct from sentence generation. Dense retrieval is trained; the other subspace readings and relation signatures are not a trained fact generator.
 
 There are **three separate wording paths**:
