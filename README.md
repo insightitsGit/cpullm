@@ -16,6 +16,15 @@ For an agent integrating the library, start with [the consumer guide](docs/libra
 
 ## New in this checkout
 
+**Strict evidence flag:** use `ask(..., strict_evidence=True)`, the HTTP header
+`X-CPU-LLM-Evidence-Mode: strict`, or a first-line `[strict-evidence]` prompt
+marker. This separate path disables FLAN-T5 and other learned answer generation,
+returning literal cited source facts or abstaining. Set
+`Appliance(strict_evidence=True)` or serve with `--strict-evidence` to enforce it.
+Version 1 supports explicit single attribute lookups, not clinical advice;
+source truth and 100% accuracy are not guaranteed. See the
+[strict evidence specification](docs/strict-evidence-spec.md).
+
 The [current design](docs/current-design.md) describes the implementation. Prompt interpretation, output layouts, delivery judgment and flag-routing enforcement are committed in this repository; an installed PyPI distribution with the same version number may predate them. The saved Millhaven benchmark is the earlier clean commit `af39da6`.
 
 - **Explicit connections and intent:** ingestion saves source-backed facts and channel memberships in a namespace-local knowledge graph. Recognized prompts prioritize the requested entity, relationship, and direction when selecting evidence. Multiple channels can apply to one connection.

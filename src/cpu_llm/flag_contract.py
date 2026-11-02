@@ -57,6 +57,10 @@ FLAG_BINDINGS = tuple(
                           ('disentangled', 'How do X and Y differ?'), ('hyperbolic', 'What type is X?'),
                           ('identity', 'Who is X?'), ('causal', 'Why did X stop?')]
 )
+FLAG_BINDINGS += (FlagBinding('request.strict_evidence', 'API, header, prompt marker, or operator floor',
+    ('strict_evidence.answer',), 'pre_graph',
+    'Enable wins; bypass normal graph and learned generation; literal quotes or abstention.',
+    '[strict-evidence] followed by a newline'),)
 OPTIONAL_ORDER = ('deep', 'gather', 'compare', 'brief', 'math', 'finance', 'frame')
 _AFTER = {'shine': -1, 'deep': 0, 'imagine': 1, 'compare': 2, 'brief': 3, 'math': 4, 'finance': 5, 'frame': 6}
 _INDEPENDENT = frozenset({'math', 'finance'})
@@ -95,7 +99,8 @@ def enforce_node_request(node, state):
 
 
 def validate_graph_consumers(nodes):
-    external = {'render_response'}
+    # These consumers execute outside the ordinary graph, before/after dispatch.
+    external = {'render_response', 'strict_evidence.answer'}
     expected = {node for binding in FLAG_BINDINGS for node in binding.consumers} - external
     if missing := expected - set(nodes):
         raise ValueError('Flag consumers missing from graph: ' + ', '.join(sorted(missing)))

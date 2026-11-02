@@ -170,8 +170,13 @@ class Appliance:
         reference_backend: Any = None,
         prompt_backend: Any = None,
         resonance_tags: bool = False,
+        strict_evidence: bool = False,
     ) -> None:
         from cpu_llm.child_safety import ChildSafetyGate, enabled_by_default
+
+        if type(strict_evidence) is not bool:
+            raise ValueError('strict_evidence must be a boolean')
+        self.strict_evidence = strict_evidence
 
         # A namespace gets its own Postgres schema and its own local memory folder.
         self.namespace = _namespace_slug(namespace) if namespace else None
@@ -571,9 +576,14 @@ class Appliance:
         caller: Any | None = None,
         as_of: int | None = None,
         style: Any | None = None,
+        strict_evidence: bool = False,
     ) -> dict[str, Any]:
         """Separate explicit compound requests; each task uses the full pipeline."""
         from cpu_llm.request_planner import dispatch_request
+        from cpu_llm.strict_evidence import requested, answer
+        enabled, _ = requested(message, strict_evidence)
+        if enabled or getattr(self, 'strict_evidence', False):
+            return answer(self, message, caller=caller, as_of=as_of)
         if style is not None:
             from cpu_llm.stylistic.contracts import validate_profile
             validate_profile(style)

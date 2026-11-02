@@ -1,5 +1,11 @@
 # Current cpu-llm design
 
+The optional [strict evidence policy](strict-evidence-spec.md) intercepts `ask`
+before the ordinary graph. Prompt/API/header activation and operator floors
+select literal, scoped SQL evidence lookup with no learned answer generation.
+Unsupported queries and missing/conflicting evidence abstain. It does not
+validate source truth or clinical suitability.
+
 Working-tree design snapshot, 2026-10-27. This describes the implementation in
 this checkout. A published package may be older. Earlier versioned
 specifications and the white paper describe historical stages.

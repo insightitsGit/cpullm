@@ -2,6 +2,11 @@
 
 Generated from `cpu_llm.flag_contract.FLAG_BINDINGS`. The JSON companion is tested for exact registry agreement.
 
+`request.strict_evidence` is a pre-graph policy consumed by
+`strict_evidence.answer`: API/header/prompt activation or an operator floor
+bypasses ordinary agent nodes and learned generation. Enable wins; see the
+[strict policy specification](strict-evidence-spec.md) for limits and refusals.
+
 | Flag | Origin / example | Consumer | Stage | Enforcement / behavior |
 |---|---|---|---|---|
 | `state.deep` | prompt or explicit API override; Deep search | `deep` | graph | Wider authorized search; not enabled by response length. |

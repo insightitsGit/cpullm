@@ -289,5 +289,15 @@
     "stage": "channel",
     "behavior": "All six channel nodes evaluate; active is a signal, not a graph skip or proof.",
     "example": "Why did X stop?"
+  },
+  {
+    "path": "request.strict_evidence",
+    "origin": "API, header, prompt marker, or operator floor",
+    "consumers": [
+      "strict_evidence.answer"
+    ],
+    "stage": "pre_graph",
+    "behavior": "Enable wins; bypass normal graph and learned generation; literal quotes or abstention.",
+    "example": "[strict-evidence] followed by a newline"
   }
 ]

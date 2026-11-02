@@ -43,6 +43,23 @@ def default_checkpoint() -> Path:
 
 
 class VectorPrismIndex:
+    def strict_source_rows(self, allowed=None, *, as_of=None, max_rows=10000):
+        """One scoped, time-valid snapshot; overflow must never yield an answer."""
+        when = _as_of(self, as_of)
+        if allowed is not None and not allowed:
+            return [], when
+        clause, params = ('TRUE', []) if allowed is None else _allowed_clause(frozenset(allowed))
+        with self.db.conn.cursor() as cursor:
+            cursor.execute(
+                'SELECT document_id, chunk_text FROM psm_document_embeddings '
+                f'WHERE ({clause}) AND valid_timestamp <= %s '
+                'AND (valid_to_timestamp IS NULL OR valid_to_timestamp > %s) LIMIT %s',
+                (*params, when, when, max_rows + 1))
+            rows = cursor.fetchall()
+        if len(rows) > max_rows:
+            raise ValueError('strict evidence scan limit exceeded')
+        return [dict(document_id=row[0], chunk_text=row[1]) for row in rows], when
+
     def __init__(
         self,
         checkpoint: Path,

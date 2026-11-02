@@ -352,3 +352,12 @@ Common distinctions:
 - Rejected output: retain the returned non-answer/hold. Do not retry by stripping safety fields or changing a failed verification flag.
 
 See [the review handoff](handoff-claim-verification-review.md) for specific unresolved correctness defects. Documentation should identify them rather than imply they were repaired by changing the README.
+
+## Strict evidence option
+
+For source-quotation-only responses, pass `strict_evidence=True` to `ask`, send
+`X-CPU-LLM-Evidence-Mode: strict`, or put `[strict-evidence]` on the first prompt
+line. An appliance constructor flag or `cpu-llm-serve --strict-evidence` enforces
+the policy for all requests. See [the versioned contract](strict-evidence-spec.md)
+for supported source/question templates, result statuses and limitations.
+This disables learned answer generation; it does not establish medical truth.
