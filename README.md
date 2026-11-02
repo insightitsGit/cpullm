@@ -268,6 +268,25 @@ An opt-in [stylistic companion node](docs/stylistic-generation-design.md) constr
 
 The [fresh live scenario audit](docs/benchmarks/2026-11-02-stylistic-scenarios/REPORT.md) passed 49 stylistic contract scenarios per rules/spaCy arm plus 16 layout/session tests. These are compatibility and generation-contract checks, not an overall answer-accuracy score; the audit also records a rules-only conversational interpretation failure.
 
+After ingesting the relevant facts, use this inside your existing appliance context:
+
+```python
+from cpu_llm.stylistic import StyleOptions
+
+result = app.ask(
+    "Tell me the color, habitat, shape, material, and weight of the Aster.",
+    style=StyleOptions(tone="friendly", max_sentences=3, clauses_per_sentence=2),
+)
+styled = result.get("stylistic", {})
+if styled.get("status") in {"generated", "unchanged"}:
+    print(styled["text"])  # A derived paraphrase, not a verbatim source quote.
+    print(styled["proof"])
+else:
+    print(result.get("reply", {}).get("text", ""))
+```
+
+The node declines aggregation when facts are missing, conflicting, about different subjects, or cannot fit the budget without dropping claims. Duplicate corroborating sources and some vocabulary/language forms also remain unsupported. Ten tone controls do not mean ten kinds of expressive prose: unsupported expressive styles report `neutral_fallback`. No style setting is inferred or remembered automatically. For the audited conversational color question, use the installed spaCy backend or ask directly, “What color is the Aster?”; the rules backend can otherwise return an unrelated attribute. See the [implemented feature specification](docs/stylistic-generation-spec.md) for the API contract, output fields and tested limits.
+
 The retrieval encoder and shipped `vectorprism.pt` projection are distinct from sentence generation. Dense retrieval is trained; the other subspace readings and relation signatures are not a trained fact generator.
 
 There are **three separate wording paths**:
