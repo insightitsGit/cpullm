@@ -347,6 +347,8 @@ The built-in HTTP entry currently forwards to `ask`, not `ask_concurrent`. Its t
 
 ## Finance checks without PostgreSQL
 
+The [domain pilot](docs/benchmarks/2026-11-02-domain-pilot/REPORT.md) found that self-contained finance prompts containing “this finding/test” can be intercepted by generic entity clarification through `Appliance.ask`, before the specialist runs. The direct validator below is a separate API and reached the calculations on the same fields. Covenant display also currently rounds to two decimals even when more precision is requested; this can obscure threshold-boundary decisions. These findings are not resolved by the stylistic node. No hosted-model or clinical-superiority result has been established.
+
 For a supplied-field check alone, the pure local dispatcher can be used without constructing `Appliance`:
 
 ```python

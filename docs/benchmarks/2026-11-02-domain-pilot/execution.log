@@ -1,0 +1,175 @@
+Could not reach the Hub (Cannot reach https://huggingface.co/api/models/sentence-transformers/all-mpnet-base-v2: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'sentence-transformers/all-mpnet-base-v2'.
+
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]
+Loading weights:  15%|#4        | 29/199 [00:00<00:00, 255.54it/s]
+Loading weights: 100%|##########| 199/199 [00:00<00:00, 1014.61it/s]
+finance-refund-0 False
+finance-refund-1 False
+finance-refund-2 False
+finance-refund-3 False
+finance-refund-4 False
+finance-refund-5 False
+finance-currencies False
+finance-ratio-compliant False
+finance-ratio-breach False
+finance-ratio-precision False
+finance-conflict False
+finance-zero False
+medication-fact-0 True
+medication-fact-1 True
+medication-fact-2 True
+medication-fact-3 True
+medication-fact-4 True
+medication-arithmetic-8 True
+medication-arithmetic-9 True
+medication-limit False
+clinical-record-willow True
+clinical-record-elm True
+clinical-missing-diagnosis True
+clinical-missing-treatment True
+{
+  "schema": "domain-pilot-v1",
+  "revision": "273ab480b8aa1d019f238b346081dfcb2a9ea844",
+  "groups": [
+    {
+      "domain": "finance",
+      "total": 12,
+      "passed": 0,
+      "answerable_total": 10,
+      "answerable_passed": 0,
+      "unanswerable_total": 2,
+      "unanswerable_passed": 0,
+      "failures": [
+        {
+          "id": "finance-refund-0",
+          "checks": {
+            "executed": true,
+            "visible_amount": false,
+            "not_recovered_or_approved": false
+          }
+        },
+        {
+          "id": "finance-refund-1",
+          "checks": {
+            "executed": true,
+            "visible_amount": false,
+            "not_recovered_or_approved": false
+          }
+        },
+        {
+          "id": "finance-refund-2",
+          "checks": {
+            "executed": true,
+            "visible_amount": false,
+            "not_recovered_or_approved": false
+          }
+        },
+        {
+          "id": "finance-refund-3",
+          "checks": {
+            "executed": true,
+            "visible_amount": false,
+            "not_recovered_or_approved": false
+          }
+        },
+        {
+          "id": "finance-refund-4",
+          "checks": {
+            "executed": true,
+            "visible_amount": false,
+            "not_recovered_or_approved": false
+          }
+        },
+        {
+          "id": "finance-refund-5",
+          "checks": {
+            "executed": true,
+            "visible_amount": false,
+            "not_recovered_or_approved": false
+          }
+        },
+        {
+          "id": "finance-currencies",
+          "checks": {
+            "executed": true,
+            "currency_isolation": false
+          }
+        },
+        {
+          "id": "finance-ratio-compliant",
+          "checks": {
+            "executed": true,
+            "verdict": false,
+            "numeric_value": false,
+            "requested_precision": false
+          }
+        },
+        {
+          "id": "finance-ratio-breach",
+          "checks": {
+            "executed": true,
+            "verdict": false,
+            "numeric_value": false,
+            "requested_precision": false
+          }
+        },
+        {
+          "id": "finance-ratio-precision",
+          "checks": {
+            "executed": true,
+            "verdict": false,
+            "numeric_value": false,
+            "requested_precision": false
+          }
+        },
+        {
+          "id": "finance-conflict",
+          "checks": {
+            "executed": true,
+            "safe_refusal": false
+          }
+        },
+        {
+          "id": "finance-zero",
+          "checks": {
+            "executed": true,
+            "safe_refusal": false
+          }
+        }
+      ]
+    },
+    {
+      "domain": "medication",
+      "total": 8,
+      "passed": 7,
+      "answerable_total": 8,
+      "answerable_passed": 7,
+      "unanswerable_total": 0,
+      "unanswerable_passed": 0,
+      "failures": [
+        {
+          "id": "medication-limit",
+          "checks": {
+            "executed": true,
+            "explicit_comparison": false
+          }
+        }
+      ]
+    },
+    {
+      "domain": "clinical_record",
+      "total": 4,
+      "passed": 4,
+      "answerable_total": 2,
+      "answerable_passed": 2,
+      "unanswerable_total": 2,
+      "unanswerable_passed": 2,
+      "failures": []
+    }
+  ],
+  "style_statuses": {
+    "skipped": 24
+  },
+  "hosted_status": "NOT RUN: deferred by user; no key available; no hosted-model superiority claim",
+  "medical_scope": "Synthetic label/record/arithmetic fixtures; not clinical diagnosis or treatment validation"
+}

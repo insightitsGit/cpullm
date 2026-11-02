@@ -1,0 +1,842 @@
+[
+  {
+    "case": {
+      "id": "finance-refund-0",
+      "domain": "finance",
+      "kind": "refund",
+      "prompt": "Review this RefundProof finding.\nvendor: Fictional Vendor 0\ninvoice: PILOT-0\ntax charged: 120.0000\ncorrect tax: 40.0000\ndeadline: ACTIONABLE\ncurrency: USD\n",
+      "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+      "answerable": true,
+      "amount": "80.0000",
+      "currency": "USD"
+    },
+    "component": {
+      "triggered": true,
+      "reasons": [
+        "the prompt asks for a RefundProof tax review"
+      ],
+      "products": [
+        "refundproof"
+      ],
+      "text": "RefundProof: Fictional Vendor 0 PILOT-0: recoverable 80.0000 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 80.0000. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery.",
+      "checks": [
+        {
+          "product": "refundproof",
+          "completed": true,
+          "verdict": "BLOCKED",
+          "text": "RefundProof: Fictional Vendor 0 PILOT-0: recoverable 80.0000 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 80.0000. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery.",
+          "findings": [
+            {
+              "index": 1,
+              "vendor": "Fictional Vendor 0",
+              "invoice_number": "PILOT-0",
+              "invoice_line": null,
+              "identity_key": "fictional vendor 0|PILOT-0|",
+              "document_type": "invoice",
+              "currency": "USD",
+              "tax_charged": "120.0000",
+              "correct_tax": "40.0000",
+              "recoverable_amount": "80.0000",
+              "credit_amount": null,
+              "deadline_status": "ACTIONABLE",
+              "state": "POTENTIAL_OVERPAYMENT",
+              "duplicate_status": "unique",
+              "evidence_status": "unverified",
+              "approval_blocked": "Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence.",
+              "recovery_blocked": "Recovery requires a persisted human approval. A state name is not approval.",
+              "eligible_actionable": false,
+              "eligible_potential": true
+            }
+          ],
+          "totals": {
+            "actionable_by_currency": {},
+            "potential_by_currency": {
+              "USD": "80.0000"
+            },
+            "actionable_total": "0.0000",
+            "actionable_total_scope": "USD"
+          },
+          "limitation": "Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery."
+        }
+      ]
+    },
+    "score": {
+      "ok": true,
+      "checks": {
+        "executed": true,
+        "visible_amount": true,
+        "not_recovered_or_approved": true
+      },
+      "status": "",
+      "visible_text": "RefundProof: Fictional Vendor 0 PILOT-0: recoverable 80.0000 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 80.0000. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery."
+    }
+  },
+  {
+    "case": {
+      "id": "finance-refund-1",
+      "domain": "finance",
+      "kind": "refund",
+      "prompt": "Review this RefundProof finding.\nvendor: Fictional Vendor 1\ninvoice: PILOT-1\ntax charged: 1234.5678\ncorrect tax: 987.6543\ndeadline: ACTIONABLE\ncurrency: USD\n",
+      "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+      "answerable": true,
+      "amount": "246.9135",
+      "currency": "USD"
+    },
+    "component": {
+      "triggered": true,
+      "reasons": [
+        "the prompt asks for a RefundProof tax review"
+      ],
+      "products": [
+        "refundproof"
+      ],
+      "text": "RefundProof: Fictional Vendor 1 PILOT-1: recoverable 246.9135 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 246.9135. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery.",
+      "checks": [
+        {
+          "product": "refundproof",
+          "completed": true,
+          "verdict": "BLOCKED",
+          "text": "RefundProof: Fictional Vendor 1 PILOT-1: recoverable 246.9135 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 246.9135. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery.",
+          "findings": [
+            {
+              "index": 1,
+              "vendor": "Fictional Vendor 1",
+              "invoice_number": "PILOT-1",
+              "invoice_line": null,
+              "identity_key": "fictional vendor 1|PILOT-1|",
+              "document_type": "invoice",
+              "currency": "USD",
+              "tax_charged": "1234.5678",
+              "correct_tax": "987.6543",
+              "recoverable_amount": "246.9135",
+              "credit_amount": null,
+              "deadline_status": "ACTIONABLE",
+              "state": "POTENTIAL_OVERPAYMENT",
+              "duplicate_status": "unique",
+              "evidence_status": "unverified",
+              "approval_blocked": "Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence.",
+              "recovery_blocked": "Recovery requires a persisted human approval. A state name is not approval.",
+              "eligible_actionable": false,
+              "eligible_potential": true
+            }
+          ],
+          "totals": {
+            "actionable_by_currency": {},
+            "potential_by_currency": {
+              "USD": "246.9135"
+            },
+            "actionable_total": "0.0000",
+            "actionable_total_scope": "USD"
+          },
+          "limitation": "Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery."
+        }
+      ]
+    },
+    "score": {
+      "ok": true,
+      "checks": {
+        "executed": true,
+        "visible_amount": true,
+        "not_recovered_or_approved": true
+      },
+      "status": "",
+      "visible_text": "RefundProof: Fictional Vendor 1 PILOT-1: recoverable 246.9135 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 246.9135. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery."
+    }
+  },
+  {
+    "case": {
+      "id": "finance-refund-2",
+      "domain": "finance",
+      "kind": "refund",
+      "prompt": "Review this RefundProof finding.\nvendor: Fictional Vendor 2\ninvoice: PILOT-2\ntax charged: 675.4321\ncorrect tax: 123.9876\ndeadline: ACTIONABLE\ncurrency: USD\n",
+      "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+      "answerable": true,
+      "amount": "551.4445",
+      "currency": "USD"
+    },
+    "component": {
+      "triggered": true,
+      "reasons": [
+        "the prompt asks for a RefundProof tax review"
+      ],
+      "products": [
+        "refundproof"
+      ],
+      "text": "RefundProof: Fictional Vendor 2 PILOT-2: recoverable 551.4445 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 551.4445. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery.",
+      "checks": [
+        {
+          "product": "refundproof",
+          "completed": true,
+          "verdict": "BLOCKED",
+          "text": "RefundProof: Fictional Vendor 2 PILOT-2: recoverable 551.4445 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 551.4445. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery.",
+          "findings": [
+            {
+              "index": 1,
+              "vendor": "Fictional Vendor 2",
+              "invoice_number": "PILOT-2",
+              "invoice_line": null,
+              "identity_key": "fictional vendor 2|PILOT-2|",
+              "document_type": "invoice",
+              "currency": "USD",
+              "tax_charged": "675.4321",
+              "correct_tax": "123.9876",
+              "recoverable_amount": "551.4445",
+              "credit_amount": null,
+              "deadline_status": "ACTIONABLE",
+              "state": "POTENTIAL_OVERPAYMENT",
+              "duplicate_status": "unique",
+              "evidence_status": "unverified",
+              "approval_blocked": "Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence.",
+              "recovery_blocked": "Recovery requires a persisted human approval. A state name is not approval.",
+              "eligible_actionable": false,
+              "eligible_potential": true
+            }
+          ],
+          "totals": {
+            "actionable_by_currency": {},
+            "potential_by_currency": {
+              "USD": "551.4445"
+            },
+            "actionable_total": "0.0000",
+            "actionable_total_scope": "USD"
+          },
+          "limitation": "Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery."
+        }
+      ]
+    },
+    "score": {
+      "ok": true,
+      "checks": {
+        "executed": true,
+        "visible_amount": true,
+        "not_recovered_or_approved": true
+      },
+      "status": "",
+      "visible_text": "RefundProof: Fictional Vendor 2 PILOT-2: recoverable 551.4445 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 551.4445. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery."
+    }
+  },
+  {
+    "case": {
+      "id": "finance-refund-3",
+      "domain": "finance",
+      "kind": "refund",
+      "prompt": "Review this RefundProof finding.\nvendor: Fictional Vendor 3\ninvoice: PILOT-3\ntax charged: 0.0300\ncorrect tax: 0.0100\ndeadline: ACTIONABLE\ncurrency: USD\n",
+      "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+      "answerable": true,
+      "amount": "0.0200",
+      "currency": "USD"
+    },
+    "component": {
+      "triggered": true,
+      "reasons": [
+        "the prompt asks for a RefundProof tax review"
+      ],
+      "products": [
+        "refundproof"
+      ],
+      "text": "RefundProof: Fictional Vendor 3 PILOT-3: recoverable 0.0200 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 0.0200. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery.",
+      "checks": [
+        {
+          "product": "refundproof",
+          "completed": true,
+          "verdict": "BLOCKED",
+          "text": "RefundProof: Fictional Vendor 3 PILOT-3: recoverable 0.0200 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 0.0200. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery.",
+          "findings": [
+            {
+              "index": 1,
+              "vendor": "Fictional Vendor 3",
+              "invoice_number": "PILOT-3",
+              "invoice_line": null,
+              "identity_key": "fictional vendor 3|PILOT-3|",
+              "document_type": "invoice",
+              "currency": "USD",
+              "tax_charged": "0.0300",
+              "correct_tax": "0.0100",
+              "recoverable_amount": "0.0200",
+              "credit_amount": null,
+              "deadline_status": "ACTIONABLE",
+              "state": "POTENTIAL_OVERPAYMENT",
+              "duplicate_status": "unique",
+              "evidence_status": "unverified",
+              "approval_blocked": "Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence.",
+              "recovery_blocked": "Recovery requires a persisted human approval. A state name is not approval.",
+              "eligible_actionable": false,
+              "eligible_potential": true
+            }
+          ],
+          "totals": {
+            "actionable_by_currency": {},
+            "potential_by_currency": {
+              "USD": "0.0200"
+            },
+            "actionable_total": "0.0000",
+            "actionable_total_scope": "USD"
+          },
+          "limitation": "Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery."
+        }
+      ]
+    },
+    "score": {
+      "ok": true,
+      "checks": {
+        "executed": true,
+        "visible_amount": true,
+        "not_recovered_or_approved": true
+      },
+      "status": "",
+      "visible_text": "RefundProof: Fictional Vendor 3 PILOT-3: recoverable 0.0200 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 0.0200. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery."
+    }
+  },
+  {
+    "case": {
+      "id": "finance-refund-4",
+      "domain": "finance",
+      "kind": "refund",
+      "prompt": "Review this RefundProof finding.\nvendor: Fictional Vendor 4\ninvoice: PILOT-4\ntax charged: 99999.9999\ncorrect tax: 88888.8888\ndeadline: ACTIONABLE\ncurrency: USD\n",
+      "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+      "answerable": true,
+      "amount": "11111.1111",
+      "currency": "USD"
+    },
+    "component": {
+      "triggered": true,
+      "reasons": [
+        "the prompt asks for a RefundProof tax review"
+      ],
+      "products": [
+        "refundproof"
+      ],
+      "text": "RefundProof: Fictional Vendor 4 PILOT-4: recoverable 11111.1111 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 11111.1111. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery.",
+      "checks": [
+        {
+          "product": "refundproof",
+          "completed": true,
+          "verdict": "BLOCKED",
+          "text": "RefundProof: Fictional Vendor 4 PILOT-4: recoverable 11111.1111 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 11111.1111. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery.",
+          "findings": [
+            {
+              "index": 1,
+              "vendor": "Fictional Vendor 4",
+              "invoice_number": "PILOT-4",
+              "invoice_line": null,
+              "identity_key": "fictional vendor 4|PILOT-4|",
+              "document_type": "invoice",
+              "currency": "USD",
+              "tax_charged": "99999.9999",
+              "correct_tax": "88888.8888",
+              "recoverable_amount": "11111.1111",
+              "credit_amount": null,
+              "deadline_status": "ACTIONABLE",
+              "state": "POTENTIAL_OVERPAYMENT",
+              "duplicate_status": "unique",
+              "evidence_status": "unverified",
+              "approval_blocked": "Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence.",
+              "recovery_blocked": "Recovery requires a persisted human approval. A state name is not approval.",
+              "eligible_actionable": false,
+              "eligible_potential": true
+            }
+          ],
+          "totals": {
+            "actionable_by_currency": {},
+            "potential_by_currency": {
+              "USD": "11111.1111"
+            },
+            "actionable_total": "0.0000",
+            "actionable_total_scope": "USD"
+          },
+          "limitation": "Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery."
+        }
+      ]
+    },
+    "score": {
+      "ok": true,
+      "checks": {
+        "executed": true,
+        "visible_amount": true,
+        "not_recovered_or_approved": true
+      },
+      "status": "",
+      "visible_text": "RefundProof: Fictional Vendor 4 PILOT-4: recoverable 11111.1111 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 11111.1111. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery."
+    }
+  },
+  {
+    "case": {
+      "id": "finance-refund-5",
+      "domain": "finance",
+      "kind": "refund",
+      "prompt": "Review this RefundProof finding.\nvendor: Fictional Vendor 5\ninvoice: PILOT-5\ntax charged: 10.0000\ncorrect tax: 12.0000\ndeadline: ACTIONABLE\ncurrency: USD\n",
+      "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+      "answerable": true,
+      "amount": "0.0000",
+      "currency": "USD"
+    },
+    "component": {
+      "triggered": true,
+      "reasons": [
+        "the prompt asks for a RefundProof tax review"
+      ],
+      "products": [
+        "refundproof"
+      ],
+      "text": "RefundProof: Fictional Vendor 5 PILOT-5: recoverable 0.0000 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 0.0000. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery.",
+      "checks": [
+        {
+          "product": "refundproof",
+          "completed": true,
+          "verdict": "BLOCKED",
+          "text": "RefundProof: Fictional Vendor 5 PILOT-5: recoverable 0.0000 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 0.0000. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery.",
+          "findings": [
+            {
+              "index": 1,
+              "vendor": "Fictional Vendor 5",
+              "invoice_number": "PILOT-5",
+              "invoice_line": null,
+              "identity_key": "fictional vendor 5|PILOT-5|",
+              "document_type": "invoice",
+              "currency": "USD",
+              "tax_charged": "10.0000",
+              "correct_tax": "12.0000",
+              "recoverable_amount": "0.0000",
+              "credit_amount": null,
+              "deadline_status": "ACTIONABLE",
+              "state": "POTENTIAL_OVERPAYMENT",
+              "duplicate_status": "unique",
+              "evidence_status": "unverified",
+              "approval_blocked": "Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence.",
+              "recovery_blocked": "Recovery requires a persisted human approval. A state name is not approval.",
+              "eligible_actionable": false,
+              "eligible_potential": true
+            }
+          ],
+          "totals": {
+            "actionable_by_currency": {},
+            "potential_by_currency": {
+              "USD": "0.0000"
+            },
+            "actionable_total": "0.0000",
+            "actionable_total_scope": "USD"
+          },
+          "limitation": "Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery."
+        }
+      ]
+    },
+    "score": {
+      "ok": true,
+      "checks": {
+        "executed": true,
+        "visible_amount": true,
+        "not_recovered_or_approved": true
+      },
+      "status": "",
+      "visible_text": "RefundProof: Fictional Vendor 5 PILOT-5: recoverable 0.0000 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total USD 0.0000. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery."
+    }
+  },
+  {
+    "case": {
+      "id": "finance-currencies",
+      "domain": "finance",
+      "kind": "currencies",
+      "prompt": "Review these RefundProof findings.\nvendor: Fictional East\ninvoice: PILOT-E\ntax charged: 100.1234\ncorrect tax: 60.0000\ncurrency: USD\ndeadline: ACTIONABLE\n---\nvendor: Fictional West\ninvoice: PILOT-W\ntax charged: 88.7654\ncorrect tax: 11.1111\ncurrency: EUR\ndeadline: ACTIONABLE\n",
+      "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+      "answerable": true,
+      "amounts": {
+        "USD": "40.1234",
+        "EUR": "77.6543"
+      }
+    },
+    "component": {
+      "triggered": true,
+      "reasons": [
+        "the prompt asks for a RefundProof tax review"
+      ],
+      "products": [
+        "refundproof"
+      ],
+      "text": "RefundProof: Fictional East PILOT-E: recoverable 40.1234 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Fictional West PILOT-W: recoverable 77.6543 EUR. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total EUR 77.6543, USD 40.1234. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery.",
+      "checks": [
+        {
+          "product": "refundproof",
+          "completed": true,
+          "verdict": "BLOCKED",
+          "text": "RefundProof: Fictional East PILOT-E: recoverable 40.1234 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Fictional West PILOT-W: recoverable 77.6543 EUR. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total EUR 77.6543, USD 40.1234. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery.",
+          "findings": [
+            {
+              "index": 1,
+              "vendor": "Fictional East",
+              "invoice_number": "PILOT-E",
+              "invoice_line": null,
+              "identity_key": "fictional east|PILOT-E|",
+              "document_type": "invoice",
+              "currency": "USD",
+              "tax_charged": "100.1234",
+              "correct_tax": "60.0000",
+              "recoverable_amount": "40.1234",
+              "credit_amount": null,
+              "deadline_status": "ACTIONABLE",
+              "state": "POTENTIAL_OVERPAYMENT",
+              "duplicate_status": "unique",
+              "evidence_status": "unverified",
+              "approval_blocked": "Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence.",
+              "recovery_blocked": "Recovery requires a persisted human approval. A state name is not approval.",
+              "eligible_actionable": false,
+              "eligible_potential": true
+            },
+            {
+              "index": 2,
+              "vendor": "Fictional West",
+              "invoice_number": "PILOT-W",
+              "invoice_line": null,
+              "identity_key": "fictional west|PILOT-W|",
+              "document_type": "invoice",
+              "currency": "EUR",
+              "tax_charged": "88.7654",
+              "correct_tax": "11.1111",
+              "recoverable_amount": "77.6543",
+              "credit_amount": null,
+              "deadline_status": "ACTIONABLE",
+              "state": "POTENTIAL_OVERPAYMENT",
+              "duplicate_status": "unique",
+              "evidence_status": "unverified",
+              "approval_blocked": "Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence.",
+              "recovery_blocked": "Recovery requires a persisted human approval. A state name is not approval.",
+              "eligible_actionable": false,
+              "eligible_potential": true
+            }
+          ],
+          "totals": {
+            "actionable_by_currency": {},
+            "potential_by_currency": {
+              "EUR": "77.6543",
+              "USD": "40.1234"
+            },
+            "actionable_total": "0.0000",
+            "actionable_total_scope": "USD"
+          },
+          "limitation": "Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery."
+        }
+      ]
+    },
+    "score": {
+      "ok": true,
+      "checks": {
+        "executed": true,
+        "currency_isolation": true
+      },
+      "status": "",
+      "visible_text": "RefundProof: Fictional East PILOT-E: recoverable 40.1234 USD. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Fictional West PILOT-W: recoverable 77.6543 EUR. Evidence is unverified. Approval is blocked until a source digest, a rule digest, and a rule version are present. A blank binding is not evidence. Actionable total none. Potential total EUR 77.6543, USD 40.1234. Digest verification means the registered bytes hash to the stated SHA-256 and the rule version matches. It is not tax advice, proof the document is authentic, or a guarantee of recovery."
+    }
+  },
+  {
+    "case": {
+      "id": "finance-ratio-compliant",
+      "domain": "finance",
+      "kind": "ratio",
+      "prompt": "Decide this LedgerCovenant test.\ncomparator: lte\nthreshold: 4.50\nnumerator: compliance_certificate 9000000\ndenominator: compliance_certificate 2000000\nnumerator: audited_financials 12000000\nShow the computed ratio to six decimal places.\n",
+      "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+      "answerable": true,
+      "ratio": "4.500000",
+      "verdict": "COMPLIANT",
+      "precision_places": 6
+    },
+    "component": {
+      "triggered": true,
+      "reasons": [
+        "the prompt asks for a LedgerCovenant decision"
+      ],
+      "products": [
+        "ledgercovenant"
+      ],
+      "text": "LedgerCovenant: COMPLIANT. The computed value is 4.50x and the test is lte 4.50x. compliance_certificate outranks audited_financials Denominator: compliance_certificate is the only figure. This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default.",
+      "checks": [
+        {
+          "product": "ledgercovenant",
+          "completed": true,
+          "verdict": "COMPLIANT",
+          "text": "LedgerCovenant: COMPLIANT. The computed value is 4.50x and the test is lte 4.50x. compliance_certificate outranks audited_financials Denominator: compliance_certificate is the only figure. This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default.",
+          "computed_scaled": 4500000,
+          "threshold_scaled": 4500000,
+          "headroom_scaled": 0,
+          "numerator": {
+            "status": "RESOLVED",
+            "value_scaled": 9000000000000,
+            "source": "compliance_certificate",
+            "currency": "USD",
+            "id": "numerator-1",
+            "rank": 100,
+            "lattice_version": "lattice_v1",
+            "note": "compliance_certificate outranks audited_financials",
+            "outranked": [
+              "audited_financials"
+            ],
+            "corroboration_count": 0
+          },
+          "denominator": {
+            "status": "RESOLVED",
+            "value_scaled": 2000000000000,
+            "source": "compliance_certificate",
+            "currency": "USD",
+            "id": "denominator-1",
+            "rank": 100,
+            "lattice_version": "lattice_v1",
+            "note": "compliance_certificate is the only figure.",
+            "outranked": [],
+            "corroboration_count": 0
+          },
+          "derivation": null,
+          "provisions": null,
+          "obligation": "RATIO",
+          "limitation": "This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default."
+        }
+      ]
+    },
+    "score": {
+      "ok": false,
+      "checks": {
+        "executed": true,
+        "verdict": true,
+        "numeric_value": true,
+        "requested_precision": false
+      },
+      "status": "",
+      "visible_text": "LedgerCovenant: COMPLIANT. The computed value is 4.50x and the test is lte 4.50x. compliance_certificate outranks audited_financials Denominator: compliance_certificate is the only figure. This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default."
+    }
+  },
+  {
+    "case": {
+      "id": "finance-ratio-breach",
+      "domain": "finance",
+      "kind": "ratio",
+      "prompt": "Decide this LedgerCovenant test.\ncomparator: lte\nthreshold: 4.50\nnumerator: compliance_certificate 9100000\ndenominator: compliance_certificate 2000000\nShow the computed ratio to six decimal places.\n",
+      "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+      "answerable": true,
+      "ratio": "4.550000",
+      "verdict": "BREACH",
+      "precision_places": 6
+    },
+    "component": {
+      "triggered": true,
+      "reasons": [
+        "the prompt asks for a LedgerCovenant decision"
+      ],
+      "products": [
+        "ledgercovenant"
+      ],
+      "text": "LedgerCovenant: BREACH. The computed value is 4.55x and the test is lte 4.50x. compliance_certificate is the only figure. Denominator: compliance_certificate is the only figure. This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default.",
+      "checks": [
+        {
+          "product": "ledgercovenant",
+          "completed": true,
+          "verdict": "BREACH",
+          "text": "LedgerCovenant: BREACH. The computed value is 4.55x and the test is lte 4.50x. compliance_certificate is the only figure. Denominator: compliance_certificate is the only figure. This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default.",
+          "computed_scaled": 4550000,
+          "threshold_scaled": 4500000,
+          "headroom_scaled": -50000,
+          "numerator": {
+            "status": "RESOLVED",
+            "value_scaled": 9100000000000,
+            "source": "compliance_certificate",
+            "currency": "USD",
+            "id": "numerator-1",
+            "rank": 100,
+            "lattice_version": "lattice_v1",
+            "note": "compliance_certificate is the only figure.",
+            "outranked": [],
+            "corroboration_count": 0
+          },
+          "denominator": {
+            "status": "RESOLVED",
+            "value_scaled": 2000000000000,
+            "source": "compliance_certificate",
+            "currency": "USD",
+            "id": "denominator-1",
+            "rank": 100,
+            "lattice_version": "lattice_v1",
+            "note": "compliance_certificate is the only figure.",
+            "outranked": [],
+            "corroboration_count": 0
+          },
+          "derivation": null,
+          "provisions": null,
+          "obligation": "RATIO",
+          "limitation": "This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default."
+        }
+      ]
+    },
+    "score": {
+      "ok": false,
+      "checks": {
+        "executed": true,
+        "verdict": true,
+        "numeric_value": true,
+        "requested_precision": false
+      },
+      "status": "",
+      "visible_text": "LedgerCovenant: BREACH. The computed value is 4.55x and the test is lte 4.50x. compliance_certificate is the only figure. Denominator: compliance_certificate is the only figure. This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default."
+    }
+  },
+  {
+    "case": {
+      "id": "finance-ratio-precision",
+      "domain": "finance",
+      "kind": "ratio",
+      "prompt": "Decide this LedgerCovenant test.\ncomparator: lte\nthreshold: 4.50\nnumerator: compliance_certificate 9000001\ndenominator: compliance_certificate 2000000\nShow the computed ratio to six decimal places.\n",
+      "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+      "answerable": true,
+      "ratio": "4.500001",
+      "verdict": "BREACH",
+      "precision_places": 6
+    },
+    "component": {
+      "triggered": true,
+      "reasons": [
+        "the prompt asks for a LedgerCovenant decision"
+      ],
+      "products": [
+        "ledgercovenant"
+      ],
+      "text": "LedgerCovenant: BREACH. The computed value is 4.50x and the test is lte 4.50x. compliance_certificate is the only figure. Denominator: compliance_certificate is the only figure. This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default.",
+      "checks": [
+        {
+          "product": "ledgercovenant",
+          "completed": true,
+          "verdict": "BREACH",
+          "text": "LedgerCovenant: BREACH. The computed value is 4.50x and the test is lte 4.50x. compliance_certificate is the only figure. Denominator: compliance_certificate is the only figure. This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default.",
+          "computed_scaled": 4500001,
+          "threshold_scaled": 4500000,
+          "headroom_scaled": -1,
+          "numerator": {
+            "status": "RESOLVED",
+            "value_scaled": 9000001000000,
+            "source": "compliance_certificate",
+            "currency": "USD",
+            "id": "numerator-1",
+            "rank": 100,
+            "lattice_version": "lattice_v1",
+            "note": "compliance_certificate is the only figure.",
+            "outranked": [],
+            "corroboration_count": 0
+          },
+          "denominator": {
+            "status": "RESOLVED",
+            "value_scaled": 2000000000000,
+            "source": "compliance_certificate",
+            "currency": "USD",
+            "id": "denominator-1",
+            "rank": 100,
+            "lattice_version": "lattice_v1",
+            "note": "compliance_certificate is the only figure.",
+            "outranked": [],
+            "corroboration_count": 0
+          },
+          "derivation": null,
+          "provisions": null,
+          "obligation": "RATIO",
+          "limitation": "This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default."
+        }
+      ]
+    },
+    "score": {
+      "ok": false,
+      "checks": {
+        "executed": true,
+        "verdict": true,
+        "numeric_value": false,
+        "requested_precision": false
+      },
+      "status": "",
+      "visible_text": "LedgerCovenant: BREACH. The computed value is 4.50x and the test is lte 4.50x. compliance_certificate is the only figure. Denominator: compliance_certificate is the only figure. This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default."
+    }
+  },
+  {
+    "case": {
+      "id": "finance-conflict",
+      "domain": "finance",
+      "kind": "refusal",
+      "prompt": "Decide this LedgerCovenant test.\ncomparator: lte\nthreshold: 4.50\nnumerator: compliance_certificate 9000000\nnumerator: compliance_certificate 9100000\ndenominator: compliance_certificate 2000000\n",
+      "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+      "answerable": false,
+      "reason": "conflict"
+    },
+    "component": {
+      "triggered": true,
+      "reasons": [
+        "the prompt asks for a LedgerCovenant decision"
+      ],
+      "products": [
+        "ledgercovenant"
+      ],
+      "text": "LedgerCovenant: FACT_CONFLICT. 2 compliance_certificate figures differ. Equal authority is not an average. This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default.",
+      "checks": [
+        {
+          "product": "ledgercovenant",
+          "completed": true,
+          "verdict": "FACT_CONFLICT",
+          "text": "LedgerCovenant: FACT_CONFLICT. 2 compliance_certificate figures differ. Equal authority is not an average. This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default.",
+          "limitation": "This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default.",
+          "numerator": {
+            "status": "CONFLICT",
+            "value_scaled": null,
+            "source": "compliance_certificate",
+            "currency": "USD",
+            "id": null,
+            "note": "2 compliance_certificate figures differ. Equal authority is not an average.",
+            "outranked": [],
+            "contender_ids": [
+              "numerator-1",
+              "numerator-2"
+            ]
+          },
+          "provisions": null
+        }
+      ]
+    },
+    "score": {
+      "ok": true,
+      "checks": {
+        "executed": true,
+        "safe_refusal": true
+      },
+      "status": "",
+      "visible_text": "LedgerCovenant: FACT_CONFLICT. 2 compliance_certificate figures differ. Equal authority is not an average. This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default."
+    }
+  },
+  {
+    "case": {
+      "id": "finance-zero",
+      "domain": "finance",
+      "kind": "refusal",
+      "prompt": "Decide this LedgerCovenant test.\ncomparator: lte\nthreshold: 4.50\nnumerator: compliance_certificate 9000000\ndenominator: compliance_certificate 0\n",
+      "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+      "answerable": false,
+      "reason": "zero denominator"
+    },
+    "component": {
+      "triggered": true,
+      "reasons": [
+        "the prompt asks for a LedgerCovenant decision"
+      ],
+      "products": [
+        "ledgercovenant"
+      ],
+      "text": "LedgerCovenant: INPUT_INVALID. A ratio against a zero denominator is refused. This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default.",
+      "checks": [
+        {
+          "product": "ledgercovenant",
+          "completed": true,
+          "verdict": "INPUT_INVALID",
+          "text": "LedgerCovenant: INPUT_INVALID. A ratio against a zero denominator is refused. This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default.",
+          "limitation": "This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default."
+        }
+      ]
+    },
+    "score": {
+      "ok": true,
+      "checks": {
+        "executed": true,
+        "safe_refusal": true
+      },
+      "status": "",
+      "visible_text": "LedgerCovenant: INPUT_INVALID. A ratio against a zero denominator is refused. This decision is the arithmetic and the precedence trace for the figures supplied. It is not legal advice and it does not declare a default."
+    }
+  }
+]
