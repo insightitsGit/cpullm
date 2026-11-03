@@ -71,6 +71,23 @@ It ingests the records, prints actual chat responses, checks visible values and
 proofs, and demonstrates conflicts, missing information and treatment refusal.
 The pass count is an authored software check, not a clinical accuracy score.
 
+**[Read the actual healthcare/pharmacy sample chat →](examples/healthcare/sample-run/README.md)**
+No setup is needed to read the 12 recorded questions, actual replies, statuses
+and expected-result checks. Examples include a strength lookup with equivalent
+units, a recorded diagnosis, conflicting labels, a missing diagnosis and a
+treatment question that receives a nonanswer. All records are fictional.
+
+Preview from the saved run:
+
+> **User:** What is the strength of Fictional Luma?
+>
+> **cpu-llm:** Source quotations (not clinically validated):
+> [demo-label-luma-p0001] The strength of Fictional Luma is 0.75 mg.
+> [demo-secondary-luma-p0001] Fictional Luma's strength is 750 mcg.
+
+The full transcript includes source references and refusals, not just successful
+lookups. These examples demonstrate software behavior, not clinical approval.
+
 After completing the installation/database setup below, this fictional example
 shows the integration pattern:
 
