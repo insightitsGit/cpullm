@@ -14,6 +14,8 @@ cpu-llm is an embeddable Python library for document question answering. It inde
 
 For an agent integrating the library, start with [the consumer guide](docs/library-consumer-guide.md): complete `ask` arguments, result interpretation, credentials, HTTP contracts, and operational limitations.
 
+Read the [1.10.0 implementation whitepaper](docs/whitepapers/cpu-llm-1.10.0-whitepaper.md) or [download its PDF](docs/whitepapers/cpu-llm-1.10.0-whitepaper.pdf) for installation, all graph nodes, request controls, Python/HTTP APIs, examples and evidence limitations. The [website implementation handoff](docs/website-handoff/cpu-llm-1.10.0-landing-page.md) defines the Research & Proof landing page and inbound SEO plan.
+
 ## Basic conversation included by default
 
 After normal appliance setup, the built-in conversation pack answers greetings,
