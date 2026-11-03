@@ -1,12 +1,19 @@
-# cpu-llm 1.10.0
+# cpu-llm 1.11.0
 
-A local, CPU-first Python library for questions about your documents and explicit
-rules. It combines trained retrieval with bounded sentence construction,
+**Evidence-Based AI Engine.** A CPU-first Python library for questions about your documents and explicit
+rules. It combines trained retrieval with bounded verified sentence construction,
 structured finance checks, source evidence and explicit nonanswers. It is not
 an unrestricted conversational or clinical decision model.
 
 ## Included in this release
 
+- A shared evidence-backed report/article/design-document workflow with
+  section coverage, exact source proofs, formats and bounded continuation.
+- Prompt-triggered tone: `Write a detailed article about Helios in a friendly tone.`
+  Tone is a presentation control, not a phrase required in the knowledge base.
+- New technical prose from supported source predicates, with independent inverse
+  verification. Unsupported/conditional records remain attributed quotations;
+  missing design sections stay missing. Strict documents keep quotation-only output.
 - Strict evidence policy v3: source quotations, recognized conflict checks,
   bounded batches/joins, exact arithmetic and explicit unsupported outcomes.
 - A reviewed default conversation pack: eight basic intents, 51 phrases,
@@ -26,7 +33,7 @@ an unrestricted conversational or clinical decision model.
 After this version has been published:
 
 ```shell
-python -m pip install "cpu-llm==1.10.0"
+python -m pip install "cpu-llm==1.11.0"
 ```
 
 Before asking document questions, configure PostgreSQL with pgvector and set
@@ -35,7 +42,7 @@ Before asking document questions, configure PostgreSQL with pgvector and set
 on first use or cached for offline use. Installation does not start PostgreSQL
 or ingest your documents. No retraining is needed for the bundled demos.
 
-For optional spaCy prompt parsing, install `cpu-llm[prompt_nlp]==1.10.0` and
+For optional spaCy prompt parsing, install `cpu-llm[prompt_nlp]==1.11.0` and
 provision `en_core_web_sm`. The examples below use the built-in rules parser.
 
 ```python
@@ -99,8 +106,12 @@ prose contradictions or guarantee 100% accuracy/clinical safety. Outside strict
 mode, optional learned fallback paths can require additional model assets that
 are not bundled. Coreferee, FastCoref and spaCy model assets are also not bundled.
 
-The tone companion is opt-in through Python `style=...`; it does not replace
-the canonical reply or give unverified facts an audit. Strict mode bypasses it.
+Tone is opt-in through Python `style=...` or an explicit prompt directive.
+API tone overrides prompt tone. Single-fact responses keep a companion; document
+responses can publish verified derived prose while preserving source proofs and
+the canonical quotation view. Neither gives source facts an independent truth
+audit. Unsupported expressive styles can use neutral fallback. Strict mode
+bypasses generated tone.
 Financial checks operate on supplied fields/rules, not independently authenticated
 documents or professional tax/legal advice. Fictional record lookup does not
 establish diagnostic or prescribing capability.
@@ -108,11 +119,13 @@ establish diagnostic or prescribing capability.
 ## Documentation and real examples
 
 - [Full guide and setup](https://github.com/insightitsGit/cpullm#readme)
+- [Document and tone user manual](https://github.com/insightitsGit/cpullm/blob/main/docs/document-generation-user-guide.md)
+- [Generated article and report](https://github.com/insightitsGit/cpullm/blob/main/docs/examples/2026-11-03-prompt-tone/README.md)
 - [Strict evidence contract](https://github.com/insightitsGit/cpullm/blob/main/docs/strict-evidence-spec.md)
 - [Healthcare sample chat](https://github.com/insightitsGit/cpullm/blob/main/examples/healthcare/sample-run/README.md)
 - [Tone-node chat examples](https://github.com/insightitsGit/cpullm/blob/main/docs/examples/2026-11-02-tone-chat/TRANSCRIPT.md)
 - [Default conversation examples](https://github.com/insightitsGit/cpullm/blob/main/docs/examples/2026-11-02-conversation/TRANSCRIPT.md)
-- [Local medical acceptance comparison](https://github.com/insightitsGit/cpullm/blob/main/docs/benchmarks/2026-11-02-medical-local/REPORT.md)
+- [Medical acceptance comparison](https://github.com/insightitsGit/cpullm/blob/main/docs/benchmarks/2026-11-02-medical-local/REPORT.md)
 
 The project is Apache-2.0 licensed. The shipped default pack is original; external
 dialogue corpora are not bundled. Dataset review tooling does not import external

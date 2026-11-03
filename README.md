@@ -10,7 +10,7 @@ Answer questions from your documents and explicit rules, with source evidence an
 
 cpu-llm is an embeddable Python library for document question answering. It indexes paragraphs in PostgreSQL/pgvector, retrieves relevant passages using VectorPrism, and produces supported answers, source quotations, or explicit nonanswers for recognized question forms. It combines trained embedding retrieval with deterministic sentence constructions, limited event-role extraction, pattern-based policy reasoning, arithmetic, and document layouts. It also includes supplied-field finance checks and an authenticated HTTP entry point.
 
-**Author:** [Amin Parva](mailto:parvaamin@gmail.com). **Package version: 1.10.0.** This release packages the current strict-evidence, conversation, tone, prompt-routing and finance features. Earlier PyPI 1.9.x wheels predate these changes. See [the 1.10.0 release notes](docs/releases/1.10.0.md) for artifact verification and manual publishing instructions. The source build is prepared separately from publication; building it does not upload anything to PyPI.
+**Author:** [Amin Parva](mailto:parvaamin@gmail.com). **Package version: 1.11.0 (prepared for publication).** This release packages the current strict-evidence, conversation, tone, prompt-routing and finance features. Earlier PyPI 1.9.x wheels predate these changes. See [the 1.11.0 release notes](docs/releases/1.11.0.md) for artifact verification and manual publishing instructions. The source build is prepared separately from publication; building it does not upload anything to PyPI.
 
 **Correctness boundary:** source copying and component checks do not guarantee source truth or that every displayed sentence answers the question. `answer`, `reply["text"]`, and component-specific verification fields have different meanings. Recognized query shapes expose answerability outcomes; other requests can use different producers or fallback behavior. Evaluate the actual reply and its supporting evidence for your application. The [latest targeted review](docs/reviews/2026-10-19/review-9d6fbe8.md) and [executed audit](docs/reviews/2026-10-19/audit.md) distinguish tested behavior, historical failures, and limits.
 
@@ -22,7 +22,7 @@ Read the [1.10.0 implementation whitepaper](docs/whitepapers/cpu-llm-1.10.0-whit
 
 Start with the [document and tone user manual](docs/document-generation-user-guide.md), the runnable [demonstration](examples/document_workflows/demo.py), and the [findings specification](docs/document-generation-findings-spec.md).
 
-This workflow is available in the source checkout after the published 1.10.0 release.
+This workflow is included in the prepared 1.11.0 release; PyPI remains at 1.10.0 until publication.
 
 Requests such as `Write a detailed report about Helios` or `Write a design
 document about Helios as an HTML report` use a shared evidence-backed document
@@ -37,7 +37,7 @@ To request generated wording, use `Write a detailed article about Helios in a
 friendly tone.` The tone directive does not enter the KB search. The document
 tone node combines supported source predicates into inverse-verified prose;
 unrecognized records stay attributed quotations, and strict mode keeps quotes.
-Python `style=` overrides prompt tone. These changes are in the source checkout.
+Python `style=` overrides prompt tone. These changes are included in the prepared 1.11.0 release.
 
 ## Basic conversation included by default
 
@@ -334,7 +334,7 @@ python -m pip install -U pip
 python -m pip install -e .
 ```
 
-Run these commands from a checkout for development. Version 1.10.0 is prepared for publication; after it is uploaded, pip users can install `cpu-llm==1.10.0` without a repository clone. Earlier published wheels do not include the current implementation.
+Run these commands from a checkout for development. Version 1.11.0 is prepared for publication; after it is uploaded, pip users can install `cpu-llm==1.11.0` without a repository clone. Earlier published wheels do not include the current implementation.
 
 The pins in [pyproject.toml](pyproject.toml) are authoritative. The editable install makes packaged retrieval assets and sample corpora available; it does **not** start PostgreSQL, populate its corpus, or train a realizer. It does not bundle the optional fact-bridge T5 checkpoints or declare all their optional runtime dependencies.
 
