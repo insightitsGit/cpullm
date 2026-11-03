@@ -18,7 +18,7 @@ from cpu_llm.access import AccessError, AuthenticationError, SourceForbidden, St
 from cpu_llm.documents import SourceDocument
 from cpu_llm.entry import Entry
 
-_ASK_FIELDS = ("discover", "imagine", "deep", "math", "finance", "as_of", "session_id", "strict_evidence")
+_ASK_FIELDS = ("discover", "imagine", "deep", "math", "finance", "as_of", "session_id", "strict_evidence", "small_talk")
 
 
 class UnknownRoute(Exception):
@@ -28,12 +28,14 @@ class UnknownRoute(Exception):
 class LocalService:
     """One process serving ask, ingest, correct, and delete_source."""
 
-    def __init__(self, entry: Entry, host: str = "127.0.0.1", port: int = 8765, *, strict_evidence: bool = False) -> None:
+    def __init__(self, entry: Entry, host: str = "127.0.0.1", port: int = 8765, *, strict_evidence: bool = False, small_talk: bool = True) -> None:
         if type(strict_evidence) is not bool:
             raise ValueError('strict_evidence must be a boolean')
+        if type(small_talk) is not bool:
+            raise ValueError('small_talk must be a boolean')
         self.entry = entry
         self.host = host
-        self._httpd = ThreadingHTTPServer((host, port), _handler(entry, strict_evidence=strict_evidence))
+        self._httpd = ThreadingHTTPServer((host, port), _handler(entry, strict_evidence=strict_evidence, small_talk=small_talk))
         self.port = int(self._httpd.server_address[1])
 
     def serve_forever(self) -> None:
@@ -50,6 +52,7 @@ def main() -> None:
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument('--strict-evidence', action='store_true', help='Require literal source evidence for every ask')
+    parser.add_argument('--no-small-talk', action='store_true', help='Disable built-in conversational replies and greeting normalization')
     parser.add_argument('--reference-backend', choices=['coreferee', 'fastcoref'])
     parser.add_argument('--prompt-backend', choices=['auto', 'rules', 'spacy'], default='auto')
     parser.add_argument(
@@ -68,6 +71,7 @@ def main() -> None:
             namespace=None if tenant == "cpu-llm" else tenant,
             reference_backend=args.reference_backend,
             prompt_backend=args.prompt_backend,
+            small_talk=not args.no_small_talk,
         )
 
     def appliance_for(tenant: str) -> Any:
@@ -78,6 +82,7 @@ def main() -> None:
         host=args.host,
         port=args.port,
         strict_evidence=args.strict_evidence,
+        small_talk=not args.no_small_talk,
     )
     try:
         service.serve_forever()
@@ -87,7 +92,7 @@ def main() -> None:
             appliance.close()
 
 
-def _handler(entry: Entry, *, strict_evidence: bool = False) -> type[BaseHTTPRequestHandler]:
+def _handler(entry: Entry, *, strict_evidence: bool = False, small_talk: bool = True) -> type[BaseHTTPRequestHandler]:
     class Handler(BaseHTTPRequestHandler):
         protocol_version = "HTTP/1.1"
 
@@ -96,7 +101,7 @@ def _handler(entry: Entry, *, strict_evidence: bool = False) -> type[BaseHTTPReq
                 secret = _bearer(self.headers.get("Authorization"))
                 payload = _json_body(self)
                 status, body = _dispatch(entry, self.path, secret, payload,
-                    evidence_mode=self.headers.get('X-CPU-LLM-Evidence-Mode'), require_strict=strict_evidence)
+                    evidence_mode=self.headers.get('X-CPU-LLM-Evidence-Mode'), require_strict=strict_evidence, allow_small_talk=small_talk)
             except UnknownRoute as exc:
                 status, body = 404, {"error": "not_found", "message": str(exc)}
             except AccessError as exc:
@@ -116,7 +121,7 @@ def _handler(entry: Entry, *, strict_evidence: bool = False) -> type[BaseHTTPReq
     return Handler
 
 
-def _dispatch(entry: Entry, path: str, secret: str, payload: dict[str, Any], *, evidence_mode=None, require_strict=False) -> tuple[int, dict[str, Any]]:
+def _dispatch(entry: Entry, path: str, secret: str, payload: dict[str, Any], *, evidence_mode=None, require_strict=False, allow_small_talk=True) -> tuple[int, dict[str, Any]]:
     if path == "/v1/ask":
         message = str(payload.get("message") or "")
         if not message:
@@ -126,6 +131,10 @@ def _dispatch(entry: Entry, path: str, secret: str, payload: dict[str, Any], *, 
             raise ValueError('X-CPU-LLM-Evidence-Mode must be strict or standard')
         if 'strict_evidence' in kwargs and type(kwargs['strict_evidence']) is not bool:
             raise ValueError('strict_evidence must be a boolean')
+        if 'small_talk' in kwargs and type(kwargs['small_talk']) is not bool:
+            raise ValueError('small_talk must be a boolean')
+        if not allow_small_talk:
+            kwargs['small_talk'] = False
         if require_strict or evidence_mode == 'strict':
             kwargs['strict_evidence'] = True
         return 200, entry.ask(secret, message, **kwargs)

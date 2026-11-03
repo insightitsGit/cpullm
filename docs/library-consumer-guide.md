@@ -355,13 +355,20 @@ See [the review handoff](handoff-claim-verification-review.md) for specific unre
 
 ## Strict evidence option
 
+Default built-in social turns have `answer_status="conversation"` and no
+document evidence. Strict policy v3 explicitly types them as built-in policy
+responses; disable them with `small_talk=False` or service `--no-small-talk`
+when only evidence/calculation/nonanswer envelopes are desired. Mixed greeting
+and factual requests preserve their substantive content. See
+[the conversation contract](conversation-spec.md).
+
 For source-quotation-only responses, pass `strict_evidence=True` to `ask`, send
 `X-CPU-LLM-Evidence-Mode: strict`, or put `[strict-evidence]` on the first prompt
 line. An appliance constructor flag or `cpu-llm-serve --strict-evidence` enforces
 the policy for all requests. See [the versioned contract](strict-evidence-spec.md)
 for supported source/question templates, result statuses and limitations.
 This disables learned answer generation; it does not establish medical truth.
-The current `strict-evidence-v2` policy adds bounded multi-question requests,
+The strict evidence policy includes bounded multi-question requests,
 recorded within-batch references, explicit one-hop evidence joins, direct-fact
 overviews and exact arithmetic. New statuses include `derived_calculation`,
 `partial` and `completed`; inspect individual `task_results`. Historical version

@@ -61,6 +61,10 @@ FLAG_BINDINGS += (FlagBinding('request.strict_evidence', 'API, header, prompt ma
     ('strict_evidence.answer',), 'pre_graph',
     'Enable wins; bypass normal graph and learned generation; bounded evidence quotes, exact arithmetic or abstention.',
     '[strict-evidence] followed by a newline'),)
+FLAG_BINDINGS += (FlagBinding('request.small_talk', 'built-in default, API boolean, or operator disable',
+    ('conversation.reply',), 'pre_graph',
+    'Guarded whole-turn social replies; mixed greetings preserve substantive requests; operator disable wins.',
+    'Who are you?'),)
 OPTIONAL_ORDER = ('deep', 'gather', 'compare', 'brief', 'math', 'finance', 'frame')
 _AFTER = {'shine': -1, 'deep': 0, 'imagine': 1, 'compare': 2, 'brief': 3, 'math': 4, 'finance': 5, 'frame': 6}
 _INDEPENDENT = frozenset({'math', 'finance'})
@@ -100,7 +104,7 @@ def enforce_node_request(node, state):
 
 def validate_graph_consumers(nodes):
     # These consumers execute outside the ordinary graph, before/after dispatch.
-    external = {'render_response', 'strict_evidence.answer'}
+    external = {'render_response', 'strict_evidence.answer', 'conversation.reply'}
     expected = {node for binding in FLAG_BINDINGS for node in binding.consumers} - external
     if missing := expected - set(nodes):
         raise ValueError('Flag consumers missing from graph: ' + ', '.join(sorted(missing)))

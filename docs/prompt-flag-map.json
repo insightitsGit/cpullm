@@ -299,5 +299,15 @@
     "stage": "pre_graph",
     "behavior": "Enable wins; bypass normal graph and learned generation; bounded evidence quotes, exact arithmetic or abstention.",
     "example": "[strict-evidence] followed by a newline"
+  },
+  {
+    "path": "request.small_talk",
+    "origin": "built-in default, API boolean, or operator disable",
+    "consumers": [
+      "conversation.reply"
+    ],
+    "stage": "pre_graph",
+    "behavior": "Guarded whole-turn social replies; mixed greetings preserve substantive requests; operator disable wins.",
+    "example": "Who are you?"
   }
 ]

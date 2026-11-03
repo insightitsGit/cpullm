@@ -171,12 +171,16 @@ class Appliance:
         prompt_backend: Any = None,
         resonance_tags: bool = False,
         strict_evidence: bool = False,
+        small_talk: bool = True,
     ) -> None:
         from cpu_llm.child_safety import ChildSafetyGate, enabled_by_default
 
         if type(strict_evidence) is not bool:
             raise ValueError('strict_evidence must be a boolean')
         self.strict_evidence = strict_evidence
+        if type(small_talk) is not bool:
+            raise ValueError('small_talk must be a boolean')
+        self.small_talk = small_talk
 
         # A namespace gets its own Postgres schema and its own local memory folder.
         self.namespace = _namespace_slug(namespace) if namespace else None
@@ -577,13 +581,37 @@ class Appliance:
         as_of: int | None = None,
         style: Any | None = None,
         strict_evidence: bool = False,
+        small_talk: bool | None = None,
     ) -> dict[str, Any]:
         """Separate explicit compound requests; each task uses the full pipeline."""
         from cpu_llm.request_planner import dispatch_request
         from cpu_llm.strict_evidence import requested, answer
-        enabled, _ = requested(message, strict_evidence)
-        if enabled or getattr(self, 'strict_evidence', False):
-            return answer(self, message, caller=caller, as_of=as_of)
+        raw_message = message
+        enabled, content = requested(message, strict_evidence)
+        enabled = enabled or getattr(self, 'strict_evidence', False)
+        if small_talk is not None and type(small_talk) is not bool:
+            raise ValueError('small_talk must be a boolean or None')
+        prefix = None
+        if getattr(self, 'small_talk', True) and small_talk is not False:
+            from cpu_llm.conversation import reply as converse, split_greeting
+            social = converse(self, raw_message, content, caller=caller, strict=enabled, style=style)
+            if social is not None:
+                return social
+            prefix = split_greeting(content)
+            if prefix is not None:
+                _caller_for(self, caller)
+                if self.guard.check(raw_message).decision == 'allow':
+                    control_offset = len(raw_message) - len(content)
+                    prefix['start'] += control_offset
+                    prefix['end'] += control_offset
+                    message = prefix['engine_query']
+                else:
+                    prefix = None
+        if enabled:
+            result = answer(self, message, caller=caller, as_of=as_of)
+            if prefix is not None:
+                result.update(original_message=raw_message, conversation_prefix=prefix)
+            return result
         if style is not None:
             from cpu_llm.stylistic.contracts import validate_profile
             validate_profile(style)
@@ -596,6 +624,8 @@ class Appliance:
             payment=payment, authority=authority, objective=objective, hypothesis=hypothesis,
             causal_graph=causal_graph, realization=realization, account=account, grade=grade,
             child_safety=child_safety, session_id=session_id, caller=caller, as_of=as_of))
+        if prefix is not None:
+            result.update(original_message=raw_message, conversation_prefix=prefix)
         from cpu_llm.output_rendering import render_response
         if style is not None:
             from cpu_llm.stylistic import apply_style

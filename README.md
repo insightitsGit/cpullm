@@ -14,6 +14,37 @@ cpu-llm is an embeddable Python library for document question answering. It inde
 
 For an agent integrating the library, start with [the consumer guide](docs/library-consumer-guide.md): complete `ask` arguments, result interpretation, credentials, HTTP contracts, and operational limitations.
 
+## Basic conversation included by default
+
+After normal appliance setup, the built-in conversation pack answers greetings,
+identity, wellbeing, help/capabilities, thanks, farewells and limitation questions.
+For example, `app.ask("Who are you?")` identifies cpu-llm, and
+`app.ask("How are you?")` replies that it is ready to help. These are reviewed
+application responses, not learned claims of feelings or medical qualifications.
+Python `style="friendly"`/`"formal"` selects controlled variants; unsupported
+expressive styles use a labeled neutral fallback.
+
+Read `response_kind="conversation"` and `answer_status="conversation"` as a
+social message: it has no document proof and no clinical verification. This also
+applies in strict policy v3. A greeting such as “Hi, what is the strength of
+Fictional Luma?” retains its factual question and goes through the strict
+evidence path. It does not get replaced with a greeting response.
+
+Use `Appliance(small_talk=False)`, `ask(..., small_talk=False)`, or service
+`--no-small-talk` to disable it; an operator disable wins. The HTTP JSON body
+also accepts a boolean `small_talk`.
+
+The default pack is original, small and shipped with the package. Optional
+`tools/prepare_conversation_candidates.py` prepares review queues from local
+OpenAssistant/UltraChat/DailyDialog exports with source/revision/license receipts.
+It does not install external answers, train a model, or add facts to your medical
+or financial corpus. DailyDialog requires explicit noncommercial acknowledgment
+and is not bundled. See [the conversation specification](docs/conversation-spec.md)
+for source cards, import commands, filtering and limits.
+Run `python examples/conversation/run_demo.py --out build/conversation-demo-new-run`
+after the standard database/model setup for an actual 12-turn walkthrough.
+See [the demo instructions](examples/conversation/README.md).
+
 ## Using cpu-llm in healthcare and finance
 
 Treat this “semi LLM” as an embeddable engine for document facts, bounded

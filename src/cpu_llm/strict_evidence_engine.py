@@ -180,7 +180,7 @@ def answer(appliance, message, *, caller=None, as_of=None):
     allowed = None if context is None else context.allowed_sources
     result = dict(message=message, original_message=message, tenant_id=appliance.tenant_id,
         request_id=None if context is None else context.request_id, answer=None, answer_status='unsupported',
-        answer_evidence=[], audit_passed=False, evidence_policy=dict(version='strict-evidence-v2', enabled=True,
+        answer_evidence=[], audit_passed=False, evidence_policy=dict(version='strict-evidence-v3', enabled=True,
             allowed_sources=None if allowed is None else sorted(allowed), learned_generation=False,
             clinical_validation=False, source_truth_verified=False,
             conflict_detection='recognized literal and possessive/has/for forms; exact scalar unit equivalence',

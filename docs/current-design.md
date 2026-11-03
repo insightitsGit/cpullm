@@ -1,5 +1,11 @@
 # Current cpu-llm design
 
+The default [conversation node](conversation-spec.md) handles only complete
+reviewed social intents and guarded greeting prefixes before factual dispatch.
+Strict policy v3 distinguishes its built-in social scope from document evidence;
+operator disable preserves evidence-only deployments. No external dialogue
+answers are part of the knowledge graph or default response pack.
+
 The optional [strict evidence policy](strict-evidence-spec.md) intercepts `ask`
 before the ordinary graph. Prompt/API/header activation and operator floors
 select literal, scoped SQL evidence lookup with no learned answer generation.

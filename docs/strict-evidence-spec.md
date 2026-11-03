@@ -1,6 +1,7 @@
-# Strict evidence mode, version 2
+# Strict evidence mode, version 3
 
-Version 1 shipped in `5f68561`. Current policy identifier: `strict-evidence-v2`.
+Version 1 shipped in `5f68561`. Version 2 added bounded evidence/calculation
+contracts. Current policy identifier: `strict-evidence-v3`.
 This document specifies the existing implementation; the “zero hallucination”
 description does not introduce a second flag or a broader answering contract.
 
@@ -26,6 +27,17 @@ be presented as 100% factual accuracy, universal contradiction detection,
 clinical validation, or regulatory certification.
 
 ## Activation and precedence
+
+Version 3 adds default reviewed social replies with
+`response_kind="conversation"`, `answer_status="conversation"` and
+`evidence_policy.response_scope="builtin_conversation"`. They carry no document
+evidence, audit or clinical approval. These are application-owned identity/help
+and social messages, not factual retrieval results. Set constructor
+`small_talk=False`, request `small_talk=False`, or service `--no-small-talk`
+to disable them; an operator disable cannot be reversed by a request. Mixed
+greeting/factual prompts keep their substantive request and raw-prompt guard.
+See [the conversation contract](conversation-spec.md). Factual behavior below
+is unchanged; the social path never enables a learned answer generator.
 
 Python: `app.ask("What is the strength of DemoMed?", strict_evidence=True)`.
 An appliance created with `Appliance(strict_evidence=True)` enforces the policy
@@ -119,6 +131,11 @@ not mean the request was answered. Supported terminal statuses are
 `evidence_quote`, `conflicting`, `insufficient_evidence`, `unsupported`, and
 `blocked`. Source evidence can accompany a conflict without authorizing the
 application to choose either value.
+
+Version 3 additionally returns `conversation` for approved whole-turn social
+intents. This is a built-in policy response with an empty evidence list, not an
+answer to a source question. Consumers that require only factual envelopes must
+disable small talk as described above.
 
 Version 2 adds `derived_calculation` for exact deterministic arithmetic,
 `partial` when only some requested tasks succeed, and `completed` when every

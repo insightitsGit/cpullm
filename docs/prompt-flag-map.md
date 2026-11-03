@@ -2,6 +2,11 @@
 
 Generated from `cpu_llm.flag_contract.FLAG_BINDINGS`. The JSON companion is tested for exact registry agreement.
 
+`request.small_talk` is a pre-graph default consumed by `conversation.reply`.
+It produces guarded, complete-turn built-in social responses and preserves
+substantive content after greeting prefixes. Operator disable wins; it never
+licenses factual evidence or learned generation. See [the contract](conversation-spec.md).
+
 `request.strict_evidence` is a pre-graph policy consumed by
 `strict_evidence.answer`: API/header/prompt activation or an operator floor
 bypasses ordinary agent nodes and learned generation. Version 2 selects bounded
