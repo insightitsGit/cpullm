@@ -66,7 +66,7 @@ def main():
             story.append(Paragraph(inline(line[level:].strip()),styles['TitlePaper' if level==1 else 'SectionPaper' if level==2 else 'SubPaper']))
         elif re.match(r'^([-*] |\d+\. )',line):
             flush(); paragraph.append(line)
-        else: paragraph.append(line.strip())
+        else: paragraph.append(line.strip().removeprefix('> '))
     flush()
     output=ROOT/'output/pdf/cpu-llm-1.10.0-whitepaper.pdf'; output.parent.mkdir(parents=True,exist_ok=True)
     def footer(canvas, doc):
