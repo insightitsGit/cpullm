@@ -1,0 +1,79 @@
+{
+  "sources": [
+    [
+      "tone-chat-p0001",
+      "The Aster is blue."
+    ],
+    [
+      "tone-chat-p0002",
+      "The Aster is found in coastal waters."
+    ],
+    [
+      "tone-chat-p0003",
+      "The shape of the Aster is round."
+    ],
+    [
+      "tone-chat-p0004",
+      "The material of the Aster is steel."
+    ],
+    [
+      "tone-chat-p0005",
+      "The weight of the Aster is 12.5 pounds."
+    ],
+    [
+      "tone-label-p0001",
+      "The strength of Fictional DemoMed is 0.75 mg."
+    ]
+  ],
+  "cases": [
+    {
+      "id": "formal-color",
+      "prompt": "What color is the Aster?",
+      "style": "formal"
+    },
+    {
+      "id": "friendly-location",
+      "prompt": "Where does the Aster live?",
+      "style": "friendly"
+    },
+    {
+      "id": "analytical-weight",
+      "prompt": "What is the weight of the Aster?",
+      "style": "analytical"
+    },
+    {
+      "id": "five-fact-composition",
+      "prompt": "Tell me the color, habitat, shape, material, and weight of the Aster.",
+      "style": {
+        "tone": "friendly",
+        "max_sentences": 3,
+        "clauses_per_sentence": 2
+      }
+    },
+    {
+      "id": "poetic-fallback",
+      "prompt": "What color is the Aster?",
+      "style": "poetic"
+    },
+    {
+      "id": "relationship-restriction",
+      "prompt": "What color is the Aster?",
+      "style": {
+        "tone": "intimate",
+        "relationship": 1
+      }
+    },
+    {
+      "id": "strict-label",
+      "prompt": "What is the strength of Fictional DemoMed?",
+      "style": "friendly",
+      "strict_evidence": true
+    },
+    {
+      "id": "finance-boundary",
+      "prompt": "Decide this LedgerCovenant test.\nthreshold: 4.50\nnumerator: compliance_certificate 9000001\ndenominator: compliance_certificate 2000000\n",
+      "style": "friendly",
+      "finance": true
+    }
+  ]
+}

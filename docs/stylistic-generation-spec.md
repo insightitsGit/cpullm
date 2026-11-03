@@ -1,6 +1,6 @@
 # Stylistic generation: implemented specification v2
 
-This document specifies the current implementation, not every proposed feature in the [design](stylistic-generation-design.md). Its [JSON companion](stylistic-generation-spec.json) records machine-readable controls and construction IDs. The tested runtime is `3b8ab1e`; later documentation/test commits do not change that implementation.
+This document specifies the current implementation, not every proposed feature in the [design](stylistic-generation-design.md). Its [JSON companion](stylistic-generation-spec.json) records machine-readable controls and construction IDs. The style construction implementation originated in `3b8ab1e`; subsequent parser fixes and strict-mode precedence are noted below. The fresh public-API chat capture uses runtime `271d685`.
 
 ## Purpose and execution
 
@@ -33,6 +33,12 @@ if sidecar.get("status") in {"generated", "unchanged"}:
 
 Profiles are explicit and request-local. Repeat the argument on a follow-up if wanted; it does not enter pending session state or persist to later requests. Existing HTTP request models do not expose this parameter. Prompt wording alone does not enable tone selection.
 
+Strict evidence mode takes precedence and bypasses the style node, even if
+`style` is supplied; strict responses do not include a generated stylistic
+companion. Finance verdicts and generic medication/clinical attributes remain
+outside the current five-relation adapter. See the fresh
+[public-API chat demonstration](examples/2026-11-02-tone-chat/TRANSCRIPT.md).
+
 ## Controls and constraints
 
 - Tone order: friendly, poetic, formal, emotional, serious, playful, melancholic, empathetic, analytical, intimate. `tone_weights`, when supplied, is an immutable ten-value tuple of finite nonnegative weights summing to one within tolerance. It replaces the one-hot preference; the tone label remains diagnostic.
@@ -64,7 +70,7 @@ The [composition evaluation](benchmarks/2026-11-01-stylistic-composition/REPORT.
 
 The [fresh scenario audit](benchmarks/2026-11-02-stylistic-scenarios/REPORT.md) records 49/49 stylistic contract checks per real rules/spaCy arm, plus 16/16 live layout/session integration tests. It covers five-fact generation, eight-task composition, budget refusal, missing/conflicting data, relationship restrictions, source scope, historical corrections, clarification, cancellation and no style leakage. These are not overall answer-accuracy percentages or independent human fluency ratings.
 
-The audit also confirms an upstream rules issue: “Please give me information about the color of the Virel” returned material information. Styling declined it; spaCy interpreted it correctly. Direct supported questions such as “What color is the Virel?” worked in both arms. The style node cannot repair incorrect interpretation by inventing a better answer.
+The historical audit confirmed an upstream rules issue: “Please give me information about the color of the Virel” returned material information. Styling declined it; spaCy interpreted it correctly. That rules-parser defect was subsequently fixed and covered by `tests/test_domain_gap_fixes_live.py`; the original audit is retained unchanged. The style node itself cannot repair incorrect interpretation by inventing a better answer.
 
 Remaining limits include duplicate corroborating proof sets, unlisted color/shape values, non-ASCII forms, inherited multi-premise facts, arbitrary specialist outputs, general creative prose and automatic tone/audience inference. Long conjunctions can sound repetitive. Broader vocabulary, naturalness improvements and visible publication require further reviewed constructions and tests.
 

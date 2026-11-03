@@ -14,6 +14,91 @@ cpu-llm is an embeddable Python library for document question answering. It inde
 
 For an agent integrating the library, start with [the consumer guide](docs/library-consumer-guide.md): complete `ask` arguments, result interpretation, credentials, HTTP contracts, and operational limitations.
 
+## Using cpu-llm in healthcare and finance
+
+Treat this “semi LLM” as an embeddable engine for document facts, bounded
+sentence construction and explicit rule/calculation checks. Your application
+supplies the records, authentication, user interface and decision workflow.
+The useful distinction is traceability: consumers can inspect the source text,
+outcome and calculation fields instead of relying only on a fluent answer.
+
+**Healthcare and pharmacy:** use strict evidence mode for supported label and
+record lookups, preserving decimal values, units and citations. It can identify
+recognized conflicting records and abstain when a requested fact is missing.
+It can retrieve an explicitly recorded diagnosis; it does not diagnose from
+symptoms or determine a safe medication or dose. Use validated source versions
+and retain the response and matching source version for your audit process.
+
+After completing the installation/database setup below, this fictional example
+shows the integration pattern:
+
+```python
+from cpu_llm.documents import SourceDocument
+from cpu_llm.pipeline import Appliance
+
+def main():
+    with Appliance(namespace="healthcare_demo", strict_evidence=True,
+                   prompt_backend="rules") as app:
+        app.ingest(SourceDocument("fictional-label", (
+            "The strength of Fictional DemoMed is 0.75 mg.",
+        )))
+        result = app.ask("What is the strength of Fictional DemoMed?")
+        if result["answer_status"] == "evidence_quote":
+            print(result["reply"]["text"])
+            print(result["answer_evidence"])
+        else:
+            print(result["answer_status"], result["reply"]["text"])
+
+if __name__ == "__main__":
+    main()
+```
+
+For HTTP applications, use the authenticated `Entry` service and operator
+`--strict-evidence` enforcement. Credentials define tenant/source permissions;
+do not substitute an unscoped appliance for that authorization layer. Strict
+mode supplies evidence and bounded arithmetic, not clinical source validation
+or approval for clinical decisions. See [healthcare acceptance](docs/healthcare-evidence-acceptance.md)
+and the [executed medication/record comparison](docs/benchmarks/2026-11-02-medical-local/REPORT.md).
+
+**Finance:** RefundProof checks supplied tax findings, LedgerCovenant checks
+supplied covenant figures/rules, and Ledgerlock checks supplied extracted
+fields. These can support a review workflow with exact numeric outputs,
+explicit input refusals and threshold-critical precision. For a direct
+deterministic field check, use the finance component:
+
+```python
+from cpu_llm.finance import validate_message
+
+request = """Decide this LedgerCovenant test.
+comparator: lte
+threshold: 4.50
+numerator: compliance_certificate 9000001
+denominator: compliance_certificate 2000000
+ratio places: 6
+"""
+result = validate_message(request)
+print(result["text"])  # BREACH: 4.500001x against 4.500000x
+print(result["checks"])  # exact scaled values and decision inputs
+```
+
+Inside an ordinary appliance, `app.ask(request, finance=True)` invokes the
+finance pipeline. Strict mode does not invoke finance specialists; a strict
+appliance floor cannot be disabled for one financial request. Choose a separate
+ordinary appliance or the direct finance component for those structured checks.
+Source-authority labels supplied by a caller are inputs, not authenticated
+documents. Results are not tax/legal advice, proof of document authenticity,
+or an automatic authorization to recover money or declare default. See the
+[numeric presentation contract](docs/finance-numeric-presentation.md) and
+[saved finance/domain replay](docs/benchmarks/2026-11-02-domain-replay-v2/REPORT.md).
+
+**Consume the contract, then display the response.** Check statuses, partial
+tasks, errors and proof/calculation fields before acting. `reply.text` is the
+canonical display text; a successful `stylistic.text` is an optional verified
+paraphrase and must be labeled accordingly. Tone cannot turn missing evidence
+into a fact. The [live tone chat examples](docs/examples/2026-11-02-tone-chat/TRANSCRIPT.md)
+show generated wording, a neutral fallback, a policy skip, strict-mode bypass
+and an unchanged financial verdict.
+
 ## New in this checkout
 
 **Strict evidence / “zero hallucination” mode:** use `ask(..., strict_evidence=True)`, the HTTP header
@@ -394,7 +479,20 @@ else:
     print(result.get("reply", {}).get("text", ""))
 ```
 
-The node declines aggregation when facts are missing, conflicting, about different subjects, or cannot fit the budget without dropping claims. Duplicate corroborating sources and some vocabulary/language forms also remain unsupported. Ten tone controls do not mean ten kinds of expressive prose: unsupported expressive styles report `neutral_fallback`. No style setting is inferred or remembered automatically. For the audited conversational color question, use the installed spaCy backend or ask directly, “What color is the Aster?”; the rules backend can otherwise return an unrelated attribute. See the [implemented feature specification](docs/stylistic-generation-spec.md) for the API contract, output fields and tested limits.
+The node declines aggregation when facts are missing, conflicting, about different subjects, or cannot fit the budget without dropping claims. Duplicate corroborating sources and some vocabulary/language forms also remain unsupported. Ten tone controls do not mean ten kinds of expressive prose: unsupported expressive styles report `neutral_fallback`. No style setting is inferred or remembered automatically. The historical conversational-color defect was fixed in the rules parser and covered by a live regression. See the [implemented feature specification](docs/stylistic-generation-spec.md) for the API contract, output fields and tested limits.
+
+The algorithm first snapshots an accepted fact and its proofs. Relation,
+vocabulary and relationship restrictions filter eligible constructions. It then
+ranks them by semantic fit, requested intensity and tone affinity with a
+genericness penalty. For a related multi-fact answer, it joins complete licensed
+clauses with `and`; an inverse-grammar verifier checks claim coverage and proofs
+before publishing the companion. These curated tone features are separate from
+the six retrieval channels and do not add facts to the knowledge graph. The
+current ten constructions cover five relations: color, location, shape,
+material and explicit weight. Strict evidence mode bypasses this node entirely.
+The current HTTP service does not expose `style`; use the Python API. Actual
+[chat outputs and receipts](docs/examples/2026-11-02-tone-chat/TRANSCRIPT.md)
+are saved with a runnable `tools/tone_chat_demo.py` example.
 
 The retrieval encoder and shipped `vectorprism.pt` projection are distinct from sentence generation. Dense retrieval is trained; the other subspace readings and relation signatures are not a trained fact generator.
 
@@ -404,7 +502,7 @@ There are **three separate wording paths**:
 2. **Model01 is a deterministic construction generator**, despite its name. It runs before the reply, after enabled specialists such as math, finance, and event frames. It builds licensed sentences from retrieved records. The reply shows one of them: the sentence that states a ranking when one does, otherwise the first. A second sentence that only shares a topic word is not displayed. Entity filtering keeps a named subject on passages that contain that name. A ranking prompt adds a `Ranking:` section for a stored order, or states that none is stored. Model01 loads no trained generation checkpoint, and `checkpoint_id` stays null. `realization="model01"` is accepted, but the Model01 graph node already runs on the ordinary path; that argument does not enable a separate trained model. The package exports `prepare()` and `train()` through `cpu_llm.model01`: `prepare()` stores checker-approved records in `model01_training_pair`, marking the WikiText test split as `test`; `train()` is a training-signal survey that runs no optimizer and always reports `checkpoint_written=False`. Training stays unready while every plan has one legal sentence.
 3. The fact-bridge rule path can **automatically load local FLAN-T5 extraction and writing models** when the pattern path misses, the prompt/passages have rule cues, and model directories are found. This can happen with the default `realization="deterministic"`. Model lookup checks `FACTBRIDGE_MODELS`, then `models/` and `cpullm-factbridge/models/` relative to the package installation root. An explicit root is also supported by the low-level fact-bridge API.
 
-The latter requires external checkpoints and optional tooling such as Transformers, torch, SentencePiece, and safetensors. A missing/incompatible writer or dependency can raise during a question. The current `Appliance.ask` has no public switch that guarantees this automatic fallback is disabled; inspect deployment assets and `reply.situation.wording.path`. The learned writer currently returns a nonempty candidate without calling its verifier. Its output is not covered by the earlier `answer` audit.
+The latter requires external checkpoints and optional tooling such as Transformers, torch, SentencePiece, and safetensors. A missing/incompatible writer or dependency can raise during a question. Set `strict_evidence=True` or enforce the strict appliance/service floor to bypass this fallback and the other generation nodes. Outside strict mode, inspect deployment assets and `reply.situation.wording.path`. The learned writer currently returns a nonempty candidate without calling its verifier. Its output is not covered by the earlier `answer` audit.
 
 Thus, “CPU-only” does not mean “no decoder,” and default mode does not guarantee every path uses only deterministic templates. This project makes no universal truth or zero-hallucination guarantee.
 
