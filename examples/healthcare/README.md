@@ -5,6 +5,10 @@ explicit expected results in `dataset.json`. The names, compounds and records
 are fictional. They demonstrate software behavior, **not real medicines,
 patients, clinical advice or externally validated medical accuracy**.
 
+The included [actual sample run](sample-run/README.md) passed **12/12 authored
+checks** on runtime `f8c6586`. Full replies, proof receipts and checks are saved
+with the sample. This includes correct refusals, not 12 clinical answers.
+
 The examples cover label/record lookups, equivalent units with both proofs,
 conflicting labels, missing diagnosis data, treatment refusal, exact arithmetic,
 supplied-number comparison, a two-question batch and a longer fact overview.
