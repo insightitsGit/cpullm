@@ -1,12 +1,12 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "cpu-llm"
-version = "1.9.1"
-description = "CPU-only answers and documents from your stored text. Local retrieval with pgvector, and no GPU decoder."
-readme = "README.md"
+version = "1.10.0"
+description = "CPU-first document QA, strict evidence replies, bounded sentence construction, and explicit rule checks."
+readme = "PYPI_README.md"
 requires-python = ">=3.11"
 authors = [{ name = "Amin Parva", email = "parvaamin@gmail.com" }]
 license = "Apache-2.0"
@@ -63,6 +63,8 @@ Repository = "https://github.com/insightitsGit/cpullm"
 [project.scripts]
 cpu-llm-ingest = "cpu_llm.ingest:main"
 cpu-llm-serve = "cpu_llm.serve:main"
+cpu-llm-demo = "cpu_llm.demo:main"
+cpu-llm-conversation-candidates = "cpu_llm.conversation_candidates:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

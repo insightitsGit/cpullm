@@ -1,0 +1,9 @@
+include README.md PYPI_README.md LICENSE
+recursive-include examples *.py *.json *.md
+recursive-include tools *.py
+recursive-include docs *.md
+include docs/*.json
+recursive-exclude docs/benchmarks *.json *.jsonl *.gz *.log *.py *.xml
+recursive-exclude docs/examples *.json *.jsonl *.gz *.log *.py
+global-exclude __pycache__ *.py[cod]
+exclude docs/releases/*-build-validation.md

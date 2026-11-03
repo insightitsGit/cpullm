@@ -1,0 +1,120 @@
+{
+  "schema": "packaged-conversation-demo-v1",
+  "synthetic": true,
+  "clinical_validation": false,
+  "documents": [
+    {
+      "name": "package-conversation-label",
+      "paragraphs": [
+        "The strength of Fictional Luma is 0.75 mg."
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "social-1",
+      "prompt": "Hello!",
+      "expected_status": "conversation",
+      "expected_kind": "conversation",
+      "expected_values": [],
+      "expected_proofs": []
+    },
+    {
+      "id": "social-2",
+      "prompt": "Who are you?",
+      "expected_status": "conversation",
+      "expected_kind": "conversation",
+      "expected_values": [],
+      "expected_proofs": []
+    },
+    {
+      "id": "social-3",
+      "prompt": "How are you?",
+      "expected_status": "conversation",
+      "expected_kind": "conversation",
+      "expected_values": [],
+      "expected_proofs": []
+    },
+    {
+      "id": "social-4",
+      "prompt": "What can you do?",
+      "expected_status": "conversation",
+      "expected_kind": "conversation",
+      "expected_values": [],
+      "expected_proofs": []
+    },
+    {
+      "id": "social-5",
+      "prompt": "Thanks!",
+      "expected_status": "conversation",
+      "expected_kind": "conversation",
+      "expected_values": [],
+      "expected_proofs": []
+    },
+    {
+      "id": "social-6",
+      "prompt": "Goodbye.",
+      "expected_status": "conversation",
+      "expected_kind": "conversation",
+      "expected_values": [],
+      "expected_proofs": []
+    },
+    {
+      "id": "friendly",
+      "prompt": "Hello!",
+      "kwargs": {
+        "style": "friendly"
+      },
+      "expected_status": "conversation",
+      "expected_kind": "conversation",
+      "expected_values": [],
+      "expected_proofs": []
+    },
+    {
+      "id": "fallback",
+      "prompt": "Hello!",
+      "kwargs": {
+        "style": "poetic"
+      },
+      "expected_status": "conversation",
+      "expected_kind": "conversation",
+      "expected_values": [],
+      "expected_proofs": []
+    },
+    {
+      "id": "mixed-fact",
+      "prompt": "Hi, What is the strength of Fictional Luma?",
+      "expected_status": "evidence_quote",
+      "expected_values": [
+        "0.75 mg"
+      ],
+      "expected_proofs": [
+        "package-conversation-label-p0001"
+      ]
+    },
+    {
+      "id": "mixed-advice",
+      "prompt": "Hello, can I take Fictional Luma?",
+      "expected_status": "unsupported",
+      "expected_values": [],
+      "expected_proofs": []
+    },
+    {
+      "id": "disabled",
+      "prompt": "Who are you?",
+      "kwargs": {
+        "small_talk": false
+      },
+      "expected_status": "unsupported",
+      "expected_values": [],
+      "expected_proofs": []
+    },
+    {
+      "id": "quoted-data",
+      "prompt": "The document says \"hello\".",
+      "expected_status": "unsupported",
+      "expected_values": [],
+      "expected_proofs": []
+    }
+  ]
+}

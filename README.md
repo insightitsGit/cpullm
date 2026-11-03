@@ -8,7 +8,7 @@
 
 cpu-llm is an embeddable Python library for document question answering. It indexes paragraphs in PostgreSQL/pgvector, retrieves relevant passages using VectorPrism, and produces supported answers, source quotations, or explicit nonanswers for recognized question forms. It combines trained embedding retrieval with deterministic sentence constructions, limited event-role extraction, pattern-based policy reasoning, arithmetic, and document layouts. It also includes supplied-field finance checks and an authenticated HTTP entry point.
 
-**Author:** [Amin Parva](mailto:parvaamin@gmail.com). **Package version:** 1.9.1. PyPI `1.9.0` is an earlier upload and does not include the one-sentence reply selection or the ban and upper-limit reading. This checkout is 1.9.1. The [targeted review](docs/reviews/2026-10-19/review-9d6fbe8.md) of commit [`9d6fbe8`](https://github.com/insightitsGit/cpullm/commit/9d6fbe8fabcf9dac10ec6cc409fa7852f77e948d) covers an earlier snapshot. Installing `cpu-llm==1.8.0` or `cpu-llm==1.9.0` does not include this reply and rule-reading behavior.
+**Author:** [Amin Parva](mailto:parvaamin@gmail.com). **Package version: 1.10.0.** This release packages the current strict-evidence, conversation, tone, prompt-routing and finance features. Earlier PyPI 1.9.x wheels predate these changes. See [the 1.10.0 release notes](docs/releases/1.10.0.md) for artifact verification and manual publishing instructions. The source build is prepared separately from publication; building it does not upload anything to PyPI.
 
 **Correctness boundary:** source copying and component checks do not guarantee source truth or that every displayed sentence answers the question. `answer`, `reply["text"]`, and component-specific verification fields have different meanings. Recognized query shapes expose answerability outcomes; other requests can use different producers or fallback behavior. Evaluate the actual reply and its supporting evidence for your application. The [latest targeted review](docs/reviews/2026-10-19/review-9d6fbe8.md) and [executed audit](docs/reviews/2026-10-19/audit.md) distinguish tested behavior, historical failures, and limits.
 
@@ -47,6 +47,12 @@ See [the demo instructions](examples/conversation/README.md).
 An [actual 12-turn chat capture](docs/examples/2026-11-02-conversation/TRANSCRIPT.md)
 is included; all 12 routing checks passed. The full integration suite passed
 891 tests (2 skipped, 3 expected failures).
+
+For pip installations, the same types of examples are available without Git:
+`cpu-llm-demo conversation --out conversation-demo-new-run` and
+`cpu-llm-demo healthcare --out healthcare-demo-new-run`.
+The local dataset review command is `cpu-llm-conversation-candidates --help`.
+These commands are included in 1.10.0; the normal database/model setup still applies.
 
 ## Using cpu-llm in healthcare and finance
 
@@ -158,7 +164,7 @@ into a fact. The [live tone chat examples](docs/examples/2026-11-02-tone-chat/TR
 show generated wording, a neutral fallback, a policy skip, strict-mode bypass
 and an unchanged financial verdict.
 
-## New in this checkout
+## Included in 1.10.0
 
 **Strict evidence / “zero hallucination” mode:** use `ask(..., strict_evidence=True)`, the HTTP header
 `X-CPU-LLM-Evidence-Mode: strict`, or a first-line `[strict-evidence]` prompt
@@ -304,7 +310,7 @@ python -m pip install -U pip
 python -m pip install -e .
 ```
 
-Run these commands from a checkout of this repository to use the features documented here. This source identifies itself as 1.9.1; published packages can describe an earlier implementation.
+Run these commands from a checkout for development. Version 1.10.0 is prepared for publication; after it is uploaded, pip users can install `cpu-llm==1.10.0` without a repository clone. Earlier published wheels do not include the current implementation.
 
 The pins in [pyproject.toml](pyproject.toml) are authoritative. The editable install makes packaged retrieval assets and sample corpora available; it does **not** start PostgreSQL, populate its corpus, or train a realizer. It does not bundle the optional fact-bridge T5 checkpoints or declare all their optional runtime dependencies.
 
@@ -316,7 +322,7 @@ python -m pip install "prismrag-patch[graph]==0.2.1"
 ```
 
 The source dependency declaration now requests this extra automatically. The
-published 1.9.1 wheel predates this correction. See the
+earlier published 1.9.1 wheel predates this correction. See the
 [clean installation audit](docs/reviews/2026-10-28/clean-install-audit.md) for the
 reproduction, tested environment and verification limits.
 
