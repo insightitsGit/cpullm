@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 from enum import IntFlag
 import math
+import re
 
 TONES=('friendly','poetic','formal','emotional','serious','playful','melancholic','empathetic','analytical','intimate')
 
@@ -60,3 +61,23 @@ def options(value):
     if isinstance(value,StyleOptions):return value
     if isinstance(value,str):return StyleOptions(tone=value)
     raise ValueError('style must be None, a supported tone, or StyleOptions')
+
+
+def extract_style_request(message):
+    """Explicit presentation directives only; quoted titles and negations are data."""
+    tones='|'.join(TONES)
+    from cpu_llm.output_rendering import extract_layout
+    layout=extract_layout(message)
+    if layout['format']:
+        inner=extract_style_request(layout['content_query'])
+        if inner['tone'] is not None:
+            return dict(inner,query=inner['query']+' '+layout['directive'].lstrip())
+    masked=re.sub(r'```[\s\S]*?```|"[^"\n]*"|“[^”\n]*”|`[^`\n]*`',lambda m:' '*len(m[0]),message)
+    prefix=re.match(rf'^\s*[Ii]n (?:a |an )?(?P<tone>{tones}) tone\s*[:,]\s*',masked,re.I)
+    suffix=re.search(rf'(?:\s+in (?:a |an )?|[.;]\s*(?:please\s+)?(?:use|write in) (?:a |an )?)(?P<tone>{tones}) tone\s*[.!?]*$',masked,re.I)
+    match=suffix or prefix
+    if not match:return dict(query=message,tone=None)
+    if re.search(r"\b(?:not|don't|do not)\s*$",masked[:match.start()],re.I):
+        return dict(query=message,tone=None)
+    query=(message[:match.start()]+message[match.end():]).strip()
+    return dict(query=query,tone=match['tone'].lower(),directive=message[match.start():match.end()])

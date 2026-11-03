@@ -18,7 +18,7 @@ Working-tree design snapshot, 2026-10-27. This describes the implementation in
 this checkout. A published package may be older. Earlier versioned
 specifications and the white paper describe historical stages.
 
-November 2 update: [stylistic generation node](stylistic-generation-design.md), with a [stage-2 spec](stylistic-generation-spec.json). Optional tone strings or `StyleOptions` produce verified companion sentences after canonical dispatch and before rendering. Five factual relations, ten curated constructions, bounded same-subject composition and tone/relationship controls are implemented. Canonical replies and existing reasoning contracts remain intact. General word generation, automatic tone inference and visible-answer promotion remain future work.
+November 2 update: [stylistic generation node](stylistic-generation-design.md), with a [stage-2 spec](stylistic-generation-spec.json). Optional tone strings or `StyleOptions` produce verified companion sentences after canonical dispatch and before rendering. Five factual relations, ten curated constructions, bounded same-subject composition and tone/relationship controls are implemented. Canonical replies and existing reasoning contracts remain intact. This describes the original base-fact path. The November 3 source extension additionally parses explicit prompt tone and publishes inverse-verified technical document prose with source proofs retained; see the [document generation findings](document-generation-findings-spec.md). General word generation and automatic emotional-state inference remain unsupported.
 
 The [fresh live scenario audit](benchmarks/2026-11-02-stylistic-scenarios/REPORT.md) passed 49 stylistic contract scenarios per rules/spaCy arm. It also confirms a rules-only canonical wrong-relation response; contract success is not an overall answer-accuracy score.
 
@@ -305,3 +305,7 @@ returns an incorrect answer. Progress and examples stay in the support backlog.
 - [Scenario backlog](intent-support-backlog.md)
 - [Response cases and join contract](response-cases.md)
 - [Integration contract](library-consumer-guide.md)
+
+## Quotation-document workflow (source checkout update)
+
+Explicit report/article/design-document commands now have a separate bounded, caller-scoped, time-valid quotation workflow. Strict documents use `document-quotes-v1`, preserve exact source evidence, mark missing sections and never invoke learned generation or stylistic rewriting. This adds no claim of source truth or general prose inference. See [the document specification](document-workflow-spec.md). This source change is newer than the published 1.10.0 artifacts; the release whitepaper remains a historical release description.

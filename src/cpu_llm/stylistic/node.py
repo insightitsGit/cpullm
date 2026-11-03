@@ -63,6 +63,9 @@ def _graph():
 def apply_style(result, profile):
     validate_profile(profile)
     if profile is None:return result
+    if result.get('document'):
+        from .document import apply_document_style
+        return apply_document_style(result,profile)
     spec=options(profile)
     output=dict(result)
     if (result.get('guard_decision') not in (None,'allow') or result.get('delivery_blocked')

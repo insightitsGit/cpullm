@@ -5,7 +5,7 @@ see [the current design](current-design.md), [clarification loops](clarification
 and [reference resolution setup](reference-resolution.md). These describe changes
 in this checkout and do not imply that an identically numbered PyPI upload includes them.
 
-This guide describes cpu-llm 1.9.1. The targeted review of `9d6fbe8` on 2026-10-19 covers an earlier snapshot. PyPI `1.9.0` does not include the one-sentence Model01 display or the stored-ban and same-unit upper-limit reading. This version does. Inspect signatures and run the applicable tests when you upgrade. `1.8.0` and `1.9.0` do not contain this contract.
+This guide describes the current source checkout, including document/tone changes made after the published 1.10.0 artifacts. An installed package with the same version number may lack these newer changes. Historical 1.9.x reviews describe their recorded revisions, not the current API. For executable document recipes, start with the [document and tone user manual](document-generation-user-guide.md).
 
 Read [README](../README.md) for installation and capability limits. This document supplies the integration contract, not a certificate of general correctness.
 
@@ -19,7 +19,7 @@ with Appliance(namespace="tenant_alpha") as app:
     pass
 ```
 
-Constructor arguments are `checkpoint: Path | None`, and keyword-only `dsn`, `child_safety`, `namespace`, `on_escalate`, `reference_backend`. The optional reference backend is `None` (default), `"coreferee"`, `"fastcoref"`, or an adapter; install the required models before enabling it. `dsn=None` uses `VECTORPRISM_PG_DSN` and then the development DSN in `retrieval.py`. Constructing an appliance loads the encoder/retrieval stack, connects to PostgreSQL, creates local state, and starts a reusable Thinker pool. It is not a lightweight pure-function wrapper.
+Constructor arguments are `checkpoint: Path | None`, and keyword-only `dsn`, `child_safety`, `namespace`, `on_escalate`, `reference_backend`, `prompt_backend`, `resonance_tags`, `strict_evidence`, and `small_talk`. The optional reference backend is `None` (default), `"coreferee"`, `"fastcoref"`, or an adapter; install the required models before enabling it. `dsn=None` uses `VECTORPRISM_PG_DSN` and then the development DSN in `retrieval.py`. Constructing an appliance loads the encoder/retrieval stack, connects to PostgreSQL, creates local state, and starts a reusable Thinker pool. It is not a lightweight pure-function wrapper.
 
 When running a Python script on Windows, put appliance construction and calls inside a function invoked under `if __name__ == "__main__":`; the worker pool uses child processes. The README contains a complete guarded example. The short snippets in this guide describe operations to perform inside that application entry point.
 
@@ -29,7 +29,9 @@ Namespaces are normalized to lowercase; runs of characters outside `[a-z0-9_]` b
 
 ## Complete ask contract
 
-The optional keyword `style=None | <tone string> | StyleOptions(...)` enables bounded companion generation. It adds `result["stylistic"]`; it does **not** replace `reply.text`, change canonical evidence/status fields, or enable a general language model. Read `status` before accessing `text`: `generated` means new verified wording; `unchanged` means canonical wording was selected; unsupported cases skip; failures reject; and `children` means child sidecars exist without a safe aggregate. Five supported factual relations can be composed across completed tasks about the same subject. A pending task, conflict, different subject or inadequate budget prevents aggregation. Profiles are explicit and request-local; invalid controls raise `ValueError` before retrieval. Existing HTTP request models do not expose this argument. See the [stage-2 spec](stylistic-generation-spec.json) and [design](stylistic-generation-design.md).
+The optional keyword `style=None | <tone string> | StyleOptions(...)`, or an explicit prompt directive such as `in a friendly tone`, enables bounded verified generation. The tone directive is removed from the topic query; the knowledge base supplies facts, not finished friendly sentences. API tone overrides prompt tone, strict evidence disables generation, and tone does not persist to future turns. Existing HTTP models do not expose a style field, but prompt-text tone works through HTTP.
+
+Publication depends on the result path. For individual factual tasks, `stylistic.text` is a companion and canonical `reply.text` is preserved. For evidence-backed documents, successful tone construction publishes verified prose in `reply.text`; original source proofs remain in `answer_evidence` and `document.sections[].quotes`, and `rendered_response.canonical_text` keeps the quotation view. Unsupported records remain literal quotations. Inspect status, verification, tone alignment and skip/rejection reasons. Neither path is unrestricted generation or an independent truth/clinical audit. See the [tone contract](stylistic-generation-spec.md) and [document manual](document-generation-user-guide.md).
 
 ```python
 result = app.ask("What color is the Aster?", style="formal")
@@ -82,13 +84,16 @@ def ask(
     session_id=None,
     caller=None,
     as_of=None,
+    style=None,
+    strict_evidence=False,
+    small_talk=None,
 ): ...
 ```
 
 - `message`: English question/request text. Automatic typo correction can change it using the tenant's stored vocabulary. Inspect `typos` and, when present, `original_message` before interpreting a decision.
 - `propositions`: an optional list of `cpu_llm.ir.schema.EIRProposition` objects for cognition. This is an advanced override; the pipeline also requires compatible retrieved tensor/proposition pairing. It is not a list of plain strings and is not an unrestricted fact-injection interface.
 - `discover`: enable the discovery loop; merely asking why does not enable it. This is an optional evidence-gathering path, not permission to invent missing parameters.
-- `imagine`, `deep`, `math`, `finance`: force their respective optional agents. Other behavior is classified from the request. There are no public `summarize=`, `sources=`, or `format=` kwargs; ask for those in the message.
+- `imagine`, `deep`, `math`, `finance`: force their respective optional agents on the ordinary graph path. Document requests use their declared bounded snapshot strategy instead; they do not execute specialist proposals. Other behavior is classified from the request. There are no public `summarize=`, `sources=`, or `format=` kwargs; ask for those in the message.
 - `payment`, `authority`: supply both or neither. Mismatched presence raises `ValueError`. These are the proposal/authority objects consumed by PrismAgenticPay; this is separate from local `finance_result` checks and is not a payment execution API.
 - `objective`, `hypothesis`, `causal_graph`: caller-owned PrismThinker context objects. The pipeline does not supply a missing target or causal graph merely because a passage has a number or says because. A caller causal graph is a supplied assertion, not a graph independently proved from text.
 - `realization`: `"deterministic"`, `"evidence_neural"`, or `"model01"`; other values raise `ValueError`. Model01 already runs as a graph node on the ordinary path, so `"model01"` does not select a separately trained model. `"evidence_neural"` invokes an additional N0 realization result with deterministic fallback because no trained construction-ranker checkpoint is shipped. It does not force every reply producer through a new neural verifier.

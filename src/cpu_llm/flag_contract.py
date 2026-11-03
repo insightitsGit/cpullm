@@ -31,16 +31,16 @@ _AGENTS = (
     ('discover', ('discover',), 'API discover=True', 'API-only follow-up suggestions after reply; never inferred from layout.'),
 )
 _PRESENTATION = (
-    ('long_response', ('retrieve', 'brief'), 'budget', 'Long response about X', 'Derived depth/size indicator; consumers use validated numeric budgets.'),
-    ('expand_retrieval', ('retrieve',), 'budget', 'Explain X in 20 sentences', 'Must agree with long_response; use retrieval_budget, not the deep-search agent.'),
-    ('extended_overview', ('brief',), 'budget', 'Elaborate on X', 'Long response plus overview mode; direct factual slots are unchanged.'),
-    ('table', ('render_response',), 'post_graph', 'as a table', 'Tabulate plus built-in Jinja layout after judgment.'),
-    ('bullets', ('brief', 'render_response'), 'presentation', 'as bullet points', 'Overview uses list producer; a direct fact remains a fact.'),
+    ('long_response', ('retrieve', 'brief', 'document_snapshot', 'document_coverage'), 'budget', 'Long response about X', 'Derived depth/size indicator; consumers use validated numeric budgets.'),
+    ('expand_retrieval', ('retrieve', 'document_snapshot'), 'budget', 'Explain X in 20 sentences', 'Must agree with long_response; use retrieval_budget, not the deep-search agent.'),
+    ('extended_overview', ('brief', 'document_plan'), 'budget', 'Elaborate on X', 'Long response plus overview mode; direct factual slots are unchanged.'),
+    ('table', ('render_response', 'document_render'), 'post_graph', 'as a table', 'Tabulate plus built-in Jinja layout after judgment.'),
+    ('bullets', ('brief', 'render_response', 'document_render'), 'presentation', 'as bullet points', 'Overview uses list producer; a direct fact remains a fact.'),
     ('numbered', ('brief', 'render_response'), 'presentation', 'as a numbered list', 'Use verified item boundaries and numbered layout.'),
-    ('report', ('render_response',), 'post_graph', 'as a report', 'Built-in task-response report; distinct from legacy draft report.'),
-    ('html', ('render_response',), 'post_graph', 'as an HTML report', 'Escaped HTML output; does not choose a factual agent.'),
-    ('markdown', ('render_response',), 'post_graph', 'as a Markdown table', 'Markdown representation; default does not force a template.'),
-    ('template_requested', ('render_response',), 'post_graph', 'Please use a table', 'Explicit layout indicator; validated against format/media.'),
+    ('report', ('render_response', 'document_render'), 'post_graph', 'as a report', 'Built-in task-response report; distinct from legacy draft report.'),
+    ('html', ('render_response', 'document_render'), 'post_graph', 'as an HTML report', 'Escaped HTML output; does not choose a factual agent.'),
+    ('markdown', ('render_response', 'document_render'), 'post_graph', 'as a Markdown table', 'Markdown representation; default does not force a template.'),
+    ('template_requested', ('render_response', 'document_render'), 'post_graph', 'Please use a table', 'Explicit layout indicator; validated against format/media.'),
 )
 FLAG_BINDINGS = tuple(
     FlagBinding('state.' + name, 'API-only' if name == 'discover' else
@@ -58,13 +58,21 @@ FLAG_BINDINGS = tuple(
                           ('identity', 'Who is X?'), ('causal', 'Why did X stop?')]
 )
 FLAG_BINDINGS += (FlagBinding('request.strict_evidence', 'API, header, prompt marker, or operator floor',
-    ('strict_evidence.answer',), 'pre_graph',
+    ('strict_evidence.answer', 'document_snapshot', 'document_render'), 'pre_graph',
     'Enable wins; bypass normal graph and learned generation; bounded evidence quotes, exact arithmetic or abstention.',
     '[strict-evidence] followed by a newline'),)
 FLAG_BINDINGS += (FlagBinding('request.small_talk', 'built-in default, API boolean, or operator disable',
     ('conversation.reply',), 'pre_graph',
     'Guarded whole-turn social replies; mixed greetings preserve substantive requests; operator disable wins.',
     'Who are you?'),)
+FLAG_BINDINGS += (FlagBinding('request.style', 'explicit Python API or prompt tone directive; per-request',
+    ('stylistic', 'style_verify'), 'post_graph',
+    'After accepted facts or document evidence; inverse verification before final rendering; strict bypasses; API overrides prompt tone; source proofs preserved.',
+    'ask(message, style="friendly")'),)
+FLAG_BINDINGS += (FlagBinding('request.document', 'explicit genre prompt or supported long topic overview',
+    ('document_plan', 'document_snapshot', 'document_coverage', 'document_render'), 'document_workflow',
+    'Scoped bounded snapshot; sectioned exact quotations, coverage and continuation; shared Markdown/HTML layouts; strict forbids learned generation.',
+    'Write a detailed design document about Helios.'),)
 OPTIONAL_ORDER = ('deep', 'gather', 'compare', 'brief', 'math', 'finance', 'frame')
 _AFTER = {'shine': -1, 'deep': 0, 'imagine': 1, 'compare': 2, 'brief': 3, 'math': 4, 'finance': 5, 'frame': 6}
 _INDEPENDENT = frozenset({'math', 'finance'})
@@ -104,7 +112,8 @@ def enforce_node_request(node, state):
 
 def validate_graph_consumers(nodes):
     # These consumers execute outside the ordinary graph, before/after dispatch.
-    external = {'render_response', 'strict_evidence.answer', 'conversation.reply'}
+    external = {'render_response', 'strict_evidence.answer', 'conversation.reply', 'stylistic', 'style_verify',
+                'document_plan', 'document_snapshot', 'document_coverage', 'document_render'}
     expected = {node for binding in FLAG_BINDINGS for node in binding.consumers} - external
     if missing := expected - set(nodes):
         raise ValueError('Flag consumers missing from graph: ' + ', '.join(sorted(missing)))

@@ -1,0 +1,294 @@
+"""Bounded document planning and quotation-only composition from scoped snapshots.
+
+Section labels organize source records; they never assert inferred architecture.
+No source text is executed or paraphrased. Coverage is structural, not source truth.
+"""
+from __future__ import annotations
+
+import hashlib
+import html
+import re
+
+SCHEMA = 'document-plan-v1'
+_REQUEST = re.compile(
+    r'^(?:please\s+)?(?:(?:can|could|would) you\s+)?'
+    r'(?:write|draft|compose|create|prepare|produce|give(?: me)?|provide(?: me)?)\s+'
+    r'(?:an?\s+)?(?P<depth>detailed|comprehensive|thorough|full|long|brief|short)?\s*'
+    r'(?P<genre>design document|design doc|report|article|overview)\s+'
+    r'(?:about|on|of|for)\s+(?P<topic>.+?)[.!?]*$', re.I)
+_SECTIONS = {
+    'overview': ('Overview', 'Details', 'Limitations'),
+    'report': ('Overview', 'Operations', 'Limitations'),
+    'article': ('Overview', 'Details', 'Limitations'),
+    'design': ('Overview', 'Requirements', 'Architecture', 'Interfaces', 'Operations', 'Limitations', 'Validation'),
+}
+_CUES = {
+    'Requirements': r'\b(?:requires?|must|shall|approval|requirements?)\b',
+    'Architecture': r'\b(?:database|postgresql|storage|components?|architecture|uses?|stores?)\b',
+    'Interfaces': r'\b(?:api|endpoint|interface|protocol|http|request|response)\b',
+    'Operations': r'\b(?:backup|restore|restoration|runs?|retains?|retention|operators?|audit|events?|deletion|failures?)\b',
+    'Limitations': r'\b(?:not|never|cannot|unsupported|limits?|risks?|failover|unless|except)\b',
+    'Validation': r'\b(?:verif\w*|validat\w*|tests?|checksums?|checks?)\b',
+}
+
+
+def plan_document(message):
+    """Recognize explicit genres, not quoted titles or ordinary factual questions."""
+    from cpu_llm.stylistic.profiles import extract_style_request
+    message=extract_style_request(message)['query']
+    from cpu_llm.output_rendering import extract_layout
+    layout = extract_layout(message)
+    text = layout['content_query'].strip()
+    deep_requested=False
+    deep_prefix=re.match(r'^(?:please\s+)?(?:do|run|perform|use)\s+(?:a\s+)?deep search\s+(?:and|to)\s+(.+)$',text,re.I)
+    if deep_prefix:
+        deep_requested=True;text=deep_prefix[1]
+    deep_suffix=re.search(r'[.;]\s*(?:please\s+)?(?:use|run|perform)\s+(?:a\s+)?deep search[.!]*$',text,re.I)
+    if deep_suffix:
+        deep_requested=True;text=text[:deep_suffix.start()]
+    page = 1
+    snapshot_as_of = None
+    stamp = re.search(r'\s*[,;]\s*as of\s+(\d{1,20})\s*[.!?]*$', text, re.I)
+    if stamp:
+        snapshot_as_of=int(stamp[1]); text=text[:stamp.start()]
+    match = re.search(r'\s*[,;]\s*page\s+(\d{1,5})\s*[.!?]*$', text, re.I)
+    if match:
+        page = int(match[1]); text = text[:match.start()]
+    match = _REQUEST.fullmatch(text)
+    if not match:
+        return None
+    genre = match['genre'].lower()
+    if genre == 'overview':
+        if layout['format'] != 'report' and not (page>1 and snapshot_as_of is not None):
+            return None
+    if genre.startswith('design'): genre = 'design'
+    topic = match['topic'].strip(' .!?')
+    topic=re.sub(r'^the topic (?:of )?', '',topic,flags=re.I)
+    topic=re.sub(r'\s+with (?:source citations|sources|citations)$','',topic,flags=re.I)
+    requested_sections = None
+    outline = re.search(r',\s*(?:covering|including|include)\s+(.+)$', topic, re.I)
+    if outline:
+        requested_sections=[s.strip().title() for s in re.split(r',|\band\b',outline[1],flags=re.I) if s.strip()]
+        if len(requested_sections)>10 or any(len(s)>60 for s in requested_sections):return None
+        topic=topic[:outline.start()].strip()
+    # Attribute lists remain independently judged factual tasks.
+    if re.match(r'(?:the )?(?:colou?r|habitat|shape|material|weight)\b', topic, re.I):
+        return None
+    limit = re.search(r'\s+in\s+(\d{1,5})\s+(sentences?|words?|items?|bullets?)\s*$', topic, re.I)
+    limits = {}
+    if limit:
+        limits['words' if limit[2].lower().startswith('word') else 'units'] = int(limit[1])
+        topic = topic[:limit.start()].strip()
+    # Explicit empty/ambiguous multi-instruction scope must not become source facts.
+    if not topic or len(topic) > 240 or re.search(r'[\n?;]|\b(?:and then|also write)\b', topic, re.I):
+        return None
+    depth = (match['depth'] or '').lower()
+    budget = 3 if depth in {'brief', 'short'} else 16 if depth else 8
+    if 'units' in limits: budget = min(20, max(1, limits['units']))
+    if 'words' in limits: budget = min(20, max(1, (limits['words'] + 19) // 20))
+    return dict(schema=SCHEMA, genre=genre, topic=topic, sections=list(dict.fromkeys(['Overview', *(requested_sections or _SECTIONS[genre][1:])])),
+        detail='brief' if depth in {'brief', 'short'} else 'detailed',
+        unit_budget=budget, requested_limits=limits, page=max(1, min(page, 10000)),
+        format=layout['format'] or 'report', output_media=layout['output_media'],
+        retrieval_budget=40, source_scan_limit=10000, text_scan_limit=8_000_000, snapshot_as_of=snapshot_as_of,
+        composition='attributed_source_quotes', proposed_decisions=False, deep_requested=deep_requested)
+
+
+def _words(text):
+    return set(re.findall(r'[\w]+', text.casefold())) - {'the', 'a', 'an', 'of', 'and', 'for', 'about'}
+
+
+def plan_long_overview(message):
+    """Use attributed documents for long, whole-topic overviews as well as genres."""
+    from cpu_llm.response_policy import classify_response_request
+    response=classify_response_request(message)
+    if response['mode']!='overview' or not response['flags']['long_response']:
+        return None
+    match=re.fullmatch(r'(?:tell me about|describe)\s+(.+?)[.!?]*',response['content_query'],re.I)
+    if not match or re.search(r'[?;\n]',match[1]): return None
+    plan=plan_document('Write a detailed article about '+match[1]+'.')
+    if plan is None:return None
+    plan.update(genre='overview', sections=list(_SECTIONS['overview']),
+        unit_budget=response['item_budget'] if response['format'] in {'bullets','numbered'} else response['sentence_budget'],
+        format=response['format'], output_media=response['output_media'])
+    limits=response['requested_limits']
+    if 'sentences' in limits:
+        plan['unit_budget']=min(20,max(1,limits['sentences']))
+    plan['requested_limits']=dict(limits)
+    return plan
+
+
+def _section(text, genre):
+    if re.search(r'\bis (?:a|an)\b', text, re.I): return 'Overview'
+    order = ['Limitations', 'Requirements', 'Interfaces', 'Validation', 'Architecture', 'Operations']
+    available = _SECTIONS[genre]
+    for name in order:
+        if name in available and re.search(_CUES[name], text, re.I): return name
+    if genre in {'article','overview'} and not re.search(r'\bis (?:a|an)\b', text): return 'Details'
+    return 'Overview'
+
+
+def _md(value):
+    return re.sub(r'([\\`*{}\[\]()#+!|_])', r'\\\1', html.escape(str(value),quote=False))
+
+
+def compose_document(plan, rows, *, strict=False, snapshot=None):
+    """Pure, testable composition. Each atomic quotation has exact chunk provenance."""
+    from cpu_llm.strict_evidence_engine import facts_from, name, value_key
+    wanted = _words(plan['topic'])
+    candidates = []
+    seen = set()
+    for row in rows:
+        text = str(row.get('chunk_text') or '')
+        # Topic-token coverage is an explicit lexical contract, not inferred membership.
+        if not wanted or not wanted.issubset(_words(text)) or not text.strip(): continue
+        if text in seen: continue
+        seen.add(text)
+        section=_section(text, plan['genre'])
+        if section not in plan['sections']: section='Overview'
+        for title in plan['sections']:
+            if title not in _SECTIONS[plan['genre']] and (
+                re.search(_CUES[title],text,re.I) if title in _CUES else _words(title).issubset(_words(text))):
+                section=title;break
+        candidates.append(dict(row, section=section))
+    candidates.sort(key=lambda r: str(r['document_id']))
+    # Interleave sections so budget pressure cannot silently erase all later sections.
+    groups = {s: [r for r in candidates if r['section'] == s] for s in plan['sections']}
+    ordered = []
+    while any(groups.values()):
+        for section in plan['sections']:
+            if groups[section]: ordered.append(groups[section].pop(0))
+    start = (plan['page'] - 1) * plan['unit_budget']
+    selected = ordered[start:start + plan['unit_budget']]
+    if sum(len(r['chunk_text']) for r in selected)>200_000:
+        raise ValueError('document output exceeds atomic quotation text limit')
+    sections = [dict(title=s, quotes=[], status='missing') for s in plan['sections']]
+    evidence = []
+    for row in selected:
+        text = row['chunk_text']
+        proof = dict(document_id=row['document_id'], quote=text, span=text, start=0, end=len(text),
+            chunk_sha256=hashlib.sha256(text.encode('utf-8')).hexdigest())
+        evidence.append(proof)
+        section = next(s for s in sections if s['title'] == row['section'])
+        section['quotes'].append(proof); section['status'] = 'supported'
+    # Recognized attribute conflicts are exposed with both source versions intact.
+    facts, _, _ = facts_from(candidates)
+    values = {}
+    for fact in facts:
+        key = (fact['entity'], fact['attribute'])
+        values.setdefault(key, set()).add(value_key(fact['value']))
+    conflicts = [dict(entity=k[0], attribute=k[1]) for k,v in values.items() if len(v)>1]
+    missing = [s['title'] for s in sections if not s['quotes']]
+    has_more = start + len(selected) < len(ordered)
+    status = 'insufficient_evidence' if not selected else 'partial' if missing or has_more or conflicts or plan['page']>1 else 'evidence_quote'
+    coverage = dict(scope='lexical topic matches in bounded authorized snapshot; section labels are organizational',
+        source_truth_verified=False, section_coverage_complete=bool(selected) and not missing,
+        missing_sections=missing, matched_chunks=len(candidates), included_chunks=len(selected),
+        conflicts=conflicts, conflict_detection='recognized attribute forms only; arbitrary prose conflicts not resolved',
+        has_more=has_more, next_page=plan['page']+1 if has_more else None,
+        word_limit_enforced=False, sentence_limit_enforced=False,
+        budget_scope='atomic source chunks; qualifiers and source text are never truncated',
+        snapshot=snapshot)
+    document = dict(schema='evidence-document-v1', plan=plan, sections=sections, coverage=coverage)
+    text = render_document(document)
+    coverage['rendered_word_count'] = len(text.split())
+    coverage['requested_budget_exceeded'] = bool(plan['requested_limits'].get('words') is not None and
+        coverage['rendered_word_count'] > plan['requested_limits']['words'])
+    return dict(answer=None, answer_status=status, status=status, audit_passed=False,
+        answer_evidence=evidence, supporting_evidence=[], document=document,
+        judgment=dict(schema='document-judgment-v1', outcome=status, verification='source_quote_provenance',
+            complete=not missing and not has_more and not conflicts and bool(selected)),
+        reply=dict(text=text, body=text, format=plan['format'], media_type=plan['output_media']),
+        evidence_policy=dict(version='document-quotes-v1', enabled=strict, learned_generation=False,
+            source_truth_verified=False, clinical_validation=False),
+        rendered_response=dict(schema='rendered-document-v1', text=text, format=plan['format'],
+            media_type=plan['output_media'], verification='layout of exact source quotations'),
+        routing=dict(schema='flag-routing-contract-v1', executed_nodes=[],
+            post_stages=['document_plan', 'document_snapshot', 'document_coverage', 'document_render']))
+
+
+def render_document(document):
+    """Render one evidence representation in all formats, without selecting new facts."""
+    plan, sections = document['plan'], document['sections']
+    styled=document.get('presentation')=='verified_prose_with_literal_fallback'
+    note = ('Verified prose constructed from source claims; unrecognized records remain attributed quotations. '
+            if styled else 'Source quotations; design decisions are not inferred. ')
+    note += 'Missing sections are not stated in the selected evidence.'
+    title = f"{plan['topic']} — {plan['genre'].title()}"
+    rows = [(s['title'], ('Source quotation: ' if styled else '')+q['quote'], q['document_id']) for s in sections for q in s.get('literal_quotes',s['quotes'])]
+    if styled:
+        rows += [(s['title'],'Derived prose: '+p['text'],', '.join(p['source_ids'])) for s in sections for p in s.get('prose',[])]
+    rows += [(s['title'], 'Not stated in the selected evidence.', '') for s in sections if not s['quotes']]
+    if plan['output_media'] == 'text/html':
+        e = html.escape
+        if plan['format'] == 'table':
+            from tabulate import tabulate
+            body = tabulate(rows, headers=['Section','Source quotation','Source'], tablefmt='html', disable_numparse=True)
+        elif plan['format'] in {'bullets','numbered'}:
+            tag='ol' if plan['format']=='numbered' else 'ul'
+            body=f'<{tag}>'+''.join(f'<li><strong>{e(s)}</strong>: {e(q)} [{e(i)}]</li>' for s,q,i in rows)+f'</{tag}>'
+        else:
+            body=''.join(f'<section><h2>{e(s["title"])}</h2>'+(''.join(
+                f'<p>{e(p["text"])}</p><p>Sources: {e(", ".join(p["source_ids"]))}</p>' for p in s.get('prose',[]))+''.join(
+                f'<blockquote>{e(q["quote"])}</blockquote><p>Source: {e(q["document_id"])}</p>' for q in s.get('literal_quotes',s['quotes']))
+                or '<p>Not stated in the selected evidence.</p>')+'</section>' for s in sections)
+        text=f'<article><h1>{e(title)}</h1><p>{e(note)}</p>{body}</article>'
+    else:
+        lines=['# '+_md(title), '', note, '']
+        if plan['format']=='table':
+            from tabulate import tabulate
+            lines.append(tabulate([[_md(v).replace('\n','<br>') for v in r] for r in rows],
+                headers=['Section','Source quotation','Source'],tablefmt='github',disable_numparse=True))
+        elif plan['format'] in {'bullets','numbered'}:
+            for i,(s,q,d) in enumerate(rows,1):lines.append(f'{str(i)+"." if plan["format"]=="numbered" else "-"} {_md(s)}: {_md(q)} [{_md(d)}]')
+        else:
+            for section in sections:
+                lines.extend(['## '+section['title'], ''])
+                for p in section.get('prose',[]):lines.extend([_md(p['text']),'','Sources: '+', '.join(_md(i) for i in p['source_ids']),''])
+                for q in section.get('literal_quotes',section['quotes']):lines.extend(['> '+_md(q['quote']).replace('\n','\n> '), '', 'Source: '+_md(q['document_id']), ''])
+                if not section['quotes']: lines.extend(['Not stated in the selected evidence.',''])
+        text='\n'.join(lines)
+    if document['coverage']['has_more']:
+        # Preserve the page size so continuation never skips or repeats records.
+        outline=', '.join(plan['sections'])
+        next_prompt=f'Write a {plan["genre"] if plan["genre"]!="design" else "design document"} about {plan["topic"]} in {plan["unit_budget"]} items, including {outline}, page {plan["page"]+1}.'
+        stamp=(document['coverage'].get('snapshot') or {}).get('as_of')
+        if stamp is not None: next_prompt=next_prompt.rstrip('.')+f', as of {stamp}.'
+        layout={'report':'report','table':'table','bullets':'bullet points','numbered':'numbered list'}.get(plan['format'])
+        if layout:
+            media='HTML' if plan['output_media']=='text/html' else 'Markdown'
+            next_prompt=next_prompt.rstrip('.')+f' as a {media} {layout}.'
+        document['coverage']['continuation_prompt']=next_prompt
+        text += ('<p>'+html.escape('More evidence available. Continue: '+next_prompt)+'</p>' if plan['output_media']=='text/html' else '\n\nMore evidence available. Continue: '+next_prompt)
+    if document['coverage']['conflicts']:
+        warning='Recognized conflicting source attributes exist; no value was selected as authoritative.'
+        text+=('<p>'+warning+'</p>' if plan['output_media']=='text/html' else '\n\n'+warning)
+    return text
+
+
+def execute_document(app, message, plan, *, caller=None, as_of=None, strict=False):
+    from cpu_llm.pipeline import _caller_for
+    from cpu_llm.access import source_allowed
+    import psycopg
+    context = _caller_for(app, caller)
+    allowed = None if context is None else context.allowed_sources
+    decision = app.guard.check(message).decision
+    if decision != 'allow':
+        return dict(answer_status='blocked', status='blocked', guard_decision=decision,
+            answer=None,audit_passed=False,answer_evidence=[],reply=dict(text='Request blocked.'))
+    try:
+        rows, when = app.index.strict_source_rows(allowed, as_of=as_of if as_of is not None else plan.get('snapshot_as_of'))
+        if len(rows)>plan['source_scan_limit'] or sum(len(r['chunk_text']) for r in rows)>plan['text_scan_limit']:
+            raise ValueError('document snapshot limit')
+    except (ValueError, RuntimeError, psycopg.Error):
+        return dict(answer_status='insufficient_evidence', status='insufficient_evidence',answer=None,
+            audit_passed=False,answer_evidence=[],reply=dict(text='Document evidence scan unavailable or exceeds its limit; no document selected.'))
+    if any(not source_allowed(r['document_id'], allowed) for r in rows):
+        raise RuntimeError('document source scope violation')
+    try:
+        result=compose_document(plan, rows, strict=strict, snapshot=dict(as_of=when, scanned_chunks=len(rows)))
+    except ValueError:
+        return dict(answer_status='insufficient_evidence', status='insufficient_evidence',answer=None,
+            audit_passed=False,answer_evidence=[],reply=dict(text='Atomic document quotations exceed the output limit; ingest smaller complete records or narrow the topic.'))
+    result.update(message=message, original_message=message,tenant_id=app.tenant_id,guard_decision='allow')
+    return result

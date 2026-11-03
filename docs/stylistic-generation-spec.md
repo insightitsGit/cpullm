@@ -4,7 +4,7 @@ This document specifies the current implementation, not every proposed feature i
 
 ## Purpose and execution
 
-Construct alternative sentences and longer related responses from already accepted factual decisions. The node selects from ten reviewed constructions over five relations: color, location, shape, material and explicit weight. It does not retrieve new facts, change source permissions, infer missing details or train a language model.
+Construct alternative sentences and longer related responses from accepted facts or source-bound document claims. The base fact path selects from ten reviewed constructions over color, location, shape, material and explicit weight. The source-checkout document extension adds two technical predicate constructions, using the same lexicon ranking and independent inverse verification. It does not retrieve tone phrases from the knowledge base, infer missing details, change permissions or train a language model.
 
 `stylistic -> style_verify` is a ChorusGraph output subgraph invoked after canonical request dispatch, final judgment and retrieval repair, before existing layout rendering. Batch children are processed separately; complete same-subject children can also receive an aggregate companion. The verifier checks each licensed clause, complete claim coverage and the proof union. Only additive `and` is available for composition; causal or comparative implications cannot be added.
 
@@ -31,7 +31,7 @@ if sidecar.get("status") in {"generated", "unchanged"}:
     print(sidecar["proof"])
 ```
 
-Profiles are explicit and request-local. Repeat the argument on a follow-up if wanted; it does not enter pending session state or persist to later requests. Existing HTTP request models do not expose this parameter. Prompt wording alone does not enable tone selection.
+Profiles are explicit and per-request. Use `style=` or an anchored directive such as `in a friendly tone`, `In a friendly tone, ...` or `. Use a friendly tone.` The directive is removed from the evidence query; source documents do not need matching tone vocabulary. API settings override prompt tone. HTTP bodies do not expose `style`, but their prompt text supports these directives. Quoted titles and negated instructions do not activate tone. Repeat the control on a follow-up; it does not persist to later requests.
 
 Strict evidence mode takes precedence and bypasses the style node, even if
 `style` is supplied; strict responses do not include a generated stylistic
@@ -62,7 +62,7 @@ The current adapter accepts structurally judged affirmative individual decisions
 
 Successful results expose `text`, original source `proof`, per-claim subject/relation/value, selected construction IDs, score components, sentence count, `tone_alignment`, actual style-node execution and a `style-verification-v2` record. `neutral_fallback` means the requested expressive tone has no matching factual diction; it is not evidence of successful emotional/poetic style. A skipped result can be the correct behavior even when its canonical answer is valid.
 
-Canonical `reply`, `answer`, answer/outcome, `judgment`, audit and source-evidence fields retain their existing meanings. The generated text is a **derived paraphrase**; it must not be labeled a verbatim source quotation or inherit a canonical audit as proof of world truth. Existing Markdown/HTML rendering uses canonical content. An application can explicitly consume the verified companion, but automatic visible-answer replacement is not implemented.
+On the base single-fact path, canonical reply and judgment fields remain unchanged and the verified text is a companion. On the source-checkout document path, `reply.text` can publish verified derived prose, `judgment.verification` identifies document constructions, and `rendered_response.canonical_text` preserves the quotation view. Original quotes/source evidence and `audit_passed=False` remain. Generated text must not be labeled a verbatim quotation or inherit an audit as proof of real-world truth. The document extension uses `document-style-v1`; the older fact companion remains `style-result-v2`.
 
 ## Tested behavior and limits
 
@@ -79,3 +79,36 @@ Remaining limits include duplicate corroborating proof sets, unlisted color/shap
 Runtime: `src/cpu_llm/stylistic/`; public integration: `src/cpu_llm/pipeline.py`; guarded weight-question normalization: `src/cpu_llm/prompt_ingestion.py`.
 
 Tests: `tests/test_stylistic.py`, `tests/test_stylistic_composition.py`, `tests/test_stylistic_live.py`, and `tests/test_stylistic_scenarios_live.py`. The registry consistency test checks the JSON controls, profiles, relationships, relation set and construction IDs against runtime definitions. Immutable audit artifacts preserve original prompts, responses, proof and known findings.
+
+## Trigger checklist
+
+- Enable with `app.ask(message, style="friendly")`, validated `StyleOptions`, or an explicit prompt tone directive. With neither API nor prompt tone, the subgraph is disabled.
+- After canonical dispatch, judgment and retrieval repair, execute `stylistic`, then `style_verify`, then layout rendering.
+- Require structurally accepted, affirmative, individual, subject-directed facts with matching proof. Supported relations: color, location, shape, material and explicit weight.
+- Skip blocked, held, incomplete, unsupported or clarification results. Aggregate batches only when complete supported facts share one subject.
+- Respect relationship restrictions and the smaller of the style and response sentence budgets; never discard claims to fit.
+- Strict evidence bypasses the node. Built-in social variants are a separate mechanism.
+- Anchored tone directives in Python/HTTP prompt text activate it; response length alone does not. Style does not persist between turns.
+- Use `stylistic.text` only for `generated` or `unchanged` with verification true. The base fact reply is preserved; document replies can publish verified prose with the quotation view retained. Inspect `executed_nodes`, skip reasons, `tone_alignment`, claim counts and proofs.
+
+The central flag registry includes `request.style`. Public API ordering, explicit activation and strict bypass have regression coverage in `tests/test_style_trigger_order.py`.
+
+## Source-checkout document tone extension
+
+A friendly source phrase is not required. For example, “Write a detailed article
+about Helios in a friendly tone” separates the topic Helios from the tone control.
+Two additional lexicon entries license friendly/formal document predicate
+construction through the existing weighted semantic/intensity/tone/genericness
+ranking. New sentences use exact source predicates and additive conjunctions;
+friendly contraction is limited to a leading “does not”, and a generated “It”
+requires a source-declared nonhuman identity plus the same paragraph subject.
+The independent inverse grammar recovers every original predicate in order,
+checks source hashes, and refuses omitted/changed claims, unsupported scope or
+an insufficient explicit budget. Complex/conditional records remain visibly
+attributed quotations. Unsupported expressive preferences report neutral fallback.
+
+This is `document-style-v1`, published as verified derived document prose with
+original quotes/proofs and a canonical quotation view retained in JSON. It does
+not turn quotations into certified real-world facts, infer an unknown design,
+or use a neural decoder. Strict evidence always keeps the quotation-only path.
+See `tests/test_document_tone.py` and the saved prompt-tone examples.

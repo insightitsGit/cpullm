@@ -31,6 +31,8 @@ ENTRIES=(
     Entry('material-attribute-v2','attribute:material',Tone.FORMAL|Tone.ANALYTICAL|Tone.SERIOUS),
     Entry('weight-predicate-v2','attribute:weight',Tone.FRIENDLY),
     Entry('weight-attribute-v2','attribute:weight',Tone.FORMAL|Tone.ANALYTICAL|Tone.SERIOUS),
+    Entry('document-friendly-predicate-v1','document:predicate',Tone.FRIENDLY,intensity=(.3,0,.4)),
+    Entry('document-formal-predicate-v1','document:predicate',Tone.FORMAL|Tone.ANALYTICAL|Tone.SERIOUS),
 )
 
 class Lexicon:

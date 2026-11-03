@@ -131,7 +131,9 @@ def test_ask_passes_the_plan_and_content_query_to_the_graph():
                     reply=dict(text='The retrieved passages do not settle that.',
                                answer_status='insufficient_evidence'))
     app.graph = SimpleNamespace(invoke=graph)
-    result = app.ask('Explain the Cedar in detail.')
+    # Exercise the graph primitive directly; public long-topic requests now use
+    # the quotation document workflow, covered in test_document_workflow.py.
+    result = app._ask_single('Explain the Cedar in detail.')
     assert encoded == ['Tell me about the Cedar']
     assert states[0]['summarize'] and not states[0]['explain']
     assert result['response_plan']['sentence_budget'] == 8
@@ -141,7 +143,7 @@ def test_ask_passes_the_plan_and_content_query_to_the_graph():
 
     # A presentation control word must not be corrected to a corpus noun.
     app.word_tags = {'bell': {}, 'cedar': {}}
-    result = app.ask('Explain the Cedar in detail.')
+    result = app._ask_single('Explain the Cedar in detail.')
     assert result['resolved_query'] == 'Tell me about the Cedar'
     assert result['typos'] == []
 

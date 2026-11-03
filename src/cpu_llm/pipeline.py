@@ -589,6 +589,13 @@ class Appliance:
         raw_message = message
         enabled, content = requested(message, strict_evidence)
         enabled = enabled or getattr(self, 'strict_evidence', False)
+        from cpu_llm.stylistic.profiles import extract_style_request
+        tone_control = extract_style_request(content)
+        if tone_control['tone'] is not None:
+            content = tone_control['query']
+            message = content
+            if style is None:
+                style = tone_control['tone']
         if small_talk is not None and type(small_talk) is not bool:
             raise ValueError('small_talk must be a boolean or None')
         prefix = None
@@ -607,6 +614,33 @@ class Appliance:
                     message = prefix['engine_query']
                 else:
                     prefix = None
+        from cpu_llm.document_workflow import plan_document, plan_long_overview, execute_document
+        document_message = content if prefix is None else message
+        document_plan = plan_document(document_message)
+        if document_plan is None and not enabled:
+            document_plan = plan_long_overview(document_message)
+        if document_plan is not None:
+            if not enabled and realization not in {'deterministic', 'evidence_neural', 'model01'}:
+                raise ValueError('realization must be deterministic, evidence_neural, or model01')
+            if not enabled and (payment is not None or authority is not None or objective is not None or hypothesis is not None or causal_graph is not None):
+                raise ValueError('Submit specialist proposals as a separate request, not a document request.')
+            if not enabled and style is not None:
+                from cpu_llm.stylistic.contracts import validate_profile
+                validate_profile(style)
+            result = execute_document(self, raw_message, document_plan, caller=caller, as_of=as_of, strict=enabled)
+            from cpu_llm.response_policy import classify_response_request
+            result['response_plan'] = classify_response_request(content if prefix is None else message)
+            result['response_plan']['document'] = document_plan
+            if result.get('document'):
+                result['document']['retrieval'] = dict(strategy='bounded_authorized_time_valid_snapshot',
+                    deep_search_requested=deep or document_plan.get('deep_requested',False), graph_expansion=False,
+                    note='All scoped chunks are scanned up to the declared cap; topical quotes are selected without top-k or relation inference.')
+            if not enabled and style is not None:
+                from cpu_llm.stylistic import apply_style
+                result = apply_style(result, style)
+            if tone_control['tone'] is not None:
+                result['tone_request'] = dict(tone_control, effective_tone=style if isinstance(style,str) else getattr(style,'tone',None), disabled_by_strict=enabled)
+            return result
         if enabled:
             result = answer(self, message, caller=caller, as_of=as_of)
             if prefix is not None:
@@ -630,6 +664,9 @@ class Appliance:
         if style is not None:
             from cpu_llm.stylistic import apply_style
             result = apply_style(result, style)
+        if tone_control['tone'] is not None:
+            result['tone_request'] = dict(tone_control, effective_tone=style if isinstance(style,str) else getattr(style,'tone',None))
+            result['original_message'] = raw_message
         return render_response(result)
 
     def _ask_single(

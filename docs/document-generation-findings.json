@@ -1,0 +1,25 @@
+{
+  "schema": "document-generation-findings-v1",
+  "date": "2026-11-03",
+  "availability": "source checkout after published 1.10.0; published artifacts unchanged",
+  "manual": "docs/document-generation-user-guide.md",
+  "specification": "docs/document-generation-findings-spec.md",
+  "requirements": [
+    {"id":"presentation-not-evidence","consumer":"stylistic.profiles.extract_style_request","test":"tests/test_document_tone.py"},
+    {"id":"complete-technical-records","consumer":"document_workflow.compose_document","test":"tests/test_document_workflow.py"},
+    {"id":"independent-inverse-grammar","consumer":"stylistic.document.verify_sentence","test":"tests/test_document_tone.py"},
+    {"id":"scope-time-strict-precedence","consumer":"pipeline.Appliance.ask","test":"tests/test_document_workflow_live.py"},
+    {"id":"central-flag-consumers","consumer":"flag_contract.FLAG_BINDINGS","test":"tests/test_flag_contract.py"}
+  ],
+  "prompt_cases": [
+    {"prompt":"Write a detailed article about Helios in a friendly tone.","topic":"Helios","genre":"article","tone":"friendly","format":"report","media":"text/markdown"},
+    {"prompt":"In a formal tone, write a detailed design document about Helios as an HTML report.","topic":"Helios","genre":"design","tone":"formal","format":"report","media":"text/html"},
+    {"prompt":"Write a detailed report about Helios. Use a friendly tone.","topic":"Helios","genre":"report","tone":"friendly","format":"report","media":"text/markdown"},
+    {"prompt":"Write a detailed article about Helios in a friendly tone as a Markdown table.","topic":"Helios","genre":"article","tone":"friendly","format":"table","media":"text/markdown"},
+    {"prompt":"Use deep search to write a detailed report about Helios in a friendly tone.","topic":"Helios","genre":"report","tone":"friendly","format":"report","media":"text/markdown"},
+    {"prompt":"Write a brief report about Helios as bullet points.","topic":"Helios","genre":"report","tone":null,"format":"bullets","media":"text/markdown"}
+  ],
+  "precedence": ["strict evidence disables generation", "API style overrides explicit prompt tone", "no tone persists between turns"],
+  "remaining_boundaries": ["general aliases and semantic joins", "arbitrary typed object-category questions", "universal prose conflict detection", "novel architecture proposals", "arbitrary expressive generation", "exact word or sentence counts"],
+  "learning_policy": "Review findings into deterministic rules and regression cases; do not silently train on user prompts or invent KB facts."
+}

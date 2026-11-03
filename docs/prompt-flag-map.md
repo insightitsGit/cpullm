@@ -2,6 +2,19 @@
 
 Generated from `cpu_llm.flag_contract.FLAG_BINDINGS`. The JSON companion is tested for exact registry agreement.
 
+`request.document` activates the bounded quotation-document workflow for explicit
+genres and supported long topic overviews. It runs `document_plan`,
+`document_snapshot`, `document_coverage` and `document_render`, independently of
+the ordinary graph. Caller/guard/time constraints apply before quotation
+selection. See [the document contract](document-workflow-spec.md).
+
+`request.style` is an explicit Python API or prompt-directive control consumed by the separate
+`stylistic -> style_verify` output subgraph after canonical judgment/repair and
+before layout rendering. It publishes a companion only for supported accepted
+facts or document claims. Strict evidence bypasses it. Prompt tone controls work
+through Python and HTTP text; API tone overrides prompt tone. No HTTP style field
+is added, and response length alone does not activate tone. See [tone triggers](stylistic-generation-spec.md#trigger-checklist).
+
 `request.small_talk` is a pre-graph default consumed by `conversation.reply`.
 It produces guarded, complete-turn built-in social responses and preserves
 substantive content after greeting prefixes. Operator disable wins; it never

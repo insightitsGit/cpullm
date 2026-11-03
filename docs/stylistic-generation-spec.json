@@ -4,26 +4,77 @@
   "stage": "verified_related_composition_and_tone_controls",
   "date": "2026-11-02",
   "python_api": "Appliance.ask(message, *, style=None)",
-  "profiles": ["friendly", "poetic", "formal", "emotional", "serious", "playful", "melancholic", "empathetic", "analytical", "intimate"],
+  "profiles": [
+    "friendly",
+    "poetic",
+    "formal",
+    "emotional",
+    "serious",
+    "playful",
+    "melancholic",
+    "empathetic",
+    "analytical",
+    "intimate"
+  ],
   "typed_controls": "cpu_llm.stylistic.StyleOptions",
-  "controls": ["tone", "relationship", "magnitude", "valence", "arousal", "max_sentences", "clauses_per_sentence", "tone_weights"],
-  "relationship_flags": {"UNKNOWN": 0, "FAMILIAL": 1, "ROMANTIC": 2, "COLLEAGUE": 4, "FORMAL": 8, "CASUAL": 16},
+  "controls": [
+    "tone",
+    "relationship",
+    "magnitude",
+    "valence",
+    "arousal",
+    "max_sentences",
+    "clauses_per_sentence",
+    "tone_weights"
+  ],
+  "relationship_flags": {
+    "UNKNOWN": 0,
+    "FAMILIAL": 1,
+    "ROMANTIC": 2,
+    "COLLEAGUE": 4,
+    "FORMAL": 8,
+    "CASUAL": 16
+  },
   "restriction_precedence": "union_of_exclusions_overrides_permissions",
   "default": null,
-  "activation": "explicit_api_only_request_local",
-  "graph_nodes": ["stylistic", "style_verify"],
+  "activation": "explicit_api_or_anchored_prompt_tone_directive",
+  "graph_nodes": [
+    "stylistic",
+    "style_verify"
+  ],
   "placement": "after_canonical_dispatch_before_rendering_per_completed_child",
   "publication": "companion_only",
   "result_path": "stylistic",
-  "statuses": ["generated", "unchanged", "skipped", "rejected", "children"],
+  "statuses": [
+    "generated",
+    "unchanged",
+    "skipped",
+    "rejected",
+    "children"
+  ],
   "constructions": [
-    {"id": "formal-color-v1", "profile": "formal", "relation": "has_color", "input": "X is COLOR.", "output": "The color of X is COLOR."},
-    {"id": "friendly-location-v1", "profile": "friendly", "relation": "lives_in", "input": "X is found in PLACE.", "output": "You can find X in PLACE."}
+    {
+      "id": "formal-color-v1",
+      "profile": "formal",
+      "relation": "has_color",
+      "input": "X is COLOR.",
+      "output": "The color of X is COLOR."
+    },
+    {
+      "id": "friendly-location-v1",
+      "profile": "friendly",
+      "relation": "lives_in",
+      "input": "X is found in PLACE.",
+      "output": "You can find X in PLACE."
+    }
   ],
   "eligibility": {
     "judge_verification": "structural",
     "decision_outcome": "answered",
-    "delivery_outcomes": ["answered", "evidence_quote"],
+    "delivery_outcomes": [
+      "answered",
+      "evidence_quote"
+    ],
     "polarity": "affirmative",
     "direction": "subject",
     "quantifier_scope": "individual",
@@ -32,14 +83,86 @@
     "max_slot_characters": 80
   },
   "verification": "independent_closed_inverse_grammar_plus_snapshot_and_proof_binding",
-  "relations": ["has_color", "lives_in", "attribute:shape", "attribute:material", "attribute:weight"],
-  "construction_count": 10,
-  "additional_constructions": ["plain-color-v2", "plain-location-v2", "shape-predicate-v2", "shape-attribute-v2", "material-predicate-v2", "material-attribute-v2", "weight-predicate-v2", "weight-attribute-v2"],
-  "composition": {"max_claims": 8, "default_max_sentences": 3, "default_clauses_per_sentence": 2, "max_requested_sentences": 20, "max_clauses_per_sentence": 4, "same_subject_only": true, "all_tasks_required": true, "connective": "and", "budget_intersection": "existing_response_sentence_budget", "truncation": false},
-  "lexicon": {"layout": "read_only_struct_of_arrays", "semantic_filter": "exact_relation_license_before_ranking", "weights": [0.4, 0.25, 0.25, 0.15], "valence_distance_divisor": 2, "tone_affinity": "normalized_curated_labels", "tie_break": "score_rounded_to_six_decimals_then_stable_entry_id", "trained_word_embeddings": false},
-  "unchanged": ["reply", "answer", "answer_status", "judgment", "audit_passed", "answer_evidence", "supporting_evidence", "response-plan-v1", "flag-routing-contract-v1", "EIRProposition", "database_schema"],
-  "not_implemented": ["automatic_tone_classifier", "broad_sense_aware_word_lexicon", "expressive_emotional_or_romantic_prose", "neural_generation", "visible_reply_replacement", "HTTP_style_parameter", "cross_turn_style_persistence", "multi_premise_join_realization"],
-  "tests": ["tests/test_stylistic.py", "tests/test_stylistic_composition.py", "tests/test_stylistic_live.py", "tests/test_stylistic_scenarios_live.py"],
+  "relations": [
+    "has_color",
+    "lives_in",
+    "attribute:shape",
+    "attribute:material",
+    "attribute:weight",
+    "document:predicate"
+  ],
+  "construction_count": 12,
+  "additional_constructions": [
+    "plain-color-v2",
+    "plain-location-v2",
+    "shape-predicate-v2",
+    "shape-attribute-v2",
+    "material-predicate-v2",
+    "material-attribute-v2",
+    "weight-predicate-v2",
+    "weight-attribute-v2",
+    "document-friendly-predicate-v1",
+    "document-formal-predicate-v1"
+  ],
+  "composition": {
+    "max_claims": 8,
+    "default_max_sentences": 3,
+    "default_clauses_per_sentence": 2,
+    "max_requested_sentences": 20,
+    "max_clauses_per_sentence": 4,
+    "same_subject_only": true,
+    "all_tasks_required": true,
+    "connective": "and",
+    "budget_intersection": "existing_response_sentence_budget",
+    "truncation": false
+  },
+  "lexicon": {
+    "layout": "read_only_struct_of_arrays",
+    "semantic_filter": "exact_relation_license_before_ranking",
+    "weights": [
+      0.4,
+      0.25,
+      0.25,
+      0.15
+    ],
+    "valence_distance_divisor": 2,
+    "tone_affinity": "normalized_curated_labels",
+    "tie_break": "score_rounded_to_six_decimals_then_stable_entry_id",
+    "trained_word_embeddings": false
+  },
+  "unchanged": [
+    "reply",
+    "answer",
+    "answer_status",
+    "judgment",
+    "audit_passed",
+    "answer_evidence",
+    "supporting_evidence",
+    "response-plan-v1",
+    "flag-routing-contract-v1",
+    "EIRProposition",
+    "database_schema"
+  ],
+  "not_implemented": [
+    "automatic_tone_classifier",
+    "broad_sense_aware_word_lexicon",
+    "expressive_emotional_or_romantic_prose",
+    "neural_generation",
+    "visible_reply_replacement",
+    "HTTP_style_parameter",
+    "cross_turn_style_persistence",
+    "multi_premise_join_realization"
+  ],
+  "tests": [
+    "tests/test_stylistic.py",
+    "tests/test_stylistic_composition.py",
+    "tests/test_stylistic_live.py",
+    "tests/test_stylistic_scenarios_live.py"
+  ],
   "evaluation": "tools/benchmarks/stylistic_composition_smoke.py",
-  "live_scenario_audit": "tools/benchmarks/stylistic_scenarios.py"
+  "live_scenario_audit": "tools/benchmarks/stylistic_scenarios.py",
+  "document_contract": "source claims plus inverse-verified same-subject predicates; unrecognized chunks retained literally; strict bypass",
+  "source_extension_date": "2026-11-03",
+  "prompt_tone_precedence": "strict disables generation; explicit API overrides anchored prompt tone; no inferred emotional state",
+  "document_profile_budget": "string tone uses document budget; typed StyleOptions budget honored without dropping claims"
 }

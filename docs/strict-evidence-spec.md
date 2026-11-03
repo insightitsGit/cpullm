@@ -212,3 +212,7 @@ local baseline's 25/42; the original domain replay passed 24/24. See the saved
 [evidence evaluation](benchmarks/2026-11-02-evidence-v2/REPORT.md) and
 [domain replay](benchmarks/2026-11-02-domain-replay-v2/REPORT.md). These scores
 do not satisfy the external clinical validation gate.
+
+## Quotation-document workflow (source checkout update)
+
+Explicit report/article/design-document commands now have a separate bounded, caller-scoped, time-valid quotation workflow. Strict documents use `document-quotes-v1`, preserve exact source evidence, mark missing sections and never invoke learned generation or stylistic rewriting. This adds no claim of source truth or general prose inference. See [the document specification](document-workflow-spec.md). This source change is newer than the published 1.10.0 artifacts; the release whitepaper remains a historical release description.

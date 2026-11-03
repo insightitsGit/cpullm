@@ -18,6 +18,27 @@ For an agent integrating the library, start with [the consumer guide](docs/libra
 
 Read the [1.10.0 implementation whitepaper](docs/whitepapers/cpu-llm-1.10.0-whitepaper.md) or [download its PDF](docs/whitepapers/cpu-llm-1.10.0-whitepaper.pdf) for installation, all graph nodes, request controls, Python/HTTP APIs, examples and evidence limitations. The [website implementation handoff](docs/website-handoff/cpu-llm-1.10.0-landing-page.md) defines the Research & Proof landing page and inbound SEO plan.
 
+## Reports, articles and design documents
+
+Start with the [document and tone user manual](docs/document-generation-user-guide.md), the runnable [demonstration](examples/document_workflows/demo.py), and the [findings specification](docs/document-generation-findings-spec.md).
+
+This workflow is available in the source checkout after the published 1.10.0 release.
+
+Requests such as `Write a detailed report about Helios` or `Write a design
+document about Helios as an HTML report` use a shared evidence-backed document
+workflow. It preserves technical source quotations, citations, numbers and
+qualifiers, reports missing sections, and supports Markdown/HTML reports,
+tables, bullets and numbered lists. Coverage metadata and continuation prompts
+make output limits visible. Strict mode supports quotation-only documents;
+neither mode invents design decisions or guarantees source truth. See the
+[document contract](docs/document-workflow-spec.md) for scope, budgets and examples.
+
+To request generated wording, use `Write a detailed article about Helios in a
+friendly tone.` The tone directive does not enter the KB search. The document
+tone node combines supported source predicates into inverse-verified prose;
+unrecognized records stay attributed quotations, and strict mode keeps quotes.
+Python `style=` overrides prompt tone. These changes are in the source checkout.
+
 ## Basic conversation included by default
 
 After normal appliance setup, the built-in conversation pack answers greetings,
@@ -526,7 +547,7 @@ The delivery judgment runs after that composition. If the body is not the licens
 
 ## Models and the meaning of deterministic
 
-An opt-in [stylistic companion node](docs/stylistic-generation-design.md) constructs new wording and longer related responses from accepted facts about one subject. It supports color, location, shape, material and explicit weight. Use `style="formal"`, `style="friendly"`, or `StyleOptions` for tone mixtures, relationship constraints and sentence budgets. Read `result["stylistic"]` for generated text, per-claim proof and verification; canonical `reply.text` stays unchanged. Other expressive tones can return a labeled neutral fallback. This is bounded construction-based generation; no training is needed. Missing facts stay missing. See the [spec](docs/stylistic-generation-spec.json) and [composition results](docs/benchmarks/2026-11-01-stylistic-composition/REPORT.md).
+An opt-in [stylistic companion node](docs/stylistic-generation-design.md) constructs new wording and longer related responses from accepted facts about one subject. It supports color, location, shape, material and explicit weight. Use `style="formal"`, `style="friendly"`, or `StyleOptions` for tone mixtures, relationship constraints and sentence budgets. Read `result["stylistic"]` for generated text, per-claim proof and verification; canonical `reply.text` stays unchanged for individual facts. Evidence-backed documents can publish inverse-verified generated prose in `reply.text`, retaining their original quotation view and proofs. Explicit prompt tone is supported as well as Python settings. Other expressive tones can return a labeled neutral fallback. This is bounded construction-based generation; no training is needed. Missing facts stay missing. See the [spec](docs/stylistic-generation-spec.json) and [composition results](docs/benchmarks/2026-11-01-stylistic-composition/REPORT.md).
 
 The [fresh live scenario audit](docs/benchmarks/2026-11-02-stylistic-scenarios/REPORT.md) passed 49 stylistic contract scenarios per rules/spaCy arm plus 16 layout/session tests. These are compatibility and generation-contract checks, not an overall answer-accuracy score; the audit also records a rules-only conversational interpretation failure.
 
@@ -556,9 +577,9 @@ genericness penalty. For a related multi-fact answer, it joins complete licensed
 clauses with `and`; an inverse-grammar verifier checks claim coverage and proofs
 before publishing the companion. These curated tone features are separate from
 the six retrieval channels and do not add facts to the knowledge graph. The
-current ten constructions cover five relations: color, location, shape,
+ten base-fact constructions cover five relations: color, location, shape,
 material and explicit weight. Strict evidence mode bypasses this node entirely.
-The current HTTP service does not expose `style`; use the Python API. Actual
+The HTTP service has no `style` field; use an explicit tone directive in its prompt text or use the Python API for typed controls. Actual
 [chat outputs and receipts](docs/examples/2026-11-02-tone-chat/TRANSCRIPT.md)
 are saved with a runnable `tools/tone_chat_demo.py` example.
 

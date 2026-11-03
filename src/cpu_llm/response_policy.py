@@ -56,6 +56,30 @@ def classify_response_request(message: str) -> dict:
     The latest explicit depth cue wins; explicit item/sentence counts override
     the relevant optional-material ceiling. Unknown wording keeps defaults.
     """
+    from cpu_llm.stylistic.profiles import extract_style_request
+    tone_control = extract_style_request(message)
+    message = tone_control['query']
+    from cpu_llm.document_workflow import plan_document
+    document = plan_document(message)
+    if document is not None:
+        # One genre plan controls length, retrieval and rendering. Avoid legacy
+        # draft-vs-overview disagreement while retaining the existing plan schema.
+        base = classify_response_request('Give me a detailed overview of ' + document['topic'])
+        base.update(explicit=True, detail=document['detail'], mode='document',
+            content_query=document['topic'], format=document['format'],
+            output_media=document['output_media'], sentence_budget=document['unit_budget'],
+            item_budget=document['unit_budget'], retrieval_budget=40, document=document,
+            requested_limits=document['requested_limits'],
+            budget_scope='atomic source quotations; necessary qualifiers/proofs preserved')
+        base['flags'].update(long_response=True, expand_retrieval=True, extended_overview=False,
+            table=document['format']=='table', report=document['format']=='report',
+            numbered=document['format']=='numbered', bullets=document['format']=='bullets',
+            html=document['output_media']=='text/html', markdown=document['output_media']!='text/html',
+            template_requested=True)
+        from cpu_llm.flag_contract import enforce_response_flags
+        enforce_response_flags(base)
+        if tone_control['tone'] is not None:base['style_request']=tone_control
+        return base
     from cpu_llm.output_rendering import extract_layout
     layout = extract_layout(message)
     text = ' '.join(layout['content_query'].strip().split())
@@ -170,4 +194,5 @@ def classify_response_request(message: str) -> dict:
                 word_limit_enforced=False)
     from cpu_llm.flag_contract import enforce_response_flags
     enforce_response_flags(plan)
+    if tone_control['tone'] is not None:plan['style_request']=tone_control
     return plan

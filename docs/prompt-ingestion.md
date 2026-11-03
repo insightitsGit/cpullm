@@ -209,3 +209,13 @@ General conversation, implicit intentions, arbitrary coordinated clauses and
 unrestricted multilingual paraphrases remain outside these declared grammars.
 Measure new wording on a frozen independent holdout before claiming general
 intent accuracy or an increase in factual coverage.
+
+## Explicit document and tone controls
+
+The source-checkout document path separates genre, topic, depth, layout and tone
+before evidence selection. `in a friendly tone` is a control, not a knowledge-base
+search term. API tone overrides prompt tone; strict mode keeps quotations.
+The [user manual](document-generation-user-guide.md) provides runnable examples,
+and the [findings contract](document-generation-findings-spec.md) links failures
+to implementation/regressions. Broader grammar support is reviewed and tested;
+these changes do not silently train on prompts or invent missing knowledge.

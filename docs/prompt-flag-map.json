@@ -126,7 +126,9 @@
     "origin": "explicit prompt presentation or derived default",
     "consumers": [
       "retrieve",
-      "brief"
+      "brief",
+      "document_snapshot",
+      "document_coverage"
     ],
     "stage": "budget",
     "behavior": "Derived depth/size indicator; consumers use validated numeric budgets.",
@@ -136,7 +138,8 @@
     "path": "response_plan.flags.expand_retrieval",
     "origin": "explicit prompt presentation or derived default",
     "consumers": [
-      "retrieve"
+      "retrieve",
+      "document_snapshot"
     ],
     "stage": "budget",
     "behavior": "Must agree with long_response; use retrieval_budget, not the deep-search agent.",
@@ -146,7 +149,8 @@
     "path": "response_plan.flags.extended_overview",
     "origin": "explicit prompt presentation or derived default",
     "consumers": [
-      "brief"
+      "brief",
+      "document_plan"
     ],
     "stage": "budget",
     "behavior": "Long response plus overview mode; direct factual slots are unchanged.",
@@ -156,7 +160,8 @@
     "path": "response_plan.flags.table",
     "origin": "explicit prompt presentation or derived default",
     "consumers": [
-      "render_response"
+      "render_response",
+      "document_render"
     ],
     "stage": "post_graph",
     "behavior": "Tabulate plus built-in Jinja layout after judgment.",
@@ -167,7 +172,8 @@
     "origin": "explicit prompt presentation or derived default",
     "consumers": [
       "brief",
-      "render_response"
+      "render_response",
+      "document_render"
     ],
     "stage": "presentation",
     "behavior": "Overview uses list producer; a direct fact remains a fact.",
@@ -188,7 +194,8 @@
     "path": "response_plan.flags.report",
     "origin": "explicit prompt presentation or derived default",
     "consumers": [
-      "render_response"
+      "render_response",
+      "document_render"
     ],
     "stage": "post_graph",
     "behavior": "Built-in task-response report; distinct from legacy draft report.",
@@ -198,7 +205,8 @@
     "path": "response_plan.flags.html",
     "origin": "explicit prompt presentation or derived default",
     "consumers": [
-      "render_response"
+      "render_response",
+      "document_render"
     ],
     "stage": "post_graph",
     "behavior": "Escaped HTML output; does not choose a factual agent.",
@@ -208,7 +216,8 @@
     "path": "response_plan.flags.markdown",
     "origin": "explicit prompt presentation or derived default",
     "consumers": [
-      "render_response"
+      "render_response",
+      "document_render"
     ],
     "stage": "post_graph",
     "behavior": "Markdown representation; default does not force a template.",
@@ -218,7 +227,8 @@
     "path": "response_plan.flags.template_requested",
     "origin": "explicit prompt presentation or derived default",
     "consumers": [
-      "render_response"
+      "render_response",
+      "document_render"
     ],
     "stage": "post_graph",
     "behavior": "Explicit layout indicator; validated against format/media.",
@@ -294,7 +304,9 @@
     "path": "request.strict_evidence",
     "origin": "API, header, prompt marker, or operator floor",
     "consumers": [
-      "strict_evidence.answer"
+      "strict_evidence.answer",
+      "document_snapshot",
+      "document_render"
     ],
     "stage": "pre_graph",
     "behavior": "Enable wins; bypass normal graph and learned generation; bounded evidence quotes, exact arithmetic or abstention.",
@@ -309,5 +321,29 @@
     "stage": "pre_graph",
     "behavior": "Guarded whole-turn social replies; mixed greetings preserve substantive requests; operator disable wins.",
     "example": "Who are you?"
+  },
+  {
+    "path": "request.style",
+    "origin": "explicit Python API or prompt tone directive; per-request",
+    "consumers": [
+      "stylistic",
+      "style_verify"
+    ],
+    "stage": "post_graph",
+    "behavior": "After accepted facts or document evidence; inverse verification before final rendering; strict bypasses; API overrides prompt tone; source proofs preserved.",
+    "example": "ask(message, style=\"friendly\")"
+  },
+  {
+    "path": "request.document",
+    "origin": "explicit genre prompt or supported long topic overview",
+    "consumers": [
+      "document_plan",
+      "document_snapshot",
+      "document_coverage",
+      "document_render"
+    ],
+    "stage": "document_workflow",
+    "behavior": "Scoped bounded snapshot; sectioned exact quotations, coverage and continuation; shared Markdown/HTML layouts; strict forbids learned generation.",
+    "example": "Write a detailed design document about Helios."
   }
 ]
