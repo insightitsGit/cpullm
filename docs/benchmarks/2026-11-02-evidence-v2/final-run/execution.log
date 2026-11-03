@@ -1,0 +1,97 @@
+Could not reach the Hub (Cannot reach https://huggingface.co/api/models/sentence-transformers/all-mpnet-base-v2: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'sentence-transformers/all-mpnet-base-v2'.
+
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]
+Loading weights:  19%|#8        | 37/199 [00:00<00:00, 334.92it/s]
+Loading weights: 100%|##########| 199/199 [00:00<00:00, 947.38it/s]
+direct-0 True
+direct-1 True
+direct-2 True
+direct-3 True
+direct-4 True
+direct-5 True
+direct-6 True
+direct-7 True
+paraphrase-0 True
+paraphrase-1 True
+paraphrase-2 True
+conflict-equivalence-0 True
+conflict-equivalence-1 True
+conflict-equivalence-2 True
+conflict-equivalence-3 True
+conflict-equivalence-4 True
+conflict-equivalence-5 True
+conflict-equivalence-6 True
+missing-diagnosis True
+missing-recommended treatment True
+missing-interaction True
+missing-safe dose True
+unsupported-0 True
+unsupported-1 True
+unsupported-2 True
+unsupported-3 True
+unsupported-4 True
+arithmetic-0 True
+arithmetic-1 True
+arithmetic-2 True
+arithmetic-3 True
+source-calculation True
+source-calculation-conflict True
+batch-reference True
+field-list True
+batch-partial True
+batch-ambiguous True
+join True
+join-average-refusal True
+join-conflict True
+long-evidence-overview True
+multisentence-qualifier-refusal True
+{
+  "revision": "e6301f30ce67990e1807f7f70b4594c88239ea36",
+  "total": 42,
+  "hosted": "NOT RUN: local baseline chosen by user",
+  "clinical_validation": false,
+  "scope": "fictional evidence handling, not clinical efficacy",
+  "arms": {
+    "strict": {
+      "passed": 42,
+      "answerable_total": 24,
+      "answerable_passed": 24,
+      "unanswerable_total": 18,
+      "unanswerable_passed": 18,
+      "failures": []
+    },
+    "baseline": {
+      "passed": 25,
+      "answerable_total": 24,
+      "answerable_passed": 14,
+      "unanswerable_total": 18,
+      "unanswerable_passed": 11,
+      "failures": [
+        "paraphrase-0",
+        "paraphrase-1",
+        "paraphrase-2",
+        "conflict-equivalence-0",
+        "conflict-equivalence-1",
+        "conflict-equivalence-2",
+        "conflict-equivalence-3",
+        "conflict-equivalence-4",
+        "source-calculation",
+        "source-calculation-conflict",
+        "batch-reference",
+        "field-list",
+        "batch-partial",
+        "batch-ambiguous",
+        "join",
+        "join-conflict",
+        "long-evidence-overview"
+      ]
+    }
+  },
+  "clinical_release_gate": {
+    "synthetic_engineering_only": true,
+    "external_clinical_gold": false,
+    "clinical_reviewer_signoff": false,
+    "medical_source_truth_verified": false,
+    "ready_for_clinical_decisions": false
+  }
+}

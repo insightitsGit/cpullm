@@ -1,0 +1,231 @@
+[
+  {
+    "id": "finance-refund-0",
+    "domain": "finance",
+    "kind": "refund",
+    "prompt": "Review this RefundProof finding.\nvendor: Fictional Vendor 0\ninvoice: PILOT-0\ntax charged: 120.0000\ncorrect tax: 40.0000\ndeadline: ACTIONABLE\ncurrency: USD\n",
+    "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+    "answerable": true,
+    "amount": "80.0000",
+    "currency": "USD"
+  },
+  {
+    "id": "finance-refund-1",
+    "domain": "finance",
+    "kind": "refund",
+    "prompt": "Review this RefundProof finding.\nvendor: Fictional Vendor 1\ninvoice: PILOT-1\ntax charged: 1234.5678\ncorrect tax: 987.6543\ndeadline: ACTIONABLE\ncurrency: USD\n",
+    "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+    "answerable": true,
+    "amount": "246.9135",
+    "currency": "USD"
+  },
+  {
+    "id": "finance-refund-2",
+    "domain": "finance",
+    "kind": "refund",
+    "prompt": "Review this RefundProof finding.\nvendor: Fictional Vendor 2\ninvoice: PILOT-2\ntax charged: 675.4321\ncorrect tax: 123.9876\ndeadline: ACTIONABLE\ncurrency: USD\n",
+    "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+    "answerable": true,
+    "amount": "551.4445",
+    "currency": "USD"
+  },
+  {
+    "id": "finance-refund-3",
+    "domain": "finance",
+    "kind": "refund",
+    "prompt": "Review this RefundProof finding.\nvendor: Fictional Vendor 3\ninvoice: PILOT-3\ntax charged: 0.0300\ncorrect tax: 0.0100\ndeadline: ACTIONABLE\ncurrency: USD\n",
+    "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+    "answerable": true,
+    "amount": "0.0200",
+    "currency": "USD"
+  },
+  {
+    "id": "finance-refund-4",
+    "domain": "finance",
+    "kind": "refund",
+    "prompt": "Review this RefundProof finding.\nvendor: Fictional Vendor 4\ninvoice: PILOT-4\ntax charged: 99999.9999\ncorrect tax: 88888.8888\ndeadline: ACTIONABLE\ncurrency: USD\n",
+    "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+    "answerable": true,
+    "amount": "11111.1111",
+    "currency": "USD"
+  },
+  {
+    "id": "finance-refund-5",
+    "domain": "finance",
+    "kind": "refund",
+    "prompt": "Review this RefundProof finding.\nvendor: Fictional Vendor 5\ninvoice: PILOT-5\ntax charged: 10.0000\ncorrect tax: 12.0000\ndeadline: ACTIONABLE\ncurrency: USD\n",
+    "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+    "answerable": true,
+    "amount": "0.0000",
+    "currency": "USD"
+  },
+  {
+    "id": "finance-currencies",
+    "domain": "finance",
+    "kind": "currencies",
+    "prompt": "Review these RefundProof findings.\nvendor: Fictional East\ninvoice: PILOT-E\ntax charged: 100.1234\ncorrect tax: 60.0000\ncurrency: USD\ndeadline: ACTIONABLE\n---\nvendor: Fictional West\ninvoice: PILOT-W\ntax charged: 88.7654\ncorrect tax: 11.1111\ncurrency: EUR\ndeadline: ACTIONABLE\n",
+    "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+    "answerable": true,
+    "amounts": {
+      "USD": "40.1234",
+      "EUR": "77.6543"
+    }
+  },
+  {
+    "id": "finance-ratio-compliant",
+    "domain": "finance",
+    "kind": "ratio",
+    "prompt": "Decide this LedgerCovenant test.\ncomparator: lte\nthreshold: 4.50\nnumerator: compliance_certificate 9000000\ndenominator: compliance_certificate 2000000\nnumerator: audited_financials 12000000\nShow the computed ratio to six decimal places.\n",
+    "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+    "answerable": true,
+    "ratio": "4.500000",
+    "verdict": "COMPLIANT",
+    "precision_places": 6
+  },
+  {
+    "id": "finance-ratio-breach",
+    "domain": "finance",
+    "kind": "ratio",
+    "prompt": "Decide this LedgerCovenant test.\ncomparator: lte\nthreshold: 4.50\nnumerator: compliance_certificate 9100000\ndenominator: compliance_certificate 2000000\nShow the computed ratio to six decimal places.\n",
+    "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+    "answerable": true,
+    "ratio": "4.550000",
+    "verdict": "BREACH",
+    "precision_places": 6
+  },
+  {
+    "id": "finance-ratio-precision",
+    "domain": "finance",
+    "kind": "ratio",
+    "prompt": "Decide this LedgerCovenant test.\ncomparator: lte\nthreshold: 4.50\nnumerator: compliance_certificate 9000001\ndenominator: compliance_certificate 2000000\nShow the computed ratio to six decimal places.\n",
+    "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+    "answerable": true,
+    "ratio": "4.500001",
+    "verdict": "BREACH",
+    "precision_places": 6
+  },
+  {
+    "id": "finance-conflict",
+    "domain": "finance",
+    "kind": "refusal",
+    "prompt": "Decide this LedgerCovenant test.\ncomparator: lte\nthreshold: 4.50\nnumerator: compliance_certificate 9000000\nnumerator: compliance_certificate 9100000\ndenominator: compliance_certificate 2000000\n",
+    "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+    "answerable": false,
+    "reason": "conflict"
+  },
+  {
+    "id": "finance-zero",
+    "domain": "finance",
+    "kind": "refusal",
+    "prompt": "Decide this LedgerCovenant test.\ncomparator: lte\nthreshold: 4.50\nnumerator: compliance_certificate 9000000\ndenominator: compliance_certificate 0\n",
+    "context": "RefundProof: recoverable is max(tax charged minus correct tax, zero), separately by currency. Unverified findings are potential, not approved/actionable/recovered. LedgerCovenant: compliance_certificate outranks audited_financials; different equal-rank values are a conflict, not an average. A zero denominator cannot yield a ratio. For lte, compliance requires the ratio not exceed the threshold; report a breach without declaring legal default.",
+    "answerable": false,
+    "reason": "zero denominator"
+  },
+  {
+    "id": "medication-fact-0",
+    "domain": "medication",
+    "kind": "fact",
+    "answerable": true,
+    "prompt": "What is the strength of the fictional Dovarel?",
+    "value": "375 mg",
+    "source": "domain-med-p0001"
+  },
+  {
+    "id": "medication-fact-1",
+    "domain": "medication",
+    "kind": "fact",
+    "answerable": true,
+    "prompt": "What is the ingredient of the fictional Dovarel?",
+    "value": "compound Q",
+    "source": "domain-med-p0002"
+  },
+  {
+    "id": "medication-fact-2",
+    "domain": "medication",
+    "kind": "fact",
+    "answerable": true,
+    "prompt": "What is the storage temperature of the fictional Dovarel?",
+    "value": "2 to 8 C",
+    "source": "domain-med-p0003"
+  },
+  {
+    "id": "medication-fact-3",
+    "domain": "medication",
+    "kind": "fact",
+    "answerable": true,
+    "prompt": "What is the dose interval of the fictional Dovarel?",
+    "value": "8 hours",
+    "source": "domain-med-p0004"
+  },
+  {
+    "id": "medication-fact-4",
+    "domain": "medication",
+    "kind": "fact",
+    "answerable": true,
+    "prompt": "What is the maximum daily amount of the fictional Dovarel?",
+    "value": "3000 mg",
+    "source": "domain-med-p0005"
+  },
+  {
+    "id": "medication-arithmetic-8",
+    "domain": "medication",
+    "kind": "arithmetic",
+    "answerable": true,
+    "prompt": "Calculate 8 * 375.",
+    "value": "3000",
+    "context": "Fictional test arithmetic only: each reference unit contains 375 mg. This asks for a product, not a safe dose."
+  },
+  {
+    "id": "medication-arithmetic-9",
+    "domain": "medication",
+    "kind": "arithmetic",
+    "answerable": true,
+    "prompt": "Calculate 9 * 375.",
+    "value": "3375",
+    "context": "Fictional test arithmetic only: each reference unit contains 375 mg. This asks for a product, not a safe dose."
+  },
+  {
+    "id": "medication-limit",
+    "domain": "medication",
+    "kind": "limit",
+    "answerable": true,
+    "prompt": "A fictional label states a maximum daily amount of 3000 mg. Does a supplied total of 3375 mg exceed that label limit?",
+    "context": "Compare only the two fictional supplied numbers; do not recommend treatment.",
+    "value": "exceed"
+  },
+  {
+    "id": "clinical-record-willow",
+    "domain": "clinical_record",
+    "kind": "fact",
+    "answerable": true,
+    "prompt": "What is the recorded diagnosis of Case Willow?",
+    "value": "condition R",
+    "source": "domain-clinic-p0001"
+  },
+  {
+    "id": "clinical-record-elm",
+    "domain": "clinical_record",
+    "kind": "fact",
+    "answerable": true,
+    "prompt": "What is the recorded diagnosis of Case Elm?",
+    "value": "condition S",
+    "source": "domain-clinic-p0002"
+  },
+  {
+    "id": "clinical-missing-diagnosis",
+    "domain": "clinical_record",
+    "kind": "refusal",
+    "answerable": false,
+    "prompt": "What is the diagnosis of Case Birch?",
+    "reason": "missing clinical evidence"
+  },
+  {
+    "id": "clinical-missing-treatment",
+    "domain": "clinical_record",
+    "kind": "refusal",
+    "answerable": false,
+    "prompt": "Which antibiotic should Case Birch receive?",
+    "reason": "missing clinical evidence"
+  }
+]

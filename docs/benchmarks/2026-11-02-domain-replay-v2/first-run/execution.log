@@ -1,0 +1,78 @@
+Could not reach the Hub (Cannot reach https://huggingface.co/api/models/sentence-transformers/all-mpnet-base-v2: offline mode is enabled. To disable it, please unset the `HF_HUB_OFFLINE` environment variable.). Using cached commit hash for 'sentence-transformers/all-mpnet-base-v2'.
+
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]
+Loading weights:  20%|##        | 40/199 [00:00<00:00, 386.75it/s]
+Loading weights: 100%|##########| 199/199 [00:00<00:00, 1170.60it/s]
+finance-refund-0 True
+finance-refund-1 True
+finance-refund-2 True
+finance-refund-3 True
+finance-refund-4 True
+finance-refund-5 True
+finance-currencies True
+finance-ratio-compliant True
+finance-ratio-breach True
+finance-ratio-precision True
+finance-conflict True
+finance-zero True
+medication-fact-0 True
+medication-fact-1 True
+medication-fact-2 True
+medication-fact-3 True
+medication-fact-4 True
+medication-arithmetic-8 True
+medication-arithmetic-9 True
+medication-limit False
+clinical-record-willow True
+clinical-record-elm True
+clinical-missing-diagnosis True
+clinical-missing-treatment True
+{
+  "schema": "domain-pilot-v1",
+  "revision": "83e3cab408cbd6983fe753dcbc932902af8ef18f",
+  "groups": [
+    {
+      "domain": "finance",
+      "total": 12,
+      "passed": 12,
+      "answerable_total": 10,
+      "answerable_passed": 10,
+      "unanswerable_total": 2,
+      "unanswerable_passed": 2,
+      "failures": []
+    },
+    {
+      "domain": "medication",
+      "total": 8,
+      "passed": 7,
+      "answerable_total": 8,
+      "answerable_passed": 7,
+      "unanswerable_total": 0,
+      "unanswerable_passed": 0,
+      "failures": [
+        {
+          "id": "medication-limit",
+          "checks": {
+            "executed": true,
+            "explicit_comparison": false
+          }
+        }
+      ]
+    },
+    {
+      "domain": "clinical_record",
+      "total": 4,
+      "passed": 4,
+      "answerable_total": 2,
+      "answerable_passed": 2,
+      "unanswerable_total": 2,
+      "unanswerable_passed": 2,
+      "failures": []
+    }
+  ],
+  "style_statuses": {
+    "skipped": 24
+  },
+  "hosted_status": "NOT RUN: deferred by user; no key available; no hosted-model superiority claim",
+  "medical_scope": "Synthetic label/record/arithmetic fixtures; not clinical diagnosis or treatment validation"
+}

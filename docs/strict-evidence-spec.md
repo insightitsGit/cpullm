@@ -183,9 +183,15 @@ unsupported forms, decimal preservation, conflicts and scan failure.
 `tests/test_strict_evidence_live.py` checks real PostgreSQL authorization,
 historical validity and overflow behavior.
 `tests/test_strict_evidence_http.py` checks the actual HTTP header and server
-enforcement path. The saved full-suite result is **806 passed, 2 skipped,
+enforcement path. The version 1 saved full-suite result is **806 passed, 2 skipped,
 3 expected failures**, documented in the
 [version 1 validation report](reviews/2026-11-02/strict-evidence-validation.md).
 Version 2 coverage is in `tests/test_strict_evidence_v2.py` and the fresh
 `tools/benchmarks/evidence_v2.py` synthetic acceptance/local-baseline runner.
 See [healthcare acceptance requirements](healthcare-evidence-acceptance.md).
+The final version 2 suite passed **854 tests**, with 2 skipped and 3 expected
+failures. Its authored evidence evaluation passed 42/42 cases against a simple
+local baseline's 25/42; the original domain replay passed 24/24. See the saved
+[evidence evaluation](benchmarks/2026-11-02-evidence-v2/REPORT.md) and
+[domain replay](benchmarks/2026-11-02-domain-replay-v2/REPORT.md). These scores
+do not satisfy the external clinical validation gate.

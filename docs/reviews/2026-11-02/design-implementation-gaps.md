@@ -11,7 +11,9 @@ unchanged. See [the numeric contract](../../finance-numeric-presentation.md),
 [strict evidence v2](../../strict-evidence-spec.md), and
 [healthcare acceptance boundary](../../healthcare-evidence-acceptance.md).
 Clinical sign-off and arbitrary semantic contradiction coverage are not supplied
-by these fixes. A separately recorded replay is required before comparing scores.
+by these fixes. The separately recorded
+[final domain replay](../../benchmarks/2026-11-02-domain-replay-v2/REPORT.md)
+passes 24/24, including 12/12 finance; the historical results below are preserved.
 
 ### P1: self-contained finance requests are blocked by generic reference resolution
 

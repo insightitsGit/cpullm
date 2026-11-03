@@ -106,6 +106,15 @@ this mode supplies traceable evidence, not a diagnosis or prescribing system.
 See [the specification](docs/strict-evidence-spec.md) and
 [validation report](docs/reviews/2026-11-02/strict-evidence-validation.md).
 
+Latest verification: **854 tests passed**, 2 skipped and 3 expected failures.
+The authored strict evidence suite passed **42/42**, versus **25/42** for a
+simple independent local literal/calculator baseline. The original domain replay
+now passes **24/24**, including all 12 finance cases. These are synthetic
+engineering results, not a clinical accuracy score or hosted-LLM comparison.
+See [strict evaluation](docs/benchmarks/2026-11-02-evidence-v2/REPORT.md),
+[domain replay](docs/benchmarks/2026-11-02-domain-replay-v2/REPORT.md) and
+[remaining clinical gates](docs/healthcare-evidence-acceptance.md).
+
 ## Other changes in this checkout
 
 The [current design](docs/current-design.md) describes the implementation. Prompt interpretation, output layouts, delivery judgment and flag-routing enforcement are committed in this repository; an installed PyPI distribution with the same version number may predate them. The saved Millhaven benchmark is the earlier clean commit `af39da6`.

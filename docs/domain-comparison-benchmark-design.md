@@ -22,6 +22,10 @@ The [CPU-only pilot results](benchmarks/2026-11-02-domain-pilot/REPORT.md) and [
 
 ## Questions and fair comparisons
 
+Executed follow-up reports: [42-case strict/local comparison](benchmarks/2026-11-02-evidence-v2/REPORT.md)
+and [24-case ordinary domain replay](benchmarks/2026-11-02-domain-replay-v2/REPORT.md).
+The original and follow-up failures are retained alongside the final outcomes.
+
 Measure answerable-task success, numeric/value/unit fidelity, refusal on genuinely missing information, unsupported assertions, proof retention and latency separately. Always-refuse is not a winning strategy: supported coverage and answer correctness must be reported beside abstention. Score visible text independently from internal fields. Do not give CPU LLM credit for a hidden number missing from its public response.
 
 Run the committed runtime with its ordinary public `Appliance.ask` entry point, then the same request with `style="friendly"`. Canonical and styled-companion results are separate observations, not independent answered cases. The style adapter currently supports five simple attribute relations; finance specialists and most medication/clinical attributes are outside its adapter set. A correct skip preserves canonical content but does not demonstrate domain generation.
