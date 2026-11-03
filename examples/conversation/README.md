@@ -6,6 +6,10 @@ messages, explicit tone variants, a greeting plus a factual lookup, a medication
 question that must remain unsupported, per-request disable, and quoted text
 that must not be treated as a greeting.
 
+The [actual saved sample chat](../../docs/examples/2026-11-02-conversation/TRANSCRIPT.md)
+passed all 12 checks. These are application routing/response checks, not clinical
+accuracy measurements.
+
 After the usual database/checkpoint/cached-encoder setup from the main README:
 
 ```powershell

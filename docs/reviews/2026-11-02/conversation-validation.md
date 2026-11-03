@@ -32,3 +32,11 @@ The three supported dataset formats feed an explicit local review queue only.
 Source cards were checked for declared licenses; an input file's claimed origin
 is not independently authenticated by the importer. Clinical source truth and
 clinical sign-off remain unverified.
+
+After adding the explicit disabled-node list to the strict social receipt,
+50 focused conversation, strict-mode, numeric and actual HTTP checks passed.
+The [committed-runtime live demo](../../examples/2026-11-02-conversation/TRANSCRIPT.md)
+then passed all 12 routing/status checks. The archived records retain actual
+outputs and input/runner/pack hashes. An isolated wheel target install also
+loaded the packaged conversation module/data and returned the expected identity;
+the host's existing dependencies were reused, without a model constructor.

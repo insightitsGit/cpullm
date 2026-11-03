@@ -44,6 +44,9 @@ for source cards, import commands, filtering and limits.
 Run `python examples/conversation/run_demo.py --out build/conversation-demo-new-run`
 after the standard database/model setup for an actual 12-turn walkthrough.
 See [the demo instructions](examples/conversation/README.md).
+An [actual 12-turn chat capture](docs/examples/2026-11-02-conversation/TRANSCRIPT.md)
+is included; all 12 routing checks passed. The full integration suite passed
+891 tests (2 skipped, 3 expected failures).
 
 ## Using cpu-llm in healthcare and finance
 
