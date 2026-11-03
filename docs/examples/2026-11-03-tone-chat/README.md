@@ -70,7 +70,7 @@ Reason: Strict evidence bypasses the tone node.
 
 ### finance-boundary
 
-Prompt: Decide this LedgerCovenant test. / threshold: 4.50 / numerator: compliance_certificate 9000001 / denominator: compliance_certificate 2000000 / 
+Prompt: Decide this LedgerCovenant test. / threshold: 4.50 / numerator: compliance_certificate 9000001 / denominator: compliance_certificate 2000000 /
 
 Status: `skipped`; alignment: `not applicable`.
 
