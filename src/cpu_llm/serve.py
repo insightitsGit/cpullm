@@ -11,7 +11,7 @@ from __future__ import annotations
 import argparse
 import json
 import threading
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from http.server import BaseHTTPRequestHandler, HTTPServer
 from typing import Any, Callable
 
 from cpu_llm.access import AccessError, AuthenticationError, SourceForbidden, StorageError
@@ -35,7 +35,9 @@ class LocalService:
             raise ValueError('small_talk must be a boolean')
         self.entry = entry
         self.host = host
-        self._httpd = ThreadingHTTPServer((host, port), _handler(entry, strict_evidence=strict_evidence, small_talk=small_talk))
+        # Cached appliances own thread-affine SQLite/graph state. Run every
+        # request on the serving thread, where lazy tenant factories build it.
+        self._httpd = HTTPServer((host, port), _handler(entry, strict_evidence=strict_evidence, small_talk=small_talk))
         self.port = int(self._httpd.server_address[1])
 
     def serve_forever(self) -> None:
@@ -112,8 +114,11 @@ def _handler(entry: Entry, *, strict_evidence: bool = False, small_talk: bool = 
             self.send_response(status)
             self.send_header("Content-Type", "application/json")
             self.send_header("Content-Length", str(len(encoded)))
+            # An idle HTTP/1.1 keepalive must not monopolize the serial server.
+            self.send_header("Connection", "close")
             self.end_headers()
             self.wfile.write(encoded)
+            self.close_connection = True
 
         def log_message(self, fmt: str, *args: Any) -> None:
             return None

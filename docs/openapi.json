@@ -1,0 +1,569 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CPU LLM authenticated HTTP contract",
+    "version": "1.11.1",
+    "description": "Documentation for the stdlib Entry-backed server. This file is checked in; 1.11.0 does not serve /openapi.json, Swagger UI, TLS or a production gateway. Operator strict floors and small-talk disables take precedence. Optional Python style/realization controls are not HTTP fields. Source patch 1.11.1 serializes requests on the serving thread and closes response connections. Entry factories must lazily create thread-affine appliances there. Published 1.11.0 threaded transport has a cross-client SQLite affinity defect."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8765"
+    }
+  ],
+  "paths": {
+    "/v1/ask": {
+      "post": {
+        "operationId": "ask",
+        "security": [
+          {
+            "BearerSecret": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AskRequest"
+              },
+              "examples": {
+                "ordinaryDocument": {
+                  "value": {
+                    "message": "Write a detailed article about Helios in a friendly tone."
+                  }
+                },
+                "strictDocument": {
+                  "value": {
+                    "message": "Write a detailed report about Helios in a friendly tone.",
+                    "strict_evidence": true
+                  }
+                },
+                "strictLookup": {
+                  "value": {
+                    "message": "What is the strength of Fictional DemoMed?",
+                    "strict_evidence": true,
+                    "small_talk": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Operation envelope; inspect semantic status separately.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AskResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CPU-LLM-Evidence-Mode",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "strict",
+                "standard"
+              ]
+            },
+            "description": "strict enables evidence policy; standard cannot override body strict=true or an operator strict floor."
+          }
+        ]
+      }
+    },
+    "/v1/ingest": {
+      "post": {
+        "operationId": "ingest",
+        "security": [
+          {
+            "BearerSecret": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IngestRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Operation envelope; inspect semantic status separately.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/correct": {
+      "post": {
+        "operationId": "correct",
+        "security": [
+          {
+            "BearerSecret": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CorrectRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Operation envelope; inspect semantic status separately.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/delete": {
+      "post": {
+        "operationId": "deleteSource",
+        "security": [
+          {
+            "BearerSecret": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Operation envelope; inspect semantic status separately.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Typed transport error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerSecret": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Send the original credential secret, not its SHA256 digest. Server stores secret_sha256 and maps tenant/caller/source scope."
+      }
+    },
+    "schemas": {
+      "AskRequest": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "description": "English request. Explicit tone directives are parsed from this text."
+          },
+          "discover": {
+            "type": "boolean"
+          },
+          "imagine": {
+            "type": "boolean"
+          },
+          "deep": {
+            "type": "boolean"
+          },
+          "math": {
+            "type": "boolean"
+          },
+          "finance": {
+            "type": "boolean"
+          },
+          "strict_evidence": {
+            "type": "boolean"
+          },
+          "small_talk": {
+            "type": "boolean"
+          },
+          "as_of": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Epoch-seconds historical validity time."
+          },
+          "session_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "description": "Supported request fields. Unknown keys are ignored, including style; pass tone in message text. Current runtime coerces message to a string and enforces strict_evidence/small_talk boolean types; this schema describes recommended client types, not a claim of universal runtime schema enforcement."
+      },
+      "AskResponse": {
+        "type": "object",
+        "additionalProperties": true,
+        "description": "Polymorphic result: inspect answer_status, per-task outcomes, evidence and judgment; HTTP 200 is not factual or clinical approval.",
+        "properties": {
+          "answer_status": {
+            "type": "string"
+          },
+          "audit_passed": {
+            "type": "boolean"
+          },
+          "answer_evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "reply": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "text": {
+                "type": "string"
+              }
+            }
+          },
+          "document": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "stylistic": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "IngestRequest": {
+        "type": "object",
+        "additionalProperties": true,
+        "anyOf": [
+          {
+            "required": [
+              "name",
+              "paragraphs"
+            ]
+          },
+          {
+            "required": [
+              "source"
+            ]
+          }
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "paragraphs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "description": "Document body or server path under configured ingest_root. When paragraphs is an array it takes precedence over source."
+      },
+      "CorrectRequest": {
+        "type": "object",
+        "required": [
+          "document_id",
+          "prior_sentence",
+          "new_sentence",
+          "actor_id",
+          "timestamp"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "document_id": {
+            "type": "string"
+          },
+          "prior_sentence": {
+            "type": "string"
+          },
+          "new_sentence": {
+            "type": "string"
+          },
+          "actor_id": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "integer",
+            "description": "Epoch seconds for versioned correction."
+          }
+        }
+      },
+      "DeleteRequest": {
+        "type": "object",
+        "required": [
+          "source"
+        ],
+        "properties": {
+          "source": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": true
+      },
+      "OperationResponse": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "error",
+          "message"
+        ],
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  }
+}

@@ -10,7 +10,7 @@ Answer questions from your documents and explicit rules, with source evidence an
 
 cpu-llm is an embeddable Python library for document question answering. It indexes paragraphs in PostgreSQL/pgvector, retrieves relevant passages using VectorPrism, and produces supported answers, source quotations, or explicit nonanswers for recognized question forms. It combines trained embedding retrieval with deterministic sentence constructions, limited event-role extraction, pattern-based policy reasoning, arithmetic, and document layouts. It also includes supplied-field finance checks and an authenticated HTTP entry point.
 
-**Author:** [Amin Parva](mailto:parvaamin@gmail.com). **Package version: 1.11.0 (published).** This release packages the current strict-evidence, conversation, tone, prompt-routing and finance features. Earlier PyPI 1.9.x wheels predate these changes. See [the 1.11.0 release notes](docs/releases/1.11.0.md) for artifact verification and manual publishing instructions. The source build is prepared separately from publication; building it does not upload anything to PyPI.
+**Author:** [Amin Parva](mailto:parvaamin@gmail.com). **Source version: 1.11.1 (patch preparation); published version: 1.11.0.** This release packages the current strict-evidence, conversation, tone, prompt-routing and finance features. Earlier PyPI 1.9.x wheels predate these changes. See [the 1.11.1 patch notes](docs/releases/1.11.1.md) for artifact verification and manual publishing instructions. The source build is prepared separately from publication; building it does not upload anything to PyPI.
 
 **Correctness boundary:** source copying and component checks do not guarantee source truth or that every displayed sentence answers the question. `answer`, `reply["text"]`, and component-specific verification fields have different meanings. Recognized query shapes expose answerability outcomes; other requests can use different producers or fallback behavior. Evaluate the actual reply and its supporting evidence for your application. The [latest targeted review](docs/reviews/2026-10-19/review-9d6fbe8.md) and [executed audit](docs/reviews/2026-10-19/audit.md) distinguish tested behavior, historical failures, and limits.
 
@@ -352,6 +352,11 @@ reproduction, tested environment and verification limits.
 
 A disposable development database can be started with Docker:
 
+From a checkout, `docker compose up -d --wait postgres` starts the checked-in
+pgvector service with a readiness check and initializes the vector extension.
+See [database setup](docs/development-database.md) for the matching DSN, alternate
+ports and existing-volume behavior. The equivalent standalone command is:
+
 ```powershell
 docker run -d --name cpullm-pgvector -p 127.0.0.1:5433:5432 -e POSTGRES_USER=vectorprism -e POSTGRES_PASSWORD=vectorprism -e POSTGRES_DB=vectorprism pgvector/pgvector:pg16
 ```
@@ -373,6 +378,12 @@ Follow these steps in order:
 1. Install this checkout in a virtual environment using the commands above.
 2. Start PostgreSQL/pgvector and set `VECTORPRISM_PG_DSN` if you use a different database.
 3. Keep the packaged trained VectorPrism checkpoint available and allow the pretrained encoder assets to download on first use. For offline use, cache those assets first.
+
+For explicit connected preparation, transferable cache paths and offline failure
+checks, follow [encoder caching and offline setup](docs/offline-setup.md). Set
+`HF_HOME` / `HF_HUB_CACHE` before starting Python, then enable `HF_HUB_OFFLINE=1`
+and `TRANSFORMERS_OFFLINE=1` on the prepared deployment. Cache setup is separate
+from PostgreSQL setup and model training.
 4. Optionally install the prompt parser with `python -m pip install -e ".[prompt_nlp]"` and `python -m spacy download en_core_web_sm`. Use `prompt_backend="spacy"` to require it, or `"rules"` for the built-in interpreter. The default `"auto"` reports fallback when optional assets are missing.
 5. Ingest your documents, then ask questions about facts they actually contain. Installation alone does not load your documents.
 6. Read the visible reply, judgment and evidence together. Answer a clarification using the same `session_id` and caller scope. Treat partial execution or node errors as failures.
@@ -639,7 +650,7 @@ The credential file contains `secret_sha256` digests plus tenant, caller, and al
 
 `ask` is synchronous and uses the appliance's main Thinker pool. Do not concurrently call `ask` on the same instance as if it were a stateless function. `ask_concurrent` provides an experimental worker-seat path with a lock and Thinker per seat, returning `seat`/`request_id` on success or an error such as `other_server`/`seat_failed`. `other_server` is a capacity outcome: it does not provision or execute on another machine.
 
-The built-in HTTP entry currently forwards to `ask`, not `ask_concurrent`. Its threaded HTTP server is not proof of safe concurrent conversational use. Follow-up state, graph/index writes, reingestion, and multi-store lifecycle operations need explicit coordination. Scale counters and memory estimates have known gaps; they are not measured production capacity guarantees.
+The built-in HTTP entry forwards to `ask`, not `ask_concurrent`. The 1.11.1 patch serializes HTTP requests on the serving thread so lazily created tenant appliances retain ownership of SQLite/graph state. Connections close after each response so idle keepalive clients cannot monopolize the server. Factories supplied to `Entry` must construct thread-affine appliances on that serving thread; do not hand it an appliance created on another thread. The published 1.11.0 threaded transport can fail across clients and needs this patch for ordinary shared-appliance HTTP use. Scale counters and memory estimates are not measured production capacity guarantees.
 
 ## Finance checks without PostgreSQL
 

@@ -1,4 +1,4 @@
-# cpu-llm 1.11.0
+# cpu-llm 1.11.1
 
 **Evidence-Based AI Engine.** A CPU-first Python library for questions about your documents and explicit
 rules. It combines trained retrieval with bounded verified sentence construction,
@@ -6,6 +6,8 @@ structured finance checks, source evidence and explicit nonanswers. It is not
 an unrestricted conversational or clinical decision model.
 
 ## Included in this release
+
+- HTTP requests execute on one serving thread, preserving cached SQLite/graph ownership across clients. Connections close after responses. This corrects the 1.11.0 threaded-service defect.
 
 - A shared evidence-backed report/article/design-document workflow with
   section coverage, exact source proofs, formats and bounded continuation.
@@ -33,7 +35,7 @@ an unrestricted conversational or clinical decision model.
 After this version has been published:
 
 ```shell
-python -m pip install "cpu-llm==1.11.0"
+python -m pip install "cpu-llm==1.11.1"
 ```
 
 Before asking document questions, configure PostgreSQL with pgvector and set
@@ -42,7 +44,25 @@ Before asking document questions, configure PostgreSQL with pgvector and set
 on first use or cached for offline use. Installation does not start PostgreSQL
 or ingest your documents. No retraining is needed for the bundled demos.
 
-For optional spaCy prompt parsing, install `cpu-llm[prompt_nlp]==1.11.0` and
+Prepare the encoder while connected (set cache variables before Python starts):
+
+```sh
+export HF_HOME="$PWD/model-cache"
+export HF_HUB_CACHE="$HF_HOME/hub"
+python -c "import pyarrow; from sentence_transformers import SentenceTransformer; SentenceTransformer('sentence-transformers/all-mpnet-base-v2', device='cpu')"
+```
+
+For deployment, transfer the complete cache and set `HF_HUB_OFFLINE=1` and
+`TRANSFORMERS_OFFLINE=1`. On PowerShell use `$env:HF_HOME = Join-Path $PWD 'model-cache'`
+and `$env:HF_HUB_CACHE = Join-Path $env:HF_HOME 'hub'` instead of `export`.
+See [offline setup](https://github.com/insightitsGit/cpullm/blob/main/docs/offline-setup.md)
+for verification and optional-model limits. A repository checkout also supplies
+`docker compose up -d --wait postgres`; see
+[database setup](https://github.com/insightitsGit/cpullm/blob/main/docs/development-database.md)
+for matching connection strings. The source server contract is documented in
+[OpenAPI](https://github.com/insightitsGit/cpullm/blob/main/docs/openapi.json).
+
+For optional spaCy prompt parsing, install `cpu-llm[prompt_nlp]==1.11.1` and
 provision `en_core_web_sm`. The examples below use the built-in rules parser.
 
 ```python

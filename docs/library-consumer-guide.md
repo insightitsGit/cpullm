@@ -241,6 +241,14 @@ Direct `ingest` and `delete_source` do not take a caller argument. Authenticate 
 
 ## Authenticated HTTP service
 
+The checked-in [OpenAPI 3.1 contract](openapi.json) documents all four POST routes,
+request examples, bearer authentication and strict-policy precedence. It is a
+documentation artifact: the 1.11.0 stdlib server does not serve `/openapi.json` or
+Swagger UI. Unknown body fields are currently ignored; the schema documents
+recommended client types without claiming full runtime schema enforcement.
+For deployment prerequisites, see [database setup](development-database.md) and
+[encoder caching](offline-setup.md).
+
 Create a high-entropy bearer secret outside source control. For example, set it in `CPU_LLM_TOKEN` using your secret manager or shell. Generate the credential file from its digest without embedding the secret in the file:
 
 ```python
@@ -297,7 +305,7 @@ Run ingestion first. `response_view` is the helper above. Set a client timeout a
 
 Mapped errors return `{"error": code, "message": text}`: authentication failures use 401; source/tenant/access refusals 403; storage errors 503; caught `ValueError` requests 400. An unserved path returns 404. Unexpected exceptions are not universally wrapped into this JSON contract. `urllib` raises `HTTPError` for non-2xx responses; read its body to inspect a mapped error, and distinguish it from a timeout/connection failure.
 
-The service caches one appliance per tenant. The first requests for a tenant share one build, and a duplicate appliance is closed. `/v1/ask` calls ordinary `ask`, not `ask_concurrent`. Turns that share a `session_id` run one at a time. Turn tensors and the current-turn record are kept on the calling thread, so two sessions can be in `ask` together. `ask_concurrent` remains a Python API.
+The service caches one appliance per tenant. In the 1.11.1 patch, all HTTP requests execute serially on the serving thread, where the lazy tenant factory must construct thread-affine SQLite/graph state. Do not supply a preconstructed appliance from a different thread. Connections close after responses to prevent idle keepalive clients from holding the serial server. `/v1/ask` calls ordinary `ask`, not `ask_concurrent`; concurrent seat dispatch remains a separate Python API. The published 1.11.0 threaded server can raise SQLite thread-ownership errors across clients, including sequential requests.
 
 ## Corrections and history
 

@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: vectorprism
+      POSTGRES_PASSWORD: ${CPULLM_POSTGRES_PASSWORD:-vectorprism}
+      POSTGRES_DB: vectorprism
+    ports:
+      - "127.0.0.1:${CPULLM_POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - cpullm_pgdata:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/01-vector.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U vectorprism -d vectorprism"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+
+volumes:
+  cpullm_pgdata:
