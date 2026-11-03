@@ -1,7 +1,7 @@
 # User guide: reports, articles, design documents and tone
 
-These features are included in cpu-llm 1.11.0, prepared for publication.
-The PyPI 1.10.0 wheel and release whitepaper have not been replaced. After publication, install `cpu-llm==1.11.0`; before then, install the prepared wheel or use a checkout. From a
+These features are included in the published cpu-llm 1.11.0 release.
+The PyPI 1.10.0 wheel and release whitepaper have not been replaced. Install `cpu-llm==1.11.0` from PyPI or use a checkout. From a
 checkout containing these changes, install with `python -m pip install -e .`.
 Configure PostgreSQL/pgvector and the encoder assets as described in the
 [installation guide](../README.md). Ingestion supplies knowledge; it is not

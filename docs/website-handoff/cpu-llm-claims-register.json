@@ -1,6 +1,6 @@
 {
-  "version": "1.10.0",
-  "runtime_revision": "0102bc0",
+  "version": "1.11.0",
+  "runtime_revision": "71d1301",
   "claims": [
     {
       "claim": "Open-source CPU-first Python document QA",
@@ -15,7 +15,7 @@
     {
       "claim": "Bounded tone companion generation",
       "source": "docs/stylistic-generation-spec.md",
-      "limit": "Five relations, ten constructions; exact fact verification; strict bypass; neutral fallback"
+      "limit": "Original five-relation companion path plus two technical document constructions; prompt or API tone; independent inverse grammar; strict bypass; literal/neutral fallback."
     },
     {
       "claim": "897 passed, 2 skipped, 3 existing xfailed",
@@ -31,6 +31,21 @@
       "claim": "Historical medical strict contracts 16/16 in each of two domains",
       "source": "docs/benchmarks/2026-11-02-medical-local/REPORT.md",
       "limit": "Revision 26a5215; limited baseline; no hosted LLM or clinician comparison"
+    },
+    {
+      "claim": "Published cpu-llm 1.11.0 artifacts match the tested wheel/sdist hashes",
+      "source": "docs/releases/1.11.0-publication.json",
+      "limit": "Official PyPI metadata verification; no new clinical or hosted-model benchmark."
+    },
+    {
+      "claim": "Prompt-triggered verified document prose from source predicates",
+      "source": "docs/examples/2026-11-03-prompt-tone/README.md",
+      "limit": "Twelve fictional source claims in this captured example; bounded grammar; original evidence retained; unsupported records remain literal."
+    },
+    {
+      "claim": "Clean installed 1.11.0 passed dependency/CLI/database checks and both packaged demos",
+      "source": "docs/releases/1.11.0-build-validation.md",
+      "limit": "Windows Python 3.12.10, cached encoder and isolated pgvector; each demo 12/12 authored checks; no clinical accuracy inference."
     }
   ],
   "prohibited_claims": [
@@ -45,5 +60,6 @@
     "all six learned retrieval heads trained"
   ],
   "ordinary_mode_limit": "Optional FLAN-T5 may load; do not promise every ordinary path is generator-free.",
-  "evidence_limit": "Chunk IDs, spans and hashes establish stored provenance, not authenticated source truth."
+  "evidence_limit": "Chunk IDs, spans and hashes establish stored provenance, not authenticated source truth.",
+  "release_revision": "75425fc"
 }
