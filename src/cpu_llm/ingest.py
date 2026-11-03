@@ -75,15 +75,22 @@ def _train_split(
 
 
 def main() -> None:
-    import sys
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Ingest bundled corpora into the configured local database.')
+    selected = parser.add_mutually_exclusive_group()
+    selected.add_argument('--test', action='store_true', help='Ingest the WikiText test split')
+    selected.add_argument('--textbook', action='store_true', help='Ingest the bundled artificial-intelligence primer')
+    selected.add_argument('--finance', action='store_true', help='Ingest the bundled finance validation corpus')
+    args = parser.parse_args()
 
     appliance = Appliance(default_checkpoint())
     try:
-        if "--test" in sys.argv:
+        if args.test:
             _report(*train_wikitext_test(appliance), TEST_PREFIX)
-        elif "--textbook" in sys.argv:
+        elif args.textbook:
             _report(*train_textbook(appliance), TEXTBOOK_PREFIX)
-        elif "--finance" in sys.argv:
+        elif args.finance:
             _report(*train_finance(appliance), FINANCE_PREFIX)
         else:
             _report(*train_wikitext(appliance), SOURCE_PREFIX)
