@@ -71,7 +71,9 @@ def proofs(result):
 
 def score(case, result, rows):
     text = str((result.get('reply') or {}).get('text') or '')
-    status = result.get('answer_status') or (result.get('judgment') or {}).get('outcome')
+    status = (result.get('answer_status') or result.get('status') or
+              (result.get('reply') or {}).get('answer_status') or
+              (result.get('judgment') or {}).get('outcome'))
     held = status in HELD
     checks = dict(executed=not result.get('exception') and bool(text))
     if case['outcome'] == 'conflict':

@@ -41,3 +41,18 @@ def test_always_refuse_is_not_a_success_and_missing_proof_is_separate():
     verdict=module.score(case,result,rows)
     assert verdict['task_success']
     assert not verdict['ok']
+
+
+def test_ordinary_clarification_envelope_is_a_valid_nonanswer():
+    case=dict(outcome='refusal',values=[],required_sources=[])
+    response=dict(status='needs_clarification',reply=dict(text='Which entity do you mean?'))
+    assert module.score(case,response,[])['ok']
+
+
+def test_visible_arithmetic_with_a_held_decision_is_not_full_contract_success():
+    case=dict(outcome='calculation',values=['10.500'],required_sources=[])
+    response=dict(judgment=dict(outcome='insufficient_evidence'),reply=dict(text='Math: 12*0.875 = 10.5.'))
+    score=module.score(case,response,[])
+    assert score['checks']['visible_value']
+    assert not score['checks']['outcome']
+    assert not score['ok']
