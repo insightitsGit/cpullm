@@ -58,6 +58,12 @@ def normalize_question(text: str) -> dict:
     if _GUARD.search(raw) or re.search(r'```|["“”]|(?m:^\s*>)', raw):
         return dict(result, status='guarded')
     query = raw.strip()
+    information = _ANNOTATION_REQUEST.match(query)
+    if information:
+        facet = re.fullmatch(r'(?:the\s+)?([a-z]+)\s+of\s+(.+?)[.!?]*', query[information.end():], re.I)
+        if facet and facet[1].casefold() in _FIELDS and not re.search(r'\b(?:and|or|in|on|at|under|over|from|for|with|during|near)\b|[?;\n]', facet[2], re.I):
+            query = _FIELDS[facet[1].casefold()].format(entity=facet[2])
+            result['transformations'].append(dict(rule='explicit_information_attribute'))
     shell = _SHELL.match(query)
     if shell:
         query = query[shell.end():]

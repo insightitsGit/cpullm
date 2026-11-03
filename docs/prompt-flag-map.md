@@ -4,7 +4,8 @@ Generated from `cpu_llm.flag_contract.FLAG_BINDINGS`. The JSON companion is test
 
 `request.strict_evidence` is a pre-graph policy consumed by
 `strict_evidence.answer`: API/header/prompt activation or an operator floor
-bypasses ordinary agent nodes and learned generation. Enable wins; see the
+bypasses ordinary agent nodes and learned generation. Version 2 selects bounded
+evidence quotations, exact arithmetic, or abstention. Enable wins; see the
 [strict policy specification](strict-evidence-spec.md) for limits and refusals.
 
 | Flag | Origin / example | Consumer | Stage | Enforcement / behavior |

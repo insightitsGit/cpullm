@@ -68,6 +68,14 @@ def products_from(selected: list[tuple[str, str]]) -> list[str]:
     return names
 
 
+def owns_structured_request(message: str, *, forced: bool = False) -> bool:
+    """A selected specialist owns supplied fields, including incomplete payloads."""
+    if not products_from(select_finance(message, forced=forced)):
+        return False
+    return bool('{' in message or re.search(
+        r'(?im)^\s*(?:vendor|invoice|tax charged|correct tax|numerator|denominator|threshold|comparator|field|document type)\s*:', message))
+
+
 def _definition_only(message: str) -> bool:
     text = (message or "").strip()
     if _DEFINITION.match(text) is None:

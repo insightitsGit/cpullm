@@ -107,7 +107,9 @@ def score(case,result):
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--out',type=Path,required=True)
-    out=parser.parse_args().out.resolve();out.mkdir(parents=True,exist_ok=False)
+    parser.add_argument('--database',default='domain_pilot_'+str(int(time.time())))
+    args=parser.parse_args()
+    out=args.out.resolve();out.mkdir(parents=True,exist_ok=False)
     sources,cases=gold();write(out/'cases.json',cases);write(out/'sources.json',sources)
     revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     if subprocess.call(['git','diff','--quiet','--','src/cpu_llm'],cwd=ROOT):raise SystemExit('Use committed runtime')
@@ -117,7 +119,7 @@ def main():
     os.environ['HF_HUB_OFFLINE']='1';os.environ['TRANSFORMERS_OFFLINE']='1'
     import psycopg
     from cpu_llm.pipeline import Appliance
-    admin='postgresql://vectorprism@127.0.0.1:55433/postgres';db='domain_pilot_1102'
+    admin='postgresql://vectorprism@127.0.0.1:55433/postgres';db=args.database
     with psycopg.connect(admin,autocommit=True) as conn:
         conn.execute(psycopg.sql.SQL('CREATE DATABASE {}').format(psycopg.sql.Identifier(db)))
     dsn=admin.rsplit('/',1)[0]+'/'+db

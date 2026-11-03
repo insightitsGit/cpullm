@@ -59,7 +59,7 @@ FLAG_BINDINGS = tuple(
 )
 FLAG_BINDINGS += (FlagBinding('request.strict_evidence', 'API, header, prompt marker, or operator floor',
     ('strict_evidence.answer',), 'pre_graph',
-    'Enable wins; bypass normal graph and learned generation; literal quotes or abstention.',
+    'Enable wins; bypass normal graph and learned generation; bounded evidence quotes, exact arithmetic or abstention.',
     '[strict-evidence] followed by a newline'),)
 OPTIONAL_ORDER = ('deep', 'gather', 'compare', 'brief', 'math', 'finance', 'frame')
 _AFTER = {'shine': -1, 'deep': 0, 'imagine': 1, 'compare': 2, 'brief': 3, 'math': 4, 'finance': 5, 'frame': 6}

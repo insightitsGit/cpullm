@@ -692,7 +692,10 @@ class Appliance:
                 chosen = ' '.join(str(word) for word in plan['sense'].get('words') or []).strip()
                 if isinstance(plan.get('question'), str) and plan['question'].strip():
                     message = plan['question']
-            reference = self.references.prepare(message, key=session_key, continuation=plan)
+            from cpu_llm.finance.triggers import owns_structured_request
+            specialist_owned = owns_structured_request(message, forced=finance)
+            reference = (dict(status='ready', query=message, bindings=[]) if specialist_owned else
+                         self.references.prepare(message, key=session_key, continuation=plan))
             if reference['status'] in {'needs_clarification', 'insufficient_information', 'cancelled'}:
                 response = clarification_result(reference, raw_message, self.tenant_id)
                 response['response_plan'] = response_plan
@@ -715,7 +718,11 @@ class Appliance:
             from cpu_llm.typos import correct_message
 
             overview_prefix = re.match(r'^(?:tell me about|describe)\s+', message, re.I) if response_plan['mode'] == 'overview' else None
-            if overview_prefix:
+            if specialist_owned:
+                # A structured specialist owns these exact fields; corpus spelling
+                # suggestions must never rewrite an invoice or numeric payload.
+                typos = []
+            elif overview_prefix:
                 # These are request/control words, not misspelled corpus words.
                 # In a bell corpus, correcting "Tell" to "Bell" narrows an
                 # overview to one fact before the summary producer sees it.

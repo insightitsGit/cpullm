@@ -57,6 +57,7 @@ _COVENANT_KEYS = {
     "comparator": "comparator",
     "threshold": "threshold",
     "rounding": "rounding",
+    "ratio places": "ratio_places",
     "currency": "currency",
     "max iterations": "max_iterations",
     "add-back base": "addback_base",
@@ -72,9 +73,20 @@ _LOCK_KEYS = {
 def parse_sections(message: str, products: list[str]) -> dict[str, dict[str, Any]]:
     """Sections for the products this turn is running."""
     payload = extract_json(message)
-    if payload is not None and _looks_like_request(payload):
-        return _from_json(payload, products)
-    return _from_lines(message, products)
+    sections = (_from_json(payload, products) if payload is not None and _looks_like_request(payload)
+                else _from_lines(message, products))
+    places = re.findall(r'\b(?:to|with) (zero|one|two|three|four|five|six|[0-6]) decimal places\b', message, re.I)
+    if places and 'ledgercovenant' in sections:
+        names = dict(zip(('zero','one','two','three','four','five','six'), range(7)))
+        requested = {names[v.casefold()] if v.casefold() in names else int(v) for v in places}
+        if len(requested) != 1:
+            raise ValueError('Conflicting ratio display precision requests.')
+        section = sections['ledgercovenant']
+        value = requested.pop()
+        if 'ratio_places' in section and int(section['ratio_places']) != value:
+            raise ValueError('Conflicting ratio display precision requests.')
+        section['ratio_places'] = value
+    return sections
 
 
 def _looks_like_request(payload: dict[str, Any]) -> bool:

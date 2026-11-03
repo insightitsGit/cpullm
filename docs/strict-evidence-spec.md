@@ -1,6 +1,6 @@
-# Strict evidence mode, version 1
+# Strict evidence mode, version 2
 
-Implementation: `5f68561`. Policy identifier: `strict-evidence-v1`.
+Version 1 shipped in `5f68561`. Current policy identifier: `strict-evidence-v2`.
 This document specifies the existing implementation; the “zero hallucination”
 description does not introduce a second flag or a broader answering contract.
 
@@ -14,7 +14,8 @@ Clinical decisions need separately validated clinical data and decision rules.
 The term describes an execution restriction: strict mode MUST NOT generate
 factual answer wording with a learned model. Delivered evidence MUST be a
 literal substring of an authorized stored chunk. Source labels and fixed
-nonanswer messages are application-owned text, not generated medical claims.
+nonanswer messages and exact calculation displays are application-owned text,
+not model-generated medical claims.
 If evidence cannot satisfy the supported lookup contract, the mode MUST return
 a nonanswer or fail the request; it MUST NOT retry through ordinary generation.
 
@@ -52,24 +53,54 @@ neural realization, stylistic generation, reference resolution, or specialist
 nodes. Retrieval/ingestion models may still be loaded by the appliance; the
 strict answer path uses SQL plus literal matching, with no model inference.
 
-Version 1 supports one exact question form:
-`What is the <attribute> of <named entity>?` It matches only whole stored chunks
-of the form `The <attribute> of <named entity> is <value>.` Case-insensitive
-attribute/entity matching is allowed. Values, numbers and units are copied
-without conversion or rounding. Multisentence chunks, unresolved pronouns,
-compound questions, conditions, inferred joins, calculations, diagnosis and
-treatment advice are unsupported. Rephrase a lookup explicitly; unsupported
-requests never fall back to the normal pipeline. Normal mode is unchanged.
+Version 2 supports the following bounded request forms:
 
-One SQL snapshot scans up to 10,000 authorized, time-valid chunks. Authorization
+- `What is the <attribute> of <named entity>?`
+- Up to eight such questions separated by question marks, newlines or semicolons.
+- `What are the strength and storage of DemoMed?` (explicit attribute lists).
+- `List documented attributes of DemoMed.` (up to 32 recognized direct attributes).
+- `Calculate 0.1 + 0.2.` (explicit addition, subtraction or multiplication).
+- `Calculate the strength of DemoMed times 3.` (unambiguous scalar source fact).
+
+Within a batch, `of it` can bind to exactly one previously named entity; multiple
+prior entities produce an unsupported task rather than a guessed referent.
+The binding is recorded in `task_results[].request.reference_binding`. No
+cross-turn session state is read or written. Unknown tasks stay in the result;
+one unsupported question never silently removes another requested question.
+
+Recognized whole-chunk source forms are `The <attribute> of/for <entity> is
+<value>.`, `<entity>'s <attribute> is <value>.`, and `<entity> has a/an
+<attribute> of <value>.` Original numbers, units and wording are quoted without
+rewriting. Case-insensitive attribute/entity matching and a leading `the` are
+normalized for matching only. Multisentence chunks remain unsupported so a
+qualifier in a following sentence cannot be silently discarded.
+
+A one-hop join requires both `<entity> is a/an <type>.` and `Every <type> has
+a/an <attribute> of <value>.` Both original premises are returned, not a new
+asserted sentence. Class averages, ambiguous memberships and missing premises
+do not license an individual fact. Direct and joined values participate in the
+same conflict check. This is not unrestricted graph reasoning.
+
+Explicit negations in recognized forms cause a conflict/nonanswer. Recognized
+uncertainty or conditions withhold the affected slot, including when another
+source has an unconditional value. Unrecognized paraphrases can still be missed;
+this is a bounded parser, not exhaustive semantic contradiction detection.
+
+One SQL snapshot scans up to 10,000 authorized, time-valid chunks and eight
+million text characters. Authorization
 and validity filters precede the limit. An overflow refuses to select an answer.
 `as_of` selects historical evidence; otherwise current validity applies. This
 scan is independent of vector top-k rankings. It detects differing values only
-within the exact supported source template, **not semantic contradictions in
-other wording**. Thus `scan_complete` describes the bounded database scan, not
+within the recognized source forms, **not arbitrary semantic contradictions**.
+Thus `scan_complete` describes the bounded database scan, not
 completeness of medical knowledge or exhaustive semantic conflict detection.
 
-Matching identical values retain every source proof. Different value strings
+Matching equivalent values retain every source proof. Exact scalar mass
+(`mcg`, `mg`, `g`, `kg`), volume (`mL`, `L`) and time (`minute(s)`, `hour(s)`)
+values are compared using Decimal and explicit conversion factors. Units are
+case-sensitive; compound units, ranges, clinical dose conversions and fuzzy
+equivalence are not inferred. Source wording is never converted for display.
+Different non-equivalent values
 produce `conflicting`; no match produces `insufficient_evidence`; unsupported
 forms produce `unsupported`. `evidence_quote` returns labeled, unvalidated source
 quotations. `answer` remains null and `audit_passed` remains false; no synthetic
@@ -85,6 +116,22 @@ not mean the request was answered. Supported terminal statuses are
 `evidence_quote`, `conflicting`, `insufficient_evidence`, `unsupported`, and
 `blocked`. Source evidence can accompany a conflict without authorizing the
 application to choose either value.
+
+Version 2 adds `derived_calculation` for exact deterministic arithmetic,
+`partial` when only some requested tasks succeed, and `completed` when every
+task succeeds with mixed quotation/calculation types. `task_results` preserves
+the status, request interpretation, proofs and optional calculation for each
+task. Homogeneous batches retain their common status. Consumers must inspect
+individual task statuses and must not interpret a partial result as full success.
+
+Calculations record the operator, input decimal strings, result and unit in
+`calculation`; they are labeled arithmetic, not medical advice. Source-based
+calculations retain all source proofs and refuse conflicting/uncertain values.
+Pure prompt arithmetic does not perform a database scan. Arithmetic is limited
+to bounded decimal operands (24 integer and 12 fractional digits), a 100-digit
+local Decimal context and the three stated operations; there is no division,
+clinical dosing policy or open-ended expression evaluation. As in version 1,
+`answer` is null and `audit_passed` is false for every strict result.
 
 For all strict responses, `evidence_policy.enabled` is true,
 `learned_generation`, `clinical_validation` and `source_truth_verified` are
@@ -107,7 +154,7 @@ Strict responses bypass the ordinary graph's judgment and output rendering.
 Consumers MUST NOT require ordinary graph-specific fields to interpret this
 envelope or treat `audit_passed=False` as permission to retry with generation.
 
-Strict mode is stateless: session IDs do not resolve references or resume
+Strict mode is stateless across requests: session IDs do not resolve references or resume
 pending tasks. Style, length, layout and other generation flags cannot enable
 additional producers. Repeat the flag each turn or use an operator floor.
 
@@ -126,4 +173,7 @@ historical validity and overflow behavior.
 `tests/test_strict_evidence_http.py` checks the actual HTTP header and server
 enforcement path. The saved full-suite result is **806 passed, 2 skipped,
 3 expected failures**, documented in the
-[validation report](reviews/2026-11-02/strict-evidence-validation.md).
+[version 1 validation report](reviews/2026-11-02/strict-evidence-validation.md).
+Version 2 coverage is in `tests/test_strict_evidence_v2.py` and the fresh
+`tools/benchmarks/evidence_v2.py` synthetic acceptance/local-baseline runner.
+See [healthcare acceptance requirements](healthcare-evidence-acceptance.md).

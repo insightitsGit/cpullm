@@ -361,3 +361,9 @@ line. An appliance constructor flag or `cpu-llm-serve --strict-evidence` enforce
 the policy for all requests. See [the versioned contract](strict-evidence-spec.md)
 for supported source/question templates, result statuses and limitations.
 This disables learned answer generation; it does not establish medical truth.
+The current `strict-evidence-v2` policy adds bounded multi-question requests,
+recorded within-batch references, explicit one-hop evidence joins, direct-fact
+overviews and exact arithmetic. New statuses include `derived_calculation`,
+`partial` and `completed`; inspect individual `task_results`. Historical version
+1 contracts are preserved in the Git history. No clinical decision approval is
+implied by either version.

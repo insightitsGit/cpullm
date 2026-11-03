@@ -21,24 +21,24 @@ For an agent integrating the library, start with [the consumer guide](docs/libra
 marker. This separate path disables FLAN-T5 and other learned answer generation,
 returning literal cited source facts or abstaining. Set
 `Appliance(strict_evidence=True)` or serve with `--strict-evidence` to enforce it.
-Version 1 supports explicit single attribute lookups, not clinical advice;
+Version 2 supports bounded fact batches, evidence joins and exact arithmetic, not clinical advice;
 source truth and 100% accuracy are not guaranteed. See the
 [strict evidence specification](docs/strict-evidence-spec.md).
 
-## Strict evidence: source quotations without generated facts
+## Strict evidence: source quotations and exact arithmetic
 
 The “zero hallucination” goal here means **no model-generated factual answer**
-in the strict path. The library copies a supported source fact exactly, including
-its numbers and units, or returns a nonanswer. It does not use FLAN-T5,
+in the strict path. The library copies supported source facts exactly, performs
+explicit bounded arithmetic, or returns a nonanswer. It does not use FLAN-T5,
 fact-bridge, neural realization or stylistic generation for strict answers.
-Fixed status messages and source labels are application text. This is a
+Fixed status messages, arithmetic results and source labels are application text. This is a
 quotation/provenance restriction, not a guarantee of zero errors: stored facts
 can be wrong, and contradictory prose outside the supported template can be
 missed. This feature is available in this checkout; older PyPI packages may
 not contain it.
 
 After completing the normal database and model setup below, try this fictional
-example. The exact source and question forms matter in version 1:
+example. The supported source and question forms still matter in version 2:
 
 ```python
 from cpu_llm.pipeline import Appliance
@@ -73,10 +73,31 @@ Check `answer_status` before using the result:
 - `insufficient_evidence`: no supported match or the strict scan limit was reached.
 - `unsupported`: the question is outside the single attribute lookup contract.
 - `blocked`: the prompt guard rejected the request.
+- `derived_calculation`: an exact, deterministic calculation with recorded operands.
+- `partial`: some tasks succeeded; inspect every entry in `task_results`.
+- `completed`: all tasks succeeded with mixed quotation/calculation result types.
 
-Strict mode scans up to 10,000 authorized, time-valid chunks and fails closed on
-overflow. It is stateless and does not infer joins, perform calculations,
-resolve pronouns, expand long answers or render requested layouts. A question
+Strict mode scans up to 10,000 authorized, time-valid chunks (eight million text
+characters) and fails closed on overflow. It supports up to eight explicit
+questions, unique within-batch `of it` references, one-hop explicit universal-rule
+joins, and documented-attribute overviews of up to 32 attributes. It recognizes
+canonical, possessive, `has` and `for` fact forms and compares supported scalar
+units exactly. Arbitrary prose contradictions remain outside that contract.
+
+Examples after ingesting the appropriate fictional facts:
+
+```text
+What are the strength and storage of DemoMed?
+What is the strength of DemoMed? What is the storage of it?
+List documented attributes of DemoMed.
+Calculate 0.1 + 0.2.
+Calculate the strength of DemoMed times 3.
+```
+
+Calculations are labeled arithmetic, never medical advice. Source-based
+calculations retain proofs and refuse conflicting/uncertain values. Strict mode
+does not remember prior turns, infer missing clinical rules, or render requested
+layouts. A question
 such as “Can I take DemoMed?” is unsupported. Pharmacy and healthcare users
 still need validated sources and separately validated clinical decision logic;
 this mode supplies traceable evidence, not a diagnosis or prescribing system.

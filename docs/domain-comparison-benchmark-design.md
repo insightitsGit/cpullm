@@ -2,6 +2,22 @@
 
 Status: pilot specification, November 2, 2026. Hosted comparison is deferred at the user's request until a free-account key is available. No paid API calls are authorized. This is an evaluation of evidence handling and arithmetic, not a clinical validation or a presumption that CPU LLM wins.
 
+Current follow-up: the user selected a **local deterministic baseline** and
+explicitly left the hosted arm unrun. `tools/benchmarks/evidence_v2.py` freezes
+fresh fictional evidence cases and compares the public strict API with an
+independently implemented canonical whole-record lookup/Decimal calculator.
+It checks visible values, literal proof offsets/hashes, expected task statuses,
+answerable coverage and correct nonanswers. It does not import the production
+strict parser or use gold answers inside the baseline. A limited baseline is
+not a stand-in for a hosted LLM or a clinical comparator.
+
+`tools/benchmarks/domain_pilot.py --database <new-disposable-name> --out <new-dir>`
+replays the original 24 cases through ordinary public `ask`; original archived
+results remain immutable. Both runners require committed runtime sources and
+record their revision and dataset hashes before model execution. Do not alter
+scoring/gold after a run without a separately versioned rerun. Clinical release
+gates are defined in [healthcare acceptance](healthcare-evidence-acceptance.md).
+
 The [CPU-only pilot results](benchmarks/2026-11-02-domain-pilot/REPORT.md) and [gap review](reviews/2026-11-02/design-implementation-gaps.md) are now saved. Public finance requests were blocked by reference resolution; direct finance-component probes exposed precision-display gaps. Preserve these failures when preparing the later comparison. Explicitly spell out rounding policy in its new frozen inputs.
 
 ## Questions and fair comparisons

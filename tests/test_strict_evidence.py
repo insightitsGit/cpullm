@@ -47,7 +47,7 @@ def test_decimal_conflicts_are_not_rounded_away():
 
 
 @pytest.mark.parametrize('query', ['Can I take DemoMed?', 'What is the dose of it?',
-    'What is the strength of DemoMed? And what is its dose?',
+    'What is its dose?',
     'What is the strength of DemoMed if I am pregnant?'])
 def test_unsupported_does_not_retrieve_or_infer(query):
     app = appliance()

@@ -53,7 +53,8 @@ class VectorPrismIndex:
             cursor.execute(
                 'SELECT document_id, chunk_text FROM psm_document_embeddings '
                 f'WHERE ({clause}) AND valid_timestamp <= %s '
-                'AND (valid_to_timestamp IS NULL OR valid_to_timestamp > %s) LIMIT %s',
+                'AND (valid_to_timestamp IS NULL OR valid_to_timestamp > %s) '
+                'ORDER BY document_id, valid_timestamp LIMIT %s',
                 (*params, when, when, max_rows + 1))
             rows = cursor.fetchall()
         if len(rows) > max_rows:

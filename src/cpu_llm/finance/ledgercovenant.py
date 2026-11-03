@@ -11,6 +11,7 @@ from __future__ import annotations
 from datetime import date, datetime, timezone
 from decimal import Decimal, InvalidOperation
 from typing import Any
+import re
 
 from cpu_llm.finance.money import (
     AMOUNT_SCALE,
@@ -499,8 +500,16 @@ def _decide(request: dict[str, Any]) -> dict[str, Any]:
             rounding=rounding,
         )
         threshold_scaled = parse_amount(threshold, scale=RATIO_SCALE)
-        shown_computed = format_ratio(computed)
-        shown_threshold = format_ratio(threshold_scaled)
+        raw_places = request.get('ratio_places', 2)
+        if isinstance(raw_places, bool) or not re.fullmatch(r'[0-6]', str(raw_places)):
+            raise FinanceInputError('ratio_places must be an integer from 0 to 6.')
+        places = int(raw_places)
+        # Preserve the exact stored decision values, even when fewer digits were requested.
+        effective_places = places
+        while effective_places < RATIO_SCALE and any(v % (10 ** (RATIO_SCALE - effective_places)) for v in (computed, threshold_scaled)):
+            effective_places += 1
+        shown_computed = format_ratio(computed, places=effective_places)
+        shown_threshold = format_ratio(threshold_scaled, places=effective_places)
     else:
         computed = numerator["value_scaled"]
         threshold_scaled = parse_amount(threshold, scale=AMOUNT_SCALE)

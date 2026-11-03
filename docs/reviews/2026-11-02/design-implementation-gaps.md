@@ -4,6 +4,15 @@ Reviewed runtime `273ab48` (same implementation as `3b8ab1e`). No runtime fixes 
 
 ## Actionable findings
 
+Follow-up implementation: the structured-finance ownership, ratio precision,
+and conversational color findings below now have fixes and regression tests
+(`tests/test_domain_gap_fixes*.py`). Historical pilot results below remain
+unchanged. See [the numeric contract](../../finance-numeric-presentation.md),
+[strict evidence v2](../../strict-evidence-spec.md), and
+[healthcare acceptance boundary](../../healthcare-evidence-acceptance.md).
+Clinical sign-off and arbitrary semantic contradiction coverage are not supplied
+by these fixes. A separately recorded replay is required before comparing scores.
+
 ### P1: self-contained finance requests are blocked by generic reference resolution
 
 `src/cpu_llm/pipeline.py:685` invokes `self.references.prepare` before finance ownership is selected at line 744. All twelve fresh public `ask` requests in the domain pilot, including complete invoice/covenant fields, returned “Which entity do you mean? Please give its full name.” The ordinary product phrasing “Review this RefundProof finding” / “Decide this LedgerCovenant test” contains demonstratives that the reference layer treats as unresolved entities.
