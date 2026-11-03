@@ -2,9 +2,18 @@
 
 ## Request and deliverables
 
+Approved product description: **Evidence-Based AI Engine**. Use this consistently
+in the hero, whitepaper title, social cards and product descriptions. Subtitle:
+**Answer questions from your documents and explicit rules, with source evidence
+and CPU-first execution.** Do not describe the product as a "local" engine or
+"local document question answering". Document question answering remains a
+capability and a useful search term, rather than the complete product category.
+Credit the whitepaper to **Amin Parva, Independent Engineer**; do not attribute
+its authorship to Insight IT Solutions LLC.
+
 The product owner requests a cpu-llm landing page on **www.insightits.com**, under
 **Research & Proof**, with a downloadable whitepaper and developer guidance for
-nodes/APIs. This is inbound SEO for developers evaluating local document QA,
+nodes/APIs. This is inbound SEO for developers evaluating document QA,
 not a paid product-shop SKU or a claim of clinically certified AI.
 
 Create the page in the existing website repository using its established styles,
@@ -23,7 +32,7 @@ Deliver:
 
 ## Files to consume
 
-Shared local checkout: `C:\code\cpullm`.
+Shared checkout: `C:\code\cpullm`.
 
 - `docs/whitepapers/cpu-llm-1.10.0-whitepaper.md`: canonical full text.
 - `docs/whitepapers/cpu-llm-1.10.0-whitepaper.pdf`: verified publication PDF.
@@ -38,7 +47,7 @@ Shared local checkout: `C:\code\cpullm`.
 - `docs/examples/2026-11-02-conversation/TRANSCRIPT.md`: actual basic chat/routing.
 
 Copy required publication assets into the website's normal public asset tree;
-do not publish `file://`, local drive paths, build logs, credentials or private
+do not publish `file://`, drive paths, build logs, credentials or private
 patient data. Versioned GitHub links below are suitable evidence links.
 
 ## Verified placement and proposed URLs
@@ -63,13 +72,13 @@ distinct titles and purposes.
 ## Positioning and search intent
 
 Primary audience: Python/application developers and engineering evaluators
-looking for local document question answering, self-hosted document search,
+looking for document question answering, self-hosted document search,
 RAG-style source retrieval, and inspectable calculations or refusals.
 
-Primary phrase hypothesis: **local document question answering**.
+Primary phrase hypothesis: **document question answering**.
 Supporting phrases: **CPU document QA**, **Python document QA library**,
 **document question answering with citations**, **self-hosted document search**,
-**local RAG Python**, **strict evidence mode**, **financial document validation**.
+**RAG Python**, **strict evidence mode**, **financial document validation**.
 Developer-specific long tails: **healthcare document QA with source evidence**,
 **pharmacy label lookup demo**, **exact financial calculations Python**,
 **PostgreSQL pgvector document questions**, and **source-grounded AI responses**.
@@ -81,19 +90,19 @@ has been measured. Validate actual demand in Search Console after launch.
 
 Use these terms naturally in descriptive titles, headings, examples, anchors and
 the developer guide. Do not build near-duplicate doorway pages for every phrase.
-"Local RAG" needs a clear scope explanation: strict selection is bounded SQL
-evidence matching, not a bundled general-purpose local generative LLM.
+"RAG" needs a clear scope explanation: strict selection is bounded SQL
+evidence matching, not a bundled general-purpose generative LLM.
 
 ## Metadata and proposed opening copy
 
-Title: **CPU LLM: Local Document QA with Citations | Insight ITS**
+Title: **CPU LLM: Evidence-Based AI Engine | Insight ITS**
 
-Meta description: **Explore cpu-llm, a local Python library for document questions,
+Meta description: **Explore cpu-llm, a Python library for document questions,
 source evidence and exact checks. See fictional healthcare demos, APIs and limits.**
 
 Eyebrow: **Research & Proof · Open-source Python library · Version 1.10.0**
 
-H1: **CPU LLM for local document question answering**
+H1: **CPU LLM: Evidence-Based AI Engine**
 
 Hero copy:
 
@@ -194,7 +203,7 @@ installed healthcare and conversation demos each 12/12 authored checks. Keep
 Windows/Python 3.12 scope and correct refusals visible. These are different
 denominators and must not be aggregated into an accuracy rate.
 
-The historical 32-case local comparison may appear in a methodology section:
+The historical 32-case comparison may appear in a methodology section:
 16 fictional medication cases and 16 healthcare-record cases; ordinary, strict,
 literal/calculator arms. It is not a comparison with a generative LLM or clinician.
 Do not headline 16/16 as medical accuracy. Link frozen cases/scorer/raw evidence.
@@ -209,7 +218,7 @@ peer-reviewed research paper or independent clinical/security certification.
 
 ### FAQ copy
 
-- **Is cpu-llm a general local LLM?** It is a bounded document-and-rule engine.
+- **Is cpu-llm a general LLM?** It is a bounded document-and-rule engine.
   A trained encoder/projection supports retrieval; not every response uses an
   unrestricted generative decoder.
 - **Does strict mode guarantee zero hallucinations?** It bypasses learned answer
@@ -279,6 +288,6 @@ Actual healthcare chat: https://github.com/insightitsGit/cpullm/blob/0102bc0/exa
 
 Before reporting completion, check the claims register against page text and
 metadata, test every CTA and asset, ensure the nav/index placement is correct,
-and state whether the result is a local preview or live deployment. Return the
+and state whether the result is a preview or live deployment. Return the
 implemented paths/URLs, tests and any remaining limitation. Do not report a live
 page merely because this handoff exists.

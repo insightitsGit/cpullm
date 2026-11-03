@@ -72,10 +72,10 @@ def main():
     def footer(canvas, doc):
         canvas.setStrokeColor(colors.HexColor('#c4d3de')); canvas.line(48,40,564,40)
         canvas.setFont('Helvetica',8); canvas.setFillColor(colors.HexColor('#40576a'))
-        canvas.drawString(48,28,'Insight ITS | cpu-llm 1.10.0 | Implementation whitepaper')
+        canvas.drawString(48,28,'Amin Parva | Independent Engineer | cpu-llm 1.10.0')
         canvas.drawRightString(564,28,str(doc.page))
     SimpleDocTemplate(str(output),pagesize=(612,792),rightMargin=48,leftMargin=48,topMargin=44,bottomMargin=56,
-        title='CPU LLM for Local Document Question Answering',author='Amin Parva, Insight IT Solutions LLC').build(story,onFirstPage=footer,onLaterPages=footer)
+        title='CPU LLM: Evidence-Based AI Engine',author='Amin Parva, Independent Engineer').build(story,onFirstPage=footer,onLaterPages=footer)
     (DOC/output.name).write_bytes(output.read_bytes())
     print(output)
 

@@ -1,6 +1,8 @@
 # cpu-llm
 
-**A local, CPU-based library for answering questions from your documents and explicit rules.**
+**Evidence-Based AI Engine**
+
+Answer questions from your documents and explicit rules, with source evidence and CPU-first execution.
 
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-Apache--2.0-orange)](LICENSE)
@@ -37,8 +39,7 @@ Use `Appliance(small_talk=False)`, `ask(..., small_talk=False)`, or service
 also accepts a boolean `small_talk`.
 
 The default pack is original, small and shipped with the package. Optional
-`tools/prepare_conversation_candidates.py` prepares review queues from local
-OpenAssistant/UltraChat/DailyDialog exports with source/revision/license receipts.
+`tools/prepare_conversation_candidates.py` prepares review queues from OpenAssistant/UltraChat/DailyDialog exports with source/revision/license receipts.
 It does not install external answers, train a model, or add facts to your medical
 or financial corpus. DailyDialog requires explicit noncommercial acknowledgment
 and is not bundled. See [the conversation specification](docs/conversation-spec.md)
@@ -53,7 +54,7 @@ is included; all 12 routing checks passed. The full integration suite passed
 For pip installations, the same types of examples are available without Git:
 `cpu-llm-demo conversation --out conversation-demo-new-run` and
 `cpu-llm-demo healthcare --out healthcare-demo-new-run`.
-The local dataset review command is `cpu-llm-conversation-candidates --help`.
+The dataset review command is `cpu-llm-conversation-candidates --help`.
 These commands are included in 1.10.0; the normal database/model setup still applies.
 
 ## Using cpu-llm in healthcare and finance
@@ -260,17 +261,17 @@ See [the specification](docs/strict-evidence-spec.md) and
 
 Latest verification: **854 tests passed**, 2 skipped and 3 expected failures.
 The authored strict evidence suite passed **42/42**, versus **25/42** for a
-simple independent local literal/calculator baseline. The original domain replay
+simple independent literal/calculator baseline. The original domain replay
 now passes **24/24**, including all 12 finance cases. These are synthetic
 engineering results, not a clinical accuracy score or hosted-LLM comparison.
 See [strict evaluation](docs/benchmarks/2026-11-02-evidence-v2/REPORT.md),
 [domain replay](docs/benchmarks/2026-11-02-domain-replay-v2/REPORT.md) and
 [remaining clinical gates](docs/healthcare-evidence-acceptance.md).
 
-A dedicated [local medication/healthcare comparison](docs/benchmarks/2026-11-02-medical-local/REPORT.md)
+A dedicated [medication/healthcare comparison](docs/benchmarks/2026-11-02-medical-local/REPORT.md)
 now separates 16 fictional medication tasks from 16 healthcare-record tasks.
 It runs ordinary cpu-llm, strict evidence and the literal/calculator baseline;
-no local generative LLM is included. Use
+no generative LLM is included. Use
 `python tools/benchmarks/medical_local.py --out build/medical-local-new-run`
 after configuring the disposable database and cached assets described in
 [the setup design](docs/medical-local-benchmark-design.md).
@@ -279,7 +280,7 @@ after configuring the disposable database and cached assets described in
 
 The [current design](docs/current-design.md) describes the implementation. Prompt interpretation, output layouts, delivery judgment and flag-routing enforcement are committed in this repository; an installed PyPI distribution with the same version number may predate them. The saved Millhaven benchmark is the earlier clean commit `af39da6`.
 
-- **Explicit connections and intent:** ingestion saves source-backed facts and channel memberships in a namespace-local knowledge graph. Recognized prompts prioritize the requested entity, relationship, and direction when selecting evidence. Multiple channels can apply to one connection.
+- **Explicit connections and intent:** ingestion saves source-backed facts and channel memberships in a namespace-scoped knowledge graph. Recognized prompts prioritize the requested entity, relationship, and direction when selecting evidence. Multiple channels can apply to one connection.
 - **Prompt interpretation:** supported conversational questions and explicit field lists compile inside `ask()` into direct, independently retrieved tasks. Original text, transformations, constraints and interpretation diagnostics remain available. The default `prompt_backend="auto"` uses a locally installed spaCy model for planning and validated attribute-query proposals, with an explicit diagnostic fallback when its optional assets are absent. Set `"spacy"` to require it or `"rules"` to disable it. See [prompt ingestion](docs/prompt-ingestion.md) for setup and limits; parser annotations are not evidence.
 - **Output layouts:** prompt flags select tables, bullets, numbering and report layouts in Markdown or HTML. Tabulate formats tables and Jinja2 renders built-in templates from judged responses and accepted source IDs; pending or missing information is preserved. See [output layout alignment](docs/output-layouts.md).
 - **Dictionary-assisted questions:** a small, inspectable lexicon recognizes supported synonyms and equivalent expressions. It preserves the original question and can retrieve with one canonical variant. Antonyms remain distinct; this is not a complete dictionary or arbitrary semantic understanding.
@@ -294,7 +295,7 @@ These additions select evidence and support bounded sentence constructions. They
 
 ## Where it can be useful
 
-The intended use is a document assistant inside another application: for example, looking up facts in a manual, answering supported questions about an internal policy, or preparing a structured summary from stored passages. Local CPU execution and explicit source records can be useful when the developer wants to keep the runtime and indexed documents under their control.
+The intended use is a document assistant inside another application: for example, looking up facts in a manual, answering supported questions about an internal policy, or preparing a structured summary from stored passages. CPU execution and explicit source records can be useful when the developer wants to keep the runtime and indexed documents under their control.
 
 This is a candidate for a **bounded, human-supervised pilot**. Industry usefulness, customer time savings, and production reliability have not been established by the repository tests. Before deployment, evaluate real documents and independently written questions, including missing facts and conflicting sources, against your existing search workflow. Broad conversation, arbitrary language understanding, and a trained general-purpose sentence generator are outside the demonstrated scope.
 
@@ -303,7 +304,7 @@ This is a candidate for a **bounded, human-supervised pilot**. Industry usefulne
 - Python 3.11 or newer and a 64-bit CPU.
 - PostgreSQL with the `vector` extension; the documented development configuration uses PostgreSQL 16.
 - The frozen `sentence-transformers/all-mpnet-base-v2` encoder. First use may download model assets; subsequent offline use requires those assets already cached.
-- Writable local storage for `.chorusgraph/cpu-llm/` under the process's **current working directory**, in addition to the PostgreSQL data.
+- Writable storage for `.chorusgraph/cpu-llm/` under the process's **current working directory**, in addition to the PostgreSQL data.
 
 ```powershell
 python -m venv .venv
@@ -466,14 +467,14 @@ Reingesting a source replaces vector, graph, and word-index rows for that source
 ## Available behaviors
 
 - **Document questions:** retrieve paragraphs and deliberate over supported stored propositions. Recognized definition, named-attribute, present-action/location, and weight questions bind to supporting sentences or report insufficient/conflicting evidence. Examples include `What is the harbor kestrel?`, `What is the capital of France?`, `Where does the harbor kestrel nest?`, and `How much does the harbor kestrel weigh?`. The proposition extractor considers a paragraph's first sentence; other text can still be retrieved or quoted. These are narrow English grammars, not arbitrary question answering.
-- **Event questions:** supported color, location, and agent forms, such as `What color was the apple John ate?`, `Where did John eat the apple?`, and `Who ate the apple?`. Dates and tense constrain matching. Limited negative/conditional frame forms and paragraph-local alias helpers also exist; this is not general semantic parsing or arbitrary coreference. The query frame node operates on the retrieved passages, not an exhaustive role-index search.
+- **Event questions:** supported color, location, and agent forms, such as `What color was the apple John ate?`, `Where did John eat the apple?`, and `Who ate the apple?`. Dates and tense constrain matching. Limited negative/conditional frame forms and within-paragraph alias helpers also exist; this is not general semantic parsing or arbitrary coreference. The query frame node operates on the retrieved passages, not an exhaustive role-index search.
 - **Rule answers:** return `YES`, `NO`, `CONTESTED`, `UNKNOWN`, `CAUSE`, or `NONE` under `reply.situation`. The pattern reader distinguishes asked permission, obligation, and prohibition, and compares a stored measurement with a numeric condition. A sufficient allowance alone leaves cases outside its condition unknown. Missing measurements also produce UNKNOWN. When that reader returns `NONE`, a permission question (`can`, `may`, `could`, or `am I allowed`) can quote a stored ban or an upper limit only when the sentence is about the asked action. A ban (`must not`, `cannot`, `not allowed`, `prohibited`, `forbidden`, and the same family; `may not` only when it is not a hedge such as `may not be`) needs the question's verb and a shared object, or at least two shared content words. One shared word is not enough. A ban inside a relative clause is ignored. A limit (`up to`, `no more than`, `at most`, `a maximum of`, `may not exceed`) is used only when its unit is the unit asked about. A sentence with `if`, `when`, `unless`, `only`, `provided`, or `except` does not produce `YES`. A ban and a permission that both match are `CONTESTED`. Anything less specific stays `NONE`. A different unit is not converted. Category matching and background-memory assumptions remain limited; evaluate the source sentences before using a verdict in a decision.
 - **Summary/explanation/list/sources:** optional brief output over stored sentences. When one of these is requested, the checked sentence stays and the section is appended. Model01 does not replace that sentence. An empty summary, explanation, or list says so in that section. A because-sentence is reported only for the effect it states. The same sentence does not answer a different subject or a different action. When, a bare count, and an explicit comparison stay the fixed unsupported sentence. Comparisons present per-topic evidence; they do not establish a new comparative judgment.
 - **Deep search:** expands candidate paragraphs using lexical tags/relation hands. `deep_min_similarity` defaults to `0.62`; setting it to `None` removes that additional dense-similarity floor. A shortlist is not proof that all relevant evidence or contradictions were found.
 - **Creative mode:** selects varying subsets of stored sentences. The same prompt can yield different passages; this feature is not deterministic across runs.
 - **Math:** evaluates supported arithmetic in a separate agent. A computed value is not a retrieved proposition.
 - **Document layouts:** 31 built-in formats, including email, report, checklist, essay, and FAQ. A named format/topic can replace the main reply with copied topic-related sentences. This is text layout, not DOCX/PDF export or unrestricted prose generation. Missing roles should remain unfilled; topic-to-header binding has known limitations.
-- **Finance checks:** local RefundProof, LedgerCovenant, and Ledgerlock routines consume supplied fields. They do not fetch financial records or perform external writes.
+- **Finance checks:** RefundProof, LedgerCovenant, and Ledgerlock routines consume supplied fields. They do not fetch financial records or perform external writes.
 
 The supported grammar and explicit non-answer statuses are part of the interface. A name or possessive in a sentence does not establish arbitrary identity, ownership, or causality.
 
@@ -567,7 +568,7 @@ There are **three separate wording paths**:
 
 1. The construction realizer associated with the v1.9 design has N0 plans/constructions/checking but **no trained ranker checkpoint**. `realization="evidence_neural"` currently reports deterministic fallback. It is opt-in, does not affect every plain reply, and is not a delivered neural graph decoder. `account=True` opts into an account of authorized records.
 2. **Model01 is a deterministic construction generator**, despite its name. It runs before the reply, after enabled specialists such as math, finance, and event frames. It builds licensed sentences from retrieved records. The reply shows one of them: the sentence that states a ranking when one does, otherwise the first. A second sentence that only shares a topic word is not displayed. Entity filtering keeps a named subject on passages that contain that name. A ranking prompt adds a `Ranking:` section for a stored order, or states that none is stored. Model01 loads no trained generation checkpoint, and `checkpoint_id` stays null. `realization="model01"` is accepted, but the Model01 graph node already runs on the ordinary path; that argument does not enable a separate trained model. The package exports `prepare()` and `train()` through `cpu_llm.model01`: `prepare()` stores checker-approved records in `model01_training_pair`, marking the WikiText test split as `test`; `train()` is a training-signal survey that runs no optimizer and always reports `checkpoint_written=False`. Training stays unready while every plan has one legal sentence.
-3. The fact-bridge rule path can **automatically load local FLAN-T5 extraction and writing models** when the pattern path misses, the prompt/passages have rule cues, and model directories are found. This can happen with the default `realization="deterministic"`. Model lookup checks `FACTBRIDGE_MODELS`, then `models/` and `cpullm-factbridge/models/` relative to the package installation root. An explicit root is also supported by the low-level fact-bridge API.
+3. The fact-bridge rule path can **automatically load FLAN-T5 extraction and writing models** when the pattern path misses, the prompt/passages have rule cues, and model directories are found. This can happen with the default `realization="deterministic"`. Model lookup checks `FACTBRIDGE_MODELS`, then `models/` and `cpullm-factbridge/models/` relative to the package installation root. An explicit root is also supported by the low-level fact-bridge API.
 
 The latter requires external checkpoints and optional tooling such as Transformers, torch, SentencePiece, and safetensors. A missing/incompatible writer or dependency can raise during a question. Set `strict_evidence=True` or enforce the strict appliance/service floor to bypass this fallback and the other generation nodes. Outside strict mode, inspect deployment assets and `reply.situation.wording.path`. The learned writer currently returns a nonempty candidate without calling its verifier. Its output is not covered by the earlier `answer` audit.
 
@@ -601,7 +602,7 @@ For applications that make decisions, separate the transport outcome, component 
 
 ## Tenants, authentication, and service
 
-`Appliance(namespace="tenant_alpha")` uses a normalized namespace, PostgreSQL schema/table `ns_tenant_alpha.psm_document_embeddings`, and local files under `.chorusgraph/cpu-llm/tenant_alpha/`. The default namespace is tenant `cpu-llm`. Local paths are relative to the working directory: use a stable working directory and isolate deployments that use different DSNs.
+`Appliance(namespace="tenant_alpha")` uses a normalized namespace, PostgreSQL schema/table `ns_tenant_alpha.psm_document_embeddings`, and files under `.chorusgraph/cpu-llm/tenant_alpha/`. The default namespace is tenant `cpu-llm`. paths are relative to the working directory: use a stable working directory and isolate deployments that use different DSNs.
 
 Direct Python calls are trusted integration calls. Omitting `caller` is unscoped within the selected tenant; constructing a `CallerContext` is not authentication. For source-scoped callers use exact document IDs (including IDs supplied to `index_chunks`) or a source prefix ending in `-p`, such as `field-guide-p`. An empty scope permits no reads. Use the authenticated `Entry`/HTTP service when callers are not already trusted.
 
@@ -611,11 +612,11 @@ Scoped and historical turns limit legacy deep-search, summary, comparison, and c
 cpu-llm-serve --secrets credentials.json --host 127.0.0.1 --port 8765
 ```
 
-The credential file contains `secret_sha256` digests plus tenant, caller, and allowed-source mappings. Requests send the actual secret in `Authorization: Bearer ...`. The service provides POST `/v1/ask`, `/v1/ingest`, `/v1/correct`, and `/v1/delete`; it is a local stdlib HTTP server without built-in TLS. The [consumer guide](docs/library-consumer-guide.md#authenticated-http-service) includes a credential-generation example, exact request fields, and error semantics.
+The credential file contains `secret_sha256` digests plus tenant, caller, and allowed-source mappings. Requests send the actual secret in `Authorization: Bearer ...`. The service provides POST `/v1/ask`, `/v1/ingest`, `/v1/correct`, and `/v1/delete`; it is a stdlib HTTP server without built-in TLS. The [consumer guide](docs/library-consumer-guide.md#authenticated-http-service) includes a credential-generation example, exact request fields, and error semantics.
 
 ## Concurrency and scaling
 
-`ask` is synchronous and uses the appliance's main Thinker pool. Do not concurrently call `ask` on the same instance as if it were a stateless function. `ask_concurrent` provides an experimental local-seat path with a lock and Thinker per seat, returning `seat`/`request_id` on success or an error such as `other_server`/`seat_failed`. `other_server` is a capacity outcome: it does not provision or execute on another machine.
+`ask` is synchronous and uses the appliance's main Thinker pool. Do not concurrently call `ask` on the same instance as if it were a stateless function. `ask_concurrent` provides an experimental worker-seat path with a lock and Thinker per seat, returning `seat`/`request_id` on success or an error such as `other_server`/`seat_failed`. `other_server` is a capacity outcome: it does not provision or execute on another machine.
 
 The built-in HTTP entry currently forwards to `ask`, not `ask_concurrent`. Its threaded HTTP server is not proof of safe concurrent conversational use. Follow-up state, graph/index writes, reingestion, and multi-store lifecycle operations need explicit coordination. Scale counters and memory estimates have known gaps; they are not measured production capacity guarantees.
 
@@ -623,7 +624,7 @@ The built-in HTTP entry currently forwards to `ask`, not `ask_concurrent`. Its t
 
 The [domain pilot](docs/benchmarks/2026-11-02-domain-pilot/REPORT.md) found that self-contained finance prompts containing “this finding/test” can be intercepted by generic entity clarification through `Appliance.ask`, before the specialist runs. The direct validator below is a separate API and reached the calculations on the same fields. Covenant display also currently rounds to two decimals even when more precision is requested; this can obscure threshold-boundary decisions. These findings are not resolved by the stylistic node. No hosted-model or clinical-superiority result has been established.
 
-For a supplied-field check alone, the pure local dispatcher can be used without constructing `Appliance`:
+For a supplied-field check alone, the pure dispatcher can be used without constructing `Appliance`:
 
 ```python
 from cpu_llm.finance import validate_message
@@ -645,14 +646,14 @@ Use decimal strings for numeric fields in JSON; Python/JSON floats are refused b
 python -m pytest
 ```
 
-Tests under `test_pipeline.py`, parts of `test_upload.py`, `test_join_pipeline.py`, and `test_tenant_isolation.py` use a real local PostgreSQL service; other tests use fixtures/fakes or pure functions. Service tests bind a local port. Optional model tests can skip when checkpoints/dependencies are absent, and can run a real local model when present. Use a fresh writable `--basetemp` if the default temporary directory is restricted.
+Tests under `test_pipeline.py`, parts of `test_upload.py`, `test_join_pipeline.py`, and `test_tenant_isolation.py` use a real PostgreSQL service; other tests use fixtures/fakes or pure functions. Service tests bind a port. Optional model tests can skip when checkpoints/dependencies are absent, and can run a real model when present. Use a fresh writable `--basetemp` if the default temporary directory is restricted.
 
 Run database integration tests against a disposable test database: some tests use fixed tenant/document/model IDs and write or delete fixture records. Set `CPU_LLM_LIVE_TESTS=1` for the opt-in live join tests. Keep `HF_HUB_OFFLINE=1` and `TRANSFORMERS_OFFLINE=1` when the encoder assets are already cached.
 
 ### What has actually been demonstrated
 
 - On October 27, against this working tree after the delivery-boundary fixes, the **full suite passed 492 tests**, with 2 skipped and 3 strict expected failures, in 67.38 seconds. The skips are the two optional extractor-checkpoint tests. The expected failures are the three crane sense tests in `test_resonance_groups.py`. The run used PostgreSQL 16 with pgvector in Docker on `127.0.0.1:5433`, database `cpullm_public`, and cached CPU encoder assets. NumPy emitted six overflow warnings inside `linalg` during pipeline tests. Those warnings were not assertion failures. This count is for this checkout. It is not a customer-corpus accuracy score, and it does not include a fresh Millhaven replay.
-- The saved Millhaven run at clean commit `af39da6` used 30 paragraphs and 41 turns in each arm. Dense answered 17 of 18 factual cases, completed 5 of 5 conversations, and abstained appropriately on 4 of 4. Resonance answered 9 of 18 factual cases, completed 4 of 5 conversations, and abstained appropriately on 3 of 4. The resonance gap was mostly a false meaning question about one ferry's color, kind, place, and possessions. This checkout changes that sense rule. That change has not been replayed, so these figures describe `af39da6`, not the uncommitted judgment. The local artifacts are in `build/benchmark-2026-10-26` and are not part of the published tree. The why-diesel case still expects the unsupported sentence. Quoting the stored river-current cause is a contract disagreement, not a false claim. The 10,000-paragraph scoped lookup in that run was 0.078 seconds dense and 2.014 seconds resonance.
+- The saved Millhaven run at clean commit `af39da6` used 30 paragraphs and 41 turns in each arm. Dense answered 17 of 18 factual cases, completed 5 of 5 conversations, and abstained appropriately on 4 of 4. Resonance answered 9 of 18 factual cases, completed 4 of 5 conversations, and abstained appropriately on 3 of 4. The resonance gap was mostly a false meaning question about one ferry's color, kind, place, and possessions. This checkout changes that sense rule. That change has not been replayed, so these figures describe `af39da6`, not the uncommitted judgment. The artifacts are in `build/benchmark-2026-10-26` and are not part of the published tree. The why-diesel case still expects the unsupported sentence. Quoting the stored river-current cause is a contract disagreement, not a false claim. The 10,000-paragraph scoped lookup in that run was 0.078 seconds dense and 2.014 seconds resonance.
 - For the October 25 join/response review, the **full suite passed 420 tests**, with two optional extraction-checkpoint tests skipped and no test files excluded or tests deselected. This used isolated PostgreSQL 18.1/pgvector and cached CPU encoder assets, including seven live join/lifecycle/history tests. The four-question diagnostic lab recorded hit-rate@5 and spoken attribution of 1.0; this is not a broad accuracy estimate. Wheel and source builds succeeded. Earlier real Coreferee smoke tests covered five reference forms plus ambiguity and user confirmation; FastCoref remains unvalidated. See the [validation record and transcript](docs/reviews/2026-10-25/join-review.md) and [response-case checklist](docs/response-cases.md).
 - At `9d6fbe8`, **126 targeted tests passed**, with one fixed-ID database test deselected. Five additional live Appliance checks passed for missing duration, complete entity names, a short name, and exclusion of an unrelated passage. [Review and scope](docs/reviews/2026-10-19/review-9d6fbe8.md), [test transcript](docs/reviews/2026-10-19/pytest-9d6fbe8.txt), [live inputs and outputs](docs/reviews/2026-10-19/review-9d6fbe8-probes.json). That count does not include the later one-sentence reply selection or the ban and upper-limit reading. Those have tests in `tests/test_model01.py` and `tests/test_fact_bridge.py`.
 - At the preceding `1183b77` revision, the **27 original diagnostic cases passed** on a 17-paragraph controlled corpus: 17 factual checks, four policy checks, four missing-fact nonanswers, and two arithmetic checks. Three repetitions through retrieval and the pipeline produced **162 measured calls without exceptions**. [Recorded benchmark](docs/reviews/2026-10-19/audit-1183b77-small/summary.json).
@@ -680,7 +681,7 @@ Older reports remain evidence for their recorded checkout/environment:
 
 That benchmark records seven individual question times, not a repeated-run percentile study. It includes abstentions and an unrelated answer to the France-capital question; timing results are not an accuracy score.
 
-Additional limits include narrow English extraction grammars, incomplete retrieval coverage, limited alias/coreference handling, no general code generation or translation, and no universal transaction/rollback across PostgreSQL and local stores. Accepted schemas and credentials do not constitute an independent security certification.
+Additional limits include narrow English extraction grammars, incomplete retrieval coverage, limited alias/coreference handling, no general code generation or translation, and no universal transaction/rollback across PostgreSQL and stores. Accepted schemas and credentials do not constitute an independent security certification.
 
 ## Source and design map
 
@@ -692,7 +693,7 @@ Additional limits include narrow English extraction grammars, incomplete retriev
 - [Response cases](docs/response-cases.md): evidence-join semantics, covered examples, and cases still missing.
 - [knowledge_graph.py](src/cpu_llm/knowledge_graph.py), [connection_channels.py](src/cpu_llm/connection_channels.py): explicit source facts and independent channel assessments; [graph design](docs/knowledge-graph.md).
 - [prompt_intent.py](src/cpu_llm/prompt_intent.py), [query_dictionary.py](src/cpu_llm/query_dictionary.py), [attribute_search.py](src/cpu_llm/attribute_search.py): intent, lexical variants, and bounded retrieval repair; [dictionary design](docs/dictionary-assisted-paraphrases.md), [attribute retrieval](docs/attribute-directed-retrieval.md).
-- [clarification.py](src/cpu_llm/clarification.py), [references.py](src/cpu_llm/references.py): session-local clarification and optional reference backends; [remaining use cases](docs/intent-support-backlog.md).
+- [clarification.py](src/cpu_llm/clarification.py), [references.py](src/cpu_llm/references.py): session-scoped clarification and optional reference backends; [remaining use cases](docs/intent-support-backlog.md).
 - [pipeline.py](src/cpu_llm/pipeline.py): `Appliance`, graph order, ingestion, scoped asks, concurrency, lifecycle.
 - [evidence_judge.py](src/cpu_llm/evidence_judge.py): the delivery decision applied to an early sense clarification and to the text leaving `ask()`.
 - [reply.py](src/cpu_llm/agents/reply.py), [answering.py](src/cpu_llm/answering.py), [fact_bridge](src/fact_bridge/__init__.py): displayed-reply selection and rule inference.
@@ -721,6 +722,6 @@ Amin Parva — AI Architect & Staff Applied AI Engineer — [parvaamin@gmail.com
 
 The [October 27 result note](docs/handoff-channel-evidence-results.md) records this checkout's suite, the unreplayed Millhaven change, and the remaining limits. The consolidated [October 25 review handoff](docs/reviews/2026-10-25/recent-commits-handoff.md) records the earlier commit findings.
 
-Explicit requests such as “briefly explain,” “in detail,” and “in three bullet points” produce a request-local `response_plan` with source-backed overview/list budgets. Required proof premises are preserved. See [response-depth classification](docs/response-depth.md) for supported forms and limits.
+Explicit requests such as “briefly explain,” “in detail,” and “in three bullet points” produce a per-request `response_plan` with source-backed overview/list budgets. Required proof premises are preserved. See [response-depth classification](docs/response-depth.md) for supported forms and limits.
 
 Explicit multi-question prompts are separated into up to eight tasks, each with independent retrieval and evidence judgment. The returned `request_plan` and `task_results` expose answered, missing, and pending parts; clarification resumes through the same session. See [request separation](docs/request-separation.md) for shared references, long background, limits, and examples.

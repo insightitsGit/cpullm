@@ -1,15 +1,18 @@
-# CPU LLM for Local Document Question Answering
+# CPU LLM: Evidence-Based AI Engine
+
+Answer questions from your documents and explicit rules, with source evidence
+and CPU-first execution.
 
 ## Implementation whitepaper and developer guide
 
 **Product:** cpu-llm 1.10.0  
-**Author:** Amin Parva, Insight IT Solutions LLC  
+**Author:** Amin Parva, Independent Engineer
 **Date:** November 2, 2026  
 **Edition:** 1.0, based on the published 1.10.0 implementation  
 **Audience:** application developers, technical evaluators and engineering leads
 
 This paper explains how to install cpu-llm, ingest records, select its execution
-paths, interpret results and integrate its Python and local HTTP interfaces.
+paths, interpret results and integrate its Python and HTTP interfaces.
 It documents implemented behavior and engineering evidence. It is not a
 peer-reviewed clinical study, security certification or guarantee of factual
 correctness. Source code and executable examples remain the implementation
@@ -17,11 +20,11 @@ authority. References at the end link to the version, contracts and saved runs.
 
 ## 1 Executive overview
 
-cpu-llm is an Apache-2.0 Python library for local, CPU-first document question
+cpu-llm is an Apache-2.0 Python library for CPU-first document question
 answering and explicit rule checks. It combines a trained retrieval projection,
 a pretrained sentence encoder, PostgreSQL/pgvector, symbolic source connections,
 conditional graph stages and bounded response construction. Applications embed
-the library or place its authenticated local HTTP entry point behind their own
+the library or place its authenticated HTTP entry point behind their own
 service infrastructure. It can support self-hosted document search and
 evidence-backed question answering without requiring an unrestricted generative
 decoder for every answer.
@@ -162,11 +165,11 @@ clinical document interpretation. Evaluate the actual reader output before
 using it as a source. Reingestion updates the source's stored paragraphs and
 connections; it is not retraining the encoder or a general sentence generator.
 
-Named namespaces map to normalized tenant/schema names and local cache folders.
+Named namespaces map to normalized tenant/schema names and cache folders.
 Different raw names can normalize to the same slug. Provision canonical tenant
 identities rather than accepting arbitrary names as proof of isolation. Use a
 stable, deliberately separated working directory/cache for a deployment and
-database combination; database state and local graph/cache state are distinct.
+database combination; database state and graph/cache state are distinct.
 
 ## 5 Execution paths and the six retrieval channels
 
@@ -230,7 +233,7 @@ standalone public API guarantee for each internal function.
 
 **Conditional stages and delivery**
 
-- `deep` widens authorized local retrieval when explicitly requested; it is
+- `deep` widens authorized retrieval when explicitly requested; it is
   not an automatic web-search agent.
 - `gather` collects supported article/context material before `imagine`.
 - `imagine` handles the bounded imagination path; the release does not offer
@@ -380,7 +383,7 @@ as a derived paraphrase, not a source quotation or inherited audit of world trut
 
 Ten preference controls do not imply ten mature expressive styles. Poetic and
 other unsupported diction can return `neutral_fallback`. Requested tones are
-explicit and request-local, not automatically inferred or remembered. The
+explicit and per-request, not automatically inferred or remembered. The
 default conversation pack uses separate reviewed social variants; it is not
 the factual style subgraph. The HTTP ask interface does not expose `style`.
 
@@ -417,7 +420,7 @@ legal interpretation or authentication of a compliance certificate.
 
 ## 11 HTTP service and authorization
 
-The local service binds to `127.0.0.1:8765` by default. Prepare a credential file
+The service binds to `127.0.0.1:8765` by default. Prepare a credential file
 containing SHA-256 digests, canonical tenant IDs and permitted source prefixes.
 `cpu_llm.entry.secret_sha256(secret)` computes the digest; do not put the secret
 itself in that file or a public example. Send the secret using the Bearer header.
@@ -455,7 +458,7 @@ be re-enabled by a request. Invalid boolean or strict-header values are rejected
 `Entry` wraps reads and mutations with credential/source checks and restricts
 server-path ingestion to its resolved root. Direct `Appliance.ingest` and
 `delete_source` methods are trusted backend APIs, not authorization endpoints.
-Do not expose them directly to untrusted clients. The stdlib local server is
+Do not expose them directly to untrusted clients. The stdlib server is
 not a full production gateway: deploy TLS, access policy, request limits,
 logging and operational controls appropriate to the application.
 
@@ -495,7 +498,7 @@ per-request safety enforcement or clinical policy.
 registers repeatable catalog/proposition information; `upsert(id, text)` is a
 single-chunk helper. `correct` accepts a document ID, exact old/new sentence,
 actor, timestamp and optional caller. `delete_source(source)` removes the named
-source. `clear_session_state()` clears local conversation/planning state;
+source. `clear_session_state()` clears conversation/planning state;
 `close()` releases workers/resources. Use `Entry` for untrusted mutations.
 
 **Concurrent requests:** `ask_concurrent` adds request identity/caller and an
@@ -520,13 +523,13 @@ suite passed 897 tests, with 2 skipped and 3 pre-existing expected failures.
 The full suite and the clean-install demos are different validation scopes.
 
 Historical authored comparisons provide additional engineering examples, not
-clinical or hosted-model superiority results. The 32-case local medical run
+clinical or hosted-model superiority results. The 32-case medical run
 at revision `26a5215` reported full-contract passes of medication: ordinary
 9/16, strict 16/16, simple literal/calculator 9/16; healthcare records: ordinary
 15/16, strict 16/16, baseline 10/16. Correct visible arithmetic with a held final
 status was counted as a delivery-contract failure, not fabricated number drift.
 Some tasks require correct refusals rather than answers. The ordinary,
-strict and baseline paths are local library/components; no generative LLM arm
+strict and baseline paths are library/components; no generative LLM arm
 was installed or run in that comparison.
 
 A separate 42-case authored strict evaluation reported 42/42 versus 25/42 for
@@ -536,7 +539,7 @@ recorded revisions and different cases/scorers; they must not be added together
 or presented as a single 1.10.0 clinical accuracy rate. The data, frozen receipts,
 raw responses, corrected scorer history and hashes are retained in Git.
 
-The 1.10.0 published upload artifacts were verified against the locally tested
+The 1.10.0 published upload artifacts were verified against the tested
 SHA-256 hashes. Neither distribution validation nor a perfect authored fixture
 score proves clinical safety, arbitrary question coverage, data quality,
 security certification, universal hallucination prevention or competitive LLM
@@ -557,7 +560,7 @@ rules if those decisions are intended. For finance, validate source authority,
 numeric policy, precision, input completeness and action approval. The library
 alone does not provide those organizational or professional controls.
 
-Use cached assets and restricted egress when local/offline operation is required.
+Use cached assets and restricted egress when offline operation is required.
 Benchmark startup, ingestion, memory and concurrency on the actual hardware;
 do not infer a performance SLA from a small demo. Re-run supported and refusal
 cases after changing parser assets, schemas, rules, source readers or dependency
@@ -580,8 +583,8 @@ request/result contract against the application's requirements.
 9. Python pipeline: https://github.com/insightitsGit/cpullm/blob/0102bc0/src/cpu_llm/pipeline.py
 10. HTTP service: https://github.com/insightitsGit/cpullm/blob/0102bc0/src/cpu_llm/serve.py
 11. Healthcare demo and actual replies: https://github.com/insightitsGit/cpullm/tree/0102bc0/examples/healthcare
-12. Local medical comparison: https://github.com/insightitsGit/cpullm/blob/0102bc0/docs/benchmarks/2026-11-02-medical-local/REPORT.md
-13. Strict/local acceptance: https://github.com/insightitsGit/cpullm/blob/0102bc0/docs/benchmarks/2026-11-02-evidence-v2/REPORT.md
+12. Medical comparison: https://github.com/insightitsGit/cpullm/blob/0102bc0/docs/benchmarks/2026-11-02-medical-local/REPORT.md
+13. Strict evidence acceptance: https://github.com/insightitsGit/cpullm/blob/0102bc0/docs/benchmarks/2026-11-02-evidence-v2/REPORT.md
 14. Domain replay: https://github.com/insightitsGit/cpullm/blob/0102bc0/docs/benchmarks/2026-11-02-domain-replay-v2/REPORT.md
 15. Healthcare acceptance gate: https://github.com/insightitsGit/cpullm/blob/0102bc0/docs/healthcare-evidence-acceptance.md
 
