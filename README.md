@@ -92,12 +92,14 @@ What is the strength of DemoMed? What is the storage of it?
 List documented attributes of DemoMed.
 Calculate 0.1 + 0.2.
 Calculate the strength of DemoMed times 3.
+Does 3375 mg exceed 3000 mg?
 ```
 
 Calculations are labeled arithmetic, never medical advice. Source-based
 calculations retain proofs and refuse conflicting/uncertain values. Strict mode
 does not remember prior turns, infer missing clinical rules, or render requested
-layouts. A question
+layouts. An explicit numeric limit and total can use the documented same-unit
+comparison grammar; it does not determine a medically safe amount. A question
 such as “Can I take DemoMed?” is unsupported. Pharmacy and healthcare users
 still need validated sources and separately validated clinical decision logic;
 this mode supplies traceable evidence, not a diagnosis or prescribing system.

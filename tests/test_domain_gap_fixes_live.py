@@ -34,3 +34,12 @@ def test_rules_color_regression_uses_requested_relation(app):
     result = app.ask('Please give me information about the color of the Virel.')
     assert 'blue' in result['reply']['text']
     assert 'brass' not in result['reply']['text']
+
+
+def test_inline_supplied_numbers_reach_math_without_losing_context(app):
+    from test_numeric_comparison import INLINE
+    app.clear_session_state()
+    result = app.ask(INLINE)
+    assert '3375 mg exceeds' in result['reply']['text']
+    assert '3000 mg' in result['reply']['text']
+    assert 'not treatment advice' in result['reply']['text']

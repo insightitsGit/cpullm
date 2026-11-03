@@ -194,6 +194,9 @@ def math_trigger(message: str, *, forced: bool = False) -> list[str]:
     stays off this path. ``forced`` records that the caller turned the step on.
     """
     reasons: list[str] = []
+    from cpu_llm.numeric_comparison import compare_prompt
+    if compare_prompt(message) is not None:
+        reasons.append('the prompt supplies an explicit numeric comparison')
     if forced:
         reasons.append(MATH_CALLER_REASON)
     reasons.extend(_matched(message, _MATH_REASONS))

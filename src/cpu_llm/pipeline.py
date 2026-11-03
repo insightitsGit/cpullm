@@ -694,7 +694,9 @@ class Appliance:
                     message = plan['question']
             from cpu_llm.finance.triggers import owns_structured_request
             specialist_owned = owns_structured_request(message, forced=finance)
-            reference = (dict(status='ready', query=message, bindings=[]) if specialist_owned else
+            from cpu_llm.numeric_comparison import compare_prompt
+            numeric_owned = compare_prompt(message) is not None
+            reference = (dict(status='ready', query=message, bindings=[]) if specialist_owned or numeric_owned else
                          self.references.prepare(message, key=session_key, continuation=plan))
             if reference['status'] in {'needs_clarification', 'insufficient_information', 'cancelled'}:
                 response = clarification_result(reference, raw_message, self.tenant_id)
@@ -718,7 +720,7 @@ class Appliance:
             from cpu_llm.typos import correct_message
 
             overview_prefix = re.match(r'^(?:tell me about|describe)\s+', message, re.I) if response_plan['mode'] == 'overview' else None
-            if specialist_owned:
+            if specialist_owned or numeric_owned:
                 # A structured specialist owns these exact fields; corpus spelling
                 # suggestions must never rewrite an invoice or numeric payload.
                 typos = []

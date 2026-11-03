@@ -61,6 +61,9 @@ Version 2 supports the following bounded request forms:
 - `List documented attributes of DemoMed.` (up to 32 recognized direct attributes).
 - `Calculate 0.1 + 0.2.` (explicit addition, subtraction or multiplication).
 - `Calculate the strength of DemoMed times 3.` (unambiguous scalar source fact).
+- `Does 3375 mg exceed 3000 mg?` (explicit same-unit numeric comparison).
+- `A fictional label states a maximum daily amount of 3000 mg. Does a supplied
+  total of 3375 mg exceed that label limit?` (explicit inline numeric context).
 
 Within a batch, `of it` can bind to exactly one previously named entity; multiple
 prior entities produce an unsupported task rather than a guessed referent.
@@ -132,6 +135,15 @@ to bounded decimal operands (24 integer and 12 fractional digits), a 100-digit
 local Decimal context and the three stated operations; there is no division,
 clinical dosing policy or open-ended expression evaluation. As in version 1,
 `answer` is null and `audit_passed` is false for every strict result.
+
+The additional `greater_than` calculation form compares two supplied numbers
+with identical supported mass/volume unit symbols. It records both operands,
+the unit and a `true`/`false` value. It never converts units or declares a dose
+safe. Its recognized inline label/policy/rule grammar binds `that limit` to the
+explicit preceding numeric limit; arbitrary cross-sentence reference resolution
+remains unsupported. Conditions, quotes, mismatched units and unrecognized
+wording do not enter that path. The ordinary pipeline routes the same complete
+numeric form to the math node while retaining its explicit context.
 
 For all strict responses, `evidence_policy.enabled` is true,
 `learned_generation`, `clinical_validation` and `source_truth_verified` are

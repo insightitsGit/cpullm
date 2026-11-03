@@ -34,6 +34,10 @@ def solve_math(message: str) -> dict[str, str | bool]:
     ``ok`` is false when the prompt names an operation that cannot be
     completed, including division by zero. The value is a decimal string.
     """
+    from cpu_llm.numeric_comparison import compare_prompt
+    comparison = compare_prompt(message or '')
+    if comparison is not None:
+        return comparison
     text = _normalize(message or "")
     special = _special(text)
     if special is not None:

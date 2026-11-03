@@ -330,6 +330,9 @@ def dispatch_request(app, message, propositions, options):
     checker = getattr(app, 'guard', None) or create_checker_rules_only()
     if checker.check(message).decision != 'allow':
         return app._ask_single(message, propositions, **options)
+    from cpu_llm.numeric_comparison import compare_prompt
+    if compare_prompt(message) is not None:
+        return app._ask_single(message, propositions, **options)
     planned = separate_request(message, interpreter=getattr(app, 'prompt_interpreter', None))
     sessions = getattr(app, 'request_sessions', None)
     if planned['status'] == 'single' and sessions is None:

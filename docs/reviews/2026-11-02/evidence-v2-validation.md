@@ -1,10 +1,10 @@
 # Evidence v2 and domain gap validation
 
-Final complete live suite: **844 passed, 2 skipped, 3 xfailed**, six existing
-NumPy overflow warnings, 109.58 seconds, exit 0. Windows / PostgreSQL 18, fresh
-disposable database `evidence_v2_1102_r3`, real cached encoder and spaCy assets,
+Final complete live suite: **854 passed, 2 skipped, 3 xfailed**, six existing
+NumPy overflow warnings, 113.13 seconds, exit 0. Windows / PostgreSQL 18, fresh
+disposable database `evidence_v2_1102_final`, real cached encoder and spaCy assets,
 `CPU_LLM_LIVE_TESTS=1`, offline model settings, plugin autoload disabled.
-The local raw log is `build/evidence-v2-tests-r3.log`; PostgreSQL was stopped
+The local raw log is `build/evidence-v2-tests-final.log`; PostgreSQL was stopped
 after the run. No hosted calls or real patient data were used.
 
 New tests cover recognized paraphrase conflicts, exact unit equivalence,
@@ -23,6 +23,14 @@ of a spatially qualified color request; a guarded rewrite fixed it.
 its required invoice number; the fixture was completed. These runs are not
 reported as successful validation. Structured payload spelling correction was
 also disabled before the final full run.
+
+The first committed implementation (`83e3cab`) had a passing 844-test suite and
+42/42 strict acceptance cases, but the original domain replay retained one
+inline numeric-limit formatting failure (23/24). The follow-up adds a bounded
+explicit same-unit comparison grammar and ordinary math routing while preserving
+all supplied context. Nine component/strict comparison scenarios and one real
+public API regression were added; the final full-suite count above includes them.
+The original cases/scorer are retained for the next recorded replay.
 
 No runtime source changes are permitted between this passing suite and the
 recorded benchmark revision. Fresh synthetic benchmarking and replay use

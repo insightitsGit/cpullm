@@ -71,6 +71,10 @@ def facts_from(rows):
 
 def parse(query):
     query = re.sub(r'^(?:please\s+)?', '', query.strip(), flags=re.I)
+    from cpu_llm.numeric_comparison import compare_prompt
+    comparison = compare_prompt(query)
+    if comparison is not None:
+        return dict(kind='comparison', comparison=comparison)
     if UNSAFE.search(query) or re.search(r'["“”`]|\b(?:not|or)\b', query, re.I):
         return None
     calc = re.fullmatch(rf'Calculate ({NUMBER})\s*([+*\-])\s*({NUMBER})[.!]?', query, re.I)
@@ -91,6 +95,9 @@ def parse(query):
 def tasks_from(query):
     if len(query) > 32000:
         return None
+    from cpu_llm.numeric_comparison import compare_prompt
+    if compare_prompt(query) is not None:
+        return [dict(kind='comparison', comparison=compare_prompt(query), query=query)]
     fields = re.fullmatch(r'What are the ([a-z ,\-]+) of (.+?)\?', query.strip(), re.I)
     if fields:
         attributes = re.split(r',\s*(?:and\s+)?|\s+and\s+', fields[1], flags=re.I)
@@ -187,7 +194,7 @@ def answer(appliance, message, *, caller=None, as_of=None):
     if not tasks or all(t['kind'] == 'unsupported' for t in tasks):
         return result
     rows = []
-    if any(t['kind'] not in {'arithmetic', 'unsupported'} for t in tasks):
+    if any(t['kind'] not in {'arithmetic', 'comparison', 'unsupported'} for t in tasks):
         try:
             rows, when = appliance.index.strict_source_rows(allowed, as_of=as_of)
             if sum(len(row['chunk_text']) for row in rows) > 8_000_000:
@@ -212,7 +219,9 @@ def answer(appliance, message, *, caller=None, as_of=None):
     outputs = []
     for task in expanded:
         evidence, calculation = [], None
-        if task['kind'] == 'arithmetic':
+        if task['kind'] == 'comparison':
+            status, calculation = 'derived_calculation', task['comparison']
+        elif task['kind'] == 'arithmetic':
             status, calculation = 'derived_calculation', calculate(task)
         elif task['kind'] in {'lookup', 'source_calculation'}:
             status, evidence, value = lookup(task, facts, memberships, rules)
@@ -224,7 +233,7 @@ def answer(appliance, message, *, caller=None, as_of=None):
         if status == 'evidence_quote':
             text = 'Source quotations (not clinically validated):\n' + '\n'.join(f"[{p['document_id']}] {p['quote']}" for p in evidence)
         elif status == 'derived_calculation':
-            text = 'Exact arithmetic: ' + calculation['display'] + '. Arithmetic only; not treatment advice.'
+            text = calculation['text'] if calculation['operation'] == 'greater_than' else 'Exact arithmetic: ' + calculation['display'] + '. Arithmetic only; not treatment advice.'
         else:
             text = {'conflicting': 'Source evidence conflicts; no answer selected.',
                     'insufficient_evidence': 'No unambiguous supported evidence; no answer selected.'}.get(status, 'Unsupported strict request; no answer selected.')
