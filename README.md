@@ -115,6 +115,14 @@ See [strict evaluation](docs/benchmarks/2026-11-02-evidence-v2/REPORT.md),
 [domain replay](docs/benchmarks/2026-11-02-domain-replay-v2/REPORT.md) and
 [remaining clinical gates](docs/healthcare-evidence-acceptance.md).
 
+A dedicated [local medication/healthcare comparison](docs/benchmarks/2026-11-02-medical-local/REPORT.md)
+now separates 16 fictional medication tasks from 16 healthcare-record tasks.
+It runs ordinary cpu-llm, strict evidence and the literal/calculator baseline;
+no local generative LLM is included. Use
+`python tools/benchmarks/medical_local.py --out build/medical-local-new-run`
+after configuring the disposable database and cached assets described in
+[the setup design](docs/medical-local-benchmark-design.md).
+
 ## Other changes in this checkout
 
 The [current design](docs/current-design.md) describes the implementation. Prompt interpretation, output layouts, delivery judgment and flag-routing enforcement are committed in this repository; an installed PyPI distribution with the same version number may predate them. The saved Millhaven benchmark is the earlier clean commit `af39da6`.

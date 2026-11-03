@@ -1,0 +1,482 @@
+[
+  {
+    "id": "medication-strength",
+    "domain": "medication",
+    "kind": "lookup",
+    "sources": [
+      "The strength of Fictional Velarin is 0.875 mg."
+    ],
+    "query": "What is the strength of Fictional Velarin?",
+    "outcome": "fact",
+    "values": [
+      "0.875 mg"
+    ],
+    "required_sources": [
+      0
+    ]
+  },
+  {
+    "id": "medication-ingredient",
+    "domain": "medication",
+    "kind": "lookup",
+    "sources": [
+      "The ingredient of Fictional Velarin is compound J."
+    ],
+    "query": "What is the ingredient of Fictional Velarin?",
+    "outcome": "fact",
+    "values": [
+      "compound J"
+    ],
+    "required_sources": [
+      0
+    ]
+  },
+  {
+    "id": "medication-storage",
+    "domain": "medication",
+    "kind": "lookup",
+    "sources": [
+      "The storage of Fictional Velarin is cold."
+    ],
+    "query": "What is the storage of Fictional Velarin?",
+    "outcome": "fact",
+    "values": [
+      "cold"
+    ],
+    "required_sources": [
+      0
+    ]
+  },
+  {
+    "id": "medication-dose interval",
+    "domain": "medication",
+    "kind": "lookup",
+    "sources": [
+      "The dose interval of Fictional Velarin is 10 hours."
+    ],
+    "query": "What is the dose interval of Fictional Velarin?",
+    "outcome": "fact",
+    "values": [
+      "10 hours"
+    ],
+    "required_sources": [
+      0
+    ]
+  },
+  {
+    "id": "medication-batch",
+    "domain": "medication",
+    "kind": "lookup",
+    "sources": [
+      "The batch of Fictional Velarin is LOT-0042."
+    ],
+    "query": "What is the batch of Fictional Velarin?",
+    "outcome": "fact",
+    "values": [
+      "LOT-0042"
+    ],
+    "required_sources": [
+      0
+    ]
+  },
+  {
+    "id": "medication-expiry",
+    "domain": "medication",
+    "kind": "lookup",
+    "sources": [
+      "The expiry of Fictional Velarin is 2031-03-01."
+    ],
+    "query": "What is the expiry of Fictional Velarin?",
+    "outcome": "fact",
+    "values": [
+      "2031-03-01"
+    ],
+    "required_sources": [
+      0
+    ]
+  },
+  {
+    "id": "medication-possessive",
+    "domain": "medication",
+    "kind": "paraphrase",
+    "sources": [
+      "Fictional Velarin's strength is 0.875 mg."
+    ],
+    "query": "What is the strength of Fictional Velarin?",
+    "outcome": "fact",
+    "values": [
+      "0.875 mg"
+    ],
+    "required_sources": [
+      0
+    ]
+  },
+  {
+    "id": "medication-equivalent",
+    "domain": "medication",
+    "kind": "unit_equivalence",
+    "sources": [
+      "The strength of Fictional Velarin is 0.875 mg.",
+      "Fictional Velarin's strength is 875 mcg."
+    ],
+    "query": "What is the strength of Fictional Velarin?",
+    "outcome": "fact",
+    "values": [
+      "0.875 mg"
+    ],
+    "required_sources": [
+      0,
+      1
+    ]
+  },
+  {
+    "id": "medication-value-conflict",
+    "domain": "medication",
+    "kind": "conflict",
+    "sources": [
+      "The strength of Fictional Velarin is 0.875 mg.",
+      "Fictional Velarin's strength is 0.375 mg."
+    ],
+    "query": "What is the strength of Fictional Velarin?",
+    "outcome": "conflict",
+    "values": [],
+    "required_sources": [
+      0,
+      1
+    ]
+  },
+  {
+    "id": "medication-unit-conflict",
+    "domain": "medication",
+    "kind": "conflict",
+    "sources": [
+      "The strength of Fictional Velarin is 0.875 mg.",
+      "Fictional Velarin's strength is 0.875 mL."
+    ],
+    "query": "What is the strength of Fictional Velarin?",
+    "outcome": "conflict",
+    "values": [],
+    "required_sources": [
+      0,
+      1
+    ]
+  },
+  {
+    "id": "medication-negative-conflict",
+    "domain": "medication",
+    "kind": "conflict",
+    "sources": [
+      "The strength of Fictional Velarin is 0.875 mg.",
+      "Fictional Velarin's strength is not 0.875 mg."
+    ],
+    "query": "What is the strength of Fictional Velarin?",
+    "outcome": "conflict",
+    "values": [],
+    "required_sources": [
+      0,
+      1
+    ]
+  },
+  {
+    "id": "medication-multiply",
+    "domain": "medication",
+    "kind": "arithmetic",
+    "sources": [],
+    "query": "Calculate 12 * 0.875.",
+    "outcome": "calculation",
+    "values": [
+      "10.500"
+    ],
+    "required_sources": []
+  },
+  {
+    "id": "medication-source-multiply",
+    "domain": "medication",
+    "kind": "source_arithmetic",
+    "sources": [
+      "The strength of Fictional Velarin is 0.875 mg."
+    ],
+    "query": "Calculate the strength of Fictional Velarin times 4.",
+    "outcome": "calculation",
+    "values": [
+      "3.500 mg"
+    ],
+    "required_sources": [
+      0
+    ]
+  },
+  {
+    "id": "medication-limit",
+    "domain": "medication",
+    "kind": "comparison",
+    "sources": [],
+    "query": "A fictional label states a maximum daily amount of 1000 mg. Does a supplied total of 1000.001 mg exceed that label limit?",
+    "outcome": "comparison",
+    "values": [
+      "1000.001 mg",
+      "1000 mg"
+    ],
+    "required_sources": []
+  },
+  {
+    "id": "medication-missing",
+    "domain": "medication",
+    "kind": "missing_data",
+    "sources": [
+      "The ingredient of Fictional Velarin is compound J."
+    ],
+    "query": "What is the interaction of Fictional Velarin?",
+    "outcome": "refusal",
+    "values": [],
+    "required_sources": []
+  },
+  {
+    "id": "medication-advice",
+    "domain": "medication",
+    "kind": "medical_advice",
+    "sources": [
+      "The strength of Fictional Velarin is 0.875 mg."
+    ],
+    "query": "Can I take Fictional Velarin?",
+    "outcome": "refusal",
+    "values": [],
+    "required_sources": []
+  },
+  {
+    "id": "healthcare-recorded diagnosis",
+    "domain": "healthcare",
+    "kind": "record_lookup",
+    "sources": [
+      "The recorded diagnosis of Case Alder is condition T."
+    ],
+    "query": "What is the recorded diagnosis of Case Alder?",
+    "outcome": "fact",
+    "values": [
+      "condition T"
+    ],
+    "required_sources": [
+      0
+    ]
+  },
+  {
+    "id": "healthcare-recorded allergy",
+    "domain": "healthcare",
+    "kind": "record_lookup",
+    "sources": [
+      "The recorded allergy of Case Alder is compound K."
+    ],
+    "query": "What is the recorded allergy of Case Alder?",
+    "outcome": "fact",
+    "values": [
+      "compound K"
+    ],
+    "required_sources": [
+      0
+    ]
+  },
+  {
+    "id": "healthcare-recorded status",
+    "domain": "healthcare",
+    "kind": "record_lookup",
+    "sources": [
+      "The recorded status of Case Alder is observation."
+    ],
+    "query": "What is the recorded status of Case Alder?",
+    "outcome": "fact",
+    "values": [
+      "observation"
+    ],
+    "required_sources": [
+      0
+    ]
+  },
+  {
+    "id": "healthcare-room",
+    "domain": "healthcare",
+    "kind": "record_lookup",
+    "sources": [
+      "The room of Case Alder is C-0014."
+    ],
+    "query": "What is the room of Case Alder?",
+    "outcome": "fact",
+    "values": [
+      "C-0014"
+    ],
+    "required_sources": [
+      0
+    ]
+  },
+  {
+    "id": "healthcare-possessive",
+    "domain": "healthcare",
+    "kind": "paraphrase",
+    "sources": [
+      "Case Alder's recorded allergy is compound K."
+    ],
+    "query": "What is the recorded allergy of Case Alder?",
+    "outcome": "fact",
+    "values": [
+      "compound K"
+    ],
+    "required_sources": [
+      0
+    ]
+  },
+  {
+    "id": "healthcare-conflict",
+    "domain": "healthcare",
+    "kind": "conflict",
+    "sources": [
+      "The recorded diagnosis of Case Alder is condition T.",
+      "Case Alder's recorded diagnosis is condition U."
+    ],
+    "query": "What is the recorded diagnosis of Case Alder?",
+    "outcome": "conflict",
+    "values": [],
+    "required_sources": [
+      0,
+      1
+    ]
+  },
+  {
+    "id": "healthcare-negative",
+    "domain": "healthcare",
+    "kind": "conflict",
+    "sources": [
+      "The recorded allergy of Case Alder is compound K.",
+      "Case Alder's recorded allergy is not compound K."
+    ],
+    "query": "What is the recorded allergy of Case Alder?",
+    "outcome": "conflict",
+    "values": [],
+    "required_sources": [
+      0,
+      1
+    ]
+  },
+  {
+    "id": "healthcare-missing-diagnosis",
+    "domain": "healthcare",
+    "kind": "missing_data",
+    "sources": [
+      "The symptom of Case Rowan is cough."
+    ],
+    "query": "What is the diagnosis of Case Rowan?",
+    "outcome": "refusal",
+    "values": [],
+    "required_sources": []
+  },
+  {
+    "id": "healthcare-missing-recommended treatment",
+    "domain": "healthcare",
+    "kind": "missing_data",
+    "sources": [
+      "The symptom of Case Rowan is cough."
+    ],
+    "query": "What is the recommended treatment of Case Rowan?",
+    "outcome": "refusal",
+    "values": [],
+    "required_sources": []
+  },
+  {
+    "id": "healthcare-missing-recorded allergy",
+    "domain": "healthcare",
+    "kind": "missing_data",
+    "sources": [
+      "The symptom of Case Rowan is cough."
+    ],
+    "query": "What is the recorded allergy of Case Rowan?",
+    "outcome": "refusal",
+    "values": [],
+    "required_sources": []
+  },
+  {
+    "id": "healthcare-diagnostic-advice",
+    "domain": "healthcare",
+    "kind": "medical_advice",
+    "sources": [
+      "The symptom of Case Rowan is cough."
+    ],
+    "query": "Which antibiotic should Case Rowan receive?",
+    "outcome": "refusal",
+    "values": [],
+    "required_sources": []
+  },
+  {
+    "id": "healthcare-conditional",
+    "domain": "healthcare",
+    "kind": "uncertainty",
+    "sources": [
+      "The recorded diagnosis of Case Alder is condition T if test Q is positive."
+    ],
+    "query": "What is the recorded diagnosis of Case Alder?",
+    "outcome": "refusal",
+    "values": [],
+    "required_sources": []
+  },
+  {
+    "id": "healthcare-batch",
+    "domain": "healthcare",
+    "kind": "batch",
+    "sources": [
+      "The recorded diagnosis of Case Alder is condition T.",
+      "The recorded allergy of Case Alder is compound K."
+    ],
+    "query": "What is the recorded diagnosis of Case Alder? What is the recorded allergy of it?",
+    "outcome": "fact",
+    "values": [
+      "condition T",
+      "compound K"
+    ],
+    "required_sources": [
+      0,
+      1
+    ]
+  },
+  {
+    "id": "healthcare-overview",
+    "domain": "healthcare",
+    "kind": "overview",
+    "sources": [
+      "The recorded diagnosis of Case Alder is condition T.",
+      "The recorded allergy of Case Alder is compound K.",
+      "The room of Case Alder is C-0014."
+    ],
+    "query": "List documented attributes of Case Alder.",
+    "outcome": "fact",
+    "values": [
+      "condition T",
+      "compound K",
+      "C-0014"
+    ],
+    "required_sources": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "id": "healthcare-wrong-patient",
+    "domain": "healthcare",
+    "kind": "identity",
+    "sources": [
+      "The recorded diagnosis of Case Willow is condition S."
+    ],
+    "query": "What is the recorded diagnosis of Case Rowan?",
+    "outcome": "refusal",
+    "values": [],
+    "required_sources": []
+  },
+  {
+    "id": "healthcare-unresolved",
+    "domain": "healthcare",
+    "kind": "reference",
+    "sources": [
+      "The recorded diagnosis of Case Alder is condition T."
+    ],
+    "query": "What is the recorded diagnosis of it?",
+    "outcome": "refusal",
+    "values": [],
+    "required_sources": []
+  }
+]

@@ -1,0 +1,362 @@
+{
+  "revision": "70d7d2ba20afe8d17d2758f0e94e8892e115b69a",
+  "total": 32,
+  "clinical_validation": false,
+  "comparison": "ordinary cpu-llm vs strict evidence vs simple literal/calculator; no local decoder",
+  "domains": {
+    "medication": {
+      "ordinary": {
+        "total": 16,
+        "passed": 9,
+        "task_success": 9,
+        "answerable_total": 11,
+        "answerable_passed": 7,
+        "nonanswer_total": 5,
+        "nonanswer_passed": 2,
+        "safe_nonanswers": 2,
+        "proof_retention_passed": 14,
+        "proof_integrity_passed": 16,
+        "execution_errors": [],
+        "failures": [
+          "medication-equivalent",
+          "medication-value-conflict",
+          "medication-unit-conflict",
+          "medication-negative-conflict",
+          "medication-multiply",
+          "medication-source-multiply",
+          "medication-limit"
+        ],
+        "categories": {
+          "arithmetic": {
+            "total": 1,
+            "passed": 0
+          },
+          "comparison": {
+            "total": 1,
+            "passed": 0
+          },
+          "conflict": {
+            "total": 3,
+            "passed": 0
+          },
+          "lookup": {
+            "total": 6,
+            "passed": 6
+          },
+          "medical_advice": {
+            "total": 1,
+            "passed": 1
+          },
+          "missing_data": {
+            "total": 1,
+            "passed": 1
+          },
+          "paraphrase": {
+            "total": 1,
+            "passed": 1
+          },
+          "source_arithmetic": {
+            "total": 1,
+            "passed": 0
+          },
+          "unit_equivalence": {
+            "total": 1,
+            "passed": 0
+          }
+        }
+      },
+      "strict": {
+        "total": 16,
+        "passed": 16,
+        "task_success": 16,
+        "answerable_total": 11,
+        "answerable_passed": 11,
+        "nonanswer_total": 5,
+        "nonanswer_passed": 5,
+        "safe_nonanswers": 5,
+        "proof_retention_passed": 16,
+        "proof_integrity_passed": 16,
+        "execution_errors": [],
+        "failures": [],
+        "categories": {
+          "arithmetic": {
+            "total": 1,
+            "passed": 1
+          },
+          "comparison": {
+            "total": 1,
+            "passed": 1
+          },
+          "conflict": {
+            "total": 3,
+            "passed": 3
+          },
+          "lookup": {
+            "total": 6,
+            "passed": 6
+          },
+          "medical_advice": {
+            "total": 1,
+            "passed": 1
+          },
+          "missing_data": {
+            "total": 1,
+            "passed": 1
+          },
+          "paraphrase": {
+            "total": 1,
+            "passed": 1
+          },
+          "source_arithmetic": {
+            "total": 1,
+            "passed": 1
+          },
+          "unit_equivalence": {
+            "total": 1,
+            "passed": 1
+          }
+        }
+      },
+      "baseline": {
+        "total": 16,
+        "passed": 9,
+        "task_success": 10,
+        "answerable_total": 11,
+        "answerable_passed": 7,
+        "nonanswer_total": 5,
+        "nonanswer_passed": 2,
+        "safe_nonanswers": 2,
+        "proof_retention_passed": 10,
+        "proof_integrity_passed": 16,
+        "execution_errors": [],
+        "failures": [
+          "medication-possessive",
+          "medication-equivalent",
+          "medication-value-conflict",
+          "medication-unit-conflict",
+          "medication-negative-conflict",
+          "medication-source-multiply",
+          "medication-limit"
+        ],
+        "categories": {
+          "arithmetic": {
+            "total": 1,
+            "passed": 1
+          },
+          "comparison": {
+            "total": 1,
+            "passed": 0
+          },
+          "conflict": {
+            "total": 3,
+            "passed": 0
+          },
+          "lookup": {
+            "total": 6,
+            "passed": 6
+          },
+          "medical_advice": {
+            "total": 1,
+            "passed": 1
+          },
+          "missing_data": {
+            "total": 1,
+            "passed": 1
+          },
+          "paraphrase": {
+            "total": 1,
+            "passed": 0
+          },
+          "source_arithmetic": {
+            "total": 1,
+            "passed": 0
+          },
+          "unit_equivalence": {
+            "total": 1,
+            "passed": 0
+          }
+        }
+      }
+    },
+    "healthcare": {
+      "ordinary": {
+        "total": 16,
+        "passed": 14,
+        "task_success": 14,
+        "answerable_total": 7,
+        "answerable_passed": 7,
+        "nonanswer_total": 9,
+        "nonanswer_passed": 7,
+        "safe_nonanswers": 7,
+        "proof_retention_passed": 15,
+        "proof_integrity_passed": 16,
+        "execution_errors": [],
+        "failures": [
+          "healthcare-negative",
+          "healthcare-unresolved"
+        ],
+        "categories": {
+          "batch": {
+            "total": 1,
+            "passed": 1
+          },
+          "conflict": {
+            "total": 2,
+            "passed": 1
+          },
+          "identity": {
+            "total": 1,
+            "passed": 1
+          },
+          "medical_advice": {
+            "total": 1,
+            "passed": 1
+          },
+          "missing_data": {
+            "total": 3,
+            "passed": 3
+          },
+          "overview": {
+            "total": 1,
+            "passed": 1
+          },
+          "paraphrase": {
+            "total": 1,
+            "passed": 1
+          },
+          "record_lookup": {
+            "total": 4,
+            "passed": 4
+          },
+          "reference": {
+            "total": 1,
+            "passed": 0
+          },
+          "uncertainty": {
+            "total": 1,
+            "passed": 1
+          }
+        }
+      },
+      "strict": {
+        "total": 16,
+        "passed": 16,
+        "task_success": 16,
+        "answerable_total": 7,
+        "answerable_passed": 7,
+        "nonanswer_total": 9,
+        "nonanswer_passed": 9,
+        "safe_nonanswers": 9,
+        "proof_retention_passed": 16,
+        "proof_integrity_passed": 16,
+        "execution_errors": [],
+        "failures": [],
+        "categories": {
+          "batch": {
+            "total": 1,
+            "passed": 1
+          },
+          "conflict": {
+            "total": 2,
+            "passed": 2
+          },
+          "identity": {
+            "total": 1,
+            "passed": 1
+          },
+          "medical_advice": {
+            "total": 1,
+            "passed": 1
+          },
+          "missing_data": {
+            "total": 3,
+            "passed": 3
+          },
+          "overview": {
+            "total": 1,
+            "passed": 1
+          },
+          "paraphrase": {
+            "total": 1,
+            "passed": 1
+          },
+          "record_lookup": {
+            "total": 4,
+            "passed": 4
+          },
+          "reference": {
+            "total": 1,
+            "passed": 1
+          },
+          "uncertainty": {
+            "total": 1,
+            "passed": 1
+          }
+        }
+      },
+      "baseline": {
+        "total": 16,
+        "passed": 10,
+        "task_success": 10,
+        "answerable_total": 7,
+        "answerable_passed": 4,
+        "nonanswer_total": 9,
+        "nonanswer_passed": 6,
+        "safe_nonanswers": 6,
+        "proof_retention_passed": 11,
+        "proof_integrity_passed": 16,
+        "execution_errors": [],
+        "failures": [
+          "healthcare-possessive",
+          "healthcare-conflict",
+          "healthcare-negative",
+          "healthcare-conditional",
+          "healthcare-batch",
+          "healthcare-overview"
+        ],
+        "categories": {
+          "batch": {
+            "total": 1,
+            "passed": 0
+          },
+          "conflict": {
+            "total": 2,
+            "passed": 0
+          },
+          "identity": {
+            "total": 1,
+            "passed": 1
+          },
+          "medical_advice": {
+            "total": 1,
+            "passed": 1
+          },
+          "missing_data": {
+            "total": 3,
+            "passed": 3
+          },
+          "overview": {
+            "total": 1,
+            "passed": 0
+          },
+          "paraphrase": {
+            "total": 1,
+            "passed": 0
+          },
+          "record_lookup": {
+            "total": 4,
+            "passed": 4
+          },
+          "reference": {
+            "total": 1,
+            "passed": 1
+          },
+          "uncertainty": {
+            "total": 1,
+            "passed": 0
+          }
+        }
+      }
+    }
+  }
+}

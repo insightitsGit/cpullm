@@ -1,5 +1,9 @@
 # Medication and healthcare: local comparison
 
+Executed results, frozen inputs and raw replies are saved in
+[the local comparison report](benchmarks/2026-11-02-medical-local/REPORT.md).
+The final scoring revision is `26a5215`; the first scoring run is retained.
+
 This dedicated benchmark separates **16 fictional medication-label tasks**
 from **16 fictional healthcare-record tasks**. It compares ordinary public
 `Appliance.ask`, strict evidence mode, and the independent canonical
