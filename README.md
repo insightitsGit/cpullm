@@ -29,6 +29,14 @@ It can retrieve an explicitly recorded diagnosis; it does not diagnose from
 symptoms or determine a safe medication or dose. Use validated source versions
 and retain the response and matching source version for your audit process.
 
+**Try the included [small healthcare/pharmacy demo](examples/healthcare/README.md):**
+six fictional documents, 11 paragraphs and 12 questions with expected outcomes
+are included in [dataset.json](examples/healthcare/dataset.json). After setup,
+run `python examples/healthcare/run_demo.py --out build/healthcare-demo-new-run`.
+It ingests the records, prints actual chat responses, checks visible values and
+proofs, and demonstrates conflicts, missing information and treatment refusal.
+The pass count is an authored software check, not a clinical accuracy score.
+
 After completing the installation/database setup below, this fictional example
 shows the integration pattern:
 

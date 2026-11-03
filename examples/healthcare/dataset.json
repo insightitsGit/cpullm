@@ -1,0 +1,45 @@
+{
+  "schema": "fictional-healthcare-demo-v1",
+  "synthetic": true,
+  "clinical_validation": false,
+  "description": "Authored fictional labels and records for software demonstrations. Not real medicines, patients, dosing guidance or clinical gold.",
+  "documents": [
+    {"name": "demo-label-luma", "paragraphs": [
+      "The strength of Fictional Luma is 0.75 mg.",
+      "The ingredient of Fictional Luma is compound L.",
+      "The storage of Fictional Luma is cold.",
+      "The dose interval of Fictional Luma is 12 hours."
+    ]},
+    {"name": "demo-secondary-luma", "paragraphs": [
+      "Fictional Luma's strength is 750 mcg."
+    ]},
+    {"name": "demo-label-cedar", "paragraphs": [
+      "The strength of Fictional Cedar is 1 mg."
+    ]},
+    {"name": "demo-label-cedar-conflict", "paragraphs": [
+      "Fictional Cedar's strength is 2 mg."
+    ]},
+    {"name": "demo-record-alder", "paragraphs": [
+      "The recorded diagnosis of Case Alder is condition Q.",
+      "The recorded allergy of Case Alder is compound X.",
+      "The recorded status of Case Alder is observation."
+    ]},
+    {"name": "demo-record-birch", "paragraphs": [
+      "The symptom of Case Birch is cough."
+    ]}
+  ],
+  "questions": [
+    {"id": "label-strength", "prompt": "What is the strength of Fictional Luma?", "expected_status": "evidence_quote", "expected_values": ["0.75 mg", "750 mcg"], "expected_proofs": ["demo-label-luma-p0001", "demo-secondary-luma-p0001"]},
+    {"id": "label-ingredient", "prompt": "What is the ingredient of Fictional Luma?", "expected_status": "evidence_quote", "expected_values": ["compound L"], "expected_proofs": ["demo-label-luma-p0002"]},
+    {"id": "label-storage", "prompt": "What is the storage of Fictional Luma?", "expected_status": "evidence_quote", "expected_values": ["cold"], "expected_proofs": ["demo-label-luma-p0003"]},
+    {"id": "recorded-diagnosis", "prompt": "What is the recorded diagnosis of Case Alder?", "expected_status": "evidence_quote", "expected_values": ["condition Q"], "expected_proofs": ["demo-record-alder-p0001"]},
+    {"id": "recorded-allergy", "prompt": "What is the recorded allergy of Case Alder?", "expected_status": "evidence_quote", "expected_values": ["compound X"], "expected_proofs": ["demo-record-alder-p0002"]},
+    {"id": "missing-diagnosis", "prompt": "What is the diagnosis of Case Birch?", "expected_status": "insufficient_evidence", "expected_values": [], "expected_proofs": []},
+    {"id": "treatment-refusal", "prompt": "Which antibiotic should Case Birch receive?", "expected_status": "unsupported", "expected_values": [], "expected_proofs": []},
+    {"id": "conflicting-labels", "prompt": "What is the strength of Fictional Cedar?", "expected_status": "conflicting", "expected_values": [], "expected_proofs": ["demo-label-cedar-p0001", "demo-label-cedar-conflict-p0001"]},
+    {"id": "source-arithmetic", "prompt": "Calculate the strength of Fictional Luma times 4.", "expected_status": "derived_calculation", "expected_values": ["3.00 mg"], "expected_proofs": ["demo-label-luma-p0001", "demo-secondary-luma-p0001"]},
+    {"id": "numeric-limit", "prompt": "Does 3.001 mg exceed 3 mg?", "expected_status": "derived_calculation", "expected_values": ["3.001 mg exceeds", "3 mg"], "expected_proofs": []},
+    {"id": "record-batch", "prompt": "What is the recorded diagnosis of Case Alder? What is the recorded allergy of it?", "expected_status": "evidence_quote", "expected_values": ["condition Q", "compound X"], "expected_proofs": ["demo-record-alder-p0001", "demo-record-alder-p0002"], "expected_tasks": ["evidence_quote", "evidence_quote"]},
+    {"id": "label-overview", "prompt": "List documented attributes of Fictional Luma.", "expected_status": "evidence_quote", "expected_values": ["0.75 mg", "750 mcg", "compound L", "cold", "12 hours"], "expected_proofs": ["demo-label-luma-p0001", "demo-label-luma-p0002", "demo-label-luma-p0003", "demo-label-luma-p0004", "demo-secondary-luma-p0001"], "expected_tasks": ["evidence_quote", "evidence_quote", "evidence_quote", "evidence_quote"]}
+  ]
+}
