@@ -1,157 +1,270 @@
-# cpu-llm
+# CPU-LLM: Evidence-Based AI Engine
 
-**Evidence-Based AI Engine**
+**Deterministic Document Checks, Financial Covenant Verification & Evidence-Preserving Retrieval on Commodity CPUs.**
 
-Answer questions from your documents and explicit rules, with source evidence
-and CPU-first execution. **Published release: [1.11.1](https://pypi.org/project/cpu-llm/1.11.1/).**
-Author: Amin Parva, Independent Engineer.
+[![PyPI 1.11.1](https://img.shields.io/badge/PyPI-1.11.1-blue)](https://pypi.org/project/cpu-llm/1.11.1/)
+[![Code license Apache 2.0](https://img.shields.io/badge/Code-Apache_2.0-green)](LICENSE)
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue)](pyproject.toml)
 
-cpu-llm is an embeddable Python library combining document retrieval, bounded
-sentence construction and explicit rule/calculation checks. It produces source
-quotations, supported derived wording or explicit nonanswers for recognized
-requests. Its name is the package name; it is not a general-purpose language model.
+`cpu-llm` / `cpullm` is an embeddable Python engine for source-backed document
+questions and explicit rule checks. It is intended for architects evaluating
+controlled evidence workflows in financial compliance, private credit and
+regulated enterprises, where unsupported answers, arithmetic errors and data
+egress carry material risk.
 
-**Licensing:** code is [Apache-2.0](LICENSE). Bundled WikiText-2 text has separate
-**CC BY-SA 3.0/GFDL** attribution and terms; see [third-party notices](THIRD_PARTY_NOTICES.md).
+Unlike unrestricted generative answering, its strict evidence path selects
+quotations, executes recognized calculations or returns an explicit nonanswer.
+This is a bounded evidence contract: it does not establish that a source is true,
+that every question is understood, or that a deployment is compliant.
 
-## Install and try
+**Published version: 1.11.1.** Use it instead of 1.11.0 for HTTP; it repairs a
+cached-appliance SQLite thread-ownership defect. Author: **Amin Parva,
+Independent Engineer**.
 
-Python 3.11+ is required; release checks used Windows/Python 3.12.10.
+**Licenses:** code [Apache-2.0](LICENSE); bundled WikiText-2 data has separate
+**CC BY-SA 3.0/GFDL** terms and attribution. See [third-party notices](THIRD_PARTY_NOTICES.md).
 
-```shell
-python -m pip install --upgrade "cpu-llm==1.11.1"
-python -m pip check
-```
+## Verification contract compared with generative RAG
 
-Before document queries, configure PostgreSQL with pgvector and set
-`VECTORPRISM_PG_DSN`. Prepare the pretrained
-`sentence-transformers/all-mpnet-base-v2` encoder assets. The trained projection
-is bundled; demo use does not require retraining.
+This compares execution contracts, not measured product accuracy or cost.
+Generative RAG systems can also add citations, calculators and deployment controls.
 
-- [Database setup and matching connection strings](docs/development-database.md).
-- [Encoder download, transferable cache and offline verification](docs/offline-setup.md).
+| Dimension | Generative RAG without an enforced verification layer | CPU-LLM contract |
+| --- | --- | --- |
+| Answer construction | Generated wording needs independent support checks | Strict mode returns source spans, recognized calculations, conflicts or nonanswers; unsupported forms return `unsupported` |
+| Arithmetic | A generated numeric answer needs a calculator/checker | Explicit finance fields use inspectable decimal/integer policies; the example below uses six-place half-up rounding |
+| Infrastructure | Depends on the chosen model and hosting | CPU-first Python plus PostgreSQL/pgvector and cached encoder assets; no GPU required for the documented path |
+| Audit evidence | Depends on the application's evidence layer | Source IDs, quotation offsets and chunk hashes; supported tone constructions include inverse-verification receipts |
+| Data location | Hosted or self-managed, depending on the system | Can run on premises with prepared dependencies and cached assets; air-gap enforcement is an operator responsibility |
 
-The supplied Compose configuration validates, but its actual container launch
-remains unverified on the maintainer's host because Docker Desktop crashes.
-Recorded installed-package checks used native PostgreSQL 18/pgvector.
+“Zero hallucination” is not a universal accuracy guarantee. Strict selection can
+preserve an incorrect source, and an unsupported request can be refused. Ordinary
+mode has different verification limits, including optional learned producers.
 
-Once setup is complete, these installed commands ingest fictional demo records
-and save responses, evidence and expected-outcome checks:
+## Core capabilities
 
-```shell
-cpu-llm-demo healthcare --out healthcare-demo-new-run
-cpu-llm-demo conversation --out conversation-demo-new-run
-```
+### Strict evidence: quote or abstain
 
-Use a new output directory each time. The healthcare demo includes supported
-lookups, conflicts, missing data and treatment refusals; passing checks are
-software-fixture outcomes, not clinical validation.
-
-## Ask your documents
-
-Run appliance construction under a main guard on Windows:
+After setup, ingest atomic statements and ask an explicit attribute question.
+Save this as a script; use the main guard on Windows:
 
 ```python
 from cpu_llm.pipeline import Appliance
 from cpu_llm.documents import SourceDocument
 
 def main():
-    with Appliance(namespace="my_docs", prompt_backend="rules") as app:
-        app.ingest(SourceDocument("helios-manual", (
-            "Helios is a backup service.",
-            "Helios stores encrypted backups.",
-            "Helios uses PostgreSQL for metadata.",
-            "Helios does not support automatic regional failover.",
+    with Appliance(namespace="label_example", prompt_backend="rules") as app:
+        app.ingest(SourceDocument("fictional-label", (
+            "The strength of Fictional Luma is 0.75 mg.",
         )))
-        result = app.ask(
-            "Write a detailed article about Helios in a friendly tone."
-        )
-        print(result["reply"]["text"])
-        print(result.get("stylistic", {}).get("verification"))
+        for question in (
+            "What is the strength of Fictional Luma?",
+            "Which antibiotic should Case Birch receive?",
+        ):
+            result = app.ask(question, strict_evidence=True, small_talk=False)
+            print(result["answer_status"])
+            print(result["reply"]["text"])
+            print(result.get("answer_evidence", []))
 
 if __name__ == "__main__":
     main()
 ```
 
-The tone instruction is removed from the topic query; the KB does not need
-friendly wording. Reviewed constructions can produce a new sentence such as
-“Helios stores encrypted backups and uses PostgreSQL for metadata.” Original
-source proofs remain available. Unsupported constructions remain attributed
-quotations and missing document sections remain explicit.
+The [recorded healthcare demo](examples/healthcare/sample-run/README.md) shows:
 
-[Document/tone manual](docs/document-generation-user-guide.md) ·
-[Recorded article and report](docs/examples/2026-11-03-prompt-tone/README.md) ·
-[Complete Python/HTTP consumer guide](docs/library-consumer-guide.md).
+```text
+What is the strength of Fictional Luma?
+status: evidence_quote
+The strength of Fictional Luma is 0.75 mg.
 
-## Choose the evidence contract
+Which antibiotic should Case Birch receive?
+status: unsupported
+Unsupported strict request; use explicit named attribute questions.
+```
 
-- **Strict evidence:** use `strict_evidence=True` or the strict HTTP header.
-  Recognized queries return quotations with provenance, bounded exact
-  calculations, conflicts or nonanswers. Strict mode bypasses learned answer
-  generation and tone rewriting. Source truth is not independently verified.
-- **Ordinary requests:** support additional producers, document layouts and
-  bounded verified tone constructions. In the source branch, the optional learned writer requires
-  `CPU_LLM_ALLOW_LEARNED_WRITER=1`; its fallback paths
-  have different verification limits; there is no blanket “verified ordinary
-  mode” or universal factual-accuracy claim.
-- **Finance checks:** operate on supplied fields and explicit policies.
-  Decimal arithmetic and decision precision are inspectable; these checks do
-  not authenticate financial documents or establish professional approval.
+Evidence includes document IDs, quotation offsets and chunk hashes. These are
+fictional label-handling fixtures, not a diagnostic or prescribing system.
+Use one factual statement per record for the recognized strict grammar;
+multisentence records can be rejected rather than losing a qualifier.
+[Strict grammar and limits](docs/strict-evidence-spec.md).
 
-The covenant boundary example uses raw `9000001/2000000 = 4.5000005`. Under its
-explicit six-place half-up policy, the stored/displayed value is `4.500001`,
-which breaches an `lte 4.500000` threshold. That is a bounded numeric-policy
-check, not a claim that every finance question is understood.
+### Deterministic finance: explicit fields and precision
 
-Six retrieval signals exist: dense, relational, disentangled, hyperbolic,
-identity and causal. **Only the dense and identity projection heads are trained
-and bundled.** Channel signals and scores are not factual proof.
+`LedgerCovenant` evaluates supplied covenant fields. `RefundProof` reviews
+supplied sales-tax findings; it is a separate check, not a covenant synonym.
+The direct validator needs no database or encoder:
 
-## HTTP and deployment
+```python
+from cpu_llm.finance import validate_message
 
-The authenticated stdlib server exposes POST `/v1/ask`, `/v1/ingest`,
-`/v1/correct` and `/v1/delete`. See the [OpenAPI contract](docs/openapi.json)
-and [credential/setup guide](docs/library-consumer-guide.md#authenticated-http-service).
-The JSON file documents the API; the server does not serve Swagger/OpenAPI UI.
+result = validate_message("""Decide this LedgerCovenant test.
+comparator: lte
+threshold: 4.50
+numerator: compliance_certificate 9000001
+denominator: compliance_certificate 2000000
+ratio places: 6
+""")
+print(result["text"])
+print(result["checks"])
+```
 
-**Use 1.11.1 for HTTP.** It fixes 1.11.0's cached-appliance SQLite thread error.
-Requests run serially on the serving thread and response connections close.
-Lazy factories must construct appliances on that thread. The server has no
-built-in TLS or production gateway controls, and slow work blocks later requests.
-No production throughput or startup-latency guarantee is established.
-The source branch caps HTTP bodies at 1 MiB and uses a 10-second socket read
-timeout. Chunked request bodies are rejected. These changes are not in 1.11.1.
+```text
+Raw ratio:               9000001 / 2000000 = 4.5000005
+Six-place half-up value: 4.500001x
+Allowed threshold:      lte 4.500000x
+Decision:               BREACH
+```
 
-Child-safety compatibility arguments do not apply a pipeline gate. Explicit
-requests emit a warning; the standalone `ChildSafetyGate` remains unvalidated.
+The block summarizes the inspectable calculation; the command prints the full
+result and precedence trace. `4.500001` is the policy-rounded value, not the raw
+quotient. Precision is explicit, not a universal six-decimal rule or binary-float
+approximation. Supplied fields are not authenticated financial records, and a
+breach result is not a legal declaration of default.
 
-## Evidence, tests and limits
+### Verified document generation: bounded inverse grammar
 
-The recorded 1.11.1 source run passed **905 tests**, skipped **56**, and retained
-**3 existing expected failures**. Of the skips, **54 opt-in integration cases
-were not enabled** and **2 lacked optional trained extractor checkpoints**.
-Those 54 cases are not being represented as passed or as missing installed assets.
+Using an appliance configured as above:
 
-Separate installed-wheel checks verified strict and ordinary HTTP requests,
-source scope and the packaged healthcare demo's 12/12 authored outcomes.
-[Test-count explanation and receipts](docs/testing-results.md) distinguish these
-from historical runs. There is no independent clinical, customer-corpus or
-hosted-model comparison establishing general usefulness or superiority.
+```python
+app.ingest(SourceDocument("helios-manual", (
+    "Helios is a backup service.",
+    "Helios stores encrypted backups.",
+    "Helios uses PostgreSQL for metadata.",
+    "Helios does not support automatic regional failover.",
+)))
+result = app.ask("Write a detailed article about Helios in a friendly tone.")
+print(result["reply"]["text"])
+```
 
-Known limits include bounded English grammars, lexical topic matching,
-incomplete aliases/semantic joins, limited typed factual queries and conflict
-detection, and no general creative or novel-architecture generation. Hashes prove
-consistency with stored text, not authenticity or truth. Inspect actual output,
-status, coverage and evidence for the intended application.
+Supported predicate joins can produce:
+
+```text
+Helios stores encrypted backups and uses PostgreSQL for metadata.
+```
+
+The tone request is removed from the retrieval topic. Bounded inverse grammar
+checks supported constructions against source predicates while retaining proofs,
+numbers, negation and qualifiers. Unsupported constructions remain quotations;
+missing sections remain explicit. Strict documents bypass tone rewriting.
+This produces bounded new wording, not arbitrary creative prose or new facts.
+[Article/report receipts](docs/examples/2026-11-03-prompt-tone/README.md) ·
+[Document and tone manual](docs/document-generation-user-guide.md).
+
+### Six-signal retrieval and explicit routing
+
+The ordinary pipeline registers 27 graph nodes, including **dense, relational,
+disentangled, hyperbolic, identity and causal** retrieval signals backed by
+PostgreSQL/pgvector. **Only dense and identity projection heads are trained and
+bundled**; the other channels use their implemented signals or symbolic paths.
+A similarity score or connection is not factual proof. Strict requests and document
+workflows can bypass the ordinary graph; not every request runs every node.
+See the [architecture](docs/current-design.md) and [prompt-to-node mapping](docs/prompt-flag-map.md).
+
+## Quickstart and reproduction
+
+Python 3.11+ is required. Release checks used Windows/Python 3.12.10.
+
+```shell
+python -m pip install --upgrade "cpu-llm==1.11.1"
+python -m pip check
+```
+
+Document queries require PostgreSQL/pgvector and the pretrained
+`sentence-transformers/all-mpnet-base-v2` encoder assets. The trained projection
+is bundled; no retraining is required for these demos. Follow the
+[database setup](docs/development-database.md) and [encoder preparation](docs/offline-setup.md).
+Recorded installed-package checks used native PostgreSQL 18/pgvector.
+
+**Docker alternative — configuration documented; container startup remains
+unverified on the maintainer's current host.** For a disposable development
+instance, this command binds only to loopback:
+
+```shell
+docker run -d --name pgvector-test -p 127.0.0.1:5434:5432 -e POSTGRES_PASSWORD=postgres pgvector/pgvector:pg16
+docker exec pgvector-test pg_isready -U postgres -d postgres
+```
+
+After readiness succeeds, enable the extension:
+
+```shell
+docker exec pgvector-test psql -U postgres -d postgres -c "CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public;"
+```
+
+Set the matching connection string before running Python. POSIX shell:
+
+```shell
+export VECTORPRISM_PG_DSN='postgresql://postgres:postgres@127.0.0.1:5434/postgres'
+```
+
+PowerShell:
+
+```powershell
+$env:VECTORPRISM_PG_DSN = 'postgresql://postgres:postgres@127.0.0.1:5434/postgres'
+```
+
+After database and encoder preparation:
+
+```shell
+cpu-llm-demo healthcare --out healthcare-demo-output
+cpu-llm-demo conversation --out conversation-demo-output
+```
+
+Use fresh output directories. The commands ingest demo records and save responses,
+evidence and outcome checks. Initial encoder download time depends on connectivity
+and caching; it is preparation, not training. For disconnected deployments,
+prepare the Python wheelhouse, database installation/image and encoder cache
+before transfer. Offline flags are not a substitute for network isolation.
+
+## Enterprise and commercial evaluation
+
+For pilot discussions with **Insight IT Solutions**, visit
+[CPU-LLM research and commercial enquiries](https://www.insightits.com/research-tools/cpu-llm).
+Potential scopes include:
+
+- **Private-credit covenant monitoring:** map explicit source fields and policies
+  into LedgerCovenant checks, with reviewable arithmetic and evidence.
+- **On-premises and sovereign deployments:** prepare CPU runtime assets and
+  evaluate isolation, identity and gateway controls in the target environment.
+- **Regulatory workflow adapters:** integrate existing tenant/source permissions
+  with enterprise RBAC, retention and audit systems. SOX/HIPAA requirements need
+  a deployment-specific assessment; no certification is claimed.
+
+These are pilot integration opportunities, not claims of deployed customer
+results, automatic legal compliance or a turnkey zero-trust enclave.
+
+## Verification and deployment limits
+
+The recorded 1.11.1 source run reports **905 passed, 56 skipped, 3 expected
+failures**: 54 skips were disabled opt-in integration cases; two lacked optional
+extractor checkpoints. Separate installed-wheel checks covered strict/ordinary
+HTTP and the healthcare demo's 12/12 authored outcomes.
+[Commands, scope and receipts](docs/testing-results.md). No independent clinical,
+customer-corpus or hosted-model comparison establishes superiority.
+
+The authenticated HTTP service exposes POST `/v1/ask`, `/v1/ingest`, `/v1/correct`
+and `/v1/delete`. It serves requests serially; lazy factories must construct
+appliances on the serving thread. There is no built-in TLS or production gateway,
+and long work blocks other requests. See [OpenAPI](docs/openapi.json) and the
+[consumer guide](docs/library-consumer-guide.md#authenticated-http-service).
+
+**Unreleased source changes:** learned writer fallback requires
+`CPU_LLM_ALLOW_LEARNED_WRITER=1`; HTTP bodies are capped at 1 MiB with a 10-second
+socket inactivity timeout. Explicit child-safety controls warn that no pipeline
+gate is applied; the standalone gate remains unvalidated. These changes are not
+in published 1.11.1. See the [hardening specification](docs/audit-hardening-spec.md).
+
+Known limits include bounded English grammars, lexical topic matching, incomplete
+aliases/joins and conflict detection. Hashes prove consistency with stored text,
+not source authenticity or truth. Inspect response status, evidence and coverage
+for the intended application.
 
 ## Documentation
 
-- [Published release notes](docs/releases/1.11.1.md) and [build validation](docs/releases/1.11.1-build-validation.md).
-- [Current whitepaper](https://www.insightits.com/research-tools/cpu-llm/whitepaper) and [1.11.1 PDF](https://www.insightits.com/assets/whitepapers/cpu-llm-1.11.1-whitepaper.pdf).
-- [Architecture](docs/current-design.md), [strict evidence](docs/strict-evidence-spec.md), [tone specification](docs/stylistic-generation-spec.md), and [flag mapping](docs/prompt-flag-map.md).
-- [Extended implementation reference and historical observations](docs/reference/implementation-guide.md).
-- [Release publishing and provenance](docs/release-publishing.md).
+- [1.11.1 release notes](docs/releases/1.11.1.md) and [build validation](docs/releases/1.11.1-build-validation.md).
+- [Whitepaper](https://www.insightits.com/research-tools/cpu-llm/whitepaper) and [1.11.1 PDF](https://www.insightits.com/assets/whitepapers/cpu-llm-1.11.1-whitepaper.pdf).
+- [Strict evidence](docs/strict-evidence-spec.md), [tone specification](docs/stylistic-generation-spec.md), [flag mapping](docs/prompt-flag-map.md).
+- [Extended implementation reference](docs/reference/implementation-guide.md) and [release provenance](docs/release-publishing.md).
 
-For citations, use **“cpu-llm: Evidence-Based AI Engine”**, by Amin Parva, with
-the repository URL and the exact version/commit evaluated. Code is Apache-2.0;
-that label does not replace the separate bundled-data notices.
+For citations: **cpu-llm: Evidence-Based AI Engine**, Amin Parva, repository URL,
+and the exact version/commit evaluated. The Apache code label does not replace
+bundled-data notices.
