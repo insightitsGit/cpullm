@@ -10,6 +10,7 @@ nothing, and the caller keeps the retrieved sentence.
 
 from __future__ import annotations
 
+import os
 import re
 from typing import Any, Optional
 
@@ -48,6 +49,7 @@ def situation_from_chunks(
         and extractor is None
         and _DECISION.search(question)
         and _RULE_CUE.search("\n".join(texts))
+        and os.environ.get('CPU_LLM_ALLOW_LEARNED_WRITER', '').strip() == '1'
         and model_root() is not None
     ):
         result = answer(question, texts, retrieve=retrieve, ml=True)

@@ -192,6 +192,7 @@ class Appliance:
                 raise
             except Exception as exc:
                 raise StorageError("the database schema could not be opened") from exc
+        _warn_unsupported_child_safety(child_safety=child_safety, on_escalate=on_escalate)
         self.child_safety = ChildSafetyGate(
             enabled=enabled_by_default() if child_safety is None else child_safety,
             on_escalate=on_escalate,
@@ -586,6 +587,7 @@ class Appliance:
         """Separate explicit compound requests; each task uses the full pipeline."""
         from cpu_llm.request_planner import dispatch_request
         from cpu_llm.strict_evidence import requested, answer
+        _warn_unsupported_child_safety(child_safety=child_safety, grade=grade)
         raw_message = message
         enabled, content = requested(message, strict_evidence)
         enabled = enabled or getattr(self, 'strict_evidence', False)
@@ -3202,3 +3204,13 @@ def _cognize(appliance: Appliance):
         return update
 
     return node
+
+
+def _warn_unsupported_child_safety(*, child_safety=None, grade=None, on_escalate=None):
+    """Compatibility controls are not an applied pipeline safety policy."""
+    if child_safety is not None and type(child_safety) is not bool:
+        raise ValueError('child_safety must be a boolean or None')
+    if child_safety is True or grade is not None or on_escalate is not None:
+        import warnings
+        warnings.warn('Child-safety controls are not applied by Appliance; use ChildSafetyGate explicitly. '
+                      'The standalone gate is unvalidated.', RuntimeWarning, stacklevel=3)

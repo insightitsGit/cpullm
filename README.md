@@ -90,7 +90,8 @@ quotations and missing document sections remain explicit.
   calculations, conflicts or nonanswers. Strict mode bypasses learned answer
   generation and tone rewriting. Source truth is not independently verified.
 - **Ordinary requests:** support additional producers, document layouts and
-  bounded verified tone constructions. Some optional FLAN-T5 fallback paths
+  bounded verified tone constructions. In the source branch, the optional learned writer requires
+  `CPU_LLM_ALLOW_LEARNED_WRITER=1`; its fallback paths
   have different verification limits; there is no blanket “verified ordinary
   mode” or universal factual-accuracy claim.
 - **Finance checks:** operate on supplied fields and explicit policies.
@@ -118,6 +119,11 @@ Requests run serially on the serving thread and response connections close.
 Lazy factories must construct appliances on that thread. The server has no
 built-in TLS or production gateway controls, and slow work blocks later requests.
 No production throughput or startup-latency guarantee is established.
+The source branch caps HTTP bodies at 1 MiB and uses a 10-second socket read
+timeout. Chunked request bodies are rejected. These changes are not in 1.11.1.
+
+Child-safety compatibility arguments do not apply a pipeline gate. Explicit
+requests emit a warning; the standalone `ChildSafetyGate` remains unvalidated.
 
 ## Evidence, tests and limits
 

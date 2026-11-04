@@ -19,9 +19,15 @@ def value_key(value):
     units = {'mg': ('mass', '0.001'), 'g': ('mass', '1'), 'mcg': ('mass', '0.000001'),
              'kg': ('mass', '1000'), 'mL': ('volume', '0.001'), 'L': ('volume', '1'),
              'hour': ('time', '60'), 'hours': ('time', '60'), 'minute': ('time', '1'), 'minutes': ('time', '1')}
-    match = re.fullmatch(rf'({NUMBER})\s*(mg|g|mcg|kg|mL|L|hours?|minutes?)', value)
-    if match:
-        kind, scale = units[match[2]]
+    aliases = {'milligram': 'mg', 'milligrams': 'mg', 'gram': 'g', 'grams': 'g',
+               'microgram': 'mcg', 'micrograms': 'mcg', 'kilogram': 'kg', 'kilograms': 'kg',
+               'milliliter': 'mL', 'milliliters': 'mL', 'liter': 'L', 'liters': 'L'}
+    scalar = value.strip()
+    if re.fullmatch(NUMBER, scalar):
+        return 'number', Decimal(scalar)
+    match = re.fullmatch(rf'({NUMBER})\s*([A-Za-z]+)', scalar)
+    if match and aliases.get(match[2], match[2]) in units:
+        kind, scale = units[aliases.get(match[2], match[2])]
         with localcontext() as context:
             context.prec = 100
             return kind, Decimal(match[1]) * Decimal(scale)

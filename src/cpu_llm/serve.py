@@ -21,6 +21,10 @@ from cpu_llm.entry import Entry
 _ASK_FIELDS = ("discover", "imagine", "deep", "math", "finance", "as_of", "session_id", "strict_evidence", "small_talk")
 
 
+MAX_REQUEST_BYTES = 1024 * 1024
+CLIENT_READ_TIMEOUT_SECONDS = 10
+
+
 class UnknownRoute(Exception):
     """The request named a path this service does not provide."""
 
@@ -98,6 +102,10 @@ def _handler(entry: Entry, *, strict_evidence: bool = False, small_talk: bool = 
     class Handler(BaseHTTPRequestHandler):
         protocol_version = "HTTP/1.1"
 
+        def setup(self) -> None:
+            self.request.settimeout(CLIENT_READ_TIMEOUT_SECONDS)
+            super().setup()
+
         def do_POST(self) -> None:  # noqa: N802 — stdlib handler name
             try:
                 secret = _bearer(self.headers.get("Authorization"))
@@ -108,6 +116,8 @@ def _handler(entry: Entry, *, strict_evidence: bool = False, small_talk: bool = 
                 status, body = 404, {"error": "not_found", "message": str(exc)}
             except AccessError as exc:
                 status, body = _access_status(exc), exc.as_dict()
+            except TimeoutError:
+                status, body = 408, {"error": "request_timeout", "message": "request body read timed out"}
             except ValueError as exc:
                 status, body = 400, {"error": "bad_request", "message": str(exc)}
             encoded = json.dumps(body).encode("utf-8")
@@ -203,11 +213,19 @@ def _source(payload: dict[str, Any]) -> Any:
 
 
 def _json_body(handler: BaseHTTPRequestHandler) -> dict[str, Any]:
+    if handler.headers.get("Transfer-Encoding") is not None:
+        raise ValueError("Transfer-Encoding is not supported")
+    if hasattr(handler.headers, 'get_all') and len(handler.headers.get_all('Content-Length') or []) > 1:
+        raise ValueError("duplicate Content-Length is not supported")
     length = int(handler.headers.get("Content-Length") or "0")
+    if not 0 <= length <= MAX_REQUEST_BYTES:
+        raise ValueError("request body must be between 0 and 1048576 bytes")
     raw = handler.rfile.read(length) if length else b""
+    if len(raw) != length:
+        raise ValueError("incomplete request body")
     try:
         loaded = json.loads(raw.decode("utf-8") or "{}")
-    except json.JSONDecodeError as exc:
+    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
         raise ValueError("the request body is not JSON") from exc
     if not isinstance(loaded, dict):
         raise ValueError("the request body must be an object")

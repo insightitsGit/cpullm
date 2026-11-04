@@ -30,6 +30,8 @@ an unrestricted conversational or clinical decision model.
 - Installed demo and conversation-candidate commands; no repository clone or
   Git executable is needed for those commands.
 
+**Licenses:** code Apache-2.0; bundled WikiText-2 data CC BY-SA 3.0/GFDL, with dataset provenance.
+
 ## Install and prepare
 
 Install the published release:
@@ -147,6 +149,6 @@ establish diagnostic or prescribing capability.
 - [Default conversation examples](https://github.com/insightitsGit/cpullm/blob/main/docs/examples/2026-11-02-conversation/TRANSCRIPT.md)
 - [Medical acceptance comparison](https://github.com/insightitsGit/cpullm/blob/main/docs/benchmarks/2026-11-02-medical-local/REPORT.md)
 
-The project is Apache-2.0 licensed. The shipped default pack is original; external
+Code is Apache-2.0 licensed. Bundled WikiText-2 data has separate CC BY-SA 3.0/GFDL terms and attribution; see THIRD_PARTY_NOTICES.md in the repository. The shipped default pack is original; external
 dialogue corpora are not bundled. Dataset review tooling does not import external
 assistant answers into the runtime or medical knowledge base.

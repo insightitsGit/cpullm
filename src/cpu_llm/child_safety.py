@@ -17,10 +17,10 @@ principle checks and templates live in `data/child_safety.json` (versioned).
 Status: unvalidated. Calibrate and validate against the Retriever Labs benchmark (worked keep/break examples,
 age-flip subset, reliability targets) before relying on it.
 
-Switches:
-    Appliance(child_safety=False)            off for one appliance
-    appliance.ask(..., child_safety=False)   off for one question
-    CPU_LLM_CHILD_SAFETY=0                   off by environment (default on)
+Integration status:
+    Appliance compatibility arguments do not apply this gate. Explicit requests
+    emit a RuntimeWarning. Call ChildSafetyGate.decide directly if evaluating
+    this unvalidated standalone component; do not assume pipeline protection.
 """
 
 from __future__ import annotations
