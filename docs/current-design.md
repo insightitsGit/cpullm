@@ -1,5 +1,10 @@
 # Current cpu-llm design
 
+Proposed November 4 designs (documentation only, not implemented):
+[prompt expansion and research planning](prompt-research-expansion-spec.md) and
+[six-channel multi-cycle exploration](six-channel-cycle-exploration-spec.md).
+See their [gap review and implementation gates](research-and-cycle-design-review.md).
+
 The default [conversation node](conversation-spec.md) handles only complete
 reviewed social intents and guarded greeting prefixes before factual dispatch.
 Strict policy v3 distinguishes its built-in social scope from document evidence;
