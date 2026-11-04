@@ -85,3 +85,21 @@ Final follow-up default suite: **967 passed, 56 skipped, 3 existing xfailed**,
 six existing NumPy warnings, 107.66 seconds. The 54 opt-in integration cases
 remain disabled and two optional extractor checkpoints remain unavailable.
 This is not a full-live or independent benchmark. Final focused set: 136 passed.
+
+## Loop consumption and trigger integration
+
+Loop results now feed verified path sentences and ordinary document sections,
+not just a raw metadata list. Source clauses, direction, intermediate edges,
+canonical quotations and all six channel receipts are retained. Explicit natural
+prompts and Python/HTTP cycle_search options are supported; API options override
+prompt seeds, including multi-topic documents. Documents share one source
+snapshot and attach path text after neutral/explicit style stages. Strict floors
+refuse exploration before retrieval. See cycle-consumption-spec.md and the README.
+
+Full default suite: **989 passed, 56 skipped, 3 existing xfailed**, six existing
+NumPy warnings, 105.64 seconds. Final focused integration set: **126 passed** in
+4.34 seconds, including the API-seed override correction. No full-live or clinical
+benchmark is claimed; 54 opt-in integration cases remain disabled and two optional
+extractor checkpoints remain unavailable. Receipts: build/cycle-consumption-tests.*.
+Actual Appliance examples: build/cycle-consumption-live-examples.json and
+docs/examples/2026-11-04-cycle-consumption/README.md. No package upload was done.

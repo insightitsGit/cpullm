@@ -592,10 +592,6 @@ class Appliance:
         raw_message = message
         enabled, content = requested(message, strict_evidence)
         enabled = enabled or getattr(self, 'strict_evidence', False)
-        if cycle_search is not None:
-            from cpu_llm.cycle_exploration import execute_cycle_request
-            return execute_cycle_request(self, message, cycle_search, caller=caller,
-                                         as_of=as_of, strict=enabled)
         from cpu_llm.stylistic.profiles import extract_style_request
         tone_control = extract_style_request(content)
         if tone_control['tone'] is not None:
@@ -603,6 +599,18 @@ class Appliance:
             message = content
             if style is None:
                 style = tone_control['tone']
+        from cpu_llm.cycle_composition import parse_cycle_prompt
+        loop_control=parse_cycle_prompt(content,seed_override=cycle_search.get('seed') if isinstance(cycle_search,dict) else None)
+        if loop_control is not None:
+            if cycle_search is None:
+                cycle_search=loop_control['options']
+            content=message=loop_control['query']
+        if cycle_search is not None:
+            from cpu_llm.document_workflow import plan_document
+            if plan_document(content) is None:
+                from cpu_llm.cycle_exploration import execute_cycle_request
+                return execute_cycle_request(self, raw_message, cycle_search, caller=caller,
+                                             as_of=as_of, strict=enabled)
         if small_talk is not None and type(small_talk) is not bool:
             raise ValueError('small_talk must be a boolean or None')
         prefix = None
@@ -634,7 +642,8 @@ class Appliance:
             if not enabled and style is not None:
                 from cpu_llm.stylistic.contracts import validate_profile
                 validate_profile(style)
-            result = execute_document(self, raw_message, document_plan, caller=caller, as_of=as_of, strict=enabled)
+            result = execute_document(self, raw_message, document_plan, caller=caller, as_of=as_of,
+                                      strict=enabled, style=style, cycle_options=cycle_search)
             from cpu_llm.response_policy import classify_response_request
             result['response_plan'] = classify_response_request(content if prefix is None else message)
             result['response_plan']['document'] = document_plan
@@ -642,9 +651,6 @@ class Appliance:
                 result['document']['retrieval'] = dict(strategy='bounded_authorized_time_valid_snapshot',
                     deep_search_requested=deep or document_plan.get('deep_requested',False), graph_expansion=False,
                     note='All scoped chunks are scanned up to the declared cap; topical quotes are selected without top-k or relation inference.')
-            if not enabled and style is not None:
-                from cpu_llm.stylistic import apply_style
-                result = apply_style(result, style)
             if tone_control['tone'] is not None:
                 result['tone_request'] = dict(tone_control, effective_tone=style if isinstance(style,str) else getattr(style,'tone',None), disabled_by_strict=enabled)
             return result

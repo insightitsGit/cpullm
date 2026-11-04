@@ -160,7 +160,65 @@ A similarity score or connection is not factual proof. Strict requests and docum
 workflows can bypass the ordinary graph; not every request runs every node.
 See the [architecture](docs/current-design.md) and [prompt-to-node mapping](docs/prompt-flag-map.md).
 
-## Quickstart and reproduction
+## New source features: prompts, research and relationship loops
+
+The features below are in the current Git source, **not the published 1.11.2
+wheel**. To use them, install a checkout and complete the database/encoder setup:
+
+```shell
+git clone https://github.com/insightitsGit/cpullm.git
+cd cpullm
+python -m pip install -e .
+```
+
+- **Research planning:** `Write a detailed article about Helios.` or
+  `Draft a concise email to Alex about Helios.` automatically creates an
+  inspectable `research_plan`. Named topics and one layer of explicit relations
+  select evidence from one authorized snapshot.
+- **Long responses:** `Write an article about Helios in 1000 words.` uses a
+  source-body word target; `Write a report about Helios in 60 items.` can select
+  60 separate source items. Evidence shortage is reported, never padded.
+- **Loop exploration:** `Show relationship loops for Alpha.` or
+  `Explore cycles through Alpha.` activates bounded multi-cycle search.
+- **Loops inside a document:** `Write a detailed report about Alpha, including
+  relationship loops through Alpha.` consumes the discovered paths in a
+  Relationship loops section, using the same snapshot as the report.
+- **Tone:** append `in a friendly tone` for the supported tone stage. Ordinary
+  documents already use neutral inverse-verified composition. Path sentences
+  preserve their source clauses and are not rewritten by tone.
+
+Inside an existing appliance (use the main guard on Windows), a minimal fixture:
+
+```python
+app.ingest(SourceDocument("loop-example", (
+    "Alpha causes Beta.",
+    "Beta causes Gamma.",
+    "Gamma causes Alpha.",
+)))
+result = app.ask("Show relationship loops for Alpha.")
+print(result["reply"]["text"])
+```
+
+Supported output includes:
+
+```text
+The source records describe a closed lexical path: Alpha causes Beta; Beta causes Gamma; Gamma causes Alpha.
+```
+
+Each clause keeps its source proof, direction and six-channel receipt. This
+does **not** infer the shortcut “Alpha causes Gamma” or resolve word senses.
+Quoted/negative/background instructions do not activate loop search. General
+articles do not automatically activate it either.
+
+Python and HTTP `/v1/ask` can instead supply
+`cycle_search={"seed": "Alpha", "limits": {"max_rounds": 1000}}`.
+Explicit API options override the prompt seed. Default maximum rounds: 1,000;
+absolute configurable ceiling: 100,000, with additional time/memory/edge limits.
+Strict API/header/operator mode disables cycle exploration and prose rewriting.
+Check `cycle_composition`, `cycle_exploration`, `answer_evidence` and coverage for
+omitted paths or incomplete searches. [Full trigger and budget guide](docs/research-cycle-user-guide.md).
+
+## Quickstart and reproduction: published package
 
 Python 3.11+ is required. Release checks used Windows/Python 3.12.10.
 

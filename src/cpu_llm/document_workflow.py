@@ -399,16 +399,22 @@ def _render_email(document):
     return '\n\n'.join(_md(p) for p in [subject,greeting,*paragraphs,'Regards,'])
 
 
-def execute_document(app, message, plan, *, caller=None, as_of=None, strict=False):
+def execute_document(app, message, plan, *, caller=None, as_of=None, strict=False, style=None, cycle_options=None):
     from cpu_llm.pipeline import _caller_for
     from cpu_llm.access import source_allowed
     import psycopg
     context = _caller_for(app, caller)
     allowed = None if context is None else context.allowed_sources
-    decision = app.guard.check(message).decision
+    if cycle_options is not None:
+        from cpu_llm.cycle_exploration import validate_cycle_options
+        cycle_seed,cycle_limits=validate_cycle_options(cycle_options)
+    decision = app.guard.check(message+('\n'+cycle_seed if cycle_options is not None else '')).decision
     if decision != 'allow':
         return dict(answer_status='blocked', status='blocked', guard_decision=decision,
             answer=None,audit_passed=False,answer_evidence=[],reply=dict(text='Request blocked.'))
+    if strict and cycle_options is not None:
+        return dict(answer_status='unsupported',status='unsupported',answer=None,audit_passed=False,
+                    answer_evidence=[],reply=dict(text='Cycle exploration is disabled in strict evidence mode.'))
     if strict and plan['genre'] not in {'article', 'report', 'design', 'overview'}:
         return dict(answer_status='unsupported', status='unsupported', answer=None,
             audit_passed=False, answer_evidence=[], reply=dict(text='This document genre is not supported in strict mode.'))
@@ -430,6 +436,7 @@ def execute_document(app, message, plan, *, caller=None, as_of=None, strict=Fals
     if any(not source_allowed(r['document_id'], allowed) for r in rows):
         raise RuntimeError('document source scope violation')
     scanned_chunks = len(rows)
+    snapshot_rows=rows
     if research is not None:
         from cpu_llm.research_plan import select_research_rows
         rows = select_research_rows(research, rows)
@@ -462,4 +469,16 @@ def execute_document(app, message, plan, *, caller=None, as_of=None, strict=Fals
         result['rendered_response']['text']=text
         from cpu_llm.stylistic.document import compose_verified_document
         result=compose_verified_document(result)
+    if not strict and style is not None:
+        from cpu_llm.stylistic import apply_style
+        result=apply_style(result,style)
+    if cycle_options is not None:
+        from cpu_llm.cycle_exploration import explore_snapshot
+        from cpu_llm.cycle_composition import compose_cycles,attach_document_cycles
+        search=explore_snapshot(cycle_seed,snapshot_rows,limits=cycle_limits,allowed=allowed,
+            tenant_id=app.tenant_id,snapshot=dict(as_of=when))
+        remaining_chars=max(0,200000-sum(len(p['quote']) for p in result['answer_evidence']))
+        remaining_edges=max(0,MAX_DOCUMENT_UNITS-len(result['answer_evidence']))
+        composition=compose_cycles(search,snapshot_rows,char_budget=min(100000,remaining_chars),edge_budget=remaining_edges)
+        result=attach_document_cycles(result,search,composition)
     return result

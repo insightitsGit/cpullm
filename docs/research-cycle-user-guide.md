@@ -1,6 +1,7 @@
 # Research planning and cycle exploration: source-branch guide
 
-These features are implemented on `codex/research-cycle-nodes`, after 1.11.2.
+These features are available in the current Git source after 1.11.2.
+They were developed on `codex/research-cycle-nodes` and integrated into main.
 They are not in the published 1.11.2 package. No release has been built here.
 
 ## Short writing requests
@@ -57,6 +58,19 @@ document genres/selection and does not run the new research planner.
 
 Opt in explicitly; response length or an article prompt does not activate this:
 
+Natural-language triggers are available through Python and HTTP text:
+
+```python
+result = app.ask('Show relationship loops for Alpha.')
+report = app.ask('Write a detailed report about Alpha, including relationship loops through Alpha.')
+```
+
+Whole requests beginning show/find/explore/explain/describe plus loops/cycles and
+for/through/around/involving are recognized. A document can end with “including
+relationship loops through Alpha”. Quoted, negative and background uses are not
+controls. Multi-topic documents should explicitly name the starting label.
+The existing API options remain available and take precedence:
+
 ```python
 result = app.ask(
     'Explore the documented relationship loops through Alpha.',
@@ -75,6 +89,27 @@ for cycle in search['cycles']:
 schema for exact fields and ceilings. This path runs outside the ordinary graph.
 Strict API/header/operator enable wins: cycle exploration returns `unsupported`
 before retrieving evidence. Guard and caller/source scope still apply.
+
+Loop data is consumed in independently verified sentences. For example:
+
+```text
+The source records describe a closed lexical path: Alpha causes Beta; Beta causes Gamma; Gamma causes Alpha.
+```
+
+The verifier parses the ordered clauses, re-extracts the directed source claims
+and checks source spans/hashes and path closure. It rejects omitted intermediate
+edges, reversed relations, changed values and altered proofs. Unsupported sentence
+punctuation uses attributed literal fallback only after source/path validation.
+Independent duplicate proofs remain available. All six channel receipts accompany
+each composed path; unknown vector channels do not become positive votes.
+
+Document loop mode shares the document's single authorized/as-of snapshot, then
+attaches verified path prose after neutral/explicit tone composition. Path clauses
+cannot be casually shortened into an unproven shortcut. The parent evidence set
+includes cycle proofs, and canonical quotation text retains their source wording.
+Whole cycles exceeding the remaining response budget are explicitly reported as
+omitted; raw bounded search metadata remains inspectable. No-cycle and incomplete
+search outcomes do not erase independently supported document facts.
 
 The graph is reconstructed only from the authorized/time-valid source snapshot,
 not the unversioned persistent companion graph. This avoids changing its existing
@@ -125,3 +160,6 @@ adaptive multi-pass research remain separate follow-up stages. The initial nodes
 do not advertise those proposed capabilities as implemented.
 
 [Actual long-response and corrected email examples](examples/2026-11-04-long-document-fix/README.md).
+
+[Actual cycle sentences inside responses and reports](examples/2026-11-04-cycle-consumption/README.md).
+[Cycle consumption and verification contract](cycle-consumption-spec.md).

@@ -44,6 +44,18 @@
                     "strict_evidence": true,
                     "small_talk": false
                   }
+                },
+                "cyclePrompt": {
+                  "summary": "Natural-language cycle trigger",
+                  "value": {
+                    "message": "Show relationship loops for Alpha."
+                  }
+                },
+                "documentCycles": {
+                  "summary": "Research report consuming cycle evidence from the same snapshot",
+                  "value": {
+                    "message": "Write a detailed report about Alpha, including relationship loops through Alpha."
+                  }
                 }
               }
             }
@@ -497,7 +509,7 @@
                 }
               }
             },
-            "description": "Explicit opt-in to bounded source-backed lexical cycle discovery. Disabled in strict mode; not a new inference or identity proof."
+            "description": "Explicit bounded lexical cycle discovery with verified path sentence composition; standalone or inside a document. API options override prompt seed. Strict mode disables cycles; no shortcut inference."
           }
         },
         "description": "Supported request fields. Unknown keys are ignored, including style; pass tone in message text. Current runtime coerces message to a string and enforces strict_evidence/small_talk boolean types; this schema describes recommended client types, not a claim of universal runtime schema enforcement."

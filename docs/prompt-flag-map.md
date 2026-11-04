@@ -71,8 +71,10 @@ document requests and recalls one explicit relation layer from the same bounded
 authorized snapshot. It never infers class inheritance or causal conclusions.
 Strict documents preserve their existing selection path.
 
-`request.cycle_search` is an explicit Python/HTTP object with a seed and optional
-limits. It runs cycle_snapshot -> cycle_explore -> cycle_evidence outside the
-ordinary graph. It is disabled by a strict request/operator floor. See
+`request.cycle_search` is an explicit loop prompt or Python/HTTP object with a
+seed and optional limits. It runs cycle_snapshot -> cycle_explore -> cycle_compose
+-> cycle_verify outside the ordinary graph. It composes source clauses in path
+order and preserves all six channel receipts; document requests share the same
+authorized snapshot. It is disabled by a strict request/operator floor. See
 [usage and limits](research-cycle-user-guide.md). New flags do not change the
 number of ordinary graph nodes.

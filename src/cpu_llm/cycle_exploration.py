@@ -224,15 +224,7 @@ def execute_cycle_request(app, message, options, *, caller=None, as_of=None, str
     """Explicit Python/HTTP opt-in; strict answers never acquire cycle inference."""
     from cpu_llm.pipeline import _caller_for
     import psycopg
-    if not isinstance(options, dict) or set(options) - {'seed', 'limits'}:
-        raise ValueError('cycle_search requires seed and optional limits')
-    seed = options.get('seed')
-    if not isinstance(seed, str) or not seed.strip() or len(seed) > 240:
-        raise ValueError('cycle_search.seed must be a named entity label (1..240 characters)')
-    limit_options = options.get('limits', {})
-    if not isinstance(limit_options, dict) or set(limit_options) - set(CycleLimits.__dataclass_fields__):
-        raise ValueError('unknown cycle search limit')
-    limits = CycleLimits(**limit_options)
+    seed,limits=validate_cycle_options(options)
     context = _caller_for(app, caller)
     def refusal(status, text):
         return dict(answer_status=status, status=status, answer=None, audit_passed=False,
@@ -252,30 +244,34 @@ def execute_cycle_request(app, message, options, *, caller=None, as_of=None, str
         return refusal('insufficient_evidence', 'Cycle source snapshot is unavailable.')
     result = explore_snapshot(seed, rows, limits=limits, allowed=allowed,
                              tenant_id=app.tenant_id, snapshot=dict(as_of=when))
-    evidence, seen = [], set()
-    for cycle in result['cycles']:
-        for edge in cycle['edges']:
-            for proof in [edge.get('proof'), *edge.get('additional_proofs', [])]:
-                identity = None if proof is None else (proof['document_id'], proof['start'], proof['end'])
-                if proof and identity not in seen:
-                    seen.add(identity); evidence.append(proof)
-    # Presentation stays literal and bounded. Paths are inspectable in metadata.
-    lines = ['Source-backed lexical cycles; no new inferred facts or resolved word senses.']
-    rendered = []
-    chars = 0
-    for proof in evidence:
-        if chars + len(proof['quote']) > 100000:
-            break
-        rendered.append(proof)
-        lines.append('[' + proof['document_id'] + '] ' + proof['quote'])
-        chars += len(proof['quote'])
+    from .cycle_composition import compose_cycles
+    composition=compose_cycles(result,rows)
+    evidence=composition['evidence']
+    lines=['Source-backed lexical cycles; no new inferred facts or resolved word senses.']
+    lines.extend(s['text']+'\nSources: '+', '.join(s['source_ids']) for s in composition['sentences'])
     if not evidence:
-        lines.append('No qualifying cycle found within the authorized snapshot and search limits.')
+        lines.append('Discovered cycles could not be included within validation or presentation limits.' if result['cycles'] else
+                     'No qualifying cycle found within the authorized snapshot and search limits.')
     if not result['complete']:
-        lines.append('Search incomplete: ' + result['stop_reason'] + '.')
-    result['presentation_truncated'] = len(rendered) != len(evidence)
+        lines.append('Search incomplete: '+result['stop_reason']+'.')
+    if composition['omitted_cycles']:
+        lines.append(str(composition['omitted_cycles'])+' cycles omitted by validation or presentation limits.')
+    result['presentation_truncated']=composition['presentation_truncated']
     return dict(answer_status='evidence_quote' if evidence else 'insufficient_evidence',
-                status='completed' if result['complete'] else 'partial',
-                answer=None, audit_passed=False, answer_evidence=rendered,
-                cycle_exploration=result, reply=dict(text='\n'.join(lines)), tenant_id=app.tenant_id,
-                routing=dict(post_stages=['cycle_snapshot', 'cycle_explore', 'cycle_evidence']))
+                status='completed' if result['complete'] and not composition['presentation_truncated'] else 'partial',
+                answer=None,audit_passed=False,answer_evidence=evidence,cycle_exploration=result,
+                cycle_composition=composition,reply=dict(text='\n'.join(lines)),tenant_id=app.tenant_id,
+                routing=dict(post_stages=['cycle_snapshot','cycle_explore','cycle_compose','cycle_verify']))
+
+
+def validate_cycle_options(options):
+    if not isinstance(options, dict) or set(options) - {'seed', 'limits'}:
+        raise ValueError('cycle_search requires seed and optional limits')
+    seed = options.get('seed')
+    if not isinstance(seed, str) or not seed.strip() or len(seed) > 240:
+        raise ValueError('cycle_search.seed must be a named entity label (1..240 characters)')
+    limit_options = options.get('limits', {})
+    if not isinstance(limit_options, dict) or set(limit_options) - set(CycleLimits.__dataclass_fields__):
+        raise ValueError('unknown cycle search limit')
+    limits = CycleLimits(**limit_options)
+    return seed,limits
