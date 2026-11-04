@@ -68,6 +68,13 @@ def build_research_plan(message, document_plan, *, strict=False):
                       origin='template_suggestion', required=False,
                       prerequisites=[FACETS[f][1]] if FACETS[f][1] else [],
                       status='pending', evidence_ids=[]) for i, f in enumerate(facets[:MAX_QUESTIONS])]
+    explicit_sections={s.casefold() for s in document_plan['sections']}
+    required_names={'mechanism':{'mechanism','mechanisms','how it works'},
+                    'cause':{'reasons','causes','why'},
+                    'relationships':{'relationships','connections'},
+                    'validation':{'validation'}}
+    for q in questions:
+        q['required']=bool(required_names.get(q['facet'],set()) & explicit_sections)
     clarifications = []
     if re.fullmatch(r'(?:it|this|that|them|this document|that document)', topic, re.I):
         clarifications.append('Which named subject or document should this request cover?')
@@ -134,5 +141,6 @@ def select_research_rows(plan, rows):
         if q['prerequisites'] and not any(other['facet'] in q['prerequisites'] and other['evidence_ids'] for other in plan['questions']):
             q.update(status='prerequisite_missing', evidence_ids=[])
     plan['coverage'] = dict(selected_chunks=len(selected), question_answers_verified=False,
-                            missing_facets=[q['facet'] for q in plan['questions'] if not q['evidence_ids']])
+                            missing_facets=[q['facet'] for q in plan['questions'] if not q['evidence_ids']],
+                            required_missing_facets=[q['facet'] for q in plan['questions'] if q['required'] and not q['evidence_ids']])
     return selected

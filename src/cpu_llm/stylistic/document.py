@@ -43,13 +43,19 @@ def _generate(state):
     friendly=state['friendly']
     for group in state['groups']:
         claims=group['claims'];sentences=[]
-        for start in range(0,len(claims),state['spec'].clauses_per_sentence):
-            batch=claims[start:start+state['spec'].clauses_per_sentence]
+        start=0;previous_subject=None
+        while start<len(claims):
+            end=start+1
+            while end<len(claims) and end-start<state.get('clauses_per_sentence',state['spec'].clauses_per_sentence) and claims[end].subject==claims[start].subject:
+                end+=1
+            batch=claims[start:end]
             predicates=[("doesn't "+c.predicate[len('does not '):])
                 if friendly and c.predicate.startswith('does not ') else c.predicate for c in batch]
-            subject='It' if friendly and state['allow_pronoun'] and start else batch[0].subject
+            pronoun_ok=batch[0].subject in state.get('pronoun_subjects',())
+            subject='It' if friendly and pronoun_ok and previous_subject==batch[0].subject else batch[0].subject
             text=subject+' '+' and '.join(predicates)+'.'
             sentences.append(dict(text=text,claims=[asdict(c) for c in batch],construction=state['construction']))
+            previous_subject=batch[0].subject;start=end
         items.append(dict(title=group['title'],sentences=sentences,quotes=group['quotes']))
     return dict(candidate=items,executed_nodes=['stylistic'])
 
@@ -81,11 +87,12 @@ def _verify(state):
         for sentence in actual['sentences']:
             if sentence['construction']!=state['construction']:errors.append('construction_changed')
             claims=[Claim(**c) for c in sentence['claims']]
-            errors.extend(verify_sentence(sentence['text'],claims,antecedent=antecedent,friendly=state['friendly'],allow_pronoun=state['allow_pronoun']))
+            errors.extend(verify_sentence(sentence['text'],claims,antecedent=antecedent,friendly=state['friendly'],
+                allow_pronoun=bool(claims) and claims[0].subject in state.get('pronoun_subjects',())))
             recovered.extend(claims);count+=1
             antecedent=claims[0].subject if claims else None
         if recovered!=expected['claims']:errors.append('claim_coverage_changed')
-    if count+sum(len(g['quotes']) for g in state['groups'])>state['spec'].max_sentences:errors.append('budget_cannot_preserve_all_claims')
+    if count+sum(len(g['quotes']) for g in state['groups'])>state.get('sentence_budget',state['spec'].max_sentences):errors.append('budget_cannot_preserve_all_claims')
     return dict(errors=list(dict.fromkeys(errors)),executed_nodes=['stylistic','style_verify'])
 
 @lru_cache(maxsize=1)
@@ -120,7 +127,8 @@ def apply_document_style(result,profile):
             if (evidence.get(quote['document_id'])!=quote or quote.get('start')!=0 or quote.get('end')!=len(quote['quote'])
                 or quote['chunk_sha256']!=hashlib.sha256(quote['quote'].encode()).hexdigest()):
                 output['stylistic']=dict(meta,status='rejected',reason='document_proof_mismatch');return output
-            claim=claim_from(quote,document['plan']['topic'])
+            topics=re.split(r'\s+and\s+', document['plan']['topic'], flags=re.I)
+            claim=next((c for topic in topics if (c:=claim_from(quote,topic)) is not None),None)
             if claim is None:quotes.append(quote)
             else:claims.append(claim)
         groups.append(dict(title=section['title'],claims=claims,quotes=quotes))
@@ -135,7 +143,17 @@ def apply_document_style(result,profile):
     identities=[c.predicate for g in groups for c in g['claims'] if c.predicate.startswith('is a')]
     nonhuman=re.compile(r'is an? (?:backup service|service|system|library|application|tool|device|product|process|database|server|program|platform)')
     allow_pronoun=bool(identities) and all(nonhuman.fullmatch(p) for p in identities)
-    state=_graph().invoke(dict(groups=groups,spec=spec,friendly=friendly,allow_pronoun=allow_pronoun,construction=construction))
+    pronoun_subjects=set()
+    for subject in {c.subject for g in groups for c in g['claims']}:
+        identity=[c.predicate for g in groups for c in g['claims'] if c.subject==subject and c.predicate.startswith('is a')]
+        if identity and all(nonhuman.fullmatch(p) for p in identity):
+            pronoun_subjects.add(subject)
+    sentence_budget=min(500,document['plan']['unit_budget']) if isinstance(profile,str) else spec.max_sentences
+    requested=document['plan']['requested_limits']
+    clauses=1 if any(k in requested for k in ('units','items','sentences')) else spec.clauses_per_sentence
+    state=_graph().invoke(dict(groups=groups,spec=spec,friendly=friendly,allow_pronoun=allow_pronoun,
+        construction=construction,sentence_budget=sentence_budget,pronoun_subjects=pronoun_subjects,
+        clauses_per_sentence=clauses))
     if state.get('__partial__') or state.get('__node_error__') or 'errors' not in state or state['errors']:
         output['stylistic']=dict(meta,status='rejected',reason='document_style_verification_failed',reasons=state.get('errors',[]));return output
     for section,candidate in zip(document['sections'],state['candidate']):
@@ -144,7 +162,7 @@ def apply_document_style(result,profile):
         section['literal_quotes']=candidate['quotes']
     document['presentation']='verified_prose_with_literal_fallback'
     document['tone_alignment']='supported' if affinity else 'neutral_fallback'
-    canonical=output['reply']['text'];text=render_document(document)
+    canonical=output.get('rendered_response',{}).get('canonical_text',output['reply']['text']);text=render_document(document)
     output['reply'].update(text=text,body=text)
     output['rendered_response'].update(text=text,canonical_text=canonical,verification='inverse-verified predicate composition plus attributed literal quotes')
     claim_count=sum(len(g['claims']) for g in groups)
@@ -156,7 +174,25 @@ def apply_document_style(result,profile):
             retained_literal_quotes=sum(len(g['quotes']) for g in groups)),proof=deepcopy(output['answer_evidence']))
     output['judgment']['verification']='source_quotes_and_inverse_verified_document_constructions'
     document['coverage']['rendered_word_count']=len(text.split())
+    from cpu_llm.document_workflow import update_length_coverage
+    update_length_coverage(document)
     limit=document['plan']['requested_limits'].get('words')
-    document['coverage']['requested_budget_exceeded']=limit is not None and len(text.split())>limit
+    document['coverage']['requested_budget_exceeded']=limit is not None and document['coverage']['body_word_count']>limit
+    if document['coverage']['length_required'] and not document['coverage']['length_target_met']:
+        output['judgment']['complete']=False
+        if output['answer_status']=='evidence_quote':
+            output['answer_status']=output['status']=output['judgment']['outcome']='partial'
     output.setdefault('routing',{}).setdefault('post_stages',[]).extend(['stylistic','style_verify','document_render'])
+    return output
+
+
+def compose_verified_document(result):
+    """Neutral document composition, separate from an explicit tone request."""
+    output=apply_document_style(result,'formal')
+    meta=output.pop('stylistic',{})
+    output['document_composition']=meta
+    output['document_composition']['trigger']='ordinary_document_composition'
+    stages=output.setdefault('routing',{}).setdefault('post_stages',[])
+    output['routing']['post_stages']=[s for s in stages if s not in {'stylistic','style_verify'}]
+    output['routing']['post_stages'].extend(['document_compose','document_inverse_verify'])
     return output

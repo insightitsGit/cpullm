@@ -24,8 +24,8 @@ distinction between lexical candidates and semantic identity validation.
 The full proposal includes features beyond this initial implementation:
 canonical sense IDs and cross-store migration; checkpoint/resume; calibrated
 vector-based prioritization; adaptive multi-pass research with a request-wide
-persisted budget; broader clarification/constraint/genre grammars and email-native
-presentation. Those are not claimed complete. Current bounded snapshot execution
+persisted budget; broader clarification/constraint/genre grammars. Email-native presentation
+and longer bounded composition are implemented in the follow-up below. Those are not claimed complete. Current bounded snapshot execution
 avoids cross-store migration and hidden child retries rather than pretending
 these contracts already exist.
 
@@ -60,3 +60,28 @@ attributed records. Example output is in build/research-cycle-examples.json.
 After the full run, a snapshot-count metadata correction was verified with the
 125-test targeted set (4.26 seconds); research selection and strict behavior
 remain covered. No broad rerun was required for that reporting-only correction.
+
+## Long-document correction follow-up
+
+See [the long-document composition contract](long-document-composition-spec.md).
+The 20-record document bottleneck is replaced with word-based atomic pagination,
+up to 500 explicit source items, ordinary neutral inverse-verified composition,
+research-aware required coverage, and native email/letter draft layouts. Strict
+mode retains quotation-only composition. Explicit StyleOptions budgets still
+reject rather than drop claims. Per-subject pronoun checks were strengthened.
+
+The focused document/research/flag/response regression set passes 136 tests.
+Actual Appliance runs on the isolated database produced a 1,013-body-word article
+from 66 selected records, 60 individually presented source items, and a concise
+21-body-word email containing all four authorized facts without pagination.
+The retention dataset deliberately repeats a structure with distinct generation
+numbers to test selection; this does not establish editorial quality.
+
+Full-suite receipt: build/long-document-tests.xml and .log. Actual live responses:
+build/long-document-live-examples.json. Complete example transcripts are linked
+from the user guide. No new package or PyPI upload is part of this correction.
+
+Final follow-up default suite: **967 passed, 56 skipped, 3 existing xfailed**,
+six existing NumPy warnings, 107.66 seconds. The 54 opt-in integration cases
+remain disabled and two optional extractor checkpoints remain unavailable.
+This is not a full-live or independent benchmark. Final focused set: 136 passed.

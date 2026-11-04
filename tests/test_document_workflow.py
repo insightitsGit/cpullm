@@ -46,7 +46,7 @@ def test_long_explanation_uses_technical_quotes_not_lossy_proposition_subset():
 
 def test_long_overview_caps_requests_and_keeps_continuation_genre_and_outline():
     plan=plan_long_overview('Explain Helios in 1000 sentences as bullet points.')
-    assert plan['unit_budget']==20
+    assert plan['unit_budget']==500
     plan['unit_budget']=2
     r=compose_document(plan,rows(),snapshot={'as_of':123})
     follow=plan_document(r['document']['coverage']['continuation_prompt'])

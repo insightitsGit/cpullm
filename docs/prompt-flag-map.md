@@ -59,6 +59,13 @@ evidence quotations, exact arithmetic, or abstention. Enable wins; see the
 
 ## Research planning and explicit cycle exploration (unreleased)
 
+Ordinary document requests additionally activate `document_compose` and
+`document_inverse_verify` for neutral, source-bound predicate composition.
+This does not infer a tone request. Explicit `request.style` remains separate;
+strict documents bypass both construction paths. Document ceilings are 500
+atomic records and 20,000 effective body words; normal short-answer ceilings
+remain unchanged. See [the composition contract](long-document-composition-spec.md).
+
 `request.document.research_plan` activates curated research questions for ordinary
 document requests and recalls one explicit relation layer from the same bounded
 authorized snapshot. It never infers class inheritance or causal conclusions.

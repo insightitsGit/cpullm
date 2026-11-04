@@ -28,6 +28,13 @@ It does not require all topic names to occur in a single chunk. A related class
 quotation is not rewritten into a property of an individual. The plan's question
 coverage says `candidate_evidence`, not that a verified answer was found.
 
+Long-response fixes now use word-based page selection and neutral inverse-verified
+predicate composition for ordinary documents. “1,000 words” is not reduced to 20
+records; explicit item counts can select up to 500 records. Email/letter defaults
+use a draft layout. See [length and composition details](long-document-composition-spec.md).
+Body words exclude headings and citations. Evidence shortage is reported rather
+than filled with unsupported content.
+
 Cause questions are only added for explicit why/cause/reason wording; recognized
 negative directives suppress them. This is a curated phrase/template system,
 not an unrestricted prompt interpreter. Unknown constraints remain in the original
@@ -42,7 +49,7 @@ assert result['research_plan']['recipient'] == 'Alex'
 assert result['research_plan']['sending_authorized'] is False
 ```
 
-These are evidence-organized drafts; they do not invent a sender, commitment,
+These are source-backed drafts; they do not invent a sender, commitment,
 approval or deadline. No email is sent. Strict mode retains its original
 document genres/selection and does not run the new research planner.
 
@@ -116,3 +123,5 @@ Persistent canonical entity/sense migration, calibrated vector-assisted ordering
 checkpoint/resume with revocation, broad syntax/constraint interpretation and
 adaptive multi-pass research remain separate follow-up stages. The initial nodes
 do not advertise those proposed capabilities as implemented.
+
+[Actual long-response and corrected email examples](examples/2026-11-04-long-document-fix/README.md).

@@ -10,6 +10,8 @@ import html
 import re
 
 SCHEMA = 'document-plan-v1'
+MAX_DOCUMENT_UNITS = 500
+MAX_DOCUMENT_WORDS = 20000
 _REQUEST = re.compile(
     r'^(?:please\s+)?(?:(?:can|could|would) you\s+)?'
     r'(?:write|draft|compose|create|prepare|produce|give(?: me)?|provide(?: me)?)\s+'
@@ -23,6 +25,9 @@ _SECTIONS = {
     'design': ('Overview', 'Requirements', 'Architecture', 'Interfaces', 'Operations', 'Limitations', 'Validation'),
 }
 _CUES = {
+    'Mechanism': r'\b(?:by|through|using|process|steps)\b',
+    'Relationships': r'\b(?:uses|has|requires|depends on|is a|causes)\b',
+    'Reasons': r'\b(?:because|causes|due to)\b',
     'Requirements': r'\b(?:requires?|must|shall|approval|requirements?)\b',
     'Architecture': r'\b(?:database|postgresql|storage|components?|architecture|uses?|stores?)\b',
     'Interfaces': r'\b(?:api|endpoint|interface|protocol|http|request|response)\b',
@@ -91,12 +96,14 @@ def plan_document(message):
     if not topic or len(topic) > 240 or re.search(r'[\n?;]|\b(?:and then|also write)\b', topic, re.I):
         return None
     depth = (match['depth'] or '').lower()
-    budget = 3 if depth in {'brief', 'short', 'concise'} else 16 if depth else 8
-    if 'units' in limits: budget = min(20, max(1, limits['units']))
-    if 'words' in limits: budget = min(20, max(1, (limits['words'] + 19) // 20))
+    brief = depth in {'brief', 'short', 'concise'}
+    word_target = min(MAX_DOCUMENT_WORDS, max(1, limits.get('words',
+        120 if brief else 1000 if depth else 400)))
+    budget = min(MAX_DOCUMENT_UNITS, max(1, limits.get('units', MAX_DOCUMENT_UNITS)))
+    if 'units' in limits: word_target = None
     return dict(schema=SCHEMA, genre=genre, topic=topic, sections=list(dict.fromkeys(['Overview', *(requested_sections or _SECTIONS[genre][1:])])),
         detail='brief' if depth in {'brief', 'short', 'concise'} else 'detailed', recipient=recipient,
-        unit_budget=budget, requested_limits=limits, page=max(1, min(page, 10000)),
+        unit_budget=budget, word_target=word_target, requested_limits=limits, page=max(1, min(page, 10000)),
         format=layout['format'] or 'report', output_media=layout['output_media'],
         retrieval_budget=40, source_scan_limit=10000, text_scan_limit=8_000_000, snapshot_as_of=snapshot_as_of,
         composition='attributed_source_quotes', proposed_decisions=False, deep_requested=deep_requested)
@@ -117,11 +124,18 @@ def plan_long_overview(message):
     plan=plan_document('Write a detailed article about '+match[1]+'.')
     if plan is None:return None
     plan.update(genre='overview', sections=list(_SECTIONS['overview']),
-        unit_budget=response['item_budget'] if response['format'] in {'bullets','numbered'} else response['sentence_budget'],
+        unit_budget=MAX_DOCUMENT_UNITS,
         format=response['format'], output_media=response['output_media'])
     limits=response['requested_limits']
     if 'sentences' in limits:
-        plan['unit_budget']=min(20,max(1,limits['sentences']))
+        plan['unit_budget']=min(MAX_DOCUMENT_UNITS,max(1,limits['sentences']))
+        plan['word_target']=None
+    elif 'items' in limits:
+        plan['unit_budget']=min(MAX_DOCUMENT_UNITS,max(1,limits['items']))
+        plan['word_target']=None
+    elif 'words' in limits:
+        plan['unit_budget']=MAX_DOCUMENT_UNITS
+        plan['word_target']=min(MAX_DOCUMENT_WORDS,max(1,limits['words']))
     plan['requested_limits']=dict(limits)
     return plan
 
@@ -132,8 +146,56 @@ def _section(text, genre):
     available = _SECTIONS[genre]
     for name in order:
         if name in available and re.search(_CUES[name], text, re.I): return name
-    if genre in {'article','overview'} and not re.search(r'\bis (?:a|an)\b', text): return 'Details'
+    if 'Details' in available: return 'Details'
     return 'Overview'
+
+
+def _page_records(ordered, plan):
+    """Stable atomic pages, measured in source-body words rather than citations."""
+    target = plan.get('word_target')
+    cursor = 0
+    for page in range(1, plan['page'] + 1):
+        selected, words, chars = [], 0, 0
+        start = cursor
+        while cursor < len(ordered) and len(selected) < plan['unit_budget']:
+            row = ordered[cursor]
+            size = len(row['chunk_text'])
+            if size > 200000:
+                raise ValueError('document output exceeds atomic quotation text limit')
+            if selected and chars + size > 200000:
+                break
+            selected.append(row); cursor += 1
+            words += len(row['chunk_text'].split()); chars += size
+            if target is not None and words >= target:
+                break
+        if page == plan['page']:
+            return selected, start, cursor, words
+        if cursor == start:
+            break
+    return [], cursor, cursor, 0
+
+
+def update_length_coverage(document):
+    """Measure composed content separately from titles, citations and notices."""
+    words = sum(len(p['text'].split()) for s in document['sections'] for p in s.get('prose', []))
+    words += sum(len(q['quote'].split()) for s in document['sections']
+                 for q in s.get('literal_quotes', s['quotes']))
+    c, plan = document['coverage'], document['plan']
+    target = plan.get('word_target')
+    c['body_word_count'] = words
+    c['effective_word_target'] = target
+    requested=plan['requested_limits']
+    desired_words=requested.get('words',target)
+    desired_units=requested.get('units',requested.get('sentences',requested.get('items',plan['unit_budget'])))
+    c['effective_target_met'] = words>=target if target is not None else c['included_chunks']>=plan['unit_budget']
+    c['length_target_met'] = words>=desired_words if desired_words is not None else c['included_chunks']>=desired_units
+    c['word_shortfall'] = max(0, desired_words - words) if desired_words is not None else 0
+    c['item_shortfall'] = max(0,desired_units-c['included_chunks']) if target is None else 0
+    c['requested_budget_clamped'] = (desired_words>target if target is not None else desired_units>plan['unit_budget'])
+    c['length_required']=bool(requested) or plan['detail']=='detailed'
+    c['length_stop_reason'] = ('target_met' if c['length_target_met'] else
+        'operator_limit' if c['requested_budget_clamped'] and c['effective_target_met'] else
+        'page_budget' if c['has_more'] else 'evidence_exhausted')
 
 
 def _md(value):
@@ -170,11 +232,12 @@ def compose_document(plan, rows, *, strict=False, snapshot=None):
     while any(groups.values()):
         for section in plan['sections']:
             if groups[section]: ordered.append(groups[section].pop(0))
-    start = (plan['page'] - 1) * plan['unit_budget']
-    selected = ordered[start:start + plan['unit_budget']]
+    selected, start, end, _ = _page_records(ordered, plan)
     if sum(len(r['chunk_text']) for r in selected)>200_000:
         raise ValueError('document output exceeds atomic quotation text limit')
     sections = [dict(title=s, quotes=[], status='missing') for s in plan['sections']]
+    for section in sections:
+        section['status'] = 'omitted' if any(r['section']==section['title'] for r in candidates) else 'missing'
     evidence = []
     for row in selected:
         text = row['chunk_text']
@@ -190,26 +253,30 @@ def compose_document(plan, rows, *, strict=False, snapshot=None):
         key = (fact['entity'], fact['attribute'])
         values.setdefault(key, set()).add(value_key(fact['value']))
     conflicts = [dict(entity=k[0], attribute=k[1]) for k,v in values.items() if len(v)>1]
-    missing = [s['title'] for s in sections if not s['quotes']]
-    has_more = start + len(selected) < len(ordered)
+    missing = [s['title'] for s in sections if s['status']=='missing']
+    omitted = [s['title'] for s in sections if s['status']=='omitted']
+    has_more = end < len(ordered)
     status = 'insufficient_evidence' if not selected else 'partial' if missing or has_more or conflicts or plan['page']>1 else 'evidence_quote'
     coverage = dict(scope='lexical topic matches in bounded authorized snapshot; section labels are organizational',
-        source_truth_verified=False, section_coverage_complete=bool(selected) and not missing,
-        missing_sections=missing, matched_chunks=len(candidates), included_chunks=len(selected),
+        source_truth_verified=False, section_coverage_complete=bool(selected) and not missing and not omitted,
+        missing_sections=missing, omitted_sections=omitted, matched_chunks=len(candidates), included_chunks=len(selected),
         conflicts=conflicts, conflict_detection='recognized attribute forms only; arbitrary prose conflicts not resolved',
         has_more=has_more, next_page=plan['page']+1 if has_more else None,
         word_limit_enforced=False, sentence_limit_enforced=False,
         budget_scope='atomic source chunks; qualifiers and source text are never truncated',
         snapshot=snapshot)
     document = dict(schema='evidence-document-v1', plan=plan, sections=sections, coverage=coverage)
+    update_length_coverage(document)
+    if selected and coverage['length_required'] and not coverage['length_target_met']:
+        status='partial'
     text = render_document(document)
     coverage['rendered_word_count'] = len(text.split())
     coverage['requested_budget_exceeded'] = bool(plan['requested_limits'].get('words') is not None and
-        coverage['rendered_word_count'] > plan['requested_limits']['words'])
+        coverage['body_word_count'] > plan['requested_limits']['words'])
     return dict(answer=None, answer_status=status, status=status, audit_passed=False,
         answer_evidence=evidence, supporting_evidence=[], document=document,
         judgment=dict(schema='document-judgment-v1', outcome=status, verification='source_quote_provenance',
-            complete=not missing and not has_more and not conflicts and bool(selected)),
+            complete=not missing and not omitted and not has_more and not conflicts and bool(selected) and (coverage['length_target_met'] or not coverage['length_required'])),
         reply=dict(text=text, body=text, format=plan['format'], media_type=plan['output_media']),
         evidence_policy=dict(version='document-quotes-v1', enabled=strict, learned_generation=False,
             source_truth_verified=False, clinical_validation=False),
@@ -222,6 +289,8 @@ def compose_document(plan, rows, *, strict=False, snapshot=None):
 def render_document(document):
     """Render one evidence representation in all formats, without selecting new facts."""
     plan, sections = document['plan'], document['sections']
+    if plan['genre'] in {'email', 'letter'} and plan['format'] in {'report', 'prose'}:
+        return _render_email(document)
     styled=document.get('presentation')=='verified_prose_with_literal_fallback'
     note = ('Verified prose constructed from source claims; unrecognized records remain attributed quotations. '
             if styled else 'Source quotations; design decisions are not inferred. ')
@@ -230,7 +299,7 @@ def render_document(document):
     rows = [(s['title'], ('Source quotation: ' if styled else '')+q['quote'], q['document_id']) for s in sections for q in s.get('literal_quotes',s['quotes'])]
     if styled:
         rows += [(s['title'],'Derived prose: '+p['text'],', '.join(p['source_ids'])) for s in sections for p in s.get('prose',[])]
-    rows += [(s['title'], 'Not stated in the selected evidence.', '') for s in sections if not s['quotes']]
+    rows += [(s['title'], _section_gap(s), '') for s in sections if not s['quotes']]
     if plan['output_media'] == 'text/html':
         e = html.escape
         if plan['format'] == 'table':
@@ -243,7 +312,7 @@ def render_document(document):
             body=''.join(f'<section><h2>{e(s["title"])}</h2>'+(''.join(
                 f'<p>{e(p["text"])}</p><p>Sources: {e(", ".join(p["source_ids"]))}</p>' for p in s.get('prose',[]))+''.join(
                 f'<blockquote>{e(q["quote"])}</blockquote><p>Source: {e(q["document_id"])}</p>' for q in s.get('literal_quotes',s['quotes']))
-                or '<p>Not stated in the selected evidence.</p>')+'</section>' for s in sections)
+                or '<p>'+e(_section_gap(s))+'</p>')+'</section>' for s in sections)
         text=f'<article><h1>{e(title)}</h1><p>{e(note)}</p>{body}</article>'
     else:
         lines=['# '+_md(title), '', note, '']
@@ -258,12 +327,15 @@ def render_document(document):
                 lines.extend(['## '+section['title'], ''])
                 for p in section.get('prose',[]):lines.extend([_md(p['text']),'','Sources: '+', '.join(_md(i) for i in p['source_ids']),''])
                 for q in section.get('literal_quotes',section['quotes']):lines.extend(['> '+_md(q['quote']).replace('\n','\n> '), '', 'Source: '+_md(q['document_id']), ''])
-                if not section['quotes']: lines.extend(['Not stated in the selected evidence.',''])
+                if not section['quotes']: lines.extend([_section_gap(section),''])
         text='\n'.join(lines)
     if document['coverage']['has_more']:
         # Preserve the page size so continuation never skips or repeats records.
         outline=', '.join(plan['sections'])
-        next_prompt=f'Write a {plan["genre"] if plan["genre"]!="design" else "design document"} about {plan["topic"]} in {plan["unit_budget"]} items, including {outline}, page {plan["page"]+1}.'
+        target = plan.get('word_target')
+        size = f'{target} words' if target is not None and plan['unit_budget']==MAX_DOCUMENT_UNITS else f'{plan["unit_budget"]} items'
+        recipient = ' to '+plan['recipient'] if plan.get('recipient') else ''
+        next_prompt=f'Write a {plan["genre"] if plan["genre"]!="design" else "design document"}{recipient} about {plan["topic"]} in {size}, including {outline}, page {plan["page"]+1}.'
         stamp=(document['coverage'].get('snapshot') or {}).get('as_of')
         if stamp is not None: next_prompt=next_prompt.rstrip('.')+f', as of {stamp}.'
         layout={'report':'report','table':'table','bullets':'bullet points','numbered':'numbered list'}.get(plan['format'])
@@ -275,7 +347,56 @@ def render_document(document):
     if document['coverage']['conflicts']:
         warning='Recognized conflicting source attributes exist; no value was selected as authoritative.'
         text+=('<p>'+warning+'</p>' if plan['output_media']=='text/html' else '\n\n'+warning)
+    research_gaps = document['coverage'].get('research_required_missing_facets', [])
+    if research_gaps:
+        warning='Research evidence not found for: '+', '.join(research_gaps)+'. No explanation was invented.'
+        text+=('<p>'+html.escape(warning)+'</p>' if plan['output_media']=='text/html' else '\n\n'+warning)
+    if plan['requested_limits'].get('words') and not document['coverage']['length_target_met']:
+        warning=f"Requested length not reached: {document['coverage']['body_word_count']} source-backed body words; {document['coverage']['length_stop_reason']}. No padding was added."
+        text+=('<p>'+html.escape(warning)+'</p>' if plan['output_media']=='text/html' else '\n\n'+warning)
     return text
+
+
+def _section_gap(section):
+    return ('Evidence exists but was omitted from this page by the response budget.'
+            if section.get('status')=='omitted' else 'Not stated in the selected evidence.')
+
+
+def _render_email(document):
+    """Draft-only email presentation; sourced body, no invented sender or action."""
+    plan = document['plan']
+    paragraphs = []
+    sources = []
+    for section in document['sections']:
+        for p in section.get('prose', []):
+            paragraphs.append(p['text']+' ['+', '.join(p['source_ids'])+']')
+        for q in section.get('literal_quotes', section['quotes']):
+            paragraphs.append('Source quotation: '+q['quote']+' ['+q['document_id']+']')
+        sources.extend(q['document_id'] for q in section['quotes'])
+    if not paragraphs:
+        paragraphs=['No supported content was found for this draft.']
+    if document['coverage']['has_more']:
+        # Reuse the normal continuation generator with an isolated report view.
+        from copy import deepcopy
+        view = deepcopy(document); view['plan']['genre']='document'; view['plan']['recipient']=None
+        render_document(view)
+        follow=view['coverage']['continuation_prompt']
+        follow=follow.replace('Write a document about ', 'Write a '+plan['genre']+
+            (' to '+plan['recipient'] if plan.get('recipient') else '')+' about ',1)
+        document['coverage']['continuation_prompt']=follow
+        paragraphs.append('Additional evidence omitted by the requested response budget. Continue: '+follow)
+    gaps=document['coverage'].get('research_required_missing_facets', [])
+    if gaps:
+        paragraphs.append('Research evidence not found for: '+', '.join(gaps)+'.')
+    if document['coverage']['conflicts']:
+        paragraphs.append('Conflicting source attributes remain unresolved; no value was chosen.')
+    if plan['requested_limits'].get('words') and not document['coverage']['length_target_met']:
+        paragraphs.append(f"Requested length not reached: {document['coverage']['body_word_count']} source-backed body words; {document['coverage']['length_stop_reason']}. No padding was added.")
+    subject='Subject: '+plan['topic']
+    greeting='Hello'+(' '+plan['recipient'] if plan.get('recipient') else '')+','
+    if plan['output_media']=='text/html':
+        return '<article>'+''.join('<p>'+html.escape(p)+'</p>' for p in [subject,greeting,*paragraphs,'Regards,'])+'</article>'
+    return '\n\n'.join(_md(p) for p in [subject,greeting,*paragraphs,'Regards,'])
 
 
 def execute_document(app, message, plan, *, caller=None, as_of=None, strict=False):
@@ -327,4 +448,18 @@ def execute_document(app, message, plan, *, caller=None, as_of=None, strict=Fals
         result['research_plan']['snapshot'] = dict(as_of=when)
         result['research_plan']['budget'] = dict(snapshot_reads=1, replan_passes=0,
             source_scan_limit=plan['source_scan_limit'], text_scan_limit=plan['text_scan_limit'])
+        gaps=research['coverage']['missing_facets']
+        result['document']['coverage']['research_missing_facets']=gaps
+        result['document']['coverage']['research_coverage_complete']=not gaps
+        required_gaps=research['coverage']['required_missing_facets']
+        result['document']['coverage']['research_required_missing_facets']=required_gaps
+        if required_gaps:
+            result['judgment']['complete']=False
+            if result['answer_status']=='evidence_quote':
+                result['answer_status']=result['status']=result['judgment']['outcome']='partial'
+        text=render_document(result['document'])
+        result['reply'].update(text=text,body=text)
+        result['rendered_response']['text']=text
+        from cpu_llm.stylistic.document import compose_verified_document
+        result=compose_verified_document(result)
     return result

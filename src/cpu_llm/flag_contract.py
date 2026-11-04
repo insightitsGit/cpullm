@@ -74,6 +74,10 @@ FLAG_BINDINGS += (FlagBinding('request.document', 'explicit genre prompt or supp
     'Scoped bounded snapshot; sectioned exact quotations, coverage and continuation; shared Markdown/HTML layouts; strict forbids learned generation.',
     'Write a detailed design document about Helios.'),)
 FLAG_BINDINGS += (
+    FlagBinding('request.document.composition', 'ordinary document request; strict bypasses',
+        ('document_compose', 'document_inverse_verify'), 'document_workflow',
+        'Neutral supported predicate composition preserves proofs; explicit tone is a separate opt-in output stage.',
+        'Write a detailed article about Helios.'),
     FlagBinding('request.document.research_plan', 'supported ordinary document request',
         ('research_plan', 'document_snapshot', 'document_coverage'), 'document_workflow',
         'Curated evidence-seeking questions and one explicit relation layer from the same authorized snapshot; strict bypasses.',
@@ -124,7 +128,8 @@ def validate_graph_consumers(nodes):
     # These consumers execute outside the ordinary graph, before/after dispatch.
     external = {'render_response', 'strict_evidence.answer', 'conversation.reply', 'stylistic', 'style_verify',
                 'document_plan', 'document_snapshot', 'document_coverage', 'document_render',
-                'research_plan', 'cycle_snapshot', 'cycle_explore', 'cycle_evidence'}
+                'research_plan', 'cycle_snapshot', 'cycle_explore', 'cycle_evidence',
+                'document_compose', 'document_inverse_verify'}
     expected = {node for binding in FLAG_BINDINGS for node in binding.consumers} - external
     if missing := expected - set(nodes):
         raise ValueError('Flag consumers missing from graph: ' + ', '.join(sorted(missing)))
@@ -156,7 +161,8 @@ def enforce_response_flags(plan):
         raise ValueError('Long-response retrieval budget was not connected')
     if not flags['expand_retrieval'] and plan['retrieval_budget'] != 5:
         raise ValueError('Unexpected expanded retrieval without its flag')
-    for key, ceiling in [('sentence_budget', 20), ('item_budget', 20), ('retrieval_budget', 40)]:
+    document_ceiling = 500 if plan.get('mode')=='document' else 20
+    for key, ceiling in [('sentence_budget', document_ceiling), ('item_budget', document_ceiling), ('retrieval_budget', 40)]:
         if type(plan[key]) is not int or not 1 <= plan[key] <= ceiling:
             raise ValueError('Invalid bounded budget: ' + key)
 
