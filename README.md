@@ -2,7 +2,7 @@
 
 **Deterministic Document Checks, Financial Covenant Verification & Evidence-Preserving Retrieval on Commodity CPUs.**
 
-[![PyPI 1.11.1](https://img.shields.io/badge/PyPI-1.11.1-blue)](https://pypi.org/project/cpu-llm/1.11.1/)
+[![PyPI 1.11.2](https://img.shields.io/badge/PyPI-1.11.2-blue)](https://pypi.org/project/cpu-llm/1.11.2/)
 [![Code license Apache 2.0](https://img.shields.io/badge/Code-Apache_2.0-green)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue)](pyproject.toml)
 
@@ -17,7 +17,7 @@ quotations, executes recognized calculations or returns an explicit nonanswer.
 This is a bounded evidence contract: it does not establish that a source is true,
 that every question is understood, or that a deployment is compliant.
 
-**Published version: 1.11.1; next build: 1.11.2 (prepared for owner publication).** Use it instead of 1.11.0 for HTTP; it repairs a
+**Published version: 1.11.2.** Use it instead of 1.11.0 for HTTP; it repairs a
 cached-appliance SQLite thread-ownership defect. Author: **Amin Parva,
 Independent Engineer**.
 
@@ -165,7 +165,7 @@ See the [architecture](docs/current-design.md) and [prompt-to-node mapping](docs
 Python 3.11+ is required. Release checks used Windows/Python 3.12.10.
 
 ```shell
-python -m pip install --upgrade "cpu-llm==1.11.1"
+python -m pip install --upgrade "cpu-llm==1.11.2"
 python -m pip check
 ```
 
@@ -234,7 +234,7 @@ results, automatic legal compliance or a turnkey zero-trust enclave.
 
 ## Verification and deployment limits
 
-The prepared 1.11.2 source run reports **925 passed, 56 skipped, 3 expected
+The 1.11.2 source run reports **925 passed, 56 skipped, 3 expected
 failures**: 54 skips were disabled opt-in integration cases; two lacked optional
 extractor checkpoints. See the [1.11.2 build validation](docs/releases/1.11.2-build-validation.md). Separate installed-wheel checks covered strict/ordinary
 HTTP and the healthcare demo's 12/12 authored outcomes.
@@ -247,11 +247,10 @@ appliances on the serving thread. There is no built-in TLS or production gateway
 and long work blocks other requests. See [OpenAPI](docs/openapi.json) and the
 [consumer guide](docs/library-consumer-guide.md#authenticated-http-service).
 
-**Unreleased source changes:** learned writer fallback requires
+**Included in 1.11.2:** learned writer fallback requires
 `CPU_LLM_ALLOW_LEARNED_WRITER=1`; HTTP bodies are capped at 1 MiB with a 10-second
 socket inactivity timeout. Explicit child-safety controls warn that no pipeline
-gate is applied; the standalone gate remains unvalidated. These changes are not
-in published 1.11.1. See the [hardening specification](docs/audit-hardening-spec.md).
+gate is applied; the standalone gate remains unvalidated. These changes extend 1.11.1. See the [hardening specification](docs/audit-hardening-spec.md).
 
 Known limits include bounded English grammars, lexical topic matching, incomplete
 aliases/joins and conflict detection. Hashes prove consistency with stored text,
