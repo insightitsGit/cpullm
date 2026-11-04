@@ -32,7 +32,7 @@ an unrestricted conversational or clinical decision model.
 
 ## Install and prepare
 
-After this version has been published:
+Install the published release:
 
 ```shell
 python -m pip install "cpu-llm==1.11.1"
