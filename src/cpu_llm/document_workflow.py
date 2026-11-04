@@ -13,8 +13,8 @@ SCHEMA = 'document-plan-v1'
 _REQUEST = re.compile(
     r'^(?:please\s+)?(?:(?:can|could|would) you\s+)?'
     r'(?:write|draft|compose|create|prepare|produce|give(?: me)?|provide(?: me)?)\s+'
-    r'(?:an?\s+)?(?P<depth>detailed|comprehensive|thorough|full|long|brief|short)?\s*'
-    r'(?P<genre>design document|design doc|report|article|overview)\s+'
+    r'(?:an?\s+)?(?P<depth>detailed|comprehensive|thorough|full|long|brief|short|concise|in-depth)?\s*'
+    r'(?P<genre>design document|design doc|report|article|overview|document|email|letter|memo|proposal|specification|briefing|summary)\s+'
     r'(?:about|on|of|for)\s+(?P<topic>.+?)[.!?]*$', re.I)
 _SECTIONS = {
     'overview': ('Overview', 'Details', 'Limitations'),
@@ -30,6 +30,8 @@ _CUES = {
     'Limitations': r'\b(?:not|never|cannot|unsupported|limits?|risks?|failover|unless|except)\b',
     'Validation': r'\b(?:verif\w*|validat\w*|tests?|checksums?|checks?)\b',
 }
+for _genre in ('document', 'email', 'letter', 'memo', 'proposal', 'specification', 'briefing', 'summary'):
+    _SECTIONS[_genre] = ('Overview', 'Details', 'Limitations')
 
 
 def plan_document(message):
@@ -54,6 +56,12 @@ def plan_document(message):
     match = re.search(r'\s*[,;]\s*page\s+(\d{1,5})\s*[.!?]*$', text, re.I)
     if match:
         page = int(match[1]); text = text[:match.start()]
+    # Explicit recipient is a draft presentation field, never authority to send.
+    recipient = None
+    email = re.match(r'^(.*?\b(?:email|letter))\s+to\s+([\w @.\'-]{1,100})\s+about\s+(.+)$', text, re.I)
+    if email:
+        recipient = email[2].strip()
+        text = email[1] + ' about ' + email[3]
     match = _REQUEST.fullmatch(text)
     if not match:
         return None
@@ -83,11 +91,11 @@ def plan_document(message):
     if not topic or len(topic) > 240 or re.search(r'[\n?;]|\b(?:and then|also write)\b', topic, re.I):
         return None
     depth = (match['depth'] or '').lower()
-    budget = 3 if depth in {'brief', 'short'} else 16 if depth else 8
+    budget = 3 if depth in {'brief', 'short', 'concise'} else 16 if depth else 8
     if 'units' in limits: budget = min(20, max(1, limits['units']))
     if 'words' in limits: budget = min(20, max(1, (limits['words'] + 19) // 20))
     return dict(schema=SCHEMA, genre=genre, topic=topic, sections=list(dict.fromkeys(['Overview', *(requested_sections or _SECTIONS[genre][1:])])),
-        detail='brief' if depth in {'brief', 'short'} else 'detailed',
+        detail='brief' if depth in {'brief', 'short', 'concise'} else 'detailed', recipient=recipient,
         unit_budget=budget, requested_limits=limits, page=max(1, min(page, 10000)),
         format=layout['format'] or 'report', output_media=layout['output_media'],
         retrieval_budget=40, source_scan_limit=10000, text_scan_limit=8_000_000, snapshot_as_of=snapshot_as_of,
@@ -141,7 +149,11 @@ def compose_document(plan, rows, *, strict=False, snapshot=None):
     for row in rows:
         text = str(row.get('chunk_text') or '')
         # Topic-token coverage is an explicit lexical contract, not inferred membership.
-        if not wanted or not wanted.issubset(_words(text)) or not text.strip(): continue
+        match_sets = plan.get('research_topic_sets')
+        matched = (any(set(t).issubset(_words(text)) for t in match_sets if t)
+                   if match_sets else wanted and wanted.issubset(_words(text)))
+        matched = matched or row['document_id'] in plan.get('research_document_ids', ())
+        if not matched or not text.strip(): continue
         if text in seen: continue
         seen.add(text)
         section=_section(text, plan['genre'])
@@ -276,6 +288,17 @@ def execute_document(app, message, plan, *, caller=None, as_of=None, strict=Fals
     if decision != 'allow':
         return dict(answer_status='blocked', status='blocked', guard_decision=decision,
             answer=None,audit_passed=False,answer_evidence=[],reply=dict(text='Request blocked.'))
+    if strict and plan['genre'] not in {'article', 'report', 'design', 'overview'}:
+        return dict(answer_status='unsupported', status='unsupported', answer=None,
+            audit_passed=False, answer_evidence=[], reply=dict(text='This document genre is not supported in strict mode.'))
+    research = None
+    if not strict:
+        from cpu_llm.research_plan import build_research_plan
+        research = build_research_plan(message, plan)
+        if research['clarifications']:
+            return dict(answer_status='needs_clarification', status='needs_clarification',
+                needs_clarification=True, answer=None, audit_passed=False, answer_evidence=[],
+                research_plan=research, reply=dict(text=' '.join(research['clarifications'])))
     try:
         rows, when = app.index.strict_source_rows(allowed, as_of=as_of if as_of is not None else plan.get('snapshot_as_of'))
         if len(rows)>plan['source_scan_limit'] or sum(len(r['chunk_text']) for r in rows)>plan['text_scan_limit']:
@@ -285,10 +308,23 @@ def execute_document(app, message, plan, *, caller=None, as_of=None, strict=Fals
             audit_passed=False,answer_evidence=[],reply=dict(text='Document evidence scan unavailable or exceeds its limit; no document selected.'))
     if any(not source_allowed(r['document_id'], allowed) for r in rows):
         raise RuntimeError('document source scope violation')
+    scanned_chunks = len(rows)
+    if research is not None:
+        from cpu_llm.research_plan import select_research_rows
+        rows = select_research_rows(research, rows)
+        plan = dict(plan, research_topic_sets=[sorted(_words(t)) for t in
+                    re.split(r'\s+and\s+', plan['topic'], flags=re.I)],
+                    research_document_ids=[r['document_id'] for r in rows])
     try:
-        result=compose_document(plan, rows, strict=strict, snapshot=dict(as_of=when, scanned_chunks=len(rows)))
+        result=compose_document(plan, rows, strict=strict, snapshot=dict(as_of=when, scanned_chunks=scanned_chunks))
     except ValueError:
         return dict(answer_status='insufficient_evidence', status='insufficient_evidence',answer=None,
             audit_passed=False,answer_evidence=[],reply=dict(text='Atomic document quotations exceed the output limit; ingest smaller complete records or narrow the topic.'))
     result.update(message=message, original_message=message,tenant_id=app.tenant_id,guard_decision='allow')
+    if research is not None:
+        result['research_plan'] = research
+        result['routing']['post_stages'].insert(0, 'research_plan')
+        result['research_plan']['snapshot'] = dict(as_of=when)
+        result['research_plan']['budget'] = dict(snapshot_reads=1, replan_passes=0,
+            source_scan_limit=plan['source_scan_limit'], text_scan_limit=plan['text_scan_limit'])
     return result

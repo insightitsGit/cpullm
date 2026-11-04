@@ -345,5 +345,29 @@
     "stage": "document_workflow",
     "behavior": "Scoped bounded snapshot; sectioned exact quotations, coverage and continuation; shared Markdown/HTML layouts; strict forbids learned generation.",
     "example": "Write a detailed design document about Helios."
+  },
+  {
+    "path": "request.document.research_plan",
+    "origin": "supported ordinary document request",
+    "consumers": [
+      "research_plan",
+      "document_snapshot",
+      "document_coverage"
+    ],
+    "stage": "document_workflow",
+    "behavior": "Curated evidence-seeking questions and one explicit relation layer from the same authorized snapshot; strict bypasses.",
+    "example": "Write an article about Helios and PostgreSQL."
+  },
+  {
+    "path": "request.cycle_search",
+    "origin": "explicit Python/HTTP options",
+    "consumers": [
+      "cycle_snapshot",
+      "cycle_explore",
+      "cycle_evidence"
+    ],
+    "stage": "pre_graph",
+    "behavior": "Bounded multiple lexical cycles from a fixed authorized snapshot; strict disables; no new inferred facts.",
+    "example": "ask(\"Explore Alpha\", cycle_search={\"seed\": \"Alpha\"})"
   }
 ]

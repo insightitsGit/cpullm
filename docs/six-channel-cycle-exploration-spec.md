@@ -1,6 +1,8 @@
 # Design B: Six-channel relationship and cycle exploration
 
-Status: proposed specification; documentation only. Date: November 4, 2026.
+Status: target specification with an initial source implementation. Further
+stages remain proposed. Date: November 4, 2026. See
+[actual implementation boundaries](research-cycle-implementation.md).
 Working name: semi-deterministic exploration node. This describes bounded search
 plus channel-guided prioritization, not a truth guarantee or a new trained model.
 Companion: [Design A](prompt-research-expansion-spec.md).

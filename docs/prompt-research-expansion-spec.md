@@ -1,7 +1,8 @@
 # Design A: Prompt expansion and research planning
 
-Status: proposed specification; documentation only. Date: November 4, 2026.
-Implementation baseline: published cpu-llm 1.11.2. No new node is implemented.
+Status: target specification; initial source stage implemented, further stages
+remain proposed. Date: November 4, 2026. Baseline: published cpu-llm 1.11.2.
+See [actual implementation boundaries](research-cycle-implementation.md).
 Companion: [Design B](six-channel-cycle-exploration-spec.md).
 Review and implementation gates: [design review](research-and-cycle-design-review.md).
 

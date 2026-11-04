@@ -259,6 +259,9 @@ for the intended application.
 
 ## Documentation
 
+- [Unreleased research planner and explicit cycle exploration](docs/research-cycle-user-guide.md):
+  initial source-branch implementation, separate from published 1.11.2.
+
 - [1.11.1 release notes](docs/releases/1.11.1.md) and [build validation](docs/releases/1.11.1-build-validation.md).
 - [Whitepaper](https://www.insightits.com/research-tools/cpu-llm/whitepaper) and [1.11.1 PDF](https://www.insightits.com/assets/whitepapers/cpu-llm-1.11.1-whitepaper.pdf).
 - [Strict evidence](docs/strict-evidence-spec.md), [tone specification](docs/stylistic-generation-spec.md), [flag mapping](docs/prompt-flag-map.md).

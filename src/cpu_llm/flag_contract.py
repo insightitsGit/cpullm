@@ -73,6 +73,16 @@ FLAG_BINDINGS += (FlagBinding('request.document', 'explicit genre prompt or supp
     ('document_plan', 'document_snapshot', 'document_coverage', 'document_render'), 'document_workflow',
     'Scoped bounded snapshot; sectioned exact quotations, coverage and continuation; shared Markdown/HTML layouts; strict forbids learned generation.',
     'Write a detailed design document about Helios.'),)
+FLAG_BINDINGS += (
+    FlagBinding('request.document.research_plan', 'supported ordinary document request',
+        ('research_plan', 'document_snapshot', 'document_coverage'), 'document_workflow',
+        'Curated evidence-seeking questions and one explicit relation layer from the same authorized snapshot; strict bypasses.',
+        'Write an article about Helios and PostgreSQL.'),
+    FlagBinding('request.cycle_search', 'explicit Python/HTTP options',
+        ('cycle_snapshot', 'cycle_explore', 'cycle_evidence'), 'pre_graph',
+        'Bounded multiple lexical cycles from a fixed authorized snapshot; strict disables; no new inferred facts.',
+        'ask("Explore Alpha", cycle_search={"seed": "Alpha"})'),
+)
 OPTIONAL_ORDER = ('deep', 'gather', 'compare', 'brief', 'math', 'finance', 'frame')
 _AFTER = {'shine': -1, 'deep': 0, 'imagine': 1, 'compare': 2, 'brief': 3, 'math': 4, 'finance': 5, 'frame': 6}
 _INDEPENDENT = frozenset({'math', 'finance'})
@@ -113,7 +123,8 @@ def enforce_node_request(node, state):
 def validate_graph_consumers(nodes):
     # These consumers execute outside the ordinary graph, before/after dispatch.
     external = {'render_response', 'strict_evidence.answer', 'conversation.reply', 'stylistic', 'style_verify',
-                'document_plan', 'document_snapshot', 'document_coverage', 'document_render'}
+                'document_plan', 'document_snapshot', 'document_coverage', 'document_render',
+                'research_plan', 'cycle_snapshot', 'cycle_explore', 'cycle_evidence'}
     expected = {node for binding in FLAG_BINDINGS for node in binding.consumers} - external
     if missing := expected - set(nodes):
         raise ValueError('Flag consumers missing from graph: ' + ', '.join(sorted(missing)))

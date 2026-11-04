@@ -1,9 +1,11 @@
 # Current cpu-llm design
 
-Proposed November 4 designs (documentation only, not implemented):
+November 4 designs with an initial source-branch implementation:
 [prompt expansion and research planning](prompt-research-expansion-spec.md) and
 [six-channel multi-cycle exploration](six-channel-cycle-exploration-spec.md).
 See their [gap review and implementation gates](research-and-cycle-design-review.md).
+See [implementation status](research-cycle-implementation.md) and
+[usage/limits](research-cycle-user-guide.md); remaining proposed stages are explicit.
 
 The default [conversation node](conversation-spec.md) handles only complete
 reviewed social intents and guarded greeting prefixes before factual dispatch.

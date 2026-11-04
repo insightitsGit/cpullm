@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "CPU LLM authenticated HTTP contract",
-    "version": "1.11.1",
-    "description": "Documentation for the stdlib Entry-backed server. This file is checked in; 1.11.0 does not serve /openapi.json, Swagger UI, TLS or a production gateway. Operator strict floors and small-talk disables take precedence. Optional Python style/realization controls are not HTTP fields. Source patch 1.11.1 serializes requests on the serving thread and closes response connections. Entry factories must lazily create thread-affine appliances there. Published 1.11.0 threaded transport has a cross-client SQLite affinity defect."
+    "version": "1.11.2-source",
+    "description": "Documentation for the stdlib Entry-backed server. This file is checked in; 1.11.0 does not serve /openapi.json, Swagger UI, TLS or a production gateway. Operator strict floors and small-talk disables take precedence. Optional Python style/realization controls are not HTTP fields. Source patch 1.11.1 serializes requests on the serving thread and closes response connections. Entry factories must lazily create thread-affine appliances there. Published 1.11.0 threaded transport has a cross-client SQLite affinity defect. Unreleased source addition: explicit cycle_search opts into bounded lexical cycle discovery; strict mode disables it."
   },
   "servers": [
     {
@@ -429,6 +429,75 @@
               "string",
               "null"
             ]
+          },
+          "cycle_search": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "seed"
+            ],
+            "properties": {
+              "seed": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              },
+              "limits": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "max_rounds": {
+                    "type": "integer",
+                    "default": 1000,
+                    "maximum": 100000,
+                    "minimum": 1
+                  },
+                  "max_nodes": {
+                    "type": "integer",
+                    "default": 10000,
+                    "maximum": 100000,
+                    "minimum": 1
+                  },
+                  "max_edges": {
+                    "type": "integer",
+                    "default": 50000,
+                    "maximum": 200000,
+                    "minimum": 1
+                  },
+                  "max_states": {
+                    "type": "integer",
+                    "default": 100000,
+                    "maximum": 200000,
+                    "minimum": 1
+                  },
+                  "max_frontier": {
+                    "type": "integer",
+                    "default": 10000,
+                    "maximum": 100000,
+                    "minimum": 1
+                  },
+                  "max_cycles": {
+                    "type": "integer",
+                    "default": 32,
+                    "maximum": 100,
+                    "minimum": 1
+                  },
+                  "max_bytes": {
+                    "type": "integer",
+                    "default": 67108864,
+                    "maximum": 134217728,
+                    "minimum": 1
+                  },
+                  "max_seconds": {
+                    "type": "number",
+                    "default": 5.0,
+                    "maximum": 60,
+                    "exclusiveMinimum": 0
+                  }
+                }
+              }
+            },
+            "description": "Explicit opt-in to bounded source-backed lexical cycle discovery. Disabled in strict mode; not a new inference or identity proof."
           }
         },
         "description": "Supported request fields. Unknown keys are ignored, including style; pass tone in message text. Current runtime coerces message to a string and enforces strict_evidence/small_talk boolean types; this schema describes recommended client types, not a claim of universal runtime schema enforcement."

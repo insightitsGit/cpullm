@@ -1,6 +1,8 @@
 # Review: prompt research planning and six-channel cycle exploration
 
-Date: November 4, 2026. Status: design review, not implementation or runtime proof.
+Date: November 4, 2026. Status: original design review, not runtime proof.
+Subsequent initial implementation and remaining stages are recorded in
+[the implementation record](research-cycle-implementation.md).
 
 - [Design A: prompt expansion](prompt-research-expansion-spec.md).
 - [Design B: cycle exploration](six-channel-cycle-exploration-spec.md).

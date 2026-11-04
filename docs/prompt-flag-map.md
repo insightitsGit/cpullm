@@ -56,3 +56,16 @@ evidence quotations, exact arithmetic, or abstention. Enable wins; see the
 | `prompt_intent.channels.hyperbolic.active` | recognized request form / channel evidence; What type is X? | `retrieve`, `hyperbolic` | channel | All six channel nodes evaluate; active is a signal, not a graph skip or proof. |
 | `prompt_intent.channels.identity.active` | recognized request form / channel evidence; Who is X? | `retrieve`, `identity` | channel | All six channel nodes evaluate; active is a signal, not a graph skip or proof. |
 | `prompt_intent.channels.causal.active` | recognized request form / channel evidence; Why did X stop? | `retrieve`, `causal` | channel | All six channel nodes evaluate; active is a signal, not a graph skip or proof. |
+
+## Research planning and explicit cycle exploration (unreleased)
+
+`request.document.research_plan` activates curated research questions for ordinary
+document requests and recalls one explicit relation layer from the same bounded
+authorized snapshot. It never infers class inheritance or causal conclusions.
+Strict documents preserve their existing selection path.
+
+`request.cycle_search` is an explicit Python/HTTP object with a seed and optional
+limits. It runs cycle_snapshot -> cycle_explore -> cycle_evidence outside the
+ordinary graph. It is disabled by a strict request/operator floor. See
+[usage and limits](research-cycle-user-guide.md). New flags do not change the
+number of ordinary graph nodes.

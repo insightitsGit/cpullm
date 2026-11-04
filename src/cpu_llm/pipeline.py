@@ -583,6 +583,7 @@ class Appliance:
         style: Any | None = None,
         strict_evidence: bool = False,
         small_talk: bool | None = None,
+        cycle_search: dict | None = None,
     ) -> dict[str, Any]:
         """Separate explicit compound requests; each task uses the full pipeline."""
         from cpu_llm.request_planner import dispatch_request
@@ -591,6 +592,10 @@ class Appliance:
         raw_message = message
         enabled, content = requested(message, strict_evidence)
         enabled = enabled or getattr(self, 'strict_evidence', False)
+        if cycle_search is not None:
+            from cpu_llm.cycle_exploration import execute_cycle_request
+            return execute_cycle_request(self, message, cycle_search, caller=caller,
+                                         as_of=as_of, strict=enabled)
         from cpu_llm.stylistic.profiles import extract_style_request
         tone_control = extract_style_request(content)
         if tone_control['tone'] is not None:

@@ -18,7 +18,7 @@ from cpu_llm.access import AccessError, AuthenticationError, SourceForbidden, St
 from cpu_llm.documents import SourceDocument
 from cpu_llm.entry import Entry
 
-_ASK_FIELDS = ("discover", "imagine", "deep", "math", "finance", "as_of", "session_id", "strict_evidence", "small_talk")
+_ASK_FIELDS = ("discover", "imagine", "deep", "math", "finance", "as_of", "session_id", "strict_evidence", "small_talk", "cycle_search")
 
 
 MAX_REQUEST_BYTES = 1024 * 1024
