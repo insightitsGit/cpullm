@@ -17,7 +17,7 @@ quotations, executes recognized calculations or returns an explicit nonanswer.
 This is a bounded evidence contract: it does not establish that a source is true,
 that every question is understood, or that a deployment is compliant.
 
-**Published version: 1.11.1.** Use it instead of 1.11.0 for HTTP; it repairs a
+**Published version: 1.11.1; next build: 1.11.2 (prepared for owner publication).** Use it instead of 1.11.0 for HTTP; it repairs a
 cached-appliance SQLite thread-ownership defect. Author: **Amin Parva,
 Independent Engineer**.
 
@@ -234,9 +234,9 @@ results, automatic legal compliance or a turnkey zero-trust enclave.
 
 ## Verification and deployment limits
 
-The recorded 1.11.1 source run reports **905 passed, 56 skipped, 3 expected
+The prepared 1.11.2 source run reports **925 passed, 56 skipped, 3 expected
 failures**: 54 skips were disabled opt-in integration cases; two lacked optional
-extractor checkpoints. Separate installed-wheel checks covered strict/ordinary
+extractor checkpoints. See the [1.11.2 build validation](docs/releases/1.11.2-build-validation.md). Separate installed-wheel checks covered strict/ordinary
 HTTP and the healthcare demo's 12/12 authored outcomes.
 [Commands, scope and receipts](docs/testing-results.md). No independent clinical,
 customer-corpus or hosted-model comparison establishes superiority.

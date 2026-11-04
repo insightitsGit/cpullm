@@ -1,154 +1,269 @@
-# cpu-llm 1.11.1
+# CPU-LLM: Evidence-Based AI Engine
 
-**Evidence-Based AI Engine.** A CPU-first Python library for questions about your documents and explicit
-rules. It combines trained retrieval with bounded verified sentence construction,
-structured finance checks, source evidence and explicit nonanswers. It is not
-an unrestricted conversational or clinical decision model.
+**Deterministic Document Checks, Financial Covenant Verification & Evidence-Preserving Retrieval on Commodity CPUs.**
 
-## Included in this release
+[![PyPI 1.11.2](https://img.shields.io/badge/PyPI-1.11.2-blue)](https://pypi.org/project/cpu-llm/1.11.2/)
+[![Code license Apache 2.0](https://img.shields.io/badge/Code-Apache_2.0-green)](https://github.com/insightitsGit/cpullm/blob/main/LICENSE)
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue)](https://github.com/insightitsGit/cpullm/blob/main/pyproject.toml)
 
-- HTTP requests execute on one serving thread, preserving cached SQLite/graph ownership across clients. Connections close after responses. This corrects the 1.11.0 threaded-service defect.
+`cpu-llm` / `cpullm` is an embeddable Python engine for source-backed document
+questions and explicit rule checks. It is intended for architects evaluating
+controlled evidence workflows in financial compliance, private credit and
+regulated enterprises, where unsupported answers, arithmetic errors and data
+egress carry material risk.
 
-- A shared evidence-backed report/article/design-document workflow with
-  section coverage, exact source proofs, formats and bounded continuation.
-- Prompt-triggered tone: `Write a detailed article about Helios in a friendly tone.`
-  Tone is a presentation control, not a phrase required in the knowledge base.
-- New technical prose from supported source predicates, with independent inverse
-  verification. Unsupported/conditional records remain attributed quotations;
-  missing design sections stay missing. Strict documents keep quotation-only output.
-- Strict evidence policy v3: source quotations, recognized conflict checks,
-  bounded batches/joins, exact arithmetic and explicit unsupported outcomes.
-- A reviewed default conversation pack: eight basic intents, 51 phrases,
-  original application identity/help, controlled variants and disable controls.
-- A verified stylistic companion node for five factual relations. It retains
-  accepted claims/proofs; unsupported expressive tones can use neutral fallback.
-- Prompt interpretation, request separation, clarification, response budgets,
-  source permissions, numeric precision fixes and Markdown/HTML output layouts.
-- RefundProof, LedgerCovenant and Ledgerlock supplied-field checks.
-- The trained VectorPrism projection, sample corpora, conversation pack and
-  fictional healthcare/conversation demo datasets.
-- Installed demo and conversation-candidate commands; no repository clone or
-  Git executable is needed for those commands.
+Unlike unrestricted generative answering, its strict evidence path selects
+quotations, executes recognized calculations or returns an explicit nonanswer.
+This is a bounded evidence contract: it does not establish that a source is true,
+that every question is understood, or that a deployment is compliant.
 
-**Licenses:** code Apache-2.0; bundled WikiText-2 data CC BY-SA 3.0/GFDL, with dataset provenance.
+**This distribution: 1.11.2.** Use it instead of 1.11.0 for HTTP; it repairs a
+cached-appliance SQLite thread-ownership defect. Author: **Amin Parva,
+Independent Engineer**.
 
-## Install and prepare
+**Licenses:** code [Apache-2.0](https://github.com/insightitsGit/cpullm/blob/main/LICENSE); bundled WikiText-2 data has separate
+**CC BY-SA 3.0/GFDL** terms and attribution. See [third-party notices](https://github.com/insightitsGit/cpullm/blob/main/THIRD_PARTY_NOTICES.md).
 
-Install the published release:
+## Verification contract compared with generative RAG
 
-```shell
-python -m pip install "cpu-llm==1.11.1"
-```
+This compares execution contracts, not measured product accuracy or cost.
+Generative RAG systems can also add citations, calculators and deployment controls.
 
-Before asking document questions, configure PostgreSQL with pgvector and set
-`VECTORPRISM_PG_DSN`. The package includes the trained projection; the pretrained
-`sentence-transformers/all-mpnet-base-v2` encoder assets must also be downloaded
-on first use or cached for offline use. Installation does not start PostgreSQL
-or ingest your documents. No retraining is needed for the bundled demos.
+| Dimension | Generative RAG without an enforced verification layer | CPU-LLM contract |
+| --- | --- | --- |
+| Answer construction | Generated wording needs independent support checks | Strict mode returns source spans, recognized calculations, conflicts or nonanswers; unsupported forms return `unsupported` |
+| Arithmetic | A generated numeric answer needs a calculator/checker | Explicit finance fields use inspectable decimal/integer policies; the example below uses six-place half-up rounding |
+| Infrastructure | Depends on the chosen model and hosting | CPU-first Python plus PostgreSQL/pgvector and cached encoder assets; no GPU required for the documented path |
+| Audit evidence | Depends on the application's evidence layer | Source IDs, quotation offsets and chunk hashes; supported tone constructions include inverse-verification receipts |
+| Data location | Hosted or self-managed, depending on the system | Can run on premises with prepared dependencies and cached assets; air-gap enforcement is an operator responsibility |
 
-Prepare the encoder while connected (set cache variables before Python starts):
+“Zero hallucination” is not a universal accuracy guarantee. Strict selection can
+preserve an incorrect source, and an unsupported request can be refused. Ordinary
+mode has different verification limits, including optional learned producers.
 
-```sh
-export HF_HOME="$PWD/model-cache"
-export HF_HUB_CACHE="$HF_HOME/hub"
-python -c "import pyarrow; from sentence_transformers import SentenceTransformer; SentenceTransformer('sentence-transformers/all-mpnet-base-v2', device='cpu')"
-```
+## Core capabilities
 
-For deployment, transfer the complete cache and set `HF_HUB_OFFLINE=1` and
-`TRANSFORMERS_OFFLINE=1`. On PowerShell use `$env:HF_HOME = Join-Path $PWD 'model-cache'`
-and `$env:HF_HUB_CACHE = Join-Path $env:HF_HOME 'hub'` instead of `export`.
-See [offline setup](https://github.com/insightitsGit/cpullm/blob/main/docs/offline-setup.md)
-for verification and optional-model limits. A repository checkout also supplies
-`docker compose up -d --wait postgres`; see
-[database setup](https://github.com/insightitsGit/cpullm/blob/main/docs/development-database.md)
-for matching connection strings. The source server contract is documented in
-[OpenAPI](https://github.com/insightitsGit/cpullm/blob/main/docs/openapi.json).
+### Strict evidence: quote or abstain
 
-For optional spaCy prompt parsing, install `cpu-llm[prompt_nlp]==1.11.1` and
-provision `en_core_web_sm`. The examples below use the built-in rules parser.
+After setup, ingest atomic statements and ask an explicit attribute question.
+Save this as a script; use the main guard on Windows:
 
 ```python
-from cpu_llm.documents import SourceDocument
 from cpu_llm.pipeline import Appliance
+from cpu_llm.documents import SourceDocument
 
 def main():
-    with Appliance(namespace="my_demo", strict_evidence=True,
-                   prompt_backend="rules") as app:
-        app.ingest(SourceDocument("manual", (
-            "The material of Example Device is steel.",
+    with Appliance(namespace="label_example", prompt_backend="rules") as app:
+        app.ingest(SourceDocument("fictional-label", (
+            "The strength of Fictional Luma is 0.75 mg.",
         )))
-        result = app.ask("What is the material of Example Device?")
-        print(result["answer_status"])
-        print(result["reply"]["text"])
-        print(result["answer_evidence"])
+        for question in (
+            "What is the strength of Fictional Luma?",
+            "Which antibiotic should Case Birch receive?",
+        ):
+            result = app.ask(question, strict_evidence=True, small_talk=False)
+            print(result["answer_status"])
+            print(result["reply"]["text"])
+            print(result.get("answer_evidence", []))
 
 if __name__ == "__main__":
     main()
 ```
 
-Keep the guarded `main()` on Windows because the engine starts worker processes.
-Reuse an appliance and close it after use. Production applications should use
-authenticated caller contexts or the HTTP entry service for tenant/source scope.
+The [recorded healthcare demo](https://github.com/insightitsGit/cpullm/blob/main/examples/healthcare/sample-run/README.md) shows:
 
-## Run the packaged demos
+```text
+What is the strength of Fictional Luma?
+status: evidence_quote
+The strength of Fictional Luma is 0.75 mg.
 
-With a demo database and cached encoder assets:
-
-```shell
-cpu-llm-demo healthcare --out healthcare-demo-new-run
-cpu-llm-demo conversation --out conversation-demo-new-run
+Which antibiotic should Case Birch receive?
+status: unsupported
+Unsupported strict request; use explicit named attribute questions.
 ```
 
-Each output directory must be new. The commands create isolated namespaces,
-ingest packaged fictional records and save actual responses and expected-result
-checks. Healthcare examples demonstrate label/record lookups, equivalent units,
-conflicts, missing information, treatment refusal and arithmetic. Correct
-nonanswers count as expected outcomes, not correct medical answers.
+Evidence includes document IDs, quotation offsets and chunk hashes. These are
+fictional label-handling fixtures, not a diagnostic or prescribing system.
+Use one factual statement per record for the recognized strict grammar;
+multisentence records can be rejected rather than losing a qualifier.
+[Strict grammar and limits](https://github.com/insightitsGit/cpullm/blob/main/docs/strict-evidence-spec.md).
 
-The candidate review tool is also installed:
+### Deterministic finance: explicit fields and precision
 
-```shell
-cpu-llm-conversation-candidates --help
-cpu-llm-serve --help
-cpu-llm-ingest --help
+`LedgerCovenant` evaluates supplied covenant fields. `RefundProof` reviews
+supplied sales-tax findings; it is a separate check, not a covenant synonym.
+The direct validator needs no database or encoder:
+
+```python
+from cpu_llm.finance import validate_message
+
+result = validate_message("""Decide this LedgerCovenant test.
+comparator: lte
+threshold: 4.50
+numerator: compliance_certificate 9000001
+denominator: compliance_certificate 2000000
+ratio places: 6
+""")
+print(result["text"])
+print(result["checks"])
 ```
 
-## Response and safety boundaries
+```text
+Raw ratio:               9000001 / 2000000 = 4.5000005
+Six-place half-up value: 4.500001x
+Allowed threshold:      lte 4.500000x
+Decision:               BREACH
+```
 
-Use `answer_status`, evidence, per-task outcomes and structured calculation
-fields together. A nonempty `reply.text` alone is not proof of correctness.
-Default social replies have `response_kind="conversation"`, empty evidence and
-no clinical validation. Disable them with `small_talk=False` or service
-`--no-small-talk`. Pure conversational matching never replaces a substantive
-healthcare/finance question with a greeting response.
+The block summarizes the inspectable calculation; the command prints the full
+result and precedence trace. `4.500001` is the policy-rounded value, not the raw
+quotient. Precision is explicit, not a universal six-decimal rule or binary-float
+approximation. Supplied fields are not authenticated financial records, and a
+breach result is not a legal declaration of default.
 
-Strict mode bypasses learned answer generators, including the automatic
-fact-bridge FLAN-T5 fallback. It does not validate source truth, infer arbitrary
-prose contradictions or guarantee 100% accuracy/clinical safety. Outside strict
-mode, optional learned fallback paths can require additional model assets that
-are not bundled. Coreferee, FastCoref and spaCy model assets are also not bundled.
+### Verified document generation: bounded inverse grammar
 
-Tone is opt-in through Python `style=...` or an explicit prompt directive.
-API tone overrides prompt tone. Single-fact responses keep a companion; document
-responses can publish verified derived prose while preserving source proofs and
-the canonical quotation view. Neither gives source facts an independent truth
-audit. Unsupported expressive styles can use neutral fallback. Strict mode
-bypasses generated tone.
-Financial checks operate on supplied fields/rules, not independently authenticated
-documents or professional tax/legal advice. Fictional record lookup does not
-establish diagnostic or prescribing capability.
+Using an appliance configured as above:
 
-## Documentation and real examples
+```python
+app.ingest(SourceDocument("helios-manual", (
+    "Helios is a backup service.",
+    "Helios stores encrypted backups.",
+    "Helios uses PostgreSQL for metadata.",
+    "Helios does not support automatic regional failover.",
+)))
+result = app.ask("Write a detailed article about Helios in a friendly tone.")
+print(result["reply"]["text"])
+```
 
-- [Full guide and setup](https://github.com/insightitsGit/cpullm#readme)
-- [Document and tone user manual](https://github.com/insightitsGit/cpullm/blob/main/docs/document-generation-user-guide.md)
-- [Generated article and report](https://github.com/insightitsGit/cpullm/blob/main/docs/examples/2026-11-03-prompt-tone/README.md)
-- [Strict evidence contract](https://github.com/insightitsGit/cpullm/blob/main/docs/strict-evidence-spec.md)
-- [Healthcare sample chat](https://github.com/insightitsGit/cpullm/blob/main/examples/healthcare/sample-run/README.md)
-- [Tone-node chat examples](https://github.com/insightitsGit/cpullm/blob/main/docs/examples/2026-11-02-tone-chat/TRANSCRIPT.md)
-- [Default conversation examples](https://github.com/insightitsGit/cpullm/blob/main/docs/examples/2026-11-02-conversation/TRANSCRIPT.md)
-- [Medical acceptance comparison](https://github.com/insightitsGit/cpullm/blob/main/docs/benchmarks/2026-11-02-medical-local/REPORT.md)
+Supported predicate joins can produce:
 
-Code is Apache-2.0 licensed. Bundled WikiText-2 data has separate CC BY-SA 3.0/GFDL terms and attribution; see THIRD_PARTY_NOTICES.md in the repository. The shipped default pack is original; external
-dialogue corpora are not bundled. Dataset review tooling does not import external
-assistant answers into the runtime or medical knowledge base.
+```text
+Helios stores encrypted backups and uses PostgreSQL for metadata.
+```
+
+The tone request is removed from the retrieval topic. Bounded inverse grammar
+checks supported constructions against source predicates while retaining proofs,
+numbers, negation and qualifiers. Unsupported constructions remain quotations;
+missing sections remain explicit. Strict documents bypass tone rewriting.
+This produces bounded new wording, not arbitrary creative prose or new facts.
+[Article/report receipts](https://github.com/insightitsGit/cpullm/blob/main/docs/examples/2026-11-03-prompt-tone/README.md) ·
+[Document and tone manual](https://github.com/insightitsGit/cpullm/blob/main/docs/document-generation-user-guide.md).
+
+### Six-signal retrieval and explicit routing
+
+The ordinary pipeline registers 27 graph nodes, including **dense, relational,
+disentangled, hyperbolic, identity and causal** retrieval signals backed by
+PostgreSQL/pgvector. **Only dense and identity projection heads are trained and
+bundled**; the other channels use their implemented signals or symbolic paths.
+A similarity score or connection is not factual proof. Strict requests and document
+workflows can bypass the ordinary graph; not every request runs every node.
+See the [architecture](https://github.com/insightitsGit/cpullm/blob/main/docs/current-design.md) and [prompt-to-node mapping](https://github.com/insightitsGit/cpullm/blob/main/docs/prompt-flag-map.md).
+
+## Quickstart and reproduction
+
+Python 3.11+ is required. Release checks used Windows/Python 3.12.10.
+
+```shell
+python -m pip install --upgrade "cpu-llm==1.11.2"
+python -m pip check
+```
+
+Document queries require PostgreSQL/pgvector and the pretrained
+`sentence-transformers/all-mpnet-base-v2` encoder assets. The trained projection
+is bundled; no retraining is required for these demos. Follow the
+[database setup](https://github.com/insightitsGit/cpullm/blob/main/docs/development-database.md) and [encoder preparation](https://github.com/insightitsGit/cpullm/blob/main/docs/offline-setup.md).
+Recorded installed-package checks used native PostgreSQL 18/pgvector.
+
+**Docker alternative — configuration documented; container startup remains
+unverified on the maintainer's current host.** For a disposable development
+instance, this command binds only to loopback:
+
+```shell
+docker run -d --name pgvector-test -p 127.0.0.1:5434:5432 -e POSTGRES_PASSWORD=postgres pgvector/pgvector:pg16
+docker exec pgvector-test pg_isready -U postgres -d postgres
+```
+
+After readiness succeeds, enable the extension:
+
+```shell
+docker exec pgvector-test psql -U postgres -d postgres -c "CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public;"
+```
+
+Set the matching connection string before running Python. POSIX shell:
+
+```shell
+export VECTORPRISM_PG_DSN='postgresql://postgres:postgres@127.0.0.1:5434/postgres'
+```
+
+PowerShell:
+
+```powershell
+$env:VECTORPRISM_PG_DSN = 'postgresql://postgres:postgres@127.0.0.1:5434/postgres'
+```
+
+After database and encoder preparation:
+
+```shell
+cpu-llm-demo healthcare --out healthcare-demo-output
+cpu-llm-demo conversation --out conversation-demo-output
+```
+
+Use fresh output directories. The commands ingest demo records and save responses,
+evidence and outcome checks. Initial encoder download time depends on connectivity
+and caching; it is preparation, not training. For disconnected deployments,
+prepare the Python wheelhouse, database installation/image and encoder cache
+before transfer. Offline flags are not a substitute for network isolation.
+
+## Enterprise and commercial evaluation
+
+For pilot discussions with **Insight IT Solutions**, visit
+[CPU-LLM research and commercial enquiries](https://www.insightits.com/research-tools/cpu-llm).
+Potential scopes include:
+
+- **Private-credit covenant monitoring:** map explicit source fields and policies
+  into LedgerCovenant checks, with reviewable arithmetic and evidence.
+- **On-premises and sovereign deployments:** prepare CPU runtime assets and
+  evaluate isolation, identity and gateway controls in the target environment.
+- **Regulatory workflow adapters:** integrate existing tenant/source permissions
+  with enterprise RBAC, retention and audit systems. SOX/HIPAA requirements need
+  a deployment-specific assessment; no certification is claimed.
+
+These are pilot integration opportunities, not claims of deployed customer
+results, automatic legal compliance or a turnkey zero-trust enclave.
+
+## Verification and deployment limits
+
+The prepared 1.11.2 source run reports **925 passed, 56 skipped, 3 expected
+failures**: 54 skips were disabled opt-in integration cases; two lacked optional
+extractor checkpoints. See the [1.11.2 build validation](https://github.com/insightitsGit/cpullm/blob/main/docs/releases/1.11.2-build-validation.md). Separate installed-wheel checks covered strict/ordinary
+HTTP and the healthcare demo's 12/12 authored outcomes.
+[Commands, scope and receipts](https://github.com/insightitsGit/cpullm/blob/main/docs/testing-results.md). No independent clinical,
+customer-corpus or hosted-model comparison establishes superiority.
+
+The authenticated HTTP service exposes POST `/v1/ask`, `/v1/ingest`, `/v1/correct`
+and `/v1/delete`. It serves requests serially; lazy factories must construct
+appliances on the serving thread. There is no built-in TLS or production gateway,
+and long work blocks other requests. See [OpenAPI](https://github.com/insightitsGit/cpullm/blob/main/docs/openapi.json) and the
+[consumer guide](https://github.com/insightitsGit/cpullm/blob/main/docs/library-consumer-guide.md#authenticated-http-service).
+
+**Included in 1.11.2:** learned writer fallback requires
+`CPU_LLM_ALLOW_LEARNED_WRITER=1`; HTTP bodies are capped at 1 MiB with a 10-second
+socket inactivity timeout. Explicit child-safety controls warn that no pipeline
+gate is applied; the standalone gate remains unvalidated. These changes extend published 1.11.1. See the [hardening specification](https://github.com/insightitsGit/cpullm/blob/main/docs/audit-hardening-spec.md).
+
+Known limits include bounded English grammars, lexical topic matching, incomplete
+aliases/joins and conflict detection. Hashes prove consistency with stored text,
+not source authenticity or truth. Inspect response status, evidence and coverage
+for the intended application.
+
+## Documentation
+
+- [1.11.1 release notes](https://github.com/insightitsGit/cpullm/blob/main/docs/releases/1.11.1.md) and [build validation](https://github.com/insightitsGit/cpullm/blob/main/docs/releases/1.11.1-build-validation.md).
+- [Whitepaper](https://www.insightits.com/research-tools/cpu-llm/whitepaper) and [1.11.1 PDF](https://www.insightits.com/assets/whitepapers/cpu-llm-1.11.1-whitepaper.pdf).
+- [Strict evidence](https://github.com/insightitsGit/cpullm/blob/main/docs/strict-evidence-spec.md), [tone specification](https://github.com/insightitsGit/cpullm/blob/main/docs/stylistic-generation-spec.md), [flag mapping](https://github.com/insightitsGit/cpullm/blob/main/docs/prompt-flag-map.md).
+- [Extended implementation reference](https://github.com/insightitsGit/cpullm/blob/main/docs/reference/implementation-guide.md) and [release provenance](https://github.com/insightitsGit/cpullm/blob/main/docs/release-publishing.md).
+
+For citations: **cpu-llm: Evidence-Based AI Engine**, Amin Parva, repository URL,
+and the exact version/commit evaluated. The Apache code label does not replace
+bundled-data notices.
