@@ -25,7 +25,9 @@ _SEED_PREFIX = re.compile(
     r'^(?:from|about|for|using|with|based on)\s+(?:(?:the\s+)?relationships\s+around\s+|(?:these|the)\s+(?:input\s+)?terms\s*[: ]\s*)?',
     re.I,
 )
-_EXPLICIT_EDGE = re.compile(r'(?P<subject>[\w -]+?) (?P<verb>uses|stores) (?P<object>[^.!?]+)\.?$', re.I)
+_EXPLICIT_EDGE = re.compile(
+    r'(?P<subject>[\w -]+?) (?P<verb>uses|stores|reveals?|affects?) (?P<object>[^.!?]+)\.?$', re.I,
+)
 
 
 def invention_seed(message, *, forced=False):
@@ -53,6 +55,7 @@ def _source_facts(rows):
             match = _EXPLICIT_EDGE.fullmatch(sentence)
             if match and not _UNSAFE.search(sentence):
                 verb = match['verb'].lower()
+                verb = {'reveal': 'reveals', 'affect': 'affects'}.get(verb, verb)
                 obj = re.split(r'\s+for\s+', match['object'], maxsplit=1, flags=re.I)[0] if verb == 'uses' else match['object']
                 yield Fact(match['subject'], verb, obj, doc_id, sentence)
 
@@ -308,7 +311,20 @@ def continue_invention(app, key, message, query, *, strict=False):
             if len(relationships) == 4 * (stage + 1):
                 break
     left, right = idea['subject'], idea['object']
-    if stage == 0:
+    measurement = next((p for p in relationships if p['relation'] == 'reveals'
+                        and normalize(p['subject']) in {normalize(left), normalize(right)}), None)
+    effect = next((p for p in relationships if measurement and p['relation'] == 'affects'
+                   and normalize(p['subject']) == normalize(measurement['object'])), None)
+    if stage == 0 and measurement:
+        signal, factor = measurement['subject'], measurement['object']
+        detail = (f'Research question: Can {signal} estimate {factor} well enough to improve the proposed workflow? '
+                  f'Compare estimates from {signal} against known values of {factor} in a controlled trial.')
+    elif stage == 1 and effect:
+        target = effect['object']
+        detail = (f'Research question: Does correcting for {measurement["object"]} estimated from '
+                  f'{measurement["subject"]} improve {target} in the proposed workflow? '
+                  f'Compare {target} against a known reference with and without the correction, using the same inputs.')
+    elif stage == 0:
         detail = (f'Start with one representative workflow involving {left} and {right}. Record how it runs '
                   f'today, then repeat it with the proposed change and compare the steps and failures. {idea["test"]}')
     elif stage == 1:

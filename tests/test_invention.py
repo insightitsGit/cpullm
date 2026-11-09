@@ -83,6 +83,28 @@ def test_follow_up_carries_typed_edges_and_expands_from_new_source_terms():
     assert 'operating conditions fixed' in second['reply']['text']
 
 
+def test_cosmology_follow_up_builds_a_question_from_a_directed_source_chain():
+    app = appliance()
+    docs = [
+        'Vesper Array uses pulsar timing residuals for drift detection.',
+        'Vesper Array stores simulated gravitational-wave events.',
+        'Pulsar timing residuals reveal clock drift.',
+        'Clock drift affects event timestamps.',
+    ]
+    app.index.strict_source_rows.return_value = (
+        [dict(document_id=f'cosmos-{i}', chunk_text=text) for i, text in enumerate(docs)], 123,
+    )
+    app.ask('Invention: Vesper Array.', session_id='cosmos')
+    first = app.ask('Can you explain more?', session_id='cosmos')
+    second = app.ask('Go deeper.', session_id='cosmos')
+    assert 'Can Pulsar timing residuals estimate clock drift' in first['reply']['text']
+    assert 'event timestamps' not in first['reply']['text']
+    assert 'improve event timestamps' in second['reply']['text']
+    assert 'with and without the correction' in second['reply']['text']
+    assert second['answer_evidence'] == []
+    assert second['reply']['text'].endswith(NOTE)
+
+
 def test_follow_up_asks_which_proposal_then_remembers_the_selection():
     app = appliance(('Helios uses a scheduler.',))
     app.ask('Invention: Helios', session_id='design')
