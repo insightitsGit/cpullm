@@ -11,10 +11,16 @@ import threading
 import time
 import uuid
 
+from cpu_llm.document_workflow import DOCUMENT_START
+from cpu_llm.invention import INVENTION_START
+
 MAX_TASKS = 8
 MAX_PROMPT_CHARS = 32000
 MAX_TASK_CHARS = 1000
-_START = r'(?:what|where|when|why|how|who|which|can|could|would|does|do|is|are|summari[sz]e|explain|describe|list|enumerate|compare|calculate|tell me)\b'
+_START = (r'(?:what|where|when|why|how|who|which|can|could|would|does|do|is|are|'
+          r'summari[sz]e|explain|describe|list|enumerate|compare|calculate|tell me)\b|'
+          + DOCUMENT_START + '|' + INVENTION_START)
+_START = f'(?:{_START})'
 _BOUNDARY = re.compile(rf'(?:[?;]\s*|[.!]\s+|\n+\s*(?:\d+[.)]\s*)?|,\s*(?:(?:and|also|then)\s+)?|\s+(?:and then|and|also|then)\s+)(?=(?:please\s+)?{_START})', re.I)
 _LEADING = re.compile(rf'^(?:please\s+)?{_START}', re.I)
 _REF = re.compile(r'\b(?:it|its|they|them|their|this|that|these|those)\b', re.I)
@@ -28,8 +34,15 @@ def _mask(text):
 
 def _entity(query):
     from cpu_llm.response_policy import classify_response_request
-    query = classify_response_request(query)['content_query']
+    from cpu_llm.document_workflow import plan_document
     from cpu_llm.prompt_intent import route_prompt, _name
+    document = plan_document(query)
+    if document:
+        topic = document['topic']
+        if not _REF.search(topic) and not re.search(r'\b(?:and|or)\b', topic, re.I):
+            return _name(topic)
+        return None
+    query = classify_response_request(query)['content_query']
     from cpu_llm.answerability import parse_query
     request = route_prompt(query).get('requested') or {}
     if request.get('relation') == 'causes':
@@ -120,7 +133,10 @@ def separate_request(message, *, interpreter=None):
         return dict(base, status='needs_clarification', reason='Please add a question after Questions:.')
     if len(pieces) > MAX_TASKS:
         return dict(base, status='limit_exceeded', reason=f'Please ask at most {MAX_TASKS} questions or commands at a time.')
-    if any(not _LEADING.match(_mask(classify_response_request(item['query'])['content_query'])) for item in compiled):
+    from cpu_llm.document_workflow import plan_document
+    if any(not plan_document(item['query']) and
+           not _LEADING.match(_mask(classify_response_request(item['query'])['content_query']))
+           for item in compiled):
         return dict(base, status='needs_clarification', reason='Please put each question or command on its own line. Label background as Context: and the requests as Questions:.')
     entities = []
     if background:
@@ -232,7 +248,7 @@ def _aggregate(plan, results, tenant):
         evidence.extend(entry['result'].get('answer_evidence') or [])
         supporting.extend(entry['result'].get('supporting_evidence') or [])
     waiting = any(item['status'] == 'needs_clarification' for item in entries)
-    incomplete = any(item['status'] not in {'answered', 'evidence_quote'} for item in entries)
+    incomplete = any(item['status'] not in {'answered', 'evidence_quote', 'hypotheses'} for item in entries)
     status = 'needs_clarification' if waiting else 'partial' if incomplete else 'answered'
     text = '\n\n'.join(lines)
     presentation = dict(plan.get('presentation') or {})
@@ -240,7 +256,7 @@ def _aggregate(plan, results, tenant):
     requested_items = (presentation.get('requested_limits') or {}).get('items')
     if requested_items is not None and requested_items < len(entries):
         presentation['budget_overridden_for_coverage'] = True
-    return dict(message=plan['original_message'], original_message=plan['original_message'], tenant_id=tenant,
+    response = dict(message=plan['original_message'], original_message=plan['original_message'], tenant_id=tenant,
                 request_plan=plan, task_results=entries, answer=None, answer_status=status, status=status,
                 needs_clarification=waiting, audit_passed=False,
                 answer_evidence=evidence, supporting_evidence=supporting,
@@ -249,10 +265,17 @@ def _aggregate(plan, results, tenant):
                               verification='per_task', task_ids=[item['id'] for item in entries],
                               complete=not incomplete),
                 response_plan=presentation or None)
+    invention_tasks = [item['id'] for item in results if item['result'].get('invention', {}).get('triggered')]
+    if invention_tasks:
+        response['invention'] = dict(triggered=True, potentially_nondeterministic=True, task_ids=invention_tasks)
+    return response
 
 
 def run_request_plan(app, plan, propositions, options, *, pending=None):
     """Execute one task at a time and suspend on the first clarification."""
+    from cpu_llm.document_workflow import execute_document, plan_document
+    from cpu_llm.invention import execute_invention, invention_seed
+    from cpu_llm.stylistic.profiles import extract_style_request
     state = pending or dict(plan=plan, results=[], cursor=0, propositions=propositions,
                             options=dict(options), batch_id=uuid.uuid4().hex)
     if 'combined_budget' not in state['plan']:
@@ -267,7 +290,8 @@ def run_request_plan(app, plan, propositions, options, *, pending=None):
         parent_session = options.get('session_id')
         child_options['session_id'] = f"request:{state['batch_id']}:{task['id']}" if parent_session is not None else None
         query = state.pop('followup') if 'followup' in state else task['query']
-        if query == task['query'] and state['plan'].get('presentation'):
+        seed = invention_seed(query)
+        if seed is None and query == task['query'] and state['plan'].get('presentation'):
             from cpu_llm.response_policy import classify_response_request
             if not classify_response_request(query)['explicit']:
                 depth = state['plan']['presentation']['detail']
@@ -279,7 +303,21 @@ def run_request_plan(app, plan, propositions, options, *, pending=None):
             overview = child_plan['mode'] == 'overview' or re.match(r'^(?:briefly\s+)?(?:explain|describe|tell me about|summari[sz]e)\b', query, re.I)
             if child_plan['format'] == 'prose' and overview:
                 query += ' as bullet points' if presentation['format'] == 'bullets' else ' as a numbered list'
-        result = app._ask_single(query, state['propositions'], **child_options)
+        document = plan_document(query) if seed is None else None
+        if seed is not None:
+            if any(child_options.get(key) is not None for key in
+                   ('payment', 'authority', 'objective', 'hypothesis', 'causal_graph')):
+                raise ValueError('Submit invention and other specialist requests separately.')
+            result = execute_invention(app, query, seed, caller=child_options['caller'], as_of=child_options.get('as_of'))
+        elif document is None:
+            result = app._ask_single(query, state['propositions'], **child_options)
+        else:
+            if any(child_options.get(key) is not None for key in
+                   ('payment', 'authority', 'objective', 'hypothesis', 'causal_graph')):
+                raise ValueError('Submit specialist proposals as a separate request, not a document request.')
+            result = execute_document(app, query, document, caller=child_options['caller'],
+                                      as_of=child_options.get('as_of'),
+                                      style=extract_style_request(query)['tone'])
         status = (result.get('answer_status') or (result.get('reply') or {}).get('answer_status')
                   or result.get('status') or (result.get('judgment') or {}).get('outcome') or 'insufficient_evidence')
         if result.get('needs_clarification'):

@@ -584,6 +584,7 @@ class Appliance:
         strict_evidence: bool = False,
         small_talk: bool | None = None,
         cycle_search: dict | None = None,
+        invent: bool = False,
     ) -> dict[str, Any]:
         """Separate explicit compound requests; each task uses the full pipeline."""
         from cpu_llm.request_planner import dispatch_request
@@ -599,6 +600,20 @@ class Appliance:
             message = content
             if style is None:
                 style = tone_control['tone']
+        from cpu_llm.invention import execute_invention, finish_invention_response, invention_seed
+        from cpu_llm.output_rendering import extract_layout
+        from cpu_llm.request_planner import _BOUNDARY, _mask
+        if type(invent) is not bool:
+            raise ValueError('invent must be a boolean')
+        invention_query = extract_layout(content)['content_query']
+        seed = invention_seed(invention_query, forced=invent)
+        if seed is not None and (invent or enabled or not _BOUNDARY.search(_mask(invention_query))):
+            if cycle_search is not None or any(value is not None for value in (payment, authority, objective, hypothesis, causal_graph)):
+                raise ValueError('Submit invention and other specialist requests separately.')
+            result = execute_invention(self, raw_message, seed, caller=caller, as_of=as_of, strict=enabled)
+            from cpu_llm.response_policy import classify_response_request
+            result['response_plan'] = classify_response_request(content)
+            return finish_invention_response(result)
         from cpu_llm.cycle_composition import parse_cycle_prompt
         loop_control=parse_cycle_prompt(content,seed_override=cycle_search.get('seed') if isinstance(cycle_search,dict) else None)
         if loop_control is not None:
@@ -634,6 +649,9 @@ class Appliance:
         document_plan = plan_document(document_message)
         if document_plan is None and not enabled:
             document_plan = plan_long_overview(document_message)
+        if document_plan is not None and not enabled and cycle_search is None:
+            if _BOUNDARY.search(_mask(document_message)):
+                document_plan = None  # Let the request planner route the individual tasks.
         if document_plan is not None:
             if not enabled and realization not in {'deterministic', 'evidence_neural', 'model01'}:
                 raise ValueError('realization must be deterministic, evidence_neural, or model01')
@@ -673,14 +691,13 @@ class Appliance:
             child_safety=child_safety, session_id=session_id, caller=caller, as_of=as_of))
         if prefix is not None:
             result.update(original_message=raw_message, conversation_prefix=prefix)
-        from cpu_llm.output_rendering import render_response
         if style is not None:
             from cpu_llm.stylistic import apply_style
             result = apply_style(result, style)
         if tone_control['tone'] is not None:
             result['tone_request'] = dict(tone_control, effective_tone=style if isinstance(style,str) else getattr(style,'tone',None))
             result['original_message'] = raw_message
-        return render_response(result)
+        return finish_invention_response(result)
 
     def _ask_single(
         self,

@@ -1,6 +1,18 @@
 import copy
 from types import SimpleNamespace
 import pytest
+
+
+def test_joined_sentence_reports_shortfall_in_rendered_reply():
+    from cpu_llm.document_workflow import compose_document, plan_document
+    plan = plan_document('Write an article about Helios Core in 8 words.')
+    rows = [dict(document_id='a', chunk_text='Helios Core stores backups.'),
+            dict(document_id='b', chunk_text='Helios Core uses PostgreSQL.')]
+    result = apply_style(compose_document(plan, rows), 'formal')
+    coverage = result['document']['coverage']
+    assert coverage['body_word_count'] == 7
+    assert coverage['word_shortfall'] == 1
+    assert 'Requested length not reached: 7 source-backed body words' in result['reply']['text']
 from cpu_llm.document_workflow import plan_document,compose_document
 from cpu_llm.stylistic import apply_style,StyleOptions,Relationship
 from cpu_llm.stylistic.profiles import extract_style_request

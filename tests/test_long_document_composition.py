@@ -145,3 +145,31 @@ def test_research_gaps_prevent_a_false_completed_document():
     assert not r['judgment']['complete']
     assert 'mechanism' in r['document']['coverage']['research_missing_facets']
     assert 'No explanation was invented' in r['reply']['text']
+
+
+def test_requested_facets_select_and_reserve_matching_evidence():
+    from cpu_llm.document_workflow import execute_document
+    message = 'Write a report about Helios in 2 items, including Mechanism and Validation.'
+    data = [
+        dict(document_id='a', chunk_text='Helios is a process.'),
+        dict(document_id='b', chunk_text='Helios stores records by encrypting each archive.'),
+        dict(document_id='c', chunk_text='Helios verifies archive checksums.'),
+    ]
+    app = SimpleNamespace(tenant_id='t', guard=SimpleNamespace(check=lambda _: SimpleNamespace(decision='allow')),
+                          index=SimpleNamespace(strict_source_rows=lambda *a, **k: (data, 123)))
+    result = execute_document(app, message, plan_document(message))
+    questions = {q['facet']: q for q in result['research_plan']['questions']}
+    assert questions['mechanism']['evidence_ids'] == ['b']
+    assert questions['validation']['required'] and questions['validation']['evidence_ids'] == ['c']
+    assert {proof['document_id'] for proof in result['answer_evidence']} == {'b', 'c'}
+
+
+def test_bare_process_label_leaves_required_mechanism_missing():
+    from cpu_llm.document_workflow import execute_document
+    message = 'Write a report about Helios, including Mechanism.'
+    data = [dict(document_id='a', chunk_text='Helios is a process.')]
+    app = SimpleNamespace(tenant_id='t', guard=SimpleNamespace(check=lambda _: SimpleNamespace(decision='allow')),
+                          index=SimpleNamespace(strict_source_rows=lambda *a, **k: (data, 123)))
+    result = execute_document(app, message, plan_document(message))
+    assert 'mechanism' in result['document']['coverage']['research_required_missing_facets']
+    assert 'Mechanism' in result['document']['coverage']['missing_sections']

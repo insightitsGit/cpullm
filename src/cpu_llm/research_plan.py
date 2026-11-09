@@ -64,17 +64,21 @@ def build_research_plan(message, document_plan, *, strict=False):
             excluded.add(facet)
     facets = [f for f in facets if f not in excluded]
     facets = [f for f in facets if FACETS[f][1] is None or FACETS[f][1] in facets]
-    questions = [dict(id=f'q{i+1}', facet=f, text=FACETS[f][0].format(topic=topic),
-                      origin='template_suggestion', required=False,
-                      prerequisites=[FACETS[f][1]] if FACETS[f][1] else [],
-                      status='pending', evidence_ids=[]) for i, f in enumerate(facets[:MAX_QUESTIONS])]
-    explicit_sections={s.casefold() for s in document_plan['sections']}
-    required_names={'mechanism':{'mechanism','mechanisms','how it works'},
-                    'cause':{'reasons','causes','why'},
-                    'relationships':{'relationships','connections'},
-                    'validation':{'validation'}}
-    for q in questions:
-        q['required']=bool(required_names.get(q['facet'],set()) & explicit_sections)
+    section_facets = {
+        'mechanism': 'mechanism', 'mechanisms': 'mechanism', 'how it works': 'mechanism',
+        'reasons': 'cause', 'causes': 'cause', 'why': 'cause',
+        'relationships': 'relationships', 'connections': 'relationships',
+        'validation': 'validation', 'limitations': 'limitations',
+    }
+    required = {section_facets[section.casefold()]: section for section in document_plan['sections']
+                if section.casefold() in section_facets and
+                (section != 'Limitations' or section in document_plan.get('explicit_sections', []))}
+    facets = list(dict.fromkeys([*(f for f in required if f not in excluded), *facets]))
+    questions = [dict(id=f'q{i+1}', facet=facet, text=FACETS[facet][0].format(topic=topic),
+                      origin='document_section' if facet in required else 'template_suggestion',
+                      required=facet in required, section=required.get(facet), prerequisites=[],
+                      status='pending', evidence_ids=[])
+                 for i, facet in enumerate(facets[:MAX_QUESTIONS])]
     clarifications = []
     if re.fullmatch(r'(?:it|this|that|them|this document|that document)', topic, re.I):
         clarifications.append('Which named subject or document should this request cover?')
@@ -131,15 +135,13 @@ def select_research_rows(plan, rows):
     # Coverage is candidate evidence availability, not a verified answer to a question.
     patterns = {'definition': r'\bis (?:a|an)\b', 'properties': r'.',
                 'relationships': r'\b(?:uses|has|requires|depends on|is a|causes)\b',
-                'mechanism': r'\b(?:by|through|using|process|steps)\b',
+                'mechanism': r'\b(?:by|using|through)\s+\w+ing\b|\b(?:first|then)\s+\w+s\b',
                 'cause': r'\b(?:because|causes|due to)\b',
                 'limitations': r'\b(?:not|never|cannot|unless|except|only|if|limit)\b',
-                'validation': r'\b(?:test|verify|validate|checksum)\w*\b'}
+                'validation': r'\b(?:verifies|validates|checked|confirmed|passed|failed)\s+\w+\b|\b(?:test|verification|validation) results?\s+(?:show|confirm|indicate)\b'}
     for q in plan['questions']:
         ids = [r['document_id'] for r in selected if re.search(patterns[q['facet']], r['chunk_text'], re.I)]
         q.update(status='candidate_evidence' if ids else 'missing', evidence_ids=ids)
-        if q['prerequisites'] and not any(other['facet'] in q['prerequisites'] and other['evidence_ids'] for other in plan['questions']):
-            q.update(status='prerequisite_missing', evidence_ids=[])
     plan['coverage'] = dict(selected_chunks=len(selected), question_answers_verified=False,
                             missing_facets=[q['facet'] for q in plan['questions'] if not q['evidence_ids']],
                             required_missing_facets=[q['facet'] for q in plan['questions'] if q['required'] and not q['evidence_ids']])

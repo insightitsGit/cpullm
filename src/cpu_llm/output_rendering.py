@@ -11,21 +11,31 @@ _COMMAND_SUFFIX = re.compile(r'\s+in\s+' + _FORMAT + r'\s*[.!?]*$', re.I)
 _DIRECTIVE = re.compile(r'(?:[.!?;]\s*|\n+)(?:please\s+)?(?:use|return (?:it|the answers)|present (?:it|the answers))\s+(?:as |in )?' + _FORMAT + r'\s*[.!?]*$', re.I)
 
 
-def extract_layout(message):
-    raw = message or ''
-    masked = re.sub(r'```[\s\S]*?```|"[^"\n]*"|“[^”\n]*”', lambda m: ' ' * len(m[0]), raw)
+def _layout_match(masked):
     match = _DIRECTIVE.search(masked) or _SUFFIX.search(masked)
     if match is None and re.match(r'^(?:please\s+)?(?:show|present|list|compare|summari[sz]e|describe|explain|give|provide|tell)\b', masked, re.I):
         match = _COMMAND_SUFFIX.search(masked)
+    if match is not None and re.search(r"\b(?:not|don't|do not)(?:\s+use)?$", masked[:match.start()].rstrip(), re.I):
+        return None
+    return match
+
+
+def extract_layout(message):
+    raw = message or ''
+    masked = re.sub(r'```[\s\S]*?```|"[^"\n]*"|“[^”\n]*”', lambda m: ' ' * len(m[0]), raw)
+    match = _layout_match(masked)
     if match is None:
-        return dict(format=None, output_media='text/markdown', content_query=raw, source_end=len(raw), directive=None)
-    if re.search(r"\b(?:not|don't|do not)(?:\s+use)?$", masked[:match.start()].rstrip(), re.I):
         return dict(format=None, output_media='text/markdown', content_query=raw, source_end=len(raw), directive=None)
     kind = match['format'].casefold()
     media = 'text/html' if re.search(r'\bhtml\b', kind) else 'text/markdown'
     kind = 'table' if 'table' in kind else 'report' if 'report' in kind else 'numbered' if 'numbered' in kind else 'bullets'
-    return dict(format=kind, output_media=media, content_query=raw[:match.start()].rstrip(), source_end=match.start(),
-                directive=raw[match.start():])
+    source_end = match.start()
+    while earlier := _layout_match(masked[:source_end].rstrip()):
+        if raw[earlier.start():source_end] != masked[earlier.start():source_end]:
+            break
+        source_end = earlier.start()
+    return dict(format=kind, output_media=media, content_query=raw[:source_end].rstrip(), source_end=source_end,
+                directive=raw[source_end:])
 
 
 @lru_cache(maxsize=1)

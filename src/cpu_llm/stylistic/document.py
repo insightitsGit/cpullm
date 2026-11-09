@@ -162,6 +162,8 @@ def apply_document_style(result,profile):
         section['literal_quotes']=candidate['quotes']
     document['presentation']='verified_prose_with_literal_fallback'
     document['tone_alignment']='supported' if affinity else 'neutral_fallback'
+    from cpu_llm.document_workflow import update_length_coverage
+    update_length_coverage(document)
     canonical=output.get('rendered_response',{}).get('canonical_text',output['reply']['text']);text=render_document(document)
     output['reply'].update(text=text,body=text)
     output['rendered_response'].update(text=text,canonical_text=canonical,verification='inverse-verified predicate composition plus attributed literal quotes')
@@ -174,8 +176,6 @@ def apply_document_style(result,profile):
             retained_literal_quotes=sum(len(g['quotes']) for g in groups)),proof=deepcopy(output['answer_evidence']))
     output['judgment']['verification']='source_quotes_and_inverse_verified_document_constructions'
     document['coverage']['rendered_word_count']=len(text.split())
-    from cpu_llm.document_workflow import update_length_coverage
-    update_length_coverage(document)
     limit=document['plan']['requested_limits'].get('words')
     document['coverage']['requested_budget_exceeded']=limit is not None and document['coverage']['body_word_count']>limit
     if document['coverage']['length_required'] and not document['coverage']['length_target_met']:

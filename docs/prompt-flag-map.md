@@ -1,5 +1,8 @@
 # Prompt flags → agentic consumers
 
+`invent` selects the taxonomy-driven invention node. The natural-language triggers,
+API option and disclosure are defined in [taxonomy-driven invention](taxonomy-invention-spec.md).
+
 Generated from `cpu_llm.flag_contract.FLAG_BINDINGS`. The JSON companion is tested for exact registry agreement.
 
 `request.document` activates the bounded quotation-document workflow for explicit

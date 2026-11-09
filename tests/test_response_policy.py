@@ -8,6 +8,38 @@ import pytest
 from cpu_llm.response_policy import classify_response_request
 
 
+@pytest.mark.parametrize('prompt, target', [
+    ('Write a detailed article about Helios.', 1000),
+    ('Write a long article about Helios.', 1000),
+    ('Write a detailed report about Helios.', 1000),
+    ('Write a long report about Helios.', 1000),
+    ('Write an article about Helios in 1,000 words.', 1000),
+    ('Write a detailed report about Helios in a friendly tone.', 1000),
+    ('Draft a concise email to Alex about Helios.', 120),
+])
+def test_document_classifier_preserves_topic_and_word_target(prompt, target):
+    result = classify_response_request(prompt)
+    assert result['mode'] == 'document'
+    assert result['content_query'] == 'Helios'
+    assert result['document']['word_target'] == target
+    assert classify_response_request('What is Helios?')['mode'] != 'document'
+
+
+@pytest.mark.parametrize('prompt, detail, target, format_', [
+    ('Write a detailed report about Helios. Keep it brief.', 'brief', 120, 'report'),
+    ('Write a brief article about Helios in detail.', 'detailed', 1000, 'report'),
+    ('Write a brief report about Helios in 200 words in 1,000 words.', 'brief', 1000, 'report'),
+    ('Write a detailed report about Helios as a table as bullet points.', 'detailed', 1000, 'bullets'),
+])
+def test_conflicting_document_controls_resolve_to_one_plan(prompt, detail, target, format_):
+    result = classify_response_request(prompt)
+    assert result['mode'] == 'document' and result['content_query'] == 'Helios'
+    assert result['detail'] == detail and result['document']['word_target'] == target
+    assert result['format'] == format_
+    assert result['flags']['long_response'] == (target > 120)
+    assert sum(result['flags'][name] for name in ('report', 'table', 'bullets', 'numbered')) == 1
+
+
 @pytest.mark.parametrize('question, detail, query', [
     ('Briefly explain the Cedar.', 'brief', 'Tell me about the Cedar.'),
     ('Explain the Cedar in detail.', 'detailed', 'Tell me about the Cedar'),

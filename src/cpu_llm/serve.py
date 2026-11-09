@@ -18,7 +18,7 @@ from cpu_llm.access import AccessError, AuthenticationError, SourceForbidden, St
 from cpu_llm.documents import SourceDocument
 from cpu_llm.entry import Entry
 
-_ASK_FIELDS = ("discover", "imagine", "deep", "math", "finance", "as_of", "session_id", "strict_evidence", "small_talk", "cycle_search")
+_ASK_FIELDS = ("discover", "imagine", "deep", "math", "finance", "as_of", "session_id", "strict_evidence", "small_talk", "cycle_search", "invent")
 
 
 MAX_REQUEST_BYTES = 1024 * 1024
@@ -142,6 +142,8 @@ def _dispatch(entry: Entry, path: str, secret: str, payload: dict[str, Any], *, 
         if not message:
             raise ValueError("a message is required")
         kwargs = {key: payload[key] for key in _ASK_FIELDS if key in payload}
+        if 'invent' in kwargs and type(kwargs['invent']) is not bool:
+            raise ValueError('invent must be a boolean')
         if evidence_mode is not None and evidence_mode not in ('strict', 'standard'):
             raise ValueError('X-CPU-LLM-Evidence-Mode must be strict or standard')
         if 'strict_evidence' in kwargs and type(kwargs['strict_evidence']) is not bool:

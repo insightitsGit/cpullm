@@ -12,12 +12,27 @@ import re
 SCHEMA = 'document-plan-v1'
 MAX_DOCUMENT_UNITS = 500
 MAX_DOCUMENT_WORDS = 20000
-_REQUEST = re.compile(
-    r'^(?:please\s+)?(?:(?:can|could|would) you\s+)?'
+DOCUMENT_START = (
+    r'(?:(?:can|could|would) you\s+)?'
     r'(?:write|draft|compose|create|prepare|produce|give(?: me)?|provide(?: me)?)\s+'
-    r'(?:an?\s+)?(?P<depth>detailed|comprehensive|thorough|full|long|brief|short|concise|in-depth)?\s*'
-    r'(?P<genre>design document|design doc|report|article|overview|document|email|letter|memo|proposal|specification|briefing|summary)\s+'
+    r'(?:an?\s+)?(?:(?P<depth>detailed|comprehensive|thorough|full|long|brief|short|concise|in-depth)\s+)?'
+    r'(?P<genre>design document|design doc|report|article|overview|document|email|letter|memo|proposal|specification|briefing|summary)\b'
+)
+_REQUEST = re.compile(
+    rf'^(?:please\s+)?{DOCUMENT_START}\s+'
     r'(?:about|on|of|for)\s+(?P<topic>.+?)[.!?]*$', re.I)
+_DOCUMENT_DEPTH_END = re.compile(
+    r'(?:\s+(?P<inline>in detail|in depth|at length|briefly|concisely)'
+    r'|[.;]\s*(?P<instruction>keep it short|keep it brief|be concise|be thorough))[.!?]*$', re.I)
+
+
+def _trailing_depth(text):
+    match = _DOCUMENT_DEPTH_END.search(text)
+    if not match or re.search(r"\b(?:not|never)\s*$", text[:match.start()], re.I):
+        return text, None
+    cue = (match['inline'] or match['instruction']).casefold()
+    depth = 'brief' if cue in {'briefly', 'concisely', 'keep it short', 'keep it brief', 'be concise'} else 'detailed'
+    return text[:match.start()].strip(), depth
 _SECTIONS = {
     'overview': ('Overview', 'Details', 'Limitations'),
     'report': ('Overview', 'Operations', 'Limitations'),
@@ -53,6 +68,7 @@ def plan_document(message):
     deep_suffix=re.search(r'[.;]\s*(?:please\s+)?(?:use|run|perform)\s+(?:a\s+)?deep search[.!]*$',text,re.I)
     if deep_suffix:
         deep_requested=True;text=text[:deep_suffix.start()]
+    text, trailing_depth = _trailing_depth(text)
     page = 1
     snapshot_as_of = None
     stamp = re.search(r'\s*[,;]\s*as of\s+(\d{1,20})\s*[.!?]*$', text, re.I)
@@ -87,25 +103,36 @@ def plan_document(message):
     # Attribute lists remain independently judged factual tasks.
     if re.match(r'(?:the )?(?:colou?r|habitat|shape|material|weight)\b', topic, re.I):
         return None
-    limit = re.search(r'\s+in\s+(\d{1,5})\s+(sentences?|words?|items?|bullets?)\s*$', topic, re.I)
+    from cpu_llm.response_policy import _NUMBER, _number
+    length_end = re.compile(rf'\s+in\s+({_NUMBER})\s+(sentences?|words?|items?|bullets?)\s*$', re.I)
     limits = {}
-    if limit:
-        limits['words' if limit[2].lower().startswith('word') else 'units'] = int(limit[1])
+    while True:
+        topic, topic_depth = _trailing_depth(topic)
+        trailing_depth = trailing_depth or topic_depth
+        limit = length_end.search(topic)
+        if not limit:
+            break
+        if len(limit[1]) > 12:
+            return None
+        if not limits:
+            limits['words' if limit[2].lower().startswith('word') else 'units'] = _number(limit[1])
         topic = topic[:limit.start()].strip()
     # Explicit empty/ambiguous multi-instruction scope must not become source facts.
     if not topic or len(topic) > 240 or re.search(r'[\n?;]|\b(?:and then|also write)\b', topic, re.I):
         return None
-    depth = (match['depth'] or '').lower()
+    depth = trailing_depth or (match['depth'] or '').lower()
     brief = depth in {'brief', 'short', 'concise'}
     word_target = min(MAX_DOCUMENT_WORDS, max(1, limits.get('words',
         120 if brief else 1000 if depth else 400)))
     budget = min(MAX_DOCUMENT_UNITS, max(1, limits.get('units', MAX_DOCUMENT_UNITS)))
     if 'units' in limits: word_target = None
+    long_response = not brief or (word_target or 0) > 120 or limits.get('units', 0) > 8
     return dict(schema=SCHEMA, genre=genre, topic=topic, sections=list(dict.fromkeys(['Overview', *(requested_sections or _SECTIONS[genre][1:])])),
         detail='brief' if depth in {'brief', 'short', 'concise'} else 'detailed', recipient=recipient,
-        unit_budget=budget, word_target=word_target, requested_limits=limits, page=max(1, min(page, 10000)),
+        unit_budget=budget, word_target=word_target, requested_limits=limits, explicit_sections=requested_sections or [], page=max(1, min(page, 10000)),
         format=layout['format'] or 'report', output_media=layout['output_media'],
-        retrieval_budget=40, source_scan_limit=10000, text_scan_limit=8_000_000, snapshot_as_of=snapshot_as_of,
+        retrieval_budget=40 if long_response else 5,
+        source_scan_limit=10000, text_scan_limit=8_000_000, snapshot_as_of=snapshot_as_of,
         composition='attributed_source_quotes', proposed_decisions=False, deep_requested=deep_requested)
 
 
@@ -221,14 +248,22 @@ def compose_document(plan, rows, *, strict=False, snapshot=None):
         section=_section(text, plan['genre'])
         if section not in plan['sections']: section='Overview'
         for title in plan['sections']:
-            if title not in _SECTIONS[plan['genre']] and (
+            if title not in _SECTIONS[plan['genre']] and title not in plan.get('research_required_sections', ()) and (
                 re.search(_CUES[title],text,re.I) if title in _CUES else _words(title).issubset(_words(text))):
                 section=title;break
         candidates.append(dict(row, section=section))
-    candidates.sort(key=lambda r: str(r['document_id']))
+    facet_sections = plan.get('research_facet_sections', {})
+    for candidate in candidates:
+        section = facet_sections.get(candidate['document_id'])
+        if section:
+            candidate['section'] = section
+    candidates.sort(key=lambda row: (row['document_id'] not in facet_sections, str(row['document_id'])))
     # Interleave sections so budget pressure cannot silently erase all later sections.
     groups = {s: [r for r in candidates if r['section'] == s] for s in plan['sections']}
     ordered = []
+    for section in dict.fromkeys(facet_sections.values()):
+        if groups[section]:
+            ordered.append(groups[section].pop(0))
     while any(groups.values()):
         for section in plan['sections']:
             if groups[section]: ordered.append(groups[section].pop(0))
@@ -440,9 +475,16 @@ def execute_document(app, message, plan, *, caller=None, as_of=None, strict=Fals
     if research is not None:
         from cpu_llm.research_plan import select_research_rows
         rows = select_research_rows(research, rows)
+        facet_sections = {}
+        for question in research['questions']:
+            if question['required']:
+                for document_id in question['evidence_ids']:
+                    facet_sections.setdefault(document_id, question['section'])
         plan = dict(plan, research_topic_sets=[sorted(_words(t)) for t in
                     re.split(r'\s+and\s+', plan['topic'], flags=re.I)],
-                    research_document_ids=[r['document_id'] for r in rows])
+                    research_document_ids=[r['document_id'] for r in rows],
+                    research_facet_sections=facet_sections,
+                    research_required_sections=[q['section'] for q in research['questions'] if q['required']])
     try:
         result=compose_document(plan, rows, strict=strict, snapshot=dict(as_of=when, scanned_chunks=scanned_chunks))
     except ValueError:
@@ -459,6 +501,12 @@ def execute_document(app, message, plan, *, caller=None, as_of=None, strict=Fals
         result['document']['coverage']['research_missing_facets']=gaps
         result['document']['coverage']['research_coverage_complete']=not gaps
         required_gaps=research['coverage']['required_missing_facets']
+        included_ids = {proof['document_id'] for proof in result['answer_evidence']}
+        result['document']['coverage']['research_facets_omitted_from_page'] = [
+            question['facet'] for question in research['questions']
+            if question['required'] and question['evidence_ids']
+            and included_ids.isdisjoint(question['evidence_ids'])
+        ]
         result['document']['coverage']['research_required_missing_facets']=required_gaps
         if required_gaps:
             result['judgment']['complete']=False

@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import re
 
-_NUMBER = r"(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)"
+_NUMBER = r"(?:\d{1,3}(?:,\d{3})+|\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)"
 _NUMBERS = {word: index for index, word in enumerate(
     'zero one two three four five six seven eight nine ten eleven twelve'.split())}
 _COUNT = re.compile(
@@ -45,7 +45,8 @@ _ITEM_REQUEST = re.compile(rf"^(?:please\s+)?(?:give(?: me)?|provide(?: me)?|lis
 
 
 def _number(text: str) -> int:
-    return int(text) if text.isdigit() else _NUMBERS[text.casefold()]
+    digits = text.replace(',', '')
+    return int(digits) if digits.isdigit() else _NUMBERS[text.casefold()]
 
 
 def classify_response_request(message: str) -> dict:
@@ -62,16 +63,15 @@ def classify_response_request(message: str) -> dict:
     from cpu_llm.document_workflow import plan_document
     document = plan_document(message)
     if document is not None:
-        # One genre plan controls length, retrieval and rendering. Avoid legacy
-        # draft-vs-overview disagreement while retaining the existing plan schema.
-        base = classify_response_request('Give me a detailed overview of ' + document['topic'])
-        base.update(explicit=True, detail=document['detail'], mode='document',
+        long_response = document['retrieval_budget'] > 5
+        base = dict(schema='response-plan-v1', explicit=True, detail=document['detail'], mode='document',
             content_query=document['topic'], format=document['format'],
             output_media=document['output_media'], sentence_budget=document['unit_budget'],
-            item_budget=document['unit_budget'], retrieval_budget=40, document=document,
+            item_budget=document['unit_budget'], retrieval_budget=document['retrieval_budget'], document=document,
             requested_limits=document['requested_limits'],
+            reasons=['document request'], word_limit_enforced=False,
             budget_scope='atomic source quotations; necessary qualifiers/proofs preserved')
-        base['flags'].update(long_response=True, expand_retrieval=True, extended_overview=False,
+        base['flags'] = dict(long_response=long_response, expand_retrieval=long_response, extended_overview=False,
             table=document['format']=='table', report=document['format']=='report',
             numbered=document['format']=='numbered', bullets=document['format']=='bullets',
             html=document['output_media']=='text/html', markdown=document['output_media']!='text/html',

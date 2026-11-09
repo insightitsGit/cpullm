@@ -510,6 +510,11 @@
               }
             },
             "description": "Explicit bounded lexical cycle discovery with verified path sentence composition; standalone or inside a document. API options override prompt seed. Strict mode disables cycles; no shortcut inference."
+          },
+          "invent": {
+            "type": "boolean",
+            "default": false,
+            "description": "Opt in to taxonomy-driven invention. The response labels proposals as hypotheses and discloses possible variability. Strict evidence disables this path."
           }
         },
         "description": "Supported request fields. Unknown keys are ignored, including style; pass tone in message text. Current runtime coerces message to a string and enforces strict_evidence/small_talk boolean types; this schema describes recommended client types, not a claim of universal runtime schema enforcement."

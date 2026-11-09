@@ -74,6 +74,10 @@ FLAG_BINDINGS += (FlagBinding('request.document', 'explicit genre prompt or supp
     'Scoped bounded snapshot; sectioned exact quotations, coverage and continuation; shared Markdown/HTML layouts; strict forbids learned generation.',
     'Write a detailed design document about Helios.'),)
 FLAG_BINDINGS += (
+    FlagBinding('request.invent', 'explicit concept-generation prompt or Python/HTTP flag',
+        ('taxonomy_invention',), 'pre_graph',
+        'Generate cited cross-chunk hypotheses; strict disables; append the variability disclosure after rendering.',
+        'Create a new concept from Helios.'),
     FlagBinding('request.document.composition', 'ordinary document request; strict bypasses',
         ('document_compose', 'document_inverse_verify'), 'document_workflow',
         'Neutral supported predicate composition preserves proofs; explicit tone is a separate opt-in output stage.',
@@ -128,7 +132,7 @@ def validate_graph_consumers(nodes):
     # These consumers execute outside the ordinary graph, before/after dispatch.
     external = {'render_response', 'strict_evidence.answer', 'conversation.reply', 'stylistic', 'style_verify',
                 'document_plan', 'document_snapshot', 'document_coverage', 'document_render',
-                'research_plan', 'cycle_snapshot', 'cycle_explore', 'cycle_compose', 'cycle_verify',
+                'research_plan', 'cycle_snapshot', 'cycle_explore', 'cycle_compose', 'cycle_verify', 'taxonomy_invention',
                 'document_compose', 'document_inverse_verify'}
     expected = {node for binding in FLAG_BINDINGS for node in binding.consumers} - external
     if missing := expected - set(nodes):

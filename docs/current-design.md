@@ -1,5 +1,8 @@
 # Current cpu-llm design
 
+The [taxonomy-driven invention node](taxonomy-invention-spec.md) defines
+cross-chunk hypothesis generation, explicit activation, and a response disclosure.
+
 November 4 designs with an initial source-branch implementation:
 [prompt expansion and research planning](prompt-research-expansion-spec.md) and
 [six-channel multi-cycle exploration](six-channel-cycle-exploration-spec.md).

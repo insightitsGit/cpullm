@@ -21,6 +21,7 @@ def test_questions_are_separated_and_singular_reference_is_bound():
 
 @pytest.mark.parametrize('text', [
     'What is Research and Development?', 'What is Trinidad and Tobago?',
+    'Which services create backups and prepare reports?',
     'Explain "What color is Cedar? Where does it live?".',
     "Explain 'What color is Cedar? Where does it live?'.",
     'Explain this example: ```What color is Cedar? Where does it live?```.',
@@ -279,3 +280,34 @@ def test_blocked_and_empty_scope_batches_stop_before_encoder_or_tasks():
     assert blocked['guard_decision'] == 'block'
     empty = app.ask('What color is the Cedar? Where does it live?', caller=CallerContext.make('test', 'alice', []))
     assert empty['access_error'] == 'allowed_sources_empty'
+
+@pytest.mark.parametrize('prompt', [
+    'What is Helios? Write a detailed report about Helios in 1000 words.',
+    'What is Helios? Write a detailed report about Helios in 1,000 words.',
+    'What is Helios? Write a long report about Helios.',
+    'Write a detailed article about Helios. What is its retention period?',
+    'Write a detailed report about Helios in 1000 words. What is its retention period?',
+])
+def test_mixed_request_routes_report_through_document_workflow(prompt):
+    from unittest.mock import Mock
+    app = object.__new__(Appliance)
+    app.tenant_id = 'test'
+    app.small_talk = False
+    app.guard = SimpleNamespace(check=lambda _: SimpleNamespace(decision='allow'))
+    rows = [dict(document_id=f'helios-p{i:04}', chunk_text=f'Helios retains archive group {i} for 30 days under the documented retention policy.') for i in range(80)]
+    app.index = SimpleNamespace(strict_source_rows=Mock(return_value=(rows, 123)))
+    real_single = app._ask_single
+
+    def run_task(query, propositions=None, **options):
+        if query.lower().startswith('what'):
+            return dict(answer_status='answered', reply=dict(text='Factual task handled.'))
+        return real_single(query, propositions, **options)
+
+    app._ask_single = run_task
+    result = app.ask(prompt)
+    assert len(result['task_results']) == 2
+    report = next(task['result'] for task in result['task_results'] if 'document' in task['result'])
+    assert report['document']['plan']['topic'] == 'Helios'
+    assert report['document']['coverage']['body_word_count'] >= 1000
+    assert report['research_plan']['budget']['snapshot_reads'] == 1
+    app.index.strict_source_rows.assert_called_once()

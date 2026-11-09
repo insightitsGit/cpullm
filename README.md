@@ -160,7 +160,7 @@ A similarity score or connection is not factual proof. Strict requests and docum
 workflows can bypass the ordinary graph; not every request runs every node.
 See the [architecture](docs/current-design.md) and [prompt-to-node mapping](docs/prompt-flag-map.md).
 
-## New source features: prompts, research and relationship loops
+## New source features: research, relationship loops and invention
 
 The features below are in the current Git source, **not the published 1.11.2
 wheel**. To use them, install a checkout and complete the database/encoder setup:
@@ -180,6 +180,10 @@ python -m pip install -e .
   60 separate source items. Evidence shortage is reported, never padded.
 - **Loop exploration:** `Show relationship loops for Alpha.` or
   `Explore cycles through Alpha.` activates bounded multi-cycle search.
+- **Invention:** `Invention: Fernhouse.`, `Imagine Fernhouse.`, or
+  `Create a new concept from Fernhouse.` combines cited relationships across
+  chunks and proposes new connections to test. Use `invent=True` in Python or
+  `"invent": true` in HTTP. “Imagine a story” uses the existing story workflow.
 - **Loops inside a document:** `Write a detailed report about Alpha, including
   relationship loops through Alpha.` consumes the discovered paths in a
   Relationship loops section, using the same snapshot as the report.
@@ -217,6 +221,25 @@ absolute configurable ceiling: 100,000, with additional time/memory/edge limits.
 Strict API/header/operator mode disables cycle exploration and prose rewriting.
 Check `cycle_composition`, `cycle_exploration`, `answer_evidence` and coverage for
 omitted paths or incomplete searches. [Full trigger and budget guide](docs/research-cycle-user-guide.md).
+
+### Invention example
+
+In a fictional greenhouse fixture, one source says Fernhouse uses soil moisture
+sensors and another says it stores irrigation event logs. `Invention: Fernhouse.`
+proposed a shared interface between them, cited both records, and suggested a
+prototype comparison. The proposed link was absent from the five fixture records.
+The shipped checkpoint scored dense and identity channels. The response keeps
+all six channel outcomes and labels the proposals as hypotheses.
+
+Every run sets `invention.potentially_nondeterministic=true` and appends this
+note after the response, including empty and partial runs. The note applies to
+the invention proposals within a mixed response. Strict-evidence mode disables
+invention.
+
+> Invention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs.
+
+See the fixture, ranked proposals, and current template limits in the
+[invention spec](docs/taxonomy-invention-spec.md#fernhouse-test-record).
 
 ## Quickstart and reproduction: published package
 
