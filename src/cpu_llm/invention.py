@@ -8,11 +8,16 @@ from cpu_llm.knowledge_graph import Fact, extract_facts, normalize
 
 NOTE = 'Invention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs.'
 _BARE_IMAGINE = r'imagine\s+(?!story\b|poem\b|fiction\b|scene\b|world\b)[\w-]+(?=\s*[.?!;]|\s*$)'
+_HYPOTHESIS_REQUEST = (
+    r'(?:(?:can|could|would) you\s+)?'
+    r'(?:guess|take a guess|speculate|hypothesize|brainstorm(?: ideas)?)'
+    r'(?=\s*(?:[:.!?;]|$)|\s+(?:about|for|from|using|based on)\b)'
+)
 INVENTION_START = (
     r'(?:(?:invent|imagine|create|design)\s+(?:a\s+)?'
     r'(?:new\s+(?:concept|design|idea|hypothesis|solution)|something\s+new)\b'
     r'|invention(?=\s*(?:[:.!?;]|$)|\s+(?:for|from|about|using|with|based on)\b)'
-    rf'|invent\b|{_BARE_IMAGINE})'
+    rf'|invent\b|{_BARE_IMAGINE}|{_HYPOTHESIS_REQUEST})'
 )
 _COMMAND = re.compile(rf'^(?:please\s+)?{INVENTION_START}', re.I)
 _SEED_PREFIX = re.compile(

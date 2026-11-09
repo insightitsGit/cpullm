@@ -8,6 +8,12 @@ Use `invent=True` in Python or `"invent": true` in HTTP. Natural prompts include
 
 ## Candidate generation
 
+Explicit hypothesis requests also activate the same route. Examples include
+“Guess: Fernhouse,” “Take a guess about Fernhouse,” “Speculate about Fernhouse,”
+“Hypothesize about Fernhouse,” and “Brainstorm ideas for Fernhouse.” The same
+hypothesis disclosure applies. Factual questions and quoted or negated uses
+continue through their existing routes.
+
 1. Start from the named entity and follow one explicit taxonomy level. Gather related words, phrases, and typed edges across authorized chunks. Preserve relation direction, source subjects, and source spans. Category premises retain their category subject. Merge equivalent links while keeping distinct citations. Keep multiword concepts such as “encrypted backups” intact.
 2. Use the six slices of the VectorPrism tensor to find and rank promising pairs. Generate candidate typed relationships that are absent from the inspected source graph. Check candidates against direct evidence, duplicates, and contradictions before presentation. Absence from the inspected graph establishes the scope of novelty.
 3. Evaluate each candidate with the six channel functions. Record symbolic support, calibrated vector scores where available, and unknown or inapplicable results separately. Dense and identity are the vector heads enabled by the shipped checkpoint. The other four channels can contribute supported symbolic signals. Similarity can rank a hypothesis but cannot establish its truth or prove causality.

@@ -28,6 +28,8 @@ def appliance(extra=()):
     'Create a new concept from Helios.',
     'Invent a new concept from Helios.',
     'Invention: Helios.', 'Invention for Helios.',
+    'Guess: Helios.', 'Take a guess about Helios.', 'Could you speculate about Helios?',
+    'Hypothesize about Helios.', 'Brainstorm ideas for Helios.',
     'Create something new from the input terms Helios and encrypted backups.',
 ])
 def test_triggers_compose_a_cited_hypothesis_with_six_channels(prompt):
@@ -52,6 +54,8 @@ def test_triggers_compose_a_cited_hypothesis_with_six_channels(prompt):
     'What new concepts exist for Helios?', 'Do not invent a new concept.',
     'Explain "Create a new concept from Helios".', 'new',
     'What does invention mean?', 'Invention history of Helios',
+    'Guess the dosage for Helios.', 'What is your guess about Helios?',
+    'Do not guess about Helios.', 'Explain "Guess: Helios".',
 ])
 def test_other_intents_do_not_trigger_invention(prompt):
     assert invention_seed(prompt) is None

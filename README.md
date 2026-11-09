@@ -184,6 +184,8 @@ python -m pip install -e .
   `Create a new concept from Fernhouse.` combines cited relationships across
   chunks and proposes new connections to test. Use `invent=True` in Python or
   `"invent": true` in HTTP. “Imagine a story” uses the existing story workflow.
+  You can also say `Guess: Fernhouse.`, `Speculate about Fernhouse.`, or
+  `Brainstorm ideas for Fernhouse.` to request hypotheses.
 - **Loops inside a document:** `Write a detailed report about Alpha, including
   relationship loops through Alpha.` consumes the discovered paths in a
   Relationship loops section, using the same snapshot as the report.
