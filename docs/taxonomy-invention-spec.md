@@ -74,6 +74,14 @@ The proposed connections were new within these five records. For example, the fi
 
 The repeated template limits the diversity and specificity of these results. A more developed design could compare soil moisture before and after each watering event to detect watering that failed to reach the soil. That was a design example discussed after the run. The recorded node output was the shared-interface proposal above.
 
+## Conversation follow-ups
+
+Use the same `session_id` for `Invention: Helios` and `Can you explain more?`. The node retains the proposal's endpoints, relation direction, channel results, and cited premises. If several proposals are available, it asks which one to expand. Use `Explain proposal 2` to select one, then `Go deeper` to continue with it.
+
+The first follow-up outlines a prototype test and searches authorized source records for typed relationships that touch the proposal endpoints. The second adds controls and looks for relationships connected to terms found in the first follow-up. Each expansion adds up to four cited relationships. After two expansions, the node asks for a constraint, test result, or additional source.
+
+Follow-up state is held in memory for up to 30 minutes of inactivity and scoped by tenant, caller, allowed sources, session, and snapshot time. Each follow-up rechecks the original premise hashes against the authorized snapshot. Proposed relationships stay labeled as hypotheses, while cited relationships retain their source identifiers and spans. Follow-up text does not enter the knowledge base or answer evidence. Strict evidence mode bypasses invention follow-ups.
+
 ## Acceptance checks
 
 - Both natural-language invention examples and the API flag route to the same node exactly once per task. Story prompts keep the existing Imagine route. Factual, quoted, negated, and strict-evidence prompts leave invention off.

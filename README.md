@@ -243,6 +243,22 @@ invention.
 See the fixture, ranked proposals, and current template limits in the
 [invention spec](docs/taxonomy-invention-spec.md#fernhouse-test-record).
 
+To develop a proposal over several turns, reuse the same `session_id`:
+
+```python
+app.ask("Invention: Fernhouse.", session_id="fernhouse-design")
+app.ask("Explain proposal 1.", session_id="fernhouse-design")
+app.ask("Go deeper.", session_id="fernhouse-design")
+```
+
+When there is one proposal, “Can you explain more?” is enough. When several
+are available, the engine asks which one to expand. The first follow-up outlines
+a prototype test and retrieves cited relationships involving the proposal's
+terms. The second adds test controls and searches from the terms found in the
+first follow-up. Proposed relationships stay labeled as hypotheses, and the
+engine rechecks the cited premises on each turn. See the
+[follow-up spec](docs/taxonomy-invention-spec.md#conversation-follow-ups).
+
 ## Quickstart and reproduction: published package
 
 Python 3.11+ is required. Release checks used Windows/Python 3.12.10.

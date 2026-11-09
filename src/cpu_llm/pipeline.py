@@ -557,6 +557,10 @@ class Appliance:
         sessions = getattr(self, "request_sessions", None)
         if sessions is not None:
             sessions.states.clear()
+        invention_sessions = getattr(self, 'invention_sessions', None)
+        if invention_sessions is not None:
+            with invention_sessions.lock:
+                invention_sessions.states.clear()
 
     def ask(
         self,
@@ -600,20 +604,33 @@ class Appliance:
             message = content
             if style is None:
                 style = tone_control['tone']
-        from cpu_llm.invention import execute_invention, finish_invention_response, invention_seed
+        from cpu_llm.invention import (
+            continue_invention, execute_invention, finish_invention_response,
+            invention_seed, invention_session, remember_invention,
+        )
         from cpu_llm.output_rendering import extract_layout
         from cpu_llm.request_planner import _BOUNDARY, _mask
         if type(invent) is not bool:
             raise ValueError('invent must be a boolean')
         invention_query = extract_layout(content)['content_query']
         seed = invention_seed(invention_query, forced=invent)
-        if seed is not None and (invent or enabled or not _BOUNDARY.search(_mask(invention_query))):
-            if cycle_search is not None or any(value is not None for value in (payment, authority, objective, hypothesis, causal_graph)):
-                raise ValueError('Submit invention and other specialist requests separately.')
-            result = execute_invention(self, raw_message, seed, caller=caller, as_of=as_of, strict=enabled)
-            from cpu_llm.response_policy import classify_response_request
-            result['response_plan'] = classify_response_request(content)
-            return finish_invention_response(result)
+        key = invention_session(self, caller, session_id, as_of)
+        specialist = cycle_search is not None or any(value is not None for value in (
+            payment, authority, objective, hypothesis, causal_graph,
+        ))
+        with self._session_turn(key):
+            result = continue_invention(self, key, raw_message,
+                                        invention_query if seed is None and not specialist else '',
+                                        strict=enabled)
+            if seed is not None and (invent or enabled or not _BOUNDARY.search(_mask(invention_query))):
+                if specialist:
+                    raise ValueError('Submit invention and other specialist requests separately.')
+                result = execute_invention(self, raw_message, seed, caller=caller, as_of=as_of, strict=enabled)
+                remember_invention(self, key, result)
+            if result is not None:
+                from cpu_llm.response_policy import classify_response_request
+                result['response_plan'] = classify_response_request(content)
+                return finish_invention_response(result)
         from cpu_llm.cycle_composition import parse_cycle_prompt
         loop_control=parse_cycle_prompt(content,seed_override=cycle_search.get('seed') if isinstance(cycle_search,dict) else None)
         if loop_control is not None:
@@ -697,6 +714,7 @@ class Appliance:
         if tone_control['tone'] is not None:
             result['tone_request'] = dict(tone_control, effective_tone=style if isinstance(style,str) else getattr(style,'tone',None))
             result['original_message'] = raw_message
+        remember_invention(self, key, result)
         return finish_invention_response(result)
 
     def _ask_single(

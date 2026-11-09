@@ -1,5 +1,6 @@
 """Bounded cross-chunk design hypotheses with cited premises."""
 from itertools import combinations, islice, zip_longest
+from copy import deepcopy
 import hashlib
 import re
 
@@ -73,9 +74,25 @@ def _proposal(left, right):
     )
 
 
+def _snapshot(app, allowed, as_of):
+    from cpu_llm.access import source_allowed
+
+    rows, when = app.index.strict_source_rows(allowed, as_of=as_of)
+    if len(rows) > 10000 or sum(len(row['chunk_text']) for row in rows) > 8_000_000:
+        raise ValueError('snapshot limit')
+    return [row for row in rows if source_allowed(row['document_id'], allowed)], when
+
+
+def _premise(fact, chunk, channels):
+    start = chunk.index(fact.sentence)
+    return dict(subject=fact.subject, relation=fact.relation, object=fact.object,
+                qualification='source_statement', document_id=fact.document_id,
+                quote=fact.sentence, start=start, end=start + len(fact.sentence),
+                chunk_sha256=hashlib.sha256(chunk.encode()).hexdigest(), channels=channels)
+
+
 def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=False):
     import psycopg
-    from cpu_llm.access import source_allowed
     from cpu_llm.pipeline import _caller_for
 
     context = _caller_for(app, caller)
@@ -100,13 +117,10 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
     if not seed or len(seed) > 240:
         return result('needs_clarification', 'Name a short subject in your invention request, such as “Create a new concept from Helios.”', receipt)
     try:
-        rows, when = app.index.strict_source_rows(allowed, as_of=as_of)
-        if len(rows) > 10000 or sum(len(row['chunk_text']) for row in rows) > 8_000_000:
-            raise ValueError('snapshot limit')
+        rows, when = _snapshot(app, allowed, as_of)
     except (ValueError, RuntimeError, psycopg.Error):
         receipt['complete'] = False
         return result('partial', 'The invention source snapshot was unavailable or exceeded its limit.', receipt)
-    rows = [row for row in rows if source_allowed(row['document_id'], allowed)]
     subjects = {normalize(term) for term in re.split(r',|\s+and\s+', seed, flags=re.I)}
     chunks = {row['document_id']: row['chunk_text'] for row in rows}
     facts = list(dict.fromkeys(fact for fact in _source_facts(rows)
@@ -143,12 +157,7 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
                                    right_tensor=tensors.get(fact.object), **scoring)['channels']
 
     def premise(fact):
-        chunk = chunks[fact.document_id]
-        start = chunk.index(fact.sentence)
-        return dict(subject=fact.subject, relation=fact.relation, object=fact.object,
-                    document_id=fact.document_id, quote=fact.sentence, start=start,
-                    end=start + len(fact.sentence), chunk_sha256=hashlib.sha256(chunk.encode()).hexdigest(),
-                    channels=channels(fact))
+        return _premise(fact, chunks[fact.document_id], channels(fact))
 
     receipt['relationships'] = [premise(fact) for fact in links]
     existing = {frozenset((normalize(f.subject), normalize(f.object))) for f in facts}
@@ -176,6 +185,7 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
         scores = channels(Fact(left.object, 'could_coordinate_with', right.object, '', ''))
         proposal, assumptions, tradeoff, test = _proposal(left, right)
         candidates.append(dict(proposal=proposal, assumptions=assumptions, tradeoff=tradeoff, test=test,
+            subject=left.object, object=right.object,
             relation='could_coordinate_with', qualification='hypothesis', channels=scores,
             premises=[premise(f) for f in [*left_group, *right_group]]))
     def rank(item):
@@ -194,6 +204,130 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
         lines.append('Candidate coverage is partial. Check the invention receipt for the search and vector status.')
     status = 'partial' if not receipt['complete'] else 'hypotheses' if receipt['proposals'] else 'insufficient_evidence'
     return result(status, '\n'.join(lines) or 'No qualifying cross-chunk proposal was found.', receipt)
+
+
+_FOLLOW_UP = re.compile(
+    r'(?:please\s+)?(?:(?:can|could|would) you\s+)?'
+    r'(?:explain more|tell me more|go deeper|expand on (?:it|that)|elaborate(?: on (?:it|that))?'
+    r'|(?:explain|expand on|elaborate on) (?:proposal|idea) (?P<number>[1-9][0-9]{0,2}))[.?!]*',
+    re.I,
+)
+
+
+def invention_session(app, caller, session_id, as_of):
+    if session_id is None:
+        return None
+    from cpu_llm.clarification import scoped_session
+    from cpu_llm.pipeline import _caller_for
+
+    context = _caller_for(app, caller)
+    return scoped_session(app.tenant_id, None if context is None else context.caller_id,
+                          None if context is None else context.allowed_sources, session_id, as_of)
+
+
+def remember_invention(app, key, result):
+    if key is None or result.get('needs_clarification'):
+        return
+    proposals = result.get('invention', {}).get('proposals', [])
+    if not proposals:
+        proposals = [proposal for task in result.get('task_results', [])
+                     for proposal in task.get('result', {}).get('invention', {}).get('proposals', [])][:8]
+    if proposals:
+        _invention_sessions(app).save(key, dict(proposals=deepcopy(proposals), selected=None, stages={}, links={}))
+
+
+def _invention_sessions(app):
+    from cpu_llm.request_planner import RequestSessions
+
+    sessions = getattr(app, 'invention_sessions', None)
+    return sessions if sessions is not None else app.__dict__.setdefault('invention_sessions', RequestSessions())
+
+
+def continue_invention(app, key, message, query, *, strict=False):
+    """Consume the previous invention context, or clear it on an unrelated turn."""
+    import psycopg
+
+    sessions = getattr(app, 'invention_sessions', None)
+    if key is None or sessions is None:
+        return None
+    match = _FOLLOW_UP.fullmatch(query.strip())
+    state = sessions.pop(key)
+    if strict or not match or state is None:
+        return None
+    proposals = state['proposals']
+
+    def response(status, body, **receipt):
+        return dict(message=message, tenant_id=app.tenant_id, status=status, answer_status=status,
+                    answer=None, audit_passed=False, answer_evidence=[], reply=dict(text=body, body=body),
+                    needs_clarification=status == 'needs_clarification',
+                    judgment=dict(outcome=status, complete=status == 'hypotheses'),
+                    routing=dict(post_stages=['taxonomy_invention']),
+                    invention=dict(triggered=True, potentially_nondeterministic=True, follow_up=True, **receipt))
+
+    if app.guard.check(message).decision != 'allow':
+        return dict(message=message, tenant_id=app.tenant_id, status='blocked', answer_status='blocked',
+                    answer=None, answer_evidence=[], reply=dict(text='Request blocked.', body='Request blocked.'))
+    try:
+        rows, when = _snapshot(app, key[2], key[4])
+    except (ValueError, RuntimeError, psycopg.Error):
+        sessions.save(key, state)
+        return response('partial', 'The source snapshot for this proposal is unavailable.')
+    chunks = {row['document_id']: row['chunk_text'] for row in rows}
+    hashes = {doc: hashlib.sha256(chunk.encode()).hexdigest() for doc, chunk in chunks.items()}
+    if any(hashes.get(p['document_id']) != p['chunk_sha256']
+           for idea in proposals for p in idea['premises']):
+        return response('insufficient_evidence', 'The cited sources changed. Run the invention request again.')
+
+    number = match['number']
+    selected = int(number) if number else state['selected'] or (1 if len(proposals) == 1 else None)
+    if selected is None or selected > len(proposals):
+        options = '\n'.join(f'{i}. {item["proposal"]}' for i, item in enumerate(proposals, 1))
+        sessions.save(key, state)
+        return response('needs_clarification', f'Which proposal should I expand?\n{options}')
+
+    idea = proposals[selected - 1]
+    stage = state['stages'].get(selected, 0)
+    endpoints = {normalize(idea['subject']), normalize(idea['object'])}
+    relationships = [p for p in state['links'].get(selected, [])
+                     if hashes.get(p['document_id']) == p['chunk_sha256']]
+    endpoints.update(normalize(p[field]) for p in relationships for field in ('subject', 'object'))
+    previous = {(p['document_id'], p['quote']) for p in (*idea['premises'], *relationships)}
+    related = (
+        fact for fact in _source_facts(rows)
+        if (fact.document_id, fact.sentence) not in previous
+        and len(fact.sentence) <= 1000 and fact.sentence in chunks[fact.document_id]
+        and endpoints.intersection((normalize(fact.subject), normalize(fact.object)))
+    )
+    if stage < 2:
+        for fact in related:
+            identity = (fact.document_id, fact.sentence)
+            if identity in previous:
+                continue
+            previous.add(identity)
+            relationships.append(_premise(fact, chunks[fact.document_id], evaluate_connection(fact)['channels']))
+            if len(relationships) == 4 * (stage + 1):
+                break
+    left, right = idea['subject'], idea['object']
+    if stage == 0:
+        detail = (f'Start with one representative workflow involving {left} and {right}. Record how it runs '
+                  f'today, then repeat it with the proposed change and compare the steps and failures. {idea["test"]}')
+    elif stage == 1:
+        detail = (f'Keep inputs and operating conditions fixed when comparing runs. Record failures separately '
+                  f'for {left}, {right}, and their interaction. Repeat the comparison before attributing a difference '
+                  'to the proposal. If the result is inconclusive, identify the missing measurement before expanding the trial.')
+    else:
+        detail = 'To go further, share a constraint, a result from the test, or another source to evaluate.'
+    lines = [idea['proposal'], detail, idea['assumptions'], idea['tradeoff'], 'Cited premises']
+    lines.extend(f'[{p["document_id"]}] {p["quote"]}' for p in idea['premises'])
+    if relationships:
+        lines.append('Additional source relationships')
+        lines.extend(f'[{p["document_id"]}] {p["quote"]}' for p in relationships)
+    state['selected'] = selected
+    state['stages'][selected] = min(stage + 1, 2)
+    state['links'][selected] = relationships
+    sessions.save(key, state)
+    return response('hypotheses', '\n'.join(lines), proposal_number=selected, as_of=when,
+                    proposals=[deepcopy(idea)], relationships=deepcopy(relationships))
 
 
 def finish_invention_response(result):

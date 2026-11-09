@@ -61,6 +61,49 @@ def test_other_intents_do_not_trigger_invention(prompt):
     assert invention_seed(prompt) is None
 
 
+def test_follow_up_carries_typed_edges_and_expands_from_new_source_terms():
+    app = appliance(('PostgreSQL uses write-ahead logging.', 'Write-ahead logging uses segment files.'))
+    initial = app.ask('Invention: Helios', session_id='design')
+    [idea] = initial['invention']['proposals']
+    first = app.ask('Can you explain more?', session_id='design')
+    second = app.ask('Go deeper.', session_id='design')
+
+    for result in (first, second):
+        assert result['invention']['proposals'] == [idea]
+        assert result['answer_evidence'] == []
+        assert result['reply']['text'].count(NOTE) == 1
+        assert all(p['qualification'] == 'source_statement' for p in result['invention']['relationships'])
+    assert idea['qualification'] == 'hypothesis'
+    assert (idea['subject'], idea['relation'], idea['object']) == (
+        'PostgreSQL', 'could_coordinate_with', 'encrypted backups',
+    )
+    assert 'write-ahead logging' in first['reply']['text']
+    assert 'segment files' not in first['reply']['text']
+    assert 'segment files' in second['reply']['text']
+    assert 'operating conditions fixed' in second['reply']['text']
+
+
+def test_follow_up_asks_which_proposal_then_remembers_the_selection():
+    app = appliance(('Helios uses a scheduler.',))
+    app.ask('Invention: Helios', session_id='design')
+    question = app.ask('Tell me more.', session_id='design')
+    assert question['needs_clarification']
+    selection = app.ask('Explain proposal 2.', session_id='design')
+    assert selection['invention']['proposal_number'] == 2
+    assert app.ask('Tell me more.', session_id='design')['invention']['proposal_number'] == 2
+
+
+def test_follow_up_revalidates_cited_sources():
+    app = appliance()
+    app.ask('Invention: Helios', session_id='design')
+    rows, when = app.index.strict_source_rows.return_value
+    app.index.strict_source_rows.return_value = (rows[:-1], when)
+    result = app.ask('Elaborate.', session_id='design')
+    assert result['status'] == 'insufficient_evidence'
+    assert 'The cited sources changed' in result['reply']['text']
+    assert not result['answer_evidence']
+
+
 def test_api_and_strict_precedence():
     app = appliance()
     assert app.ask('Helios', invent=True)['invention']['proposals']
