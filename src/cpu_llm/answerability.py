@@ -750,6 +750,16 @@ def _attribute_value(plan: dict[str, str], sentence: str) -> str | None:
     entity = re.escape(plan["entity"].casefold())
     copula = "was" if plan.get("tense") == "past" else "is"
     folded = " ".join(sentence.split())
+    if plan["attribute"].casefold() == "weight":
+        subject = re.escape(_subject_phrase(plan["entity"]))
+        verb = "weighed" if copula == "was" else "weighs"
+        measured = re.fullmatch(
+            rf"(?:(?:the|a|an)\s+)?{subject}\s+{verb}\s+(?P<value>.+?)[.?!]?",
+            folded,
+            re.IGNORECASE,
+        )
+        if measured:
+            return measured["value"]
     from cpu_llm.semantic import ATTRIBUTE_VALUES
     if plan['attribute'].casefold() in ATTRIBUTE_VALUES:
         bare = re.fullmatch(rf'(?:the\s+)?{entity}\s+{copula}\s+([\w-]+)[.!?]?', folded, re.I)

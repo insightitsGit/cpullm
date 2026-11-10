@@ -1118,6 +1118,21 @@ class Appliance:
             from cpu_llm.evidence_judge import finalize_turn
             with chosen_class(chosen or None):
                 result = finalize_turn(result, getattr(self, 'shine', None))
+            judgment = result.get('judgment') or {}
+            proof = judgment.get('evidence') or []
+            if (ingestion.get('quote_requested') and judgment.get('outcome') in {'answered', 'evidence_quote'}
+                    and result.get('answer_status') in {'answered', 'evidence_quote'}
+                    and len(proof) == 1):
+                from cpu_llm.evidence_judge import _publish
+
+                item = proof[0]
+                result = _publish(
+                    result, text=f'From {item["document_id"]}:\n{item["span"]}',
+                    status='evidence_quote', evidence=proof, supporting=[],
+                    scope='source_attribution', answer=item['span'],
+                )
+                result['status'] = 'evidence_quote'
+                judgment['outcome'] = 'evidence_quote'
             result.setdefault('routing', {}).setdefault('post_stages', []).append('finalize_turn')
             from cpu_llm.response_repair import inspect_gap
             gap = inspect_gap(message, result, confirmed=bool(plan.get('repair_confirmed')))

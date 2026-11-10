@@ -28,7 +28,7 @@ TYPO_MIN_COSINE = 0.45
 TYPO_MARGIN = 0.05
 # Spelling variants that select a question shape. A corpus that contains one
 # of them must not rewrite the other, or the frame parser never sees the question.
-_PROTECTED = frozenset({"color", "colour"})
+_PROTECTED = frozenset({"color", "colour", "weight"})
 _TOKEN = re.compile(r"[A-Za-z]{4,}")
 _cache_key: tuple[str, int, int] | None = None
 _cache_grams: dict[str, Counter[str]] = {}

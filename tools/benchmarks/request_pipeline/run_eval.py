@@ -515,9 +515,32 @@ def _report(out: Path) -> None:
     passes = [row for row in rows if (row.get("verdict") or {}).get("ok")]
     review = passes[::10]
     _json(out / "manual_review_queue.json", [{"id": row.get("id"), "file": row.get("_file"), "text": row.get("text")} for row in review])
+    answer_outcomes = {"answer", "quote", "partial"}
+    expected_answers = [
+        row["verdict"] for row in rows
+        if row.get("expected") in answer_outcomes and not row["verdict"].get("excluded_from_accuracy")
+    ]
+    delivered = [verdict for verdict in expected_answers if verdict.get("actual") in answer_outcomes]
+    misses = [verdict for verdict in expected_answers if not verdict.get("ok")]
+    supported_ok = len(expected_answers) - len(misses)
+    answered = len(expected_answers)
+    breakdown = {
+        "expected_answer_rows": answered,
+        "full_contract_passes": supported_ok,
+        "answer_like_delivered": len(delivered),
+        "delivered_full_contract_passes": sum(bool(verdict.get("ok")) for verdict in delivered),
+        "insufficient_without_flagged_false_assertion": sum(
+            verdict.get("actual") == "insufficient" and not verdict.get("false_assertion") for verdict in misses
+        ),
+        "clarification_without_flagged_false_assertion": sum(
+            verdict.get("actual") == "clarification" and not verdict.get("false_assertion") for verdict in misses
+        ),
+        "budget_refusals": sum(verdict.get("actual") == "budget_refusal" for verdict in misses),
+        "expected_abstentions_passed": sum(bool(row["verdict"].get("appropriate_abstention") and row["verdict"].get("ok")) for row in rows),
+        "misses_with_proof_retrieved_then_lost": sum(bool(verdict.get("retrieved_then_lost")) for verdict in misses),
+    }
+    metrics["answer_breakdown"] = breakdown
     _json(out / "metrics.json", metrics)
-    answered = [row for row in rows if row.get("expected") in {"answer", "quote", "partial"} and not (row.get("verdict") or {}).get("excluded_from_accuracy")]
-    supported_ok = sum(1 for row in answered if (row.get("verdict") or {}).get("ok"))
     false_n = sum(1 for row in rows if (row.get("verdict") or {}).get("false_assertion"))
     lines = [
         "# Request-pipeline benchmark",
@@ -527,7 +550,16 @@ def _report(out: Path) -> None:
         "",
         f"Scorer: `{SCORER_VERSION}`.",
         f"Rows scored: {len(rows)}. Passes: {len(passes)}. Failures: {len(failures)}.",
-        f"Supported answer-like rows: {supported_ok} / {len(answered)}.",
+        f"Full contract passes on gold-expected answer rows: {supported_ok} / {answered}.",
+        f"Answer-like coverage on those rows: {len(delivered)} / {answered}.",
+        f"Full contract passes among delivered answers: {breakdown['delivered_full_contract_passes']} / {len(delivered)}.",
+        f"Insufficient-evidence fallbacks with no flagged false assertion: {breakdown['insufficient_without_flagged_false_assertion']}.",
+        f"Clarification fallbacks with no flagged false assertion: {breakdown['clarification_without_flagged_false_assertion']}.",
+        f"Budget refusals on gold-expected answer rows: {breakdown['budget_refusals']}.",
+        f"Gold-expected abstentions passed: {breakdown['expected_abstentions_passed']}.",
+        f"Misses with gold proof retrieved then lost (overlaps outcomes above): {breakdown['misses_with_proof_retrieved_then_lost']}.",
+        "Fallbacks are reported separately from answer success. A fallback on a gold-expected answer row may indicate a pipeline miss or an issue with the gold expectation.",
+        "False assertion counts cover the scorer's configured checks. Gold answerability and source support require review against the original prompt and source text.",
         f"False assertions: {false_n}.",
         f"Contract disagreements excluded from accuracy: {metrics['excluded_contract_disagreements']}.",
         "",
@@ -544,7 +576,7 @@ def _report(out: Path) -> None:
     gates = [
         ("no false assertion on a scored row", false_n == 0, f"{false_n} false assertions"),
         ("no silent task loss", not any((row.get("verdict") or {}).get("silent_task_loss") for row in rows), "see failures"),
-        ("supported correctness at least 95%", (supported_ok / len(answered) >= 0.95) if answered else False, f"{supported_ok}/{len(answered) or 0}"),
+        ("full contract pass rate on gold-expected answer rows at least 95%", (supported_ok / answered >= 0.95) if answered else False, f"{supported_ok}/{answered}"),
     ]
     for name, passed, detail in gates:
         lines.append(f"- {'met' if passed else 'not met'}: {name} ({detail})")

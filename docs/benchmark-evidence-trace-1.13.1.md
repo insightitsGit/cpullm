@@ -1,0 +1,73 @@
+# 1.13.1 missed-row evidence trace
+
+Complete proof means all IDs from at least one gold proof set appeared in logged retrieval. A missing trace does not establish missing index data or a ranking failure.
+
+| Run | Case | Reply outcome | Gold IDs returned / required | Complete proof |
+| --- | --- | --- | --- | --- |
+| dense-dev | direct-har-05 | insufficient | 1 / 1 | Yes |
+| dense-dev | direct-har-07 | answer | 1 / 1 | Yes |
+| dense-dev | direct-arc-05 | insufficient | 1 / 1 | Yes |
+| dense-dev | direct-arc-06 | insufficient | 1 / 1 | Yes |
+| dense-dev | direct-arc-07 | answer | 1 / 1 | Yes |
+| dense-dev | join-har-02 | insufficient | 1 / 2 | No |
+| dense-dev | join-har-06 | insufficient | 2 / 3 | No |
+| dense-dev | join-arc-06 | insufficient | 2 / 3 | No |
+| dense-dev | depth-har-05 | answer | 1 / 1 | Yes |
+| dense-dev | depth-arc-06 | answer | 1 / 1 | Yes |
+| dense-dev | depth-gal-07 | insufficient | 1 / 1 | Yes |
+| dense-dev | separation-har-10 | insufficient | 1 / 1 | Yes |
+| dense-dev | separation-har-12 | insufficient | 1 / 1 | Yes |
+| dense-dev | separation-arc-14 | insufficient | 1 / 1 | Yes |
+| dense-dev | separation-gal-15 | partial | 2 / 2 | Yes |
+| dense-dev | separation-gal-17 | partial | 2 / 2 | Yes |
+| dense-dev | separation-gal-18 | budget_refusal | 0 / 2 | No |
+| dense-dev | separation-gal-21 | partial | 2 / 2 | Yes |
+| dense-hold-scripts | script-quote-hold-t1 | clarification | 0 / 1 | No |
+| dense-hold | direct-gal-05 | insufficient | 1 / 1 | Yes |
+| dense-hold | direct-gal-06 | insufficient | 1 / 1 | Yes |
+| dense-hold | direct-gal-07 | answer | 1 / 1 | Yes |
+| dense-hold | join-gal-06 | insufficient | 2 / 3 | No |
+| dense-hold | ambiguity-har-12 | insufficient | 1 / 2 | No |
+| dense-hold | depth-har-14 | insufficient | 1 / 1 | Yes |
+| dense-hold | separation-arc-27 | clarification | 0 / 1 | No |
+| dense-hold | unsupported-arc-05 | partial | 0 / 1 | No |
+| resonance-dev | direct-har-03 | clarification | 0 / 1 | No |
+| resonance-dev | direct-har-05 | insufficient | 1 / 1 | Yes |
+| resonance-dev | direct-har-07 | answer | 1 / 1 | Yes |
+| resonance-dev | direct-arc-03 | clarification | 0 / 1 | No |
+| resonance-dev | direct-arc-05 | insufficient | 1 / 1 | Yes |
+| resonance-dev | direct-arc-06 | insufficient | 1 / 1 | Yes |
+| resonance-dev | direct-arc-07 | answer | 1 / 1 | Yes |
+| resonance-dev | join-har-02 | insufficient | 1 / 2 | No |
+| resonance-dev | join-har-06 | insufficient | 2 / 3 | No |
+| resonance-dev | join-arc-06 | insufficient | 2 / 3 | No |
+| resonance-dev | ambiguity-har-02 | clarification | 0 / 1 | No |
+| resonance-dev | ambiguity-gal-07 | clarification | 0 / 1 | No |
+| resonance-dev | depth-har-05 | answer | 1 / 1 | Yes |
+| resonance-dev | depth-arc-06 | answer | 1 / 1 | Yes |
+| resonance-dev | depth-gal-07 | insufficient | 1 / 1 | Yes |
+| resonance-dev | separation-har-10 | insufficient | 1 / 1 | Yes |
+| resonance-dev | separation-har-12 | insufficient | 1 / 1 | Yes |
+| resonance-dev | separation-arc-14 | insufficient | 1 / 1 | Yes |
+| resonance-dev | separation-gal-15 | partial | 2 / 2 | Yes |
+| resonance-dev | separation-gal-17 | partial | 2 / 2 | Yes |
+| resonance-dev | separation-gal-18 | budget_refusal | 0 / 2 | No |
+| resonance-dev | separation-arc-19 | clarification | 0 / 2 | No |
+| resonance-dev | separation-gal-21 | partial | 2 / 2 | Yes |
+| resonance-hold-scripts | script-expire-hold-t3 | clarification | 0 / 1 | No |
+| resonance-hold-scripts | script-reopen-hold-t3 | clarification | 0 / 1 | No |
+| resonance-hold-scripts | script-quote-hold-t1 | clarification | 0 / 1 | No |
+| resonance-hold-scripts | script-cancel-hold-t1 | clarification | 0 / 2 | No |
+| resonance-hold | direct-gal-03 | clarification | 0 / 1 | No |
+| resonance-hold | direct-gal-05 | insufficient | 1 / 1 | Yes |
+| resonance-hold | direct-gal-06 | insufficient | 1 / 1 | Yes |
+| resonance-hold | direct-gal-07 | answer | 1 / 1 | Yes |
+| resonance-hold | join-gal-06 | insufficient | 2 / 3 | No |
+| resonance-hold | ambiguity-har-12 | insufficient | 1 / 2 | No |
+| resonance-hold | depth-har-11 | clarification | 0 / 1 | No |
+| resonance-hold | depth-har-14 | insufficient | 1 / 1 | Yes |
+| resonance-hold | separation-arc-27 | clarification | 0 / 1 | No |
+| resonance-hold | separation-arc-30 | clarification | 0 / 3 | No |
+| resonance-hold | separation-arc-35 | clarification | 2 / 3 | No |
+| resonance-hold | separation-gal-36 | clarification | 3 / 4 | No |
+| resonance-hold | unsupported-arc-05 | partial | 0 / 1 | No |

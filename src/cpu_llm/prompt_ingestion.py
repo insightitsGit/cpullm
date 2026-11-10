@@ -58,6 +58,15 @@ def normalize_question(text: str) -> dict:
     if _GUARD.search(raw) or re.search(r'```|["“”]|(?m:^\s*>)', raw):
         return dict(result, status='guarded')
     query = raw.strip()
+    location_quote = re.fullmatch(
+        r"quote the sentence that says where ([\w '-]+?) (?:lives|resides)[.?!]?",
+        query,
+        re.I,
+    )
+    if location_quote:
+        return dict(result, query=f"Where does {location_quote[1]} live?",
+                    status="normalized", quote_requested=True,
+                    transformations=[dict(rule="explicit_location_quote")])
     information = _ANNOTATION_REQUEST.match(query)
     if information:
         facet = re.fullmatch(r'(?:the\s+)?([a-z]+)\s+of\s+(.+?)[.!?]*', query[information.end():], re.I)
