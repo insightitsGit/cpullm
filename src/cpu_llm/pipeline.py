@@ -562,6 +562,14 @@ class Appliance:
             with invention_sessions.lock:
                 invention_sessions.states.clear()
 
+    @staticmethod
+    def evaluate_invention_constraints(hypothesis, *, model, predict, axes, observable_units, limits):
+        """Evaluate sourced numerical bounds for an explicitly selected hypothesis."""
+        from cpu_llm.constraint_evaluator import evaluate_invention_constraints
+
+        return evaluate_invention_constraints(hypothesis, model=model, predict=predict, axes=axes,
+                                              observable_units=observable_units, limits=limits)
+
     def ask(
         self,
         message: str,
