@@ -18,7 +18,7 @@ routes** to explore relationships, join cited premises across knowledge bases,
 or formulate hypotheses. Hypotheses carry their own label, and numerical results
 are conditional on the selected model and supplied constraints.
 
-**This release: 1.12.1.** Author: **Amin Parva, Independent Engineer**.
+**This release: 1.13.0.** Author: **Amin Parva, Independent Engineer**.
 
 **Licenses:** code [Apache-2.0](LICENSE); bundled WikiText-2 data has separate
 **CC BY-SA 3.0/GFDL** terms and attribution. See [third-party notices](THIRD_PARTY_NOTICES.md).
@@ -402,14 +402,14 @@ Python 3.11+ is required. Release checks used Windows/Python 3.12.10.
 
 ```shell
 python -m pip install --upgrade pip
-python -m pip install "cpu-llm==1.12.1"
+python -m pip install "cpu-llm==1.13.0"
 python -m pip check
 python -c "import cpu_llm; print(cpu_llm.__version__)"
 ```
 
 Before publication, install the supplied wheel instead of the version from PyPI.
 To build from a checkout, run `python -m pip install build` and then
-`python -m build --outdir dist/1.12.1`.
+`python -m build --outdir dist/1.13.0`.
 
 Document queries require PostgreSQL/pgvector and the pretrained
 `sentence-transformers/all-mpnet-base-v2` encoder assets. The trained projection
@@ -476,8 +476,7 @@ results, automatic legal compliance or a turnkey zero-trust enclave.
 
 ## Inspect and manage chunks
 
-Chunk management and the parallel ingestion option below are available from
-the current source checkout. The published 1.12.1 wheel predates these changes.
+Chunk inventory, confirmed deletion, team roles, and parallel ingestion are included in 1.13.0.
 
 Ask `How many chunks do we have?`, `How many chunks are there in notes.pdf?`,
 or `List chunks for notes.pdf.` Counts include active chunks visible to the
@@ -527,7 +526,7 @@ HTTP and the healthcare demo's 12/12 authored outcomes.
 customer-corpus or hosted-model comparison establishes superiority.
 
 The authenticated HTTP service exposes POST `/v1/ask`, `/v1/ingest`, `/v1/correct`
-and `/v1/delete`. The current source adds `/v1/chunks` and `/v1/delete-chunk`.
+and `/v1/delete`. Version 1.13.0 adds `/v1/chunks` and `/v1/delete-chunk`.
 It serves requests serially. Lazy factories must construct
 appliances on the serving thread. There is no built-in TLS or production gateway,
 and long work blocks other requests. See [OpenAPI](docs/openapi.json) and the

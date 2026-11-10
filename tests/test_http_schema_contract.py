@@ -10,11 +10,27 @@ SPEC=json.loads((Path(__file__).resolve().parents[1]/'docs/openapi.json').read_t
 def test_ask_fields_and_routes_match_the_server():
     fields=SPEC['components']['schemas']['AskRequest']['properties']
     assert set(fields)=={'message',*_ASK_FIELDS}
-    assert set(SPEC['paths'])=={'/v1/ask','/v1/ingest','/v1/correct','/v1/delete'}
+    assert set(SPEC['paths'])=={'/v1/ask','/v1/ingest','/v1/correct','/v1/delete','/v1/chunks','/v1/delete-chunk'}
     assert 'style' not in fields
     header=SPEC['paths']['/v1/ask']['post']['parameters'][0]
     assert header['name']=='X-CPU-LLM-Evidence-Mode'
     assert header['schema']['enum']==['strict','standard']
+
+
+def test_chunk_management_routes_forward_payloads():
+    entry = SimpleNamespace(
+        chunk_inventory=lambda secret, source, **page: (secret, source, page),
+        delete_chunk=lambda secret, document_id, confirmation: (secret, document_id, confirmation),
+    )
+    assert _dispatch(entry, '/v1/chunks', 'team', {'source': 'notes.pdf', 'limit': 2, 'offset': 5}) == (
+        200, ('team', 'notes.pdf', {'limit': 2, 'offset': 5}),
+    )
+    assert _dispatch(entry, '/v1/delete-chunk', 'team', {'document_id': 'notes-p0001'}) == (
+        200, ('team', 'notes-p0001', None),
+    )
+    assert _dispatch(entry, '/v1/delete-chunk', 'team', {
+        'document_id': 'notes-p0001', 'confirmation': 'token',
+    }) == (200, ('team', 'notes-p0001', 'token'))
 
 @pytest.mark.parametrize('name',['ordinaryDocument','strictDocument','strictLookup'])
 def test_documented_ask_examples_reach_entry(name):
