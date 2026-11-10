@@ -339,6 +339,14 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
                 lines = [f'Hypothesis: {prediction}', assumptions, test,
                          f'Proposed mechanism [{source["document_id"]}]: {source["mechanism"]}']
                 lines.extend(f'[{p["document_id"]}] {p["quote"]}' for p in [*constraints, *support[:4]])
+                if normalize(name) == 'leptogenesis' and normalize(target) == 'observed baryon asymmetry' and not constraints:
+                    from cpu_llm.leptogenesis import format_reference_result, run_reference_profile
+
+                    proposal = receipt['proposals'][0]
+                    scan = run_reference_profile(proposal)
+                    proposal['constraint_scan'] = scan
+                    lines.append(format_reference_result(scan))
+                    lines.extend(f'[{limit["id"]}] {limit["source"]}' for limit in scan['limits'])
                 status = 'hypotheses' if receipt['complete'] else 'partial'
                 return result(status, '\n'.join(lines), receipt)
             body = (f'Research question: Can {name} reproduce {target}?\n'
@@ -491,7 +499,27 @@ def continue_invention(app, key, message, query, *, strict=False):
                         and normalize(p['subject']) in {normalize(left), normalize(right)}), None)
     effect = next((p for p in relationships if measurement and p['relation'] == 'affects'
                    and normalize(p['subject']) == normalize(measurement['object'])), None)
-    if stage < 2 and idea['relation'] == 'proposed_contribution':
+    scan = idea.get('constraint_scan')
+    if stage < 2 and scan:
+        from cpu_llm.leptogenesis import format_reference_result
+
+        if stage == 0 and scan['lowest_passing']:
+            point = scan['lowest_passing']
+            detail = 'Lowest passing sampled point: ' + ', '.join(
+                f'{name}={value:.5g}' for name, value in
+                {**point['parameters'], **point['predictions']}.items()
+            ) + '.'
+        elif stage == 1 and scan['rejected_endpoint_limits']:
+            detail = 'Failed limits at the rejected endpoints of sampled brackets: ' + ', '.join(
+                f'{names}: {count}' for names, count in scan['rejected_endpoint_limits'].items()
+            ) + '. These brackets locate sampled transitions.'
+            crossing = scan['refined_crossing']
+            if crossing:
+                detail += (f' Bisection on a fixed slice found the baryon-asymmetry floor at '
+                           f'M1 ≈ {crossing["parameters"]["M1"]:.4g} GeV.')
+        else:
+            detail = format_reference_result(scan)
+    elif stage < 2 and idea['relation'] == 'proposed_contribution':
         detail = (
             f'Select a model that predicts both {right} and a linked laboratory observable from the same '
             f'parameters. Check which settings for {left} satisfy the empirical limits.'
@@ -517,7 +545,9 @@ def continue_invention(app, key, message, query, *, strict=False):
                   'to the proposal. If the result is inconclusive, identify the missing measurement before expanding the trial.')
     else:
         detail = 'To go further, share a constraint, a result from the test, or another source to evaluate.'
-    lines = [idea['proposal'], detail, idea['assumptions'], idea['tradeoff'], 'Cited premises']
+    lines = ([detail, 'The automatic profile uses its own bounds. The source passage supplied the mechanism.']
+             if scan else [idea['proposal'], detail, idea['assumptions'], idea['tradeoff']])
+    lines.append('Cited premises')
     lines.extend(f'[{p["document_id"]}] {p["quote"]}' for p in idea['premises'])
     if relationships:
         lines.append('Additional source relationships')

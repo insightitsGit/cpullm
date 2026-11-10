@@ -137,11 +137,22 @@ def test_flattened_mechanism_table_expands_a_named_model_and_asks_on_broad_topic
     assert constraint['document_id'] == 'lab'
     assert focused['invention']['research_brief']['qualification'] == 'hypothesis'
     [hypothesis] = focused['invention']['proposals']
+    assert 'constraint_scan' not in hypothesis
     assert len(hypothesis['channels']) == 6
     assert not hypothesis['channels']['causal']['symbolic_supported']
     assert focused['answer_evidence'] == []
     [source] = focused['invention']['research_context']
     assert chunk[source['start']:source['end']] == source['quote']
+
+    app.index.strict_source_rows.return_value = ([dict(document_id='physics', chunk_text=chunk)], 123)
+    automatic = app.ask('Invention: Leptogenesis.', session_id='boundary')
+    [hypothesis] = automatic['invention']['proposals']
+    scan = hypothesis['constraint_scan']
+    assert scan['sampled'] == 4000
+    assert scan['refined_crossing']['binding_limit'] == 'eta_B'
+    assert 'Automatic scan' in automatic['reply']['text']
+    assert 'Lowest passing sampled point' in app.ask('Can you explain more?', session_id='boundary')['reply']['text']
+    assert 'Bisection on a fixed slice' in app.ask('Go deeper.', session_id='boundary')['reply']['text']
 
 
 def test_unstructured_topic_chunks_yield_cited_research_question_without_claiming_edges():

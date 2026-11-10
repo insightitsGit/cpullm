@@ -82,6 +82,16 @@ The hypothesis asks whether a parameter region can reproduce the target outcome 
 
 ## Conversation follow-ups
 
+In the baryon-asymmetry case, `Invention: Baryogenesis.` asks which mechanism to
+investigate. `Invention: Leptogenesis.` selects a mechanism and returns a cited
+hypothesis about jointly satisfying cosmological and laboratory constraints.
+The follow-ups preserve that hypothesis and its source and describe the
+model-to-observable mapping and boundary analysis needed. If no numeric bound
+is retrieved, the reply distinguishes the missing KB evidence from the built-in
+reference profile. The matching leptogenesis brief runs that profile and carries
+the results through the session. For custom inputs, use the
+[Python evaluator](invention-constraint-evaluator-spec.md).
+
 Use the same `session_id` for `Invention: Helios` and `Can you explain more?`. The node retains the proposal's endpoints, relation direction, channel results, and cited premises. If several proposals are available, it asks which one to expand. Use `Explain proposal 2` to select one, then `Go deeper` to continue with it.
 
 The first follow-up outlines a prototype test and searches authorized source records for typed relationships that touch the proposal endpoints. The second adds controls and looks for relationships connected to terms found in the first follow-up. Each expansion adds up to four cited relationships. After two expansions, the node asks for a constraint, test result, or additional source.

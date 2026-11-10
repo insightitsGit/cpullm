@@ -62,3 +62,67 @@ def scan_leptogenesis(hypothesis, *, axes, limits):
         delta_cp_rad=1.97 * math.pi,
     )
     return scan
+
+
+def run_reference_profile(hypothesis):
+    """Run a fixed, versioned diagnostic profile suitable for chat."""
+    from collections import Counter
+    from cpu_llm.constraint_evaluator import ObservableLimit, ParameterAxis
+
+    scan = scan_leptogenesis(
+        hypothesis,
+        axes=[
+            ParameterAxis('M1', 'GeV', [10**(9 + 3*i/19) for i in range(20)]),
+            ParameterAxis('m_lightest', 'eV', [.001 + .049*i/19 for i in range(20)]),
+            ParameterAxis('im_z', 'rad', [.1 + 2.4*i/9 for i in range(10)]),
+            ParameterAxis('re_z', 'rad', [-math.pi/4]),
+        ],
+        limits=[
+            ObservableLimit('eta_B', 'eta_B', '1', 'Project diagnostic acceptance window',
+                            lower=5.62e-10, upper=6.62e-10),
+            ObservableLimit('kamland_zen', 'm_beta_beta', 'eV',
+                            'https://arxiv.org/abs/2406.11438 (28 meV nuclear-matrix-element scenario)',
+                            upper=.028),
+            ObservableLimit('planck_bao', 'sum_m_nu', 'eV',
+                            'https://arxiv.org/abs/1807.06209 (Planck 2018 + BAO scenario)', upper=.12),
+        ],
+    )
+    passing = [point for point in scan['points'] if not point['failed_limits']]
+    lowest = min(passing, key=lambda point: point['parameters']['M1'], default=None)
+    refined = []
+    for bracket in scan['transition_brackets']:
+        lower, upper = bracket['lower_point'], bracket['upper_point']
+        if (bracket['axis'] != 'M1' or upper['failed_limits']
+                or upper['parameters']['M1'] != lowest['parameters']['M1']
+                or lower['failed_limits'] != ['eta_B'] or lower['predictions']['eta_B'] >= 5.62e-10):
+            continue
+        left, right = lower['parameters']['M1'], upper['parameters']['M1']
+        for _ in range(32):
+            midpoint = (left + right) / 2
+            if predict(dict(upper['parameters'], M1=midpoint))['eta_B'] < 5.62e-10:
+                left = midpoint
+            else:
+                right = midpoint
+        parameters = dict(upper['parameters'], M1=right)
+        refined.append(dict(parameters=parameters, predictions=predict(parameters),
+                            binding_limit='eta_B', mass_bracket_gev=[left, right]))
+    crossings = Counter(
+        ', '.join(pair['lower_point']['failed_limits'] or pair['upper_point']['failed_limits'])
+        for pair in scan['transition_brackets']
+    )
+    return dict(profile='leptogenesis_reference_v1', status=scan['status'], axes=scan['axes'],
+                scope=scan['model_scope'], limits=scan['limits'], sampled=len(scan['points']),
+                accepted=len(passing), brackets=len(scan['transition_brackets']),
+                rejected_endpoint_limits=dict(crossings),
+                lowest_passing=lowest,
+                refined_crossing=min(refined, key=lambda point: point['parameters']['M1'], default=None))
+
+
+def format_reference_result(scan):
+    text = (f'Automatic scan ({scan["profile"]}, illustrative normal ordering without flavor effects): '
+            f'{scan["accepted"]} of {scan["sampled"]} sampled points passed; '
+            f'{scan["brackets"]} adjacent pass/fail brackets.')
+    point = scan['lowest_passing']
+    if point:
+        text += f' Lowest passing sampled M1: {point["parameters"]["M1"]:.3g} GeV.'
+    return text

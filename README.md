@@ -259,6 +259,49 @@ first follow-up. Proposed relationships stay labeled as hypotheses, and the
 engine rechecks the cited premises on each turn. See the
 [follow-up spec](docs/taxonomy-invention-spec.md#conversation-follow-ups).
 
+### From a cited hypothesis to a numerical scan
+
+With a knowledge base that describes competing explanations for baryon asymmetry,
+`Invention: Baryogenesis.` can ask which mechanism to investigate.
+`Invention: Leptogenesis.` can then propose testing whether a model reproduces
+the observed asymmetry while satisfying neutrinoless double-beta decay constraints.
+`Can you explain more?` and `Go deeper.` carry the hypothesis and its citation
+forward. When the source names an observable but supplies no usable numerical
+limit, the reply reports that gap.
+
+When the leptogenesis brief lacks numeric constraints, chat runs a built-in
+illustrative profile and cites its separate inputs. Follow-ups report a sampled
+point and the refined crossing when available. For custom bounds or a different
+grid, run the scan explicitly in Python:
+
+```python
+from cpu_llm.constraint_evaluator import ObservableLimit, ParameterAxis
+
+reply = app.ask("Invention: Leptogenesis.", session_id="baryogenesis")
+hypothesis = reply["invention"]["proposals"][0]  # Select a cited proposal from the reply.
+scan = app.scan_leptogenesis(
+    hypothesis,
+    axes=[
+        ParameterAxis("M1", "GeV", [1e11, 2e11, 3e11]),
+        ParameterAxis("m_lightest", "eV", [0.003579]),
+        ParameterAxis("re_z", "rad", [-0.7853981633974483]),
+        ParameterAxis("im_z", "rad", [0.6333333333333333]),
+    ],
+    limits=[
+        ObservableLimit("asymmetry", "eta_B", "1", "Diagnostic acceptance window",
+                        lower=5.62e-10, upper=6.62e-10),
+        ObservableLimit("effective-mass", "m_beta_beta", "eV", "Historical benchmark scenario",
+                        upper=0.036),
+    ],
+)
+print(scan["status"], scan["accepted_count"], scan["transition_brackets"])
+```
+
+The illustrative adapter uses normal ordering and an unflavored approximation.
+Its brackets describe transitions between sampled points. See the
+[constraint evaluator spec](docs/invention-constraint-evaluator-spec.md) for the
+full scan inputs, reported limits, and interpretation.
+
 ## Quickstart and reproduction: published package
 
 Python 3.11+ is required. Release checks used Windows/Python 3.12.10.

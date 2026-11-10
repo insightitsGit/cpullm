@@ -6,7 +6,13 @@ The adapter receives a parameter point and returns predictions keyed by observab
 
 The evaluator scans a bounded Cartesian grid in deterministic order. It records each point's predictions and failed constraint identifiers. Adjacent accepted and rejected grid points bracket a sampled transition. The grid spacing determines the resolution, and an empty set of accepted samples does not exclude unsampled points. Evaluation errors stop the scan.
 
-The Python invention workflow exposes the scan through the appliance after a cited hypothesis has been selected. A scan is an explicit action with supplied inputs. The hypothesis receipt does not imply that a scan ran. The first regression uses a synthetic model with a known intersection. A leptogenesis scan requires an independent implementation of the cosmological and laboratory predictions and validated numerical inputs.
+The Python invention workflow exposes the scan through the appliance after a cited hypothesis has been selected. Callers can supply custom inputs. An executed scan has its own receipt. The first regression uses a synthetic model with a known intersection. A leptogenesis scan requires an independent implementation of the cosmological and laboratory predictions and validated numerical inputs.
+
+## Automatic chat handoff
+
+When the selected mechanism is leptogenesis, the brief names the observed baryon asymmetry, and retrieval supplies no numeric constraint, chat runs `leptogenesis_reference_v1`. The trusted profile uses the illustrative normal-ordering adapter and a fixed 4,000-point grid. It combines the project diagnostic asymmetry window, a 28 meV KamLAND-Zen nuclear-matrix-element scenario, and the 120 meV Planck plus BAO scenario. These inputs are labeled separately from knowledge-base citations. The receipt records the grid, bounds, sampled pass count, lowest passing point, and failed-limit counts at rejected bracket endpoints. Follow-ups report those results. The profile also bisects eligible lower-asymmetry crossings next to the lowest passing sampled mass and reports the lowest refined crossing on those fixed slices.
+
+If retrieval already supplied numeric constraints, or no built-in adapter matches the mechanism, callers can run a custom scan explicitly through Python.
 
 ## Illustrative leptogenesis adapter
 
@@ -14,7 +20,7 @@ The Python invention workflow exposes the scan through the appliance after a cit
 
 Supply sourced constraints for `eta_B` and `m_beta_beta`. An optional `sum_m_nu` bound can be evaluated in the same scan. Use separate runs for different nuclear matrix element scenarios. The adapter predicts an effective mass in eV. A direct half-life bound requires an additional decay model. See the [complete KamLAND-Zen analysis](https://journals.aps.org/prl/abstract/10.1103/jkf6-48j8).
 
-This adapter verifies the numerical workflow and the diagnostic scan. A physics benchmark requires reproducing a published model point with its inputs and conventions, including [flavor effects](https://arxiv.org/abs/hep-ph/0601084) where applicable. Boundary claims also require checking finer grids. Chat follow-ups can describe a scan, and numerical execution requires the explicit Python call with caller-supplied axes and limits.
+This adapter verifies the numerical workflow and the diagnostic scan. A physics benchmark requires reproducing a published model point with its inputs and conventions, including [flavor effects](https://arxiv.org/abs/hep-ph/0601084) where applicable. Boundary claims also require checking finer grids.
 
 ## Baryon asymmetry case rerun
 
@@ -23,3 +29,14 @@ The illustrative scan used 20 logarithmic samples of `M1` from 1e9 to 1e12 GeV, 
 Of 4,000 sampled points, 33 passed and 152 adjacent pairs bracketed a pass/fail transition. The lowest passing sampled `M1` was 1.624e11 GeV. Passing points predicted effective Majorana masses of 4.36–30.35 meV.
 
 Bisection refined the lowest crossing among the five checked mass brackets to `M1` ≈ 1.407e11 GeV at fixed `m_lightest` ≈ 3.579 meV and `im_z` ≈ 0.6333 rad. The lower `eta_B` threshold set the crossing. At that point, `m_beta_beta` was 6.31 meV and `sum_m_nu` was 63.13 meV. This is a crossing on a fixed slice of the illustrative model.
+
+Across the 152 transition brackets, rejected endpoints failed the asymmetry
+constraint alone in 149 cases, the mass-sum limit alone in one, and both in two.
+The effective-mass ceiling failed at none of these rejected endpoints. On the
+slice with the highest passing effective mass, varying `m_lightest` crossed
+the asymmetry floor at 29.845 meV and the mass-sum ceiling at 30.159 meV.
+
+In the historical diagnostic above, the chat rerun and scan were separate executions. The chat hypothesis and both
+follow-ups cited the same leptogenesis passage and reported no usable numerical
+lab bound from that knowledge base. The scan used the caller-supplied diagnostic
+bounds above. Bisection was a separate diagnostic on selected grid brackets.
