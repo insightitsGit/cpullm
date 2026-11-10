@@ -259,6 +259,29 @@ first follow-up. Proposed relationships stay labeled as hypotheses, and the
 engine rechecks the cited premises on each turn. See the
 [follow-up spec](docs/taxonomy-invention-spec.md#conversation-follow-ups).
 
+### Join multiple knowledge bases with CrossDomin
+
+Give sources an alphanumeric KB prefix followed by a hyphen, such as
+`physics-seesaw.md`, `math-rotations.md`, or `numerics-rotation-checks.md`.
+Ingest them into the same appliance with `app.ingest(...)`, then select
+two to seven prefixes:
+
+```python
+reply = app.ask("CrossDomin: Casas-Ibarra using KBs: physics, math, numerics.")
+print(reply["reply"]["text"])
+```
+
+The first KB anchors the topic. Each selected KB must contribute a cited
+premise for the same join. The short prompt `CrossDomin: Casas-Ibarra.`
+defaults to physics and mathematics. Research prompts also route here when they
+name KBs explicitly, for example `Research Casas-Ibarra using KBs: physics, math, numerics.`
+Use `Research`, `Investigate`, or `Explore` with that suffix. Ordinary research
+requests use the research planner. CrossDomin currently verifies complex
+orthogonality in the transpose convention. If a selected KB lacks a matching
+premise, the reply names the gap and asks you to ingest a source under that prefix.
+Strict evidence mode disables this invention route. See the
+[CrossDomin spec](docs/taxonomy-invention-spec.md#crossdomin) for the join rule.
+
 ### From a cited hypothesis to a numerical scan
 
 With a knowledge base that describes competing explanations for baryon asymmetry,

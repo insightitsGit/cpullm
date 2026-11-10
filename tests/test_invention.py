@@ -180,6 +180,58 @@ def test_follow_up_revalidates_cited_sources():
     assert not result['answer_evidence']
 
 
+def test_crossdomin_requires_two_authorized_domains_and_matching_conventions():
+    app = appliance()
+    rows = [
+        dict(document_id='physics-seesaw-p0001',
+             chunk_text='The Casas-Ibarra matrix is complex orthogonal and satisfies R^T R = I.'),
+        dict(document_id='mathematics-rotation-p0001',
+             chunk_text='For complex z, the rotation built from cos(z) and sin(z) is complex orthogonal and satisfies R^T R = I.'),
+    ]
+    app.index.strict_source_rows.return_value = (rows, 123)
+    prompt = 'CrossDomin: Casas-Ibarra.'
+    result = app.ask(prompt)
+    assert result['routing']['post_stages'] == ['crossdomin']
+    [join] = result['invention']['joins']
+    assert [p['domain'] for p in join['premises']] == ['physics', 'mathematics']
+    assert result['invention']['check']['passed']
+    assert not result['answer_evidence']
+    assert result['reply']['text'].endswith(NOTE)
+    caller = CallerContext.make(app.tenant_id, 'reader', ['physics-seesaw-p'])
+    assert app.ask(prompt, caller=caller)['status'] == 'insufficient_evidence'
+    assert app.ask(prompt, strict_evidence=True)['status'] == 'unsupported'
+    rows[1]['chunk_text'] = rows[1]['chunk_text'].replace('R^T R', 'R† R')
+    assert app.ask(prompt)['status'] == 'insufficient_evidence'
+
+
+def test_crossdomin_joins_seven_user_selected_kbs_and_rejects_an_eighth():
+    from cpu_llm.documents import SourceDocument, chunks_for
+
+    app = appliance()
+    names = ['physics', 'math', 'algebra', 'numerics', 'modeling', 'methods', 'verification']
+    rows = []
+    for name in names:
+        text = ('For complex z, a rotation built from cos(z) and sin(z) is complex orthogonal and satisfies R^T R = I.'
+                if name == 'math' else 'The Casas-Ibarra matrix is complex orthogonal and satisfies R^T R = I.')
+        rows.extend(dict(document_id=key, chunk_text=chunk)
+                    for key, chunk in chunks_for(SourceDocument(f'{name}-notes', (text,))))
+    app.index.strict_source_rows.return_value = (rows, 123)
+    prompt = 'CrossDomin: Casas-Ibarra using KBs: ' + ', '.join(names)
+    result = app.ask(prompt)
+    assert result['status'] == 'hypotheses'
+    [join] = result['invention']['joins']
+    assert len(join['premises']) == 7
+    assert len({p['document_id'] for p in join['premises']}) == 7
+    natural = 'Research Casas-Ibarra using KBs: physics, math, numerics.'
+    assert app.ask(natural)['invention']['requested_domains'] == ['physics', 'mathematics', 'numerics']
+    assert app.ask(prompt + ', extra')['status'] == 'needs_clarification'
+    app.index.strict_source_rows.return_value = (rows[:-1], 123)
+    missing = app.ask(prompt)
+    assert missing['status'] == 'insufficient_evidence'
+    assert missing['invention']['missing_domains'] == ['verification']
+    assert 'Ingest a source with the missing premise' in missing['reply']['text']
+
+
 def test_api_and_strict_precedence():
     app = appliance()
     assert app.ask('Helios', invent=True)['invention']['proposals']
