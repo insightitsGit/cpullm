@@ -74,6 +74,12 @@ The proposed connections were new within these five records. For example, the fi
 
 The repeated template limits the diversity and specificity of these results. A more developed design could compare soil moisture before and after each watering event to detect watering that failed to reach the soil. That was a design example discussed after the run. The recorded node output was the shared-interface proposal above.
 
+## From research brief to hypothesis
+
+When a source labels a candidate mechanism and explicitly connects it to an outcome, the invention node uses the research brief to retrieve nearby typed relationships. It preserves the original mechanism quote and distinguishes proposed mechanisms from other source statements. The six channel results are recorded for the candidate and related links. Vector similarity ranks related links and cannot establish causation or supply a missing outcome.
+
+The hypothesis asks whether a parameter region can reproduce the target outcome while satisfying independent empirical constraints. The node looks for reported numeric bounds in separate chunks that mention an observable linked by the mechanism citation. It retains the experimental quote and span. A model must map the same parameters to the cosmological outcome and the laboratory observables before a numerical boundary can be computed. An empty intersection would exclude the tested parameter range under the model's assumptions. Missing bounds are reported explicitly. If the outcome cannot be extracted, the node returns a research question. If several mechanisms match equally, it asks which one to investigate.
+
 ## Conversation follow-ups
 
 Use the same `session_id` for `Invention: Helios` and `Can you explain more?`. The node retains the proposal's endpoints, relation direction, channel results, and cited premises. If several proposals are available, it asks which one to expand. Use `Explain proposal 2` to select one, then `Go deeper` to continue with it.

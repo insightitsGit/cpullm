@@ -94,6 +94,86 @@ def _premise(fact, chunk, channels):
                 chunk_sha256=hashlib.sha256(chunk.encode()).hexdigest(), channels=channels)
 
 
+def _research_brief(rows, subjects):
+    """Use explicitly labeled candidate mechanisms in source tables."""
+    def words(text):
+        return set(re.findall(r'[a-z0-9]+', text.casefold()))
+
+    topics = [words(subject) for subject in sorted(subjects) if words(subject)]
+    candidates = {}
+    for row in rows:
+        chunk = row['chunk_text']
+        in_table = False
+        for line in re.split(r'\r?\n|(?<=\|)[ \t]+(?=\|)', chunk):
+            cells = [cell.strip().strip('*') for cell in line.strip().strip('|').split('|')]
+            if not line.lstrip().startswith('|') or len(cells) < 2:
+                in_table = False
+                continue
+            if cells[1].casefold() == 'proposed mechanism':
+                in_table = True
+                continue
+            if not in_table or len(cells[1]) < 25 or len(line) > 1000:
+                continue
+            name, mechanism = cells[:2]
+            terms = words(f'{name} {mechanism}')
+            score = sum(all(word in terms or word + 's' in terms for word in topic) for topic in topics)
+            if name:
+                start = chunk.index(line)
+                candidates.setdefault(name, (score, dict(
+                    name=name, mechanism=mechanism, qualification='proposed_mechanism',
+                    document_id=row['document_id'], quote=line, start=start, end=start + len(line),
+                    chunk_sha256=hashlib.sha256(chunk.encode()).hexdigest(),
+                )))
+    if not candidates:
+        return []
+    best = max(score for score, _ in candidates.values())
+    matches = [item for score, item in candidates.values() if score == best and score]
+    if len(matches) == len(topics) == 1:
+        [match] = matches
+        if topics[0] < words(match['name']) and not topics[0] <= words(match['mechanism']):
+            matches = [item for _, item in candidates.values()
+                       if item['document_id'] == match['document_id']]
+    return matches[:8]
+
+
+_LAB_OBSERVABLES = {
+    'neutrinoless double-beta decay': r'neutrinoless double[ -]beta decay|0νββ',
+    'neutrino oscillation CP phase': r'oscillation.{0,100}(?:cp phase|δ[_ ]?cp)|(?:cp phase|δ[_ ]?cp).{0,100}oscillation',
+    'lepton flavor violation': r'lepton flavou?r violation|(?:μ|mu)\s*(?:→|->)\s*e\s*(?:γ|gamma)',
+}
+_EMPIRICAL_BOUND = re.compile(
+    r'(?=.*\d)(?=.*\b(?:measur\w*|experiment\w*|observed|confidence level|excluded|data)\b)'
+    r'(?=.*(?:\b(?:limit|bound|interval|constraint|uncertainty|half[ -]life)\b|±))', re.I,
+)
+
+
+def _empirical_context(rows, source, target):
+    from cpu_llm.answerability import _sentences
+
+    observables = {label: pattern for label, pattern in _LAB_OBSERVABLES.items()
+                   if re.search(pattern, source['quote'], re.I)}
+    outcome = target.removeprefix('the observed ')
+    patterns = {**observables, 'cosmological outcome': re.escape(outcome)}
+    constraints = []
+    for row in rows:
+        if row['document_id'] == source['document_id']:
+            continue
+        chunk = row['chunk_text']
+        for quote in _sentences(chunk):
+            if len(quote) > 1000 or quote not in chunk or not _EMPIRICAL_BOUND.search(quote):
+                continue
+            matches = [label for label, pattern in patterns.items() if re.search(pattern, quote, re.I)]
+            if not matches:
+                continue
+            start = chunk.index(quote)
+            constraints.append(dict(document_id=row['document_id'], quote=quote, start=start,
+                                    end=start + len(quote), chunk_sha256=hashlib.sha256(chunk.encode()).hexdigest(),
+                                    qualification='reported_empirical_constraint', observables=matches))
+            if len(constraints) == 4:
+                return list(observables), constraints
+    return list(observables), constraints
+
+
 def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=False):
     import psycopg
     from cpu_llm.pipeline import _caller_for
@@ -128,8 +208,9 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
     chunks = {row['document_id']: row['chunk_text'] for row in rows}
     facts = list(dict.fromkeys(fact for fact in _source_facts(rows)
                               if fact.sentence in chunks[fact.document_id]))
-    links = [fact for fact in facts if normalize(fact.subject) in subjects]
-    taxonomy = {normalize(fact.object) for fact in links if fact.relation == 'is_a'}
+    links = [fact for fact in facts if subjects.intersection((normalize(fact.subject), normalize(fact.object)))]
+    taxonomy = {normalize(fact.object) for fact in links
+                if fact.relation == 'is_a' and normalize(fact.subject) in subjects}
     links.extend(fact for fact in facts if normalize(fact.subject) in taxonomy - subjects)
     receipt['taxonomy'] = sorted(taxonomy)
     by_relation = {}
@@ -155,9 +236,10 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
     scoring = dict(enabled_channels=getattr(pipeline, 'enabled_channels', None),
                    causal_matrix=getattr(getattr(app.index, 'engine', None), 'causal_matrix', None))
 
-    def channels(fact):
-        return evaluate_connection(fact, left_tensor=tensors.get(fact.subject),
-                                   right_tensor=tensors.get(fact.object), **scoring)['channels']
+    def channels(fact, vectors=None):
+        vectors = tensors if vectors is None else vectors
+        return evaluate_connection(fact, left_tensor=vectors.get(fact.subject),
+                                   right_tensor=vectors.get(fact.object), **scoring)['channels']
 
     def premise(fact):
         return _premise(fact, chunks[fact.document_id], channels(fact))
@@ -196,6 +278,100 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
         return tuple(float('-inf') if score is None else score for score in scores)
 
     candidates.sort(key=rank, reverse=True)
+    if not candidates:
+        options = _research_brief(rows, subjects)
+        if options:
+            receipt['research_context'] = options
+            if len(options) > 1:
+                names = ', '.join(item['name'] for item in options)
+                return result('needs_clarification', f'Which proposed mechanism should I investigate? {names}', receipt)
+            [source] = options
+            name = source['name']
+            outcome = re.search(r'\b(?:convert\w* into|produc\w*|generat\w*)\s+(?P<target>[^.;$(]+)',
+                                source['mechanism'], re.I)
+            target = outcome['target'].strip() if outcome else 'the outcome described in the source'
+            if target.startswith('a '):
+                target = 'the observed ' + target[2:]
+            receipt['research_brief'] = dict(
+                topic=seed, mechanism=name, outcome=target, comparison='external empirical constraints',
+                qualification='hypothesis',
+            )
+            if outcome and target:
+                endpoint_terms = {normalize(name), normalize(outcome['target'].strip())}
+                endpoint_terms.update(term.removeprefix('a ') for term in tuple(endpoint_terms))
+                related = list(islice((
+                    fact for fact in facts if fact.document_id != source['document_id']
+                    and len(fact.sentence) <= 1000
+                    and any(normalize(label) in endpoint_terms for label in (fact.subject, fact.object))
+                ), 32))
+                edge = Fact(name, 'proposed_contribution', target, source['document_id'], source['quote'])
+                labels = list(dict.fromkeys(label for fact in [edge, *related]
+                                            for label in (fact.subject, fact.object) if len(label) <= 240))
+                vectors = {}
+                if pipeline is not None:
+                    try:
+                        vectors = dict(zip(labels, pipeline.encode_texts(labels)))
+                    except (ValueError, RuntimeError, OSError):
+                        receipt.update(complete=False, vector_status='unavailable')
+                support = [_premise(fact, chunks[fact.document_id], channels(fact, vectors)) for fact in related]
+                support.sort(key=lambda item: tuple(
+                    float('-inf') if item['channels'][key]['vector_score'] is None
+                    else item['channels'][key]['vector_score'] for key in ('dense', 'identity')
+                ), reverse=True)
+                observables, constraints = _empirical_context(rows, source, target)
+                receipt['research_brief'].update(observables=observables, empirical_constraints=constraints)
+                lab = ' and '.join(observables) or 'a laboratory observable linked to the mechanism'
+                prediction = (f'A parameter region for {name} may reproduce {target} while satisfying '
+                              f'experimental constraints on {lab}.')
+                assumptions = ('A specified model must map the same parameters to both the cosmological outcome '
+                               'and the laboratory observable.')
+                if not any(set(item['observables']) & set(observables) for item in constraints):
+                    assumptions += ' The retrieved sources supplied no usable numeric laboratory bound.'
+                test = ('Map the model predictions over its parameter range. Keep only points that match the '
+                        'observed outcome and satisfy the reported laboratory limits. An empty overlap excludes '
+                        'the tested parameter range under the stated assumptions.')
+                receipt['proposals'] = [dict(
+                    subject=name, relation=edge.relation, object=target, qualification='hypothesis',
+                    channels=channels(edge, vectors), premises=[source, *constraints, *support[:4]], proposal=prediction,
+                    assumptions=assumptions, tradeoff='The conclusion depends on the model-to-observable mapping.',
+                    test=test,
+                )]
+                lines = [f'Hypothesis: {prediction}', assumptions, test,
+                         f'Proposed mechanism [{source["document_id"]}]: {source["mechanism"]}']
+                lines.extend(f'[{p["document_id"]}] {p["quote"]}' for p in [*constraints, *support[:4]])
+                status = 'hypotheses' if receipt['complete'] else 'partial'
+                return result(status, '\n'.join(lines), receipt)
+            body = (f'Research question: Can {name} reproduce {target}?\n'
+                    f'Proposed mechanism [{source["document_id"]}]: {source["mechanism"]}\n'
+                    'Identify a laboratory observable linked to the mechanism and check whether the sources '
+                    'give a measured interval or exclusion bound and a model that predicts it.')
+            return result('research_question', body, receipt)
+        # Technical prose may name the topic without expressing a typed edge.
+        # Preserve those excerpts as context and pose a question without inferring an edge.
+        anchors = [re.compile(r'(?<!\w)' + re.escape(term) + r'(?!\w)', re.I)
+                   for term in sorted(subjects) if term]
+        excerpts = []
+        for row in rows:
+            chunk = row['chunk_text']
+            quote = next((sentence for sentence in _sentences(chunk)
+                          if 20 <= len(sentence) <= 1000 and sentence in chunk
+                          and any(pattern.search(sentence) for pattern in anchors)), None)
+            if quote:
+                start = chunk.index(quote)
+                excerpts.append(dict(document_id=row['document_id'], quote=quote, start=start,
+                                     end=start + len(quote), chunk_sha256=hashlib.sha256(chunk.encode()).hexdigest(),
+                                     qualification='source_excerpt'))
+            if len(excerpts) == 4:
+                break
+        if len(excerpts) >= 2:
+            receipt['research_context'] = excerpts
+            question = (f'Research question: For {seed}, can a candidate explanation reproduce the outcome '
+                        'described in the sources while satisfying their stated constraints?')
+            method = ('Identify a model that predicts the outcome and an independently measured observable. '
+                      'Find the empirical bounds and check which model parameters can satisfy both.')
+            body = [question, method, 'Source context:']
+            body.extend(f'[{p["document_id"]}] {p["quote"]}' for p in excerpts)
+            return result('research_question', '\n'.join(body), receipt)
     receipt['proposals'] = candidates[:8]
     receipt['complete'] = receipt['complete'] and len(candidates) <= 8
     lines = []
@@ -315,7 +491,15 @@ def continue_invention(app, key, message, query, *, strict=False):
                         and normalize(p['subject']) in {normalize(left), normalize(right)}), None)
     effect = next((p for p in relationships if measurement and p['relation'] == 'affects'
                    and normalize(p['subject']) == normalize(measurement['object'])), None)
-    if stage == 0 and measurement:
+    if stage < 2 and idea['relation'] == 'proposed_contribution':
+        detail = (
+            f'Select a model that predicts both {right} and a linked laboratory observable from the same '
+            f'parameters. Check which settings for {left} satisfy the empirical limits.'
+            if stage == 0 else
+            'Report the boundary of the allowed parameter region, including which experimental limit sets '
+            'each boundary and how experimental and model uncertainty affect it.'
+        )
+    elif stage == 0 and measurement:
         signal, factor = measurement['subject'], measurement['object']
         detail = (f'Research question: Can {signal} estimate {factor} well enough to improve the proposed workflow? '
                   f'Compare estimates from {signal} against known values of {factor} in a controlled trial.')

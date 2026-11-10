@@ -115,6 +115,49 @@ def test_follow_up_asks_which_proposal_then_remembers_the_selection():
     assert app.ask('Tell me more.', session_id='design')['invention']['proposal_number'] == 2
 
 
+def test_flattened_mechanism_table_expands_a_named_model_and_asks_on_broad_topic():
+    app = appliance()
+    chunk = ('| Model | Proposed Mechanism | Test | | --- | --- | --- | '
+             '| Leptogenesis | Heavy neutrinos decay and the resulting processes convert into a baryon asymmetry ($B$). | Neutrinoless double-beta decay. | '
+             '| Electroweak Baryogenesis | A first-order transition drives the system out of thermal equilibrium. | Measure transition effects. |')
+    bound = 'A simulated experiment reports a neutrinoless double-beta decay half-life lower bound of 100 years.'
+    app.index.strict_source_rows.return_value = ([
+        dict(document_id='physics', chunk_text=chunk),
+        dict(document_id='lab', chunk_text=bound),
+    ], 123)
+    broad = app.ask('Invention: Baryogenesis.')
+    assert broad['needs_clarification']
+    assert 'Leptogenesis, Electroweak Baryogenesis' in broad['reply']['text']
+    focused = app.ask('Invention: Leptogenesis.')
+    assert focused['status'] == 'hypotheses'
+    assert 'A parameter region for Leptogenesis may reproduce the observed baryon asymmetry' in focused['reply']['text']
+    assert 'An empty overlap excludes the tested parameter range' in focused['reply']['text']
+    [constraint] = focused['invention']['research_brief']['empirical_constraints']
+    assert constraint['quote'] == bound
+    assert constraint['document_id'] == 'lab'
+    assert focused['invention']['research_brief']['qualification'] == 'hypothesis'
+    [hypothesis] = focused['invention']['proposals']
+    assert len(hypothesis['channels']) == 6
+    assert not hypothesis['channels']['causal']['symbolic_supported']
+    assert focused['answer_evidence'] == []
+    [source] = focused['invention']['research_context']
+    assert chunk[source['start']:source['end']] == source['quote']
+
+
+def test_unstructured_topic_chunks_yield_cited_research_question_without_claiming_edges():
+    app = appliance()
+    app.index.strict_source_rows.return_value = ([
+        dict(document_id='physics-1', chunk_text='Researchers investigate baryogenesis as an open problem.'),
+        dict(document_id='physics-2', chunk_text='The literature discusses competing scenarios for baryogenesis.'),
+    ], 123)
+    result = app.ask('Invention: Baryogenesis.')
+    assert result['status'] == 'research_question'
+    assert not result['answer_evidence']
+    assert not result['invention']['proposals']
+    assert [p['document_id'] for p in result['invention']['research_context']] == ['physics-1', 'physics-2']
+    assert result['reply']['text'].endswith(NOTE)
+
+
 def test_follow_up_revalidates_cited_sources():
     app = appliance()
     app.ask('Invention: Helios', session_id='design')

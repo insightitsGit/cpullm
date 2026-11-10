@@ -570,6 +570,13 @@ class Appliance:
         return evaluate_invention_constraints(hypothesis, model=model, predict=predict, axes=axes,
                                               observable_units=observable_units, limits=limits)
 
+    @staticmethod
+    def scan_leptogenesis(hypothesis, *, axes, limits):
+        """Evaluate a selected hypothesis with the illustrative leptogenesis adapter."""
+        from cpu_llm.leptogenesis import scan_leptogenesis
+
+        return scan_leptogenesis(hypothesis, axes=axes, limits=limits)
+
     def ask(
         self,
         message: str,
