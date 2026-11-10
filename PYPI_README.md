@@ -1,6 +1,6 @@
 # CPU-LLM: Evidence-Based AI Engine
 
-**Source-backed answers, deterministic checks, and cross-domain research on commodity CPUs.**
+**A neuro-symbolic and constraint engine for source-backed answers, deterministic checks, and cross-domain research on commodity CPUs.**
 
 [![PyPI](https://img.shields.io/pypi/v/cpu-llm)](https://pypi.org/project/cpu-llm/)
 [![Code license Apache 2.0](https://img.shields.io/badge/Code-Apache_2.0-green)](https://github.com/insightitsGit/cpullm/blob/main/LICENSE)
@@ -23,18 +23,35 @@ are conditional on the selected model and supplied constraints.
 **Licenses:** code [Apache-2.0](https://github.com/insightitsGit/cpullm/blob/main/LICENSE); bundled WikiText-2 data has separate
 **CC BY-SA 3.0/GFDL** terms and attribution. See [third-party notices](https://github.com/insightitsGit/cpullm/blob/main/THIRD_PARTY_NOTICES.md).
 
+## Architecture in 30 seconds
+
+CPU-LLM is a Python evidence engine. The package name refers to its CPU-first
+language pipeline. It uses a pretrained encoder for retrieval and applies
+rules or model adapters according to the request.
+
+```text
+Question + authorized knowledge base
+  |
+  +-- Strict evidence --> Exact quotes, deterministic checks, or unsupported
+  |
+  +-- Research ---------> Retrieve evidence and assemble cited responses
+       |
+       +-- CrossDomin --> Join cited premises across selected KBs
+       +-- Invention ---> Propose hypotheses and run supported model scans
+```
+
 ## Verification contract compared with generative RAG
 
 This compares execution contracts, not measured product accuracy or cost.
 Generative RAG systems can also add citations, calculators and deployment controls.
 
-| Dimension | Generative RAG without an enforced verification layer | CPU-LLM contract |
-| --- | --- | --- |
-| Answer construction | Generated wording needs independent support checks | Strict mode returns source spans, recognized calculations, conflicts or nonanswers; unsupported forms return `unsupported` |
-| Arithmetic | A generated numeric answer needs a calculator/checker | Explicit finance fields use inspectable decimal/integer policies; the example below uses six-place half-up rounding |
-| Infrastructure | Depends on the chosen model and hosting | CPU-first Python plus PostgreSQL/pgvector and cached encoder assets; no GPU required for the documented path |
-| Audit evidence | Depends on the application's evidence layer | Source IDs, quotation offsets and chunk hashes; supported tone constructions include inverse-verification receipts |
-| Data location | Hosted or self-managed, depending on the system | Can run on premises with prepared dependencies and cached assets; air-gap enforcement is an operator responsibility |
+| Dimension           | Generative RAG without enforced verification   | CPU-LLM verification contract                                                    |
+| ------------------- | --------------------------------------------- | -------------------------------------------------------------------------------- |
+| Answer construction | Generated prose needs independent checks.     | Strict mode quotes exact spans, runs supported checks, or returns `unsupported`. |
+| Arithmetic          | Accuracy depends on the calculator in use.    | Inspectable decimal and integer policies, including explicit half-up rounding.   |
+| Infrastructure      | Depends on model and hosting choices.         | CPU-first Python, PostgreSQL with pgvector, and cached encoder assets.             |
+| Audit evidence      | Depends on the application's evidence layer.  | Source IDs, quote offsets, chunk hashes, and receipts for supported tone output.  |
+| Data location       | Hosted or self-managed.                       | On-premises execution with prepared assets. Operators enforce network isolation. |
 
 “Zero hallucination” is not a universal accuracy guarantee. Strict selection can
 preserve an incorrect source, and an unsupported request can be refused. Ordinary
