@@ -18,7 +18,7 @@ routes** to explore relationships, join cited premises across knowledge bases,
 or formulate hypotheses. Hypotheses carry their own label, and numerical results
 are conditional on the selected model and supplied constraints.
 
-**Release candidate: 1.12.1rc1.** Author: **Amin Parva, Independent Engineer**.
+**This release: 1.12.1.** Author: **Amin Parva, Independent Engineer**.
 
 **Licenses:** code [Apache-2.0](https://github.com/insightitsGit/cpullm/blob/main/LICENSE); bundled WikiText-2 data has separate
 **CC BY-SA 3.0/GFDL** terms and attribution. See [third-party notices](https://github.com/insightitsGit/cpullm/blob/main/THIRD_PARTY_NOTICES.md).
@@ -299,6 +299,32 @@ premise, the reply names the gap and asks you to ingest a source under that pref
 Strict evidence mode disables this invention route. See the
 [CrossDomain spec](https://github.com/insightitsGit/cpullm/blob/main/docs/taxonomy-invention-spec.md#crossdomain) for the join rule.
 
+#### When to use CrossDomain and Constraint Check
+
+Use **CrossDomain** to join source premises and check a shared mathematical
+relation. Use **Constraint Check** to compare a prediction with a bound or
+compare two reported measurement intervals after converting units.
+
+For a numerical check, ingest one `CrossDomain claim: {…}` record per selected
+KB. Give the records the same topic, quantity, conditions, and convention. A
+prediction-versus-bound check uses a prediction record, a method record, and
+a bound record. A measurement comparison uses two measurement records.
+
+```python
+math_check = app.ask("CrossDomain: Casas-Ibarra using KBs: physics, math.")
+bound_check = app.ask("Constraint Check: Leptogenesis using KBs: physics, math, experiment.")
+print(math_check["reply"]["text"])
+print(bound_check["reply"]["text"])
+```
+
+In the leptogenesis example, the first node checks the rotation identity. The
+second can check whether the illustrative **6.31 meV** prediction falls within
+the supplied **28 meV** scenario. It cites each input and returns
+`insufficient_evidence` when required claims are missing or incompatible.
+CrossDomain prompts over structured claims still work and delegate the
+comparison to Constraint Check. See the
+[structured claim format](https://github.com/insightitsGit/cpullm/blob/main/docs/cross-domain-research-spec.md#first-milestone).
+
 #### Baryon asymmetry example
 
 Why did the early universe end up with more matter than antimatter?
@@ -376,14 +402,14 @@ Python 3.11+ is required. Release checks used Windows/Python 3.12.10.
 
 ```shell
 python -m pip install --upgrade pip
-python -m pip install "cpu-llm==1.12.1rc1"
+python -m pip install "cpu-llm==1.12.1"
 python -m pip check
 python -c "import cpu_llm; print(cpu_llm.__version__)"
 ```
 
 Before publication, install the supplied wheel instead of the version from PyPI.
 To build from a checkout, run `python -m pip install build` and then
-`python -m build --outdir dist/1.12.1rc1`.
+`python -m build --outdir dist/1.12.1`.
 
 Document queries require PostgreSQL/pgvector and the pretrained
 `sentence-transformers/all-mpnet-base-v2` encoder assets. The trained projection

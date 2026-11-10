@@ -239,6 +239,60 @@ def test_crossdomin_joins_seven_user_selected_kbs_and_rejects_an_eighth():
     assert 'Ingest a source with the missing premise' in missing['reply']['text']
 
 
+def test_cross_domain_checks_a_prediction_against_an_experimental_bound():
+    import json
+
+    app = appliance()
+    common = dict(topic='Detector', quantity='effective mass', conditions='fixed model',
+                  convention='normal ordering')
+    claims = [
+        ('physics', dict(role='prediction', lower='20', upper='28', unit='meV', interval_basis='benchmark')),
+        ('math', dict(role='method', operation='compare_intervals')),
+        ('experiment', dict(role='bound', upper='0.028', unit='eV', interval_basis='benchmark')),
+    ]
+
+    def ask(command='CrossDomain'):
+        rows = [dict(document_id=f'{domain}-test-p0001',
+                     chunk_text='CrossDomain claim: ' + json.dumps(dict(common, **claim)))
+                for domain, claim in claims]
+        app.index.strict_source_rows.return_value = (rows, 123)
+        return app.ask(f'{command}: Detector using KBs: physics, math, experiment.')
+
+    result = ask()
+    [proof] = result['invention']['joins']
+    assert proof['outcome'] == 'within_bound'
+    assert result['routing']['post_stages'] == ['crossdomin', 'constraint_check']
+    direct = ask('Constraint Check')
+    assert direct['routing']['post_stages'] == ['constraint_check']
+    assert direct['invention']['joins'] == [proof]
+    assert proof['normalized_intervals'][0]['upper'] == '7/250'
+    assert len(proof['premises']) == 3
+    assert result['answer_evidence'] == []
+    claims[0][1]['upper'] = '29'
+    assert ask()['invention']['joins'][0]['outcome'] == 'overlaps_bound'
+    claims[0][1]['convention'] = 'inverted ordering'
+    assert ask()['status'] == 'insufficient_evidence'
+    del claims[0][1]['convention']
+    del claims[0][1]['lower']
+    assert ask()['status'] == 'insufficient_evidence'
+
+
+def test_cross_domain_reports_disjoint_measurements_after_unit_conversion():
+    import json
+
+    app = appliance()
+    common = dict(topic='Calibration', quantity='length', conditions='room temperature',
+                  convention='same protocol', role='measurement', interval_basis='reported range')
+    rows = [
+        dict(document_id=f'{domain}-test-p0001',
+             chunk_text='CrossDomain claim: ' + json.dumps(dict(common, unit=unit, lower=lower, upper=upper)))
+        for domain, unit, lower, upper in [('lab', 'cm', '10', '12'), ('field', 'm', '0.13', '0.14')]
+    ]
+    app.index.strict_source_rows.return_value = (rows, 123)
+    result = app.ask('Research Calibration using KBs: lab, field.')
+    assert result['invention']['joins'][0]['outcome'] == 'disjoint_intervals'
+
+
 def test_api_and_strict_precedence():
     app = appliance()
     assert app.ask('Helios', invent=True)['invention']['proposals']

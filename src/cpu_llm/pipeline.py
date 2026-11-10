@@ -641,7 +641,9 @@ class Appliance:
                 if specialist or invent:
                     raise ValueError('Submit CrossDomain and other specialist requests separately.')
                 continue_invention(self, key, raw_message, '', strict=enabled)
-                result = execute_cross_domain(self, raw_message, cross_seed, caller=caller, as_of=as_of, strict=enabled)
+                constraint_only = invention_query.partition(':')[0].strip().casefold() == 'constraint check'
+                result = execute_cross_domain(self, raw_message, cross_seed, caller=caller, as_of=as_of,
+                                              strict=enabled, constraint_only=constraint_only)
                 from cpu_llm.response_policy import classify_response_request
                 result['response_plan'] = classify_response_request(content)
                 return finish_invention_response(result)

@@ -12,25 +12,29 @@ _MAX_KBS = 7
 
 def cross_domain_seed(query):
     match = re.fullmatch(
-        r'(?:CrossDoma?in\s*:\s*(.*?)|(?:please\s+)?'
+        r'(?:(?:CrossDoma?in|Constraint Check)\s*:\s*(.*?)|(?:please\s+)?'
         r'(?:research|investigate|explore)\s+(.+?\s+using\s+kbs\s*:\s*.+?))\s*[.!?]*',
         query.strip(), re.I,
     )
     return (match[1] if match[1] is not None else match[2]).strip() if match else None
 
 
-def execute_cross_domain(app, message, seed, *, caller=None, as_of=None, strict=False):
+def execute_cross_domain(app, message, seed, *, caller=None, as_of=None, strict=False, constraint_only=False):
     import psycopg
     from cpu_llm.answerability import _sentences
     from cpu_llm.pipeline import _caller_for
 
-    def result(status, body, **receipt):
+    def result(status, body, *, constraint=False, **receipt):
         response = dict(message=message, tenant_id=app.tenant_id, status=status, answer_status=status,
                         answer=None, answer_evidence=[], audit_passed=False, reply=dict(text=body, body=body),
                         needs_clarification=status == 'needs_clarification')
         if receipt:
-            response['invention'] = dict(triggered=True, node='crossdomin', **receipt)
-            response['routing'] = dict(post_stages=['crossdomin'])
+            node = 'constraint_check' if constraint_only else 'crossdomin'
+            response['invention'] = dict(triggered=True, node=node, **receipt)
+            stages = [node]
+            if constraint and not constraint_only:
+                stages.append('constraint_check')
+            response['routing'] = dict(post_stages=stages)
         return response
 
     context = _caller_for(app, caller)
@@ -53,6 +57,23 @@ def execute_cross_domain(app, message, seed, *, caller=None, as_of=None, strict=
         rows, when = _snapshot(app, allowed, as_of)
     except (RuntimeError, ValueError, psycopg.Error):
         return result('partial', 'The CrossDomain source snapshot is unavailable.', joins=[])
+
+    from cpu_llm.cross_domain_claims import compare_claims
+
+    comparison = compare_claims(rows, requested, topic)
+    if comparison is not None:
+        gap, proof = comparison
+        if gap:
+            return result('insufficient_evidence', gap, constraint=True, joins=[], requested_domains=requested, as_of=when)
+        lines = [f'CrossDomain interval comparison: {proof["outcome"].replace("_", " ")}.']
+        for interval in proof['normalized_intervals']:
+            lines.append(f'{interval["role"]}: {interval["lower"] or "unbounded"} to '
+                         f'{interval["upper"] or "unbounded"} {interval["unit"]} (exact fractions).')
+        lines.extend(f'[{item["document_id"]}] {item["quote"]}' for item in proof['premises'])
+        return result('hypotheses', '\n'.join(lines), constraint=True, joins=[proof], requested_domains=requested, as_of=when)
+    if constraint_only:
+        return result('insufficient_evidence', 'Constraint Check needs matching structured claims in the selected KBs.',
+                      joins=[], requested_domains=requested, as_of=when)
 
     anchor = re.compile(r'(?<!\w)' + re.escape(topic) + r'(?!\w)', re.I)
     premises = {}
