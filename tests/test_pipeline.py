@@ -30,6 +30,47 @@ from cpu_llm.ingest import ingest_source
 from cpu_llm.source import validation_chunks
 
 
+def test_node_benchmark_replays_event_object_and_deep_status(appliance):
+    sentence = "John ate a yellow apple in his house."
+    appliance.catalog_chunks([("orchard-p0001", sentence)])
+    for prompt, options, node in [
+        ("What did John eat?", {}, "frame"),
+        ("Search deeply for apple.", {"deep": True}, "deep"),
+        ("What color was the apple John ate?", {"deep": True}, "deep"),
+    ]:
+        result = appliance.ask(prompt, **options)
+        assert node in result["routing"]["executed_nodes"]
+        assert result["answer_status"] in {"answered", "evidence_quote"}
+        assert result["reply"]["answer_status"] == result["answer_status"]
+        assert "yellow" in result["reply"]["text"]
+        assert any(item["document_id"] == "orchard-p0001" for item in result["answer_evidence"])
+
+
+@pytest.mark.parametrize(("prompt", "value"), [("What is 17 times 24?", "408"), ("What is 1 / 0?", "")])
+def test_node_benchmark_checks_math_results(appliance, prompt, value):
+    appliance.catalog_chunks([("arithmetic-p0001", "The archive is open.")])
+    result = appliance.ask(prompt, math=True)
+    assert "math" in result["routing"]["executed_nodes"]
+    assert result["math_result"]["value"] == value
+    assert result["math_result"]["ok"] is bool(value)
+    assert not result["answer_evidence"]
+
+
+def test_node_benchmark_discovery_keeps_hypotheses_distinct(appliance):
+    appliance.catalog_chunks([("taxa-p0001", "Hyperbolic embeddings represent taxonomy.")])
+    result = appliance.ask("Why use hyperbolic embeddings?", discover=True)
+    assert "discover" in result["routing"]["executed_nodes"]
+    items = result["discovery"]["information"]
+    assert any(item["kind"] == "reported" and "taxonomy" in item["text"] for item in items)
+    assert any(item["kind"] == "hypothesis" for item in items)
+    ordinary = appliance.ask("Why use hyperbolic embeddings?")
+    assert "discover" not in ordinary["routing"]["executed_nodes"]
+    missing = appliance.ask("Why does the Vesper archive use diamond bearings?", discover=True)
+    assert not missing["answer_evidence"]
+    assert not any(item["kind"] == "reported" and "diamond" in item["text"].lower()
+                   for item in (missing.get("discovery") or {}).get("information", []))
+
+
 @pytest.mark.parametrize("workers", [1, 4])
 def test_catalog_reuses_encoded_batch_and_rolls_back_failed_replacement(appliance, monkeypatch, workers):
     pipeline = appliance.index.pipeline

@@ -653,7 +653,8 @@ class Appliance:
                 text += '\n' + '\n'.join(receipt['chunk_ids'])
                 if receipt['next_offset'] is not None:
                     text += '\nMore chunks are available through the inventory API.'
-            return dict(status='answered', answer_status='answered', reply=dict(text=text), chunk_inventory=receipt)
+            return dict(status='answered', answer_status='answered', reply=dict(text=text), chunk_inventory=receipt,
+                        routing=dict(post_stages=['chunk_inventory']))
         chunk_delete = re.fullmatch(r'(?:please\s+)?delete\s+chunk\s+([a-z0-9-]+)[.!?]?',
                                     content.strip(), re.I)
         if chunk_delete:
@@ -664,7 +665,7 @@ class Appliance:
                     f'{receipt["preview"]}'
                     if receipt['status'] == 'confirmation_required' else 'Chunk not found.')
             return dict(status=receipt['status'], answer_status=receipt['status'],
-                        reply=dict(text=text), chunk_delete=receipt)
+                        reply=dict(text=text), chunk_delete=receipt, routing=dict(post_stages=['chunk_delete']))
         from cpu_llm.stylistic.profiles import extract_style_request
         tone_control = extract_style_request(content)
         if tone_control['tone'] is not None:

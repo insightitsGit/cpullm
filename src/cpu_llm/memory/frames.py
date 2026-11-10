@@ -41,6 +41,9 @@ _WHERE_QUESTION = re.compile(
 _WHO_QUESTION = re.compile(
     rf"^{_YEAR_PREFIX}[Ww]ho (?P<verb>[A-Za-z]+) the (?P<patient>[A-Za-z]+){_YEAR_SUFFIX}\??$"
 )
+_OBJECT_QUESTION = re.compile(
+    rf"^{_YEAR_PREFIX}[Ww]hat did (?P<agent>[A-Za-z]+) (?P<verb>[A-Za-z]+){_YEAR_SUFFIX}\??$"
+)
 _NOT_QUESTION = re.compile(r"^[Ww]hat did (?P<agent>[A-Za-z]+) not (?P<verb>[A-Za-z]+)\??$")
 _FRAME_LIKE = re.compile(r"\bwhat colou?r was\b|\bwhere did\b|\bwho (?:ate|eat|eats|eaten)\b", re.IGNORECASE)
 _BETTER = re.compile(r"\b(?:better|worse|best|worst)\b", re.IGNORECASE)
@@ -275,6 +278,8 @@ def _stage2_same(frame: dict[str, Any], wanted: dict[str, Any]) -> bool:
         return False
     if wanted.get("agent") and not _text_is(frame.get("agent"), wanted["agent"]):
         return False
+    if wanted.get("kind") == "object" and not _verb_is(frame, wanted["verb"], wanted["tense"]):
+        return False
     return True
 
 
@@ -332,6 +337,14 @@ def resolve_frames(message: str, frames: list[dict[str, Any]]) -> dict[str, Any]
         return _color_answer(matched, parsed)
     if kind == "location":
         return _location_answer(matched, parsed)
+    if kind == "object":
+        objects = [frame for frame in matched if frame.get("object") and _bindings_ok(frame)]
+        if not objects:
+            return _outcome("missing", _UNSETTLED, "the stored event has no verified object")
+        if len({frame["object"]["text"].casefold() for frame in objects}) > 1:
+            return _outcome("ambiguous", "The stored passages name more than one object.", "multiple event objects")
+        frame = objects[0]
+        return _answered(kind, frame["sentence"], frame["object"]["text"], frame, "source_sentence")
     return _agent_answer(matched, parsed)
 
 
@@ -509,6 +522,7 @@ def _parse_question(message: str) -> dict[str, Any] | None:
         ("color", _COLOR_QUESTION, "the prompt asks for a color written in a stored sentence"),
         ("location", _WHERE_QUESTION, "the prompt asks for a location written in a stored sentence"),
         ("agent", _WHO_QUESTION, "the prompt asks who a stored sentence names as the agent"),
+        ("object", _OBJECT_QUESTION, "the prompt asks for the object of a stored event"),
     ):
         found = pattern.fullmatch(text)
         if found is None:
@@ -693,7 +707,7 @@ def _answered(kind: str, sentence: str, value: str, frame: dict[str, Any], trans
                 "transformation": transformation,
                 "roles": {
                     key: frame.get(key)
-                    for key in ("agent", "predicate", "patient", "color", "location", "time")
+                    for key in ("agent", "predicate", "patient", "color", "location", "time", "object")
                 },
             },
         }

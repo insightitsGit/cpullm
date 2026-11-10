@@ -5,6 +5,17 @@ API option and disclosure are defined in [taxonomy-driven invention](taxonomy-in
 
 Generated from `cpu_llm.flag_contract.FLAG_BINDINGS`. The JSON companion is tested for exact registry agreement.
 
+The `graph.core` record lists the nodes reached through ordinary graph entry.
+The six channel records cover the retrieval channels. The optional `state.*`
+records describe explicit flags and recognized prompt forms. Graph compilation
+checks that every registered node has a map entry and every mapped graph
+consumer is registered.
+
+- `CrossDomain: Casas-Ibarra.` or `Research Casas-Ibarra using KBs: physics, math.` selects CrossDomain. A join over structured numeric claims can invoke Constraint Check. [CrossDomain spec](cross-domain-research-spec.md)
+- `Constraint Check: Leptogenesis using KBs: physics, math, experiment.` requests the numeric comparison directly. Strict evidence mode disables both cross-domain invention routes. [CrossDomain spec](cross-domain-research-spec.md)
+- `List chunks for notes.pdf.` selects scoped inventory. `Delete chunk notes-p0001.` previews an exact chunk deletion. The confirmation API and team role checks control the mutation. [Chunk management spec](chunk-management-spec.md)
+- `What did John eat?` selects the event-frame node for a supported actor and action question. A verified object answer retains the source citation. [Benchmark follow-up spec](node-benchmark-followup-spec.md)
+
 `request.document` activates the bounded quotation-document workflow for explicit
 genres and supported long topic overviews. It runs `document_plan`,
 `document_snapshot`, `document_coverage` and `document_render`, independently of

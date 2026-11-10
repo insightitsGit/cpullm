@@ -318,6 +318,13 @@ def _frame_plan(bundle: Bundle, question: str) -> Plan | None:
         )
     document_id = str((resolved.get("derivation") or {}).get("document_id") or "")
     transformation = str((resolved.get("derivation") or {}).get("transformation") or "")
+    if transformation == "source_sentence":
+        proposition_id = resolved["derivation"].get("proposition_id")
+        return _ids_plan(bundle, question, "question", [
+            item.record_id for item in bundle.records
+            if item.kind == "proposition" and item.document_id == document_id
+            and item.proposition is not None and item.proposition.proposition_id == proposition_id
+        ])
     record = next(
         (item for item in bundle.records if item.kind == "frame" and item.document_id == document_id),
         None,
@@ -355,7 +362,7 @@ def _account_plan(bundle: Bundle, question: str, frame_plan: Plan | None) -> Pla
     ids = list(_proposition_ids(bundle))
     ids.extend(item.record_id for item in bundle.records if item.kind == "quote")
     if frame_plan is not None and frame_plan.status == "answered":
-        ids.extend(frame_plan.record_ids)
+        ids.extend(record_id for record_id in frame_plan.record_ids if record_id not in ids)
     ids.extend(item.record_id for item in bundle.records if item.kind in {"math", "word_edge", "tag"})
     non_answer = ""
     if frame_plan is not None and frame_plan.status != "answered":

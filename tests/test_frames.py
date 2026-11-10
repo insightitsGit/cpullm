@@ -13,6 +13,18 @@ APPLE = "John ate a yellow apple in his house."
 DATED = "John ate a yellow apple in his house in 2019."
 
 
+def test_object_questions_keep_actor_action_and_ambiguity():
+    question = "What did John eat?"
+    apple = frame_from_chunk("apple-1", APPLE)
+    pear = frame_from_chunk("pear-1", "John ate a green pear.")
+    assert frame_trigger(question)
+    assert resolve_frames(question, [apple])["value"] == "a yellow apple"
+    assert resolve_frames(question, [apple, pear])["status"] == "ambiguous"
+    assert resolve_frames("What did Maria eat?", [apple])["status"] == "missing"
+    denied_purchase = frame_from_chunk("purchase-1", "John did not buy a yellow apple.")
+    assert resolve_frames(question, [apple, denied_purchase])["status"] == "answered"
+
+
 def test_a_plain_question_does_not_enter_the_frame_agent():
     assert frame_trigger("What is the European lobster?") == []
     assert frame_trigger("What color is the Kestrel?") == []

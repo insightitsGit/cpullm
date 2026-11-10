@@ -74,6 +74,27 @@ FLAG_BINDINGS += (FlagBinding('request.document', 'explicit genre prompt or supp
     'Scoped bounded snapshot; sectioned exact quotations, coverage and continuation; shared Markdown/HTML layouts; strict forbids learned generation.',
     'Write a detailed design document about Helios.'),)
 FLAG_BINDINGS += (
+    FlagBinding('graph.core', 'ordinary graph entry after request dispatch',
+        ('guard', 'retrieve', 'resonate', 'catalog', 'detail', 'spans', 'think', 'cognize',
+         'grammar', 'shine', 'model01', 'reply'), 'core_graph',
+        'The guard controls retrieval. The ordinary path evaluates the channel nodes before catalog and delivery.',
+        'What color is the Aster?'),
+    FlagBinding('request.cross_domain', 'CrossDomain command or research verb with an explicit KB list',
+        ('crossdomin', 'constraint_check'), 'pre_graph',
+        'Join scoped premises across selected KBs. Structured numeric claims delegate to Constraint Check.',
+        'Research Casas-Ibarra using KBs: physics, math.'),
+    FlagBinding('request.constraint_check', 'explicit Constraint Check command with structured claims',
+        ('constraint_check',), 'pre_graph',
+        'Compare compatible intervals after unit conversion. Strict evidence mode disables this route.',
+        'Constraint Check: Leptogenesis using KBs: physics, math, experiment.'),
+    FlagBinding('request.chunk_inventory', 'count or list chunks prompt, Python API, or HTTP endpoint',
+        ('chunk_inventory',), 'pre_graph',
+        'Count and list active chunks within caller scope, optionally filtered by source.',
+        'List chunks for notes.pdf.'),
+    FlagBinding('request.chunk_delete', 'exact chunk deletion prompt, Python API, or HTTP endpoint',
+        ('chunk_delete',), 'pre_graph',
+        'The prompt previews an exact ID. The API requires a valid confirmation to delete. Team callers need the admin role.',
+        'Delete chunk notes-p0001.'),
     FlagBinding('request.invent', 'explicit concept-generation prompt or Python/HTTP flag',
         ('taxonomy_invention',), 'pre_graph',
         'Generate cited cross-chunk hypotheses; strict disables; append the variability disclosure after rendering.',
@@ -133,10 +154,13 @@ def validate_graph_consumers(nodes):
     external = {'render_response', 'strict_evidence.answer', 'conversation.reply', 'stylistic', 'style_verify',
                 'document_plan', 'document_snapshot', 'document_coverage', 'document_render',
                 'research_plan', 'cycle_snapshot', 'cycle_explore', 'cycle_compose', 'cycle_verify', 'taxonomy_invention',
-                'document_compose', 'document_inverse_verify'}
+                'document_compose', 'document_inverse_verify', 'crossdomin', 'constraint_check',
+                'chunk_inventory', 'chunk_delete'}
     expected = {node for binding in FLAG_BINDINGS for node in binding.consumers} - external
     if missing := expected - set(nodes):
         raise ValueError('Flag consumers missing from graph: ' + ', '.join(sorted(missing)))
+    if unmapped := set(nodes) - expected:
+        raise ValueError('Graph nodes missing from trigger map: ' + ', '.join(sorted(unmapped)))
 
 
 def enforce_response_flags(plan):

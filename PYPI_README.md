@@ -18,7 +18,7 @@ routes** to explore relationships, join cited premises across knowledge bases,
 or formulate hypotheses. Hypotheses carry their own label, and numerical results
 are conditional on the selected model and supplied constraints.
 
-**This release: 1.13.0.** Author: **Amin Parva, Independent Engineer**.
+**This release: 1.13.1.** Author: **Amin Parva, Independent Engineer**.
 
 **Licenses:** code [Apache-2.0](https://github.com/insightitsGit/cpullm/blob/main/LICENSE); bundled WikiText-2 data has separate
 **CC BY-SA 3.0/GFDL** terms and attribution. See [third-party notices](https://github.com/insightitsGit/cpullm/blob/main/THIRD_PARTY_NOTICES.md).
@@ -175,6 +175,20 @@ bundled**; the other channels use their implemented signals or symbolic paths.
 A similarity score or connection is not factual proof. Strict requests and document
 workflows can bypass the ordinary graph; not every request runs every node.
 See the [architecture](https://github.com/insightitsGit/cpullm/blob/main/docs/current-design.md) and [prompt-to-node mapping](https://github.com/insightitsGit/cpullm/blob/main/docs/prompt-flag-map.md).
+
+## Which prompts trigger which nodes
+
+- `What did John eat?` routes to the event-frame node when the classifier recognizes the actor and action. The reply cites the matching source.
+- `Search deeply for apple.` or `app.ask(question, deep=True)` requests the deep-search node. A request for a longer answer changes the response budget.
+- `Calculate 17 times 24.` requests arithmetic. Use `app.ask(question, discover=True)` to request discovery after the ordinary reply.
+- `Write a detailed report about Helios.` selects the document workflow. `Invention: Leptogenesis.` selects invention.
+- `Research Casas-Ibarra using KBs: physics, math.` selects CrossDomain. `Constraint Check: Leptogenesis using KBs: physics, math, experiment.` requests the interval comparison directly.
+- `List chunks for notes.pdf.` opens scoped inventory. `Delete chunk notes-p0001.` opens a preview. The deletion API handles confirmation.
+
+Inspect `routing.executed_nodes` for graph execution and `routing.post_stages`
+where available for work outside the graph. See the
+[trigger guide](https://github.com/insightitsGit/cpullm/blob/main/docs/prompt-flag-map.md), [machine-readable map](https://github.com/insightitsGit/cpullm/blob/main/docs/prompt-flag-map.json),
+and [whitepaper routing addendum](https://github.com/insightitsGit/cpullm/blob/main/docs/whitepapers/prompt-routing-addendum.md).
 
 ## Research, relationship loops, invention, and CrossDomain
 
@@ -402,14 +416,14 @@ Python 3.11+ is required. Release checks used Windows/Python 3.12.10.
 
 ```shell
 python -m pip install --upgrade pip
-python -m pip install "cpu-llm==1.13.0"
+python -m pip install "cpu-llm==1.13.1"
 python -m pip check
 python -c "import cpu_llm; print(cpu_llm.__version__)"
 ```
 
 Before publication, install the supplied wheel instead of the version from PyPI.
 To build from a checkout, run `python -m pip install build` and then
-`python -m build --outdir dist/1.13.0`.
+`python -m build --outdir dist/1.13.1`.
 
 Document queries require PostgreSQL/pgvector and the pretrained
 `sentence-transformers/all-mpnet-base-v2` encoder assets. The trained projection

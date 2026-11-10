@@ -55,6 +55,10 @@ def test_unrequested_nodes_and_missing_consumers_are_rejected():
         enforce_node_request('deep', dict(guard_decision='allow'))
     with pytest.raises(ValueError, match='brief'):
         validate_graph_consumers({n for b in FLAG_BINDINGS for n in b.consumers} - {'brief'})
+    graph = {n for b in FLAG_BINDINGS if b.stage in {'core_graph', 'graph', 'channel'} for n in b.consumers}
+    validate_graph_consumers(graph)
+    with pytest.raises(ValueError, match='unmapped_node'):
+        validate_graph_consumers(graph | {'unmapped_node'})
 
 
 @pytest.mark.parametrize('change', [

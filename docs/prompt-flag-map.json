@@ -347,6 +347,68 @@
     "example": "Write a detailed design document about Helios."
   },
   {
+    "path": "graph.core",
+    "origin": "ordinary graph entry after request dispatch",
+    "consumers": [
+      "guard",
+      "retrieve",
+      "resonate",
+      "catalog",
+      "detail",
+      "spans",
+      "think",
+      "cognize",
+      "grammar",
+      "shine",
+      "model01",
+      "reply"
+    ],
+    "stage": "core_graph",
+    "behavior": "The guard controls retrieval. The ordinary path evaluates the channel nodes before catalog and delivery.",
+    "example": "What color is the Aster?"
+  },
+  {
+    "path": "request.cross_domain",
+    "origin": "CrossDomain command or research verb with an explicit KB list",
+    "consumers": [
+      "crossdomin",
+      "constraint_check"
+    ],
+    "stage": "pre_graph",
+    "behavior": "Join scoped premises across selected KBs. Structured numeric claims delegate to Constraint Check.",
+    "example": "Research Casas-Ibarra using KBs: physics, math."
+  },
+  {
+    "path": "request.constraint_check",
+    "origin": "explicit Constraint Check command with structured claims",
+    "consumers": [
+      "constraint_check"
+    ],
+    "stage": "pre_graph",
+    "behavior": "Compare compatible intervals after unit conversion. Strict evidence mode disables this route.",
+    "example": "Constraint Check: Leptogenesis using KBs: physics, math, experiment."
+  },
+  {
+    "path": "request.chunk_inventory",
+    "origin": "count or list chunks prompt, Python API, or HTTP endpoint",
+    "consumers": [
+      "chunk_inventory"
+    ],
+    "stage": "pre_graph",
+    "behavior": "Count and list active chunks within caller scope, optionally filtered by source.",
+    "example": "List chunks for notes.pdf."
+  },
+  {
+    "path": "request.chunk_delete",
+    "origin": "exact chunk deletion prompt, Python API, or HTTP endpoint",
+    "consumers": [
+      "chunk_delete"
+    ],
+    "stage": "pre_graph",
+    "behavior": "The prompt previews an exact ID. The API requires a valid confirmation to delete. Team callers need the admin role.",
+    "example": "Delete chunk notes-p0001."
+  },
+  {
     "path": "request.invent",
     "origin": "explicit concept-generation prompt or Python/HTTP flag",
     "consumers": [

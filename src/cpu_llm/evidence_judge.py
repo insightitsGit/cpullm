@@ -215,6 +215,9 @@ def _specialist_evidence(result):
     draft = (result.get('reply') or {}).get('draft') or {}
     if isinstance(draft, dict):
         selected.update(draft.get('sources') or [])
+    frame = result.get('frame_result') or {}
+    if frame.get('verified') is True:
+        selected.update(frame.get('evidence') or [])
     evidence = []
     for row in _rows(result):
         if row['document_id'] in selected:
@@ -289,6 +292,13 @@ def judge_delivery(result: dict[str, Any]) -> dict[str, Any]:
             return _blank(outcome='insufficient_evidence', reasons=['unsupported_factual_binding', 'selector_rejected'],
                           verification='selector_rejected', channels=_channels(intent))
     evidence, supporting, licensed = _spans(result, selected)
+    if (result.get("deep") is True and not status and not evidence and licensed
+            and not result.get("delivery_blocked") and not result.get("shine_enforced")
+            and result.get("shine_ok") is not False):
+        exact = next((row for row in rows if licensed in _sentences(row["text"])), None)
+        if exact is not None:
+            evidence = [dict(document_id=exact["document_id"], span=licensed)]
+            status = "evidence_quote"
     outcome = {
         "answered": "answered",
         "evidence_quote": "evidence_quote",
@@ -554,6 +564,9 @@ def finalize_turn(result: dict[str, Any], gate: Any | None) -> dict[str, Any]:
         # call with abstention cleared would replace that sentence.
         result["judgment"] = _blank(outcome="insufficient_evidence", reasons=["empty_retrieval"], verification="abstention")
         result["shine_final"] = {"role": "final_deliverable", "applied": False, "reason": "abstention"}
+        if result.get("deep") is True and not result.get("answer_status"):
+            result["answer_status"] = "insufficient_evidence"
+            result.setdefault("reply", {})["answer_status"] = "insufficient_evidence"
         return result
     judgment = judge_delivery(result)
     if judgment.get('outcome') == 'clarification':
@@ -568,6 +581,15 @@ def finalize_turn(result: dict[str, Any], gate: Any | None) -> dict[str, Any]:
         result = _withhold(result, judgment, "selector_rejected")
     else:
         result = _enforce_licensed(result, judgment)
+    if result.get("deep") is True and not result.get("answer_status"):
+        status = judgment["outcome"]
+        uncited = (status in {"answered", "evidence_quote"} and not judgment.get("evidence")
+                   and judgment.get("verification") != "specialist_contract")
+        if status == "insufficient_evidence" or uncited:
+            result = _withhold(result, judgment, "deep_reply_without_licensed_evidence")
+        else:
+            result["answer_status"] = status
+            result.setdefault("reply", {})["answer_status"] = status
     if judgment.get('outcome') in {'answered', 'evidence_quote', 'conflicting'}:
         # Even when the text was unchanged, publish the same complete proof the
         # judge accepted. Previously only rewritten replies received these IDs.
