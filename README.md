@@ -2,13 +2,13 @@
 
 **Source-backed answers, deterministic checks, and cross-domain research on commodity CPUs.**
 
-[![PyPI 1.11.2](https://img.shields.io/badge/PyPI-1.11.2-blue)](https://pypi.org/project/cpu-llm/1.11.2/)
+[![PyPI](https://img.shields.io/pypi/v/cpu-llm)](https://pypi.org/project/cpu-llm/)
 [![Code license Apache 2.0](https://img.shields.io/badge/Code-Apache_2.0-green)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue)](pyproject.toml)
 
 `cpu-llm` / `cpullm` is an embeddable, CPU-first Python library that retrieves
 evidence from your knowledge base and uses it to answer questions, verify rules
-and calculations, and assemble cited reports. The current Git source also
+and calculations, and assemble cited reports. Version 1.12.0 also
 supports cross-domain research, hypothesis generation, and numerical scans
 with supported model adapters.
 
@@ -18,9 +18,7 @@ routes** to explore relationships, join cited premises across knowledge bases,
 or formulate hypotheses. Hypotheses carry their own label, and numerical results
 are conditional on the selected model and supplied constraints.
 
-**Published version: 1.11.2.** Use it instead of 1.11.0 for HTTP; it repairs a
-cached-appliance SQLite thread-ownership defect. Author: **Amin Parva,
-Independent Engineer**.
+**This release: 1.12.0.** Author: **Amin Parva, Independent Engineer**.
 
 **Licenses:** code [Apache-2.0](LICENSE); bundled WikiText-2 data has separate
 **CC BY-SA 3.0/GFDL** terms and attribution. See [third-party notices](THIRD_PARTY_NOTICES.md).
@@ -163,8 +161,9 @@ See the [architecture](docs/current-design.md) and [prompt-to-node mapping](docs
 
 ## Research, relationship loops, invention, and CrossDomin
 
-The features below are in the current Git source, **not the published 1.11.2
-wheel**. To use them, install a checkout and complete the database/encoder setup:
+These features are included in **1.12.0**. For a development install from a Git
+checkout, use the commands below and complete the database and encoder setup
+in the quickstart.
 
 ```shell
 git clone https://github.com/insightitsGit/cpullm.git
@@ -354,14 +353,20 @@ Its brackets describe transitions between sampled points. See the
 [constraint evaluator spec](docs/invention-constraint-evaluator-spec.md) for the
 full scan inputs, reported limits, and interpretation.
 
-## Quickstart and reproduction: published package
+## Quickstart and reproduction
 
 Python 3.11+ is required. Release checks used Windows/Python 3.12.10.
 
 ```shell
-python -m pip install --upgrade "cpu-llm==1.11.2"
+python -m pip install --upgrade pip
+python -m pip install "cpu-llm==1.12.0"
 python -m pip check
+python -c "import cpu_llm; print(cpu_llm.__version__)"
 ```
+
+Before publication, install the supplied wheel instead of the version from PyPI.
+To build from a checkout, run `python -m pip install build` and then
+`python -m build --outdir dist/1.12.0`.
 
 Document queries require PostgreSQL/pgvector and the pretrained
 `sentence-transformers/all-mpnet-base-v2` encoder assets. The trained projection
@@ -453,8 +458,7 @@ for the intended application.
 
 ## Documentation
 
-- [Unreleased research planner and explicit cycle exploration](docs/research-cycle-user-guide.md):
-  initial source-branch implementation, separate from published 1.11.2.
+- [Research planner and explicit cycle exploration](docs/research-cycle-user-guide.md).
 - [Invention and CrossDomin](docs/taxonomy-invention-spec.md) and
   [numerical constraint evaluator](docs/invention-constraint-evaluator-spec.md).
 
