@@ -21,7 +21,7 @@ from collections.abc import Callable, Iterable
 from pathlib import Path
 from typing import Any
 
-from cpu_llm.access import AuthenticationError, CallerContext, SourceForbidden, source_allowed
+from cpu_llm.access import AuthenticationError, CallerContext, SourceForbidden, require_admin, source_allowed
 from cpu_llm.documents import SourceDocument, open_source, replace_prefix
 from cpu_llm.pipeline import _namespace_slug
 from cpu_llm.source_delete import source_prefix
@@ -53,12 +53,14 @@ class Entry:
         except ValueError as exc:
             raise AuthenticationError("the credential was not accepted") from exc
         sources = matched.get("allowed_sources") or []
-        if not isinstance(sources, list):
+        role = matched.get("role", "reader")
+        if not isinstance(sources, list) or role not in ("reader", "admin"):
             raise AuthenticationError("the credential was not accepted")
         return CallerContext.make(
             tenant,
             str(matched.get("caller_id") or matched.get("id") or ""),
             sources,
+            role=role,
         )
 
     def ask(self, secret: str, message: str, **kwargs: Any) -> dict[str, Any]:
@@ -106,8 +108,21 @@ class Entry:
             **kwargs,
         )
 
+    def chunk_inventory(self, secret: str, source=None, *, limit=50, offset=0):
+        context = self.authenticate(secret)
+        return self._appliance_for(context.tenant_id).chunk_inventory(
+            source, limit=limit, offset=offset, caller=context)
+
+    def delete_chunk(self, secret: str, document_id: str, confirmation: str | None = None) -> dict[str, Any]:
+        context = self.authenticate(secret)
+        require_admin(context)
+        _require_source(context, document_id)
+        return self._appliance_for(context.tenant_id).delete_chunk(
+            document_id, confirmation=confirmation, caller=context)
+
     def delete_source(self, secret: str, source: str) -> dict[str, Any]:
         context = self.authenticate(secret)
+        require_admin(context)
         _require_source(context, source_prefix(source))
         return self._appliance_for(context.tenant_id).delete_source(source)
 

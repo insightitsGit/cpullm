@@ -9,6 +9,10 @@ by paragraph id and are removed for this source only.
 from __future__ import annotations
 
 import json
+import hashlib
+import hmac
+import secrets
+import time
 from pathlib import Path
 from typing import Any
 
@@ -38,7 +42,7 @@ def source_prefix(source: str) -> str:
     return prefix
 
 
-def erase_graph_prefix(store: Any, prefix: str) -> dict[str, Any]:
+def erase_graph_prefix(store: Any, prefix: str, *, exact: bool = False) -> dict[str, Any]:
     """Hard-remove graph nodes whose ids start with ``prefix``, and edges that touch them.
 
     PrismCortex forgets a node only when its provenance source matches and no
@@ -46,11 +50,14 @@ def erase_graph_prefix(store: Any, prefix: str) -> dict[str, Any]:
     touching edges are stamped the same way, then ``forget_source`` erases both.
     Output-format nodes stay, because their ids do not use a document prefix.
     """
-    nodes = [node for node in store.all_nodes() if matches_prefix(str(node.id), prefix)]
+    def matches(value):
+        return str(value) == prefix if exact else matches_prefix(str(value), prefix)
+
+    nodes = [node for node in store.all_nodes() if matches(node.id)]
     edges = [
         edge
         for edge in store.all_edges()
-        if matches_prefix(str(edge.src), prefix) or matches_prefix(str(edge.dst), prefix)
+        if matches(edge.src) or matches(edge.dst)
     ]
     provenance = Provenance(source_id=prefix)
     ops: list[DeltaOp] = []
@@ -73,7 +80,7 @@ def erase_graph_prefix(store: Any, prefix: str) -> dict[str, Any]:
     if ops:
         store.apply(StateDelta(ops=ops))
     receipt = store.forget_source(prefix) if ops else {"nodes_erased": 0, "edges_erased": 0}
-    remaining = [node.id for node in store.all_nodes() if matches_prefix(str(node.id), prefix)]
+    remaining = [node.id for node in store.all_nodes() if matches(node.id)]
     return {
         "nodes_erased": int(receipt.get("nodes_erased") or 0),
         "edges_erased": int(receipt.get("edges_erased") or 0),
@@ -115,3 +122,61 @@ def delete_stored_source(
         "resonance": "unchanged",
         "word_relations": "unchanged",
     }
+
+
+def control_chunk_delete(app, document_id, confirmation=None, *, caller=None):
+    """Preview or confirm removal of one exact, unchanged PostgreSQL row."""
+    from cpu_llm.access import SourceForbidden, require_admin, source_allowed
+    from cpu_llm.pipeline import _caller_for, _resonance_store
+    from cpu_llm.word_taxonomy import drop_document_prefix
+
+    if (not isinstance(document_id, str) or not is_paragraph_id(document_id)
+            or not is_source_prefix(prefix_of(document_id))):
+        raise ValueError("Provide an exact chunk ID, such as notes-p0001.")
+    context = _caller_for(app, caller)
+    require_admin(context)
+    if context is not None and not source_allowed(document_id, context.allowed_sources):
+        raise SourceForbidden("that chunk is outside this caller's scope")
+    conn = getattr(app.index.db, "conn", None)
+    if conn is None:
+        raise ValueError("Chunk deletion requires PostgreSQL.")
+    caller_id = None if context is None else context.caller_id
+    key = app.__dict__.setdefault("_chunk_delete_key", secrets.token_bytes(32))
+    with conn.transaction(), conn.cursor() as cursor:
+        cursor.execute(
+            "SELECT chunk_text, xmin::text FROM psm_document_embeddings WHERE document_id = %s FOR UPDATE",
+            (document_id,),
+        )
+        row = cursor.fetchone()
+        if row is None:
+            return dict(status="chunk_not_found", document_id=document_id)
+        text, revision = row
+        digest = hashlib.sha256(text.encode()).hexdigest()
+
+        def sign(expires):
+            payload = json.dumps([app.tenant_id, caller_id, document_id, revision, digest, expires])
+            return hmac.digest(key, payload.encode(), "sha256").hex()
+
+        now = int(time.time())
+        if confirmation is None:
+            expires = str(now + 300)
+            return dict(status="confirmation_required", document_id=document_id, preview=text[:400],
+                        chunk_sha256=digest, expires_in_seconds=300, confirmation=f"{expires}.{sign(expires)}")
+        expires, separator, signature = confirmation.partition(".") if isinstance(confirmation, str) else ("", "", "")
+        if (not separator or not expires.isascii() or not expires.isdecimal() or len(expires) > 12
+                or int(expires) <= now or not signature.isascii()
+                or not hmac.compare_digest(signature, sign(expires))):
+            return dict(status="invalid_confirmation", document_id=document_id)
+        cursor.execute("DELETE FROM psm_document_embeddings WHERE document_id = %s", (document_id,))
+        graph = erase_graph_prefix(app.memory, document_id, exact=True)
+        if graph["nodes_remaining"]:
+            raise RuntimeError("Chunk graph cleanup did not complete.")
+        if getattr(app, "knowledge_graph", None) is not None:
+            app.knowledge_graph.replace([(document_id, "")])
+        tags = _resonance_store(app)
+        if tags is not None:
+            tags.delete_prefix(document_id, exact=True)
+        drop_document_prefix(app.word_tags, document_id, exact=True)
+        if app.word_tags_path is not None:
+            app.word_tags_path.write_text(json.dumps(app.word_tags), encoding="utf-8")
+    return dict(status="deleted", document_id=document_id, vector_rows=1, **graph)

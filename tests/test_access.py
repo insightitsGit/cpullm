@@ -234,6 +234,33 @@ def test_a_then_b_then_a_keeps_each_vocabulary(tmp_path):
         entry.delete_source("beta-secret", "alpha-notes")
 
 
+def test_team_deletion_requires_admin_and_source_scope(tmp_path):
+    secrets = tmp_path / "secrets.json"
+    secrets.write_text(json.dumps({"credentials": [
+        {"id": "reader", "secret_sha256": secret_sha256("reader-secret"),
+         "tenant_id": "team", "allowed_sources": ["notes-p"]},
+        {"id": "admin", "secret_sha256": secret_sha256("admin-secret"),
+         "tenant_id": "team", "allowed_sources": ["notes-p"], "role": "admin"},
+    ]}), encoding="utf-8")
+
+    class Appliance:
+        def delete_chunk(self, document_id, *, confirmation, caller):
+            return caller.role, document_id, confirmation
+
+        def delete_source(self, source):
+            return source
+
+    entry = Entry(secrets, lambda tenant: Appliance())
+    with pytest.raises(SourceForbidden, match="admin role"):
+        entry.delete_chunk("reader-secret", "notes-p0001")
+    with pytest.raises(SourceForbidden, match="admin role"):
+        entry.delete_source("reader-secret", "notes")
+    with pytest.raises(SourceForbidden, match="outside"):
+        entry.delete_chunk("admin-secret", "private-p0001")
+    assert entry.delete_chunk("admin-secret", "notes-p0001") == ("admin", "notes-p0001", None)
+    assert entry.delete_source("admin-secret", "notes") == "notes"
+
+
 def test_graph_identity_uses_the_tenant_slug():
     assert graph_identity("cpu-llm") == ("cpu-llm", "appliance_cpu-llm")
     assert graph_identity("tenant_alpha") == ("tenant_alpha", "appliance_tenant_alpha")

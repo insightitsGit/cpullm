@@ -30,6 +30,68 @@ from cpu_llm.ingest import ingest_source
 from cpu_llm.source import validation_chunks
 
 
+@pytest.mark.parametrize("workers", [1, 4])
+def test_catalog_reuses_encoded_batch_and_rolls_back_failed_replacement(appliance, monkeypatch, workers):
+    pipeline = appliance.index.pipeline
+    original = pipeline.encode_texts
+    calls = []
+
+    def encode(texts, *args, **kwargs):
+        calls.append(len(texts))
+        if texts == ["Replacement record 33."]:
+            raise RuntimeError("encoder failure")
+        return original(texts, *args, **kwargs)
+
+    monkeypatch.setattr(pipeline, "encode_texts", encode)
+    appliance.catalog_chunks([("batch-test-p0001", "The archive is blue.")],
+                             replace_prefix="batch-test-p", encoder_workers=workers)
+    assert calls == [1]
+    replacement = [(f"batch-test-p{i:04}", f"Replacement record {i}.") for i in range(1, 34)]
+    with pytest.raises(RuntimeError, match="encoder failure"):
+        appliance.catalog_chunks(replacement, replace_prefix="batch-test-p", encoder_workers=workers)
+    assert calls[0] == 1
+    assert sorted(calls[1:]) == [1, 32]
+    rows = appliance.index.current_chunks_by_ids(["batch-test-p0001", "batch-test-p0032"])
+    assert [(row["document_id"], row["chunk_text"]) for row in rows] == [
+        ("batch-test-p0001", "The archive is blue."),
+    ]
+
+
+def test_delete_chunk_requires_confirmation_and_preserves_neighbors(appliance):
+    from cpu_llm.access import CallerContext, SourceForbidden
+
+    first, second = "cleanup-p0001", "cleanup-p0002"
+    appliance.catalog_chunks([(first, "The archive is blue."), (second, "The archive is open.")])
+    viewer = CallerContext.make(appliance.tenant_id, "viewer", [first])
+    reader = CallerContext.make(appliance.tenant_id, "operator", [first], role="admin")
+    other = CallerContext.make(appliance.tenant_id, "other", [first], role="admin")
+    scoped = appliance.ask("How many chunks are there in cleanup?", caller=viewer)
+    assert scoped["chunk_inventory"]["chunk_count"] == 1
+    assert scoped["chunk_inventory"]["chunk_ids"] == [first]
+    page = appliance.chunk_inventory("cleanup", limit=1)
+    assert page["chunk_count"] == 2 and page["next_offset"] == 1
+    assert appliance.chunk_inventory("cleanup", limit=1, offset=1)["chunk_ids"] == [second]
+    assert appliance.chunk_inventory("cleanup", offset=5)["chunk_count"] == 2
+    preview = appliance.ask(f"Delete chunk {first}.", caller=reader)["chunk_delete"]
+    assert preview["status"] == "confirmation_required"
+    token = preview["confirmation"]
+    with pytest.raises(SourceForbidden, match="admin role"):
+        appliance.ask(f"Delete chunk {first}.", caller=viewer)
+    with pytest.raises(SourceForbidden, match="admin role"):
+        appliance.delete_chunk(first, confirmation=token, caller=viewer)
+    assert appliance.delete_chunk(first, confirmation=token, caller=other)["status"] == "invalid_confirmation"
+    with pytest.raises(SourceForbidden):
+        appliance.delete_chunk(second, caller=reader)
+    assert len(appliance.index.current_chunks_by_ids([first, second])) == 2
+    appliance.catalog_chunks([(first, "The archive is red.")])
+    assert appliance.delete_chunk(first, confirmation=token, caller=reader)["status"] == "invalid_confirmation"
+    token = appliance.delete_chunk(first, caller=reader)["confirmation"]
+    assert appliance.delete_chunk(first, confirmation=token, caller=reader)["status"] == "deleted"
+    assert appliance.delete_chunk(first, confirmation=token, caller=reader)["status"] == "chunk_not_found"
+    assert [row["document_id"] for row in appliance.index.current_chunks_by_ids([first, second])] == [second]
+    assert appliance.ask("List chunks for cleanup.")["chunk_inventory"]["chunk_ids"] == [second]
+
+
 @pytest.fixture
 def appliance() -> Iterator[Appliance]:
     if not os.environ.get("VECTORPRISM_PG_DSN"):

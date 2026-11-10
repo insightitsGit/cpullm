@@ -387,20 +387,17 @@ class Appliance:
         propositions: dict[str, EIRProposition] | None = None,
         *,
         replace_prefix: str | None = None,
+        encoder_workers: int = 1,
     ) -> int:
         """Store every chunk, and store a proposition when one was supplied.
 
-        The vector rows are written in a batch. Each chunk is then encoded
-        again so the graph node keeps the same tensor the row stores.
+        Encode each chunk once and reuse its tensor for the graph.
         """
-        self.index.save_chunks(chunks, replace_prefix=replace_prefix)
+        vectors = self.index.save_catalog_chunks(chunks, replace_prefix=replace_prefix,
+                                                 encoder_workers=encoder_workers)
         if getattr(self, "knowledge_graph", None) is not None:
             self.knowledge_graph.replace(chunks, prefix=replace_prefix)
         bound = propositions or {}
-        texts = [text for _document_id, text in chunks]
-        vectors: list[Any] = []
-        for start in range(0, len(texts), 32):
-            vectors.extend(self.index.pipeline.encode_texts(texts[start : start + 32]))
         known = {node.id: node for node in self.memory.all_nodes()}
         pending: dict[str, str] = {}
         ops: list[DeltaOp] = []
@@ -434,7 +431,7 @@ class Appliance:
         _store_resonance_tags(self, chunks, replace_prefix=replace_prefix)
         return len(chunks)
 
-    def ingest(self, source: str | Path | Any) -> dict[str, Any]:
+    def ingest(self, source: str | Path | Any, *, encoder_workers: int = 1) -> dict[str, Any]:
         """Store a file, a folder, or a ``SourceDocument`` the caller already split.
 
         Each paragraph joins the same index as the paragraphs already stored.
@@ -444,6 +441,9 @@ class Appliance:
         from cpu_llm.clauses import propositions_for
         from cpu_llm.documents import chunks_for, open_source, replace_prefix
         from cpu_llm.relations import add_edges
+
+        if type(encoder_workers) is not int or not 1 <= encoder_workers <= 4:
+            raise ValueError("encoder_workers must be an integer from 1 to 4")
 
         documents = open_source(source)
         registry = getattr(self, "source_slug_path", None)
@@ -460,6 +460,7 @@ class Appliance:
                 chunks,
                 propositions_for(chunks),
                 replace_prefix=replace_prefix(document),
+                **({"encoder_workers": encoder_workers} if encoder_workers != 1 else {}),
             )
             ids.extend(document_id for document_id, _text in chunks)
             pairs = [(left, right) for left, right, _label in document.connections]
@@ -510,15 +511,39 @@ class Appliance:
         _correct_resonance_tags(self, document_id, prior_sentence, result["new_id"], new_sentence)
         return result
 
-    def delete_source(self, source: str) -> dict[str, Any]:
+    def chunk_inventory(self, source: str | None = None, *, limit: int = 50, offset: int = 0,
+                        caller: Any | None = None) -> dict[str, Any]:
+        """List and count live chunk IDs visible to this caller."""
+        from cpu_llm.source_delete import source_prefix
+
+        context = _caller_for(self, caller)
+        prefix = None if source is None else source_prefix(source)
+        count, ids = self.index.chunk_inventory(
+            None if context is None else context.allowed_sources, prefix=prefix, limit=limit, offset=offset)
+        return dict(source_prefix=prefix, chunk_count=count, chunk_ids=ids,
+                    next_offset=offset + len(ids) if offset + len(ids) < count else None)
+
+    def delete_chunk(self, document_id: str, *, confirmation: str | None = None,
+                     caller: Any | None = None) -> dict[str, Any]:
+        """Preview an exact chunk deletion, or apply its explicit confirmation."""
+        from cpu_llm.source_delete import control_chunk_delete
+
+        return control_chunk_delete(self, document_id, confirmation, caller=caller)
+
+    def delete_source(self, source: str, *, caller: Any | None = None) -> dict[str, Any]:
         """Remove one source from the vector index, the graph, and the word index.
 
         ``source`` is a file name, a document id, or the ingest id prefix.
         The PrismResonance ledger and the shared word-relation file are not rebuilt.
         Resonance tags for the source are removed.
         """
-        from cpu_llm.source_delete import delete_stored_source
+        from cpu_llm.access import SourceForbidden, require_admin, source_allowed
+        from cpu_llm.source_delete import delete_stored_source, source_prefix
 
+        context = _caller_for(self, caller)
+        require_admin(context)
+        if context is not None and not source_allowed(source_prefix(source), context.allowed_sources):
+            raise SourceForbidden("that source is outside this caller's scope")
         result = delete_stored_source(
             self.index,
             self.memory,
@@ -527,7 +552,6 @@ class Appliance:
             source,
             resonance_tags=_resonance_store(self),
         )
-        from cpu_llm.source_delete import source_prefix
         if getattr(self, "knowledge_graph", None) is not None:
             self.knowledge_graph.delete_prefix(source_prefix(source))
         return result
@@ -612,6 +636,35 @@ class Appliance:
         raw_message = message
         enabled, content = requested(message, strict_evidence)
         enabled = enabled or getattr(self, 'strict_evidence', False)
+        inventory = re.fullmatch(
+            r'(?:how many chunks(?: (?:do we have|are there))?|(?:please )?(?:count|list) chunks)'
+            r'(?:\s+(?:in|for|from|related to)\s+(.+?))?[.?!]?', content.strip(), re.I)
+        if inventory:
+            if self.guard.check(raw_message).decision != 'allow':
+                return dict(status='blocked', answer_status='blocked', reply=dict(text='Request blocked.'))
+            source = inventory[1]
+            if source and source.casefold().rstrip('.') in {'the knowledge base', 'my knowledge base', 'the kb'}:
+                source = None
+            receipt = self.chunk_inventory(source, caller=caller)
+            count = receipt['chunk_count']
+            scope = f' for {receipt["source_prefix"]}' if receipt['source_prefix'] else ' in your accessible knowledge base'
+            text = f'{count} active {"chunk" if count == 1 else "chunks"}{scope}.'
+            if content.strip().casefold().startswith(('list ', 'please list ')) and receipt['chunk_ids']:
+                text += '\n' + '\n'.join(receipt['chunk_ids'])
+                if receipt['next_offset'] is not None:
+                    text += '\nMore chunks are available through the inventory API.'
+            return dict(status='answered', answer_status='answered', reply=dict(text=text), chunk_inventory=receipt)
+        chunk_delete = re.fullmatch(r'(?:please\s+)?delete\s+chunk\s+([a-z0-9-]+)[.!?]?',
+                                    content.strip(), re.I)
+        if chunk_delete:
+            if self.guard.check(raw_message).decision != 'allow':
+                return dict(status='blocked', answer_status='blocked', reply=dict(text='Request blocked.'))
+            receipt = self.delete_chunk(chunk_delete[1].lower(), caller=caller)
+            text = (f'Review chunk {receipt["document_id"]} before confirming through the chunk deletion API.\n\n'
+                    f'{receipt["preview"]}'
+                    if receipt['status'] == 'confirmation_required' else 'Chunk not found.')
+            return dict(status=receipt['status'], answer_status=receipt['status'],
+                        reply=dict(text=text), chunk_delete=receipt)
         from cpu_llm.stylistic.profiles import extract_style_request
         tone_control = extract_style_request(content)
         if tone_control['tone'] is not None:

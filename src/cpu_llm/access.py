@@ -46,6 +46,11 @@ class CallerContext:
     caller_id: str
     allowed_sources: frozenset[str]
     request_id: str
+    role: str = "reader"
+
+    def __post_init__(self) -> None:
+        if self.role not in ("reader", "admin"):
+            raise ValueError("role must be reader or admin")
 
     @staticmethod
     def make(
@@ -53,6 +58,8 @@ class CallerContext:
         caller_id: str,
         allowed_sources: frozenset[str] | set[str] | list[str],
         request_id: str | None = None,
+        *,
+        role: str = "reader",
     ) -> "CallerContext":
         sources = frozenset(str(item) for item in allowed_sources)
         for item in sources:
@@ -66,7 +73,14 @@ class CallerContext:
             caller_id=caller_id,
             allowed_sources=sources,
             request_id=request_id or uuid.uuid4().hex,
+            role=role,
         )
+
+
+def require_admin(context: CallerContext | None) -> None:
+    """A scoped caller needs the admin role for deletion."""
+    if context is not None and context.role != "admin":
+        raise SourceForbidden("an admin role is required for deletion")
 
 
 def source_allowed(document_id: str, allowed: frozenset[str] | list[str] | None) -> bool:

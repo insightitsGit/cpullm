@@ -89,7 +89,7 @@ def _matches_document_prefix(document_id: str, prefix: str) -> bool:
     return matches_prefix(document_id, prefix)
 
 
-def drop_document_prefix(index: dict[str, dict[str, list[str]]], prefix: str) -> int:
+def drop_document_prefix(index: dict[str, dict[str, list[str]]], prefix: str, *, exact: bool = False) -> int:
     """Remove document ids that belong to ``prefix``. Empty words are dropped."""
     removed = 0
     for word in list(index):
@@ -103,7 +103,7 @@ def drop_document_prefix(index: dict[str, dict[str, list[str]]], prefix: str) ->
             kept = [
                 document_id
                 for document_id in ids
-                if not _matches_document_prefix(str(document_id), prefix)
+                if not (str(document_id) == prefix if exact else _matches_document_prefix(str(document_id), prefix))
             ]
             removed += len(ids) - len(kept)
             if kept:

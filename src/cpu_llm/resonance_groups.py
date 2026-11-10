@@ -128,13 +128,13 @@ class ResonanceTags:
             self.consolidate()
         return stored
 
-    def delete_prefix(self, prefix: str) -> dict[str, int]:
+    def delete_prefix(self, prefix: str, *, exact: bool = False) -> dict[str, int]:
         """Remove tags and word rows for one source and nothing else."""
         with self._connect() as conn:
             doomed = [
                 row["unit_id"]
                 for row in conn.execute("SELECT unit_id, doc_id FROM unit")
-                if _prefix_match(row["doc_id"], prefix)
+                if (row["doc_id"] == prefix if exact else _prefix_match(row["doc_id"], prefix))
             ]
             if not doomed:
                 return {"units": 0, "words": 0}

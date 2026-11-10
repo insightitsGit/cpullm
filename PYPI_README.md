@@ -474,6 +474,49 @@ Potential scopes include:
 These are pilot integration opportunities, not claims of deployed customer
 results, automatic legal compliance or a turnkey zero-trust enclave.
 
+## Inspect and manage chunks
+
+Chunk management and the parallel ingestion option below are available from
+the current source checkout. The published 1.12.1 wheel predates these changes.
+
+Ask `How many chunks do we have?`, `How many chunks are there in notes.pdf?`,
+or `List chunks for notes.pdf.` Counts include active chunks visible to the
+caller. Use the ingested filename or source prefix to filter by document.
+The Python method `app.chunk_inventory("notes.pdf", limit=50, offset=0)`
+and HTTP `POST /v1/chunks` return the total, exact chunk IDs, and the next
+offset if another page is available. Omit the source to count the accessible
+knowledge base.
+
+### Delete one chunk with confirmation
+
+In a team deployment, configure `"role": "admin"` on a trusted credential
+record for users who can preview and confirm chunk deletion or delete a source.
+Credentials without a role default to `reader`. Administrators still need
+access to the target source or chunk. Readers can use inventory within their
+source scope. A standalone Python appliance without a caller context acts as
+the local operator.
+
+Use `Delete chunk notes-p0001.` to preview the exact chunk in chat, or call
+`app.delete_chunk("notes-p0001")` to obtain the preview and confirmation token.
+After reviewing it, pass the token as `confirmation=` to a second call with the
+same chunk ID. HTTP clients can POST the same fields to `/v1/delete-chunk`.
+The token expires in five minutes and is tied to the caller and row revision.
+Sibling chunks and correction versions require their own confirmations.
+The legacy source deletion API operates on whole sources.
+The shared resonance ledger and word-relation file are retained.
+See the [chunk management spec](https://github.com/insightitsGit/cpullm/blob/main/docs/chunk-management-spec.md) for receipts,
+approval behavior, and team permissions.
+
+### Ingest large documents
+
+Ingestion encodes each chunk once and reuses the result for storage and graph
+processing. Use `app.ingest("book.pdf", encoder_workers=4)` to try parallel
+encoding. The default is one worker, and the maximum is four. In the 162-page
+MIT PDF test, one worker completed in 85.7 seconds and used 3.00 GiB peak
+process memory. Four workers took 113.7 seconds and used 6.53 GiB. Both
+produced identical chunk text and dense vectors.
+[Ingestion performance spec](https://github.com/insightitsGit/cpullm/blob/main/docs/ingestion-performance-spec.md)
+
 ## Verification and deployment limits
 
 The 1.11.2 source run reports **925 passed, 56 skipped, 3 expected
@@ -484,7 +527,8 @@ HTTP and the healthcare demo's 12/12 authored outcomes.
 customer-corpus or hosted-model comparison establishes superiority.
 
 The authenticated HTTP service exposes POST `/v1/ask`, `/v1/ingest`, `/v1/correct`
-and `/v1/delete`. It serves requests serially; lazy factories must construct
+and `/v1/delete`. The current source adds `/v1/chunks` and `/v1/delete-chunk`.
+It serves requests serially. Lazy factories must construct
 appliances on the serving thread. There is no built-in TLS or production gateway,
 and long work blocks other requests. See [OpenAPI](https://github.com/insightitsGit/cpullm/blob/main/docs/openapi.json) and the
 [consumer guide](https://github.com/insightitsGit/cpullm/blob/main/docs/library-consumer-guide.md#authenticated-http-service).

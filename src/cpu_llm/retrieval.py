@@ -11,6 +11,8 @@ from __future__ import annotations
 import os
 import re
 import time
+from contextlib import nullcontext
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import pyarrow  # noqa: F401  # must load before torch; otherwise pyarrow faults on this machine
@@ -43,6 +45,30 @@ def default_checkpoint() -> Path:
 
 
 class VectorPrismIndex:
+    def chunk_inventory(self, allowed=None, *, prefix=None, limit=50, offset=0):
+        """Count current chunks and list a page of IDs within the same snapshot."""
+        if type(limit) is not int or not 1 <= limit <= 200 or type(offset) is not int or not 0 <= offset <= 2**31 - 1:
+            raise ValueError("Use a limit from 1 to 200 and a nonnegative 32-bit offset.")
+        if allowed is not None and not allowed:
+            return 0, []
+        scope, params = ("TRUE", []) if allowed is None else _allowed_clause(frozenset(allowed))
+        source, source_param = ("TRUE", None) if prefix is None else _prefix_predicate(prefix)
+        if source_param is not None:
+            params = [*params, source_param]
+        when = _as_of(self, None)
+        with self.db.conn.cursor() as cursor:
+            cursor.execute(
+                f"""WITH matching AS (
+                    SELECT document_id FROM psm_document_embeddings
+                    WHERE ({scope}) AND ({source}) AND valid_timestamp <= %s
+                    AND (valid_to_timestamp IS NULL OR valid_to_timestamp > %s)
+                )
+                SELECT (SELECT count(*) FROM matching),
+                       ARRAY(SELECT document_id FROM matching ORDER BY document_id LIMIT %s OFFSET %s)""",
+                (*params, when, when, limit, offset),
+            )
+            return cursor.fetchone()
+
     def strict_source_rows(self, allowed=None, *, as_of=None, max_rows=10000):
         """One scoped, time-valid snapshot; overflow must never yield an answer."""
         when = _as_of(self, as_of)
@@ -344,6 +370,32 @@ class VectorPrismIndex:
             for document_id, chunk_text in chunks
         ]
         return self.pipeline.upsert_documents(documents, batch_size=32)
+
+    def save_catalog_chunks(self, chunks: list[tuple[str, str]], *, replace_prefix: str | None = None,
+                            encoder_workers: int = 1):
+        """Store freshly encoded tensors and return those same tensors in source order."""
+        from cpu_llm.word_taxonomy import write_stamped_tensor
+
+        if type(encoder_workers) is not int or not 1 <= encoder_workers <= 4:
+            raise ValueError("encoder_workers must be an integer from 1 to 4")
+        conn = getattr(self.db, "conn", None)
+        vectors = []
+        executor = ThreadPoolExecutor(max_workers=encoder_workers) if encoder_workers > 1 else nullcontext()
+        with conn.transaction() if conn is not None else nullcontext(), executor as pool:
+            if replace_prefix:
+                self.save_chunks([], replace_prefix=replace_prefix)
+            window_size = 32 * encoder_workers
+            for start in range(0, len(chunks), window_size):
+                batches = [chunks[offset:min(offset + 32, len(chunks))]
+                           for offset in range(start, min(start + window_size, len(chunks)), 32)]
+                texts = [[text for _, text in batch] for batch in batches]
+                encodings = (pool.map(self.pipeline.encode_texts, texts) if pool is not None
+                             else map(self.pipeline.encode_texts, texts))
+                for batch, encoded in zip(batches, encodings, strict=True):
+                    for (document_id, text), tensor in zip(batch, encoded, strict=True):
+                        write_stamped_tensor(self.db, document_id, text, tensor)
+                        vectors.append(tensor)
+        return vectors
 
     def save_version(self, document_id: str, text: str, timestamp: int) -> int:
         """Use the correction's valid-from time for its new vector interval."""

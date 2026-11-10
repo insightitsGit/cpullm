@@ -304,6 +304,58 @@
         }
       }
     },
+    "/v1/chunks": {
+      "post": {
+        "operationId": "chunkInventory",
+        "security": [{"BearerSecret": []}],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "source": {"type": "string", "description": "Ingested filename or source prefix."},
+                  "limit": {"type": "integer", "minimum": 1, "maximum": 200, "default": 50},
+                  "offset": {"type": "integer", "minimum": 0, "default": 0}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {"description": "Scoped active chunk count, page of exact IDs, and next offset."},
+          "400": {"description": "Invalid request"},
+          "401": {"description": "Authentication failed"}
+        }
+      }
+    },
+    "/v1/delete-chunk": {
+      "post": {
+        "operationId": "deleteChunk",
+        "security": [{"BearerSecret": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["document_id"],
+                "properties": {
+                  "document_id": {"type": "string", "example": "notes-p0001"},
+                  "confirmation": {"type": "string", "description": "Token from the preview response for the same caller and chunk."}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {"description": "Inspect status for confirmation_required, invalid_confirmation, chunk_not_found, or deleted."},
+          "400": {"description": "Invalid request"},
+          "401": {"description": "Authentication failed"},
+          "403": {"description": "Chunk outside caller scope"}
+        }
+      }
+    },
     "/v1/delete": {
       "post": {
         "operationId": "deleteSource",

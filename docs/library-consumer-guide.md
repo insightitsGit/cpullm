@@ -237,7 +237,7 @@ caller = CallerContext.make(
 
 The scoped retrieval SQL accepts a paragraph id or a source prefix ending in `-p`, then filters before dense ranking/LIMIT. `hr-p` matches `hr-p0001` and `hr-p0001-v1700000000`. It does not match `hr-policy-p0001`. `CallerContext.make` rejects any other token, including an informal prefix such as `agent`. `allowed_sources=[]` means no reads. The trusted Python API without `caller` is unscoped; it is not equivalent to an authenticated caller with an empty scope.
 
-Direct `ingest` and `delete_source` do not take a caller argument. Authenticate and authorize writes through `Entry` or your own trusted boundary. Possession of a `CallerContext` does not prove authentication. Namespaces are application/schema isolation under one database credential, not independently provisioned PostgreSQL security principals.
+Direct `ingest` uses the appliance's tenant. Authenticate and authorize writes through `Entry` or your own trusted boundary. Possession of a `CallerContext` does not prove authentication. Namespaces provide application and schema isolation under one database credential. The current source adds scoped inventory and requires admin credentials for deletion through `Entry`. See the [chunk management spec](chunk-management-spec.md).
 
 ## Authenticated HTTP service
 
@@ -279,6 +279,8 @@ Every route below is POST with a JSON object and `Authorization: Bearer <actual-
 - `/v1/ask`: `{"message":"What is the harbor kestrel?"}`. Additional forwarded fields are exactly `discover`, `imagine`, `deep`, `math`, `finance`, `as_of`, `session_id`. `session_id` is kept for clarification and reference resolution. `grade` and `child_safety` are not forwarded. Other Python `ask` arguments are not exposed by this route; extra JSON keys are not forwarded. The route calls `Appliance.ask`, not `ask_concurrent`.
 - `/v1/correct`: `document_id`, `prior_sentence`, `new_sentence`, `actor_id`, and required integer `timestamp`. Supply the exact previous wording and actual document ID. The authenticated source scope is checked.
 - `/v1/delete`: `{"source":"agent-notes"}` deletes a whole source prefix, not one paragraph.
+- `/v1/chunks` (current source) accepts optional `source`, `limit`, and `offset` and returns the scoped active count and a page of IDs.
+- `/v1/delete-chunk` (current source) accepts `document_id` for preview and the same ID with `confirmation` for deletion. The credential must have `"role": "admin"` and access to the target. The current source also requires admin credentials for `/v1/delete`.
 
 Example request using the standard library:
 

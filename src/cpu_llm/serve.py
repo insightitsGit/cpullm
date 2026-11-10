@@ -157,6 +157,18 @@ def _dispatch(entry: Entry, path: str, secret: str, payload: dict[str, Any], *, 
         return 200, entry.ask(secret, message, **kwargs)
     if path == "/v1/ingest":
         return 200, entry.ingest(secret, _source(payload))
+    if path == "/v1/chunks":
+        source = payload.get("source")
+        if source is not None and not isinstance(source, str):
+            raise ValueError("source must be a string")
+        return 200, entry.chunk_inventory(secret, source, limit=payload.get("limit", 50),
+                                          offset=payload.get("offset", 0))
+    if path == "/v1/delete-chunk":
+        document_id = payload.get("document_id")
+        confirmation = payload.get("confirmation")
+        if not isinstance(document_id, str) or (confirmation is not None and not isinstance(confirmation, str)):
+            raise ValueError("Provide a chunk document_id and an optional confirmation string")
+        return 200, entry.delete_chunk(secret, document_id, confirmation)
     if path == "/v1/delete":
         source = str(payload.get("source") or "")
         if not source:
