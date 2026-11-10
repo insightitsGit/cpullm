@@ -1,4 +1,5 @@
 """Public API boundaries: explicit style follows canonical dispatch."""
+from contextlib import nullcontext
 from types import SimpleNamespace
 import pytest
 from cpu_llm.pipeline import Appliance
@@ -19,7 +20,7 @@ def test_style_runs_after_dispatch_before_render(monkeypatch, style):
     monkeypatch.setattr(planner,'dispatch_request',dispatch)
     monkeypatch.setattr(stylistic,'apply_style',apply)
     monkeypatch.setattr(rendering,'render_response',render)
-    app=SimpleNamespace(small_talk=False,strict_evidence=False)
+    app=SimpleNamespace(_session_turn=nullcontext,small_talk=False,strict_evidence=False)
     Appliance.ask(app,'Please be friendly and give a detailed answer.',style=style)
     assert events==(['canonical_dispatch','render'] if style is None else ['canonical_dispatch','style','render'])
 
@@ -29,5 +30,5 @@ def test_strict_evidence_bypasses_style(monkeypatch):
     expected={'answer_status':'evidence_quote'}
     monkeypatch.setattr(strict,'answer',lambda *a,**k:expected)
     monkeypatch.setattr(stylistic,'apply_style',lambda *a:pytest.fail('strict must not style'))
-    app=SimpleNamespace(small_talk=False,strict_evidence=True)
+    app=SimpleNamespace(_session_turn=nullcontext,small_talk=False,strict_evidence=True)
     assert Appliance.ask(app,'What color is the Aster?',style='friendly') is expected

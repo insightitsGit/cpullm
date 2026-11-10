@@ -1,4 +1,5 @@
 import copy
+from contextlib import nullcontext
 from types import SimpleNamespace
 import pytest
 
@@ -103,7 +104,7 @@ def test_relationship_restrictions_and_unsupported_expressive_tones_remain_visib
 def test_public_prompt_trigger_api_override_and_strict_precedence():
     from cpu_llm.pipeline import Appliance
     data=[dict(document_id=q['document_id'],chunk_text=q['quote']) for q in source_result()['answer_evidence']]
-    app=SimpleNamespace(tenant_id='t',small_talk=False,strict_evidence=False,
+    app=SimpleNamespace(_session_turn=nullcontext,tenant_id='t',small_talk=False,strict_evidence=False,
         guard=SimpleNamespace(check=lambda m:SimpleNamespace(decision='allow')),
         index=SimpleNamespace(strict_source_rows=lambda *a,**k:(data,123)))
     prompt='Write a detailed article about Helios in a friendly tone.'

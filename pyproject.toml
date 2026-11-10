@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cpu-llm"
-version = "1.12.0"
+version = "1.12.1rc1"
 description = "CPU-first evidence engine for source-backed answers, deterministic checks, and cross-domain research."
 readme = "PYPI_README.md"
 requires-python = ">=3.11"
@@ -55,7 +55,7 @@ dependencies = [
 [project.optional-dependencies]
 prompt_nlp = ["spacy>=3.7,<3.9"]
 coreference = ["coreferee==1.5.0", "spacy>=3.7,<3.9"]
-fastcoreference = ["fastcoref>=2.2.3,<3"]
+fastcoreference = ["fastcoref==2.1.6", "transformers>=4.51,<5", "spacy>=3.7,<3.9"]
 
 [project.urls]
 Homepage = "https://github.com/insightitsGit/cpullm"

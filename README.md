@@ -18,7 +18,7 @@ routes** to explore relationships, join cited premises across knowledge bases,
 or formulate hypotheses. Hypotheses carry their own label, and numerical results
 are conditional on the selected model and supplied constraints.
 
-**This release: 1.12.0.** Author: **Amin Parva, Independent Engineer**.
+**Release candidate: 1.12.1rc1.** Author: **Amin Parva, Independent Engineer**.
 
 **Licenses:** code [Apache-2.0](LICENSE); bundled WikiText-2 data has separate
 **CC BY-SA 3.0/GFDL** terms and attribution. See [third-party notices](THIRD_PARTY_NOTICES.md).
@@ -36,7 +36,7 @@ Question + authorized knowledge base
   |
   +-- Research ---------> Retrieve evidence and assemble cited responses
        |
-       +-- CrossDomin --> Join cited premises across selected KBs
+       +-- CrossDomain --> Join cited premises across selected KBs
        +-- Invention ---> Propose hypotheses and run supported model scans
 ```
 
@@ -176,7 +176,7 @@ A similarity score or connection is not factual proof. Strict requests and docum
 workflows can bypass the ordinary graph; not every request runs every node.
 See the [architecture](docs/current-design.md) and [prompt-to-node mapping](docs/prompt-flag-map.md).
 
-## Research, relationship loops, invention, and CrossDomin
+## Research, relationship loops, invention, and CrossDomain
 
 These features are included in **1.12.0**. For a development install from a Git
 checkout, use the commands below and complete the database and encoder setup
@@ -276,7 +276,7 @@ first follow-up. Proposed relationships stay labeled as hypotheses, and the
 engine rechecks the cited premises on each turn. See the
 [follow-up spec](docs/taxonomy-invention-spec.md#conversation-follow-ups).
 
-### Join multiple knowledge bases with CrossDomin
+### Join multiple knowledge bases with CrossDomain
 
 Give sources an alphanumeric KB prefix followed by a hyphen, such as
 `physics-seesaw.md`, `math-rotations.md`, or `numerics-rotation-checks.md`.
@@ -284,25 +284,25 @@ Ingest them into the same appliance with `app.ingest(...)`, then select
 two to seven prefixes:
 
 ```python
-reply = app.ask("CrossDomin: Casas-Ibarra using KBs: physics, math, numerics.")
+reply = app.ask("CrossDomain: Casas-Ibarra using KBs: physics, math, numerics.")
 print(reply["reply"]["text"])
 ```
 
 The first KB anchors the topic. Each selected KB must contribute a cited
-premise for the same join. The short prompt `CrossDomin: Casas-Ibarra.`
+premise for the same join. The short prompt `CrossDomain: Casas-Ibarra.`
 defaults to physics and mathematics. Research prompts also route here when they
 name KBs explicitly, for example `Research Casas-Ibarra using KBs: physics, math, numerics.`
 Use `Research`, `Investigate`, or `Explore` with that suffix. Ordinary research
-requests use the research planner. CrossDomin currently verifies complex
+requests use the research planner. CrossDomain currently verifies complex
 orthogonality in the transpose convention. If a selected KB lacks a matching
 premise, the reply names the gap and asks you to ingest a source under that prefix.
 Strict evidence mode disables this invention route. See the
-[CrossDomin spec](docs/taxonomy-invention-spec.md#crossdomin) for the join rule.
+[CrossDomain spec](docs/taxonomy-invention-spec.md#crossdomain) for the join rule.
 
 #### Baryon asymmetry example
 
 Why did the early universe end up with more matter than antimatter?
-Leptogenesis is one proposed explanation. In this example, CrossDomin checks
+Leptogenesis is one proposed explanation. In this example, CrossDomain checks
 one mathematical ingredient of the Casas–Ibarra parameterization used in a
 leptogenesis model.
 
@@ -313,7 +313,7 @@ The live PostgreSQL/pgvector run returned `insufficient_evidence` with the
 physics note alone. After ingesting both notes, it returned `hypotheses`:
 
 ```text
-Prompt: CrossDomin: Casas-Ibarra.
+Prompt: CrossDomain: Casas-Ibarra.
 
 Proposed model check: Verify the complex rotation using R^T R = I. For the rotation row, check cos(z)^2 + sin(z)^2 = 1.
 The built-in check sampled three complex angles with maximum residual 2.29e-16.
@@ -376,14 +376,14 @@ Python 3.11+ is required. Release checks used Windows/Python 3.12.10.
 
 ```shell
 python -m pip install --upgrade pip
-python -m pip install "cpu-llm==1.12.0"
+python -m pip install "cpu-llm==1.12.1rc1"
 python -m pip check
 python -c "import cpu_llm; print(cpu_llm.__version__)"
 ```
 
 Before publication, install the supplied wheel instead of the version from PyPI.
 To build from a checkout, run `python -m pip install build` and then
-`python -m build --outdir dist/1.12.0`.
+`python -m build --outdir dist/1.12.1rc1`.
 
 Document queries require PostgreSQL/pgvector and the pretrained
 `sentence-transformers/all-mpnet-base-v2` encoder assets. The trained projection
@@ -476,7 +476,7 @@ for the intended application.
 ## Documentation
 
 - [Research planner and explicit cycle exploration](docs/research-cycle-user-guide.md).
-- [Invention and CrossDomin](docs/taxonomy-invention-spec.md) and
+- [Invention and CrossDomain](docs/taxonomy-invention-spec.md) and
   [numerical constraint evaluator](docs/invention-constraint-evaluator-spec.md).
 
 - [1.11.1 release notes](docs/releases/1.11.1.md) and [build validation](docs/releases/1.11.1-build-validation.md).

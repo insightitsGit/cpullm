@@ -628,9 +628,9 @@ class Appliance:
         if type(invent) is not bool:
             raise ValueError('invent must be a boolean')
         invention_query = extract_layout(content)['content_query']
-        from cpu_llm.crossdomin import crossdomin_seed, execute_crossdomin
+        from cpu_llm.cross_domain import cross_domain_seed, execute_cross_domain
 
-        cross_seed = crossdomin_seed(invention_query)
+        cross_seed = cross_domain_seed(invention_query)
         seed = invention_seed(invention_query, forced=invent)
         key = invention_session(self, caller, session_id, as_of)
         specialist = cycle_search is not None or any(value is not None for value in (
@@ -639,9 +639,9 @@ class Appliance:
         with self._session_turn(key):
             if cross_seed is not None:
                 if specialist or invent:
-                    raise ValueError('Submit CrossDomin and other specialist requests separately.')
+                    raise ValueError('Submit CrossDomain and other specialist requests separately.')
                 continue_invention(self, key, raw_message, '', strict=enabled)
-                result = execute_crossdomin(self, raw_message, cross_seed, caller=caller, as_of=as_of, strict=enabled)
+                result = execute_cross_domain(self, raw_message, cross_seed, caller=caller, as_of=as_of, strict=enabled)
                 from cpu_llm.response_policy import classify_response_request
                 result['response_plan'] = classify_response_request(content)
                 return finish_invention_response(result)

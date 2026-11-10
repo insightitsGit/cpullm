@@ -24,3 +24,16 @@ See [PyPI Trusted Publishing](https://docs.pypi.org/trusted-publishers/).
 Repository README corrections apply to future distribution descriptions; editing
 the repository does not update the already-uploaded 1.11.1 long description.
 Whether to yank the defective 1.11.0 HTTP release remains an owner decision.
+
+## Release-candidate gates
+
+Dispatch the workflow with publication disabled to build the wheel from the
+source archive, validate metadata, and test the installed wheel on CPython 3.11
+and 3.12 against disposable pgvector and prepared encoder assets. Both test
+jobs must pass before publishing.
+
+After approval, commit the validated release contents, create the annotated
+tag matching the package version (for example, `v1.12.1rc1`), and push that
+tag. Dispatch the workflow against the tag with publication enabled after
+configuring the protected PyPI environment and trusted publisher. Verify PyPI
+provenance for both uploaded files and retain the workflow run URL.

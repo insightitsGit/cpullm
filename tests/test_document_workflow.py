@@ -1,5 +1,6 @@
 import copy
 import hashlib
+from contextlib import nullcontext
 from types import SimpleNamespace
 import pytest
 from cpu_llm.document_workflow import plan_document, plan_long_overview, compose_document, execute_document
@@ -106,7 +107,7 @@ def test_atomic_output_cap_fails_instead_of_truncating_a_record():
 def test_public_api_document_strict_and_tone_boundaries(monkeypatch):
     from cpu_llm.pipeline import Appliance
     import cpu_llm.stylistic as style
-    app=SimpleNamespace(tenant_id='t',small_talk=False,strict_evidence=True,
+    app=SimpleNamespace(_session_turn=nullcontext,tenant_id='t',small_talk=False,strict_evidence=True,
         guard=SimpleNamespace(check=lambda m:SimpleNamespace(decision='allow')),
         index=SimpleNamespace(strict_source_rows=lambda *a,**k:(rows(),123)))
     monkeypatch.setattr(style,'apply_style',lambda *a:pytest.fail('strict document styled'))

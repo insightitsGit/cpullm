@@ -36,9 +36,10 @@ are deliberately not guessed as entity references.
 ## Alternative and degraded operation
 
 `reference_backend="fastcoref"` uses a second adapter, configured for CPU;
-install `.[fastcoreference]` and the spaCy English model first. It can download
-its model on explicit backend construction. This adapter's real model has not
-been validated in this workspace; Coreferee has. A custom adapter implementing
+install `.[fastcoreference]` and run `python -m spacy download en_core_web_sm`.
+Explicit backend construction can download `biu-nlp/f-coref`. The release
+candidate was tested on Windows Python 3.12 with FastCoref 2.1.6 and
+Transformers 4.57.6. A custom adapter implementing
 `analyze(context, prompt)` may also be supplied to `ReferenceSessions` or Appliance.
 
 The default backend is `None`: no automatic model download or new mandatory

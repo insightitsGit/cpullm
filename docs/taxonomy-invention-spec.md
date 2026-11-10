@@ -80,15 +80,17 @@ When a source labels a candidate mechanism and explicitly connects it to an outc
 
 The hypothesis asks whether a parameter region can reproduce the target outcome while satisfying independent empirical constraints. The node looks for reported numeric bounds in separate chunks that mention an observable linked by the mechanism citation. It retains the experimental quote and span. A model must map the same parameters to the cosmological outcome and the laboratory observables before a numerical boundary can be computed. An empty intersection would exclude the tested parameter range under the model's assumptions. Missing bounds are reported explicitly. If the outcome cannot be extracted, the node returns a research question. If several mechanisms match equally, it asks which one to investigate.
 
-## CrossDomin
+## CrossDomain
 
-`CrossDomin: Casas-Ibarra.` defaults to the physics and mathematics KBs. To add a KB, ingest a source with a new alphanumeric prefix followed by a hyphen, such as `numerics-rotation-notes.md`. All sources must be available in the same authorized appliance snapshot. Select two to seven KBs per request, for example `CrossDomin: Casas-Ibarra using KBs: physics, math, numerics.` The first selected KB anchors the topic. The appliance can hold additional KBs for use in other requests.
+The legacy `CrossDomin:` prompt, Python imports, and receipt keys remain supported.
+
+`CrossDomain: Casas-Ibarra.` defaults to the physics and mathematics KBs. To add a KB, ingest a source with a new alphanumeric prefix followed by a hyphen, such as `numerics-rotation-notes.md`. All sources must be available in the same authorized appliance snapshot. Select two to seven KBs per request, for example `CrossDomain: Casas-Ibarra using KBs: physics, math, numerics.` The first selected KB anchors the topic. The appliance can hold additional KBs for use in other requests.
 
 The supported join is complex orthogonality in the transpose convention. Every selected KB must state that convention explicitly. At least one source must identify the sine and cosine construction for complex angles. The mathematics KB, when selected, must supply that construction.
 
-Requests beginning with `Research`, `Investigate`, or `Explore` also route to CrossDomin when they include an explicit `using KBs:` list. Other research requests retain their existing routing. When the join cannot be completed, the reply identifies the missing premise or construction and asks the user to ingest supporting material.
+Requests beginning with `Research`, `Investigate`, or `Explore` also route to CrossDomain when they include an explicit `using KBs:` list. Other research requests retain their existing routing. When the join cannot be completed, the reply identifies the missing premise or construction and asks the user to ingest supporting material.
 
-The response retains a quote, span, and chunk hash from each domain. It runs a built-in numerical check of the rotation identity at three complex angles. This samples an invariant and does not execute source text. Strict evidence mode bypasses CrossDomin, and a missing domain or a Hermitian-adjoint convention yields insufficient evidence.
+The response retains a quote, span, and chunk hash from each domain. It runs a built-in numerical check of the rotation identity at three complex angles. This samples an invariant and does not execute source text. Strict evidence mode bypasses CrossDomain, and a missing domain or a Hermitian-adjoint convention yields insufficient evidence.
 
 ## Conversation follow-ups
 

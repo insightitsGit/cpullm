@@ -181,6 +181,10 @@ def test_follow_up_revalidates_cited_sources():
 
 
 def test_crossdomin_requires_two_authorized_domains_and_matching_conventions():
+    from cpu_llm.cross_domain import cross_domain_seed
+    from cpu_llm.crossdomin import crossdomin_seed
+
+    assert crossdomin_seed is cross_domain_seed
     app = appliance()
     rows = [
         dict(document_id='physics-seesaw-p0001',
@@ -189,7 +193,7 @@ def test_crossdomin_requires_two_authorized_domains_and_matching_conventions():
              chunk_text='For complex z, the rotation built from cos(z) and sin(z) is complex orthogonal and satisfies R^T R = I.'),
     ]
     app.index.strict_source_rows.return_value = (rows, 123)
-    prompt = 'CrossDomin: Casas-Ibarra.'
+    prompt = 'CrossDomain: Casas-Ibarra.'
     result = app.ask(prompt)
     assert result['routing']['post_stages'] == ['crossdomin']
     [join] = result['invention']['joins']
@@ -197,6 +201,9 @@ def test_crossdomin_requires_two_authorized_domains_and_matching_conventions():
     assert result['invention']['check']['passed']
     assert not result['answer_evidence']
     assert result['reply']['text'].endswith(NOTE)
+    legacy = app.ask('CrossDomin: Casas-Ibarra.')
+    assert legacy['routing'] == result['routing']
+    assert legacy['invention'] == result['invention']
     caller = CallerContext.make(app.tenant_id, 'reader', ['physics-seesaw-p'])
     assert app.ask(prompt, caller=caller)['status'] == 'insufficient_evidence'
     assert app.ask(prompt, strict_evidence=True)['status'] == 'unsupported'

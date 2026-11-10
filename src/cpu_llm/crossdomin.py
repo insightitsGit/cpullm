@@ -10,16 +10,16 @@ from cpu_llm.knowledge_graph import Fact
 _MAX_KBS = 7
 
 
-def crossdomin_seed(query):
+def cross_domain_seed(query):
     match = re.fullmatch(
-        r'(?:CrossDomin\s*:\s*(.*?)|(?:please\s+)?'
+        r'(?:CrossDoma?in\s*:\s*(.*?)|(?:please\s+)?'
         r'(?:research|investigate|explore)\s+(.+?\s+using\s+kbs\s*:\s*.+?))\s*[.!?]*',
         query.strip(), re.I,
     )
     return (match[1] if match[1] is not None else match[2]).strip() if match else None
 
 
-def execute_crossdomin(app, message, seed, *, caller=None, as_of=None, strict=False):
+def execute_cross_domain(app, message, seed, *, caller=None, as_of=None, strict=False):
     import psycopg
     from cpu_llm.answerability import _sentences
     from cpu_llm.pipeline import _caller_for
@@ -38,7 +38,7 @@ def execute_crossdomin(app, message, seed, *, caller=None, as_of=None, strict=Fa
     if app.guard.check(message).decision != 'allow' or allowed is not None and not allowed:
         return result('blocked', 'Request blocked.')
     if strict:
-        return result('unsupported', 'Strict evidence mode disables CrossDomin invention.')
+        return result('unsupported', 'Strict evidence mode disables CrossDomain invention.')
     parts = re.split(r'\s+using\s+kbs\s*:\s*', seed, maxsplit=1, flags=re.I)
     topic = parts[0].strip()
     requested = [name.strip().casefold() for name in parts[1].split(',')] if len(parts) == 2 else ['physics', 'mathematics']
@@ -52,7 +52,7 @@ def execute_crossdomin(app, message, seed, *, caller=None, as_of=None, strict=Fa
     try:
         rows, when = _snapshot(app, allowed, as_of)
     except (RuntimeError, ValueError, psycopg.Error):
-        return result('partial', 'The CrossDomin source snapshot is unavailable.', joins=[])
+        return result('partial', 'The CrossDomain source snapshot is unavailable.', joins=[])
 
     anchor = re.compile(r'(?<!\w)' + re.escape(topic) + r'(?!\w)', re.I)
     premises = {}
@@ -88,7 +88,7 @@ def execute_crossdomin(app, message, seed, *, caller=None, as_of=None, strict=Fa
     if missing or construction is None:
         reason = ('Missing matching premises from: ' + ', '.join(missing) + '.' if missing else
                   'No selected KB supplied the complex sine and cosine construction.')
-        return result('insufficient_evidence', 'CrossDomin needs a matching transpose identity R^T R = I '
+        return result('insufficient_evidence', 'CrossDomain needs a matching transpose identity R^T R = I '
                       'in every selected KB. ' + reason + ' Ingest a source with the missing premise '
                       'under the corresponding KB prefix, then retry.', joins=[], requested_domains=requested,
                       matched_domains=[domain for domain in requested if domain in premises],
@@ -104,3 +104,7 @@ def execute_crossdomin(app, message, seed, *, caller=None, as_of=None, strict=Fa
              f'The built-in check sampled three complex angles with maximum residual {residual:.3g}.']
     lines.extend(f'[{item["document_id"]}] {item["quote"]}' for item in proof['premises'])
     return result('hypotheses', '\n'.join(lines), joins=[proof], requested_domains=requested, check=check, as_of=when)
+
+# Compatibility with the 1.12.0 Python API.
+crossdomin_seed = cross_domain_seed
+execute_crossdomin = execute_cross_domain

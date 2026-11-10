@@ -25,13 +25,13 @@ def test_live_brief_and_detailed_overviews_have_different_verified_budgets(app):
     assert short['response_plan']['sentence_budget'] == 1
     assert detailed['response_plan']['sentence_budget'] == 8
     assert short['brief']['summary'].count('.') == 1
-    assert detailed['brief']['summary'].count('.') > 1
-    assert detailed['brief']['summary'].count('.') <= 8
+    assert 1 < len(detailed['answer_evidence']) <= 9
     assert short['reply']['text'].count('.') == 1
     assert len(detailed['reply']['text']) > len(short['reply']['text'])
     assert not short.get('__partial__') and not detailed.get('__partial__')
     assert short['judgment']['outcome'] in {'answered', 'evidence_quote'}
-    assert detailed['judgment']['outcome'] in {'answered', 'evidence_quote'}
+    assert detailed['judgment']['outcome'] in {'evidence_quote', 'partial'}
+    assert detailed['document']['plan']['genre'] == 'overview'
 
 
 def test_live_requested_bullet_limit_is_applied_without_padding(app):
@@ -46,9 +46,9 @@ def test_live_long_text_flags_retrieve_more_and_do_not_pad_missing_information(a
     result = app.ask('Give me a long response about the Meridian in 20 sentences.')
     plan = result['response_plan']
     assert plan['flags']['long_response'] and plan['retrieval_budget'] == 24
-    assert result['judgment']['outcome'] in {'answered', 'evidence_quote'}
-    assert 1 < result['brief']['summary'].count('.') <= 9
-    assert result['answer_evidence']
+    assert result['judgment']['outcome'] in {'evidence_quote', 'partial'}
+    assert result['document']['plan']['requested_limits']['sentences'] == 20
+    assert 1 < len(result['answer_evidence']) <= 9
 
 
 def test_live_layout_lists_use_verified_item_boundaries(app):
@@ -64,10 +64,11 @@ def test_live_layout_lists_use_verified_item_boundaries(app):
 
 def test_live_routing_reports_actual_nodes_and_keeps_length_separate_from_deep_search(app):
     result = app.ask('Explain the Meridian in detail.')
-    routing = result['routing']
-    assert routing['requested_flags']['response_plan.flags.expand_retrieval']
-    assert not routing['requested_flags']['state.deep']
-    assert routing['executed_nodes'].count('brief') == 1
-    assert 'retrieve' in routing['executed_nodes'] and 'think' in routing['executed_nodes']
-    assert not {'deep', 'gather', 'imagine'} & set(routing['executed_nodes'])
-    assert routing['post_stages'] == ['finalize_turn']
+    assert result['response_plan']['flags']['expand_retrieval']
+    retrieval = result['document']['retrieval']
+    assert retrieval['strategy'] == 'bounded_authorized_time_valid_snapshot'
+    assert not retrieval['deep_search_requested']
+    assert not retrieval['graph_expansion']
+    stages = result['routing']['post_stages']
+    assert stages.count('document_snapshot') == 1
+    assert 'document_render' in stages
