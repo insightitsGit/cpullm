@@ -1,21 +1,22 @@
 # CPU-LLM: Evidence-Based AI Engine
 
-**Deterministic Document Checks, Financial Covenant Verification & Evidence-Preserving Retrieval on Commodity CPUs.**
+**Source-backed answers, deterministic checks, and cross-domain research on commodity CPUs.**
 
 [![PyPI 1.11.2](https://img.shields.io/badge/PyPI-1.11.2-blue)](https://pypi.org/project/cpu-llm/1.11.2/)
 [![Code license Apache 2.0](https://img.shields.io/badge/Code-Apache_2.0-green)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue)](pyproject.toml)
 
-`cpu-llm` / `cpullm` is an embeddable Python engine for source-backed document
-questions and explicit rule checks. It is intended for architects evaluating
-controlled evidence workflows in financial compliance, private credit and
-regulated enterprises, where unsupported answers, arithmetic errors and data
-egress carry material risk.
+`cpu-llm` / `cpullm` is an embeddable, CPU-first Python library that retrieves
+evidence from your knowledge base and uses it to answer questions, verify rules
+and calculations, and assemble cited reports. The current Git source also
+supports cross-domain research, hypothesis generation, and numerical scans
+with supported model adapters.
 
-Unlike unrestricted generative answering, its strict evidence path selects
-quotations, executes recognized calculations or returns an explicit nonanswer.
-This is a bounded evidence contract: it does not establish that a source is true,
-that every question is understood, or that a deployment is compliant.
+Use **strict evidence mode** when you need exact source quotations, recognized
+calculations, or a clear unsupported result. Use the **research and invention
+routes** to explore relationships, join cited premises across knowledge bases,
+or formulate hypotheses. Hypotheses carry their own label, and numerical results
+are conditional on the selected model and supplied constraints.
 
 **Published version: 1.11.2.** Use it instead of 1.11.0 for HTTP; it repairs a
 cached-appliance SQLite thread-ownership defect. Author: **Amin Parva,
@@ -160,7 +161,7 @@ A similarity score or connection is not factual proof. Strict requests and docum
 workflows can bypass the ordinary graph; not every request runs every node.
 See the [architecture](docs/current-design.md) and [prompt-to-node mapping](docs/prompt-flag-map.md).
 
-## New source features: research, relationship loops and invention
+## Research, relationship loops, invention, and CrossDomin
 
 The features below are in the current Git source, **not the published 1.11.2
 wheel**. To use them, install a checkout and complete the database/encoder setup:
@@ -281,6 +282,34 @@ orthogonality in the transpose convention. If a selected KB lacks a matching
 premise, the reply names the gap and asks you to ingest a source under that prefix.
 Strict evidence mode disables this invention route. See the
 [CrossDomin spec](docs/taxonomy-invention-spec.md#crossdomin) for the join rule.
+
+#### Baryon asymmetry example
+
+Why did the early universe end up with more matter than antimatter?
+Leptogenesis is one proposed explanation. In this example, CrossDomin checks
+one mathematical ingredient of the Casas–Ibarra parameterization used in a
+leptogenesis model.
+
+We ingested a physics note based on the
+[Casas–Ibarra paper](https://arxiv.org/abs/hep-ph/0103065) and a math note derived
+from [Orloff’s *Complex Variables with Applications*, section 2.8](https://math.libretexts.org/Bookshelves/Analysis/Complex_Variables_with_Applications_%28Orloff%29/02%3A_Analytic_Functions/2.08%3A_Gallery_of_Functions).
+The live PostgreSQL/pgvector run returned `insufficient_evidence` with the
+physics note alone. After ingesting both notes, it returned `hypotheses`:
+
+```text
+Prompt: CrossDomin: Casas-Ibarra.
+
+Proposed model check: Verify the complex rotation using R^T R = I. For the rotation row, check cos(z)^2 + sin(z)^2 = 1.
+The built-in check sampled three complex angles with maximum residual 2.29e-16.
+[physics-casas-ibarra-p0001] The Casas-Ibarra matrix R is complex orthogonal and satisfies R^T R = I.
+[math-orloff-complex-trigonometry-p0002] For complex z, the rotation built from cos(z) and sin(z) is complex orthogonal and satisfies R^T R = I.
+
+Invention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs.
+```
+
+The result checks the rotation identity at three complex angles. The separate
+leptogenesis scan below explores whether the illustrative model satisfies the
+cosmological and laboratory constraints.
 
 ### From a cited hypothesis to a numerical scan
 
@@ -426,6 +455,8 @@ for the intended application.
 
 - [Unreleased research planner and explicit cycle exploration](docs/research-cycle-user-guide.md):
   initial source-branch implementation, separate from published 1.11.2.
+- [Invention and CrossDomin](docs/taxonomy-invention-spec.md) and
+  [numerical constraint evaluator](docs/invention-constraint-evaluator-spec.md).
 
 - [1.11.1 release notes](docs/releases/1.11.1.md) and [build validation](docs/releases/1.11.1-build-validation.md).
 - [Whitepaper](https://www.insightits.com/research-tools/cpu-llm/whitepaper) and [1.11.1 PDF](https://www.insightits.com/assets/whitepapers/cpu-llm-1.11.1-whitepaper.pdf).
