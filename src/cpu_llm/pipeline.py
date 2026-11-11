@@ -82,6 +82,8 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
+from cpu_llm.external_fallback import ExternalLLMFallback
+
 import numpy as np
 from vectorprism.tensor_contract import PSMTensorContract
 from chorusgraph.core import END, START, Graph
@@ -172,6 +174,7 @@ class Appliance:
         resonance_tags: bool = False,
         strict_evidence: bool = False,
         small_talk: bool = True,
+        external_llm_fallback: ExternalLLMFallback | None = None,
     ) -> None:
         from cpu_llm.child_safety import ChildSafetyGate, enabled_by_default
 
@@ -181,6 +184,7 @@ class Appliance:
         if type(small_talk) is not bool:
             raise ValueError('small_talk must be a boolean')
         self.small_talk = small_talk
+        self.external_llm_fallback = external_llm_fallback
 
         # A namespace gets its own Postgres schema and its own local memory folder.
         self.namespace = _namespace_slug(namespace) if namespace else None
@@ -797,6 +801,11 @@ class Appliance:
             result['tone_request'] = dict(tone_control, effective_tone=style if isinstance(style,str) else getattr(style,'tone',None))
             result['original_message'] = raw_message
         remember_invention(self, key, result)
+        fallback = getattr(self, 'external_llm_fallback', None)
+        if (fallback is not None and fallback.enabled and not specialist and session_id is None
+                and not any((discover, imagine, deep, math, finance))
+                and self.guard.check(raw_message).decision == 'allow'):
+            result = fallback.apply(raw_message, result)
         return finish_invention_response(result)
 
     def _ask_single(
@@ -978,7 +987,7 @@ class Appliance:
                 "allowed_sources": None if context is None else context.allowed_sources,
                 "as_of": as_of,
             }
-            if _open_sense_question(chosen, as_of=as_of, allowed=checker.check(message).decision == 'allow'):
+            if effective is None and _open_sense_question(chosen, as_of=as_of, allowed=checker.check(message).decision == 'allow'):
                 sense_outcome = _sense_clarification(self, message, session_key)
                 if sense_outcome is not None:
                     response = clarification_result(sense_outcome, raw_message, self.tenant_id)
@@ -2661,6 +2670,13 @@ def _class_clarification(appliance, message: str, result: dict[str, Any], sessio
         seen.add(document_id)
         rows.append({"document_id": document_id or f"passage-{len(rows)}", "text": text})
     decision = assess(message, rows)
+    if (decision and decision.get("answer_status") == "insufficient_evidence"
+            and result.get("guard_decision") in (None, "allow")):
+        from cpu_llm.semantic import request_contract
+
+        request = request_contract(message)
+        if request and request.relation == "has_color":
+            decision = assess(f"What is {request.entity}?", rows)
     classes = list((decision or {}).get("classes") or [])
     if not decision or decision.get("reason") != "unlinked_classes" or len(classes) < 2:
         return None

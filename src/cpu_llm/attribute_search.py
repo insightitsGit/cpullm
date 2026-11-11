@@ -55,7 +55,17 @@ def retrieve_missing_attribute(index, message, hits, intent, *, allowed=None, as
         return [fact for fact in facts if fact.relation == 'is_a' and any(_equivalent(name, fact.subject) for name in names)]
     memberships = connections(hits)
     terms = ATTRIBUTE_TERMS[request['relation']]
-    queries = list(dict.fromkeys(f'{subject} {terms}' for subject in [request['entity']] + [fact.object for fact in memberships]))
+    asked_object = request.get('object') or request.get('object_constraint')
+    subject_terms = f'{asked_object} {terms}' if asked_object else terms
+
+    def membership_query(membership):
+        if request['relation'] == 'has':
+            return f'{membership.object} every has {asked_object or "equipment"}'
+        return f'{membership.object} {terms}'
+
+    queries = list(dict.fromkeys(
+        [f"{request['entity']} {subject_terms}"] + [membership_query(fact) for fact in memberships]
+    ))
     merged = list(hits)
     seen = {row['document_id'] for row in hits}
     executed = []
@@ -76,13 +86,13 @@ def retrieve_missing_attribute(index, message, hits, intent, *, allowed=None, as
         # A repair query can reveal a previously missing membership edge.
         # Re-plan within the same fixed budget; never start an unbounded loop.
         for membership in memberships:
-            query = f'{membership.object} {terms}'
+            query = membership_query(membership)
             if query not in executed and query not in queries:
                 queries.append(query)
         if settled['answer_status'] not in {'answered', 'conflicting', 'needs_clarification'}:
             continue
         if request.get('relation') == 'has' and settled.get('reason') != 'universal_membership_join':
-            if any(f'{membership.object} {terms}' not in executed for membership in memberships):
+            if any(membership_query(membership) not in executed for membership in memberships):
                 continue
         break
     decision = evaluate(merged)

@@ -34,6 +34,7 @@ def _requested(message):
         ('has_color', 'subject', r'what colou?r (?:is|are) (?P<entity>.+)'),
         ('lives_in', 'subject', r'where (?:does|do) (?P<entity>.+?) (?:live|reside)'),
         ('has', 'subject', rf'what (?:does|do) (?P<entity>.+?) {POSSESSION_VERBS}'),
+        ('has', 'subject', r'what equipment (?:does|do) (?P<entity>.+?) have'),
         ('has', 'subject', rf'(?:does|do) (?P<entity>.+?) {POSSESSION_VERBS} (?P<object>.+)'),
         ('causes', 'object', r'what causes (?P<entity>.+)'),
         ('causes', 'subject', r'what (?:does|do) (?P<entity>.+?) cause'),

@@ -11,7 +11,7 @@ _NUMBER = r"(?:\d{1,3}(?:,\d{3})+|\d+|one|two|three|four|five|six|seven|eight|ni
 _NUMBERS = {word: index for index, word in enumerate(
     'zero one two three four five six seven eight nine ten eleven twelve'.split())}
 _COUNT = re.compile(
-    rf"\b(?:in|using|with|as|give(?: me)?|provide(?: me)?|list)\s+"
+    rf"\b(?:in|using|with|as|give(?: me)?|provide(?: me)?|list|use at most)\s+"
     rf"(?P<count>{_NUMBER})\s+(?P<unit>sentences?|bullets?(?: points?)?|points?|items?|words?)\b", re.I)
 _BRIEF = re.compile(
     r"\b(?:briefly|concisely|in short|in brief|keep it short|be concise|"
@@ -40,6 +40,10 @@ _DEPTH_END = re.compile(
     r'(?:give(?: me)?|provide(?: me)?|write)\s+(?:an?\s+)?(?:long|longer|extended|full|detailed|comprehensive|thorough)\s+(?:answer|response|summary|overview|explanation|account)|'
     r'include more details?|add more details?|be thorough)\s*[.!?]*$', re.I)
 _LIMIT_END = re.compile(rf"[,;]?\s+(?:in|using|with|as)\s+{_NUMBER}\s+(?:sentences?|bullets?(?: points?)?|points?|items?|words?)[.!?]*$", re.I)
+_MAXIMUM_END = re.compile(
+    rf"(?<=[.?!;])\s+(?:please\s+)?use at most\s+{_NUMBER}\s+(?:sentences?|words?|items?|bullet(?: points?)?s?)[.!?]*$",
+    re.I,
+)
 _LIMIT_START = re.compile(rf"^(?:please\s+)?(?:answer\s+)?(?:in|using|with|as)\s+{_NUMBER}\s+(?:sentences?|bullets?(?: points?)?|points?|items?|words?)\s*[:,]\s*", re.I)
 _ITEM_REQUEST = re.compile(rf"^(?:please\s+)?(?:give(?: me)?|provide(?: me)?|list)\s+{_NUMBER}\s+(?:bullets?(?: points?)?|points?|items?)\s+(?:about|on|of)\s+", re.I)
 
@@ -137,6 +141,7 @@ def classify_response_request(message: str) -> dict:
             query = _STYLE_START.sub('', query)
             query = _STYLE_END.sub('', query).rstrip(' ,;')
             query = _LIMIT_END.sub('', query).rstrip(' ,;')
+            query = _MAXIMUM_END.sub('', query)
     # Explicit attribute requests retain their factual slot rather than becoming
     # arbitrary summaries of the named subject.
     query = re.sub(r'^overview\s*:\s*(?=(?:what|who|where|why|how)\b)', '', query, flags=re.I)

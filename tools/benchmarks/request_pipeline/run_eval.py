@@ -516,12 +516,20 @@ def _report(out: Path) -> None:
     review = passes[::10]
     _json(out / "manual_review_queue.json", [{"id": row.get("id"), "file": row.get("_file"), "text": row.get("text")} for row in review])
     answer_outcomes = {"answer", "quote", "partial"}
-    expected_answers = [
-        row["verdict"] for row in rows
+    expected_answer_rows = [
+        row for row in rows
         if row.get("expected") in answer_outcomes and not row["verdict"].get("excluded_from_accuracy")
     ]
+    expected_answers = [row["verdict"] for row in expected_answer_rows]
     delivered = [verdict for verdict in expected_answers if verdict.get("actual") in answer_outcomes]
     misses = [verdict for verdict in expected_answers if not verdict.get("ok")]
+    delivered_with_claim_checks = [
+        row["verdict"] for row in expected_answer_rows
+        if row.get("claims") and row["verdict"].get("actual") in answer_outcomes
+        and row["verdict"].get("missing_claims") is not None
+    ]
+    delivered_with_proof_checks = [verdict for verdict in delivered if verdict.get("proof_cited") is not None]
+    expected_quotes = [verdict for verdict in expected_answers if verdict.get("expected") == "quote"]
     supported_ok = len(expected_answers) - len(misses)
     answered = len(expected_answers)
     breakdown = {
@@ -529,6 +537,15 @@ def _report(out: Path) -> None:
         "full_contract_passes": supported_ok,
         "answer_like_delivered": len(delivered),
         "delivered_full_contract_passes": sum(bool(verdict.get("ok")) for verdict in delivered),
+        "delivered_gold_claim_checks": len(delivered_with_claim_checks),
+        "delivered_gold_claim_checks_passed": sum(
+            not verdict["missing_claims"] and not verdict.get("false_assertion")
+            for verdict in delivered_with_claim_checks
+        ),
+        "delivered_gold_proof_checks": len(delivered_with_proof_checks),
+        "delivered_gold_proof_checks_passed": sum(bool(verdict["proof_cited"]) for verdict in delivered_with_proof_checks),
+        "gold_expected_quotes": len(expected_quotes),
+        "gold_expected_quotes_delivered": sum(verdict.get("actual") == "quote" for verdict in expected_quotes),
         "insufficient_without_flagged_false_assertion": sum(
             verdict.get("actual") == "insufficient" and not verdict.get("false_assertion") for verdict in misses
         ),
@@ -553,6 +570,9 @@ def _report(out: Path) -> None:
         f"Full contract passes on gold-expected answer rows: {supported_ok} / {answered}.",
         f"Answer-like coverage on those rows: {len(delivered)} / {answered}.",
         f"Full contract passes among delivered answers: {breakdown['delivered_full_contract_passes']} / {len(delivered)}.",
+        f"Delivered answers meeting configured claim checks: {breakdown['delivered_gold_claim_checks_passed']} / {breakdown['delivered_gold_claim_checks']}.",
+        f"Delivered answers citing the expected proof: {breakdown['delivered_gold_proof_checks_passed']} / {breakdown['delivered_gold_proof_checks']}.",
+        f"Quote outcome delivered on quote-expected rows: {breakdown['gold_expected_quotes_delivered']} / {breakdown['gold_expected_quotes']}.",
         f"Insufficient-evidence fallbacks with no flagged false assertion: {breakdown['insufficient_without_flagged_false_assertion']}.",
         f"Clarification fallbacks with no flagged false assertion: {breakdown['clarification_without_flagged_false_assertion']}.",
         f"Budget refusals on gold-expected answer rows: {breakdown['budget_refusals']}.",

@@ -79,6 +79,9 @@ def separate_request(message, *, interpreter=None):
     if marker and re.match(r'\s*(?:background|context)\s*:', masked, re.I):
         background = raw[:marker.start()].strip()
         begin = marker.end()
+    elif trailing := re.search(r'(?im)(?<=\?)\s*\n[ \t]*(?:background|context)[ \t]*:', masked):
+        background = raw[trailing.start():end].strip()
+        end = trailing.start()
     style = _FORMAT.search(masked[begin:end])
     presentation = classify_response_request(raw) if layout['format'] else None
     if style:

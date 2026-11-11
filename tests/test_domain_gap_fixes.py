@@ -61,3 +61,27 @@ def test_explicit_location_quote_keeps_quote_intent_and_named_subject():
     result = normalize_question("Quote the sentence that says where the Kestrel lives.")
     assert result["query"] == "Where does the Kestrel live?"
     assert result["quote_requested"] is True
+
+def test_color_confirmation_requires_exact_subject_and_polarity():
+    from cpu_llm.answerability import assess
+
+    rows = [
+        dict(document_id="rank", chunk_text="The Sable is the best survey pane for color."),
+        dict(document_id="other", chunk_text="The Reed is lilac."),
+        dict(document_id="negative", chunk_text="The Sable is not lilac."),
+    ]
+    query = "Is the Sable lilac?"
+    assert assess(query, rows[:2])["answer_status"] == "insufficient_evidence"
+    assert assess(query, rows)["answer_evidence"] == [
+        {"document_id": "negative", "span": "The Sable is not lilac."}
+    ]
+    positive = dict(document_id="positive", chunk_text="The Sable is lilac.")
+    assert assess(query, rows + [positive])["answer_status"] == "conflicting"
+
+
+def test_trailing_maximum_is_a_budget_and_not_part_of_the_entity():
+    from cpu_llm.response_policy import classify_response_request
+
+    plan = classify_response_request("What color is the Ibis? Use at most two sentences.")
+    assert plan["content_query"] == "What color is the Ibis?"
+    assert plan["sentence_budget"] == 2

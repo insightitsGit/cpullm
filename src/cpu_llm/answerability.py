@@ -67,6 +67,13 @@ def parse_query(message: str) -> dict[str, str] | None:
     text = " ".join((message or "").strip().split())
     if not text:
         return None
+    color_check = re.fullmatch(r'is\s+(.+?)\s+([\w-]+)\s*\??', text, re.I)
+    if color_check:
+        from cpu_llm.semantic import COLOR_VOCABULARY
+
+        if color_check[2].casefold() in COLOR_VOCABULARY:
+            return dict(kind='attribute', attribute='color', entity=_subject_phrase(color_check[1]),
+                        color_check=color_check[2].casefold(), raw=text)
     explicit_definition = re.fullmatch(r'(?:define\s+(.+?)|what does\s+(.+?)\s+mean)\s*[.?]?', text, re.I)
     if explicit_definition:
         return dict(kind='definition', subject=_subject_phrase(explicit_definition[1] or explicit_definition[2]),
@@ -744,6 +751,13 @@ def _text_binds(plan: dict[str, str], text: str) -> bool:
 
 
 def _attribute_value(plan: dict[str, str], sentence: str) -> str | None:
+    if color := plan.get('color_check'):
+        entity = re.escape(plan['entity'])
+        match = re.fullmatch(
+            rf'(?:(?:the|a|an)\s+)?{entity}\s+is\s+(?P<negative>not\s+)?{re.escape(color)}[.!?]?',
+            ' '.join(sentence.split()), re.I,
+        )
+        return ('no' if match['negative'] else 'yes') if match else None
     if _NEGATED.search(sentence) or _CONDITIONAL.search(sentence):
         return None
     attribute = re.escape(plan["attribute"].casefold())

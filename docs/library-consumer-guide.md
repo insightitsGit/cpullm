@@ -389,3 +389,28 @@ overviews and exact arithmetic. New statuses include `derived_calculation`,
 `partial` and `completed`; inspect individual `task_results`. Historical version
 1 contracts are preserved in the Git history. No clinical decision approval is
 implied by either version.
+
+### Optional external LLM fallback
+
+The Python API defaults to CPU-LLM's evidence pipeline. To allow an external model to handle eligible unsupported requests, configure an `ExternalLLMFallback` on the appliance.
+
+```python
+import os
+
+from cpu_llm.external_fallback import ExternalLLMFallback
+from cpu_llm.pipeline import Appliance
+
+
+def open_appliance(provider_generate):
+    # The application supplies a synchronous (prompt, bearer_token) -> str adapter.
+    fallback = ExternalLLMFallback(
+        generate=provider_generate,
+        enabled=True,
+        api_key=os.getenv("MY_PROVIDER_API_KEY"),
+    )
+    return Appliance(external_llm_fallback=fallback)
+```
+
+For workload identity, supply `oidc_access_token` instead of `api_key`. This callback must obtain a current access token accepted by the provider through the application's identity client. Missing credentials and provider errors preserve CPU-LLM's original response. The provider adapter should raise on authentication failure and enforce its own timeout.
+
+The node only handles guard-approved, unsupported, standalone requests. Strict Evidence Mode, clarification, insufficient evidence, batches, session turns, and specialist workflows stay on their existing paths. The adapter receives the original prompt and credential. CPU-LLM does not attach retrieved passages or session history. Successful external replies carry `external_unverified`, empty evidence, and a visible verification notice.
