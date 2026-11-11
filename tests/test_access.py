@@ -266,6 +266,38 @@ def test_graph_identity_uses_the_tenant_slug():
     assert graph_identity("tenant_alpha") == ("tenant_alpha", "appliance_tenant_alpha")
     assert source_allowed("alpha-p0001", frozenset({"alpha-p"}))
     assert not source_allowed("beta-p0001", frozenset({"alpha-p"}))
+
+
+def test_mutation_audit_retention_and_live_credential_revocation(tmp_path):
+    import sqlite3
+    from contextlib import closing
+
+    credentials = tmp_path / "credentials.json"
+    audit = tmp_path / "audit.sqlite"
+    row = {"id": "alice", "secret_sha256": secret_sha256("admin-secret"),
+           "tenant_id": "team", "allowed_sources": ["notes-p"], "role": "admin"}
+    credentials.write_text(json.dumps({"credentials": [row]}), encoding="utf-8")
+
+    class Appliance:
+        def delete_chunk(self, document_id, *, confirmation, caller):
+            return {"status": "deleted" if confirmation else "confirmation_required"}
+
+    entry = Entry(credentials, lambda tenant: Appliance(), audit_path=audit, audit_retention_days=1)
+    entry.delete_chunk("admin-secret", "notes-p0001")
+    entry.delete_chunk("admin-secret", "notes-p0001", "private-token")
+    with closing(sqlite3.connect(audit)) as conn, conn:
+        assert conn.execute("SELECT caller_id, operation, outcome FROM mutation_audit").fetchall() == [
+            ("alice", "delete_chunk", "deleted"),
+        ]
+        conn.execute("UPDATE mutation_audit SET finished_at = 1")
+    entry.delete_chunk("admin-secret", "notes-p0002", "another-token")
+    with closing(sqlite3.connect(audit)) as conn:
+        assert conn.execute("SELECT targets FROM mutation_audit").fetchall() == [('["notes-p0002"]',)]
+        assert "private-token" not in "\n".join(conn.iterdump())
+    row["revoked"] = True
+    credentials.write_text(json.dumps({"credentials": [row]}), encoding="utf-8")
+    with pytest.raises(AuthenticationError):
+        entry.delete_chunk("admin-secret", "notes-p0002", "another-token")
     assert source_allowed("beta-p0001", None)
 
 

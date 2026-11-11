@@ -34,19 +34,31 @@ class Entry:
         appliance_for: Callable[[str], Any],
         *,
         ingest_root: str | Path | None = None,
+        audit_path: str | Path | None = None,
+        audit_retention_days: int | None = None,
     ) -> None:
-        self._rows = _load(Path(secrets_path))
+        self._secrets_path = Path(secrets_path).resolve()
+        _load(self._secrets_path)
+        if audit_retention_days is not None and audit_path is None:
+            raise ValueError("Audit retention requires an audit path.")
+        from cpu_llm.mutation_audit import MutationAudit
+
+        self._audit = MutationAudit(audit_path, retention_days=audit_retention_days) if audit_path else None
         self._appliance_for = appliance_for
         self._ingest_root = None if ingest_root is None else Path(ingest_root).resolve()
 
     def authenticate(self, secret: str) -> CallerContext:
         presented = _digest(secret or "")
         matched: dict[str, Any] | None = None
-        for row in self._rows:
+        try:
+            rows = _load(self._secrets_path)
+        except (OSError, ValueError) as exc:
+            raise AuthenticationError("the credential file could not be loaded") from exc
+        for row in rows:
             if hmac.compare_digest(presented, _stored_digest(row)):
                 matched = row
                 break
-        if matched is None:
+        if matched is None or matched.get("revoked", False) is not False:
             raise AuthenticationError("the credential was not accepted")
         try:
             tenant = _namespace_slug(str(matched.get("tenant_id") or ""))
@@ -72,7 +84,17 @@ class Entry:
         documents = self._documents_for_ingest(source)
         for document in documents:
             _require_source(context, replace_prefix(document))
-        return self._appliance_for(context.tenant_id).ingest(documents)
+        return self._mutate(context, "ingest", [replace_prefix(document) for document in documents],
+                            lambda: self._appliance_for(context.tenant_id).ingest(documents))
+
+    def _mutate(self, context, operation, targets, action):
+        if self._audit is None:
+            return action()
+        with self._audit.record(context, operation, targets) as receipt:
+            result = action()
+            if isinstance(result, dict):
+                receipt["status"] = result.get("status")
+            return result
 
     def _documents_for_ingest(self, source: Any) -> list[SourceDocument]:
         if isinstance(source, (str, Path)):
@@ -100,13 +122,13 @@ class Entry:
     def correct(self, secret: str, document_id: str, prior_sentence: str, new_sentence: str, **kwargs: Any) -> dict[str, Any]:
         context = self.authenticate(secret)
         _require_source(context, source_prefix(document_id))
-        return self._appliance_for(context.tenant_id).correct(
+        return self._mutate(context, "correct", [document_id], lambda: self._appliance_for(context.tenant_id).correct(
             document_id,
             prior_sentence,
             new_sentence,
             caller=context,
             **kwargs,
-        )
+        ))
 
     def chunk_inventory(self, secret: str, source=None, *, limit=50, offset=0):
         context = self.authenticate(secret)
@@ -117,14 +139,18 @@ class Entry:
         context = self.authenticate(secret)
         require_admin(context)
         _require_source(context, document_id)
-        return self._appliance_for(context.tenant_id).delete_chunk(
+        action = lambda: self._appliance_for(context.tenant_id).delete_chunk(
             document_id, confirmation=confirmation, caller=context)
+        if confirmation is None:
+            return action()
+        return self._mutate(context, "delete_chunk", [document_id], action)
 
     def delete_source(self, secret: str, source: str) -> dict[str, Any]:
         context = self.authenticate(secret)
         require_admin(context)
         _require_source(context, source_prefix(source))
-        return self._appliance_for(context.tenant_id).delete_source(source)
+        return self._mutate(context, "delete_source", [source_prefix(source)],
+                            lambda: self._appliance_for(context.tenant_id).delete_source(source))
 
 
 def _require_source(context: CallerContext, prefix: str) -> None:

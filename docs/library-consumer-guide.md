@@ -267,7 +267,7 @@ credentials = {"credentials": [{
 Path("credentials.json").write_text(json.dumps(credentials), encoding="utf-8")
 ```
 
-Plaintext `secret` entries are refused. The service reads the credential file into `Entry` at construction; changing it does not reload an already running instance. Request authentication hashes the presented secret and compares digests using `hmac.compare_digest`.
+Plaintext `secret` entries are refused. The current source reads the credential file at authentication time. Use an atomic file replacement to remove a credential or set its `revoked` field to `true`. Request authentication hashes the presented secret and compares digests using `hmac.compare_digest`. The optional `--audit-db` and `--audit-retention-days` controls record authenticated mutation attempts. See the [enterprise pilot runbook](enterprise-pilot-runbook.md).
 
 ```powershell
 cpu-llm-serve --secrets credentials.json --host 127.0.0.1 --port 8765

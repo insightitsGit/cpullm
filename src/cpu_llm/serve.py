@@ -66,6 +66,8 @@ def main() -> None:
         default=None,
         help="Directory that path ingestion may read. Required for source paths.",
     )
+    parser.add_argument("--audit-db", help="SQLite file for authenticated mutation receipts")
+    parser.add_argument("--audit-retention-days", type=int, help="Prune completed audit events after this many days")
     args = parser.parse_args()
     appliances: dict[str, Any] = {}
     cache_lock = threading.Lock()
@@ -84,7 +86,8 @@ def main() -> None:
         return cached_appliance(appliances, cache_lock, tenant, build)
 
     service = LocalService(
-        Entry(args.secrets, appliance_for, ingest_root=args.ingest_root),
+        Entry(args.secrets, appliance_for, ingest_root=args.ingest_root,
+              audit_path=args.audit_db, audit_retention_days=args.audit_retention_days),
         host=args.host,
         port=args.port,
         strict_evidence=args.strict_evidence,

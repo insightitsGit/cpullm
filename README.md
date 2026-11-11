@@ -20,6 +20,11 @@ are conditional on the selected model and supplied constraints.
 
 **This release: 1.13.1.** Author: **Amin Parva, Independent Engineer**.
 
+Individuals and small teams can use CPU-LLM free of charge under Apache 2.0.
+Enterprise teams seeking a supported pilot, deployment, integration, or ongoing
+support should contact the author to discuss scope and negotiate pricing.
+[Enterprise enquiries](https://www.insightits.com/research-tools/cpu-llm)
+
 **Licenses:** code [Apache-2.0](LICENSE); bundled WikiText-2 data has separate
 **CC BY-SA 3.0/GFDL** terms and attribution. See [third-party notices](THIRD_PARTY_NOTICES.md).
 
@@ -473,9 +478,12 @@ before transfer. Offline flags are not a substitute for network isolation.
 
 ## Enterprise and commercial evaluation
 
-For pilot discussions with **Insight IT Solutions**, visit
-[CPU-LLM research and commercial enquiries](https://www.insightits.com/research-tools/cpu-llm).
-Potential scopes include:
+The Apache 2.0 package is available for self-managed use by organizations of any
+size. For paid enterprise pilots, implementation, or ongoing support, contact
+**Amin Parva** through Insight IT Solutions to discuss scope and negotiate
+pricing. [CPU-LLM research and commercial enquiries](https://www.insightits.com/research-tools/cpu-llm)
+
+Pilot scopes include the following.
 
 - **Private-credit covenant monitoring:** map explicit source fields and policies
   into LedgerCovenant checks, with reviewable arithmetic and evidence.
