@@ -18,7 +18,8 @@ routes** to explore relationships, join cited premises across knowledge bases,
 or formulate hypotheses. Hypotheses carry their own label, and numerical results
 are conditional on the selected model and supplied constraints.
 
-**This release: 1.13.1.** Author: **Amin Parva, Independent Engineer**.
+**Latest release** [CPU-LLM 1.13.1 on PyPI](https://pypi.org/project/cpu-llm/1.13.1/).
+Author **Amin Parva, Independent Engineer**.
 
 Individuals and small teams can use CPU-LLM free of charge under Apache 2.0.
 Enterprise teams seeking a supported pilot, deployment, integration, or ongoing
@@ -64,10 +65,9 @@ mode has different verification limits, including optional learned producers.
 
 ## Core capabilities
 
-### Recent source changes
+### What’s new in 1.13.1
 
-These updates are in the repository. Check the installed package version before
-using them in a deployment.
+Install this release with `python -m pip install "cpu-llm==1.13.1"`.
 
 - **Request handling.** The pipeline can split a shared color question into two
   cited lookups, preserve valid questions with repetitive trailing input within
