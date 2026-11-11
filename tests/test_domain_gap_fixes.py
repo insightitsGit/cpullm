@@ -57,6 +57,23 @@ def test_color_selection_requires_evidence_for_the_requested_entity():
     assert select_channel_answer(query, [pearl, row("red", "The Index is red.")])["answer_status"] == "conflicting"
 
 
+def test_color_lookup_accepts_known_colors_and_explicit_custom_values():
+    from cpu_llm.prompt_intent import select_channel_answer
+
+    query = "What color is the Peregrine?"
+    for sentence, expected in (
+        ("The Peregrine is ochre.", "answered"),
+        ("The Peregrine is ocher.", "answered"),
+        ("The color of the Peregrine is Harbor-47.", "answered"),
+        ("The Peregrine is Harbor-47.", "insufficient_evidence"),
+        ("The Peregrine is a rescue cutter.", "insufficient_evidence"),
+    ):
+        result = select_channel_answer(query, [dict(document_id="source", chunk_text=sentence)])
+        assert result["answer_status"] == expected
+        if expected == "answered":
+            assert result["answer_evidence"] == [{"document_id": "source", "span": sentence}]
+
+
 def test_explicit_location_quote_keeps_quote_intent_and_named_subject():
     result = normalize_question("Quote the sentence that says where the Kestrel lives.")
     assert result["query"] == "Where does the Kestrel live?"

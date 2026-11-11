@@ -64,6 +64,42 @@ mode has different verification limits, including optional learned producers.
 
 ## Core capabilities
 
+### Recent source changes
+
+These updates are in the repository. Check the installed package version before
+using them in a deployment.
+
+- **Request handling.** The pipeline can split a shared color question into two
+  cited lookups, preserve valid questions with repetitive trailing input within
+  the applicable limits, and separate supported presentation instructions from
+  fact lookup. It searches for evidence before clarifying explicit factual
+  requests and distinguishes a class definition from an example of the class.
+- **Evidence and formatting.** Direct measurements, color checks, exact location
+  quotes, and possession joins retain their source evidence. Grounded summaries
+  requested as bullets render each selected sentence as a separate item.
+- **Spelling repair.** The engine can repair recognized question words and
+  conservative corpus-backed typos. Bare color statements use a shared
+  vocabulary. For a custom value, ingest an explicit statement such as
+  “The color of the Peregrine is Harbor-47.” Spelling repair changes the query
+  while keeping source quotations intact.
+- **Optional external LLM fallback.** Off by default. A configured Python
+  provider adapter can handle eligible unsupported standalone requests using
+  an API key or an OIDC access-token callback. Replies are labeled
+  `external_unverified`. Strict Evidence Mode bypasses the node.
+  [Configuration and routing details](https://github.com/insightitsGit/cpullm/blob/main/docs/library-consumer-guide.md#optional-external-llm-fallback)
+- **Service operations.** The authenticated service can reload file-backed
+  credentials at authentication time and optionally record mutation attempts
+  with `--audit-db` and `--audit-retention-days`.
+  [Enterprise pilot runbook](https://github.com/insightitsGit/cpullm/blob/main/docs/enterprise-pilot-runbook.md)
+
+The clean `7adf319` run passed **460/460** revised synthetic request rows,
+including **278/278** expected answers and **86/86** expected abstentions.
+A separate harbor fixture exposed a gap with *ochre* at **20/24**. Its replay
+passed **24/24** after the vocabulary fix, and an expanded replay with four typo
+prompts passed **32/32** across both retrieval configurations. These counts
+describe the tested fixtures. See the [benchmark validity review](https://github.com/insightitsGit/cpullm/blob/main/docs/benchmark-validity-review.md#recorded-results).
+
+
 ### Strict evidence: quote or abstain
 
 After setup, ingest atomic statements and ask an explicit attribute question.

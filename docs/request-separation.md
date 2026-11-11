@@ -128,3 +128,16 @@ the focused planner/response-policy run returned **47 passed**, including the ne
 concurrent-parent test. No new large-corpus or independent accuracy benchmark is
 implied. Local logs: `build/request-planner-final-suite.log` and
 `build/request-planner-scope-final.log`.
+
+## Coordinated questions and formatting
+
+A shared color question with two explicit names, such as “What color is the
+Kestrel and the Ibis?”, creates two independently evaluated tasks. Each keeps
+its own outcome and proof. Trailing runs of the same alphabetic character after
+a question boundary can be excluded from the lookup while the total prompt limit
+and the original per-item limit for a padded batch still apply.
+
+A grounded summary requested as bullets or a numbered list can render each
+selected sentence as an item when the summary is the complete displayed body.
+Supplemental sections and quotations retain their existing presentation.
+Formatting does not change the selected evidence.

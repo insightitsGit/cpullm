@@ -29,7 +29,7 @@ COLOR_VOCABULARY = frozenset(
     black blue brown gray grey green orange pink purple red white yellow
     amber copper crimson slate olive silver cream linen rose ink rust charcoal
     gold bronze violet teal navy maroon beige ivory tan scarlet azure cobalt
-    magenta cyan turquoise indigo pearl umber maize plum lilac
+    magenta cyan turquoise indigo pearl umber maize plum lilac ochre ocher
     """.split()
 )
 

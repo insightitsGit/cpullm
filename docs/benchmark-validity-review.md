@@ -26,3 +26,19 @@ For each expected fact, record whether sufficient evidence is absent from the so
 - If source evidence exists but failed to ingest, record an ingestion defect. If it was indexed and authorized, trace retrieval, ranking, and final evidence retention before recommending more data.
 - Run paired tests on the same question and caller. Begin with missing evidence, then add a relevant authorized passage and require a cited answer. In separate variants, add irrelevant volume, duplicates, contradictory or superseded material, and restricted evidence. Require stable supported answers under noise, appropriate handling of conflicts, and no disclosure of restricted material.
 - Report the change in grounded answer coverage after adding relevant evidence, along with any new unsupported claims, regressions on previously supported questions, and ingestion or retrieval costs. Keep fixture changes separate from pipeline changes so improvements can be attributed correctly.
+
+## Recorded results
+
+- The clean `7adf319` run on the revised synthetic request suite passed
+  460/460 rows, including 278/278 full passes on expected answers and 86/86
+  expected abstentions. The configured scorer flagged zero false assertions.
+  Three fixtures had changed since the prior suite, covering overview
+  specificity, equivalent proof, and grounded partial drafts.
+- The independent harbor fixture scored 20/24 against `7adf319`. Both missed
+  cases involved the bare color value *ochre*, and each failed in both retrieval
+  configurations. After adding *ochre* and *ocher*, the same fixture replayed at
+  24/24. The expanded typo replay passed 32/32, including `orche` in the tested
+  yes/no form. Replay scores measure regression coverage after a fix.
+- The report records the displayed reply separately from the response fields
+  that the scorer inspects. Presentation checks should inspect the displayed
+  reply for duplicate text and list structure.

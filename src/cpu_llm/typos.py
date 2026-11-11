@@ -29,10 +29,24 @@ TYPO_MARGIN = 0.05
 # Spelling variants that select a question shape. A corpus that contains one
 # of them must not rewrite the other, or the frame parser never sees the question.
 _PROTECTED = frozenset({"color", "colour", "weight"})
+_ATTRIBUTE_SLOT = re.compile(
+    r"^what\s+(?:(?P<color>[a-z]{4,7})\s+(?:is|are|was|were)\s+"
+    r"|(?:is|was)\s+the\s+(?P<weight>[a-z]{5,7})\s+of\s+)",
+    re.I,
+)
+_COLOR_VALUE_SLOT = re.compile(r"^is\s+the\s+[\w '-]+?\s+(?P<value>[a-z]{4,12})\s*\?$", re.I)
 _TOKEN = re.compile(r"[A-Za-z]{4,}")
 _cache_key: tuple[str, int, int] | None = None
 _cache_grams: dict[str, Counter[str]] = {}
 _cache_lengths: dict[int, list[str]] = {}
+
+
+def _adjacent_swaps(word: str) -> set[str]:
+    return {
+        word[:index] + word[index + 1] + word[index] + word[index + 2:]
+        for index in range(len(word) - 1)
+        if word[index] != word[index + 1]
+    }
 
 
 def correct_message(
@@ -48,7 +62,9 @@ def correct_message(
     """
     text = message or ""
     grams, lengths = _vocabulary(word_index, tenant_id)
-    if not grams:
+    slot = _ATTRIBUTE_SLOT.match(text)
+    value_slot = _COLOR_VALUE_SLOT.fullmatch(text)
+    if not grams and not slot:
         return text, []
     parts: list[str] = []
     changes: list[dict[str, str]] = []
@@ -58,10 +74,34 @@ def correct_message(
         parts.append(text[cursor : match.start()])
         cursor = match.end()
         folded = token.casefold()
+        if slot and match.span() == slot.span(slot.lastgroup):
+            targets = ("color", "colour") if slot.lastgroup == "color" else ("weight",)
+            # Both spellings of color identify the same attribute.
+            if folded not in _PROTECTED and folded not in _STOP and any(
+                _damerau(folded, target) == 1 for target in targets
+            ):
+                written = _match_case(token, targets[0])
+                parts.append(written)
+                changes.append({"from": token, "to": written})
+                continue
         if folded in grams or folded in _STOP or folded in _PROTECTED:
             parts.append(token)
             continue
         chosen = _nearest(folded, grams, lengths)
+        if chosen is None and value_slot and match.span() == value_slot.span("value"):
+            from cpu_llm.semantic import COLOR_VOCABULARY
+
+            # A swap can erase most n-grams in a short word. Look at the
+            # nearest swap distance first and require one known color.
+            if folded not in COLOR_VOCABULARY:
+                swaps = _adjacent_swaps(folded)
+                colors = swaps & COLOR_VOCABULARY
+                if not colors:
+                    colors = {word for swap in swaps for word in _adjacent_swaps(swap)} & COLOR_VOCABULARY
+                if len(colors) == 1:
+                    candidate = next(iter(colors))
+                    if candidate in grams:
+                        chosen = candidate
         if chosen is None or _same_inflection(folded, chosen):
             parts.append(token)
             continue

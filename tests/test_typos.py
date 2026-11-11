@@ -60,3 +60,35 @@ def test_an_empty_index_leaves_the_question():
     text, changes = correct_message("What is the lobstor?", {})
     assert text == "What is the lobstor?"
     assert changes == []
+
+def test_explicit_attribute_typo_does_not_depend_on_corpus_vocabulary():
+    assert correct_message("What clor is the Peregrine?", {}) == (
+        "What color is the Peregrine?", [{"from": "clor", "to": "color"}]
+    )
+    assert correct_message("What is the wieght of the Peregrine?", {"weighs": {}}) == (
+        "What is the weight of the Peregrine?", [{"from": "wieght", "to": "weight"}]
+    )
+
+
+def test_attribute_repair_stays_inside_explicit_question_slots():
+    text = "What is the Clor?"
+    assert correct_message(text, {}) == (text, [])
+    assert correct_message("What color is the Peregrnie?", {"peregrine": {}}) == (
+        "What color is the Peregrine?", [{"from": "Peregrnie", "to": "Peregrine"}]
+    )
+
+def test_short_color_transposition_requires_question_shape_and_stored_color():
+    query = "Is the Peregrine ohcre?"
+    assert correct_message(query, {"ochre": {}}) == (
+        "Is the Peregrine ochre?", [{"from": "ohcre", "to": "ochre"}]
+    )
+    assert correct_message(query, {}) == (query, [])
+    assert correct_message(query, {"ohcre": {}, "ochre": {}}) == (query, [])
+
+
+def test_two_swaps_repair_color_only_when_the_value_is_supported_by_vocabulary():
+    query = "Is the Peregrine orche?"
+    assert correct_message(query, {"ochre": {}}) == (
+        "Is the Peregrine ochre?", [{"from": "orche", "to": "ochre"}]
+    )
+    assert correct_message(query, {"red": {}}) == (query, [])

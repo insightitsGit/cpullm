@@ -219,3 +219,23 @@ The [user manual](document-generation-user-guide.md) provides runnable examples,
 and the [findings contract](document-generation-findings-spec.md) links failures
 to implementation/regressions. Broader grammar support is reviewed and tested;
 these changes do not silently train on prompts or invent missing knowledge.
+
+## Spelling repair and unfamiliar values
+
+Spelling repair runs before retrieval and records the original and replacement
+tokens. Structured specialist and numeric requests bypass corpus spelling repair.
+Recognized attribute words such as `weight` are protected against replacement
+by corpus wording such as `weighs`. Explicit color and weight question patterns
+can repair a one-edit attribute typo using the built-in terms.
+
+Corpus spelling correction ordinarily requires a clear one-edit match. In the
+supported `Is the <entity> <value>?` form, the color fallback can also consider
+up to two adjacent swaps when the nearest recognized color is unique and present
+in the corpus. Exact stored tokens take precedence over this fallback. The
+corrected request still needs evidence binding the requested subject and value.
+
+A bare copula such as “The Peregrine is ochre” licenses the color relation
+because the value is recognized. Explicit color wording can bind a custom value
+without adding it to the vocabulary. An unfamiliar bare value remains
+ambiguous. The original source span is preserved in citations. Unresolved
+spellings can still reach the generic response path.
