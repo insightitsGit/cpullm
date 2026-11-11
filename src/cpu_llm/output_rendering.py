@@ -71,6 +71,7 @@ def render_response(result):
     if result.get('answer_status') == 'blocked' or not result.get('judgment'):
         return result
     rows = []
+    summary_items = False
     tasks = result.get('task_results') or []
     entries = [(t.get('query', ''), t.get('result'), t.get('status')) for t in tasks] if tasks else [
         (result.get('resolved_query') or result.get('message') or '', result, result.get('answer_status'))]
@@ -81,6 +82,19 @@ def render_response(result):
             text = str((child.get('reply') or {}).get('text') or '')
             proof = list(child.get('answer_evidence') or []) + list(child.get('supporting_evidence') or [])
         sources = list(dict.fromkeys(str(p['document_id']) for p in proof if p.get('document_id')))
+        if (kind in {'bullets', 'numbered'} and child and child.get('summarize')
+                and status in {'answered', 'evidence_quote'}):
+            from cpu_llm.answerability import _sentences
+
+            body = str((child.get('reply') or {}).get('body') or '')
+            # Only unwrap a summary whose entire displayed text is the
+            # summary body. Keep supplemental sections and quotations intact.
+            if body and text == 'Summary:\n' + body:
+                summary_items = True
+                rows.extend(dict(request=query, response=sentence, status=status,
+                                 sources=sources, evidence=proof)
+                            for sentence in dict.fromkeys(_sentences(body)))
+                continue
         rows.append(dict(request=query, response=text, status=status, sources=sources, evidence=proof))
     canonical = str((result.get('reply') or {}).get('text') or '')
     media = plan.get('output_media', 'text/markdown')
@@ -108,6 +122,12 @@ def render_response(result):
         text = tabulate([[_cell(row['request']), _cell(row['response']), _cell(', '.join(row['sources']))]
                          for row in rows], headers=['Request', 'Response', 'Sources'],
                         tablefmt='github', disable_numparse=True)
+    elif summary_items:
+        text = '\n'.join(
+            (prefix := '- ' if kind == 'bullets' else f'{index}. ')
+            + row['response'].replace('\n', '\n' + ' ' * len(prefix))
+            for index, row in enumerate(rows, 1)
+        )
     elif len(tasks) == 1 and (tasks[0].get('result') or {}).get('list'):
         text = rows[0]['response']
         if kind == 'numbered':

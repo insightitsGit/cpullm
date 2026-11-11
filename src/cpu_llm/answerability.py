@@ -145,7 +145,8 @@ def parse_query(message: str) -> dict[str, str] | None:
             "tense": tense,
             "raw": text,
         }
-    return {"kind": "definition", "subject": _subject_phrase(rest), "tense": tense, "raw": text}
+    return {"kind": "definition", "subject": _subject_phrase(rest), "tense": tense, "raw": text,
+            "class_definition": bool(re.match(r"an?\s+", rest, re.I))}
 
 
 @contextmanager
@@ -826,7 +827,8 @@ def _definition_sentence(plan: dict[str, str], sentence: str) -> bool:
     return bool(re.match(
         rf"^(?:(?:the|a|an)\s+)?{phrase}(?:,\s*[^,]+,)?\s+{copula}\b", sentence, re.IGNORECASE
     ) or re.match(rf"^[\w '’-]+,\s*known as\s+[^,]+,\s*{copula}\b", sentence, re.IGNORECASE)
-        or re.search(rf"\b{copula}\s+(?:(?:the|a|an)\s+)?{phrase}[.!?]?$", sentence, re.IGNORECASE))
+        or (not plan.get("class_definition") and re.search(
+            rf"\b{copula}\s+(?:(?:the|a|an)\s+)?{phrase}[.!?]?$", sentence, re.IGNORECASE)))
 
 
 def _complete_phrase(text: str, phrase: str) -> bool:

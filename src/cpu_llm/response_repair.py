@@ -45,7 +45,8 @@ def inspect_gap(message, result, *, confirmed=False):
         decision = assess(query, rows)
         if decision and decision['answer_status'] in {'answered', 'evidence_quote'}:
             options.append(dict(label=label, query=query))
-    broad_definition = parsed.get('kind') == 'definition' and message.strip().casefold().startswith('what ')
+    broad_definition = (parsed.get('kind') == 'definition' and not parsed.get('class_definition')
+                        and message.strip().casefold().startswith('what '))
     ask = broad_definition and not confirmed and bool(options)
     if ask:
         # Identity is a possible intended question, not a fact inferred from an action.

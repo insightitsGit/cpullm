@@ -87,3 +87,21 @@ def test_html_templates_escape_values_without_evaluating_source_template_syntax(
     assert '<script>' not in output['reply']['text'] and '&lt;script&gt;' in output['reply']['text']
     assert output['answer_evidence'] == [evidence]
     assert output['rendered_response']['rows'][0]['response'] == source
+
+def test_bullet_summary_renders_each_sentence_once_with_proof_preserved():
+    from cpu_llm.output_rendering import render_response
+
+    body = "The Tamarind is a weather buoy. The Tamarind records wind speed."
+    proof = [{"document_id": "buoy-p0001", "span": body}]
+    child = dict(summarize=True, answer_evidence=proof,
+                 reply=dict(text="Summary:\n" + body, body=body))
+    result = dict(response_plan=dict(format="bullets"), judgment={"complete": True},
+                  task_results=[dict(query="Summarize the Tamarind", result=child, status="answered")],
+                  reply=dict(text="- Summary:\n" + body), answer_evidence=proof)
+    rendered = render_response(result)
+    assert rendered["reply"]["text"].splitlines() == [
+        "- The Tamarind is a weather buoy.",
+        "- The Tamarind records wind speed.",
+    ]
+    assert rendered["answer_evidence"] == proof
+    assert all(row["evidence"] == proof for row in rendered["rendered_response"]["rows"])

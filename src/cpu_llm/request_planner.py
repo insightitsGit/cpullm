@@ -72,6 +72,9 @@ def separate_request(message, *, interpreter=None):
         return dict(base, status='limit_exceeded', reason=f'Please send at most {MAX_PROMPT_CHARS} characters per request.')
     masked = _mask(raw)
     begin, end = 0, layout['source_end']
+    padding = re.search(r'(?<=\?)\s+([A-Za-z])(?:\s*\1){63,}\s*$', masked[:end], re.I)
+    if padding:
+        end = padding.start()
     # Explicit background is isolated from executable instructions. The boundary
     # marker must be a real line, not a quoted/fenced example.
     background = ''
@@ -113,6 +116,8 @@ def separate_request(message, *, interpreter=None):
         fragment = raw[begin + left:begin + right].strip(' \t\r\n,;')
         if fragment:
             pieces.append((fragment, begin + left, begin + right))
+    if padding and len(pieces) > 1 and layout['source_end'] - pieces[-1][1] > MAX_TASK_CHARS:
+        return dict(base, status='limit_exceeded', reason=f'Please keep each individual question under {MAX_TASK_CHARS} characters; put longer source material in Context:.')
     compiled = []
     expanded = []
     if len(pieces) > MAX_TASKS:
@@ -125,13 +130,19 @@ def separate_request(message, *, interpreter=None):
         if fields and fields['status'] == 'needs_clarification':
             return dict(base, status='needs_clarification', reason=fields['reason'])
         queries = fields['queries'] if fields else interpretation.get('queries', [interpretation['query']])
+        pair = re.fullmatch(
+            r'(what colou?r is) (the [\w-]+) and (the [\w-]+)\??',
+            interpretation['query'], re.I,
+        )
+        if pair:
+            queries = [f'{pair[1]} {entity}?' for entity in pair.groups()[1:]]
         for query in queries:
             expanded.append((fragment, left, right))
             compiled.append(dict(interpretation, query=query,
                                  derivation='explicit_fields' if fields or len(queries) > 1 else 'question_syntax'))
     pieces = expanded
     if len(pieces) <= 1 and not background and presentation is None:
-        return base
+        return dict(base, content_query=compiled[0]['query']) if padding and compiled else base
     if not pieces:
         return dict(base, status='needs_clarification', reason='Please add a question after Questions:.')
     if len(pieces) > MAX_TASKS:
@@ -375,6 +386,7 @@ def dispatch_request(app, message, propositions, options):
     if compare_prompt(message) is not None:
         return app._ask_single(message, propositions, **options)
     planned = separate_request(message, interpreter=getattr(app, 'prompt_interpreter', None))
+    message = planned.get('content_query', message)
     sessions = getattr(app, 'request_sessions', None)
     if planned['status'] == 'single' and sessions is None:
         return app._ask_single(message, propositions, **options)

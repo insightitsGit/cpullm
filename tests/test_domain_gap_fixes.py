@@ -85,3 +85,35 @@ def test_trailing_maximum_is_a_budget_and_not_part_of_the_entity():
     plan = classify_response_request("What color is the Ibis? Use at most two sentences.")
     assert plan["content_query"] == "What color is the Ibis?"
     assert plan["sentence_budget"] == 2
+
+def test_explicit_shared_color_question_creates_two_independent_tasks():
+    from cpu_llm.request_planner import separate_request
+
+    plan = separate_request("What color is the Kestrel and the Ibis?")
+    assert [task["query"] for task in plan["tasks"]] == [
+        "What color is the Kestrel", "What color is the Ibis",
+    ]
+
+
+def test_repetitive_suffix_keeps_both_questions_and_meaningful_suffixes():
+    from cpu_llm.request_planner import separate_request
+
+    prompt = "What color is the Spool? What is the Wicker?"
+    plan = separate_request(prompt + " " + "e" * 950)
+    assert [task["query"] for task in plan["tasks"]] == [
+        "What color is the Spool", "What is the Wicker",
+    ]
+    padded = "What is the Wicker? " + "e" * 1001
+    prefix = "What color is the Spool? "
+    assert separate_request(prefix + padded[:1000])["status"] == "multi"
+    assert separate_request(prefix + padded[:1001])["status"] == "limit_exceeded"
+    assert "content_query" not in separate_request("What is the Wicker? If it is fictional, say so.")
+
+
+def test_class_definition_requires_evidence_about_the_class_itself():
+    from cpu_llm.answerability import assess
+
+    instance = "The Gnomon is a survey peg."
+    definition = "A survey peg is a measuring instrument."
+    assert assess("What is a survey peg?", [instance])["answer_status"] == "insufficient_evidence"
+    assert assess("What is a survey peg?", [instance, definition])["text"] == definition

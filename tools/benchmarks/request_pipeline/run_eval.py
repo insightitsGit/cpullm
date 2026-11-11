@@ -279,6 +279,10 @@ def _ingest(app, paragraphs: list[dict]) -> dict:
 
 
 def _summary(case: dict, result: dict, trace: list[dict], verdict: dict) -> dict:
+    def displayed(reply_result):
+        reply = reply_result.get("reply") or {}
+        return str(reply.get("text") or reply.get("body") or reply_result.get("answer") or "")
+
     plan = result.get("request_plan") if isinstance(result.get("request_plan"), dict) else {}
     response_plan = result.get("response_plan") if isinstance(result.get("response_plan"), dict) else {}
     children = []
@@ -291,7 +295,7 @@ def _summary(case: dict, result: dict, trace: list[dict], verdict: dict) -> dict
             "id": task.get("id"),
             "status": task.get("status"),
             "query": task.get("query"),
-            "text": public_fields(child)[:2000],
+            "text": displayed(child)[:2000],
             "combined_task_budget": child_plan.get("combined_task_budget"),
             "sentence_budget": child_plan.get("sentence_budget"),
             "item_budget": child_plan.get("item_budget"),
@@ -303,7 +307,7 @@ def _summary(case: dict, result: dict, trace: list[dict], verdict: dict) -> dict
         "split": case.get("split"),
         "prompt": case.get("prompt"),
         "expected": case.get("outcome"),
-        "text": public_fields(result)[:4000],
+        "text": displayed(result)[:4000],
         "answer": result.get("answer"),
         "status": result.get("status"),
         "answer_status": result.get("answer_status"),
@@ -559,10 +563,12 @@ def _report(out: Path) -> None:
     metrics["answer_breakdown"] = breakdown
     _json(out / "metrics.json", metrics)
     false_n = sum(1 for row in rows if (row.get("verdict") or {}).get("false_assertion"))
+    checkout_status = out / "snapshot" / "status.txt"
+    dirty = not checkout_status.is_file() or bool(checkout_status.read_text(encoding="utf-8").strip())
     lines = [
         "# Request-pipeline benchmark",
         "",
-        "Exploratory mixed-tree run. The checkout was dirty, so this is not an official baseline.",
+        "Exploratory run without a clean checkout snapshot." if dirty else "Run from a recorded clean checkout.",
         "Synthetic fictional data does not certify production readiness.",
         "",
         f"Scorer: `{SCORER_VERSION}`.",

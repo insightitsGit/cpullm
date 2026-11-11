@@ -17,7 +17,7 @@ from tools.benchmarks.request_pipeline.oracle import entailed
 DEV_SEED = 271029
 HOLDOUT_SEED = 271030
 SOURCE_ORDER_SEEDS = (271201, 271202, 271203)
-CONTRACT = "request-pipeline-gold-v2-fresh"
+CONTRACT = "request-pipeline-gold-v3-fresh"
 BANNED = (
     "Lumen", "Vesper", "Helion", "Bramble", "Nacre", "Quill", "Pollen", "Sextant",
     "Azimuth", "Astrolabe", "Zenith", "Crocus", "Pinion", "Orinth", "Caldera",
@@ -363,8 +363,8 @@ def build_cases(paragraphs: list[dict], rules: list[dict]) -> list[dict]:
         _case("depth", "har", 2, contract=CONTRACT, prompt=f"In detail: What color is the {har['seconds'][0][0]}?", outcome="answer", claims=[har["seconds"][0][2]], proof_sets=[[pid(f"The {har['seconds'][0][0]} is {har['seconds'][0][2]}.")]], forbidden=[har["marker"]], caller=_public(har), budget={"hard_limit": False}),
         _case("depth", "arc", 3, contract=CONTRACT, prompt=f"What color is the {arc['name']}? Answer in two sentences.", outcome="answer", claims=[arc["color"]], proof_sets=[[pid(f"The {arc['name']} is {arc['color']}.")]], forbidden=[arc["marker"]], caller=_public(arc), budget={"requested_sentences": 2, "hard_limit": False}),
         _case("depth", "gal", 4, contract=CONTRACT, prompt=f"List the color of the {gal['name']}.", outcome="answer", claims=[gal["color"]], proof_sets=[[pid(f"The {gal['name']} is {gal['color']}.")]], forbidden=[gal["marker"]], caller=_public(gal)),
-        _case("depth", "har", 5, contract=CONTRACT, prompt=f"Tell me about the {har['name']}.", outcome="answer", claims=[har["kind"]], proof_sets=[[pid(f"The {har['name']} is a {har['kind']}.")]], forbidden=[har["marker"]], caller=_public(har)),
-        _case("depth", "arc", 6, contract=CONTRACT, prompt=f"Summarize the {arc['name']} in bullets.", outcome="answer", claims=[arc["kind"]], proof_sets=[[pid(f"The {arc['name']} is a {arc['kind']}.")]], forbidden=[arc["marker"]], caller=_public(arc)),
+        _case("depth", "har", 5, contract=CONTRACT, prompt=f"What kind of vessel is the {har['name']}?", outcome="answer", claims=[har["kind"]], proof_sets=[[pid(f"The {har['name']} is a {har['kind']}.")]], forbidden=[har["marker"]], caller=_public(har)),
+        _case("depth", "arc", 6, contract=CONTRACT, prompt=f"Summarize the {arc['name']} in bullets.", outcome="answer", claims=[arc["kind"]], proof_sets=[[pid(f"The {arc['name']} is a {arc['kind']}.")], [pid(f"The {arc['name']}, known as the {arc['alias']}, is a {arc['kind']}.")]], forbidden=[arc["marker"]], caller=_public(arc)),
         _case("depth", "gal", 7, contract=CONTRACT, prompt=f"What color is the {gal['name']}?\n" + long_background, outcome="answer", claims=[gal["color"]], proof_sets=[[pid(f"The {gal['name']} is {gal['color']}.")]], forbidden=["shed note is not evidence", gal["marker"]], caller=_public(gal)),
         _case("depth", "har", 8, contract=CONTRACT, prompt=f"What color is the {har['name']}? Answer in one sentence.", outcome="answer", claims=[har["color"]], proof_sets=[[pid(f"The {har['name']} is {har['color']}.")]], forbidden=[], caller=_public(har), budget={"hard_limit": False, "word_limit_enforced": False}),
         _case("depth", "arc", 9, contract=CONTRACT, prompt=f"How long does the {arc['name']} live? Answer in one sentence.", outcome="answer", claims=[f"{arc['years']} years"], proof_sets=[[pid(f"The {arc['name']} is a {arc['kind']}."), pid(f"Every {arc['kind']} lives for {arc['years']} years.")]], forbidden=[], caller=_public(arc), budget={"hard_limit": False, "word_limit_enforced": False, "proof_may_exceed": True}),
@@ -428,7 +428,7 @@ def build_cases(paragraphs: list[dict], rules: list[dict]) -> list[dict]:
     joins.append(_case("join", "cross", 10, contract=CONTRACT, prompt=f"How long does the average {gal['other_kind']} live?", outcome="answer", claims=[f"{gal['average']} years"], proof_sets=[[pid(f"The average {gal['other_kind']} lives for {gal['average']} years.")]], forbidden=[f"{gal['years']} years"], caller=_public(gal), oracle=[], adjudication={"prior_outcome": "insufficient", "prior_forbidden": [f"{gal['average']} years", f"{gal['years']} years"], "reason": "An explicit question about a group's average may quote that average. It still must not quote a different group's every-rule."}))
     unsupported += [
         _case("unsupported", "har", 4, contract=CONTRACT, prompt=f"Write a poem about the {har['name']}.", outcome="unsupported", claims=[], proof_sets=[], forbidden=[har["color"]], caller=_public(har)),
-        _case("unsupported", "arc", 5, contract=CONTRACT, prompt=f"Draft a letter about the {arc['name']}.", outcome="answer", claims=[arc["color"]], proof_sets=[[pid(f"The {arc['name']} is {arc['color']}.")]], forbidden=[], caller=_public(arc), bindings=[_bind(arc["name"], "has_color", arc["color"])]),
+        _case("unsupported", "arc", 5, contract=CONTRACT, prompt=f"Draft a letter about the {arc['name']}.", outcome="partial", claims=[arc["color"]], proof_sets=[[pid(f"The {arc['name']} is {arc['color']}.")]], forbidden=[], options_note="A grounded partial draft must include the cited color; genre completeness is evaluated separately.", caller=_public(arc), bindings=[_bind(arc["name"], "has_color", arc["color"])]),
         _case("unsupported", "gal", 6, contract=CONTRACT, prompt=f"Imagine the {gal['name']} in a story.", outcome="unsupported", claims=[], proof_sets=[], forbidden=[gal["color"]], caller=_public(gal)),
     ]
     groups = {
