@@ -43,9 +43,17 @@ Nammade diagnostics. The Nammade worker uses its topical and explicit-span
 comparisons in memory. Its standalone route also supports dense retrieval and
 persistence. The workers avoid concurrent writes to the appliance database.
 
-The combined reply names all three methods and shows each result, including empty branches. It includes the leading Nammade source excerpts and the comparison count. The API also exposes per-method outcomes in `research_methods`. API
-clients can inspect `invention.proposals`, `research_options`, and
-`nammade.evaluations`. Hypothesis options preserve the source prediction and
+After the three branches return, `resolve_hypotheses` runs
+[the abductive bridge](abductive-bridge-node.md) on the Nammade evaluations.
+The bridge can prepend one unverified relational candidate, or it can compile
+the user's named model against stored bounds. It does not write the index.
+A standalone Nammade scan does not call it. The recorded stage order is
+`taxonomy_invention`, `research_hypotheses`, `nammade_equilibrium`,
+`abductive_bridge`.
+
+The combined reply names all three methods and shows each result, including empty branches. It includes the leading Nammade source excerpts and the comparison count. A bridged candidate is printed under Hypothesis generation with the line that the mechanism is an unverified hypothesis and is not a stored fact. The API also exposes per-method outcomes in `research_methods`, including `abductive_bridge` with `promotion: blocked`. API
+clients can inspect `invention.proposals`, `research_options`,
+`nammade.evaluations`, and `abductive_bridge`. Hypothesis options preserve the source prediction and
 suggest a test. They do not report that an experiment was run. Research
 documents can attach diagnostics using the document topic. Strict Evidence Mode
 skips the branches. CrossDomain and numeric constraint routes keep their own

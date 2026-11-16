@@ -391,7 +391,7 @@ def test_research_branches_overlap_and_return_hypothesis_options(monkeypatch):
     reply = app.ask("Propose a testable hypothesis about light speed.")
     assert reply["answer_status"] == "hypotheses"
     assert reply["routing"]["post_stages"] == [
-        "taxonomy_invention", "research_hypotheses", "nammade_equilibrium",
+        "taxonomy_invention", "research_hypotheses", "nammade_equilibrium", "abductive_bridge",
     ]
     assert reply["research_options"][0]["prediction"] == prediction
     assert reply["research_options"][0]["document_id"] == "doc-p0001"

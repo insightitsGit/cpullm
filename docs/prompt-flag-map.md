@@ -11,6 +11,9 @@ take their relation from that span's Nammade polarity, structure, scale, and
 density. Standalone research and investigation commands can also select the scan.
 Explicit invention and hypothesis routes can attach diagnostics to their own
 response. Strict evidence disables the scan. See [the Nammade node](nammade-channel-equilibrium-node.md).
+`Research`, `Investigate`, and invention or hypothesis commands then run
+[the abductive bridge](abductive-bridge-node.md) on those comparisons. The
+bridge is a post-stage. It is not a prompt flag and it has no OpenAPI field.
 
 Generated from `cpu_llm.flag_contract.FLAG_BINDINGS`. The JSON companion is tested for exact registry agreement.
 

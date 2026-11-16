@@ -40,11 +40,12 @@ Question + authorized knowledge base
   |
   +-- Strict evidence --> Exact quotes, deterministic checks, or unsupported
   |
-  +-- Research ---------> Retrieve evidence and assemble cited responses
+  +-- Research ---------> Invention, source hypotheses, and a Nammade comparison
        |
        +-- CrossDomain --> Join cited premises across selected KBs
        +-- Invention ---> Propose hypotheses, or cite stored sentences
        +-- Nammade -----> Compare authorized passages and quote excerpts
+       +-- Abductive ---> One unverified relation when stored bounds conflict
 ```
 
 ## Verification contract compared with generative RAG
@@ -81,6 +82,7 @@ into the trained 1024-d tensor.
 `Research <topic>`, `Investigate <topic>`, and `Propose a testable hypothesis
 about <topic>` run three methods in parallel against one authorized snapshot.
 The chat reply gives each method its own section, including cases with no candidates.
+After those three finish, the abductive bridge reads the Nammade comparisons.
 
 - **Innovation** looks for new proposals grounded in relationships across
   source passages. It can offer a research question when it finds relevant
@@ -89,12 +91,28 @@ The chat reply gives each method its own section, including cases with no candid
   Supported routes can combine independent premises into a falsifiable test.
 - **Nammade** shows the comparison count and leading cited excerpts. Its
   diagnostics describe how passages compare under the model.
+- **Abductive bridge** compiles one relational candidate when two compared
+  passages give incompatible bounds on the same observable and differ on a
+  regime variable named in those passages or the active domain ontology.
+  The candidate stays an unverified hypothesis and is not written into the
+  index. The bridge abstains when the prompt already names the mediating
+  model, when one passage already links both regimes, or when the bounds
+  can share one constant. The reply then keeps a source prediction, or
+  compiles the stated premise against the stored bounds.
 
-API clients can read `research_methods`, `invention.proposals`,
-`research_options`, and `nammade.evaluations` for the individual outcomes,
-premises, and diagnostics. `Research report`, `Research article`, and
+The chat reply still opens with the three parallel methods. A bridged
+candidate appears under Hypothesis generation, with the line that the
+mechanism is an unverified hypothesis and is not a stored fact. API clients
+can read `research_methods`, `invention.proposals`, `research_options`,
+`nammade.evaluations`, and `abductive_bridge`.
+`research_methods.abductive_bridge` records the status and
+`promotion: blocked`. `Research report`, `Research article`, and
 `Research paper` use the document workflow and can carry Nammade diagnostics.
-Use `nammade=True` in Python or `"nammade": true` over HTTP for a standalone scan.
+Use `nammade=True` in Python or `"nammade": true` over HTTP for a standalone
+scan. A standalone scan does not run the bridge. A bare question that does
+not use `Research`, `Investigate`, `Invention`, or
+`Propose a testable hypothesis` stays on the ordinary route.
+The bridge contract is [the abductive bridge node](docs/abductive-bridge-node.md).
 
 #### Example: Turn dark-matter evidence into a test
 
@@ -118,6 +136,46 @@ candidate is ruled out within the tested model and study assumptions.
 The separate Nammade scan surfaced both supporting passages for inspection.
 Innovation generated zero new mechanisms in this run. The hypothesis is a
 test plan for an existing model class. A numerical fit remains to be run.
+That option is the core-size joiner: one passage states dwarf-galaxy core
+sizes in kiloparsecs, and another states the Bullet Cluster bound together
+with the mass-peak and galaxy-centroid wording. The abductive bridge is the
+later step described below. It replaces that joiner only when the joiner's
+two premise documents are the bridge anchors.
+
+#### Example: bridge a bound only when the intervals conflict
+
+A memory snapshot, without the encoder and without PostgreSQL, stored these
+sentences and was asked through `Research …`:
+
+- Self-interacting dark matter simulations require a cross section per mass
+  ≳ 1 cm²/g to form cores in dwarf galaxies.
+- The Bullet Cluster analysis reports an upper bound of 1.25 cm²/g at 68%
+  confidence.
+- A cluster merger sample limits the same observable to < 0.47 cm²/g at 95%
+  confidence. This sentence was added for the second corpus.
+- The boiling point of water is 100 C. That sentence was stored and was not
+  used.
+
+The open question was how self-interacting dark matter can form dwarf-galaxy
+cores without violating the Bullet Cluster merger bound. With only the dwarf
+requirement and the 1.25 cm²/g bound, the bridge returned `NO_GAP` and the
+reply had no hypothesis. A constant between 1 and 1.25 cm²/g can satisfy
+both bounds. Nammade quoted the two physics sentences.
+
+Adding the 0.47 cm²/g cluster-merger limit changed that open question to
+`BRIDGED`. The anchors were the dwarf sentence and the 0.47 sentence. The
+shared observable was `cross_section_per_mass`, the mediating variable was
+`relative_velocity`, and the relation was `inverse_monotonic`. The hypothesis
+text was: cross section per mass decreases as relative velocity increases.
+The claim status stayed `UNVERIFIED_HYPOTHESIS`. The 1.25 cm²/g passage was
+quoted by Nammade and was not an anchor, because its interval still overlaps
+the dwarf requirement.
+
+The closed question already asked whether one velocity-dependent model can
+explain the dwarf cores and satisfy the Bullet Cluster constraints. On both
+corpora the bridge returned `NO_GAP` because the prompt names that model.
+The reply compiled that premise against the dwarf sentence and the 1.25
+cm²/g sentence, and it said not to add a second mechanism.
 
 This gives researchers a reproducible way to inspect how propositions compare
 under the Nammade model. Source citations support attribution. The diagnostic
@@ -282,7 +340,7 @@ See the [architecture](docs/current-design.md) and [prompt-to-node mapping](docs
 - `What did John eat?` routes to the event-frame node when the classifier recognizes the actor and action. The reply cites the matching source.
 - `Search deeply for apple.` or `app.ask(question, deep=True)` requests the deep-search node. A request for a longer answer changes the response budget.
 - `Calculate 17 times 24.` requests arithmetic. Use `app.ask(question, discover=True)` to request discovery after the ordinary reply.
-- `Write a detailed report about Helios.` selects the document workflow. `Invention: Leptogenesis.` selects invention. `Nammade: dark matter.` runs the standalone scan. `Investigate dark matter.` runs invention, source hypotheses, and the Nammade comparison together.
+- `Write a detailed report about Helios.` selects the document workflow. `Invention: Leptogenesis.` selects invention. `Nammade: dark matter.` runs the standalone scan. `Investigate dark matter.` runs invention, source hypotheses, the Nammade comparison, and then the abductive bridge.
 - `Research Casas-Ibarra using KBs: physics, math.` selects CrossDomain. `Constraint Check: Leptogenesis using KBs: physics, math, experiment.` requests the interval comparison directly.
 - `List chunks for notes.pdf.` opens scoped inventory. `Delete chunk notes-p0001.` opens a preview. The deletion API handles confirmation.
 
@@ -673,6 +731,8 @@ for the intended application.
   The companion article is the author's
   [Nammade Continuum, Verified Edition](docs/nammade-continuum-verified-edition.md).
   Saving that article did not run a physics audit.
+- [Abductive bridge node](docs/abductive-bridge-node.md). It compiles one
+  unverified relation from Nammade comparisons, or it abstains.
 
 - [1.11.1 release notes](docs/releases/1.11.1.md) and [build validation](docs/releases/1.11.1-build-validation.md).
 - [Whitepaper](https://www.insightits.com/research-tools/cpu-llm/whitepaper) and [1.11.1 PDF](https://www.insightits.com/assets/whitepapers/cpu-llm-1.11.1-whitepaper.pdf).

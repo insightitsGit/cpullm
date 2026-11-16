@@ -92,3 +92,104 @@ def hypothesis_options(query, rows, *, limit=3):
             )))
     ranked.sort(key=lambda entry: -entry[0])
     return [option for _, option in ranked[:limit]]
+
+
+def hypothesis_for_bridge(bridge):
+    """Falsification test for one abductive candidate. The claim stays unverified."""
+    candidate = bridge.candidate
+    variable = candidate.mediating_variable.replace("_", " ")
+    observable = candidate.shared_observable.replace("_", " ")
+    scaling = {
+        "inverse_monotonic": f"{observable} decreases as {variable} increases",
+        "direct_monotonic": f"{observable} increases as {variable} increases",
+        "threshold_piecewise": f"{observable} changes across a threshold in {variable}",
+        "regime_conditional": f"{observable} is conditional on {variable}",
+    }[candidate.proposed_relation]
+    test = (
+        f"Fit one {variable}-dependent scaling to both regimes. "
+        f"Keep a parameter set only when it satisfies both constraints: "
+        f"\"{candidate.regime_a_constraint}\" and \"{candidate.regime_b_constraint}\". "
+        "Reject the candidate when no shared parameter set satisfies both. "
+        "Claim status: UNVERIFIED_HYPOTHESIS."
+    )
+    if bridge.contradiction_source_ids:
+        cited = ", ".join(bridge.contradiction_source_ids)
+        test += f" Remaining comparisons that disagree stay recorded and do not promote the claim: {cited}."
+    premises = [
+        dict(document_id=source_id, span=sentence, span_hash=span_hash(sentence))
+        for source_id, sentence in (
+            (candidate.anchor_chunk_ids[0], candidate.regime_a_constraint),
+            (candidate.anchor_chunk_ids[1], candidate.regime_b_constraint),
+        )
+    ]
+    return dict(
+        document_id=candidate.anchor_chunk_ids[0],
+        qualification="hypothesis",
+        origin="abductive_bridge",
+        claim_status="UNVERIFIED_HYPOTHESIS",
+        prediction=f"Unverified hypothesis: {scaling}.",
+        test=test,
+        premises=premises,
+        span_hash=premises[0]["span_hash"],
+    )
+
+
+def prompt_premise_hypothesis(query, comparisons):
+    """Compile the user's named model against stored bounds, without a new mechanism."""
+    from cpu_llm.abductive_bridge import extract_constraints, names_mediating_model
+
+    if not names_mediating_model(query):
+        return None
+    chosen = []
+    for constraint in extract_constraints(query, comparisons):
+        if chosen and (constraint.observable != chosen[0].observable or constraint.source_id in {item.source_id for item in chosen}):
+            continue
+        chosen.append(constraint)
+        if len(chosen) == 2:
+            break
+    if len(chosen) < 2:
+        return None
+    first, second = chosen
+    premises = [
+        dict(document_id=item.source_id, span=item.sentence, span_hash=span_hash(item.sentence))
+        for item in (first, second)
+    ]
+    return dict(
+        document_id=first.source_id,
+        qualification="hypothesis",
+        origin="prompt_premise",
+        claim_status="UNVERIFIED_HYPOTHESIS",
+        prediction=query.strip(),
+        test=(
+            "Parameter-space check for the stated premise. Fit one parameter set to both constraints: "
+            f"\"{first.sentence}\" and \"{second.sentence}\". "
+            "Reject the premise if no shared parameter set satisfies both. "
+            "Do not add a second mechanism."
+        ),
+        premises=premises,
+        span_hash=premises[0]["span_hash"],
+    )
+
+
+def resolve_hypotheses(query, comparisons, options):
+    """Use a bridged candidate when one exists; otherwise keep the prompt premise."""
+    from cpu_llm.abductive_bridge import AbductiveBridgeNode
+
+    bridge = AbductiveBridgeNode().execute(query, comparisons)
+    if bridge.status == "BRIDGED" and bridge.candidate is not None:
+        anchors = set(bridge.candidate.anchor_chunk_ids)
+        kept = []
+        for item in options:
+            premises = item.get("premises") or []
+            same_pair = (
+                item.get("origin") == "cross_source_synthesis"
+                and anchors == {premise.get("document_id") for premise in premises}
+            )
+            if not same_pair:
+                kept.append(item)
+        return bridge, [hypothesis_for_bridge(bridge), *kept]
+    if bridge.status == "NO_GAP" and not options:
+        compiled = prompt_premise_hypothesis(query, comparisons)
+        if compiled is not None:
+            return bridge, [compiled]
+    return bridge, list(options)

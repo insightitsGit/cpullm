@@ -224,7 +224,7 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
 
     from concurrent.futures import ThreadPoolExecutor
     from cpu_llm.nammade.execute import execute_nammade
-    from cpu_llm.research_hypotheses import hypothesis_options
+    from cpu_llm.research_hypotheses import hypothesis_options, resolve_hypotheses
 
     # Run the read-only branches from one authorized snapshot. The invention
     # branch retains access to the appliance encoder on the calling thread.
@@ -237,18 +237,22 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
         diagnostic = scan.result()
     stages = response["routing"]["post_stages"]
     stages.append("research_hypotheses")
+    scan_receipt = diagnostic.get("nammade", {})
+    bridge, options = resolve_hypotheses(seed, scan_receipt.get("evaluations") or [], options)
     response["research_options"] = options
+    response["abductive_bridge"] = bridge.model_dump()
     innovation_text = response["reply"]["text"]
     response["research_methods"] = {
         "innovation": {"outcome": response["answer_status"]},
         "hypothesis_generation": {"option_count": len(options)},
         "nammade": {"outcome": diagnostic["answer_status"]},
+        "abductive_bridge": {"status": bridge.status, "promotion": "blocked"},
     }
-    scan_receipt = diagnostic.get("nammade", {})
     if "nammade" in diagnostic:
         response["nammade"] = dict(diagnostic["nammade"], mode="research_diagnostics",
                                    outcome=diagnostic["answer_status"])
         stages.append("nammade_equilibrium")
+    stages.append("abductive_bridge")
     if (research_scan_fallback and not options and response["answer_status"] == "insufficient_evidence"
             and diagnostic["answer_status"] == "nammade"):
         response.update(status="nammade", answer_status="nammade", reply=diagnostic["reply"],
@@ -267,6 +271,10 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
         "\n### Hypothesis generation",
         "Surfaces source predictions or combines cited premises into a proposed test.",
     ]
+    if bridge.status == "BRIDGED":
+        lines.append("The mechanism below is an unverified hypothesis from the abductive bridge. It is not a stored fact.")
+    elif bridge.status == "INSUFFICIENT_EVIDENCE" and bridge.abstention_reason:
+        lines.append(bridge.abstention_reason)
     if not options:
         lines.append("No testable hypothesis option was found.")
     for index, option in enumerate(options, 1):

@@ -11,6 +11,18 @@ not factual evidence. The companion treatise
 is [The Nammade Continuum (Verified Edition)](nammade-continuum-verified-edition.md).
 Saving that article did not run a physics audit.
 
+The [abductive bridge node](abductive-bridge-node.md) is implemented in
+`cpu_llm.abductive_bridge`. `Research`, `Investigate`, and invention or
+hypothesis commands run innovation, source hypotheses, and the Nammade scan,
+then the bridge reads those comparisons. It emits one schema-bound
+`UNVERIFIED_HYPOTHESIS` when two passages give interval-disjoint bounds on
+one observable and differ on a regime variable from those passages or the
+active ontology. It abstains when the prompt already names the mediating
+model, when a passage already links both regimes, or when the bounds can
+share one constant. The candidate is not written back to the index.
+A standalone Nammade scan does not run the bridge. The bridge is not a
+prompt flag.
+
 The [taxonomy-driven invention node](taxonomy-invention-spec.md) defines
 cross-chunk hypothesis generation, explicit activation, and a response disclosure.
 
