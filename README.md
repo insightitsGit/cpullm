@@ -43,7 +43,8 @@ Question + authorized knowledge base
   +-- Research ---------> Retrieve evidence and assemble cited responses
        |
        +-- CrossDomain --> Join cited premises across selected KBs
-       +-- Invention ---> Propose hypotheses and run supported model scans
+       +-- Invention ---> Propose hypotheses, or cite stored sentences
+       +-- Nammade -----> Compare authorized passages and quote excerpts
 ```
 
 ## Verification contract compared with generative RAG
@@ -73,14 +74,22 @@ this feature.
 Nammade compares a question with authorized source passages under a
 four-coordinate experimental model. Use `Nammade: <topic>` for a standalone scan with cited excerpts. The
 structured `nammade` receipt records displacement, residual, density bands,
-and polarity bridges.
+polarity bridges, and word relations built only for that scan. Those labels
+compare wording. They do not verify a physical law, and they are not written
+into the trained 1024-d tensor.
 
-Use `Research <topic>`, `Investigate <topic>`, or
-`Propose a testable hypothesis about <topic>` to run three branches in parallel
-against one authorized snapshot. Invention looks for new proposals grounded
-in cross-chunk premises. Hypothesis generation looks for source-stated
-predictions and suggests how to test them. Nammade compares relevant passages
-under its model. Each branch can return zero candidates.
+`Research <topic>` and `Investigate <topic>` run three branches in parallel
+against one authorized snapshot. `Research report`, `Research article`, and
+`Research paper` stay on the document workflow. Invention looks for new
+proposals grounded in cross-chunk premises. When a subject has no typed
+relationship, sentences that contain each of its words are quoted as a
+research question. A hyphen is treated as a space, and a trailing plural is
+accepted. Hypothesis generation looks for source-stated predictions and
+suggests how to test them. Nammade compares relevant passages under its
+model. Each branch can return zero candidates. When `Research` or
+`Investigate` finds no proposal and no source prediction, the reply uses the
+Nammade excerpts. An `Invention:` prompt keeps its own reply and attaches the
+Nammade comparison when that scan finds excerpts.
 
 Agents can read `invention.proposals`, `research_options`, and
 `nammade.evaluations`. The chat reply shows available proposals and hypothesis
@@ -250,7 +259,7 @@ See the [architecture](docs/current-design.md) and [prompt-to-node mapping](docs
 - `What did John eat?` routes to the event-frame node when the classifier recognizes the actor and action. The reply cites the matching source.
 - `Search deeply for apple.` or `app.ask(question, deep=True)` requests the deep-search node. A request for a longer answer changes the response budget.
 - `Calculate 17 times 24.` requests arithmetic. Use `app.ask(question, discover=True)` to request discovery after the ordinary reply.
-- `Write a detailed report about Helios.` selects the document workflow. `Invention: Leptogenesis.` selects invention.
+- `Write a detailed report about Helios.` selects the document workflow. `Invention: Leptogenesis.` selects invention. `Nammade: dark matter.` runs the standalone scan. `Investigate dark matter.` runs invention, source hypotheses, and the Nammade comparison together.
 - `Research Casas-Ibarra using KBs: physics, math.` selects CrossDomain. `Constraint Check: Leptogenesis using KBs: physics, math, experiment.` requests the interval comparison directly.
 - `List chunks for notes.pdf.` opens scoped inventory. `Delete chunk notes-p0001.` opens a preview. The deletion API handles confirmation.
 
@@ -285,7 +294,11 @@ python -m pip install -e .
   chunks and proposes new connections to test. Use `invent=True` in Python or
   `"invent": true` in HTTP. “Imagine a story” uses the existing story workflow.
   You can also say `Guess: Fernhouse.`, `Speculate about Fernhouse.`, or
-  `Brainstorm ideas for Fernhouse.` to request hypotheses.
+  `Brainstorm ideas for Fernhouse.` to request hypotheses. If the subject has
+  no typed relationship, the reply still returns a research question when at
+  least two stored sentences contain each subject word. `dark-matter particle`
+  matches a request for `the dark matter particle`. The reply quotes those
+  sentences and does not invent an edge.
 - **Loops inside a document:** `Write a detailed report about Alpha, including
   relationship loops through Alpha.` consumes the discovered paths in a
   Relationship loops section, using the same snapshot as the report.
@@ -633,6 +646,10 @@ for the intended application.
 - [Research planner and explicit cycle exploration](docs/research-cycle-user-guide.md).
 - [Invention and CrossDomain](docs/taxonomy-invention-spec.md) and
   [numerical constraint evaluator](docs/invention-constraint-evaluator-spec.md).
+- [Nammade channel and equilibrium node](docs/nammade-channel-equilibrium-node.md).
+  The companion article is the author's
+  [Nammade Continuum, Verified Edition](docs/nammade-continuum-verified-edition.md).
+  Saving that article did not run a physics audit.
 
 - [1.11.1 release notes](docs/releases/1.11.1.md) and [build validation](docs/releases/1.11.1-build-validation.md).
 - [Whitepaper](https://www.insightits.com/research-tools/cpu-llm/whitepaper) and [1.11.1 PDF](https://www.insightits.com/assets/whitepapers/cpu-llm-1.11.1-whitepaper.pdf).
