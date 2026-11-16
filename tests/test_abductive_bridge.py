@@ -63,23 +63,23 @@ def test_open_gap_emits_an_inverse_velocity_candidate_and_a_scaling_test():
     assert "decreases as relative velocity increases" in options[0]["prediction"]
 
 
-def test_closed_premise_passes_through_without_a_second_mechanism():
+def test_closed_premise_keeps_the_stated_model_and_the_bridge_as_separate_options():
     rows = comparisons(DWARF, CLUSTER)
     bridge, options = resolve_hypotheses(CLOSED_QUERY, rows, [])
 
-    assert bridge.status == "NO_GAP"
-    assert bridge.candidate is None
-    assert len(options) == 1
-    assert options[0]["origin"] == "prompt_premise"
+    assert bridge.status == "BRIDGED"
+    assert [item["origin"] for item in options] == ["prompt_premise", "abductive_bridge"]
     assert "velocity-dependent" in options[0]["prediction"]
     assert "Parameter-space check" in options[0]["test"]
-    assert "Do not add a second mechanism." in options[0]["test"]
+    assert "checks only the premise" in options[0]["test"]
     assert "decreases as" not in options[0]["prediction"]
+    assert "decreases as relative velocity increases" in options[1]["prediction"]
 
     existing = dict(document_id="review", qualification="hypothesis", prediction="already compiled", test="existing protocol")
-    again, unchanged = resolve_hypotheses(CLOSED_QUERY, rows, [existing])
-    assert again.status == "NO_GAP"
-    assert unchanged == [existing]
+    again, with_existing = resolve_hypotheses(CLOSED_QUERY, rows, [existing])
+    assert again.status == "BRIDGED"
+    assert with_existing[0] == existing
+    assert [item["origin"] for item in with_existing[1:]] == ["prompt_premise", "abductive_bridge"]
 
 
 def test_equal_regime_values_abstain_without_a_mediating_variable():
@@ -143,7 +143,8 @@ def test_a_later_comparison_can_contradict_the_candidate_without_promoting_it():
     assert bridge.status == "BRIDGED"
     assert bridge.candidate.claim_status == "UNVERIFIED_HYPOTHESIS"
     assert bridge.contradiction_source_ids == ["chunk-3"]
-    _bridge, [option] = resolve_hypotheses(OPEN_QUERY, rows, [])
+    _bridge, options = resolve_hypotheses(OPEN_QUERY, rows, [])
+    option = next(item for item in options if item["origin"] == "abductive_bridge")
     assert "chunk-3" in option["test"]
     assert "do not promote" in option["test"]
 
@@ -208,12 +209,35 @@ def test_research_prompt_runs_the_bridge_between_nammade_and_hypotheses():
     assert "not a stored fact" in result["reply"]["text"]
 
 
-def test_named_model_on_the_research_path_does_not_add_a_bridge_candidate():
+def test_named_model_on_the_research_path_keeps_the_premise_and_the_bridge():
     app = appliance([DWARF, CLUSTER])
     result = app.ask(
         "Research can a single velocity-dependent self-interacting dark matter model explain "
         "dwarf-galaxy cores and satisfy Bullet Cluster merger constraints."
     )
-    assert result["abductive_bridge"]["status"] == "NO_GAP"
-    assert result["abductive_bridge"]["candidate"] is None
-    assert [item["origin"] for item in result["research_options"]] == ["prompt_premise"]
+    assert result["abductive_bridge"]["status"] == "BRIDGED"
+    assert [item["origin"] for item in result["research_options"]] == ["prompt_premise", "abductive_bridge"]
+    assert "separate option" in result["reply"]["text"]
+    assert "(Stated premise)" in result["reply"]["text"]
+    assert "(Abductive bridge)" in result["reply"]["text"]
+
+
+def test_overlapping_and_disjoint_bounds_are_separate_options():
+    rows = comparisons(
+        "Self-interacting dark matter simulations require a cross section per mass ≳ 1 cm²/g to form cores in dwarf galaxies.",
+        "The Bullet Cluster analysis reports an upper bound of 1.25 square centimeters per gram at 68 percent confidence on the dark matter cross section per mass.",
+        "A cluster merger sample limits the dark matter cross section per mass to < 0.47 cm²/g at 95 percent confidence.",
+    )
+    bridge, options = resolve_hypotheses(OPEN_QUERY, rows, [])
+    assert bridge.status == "BRIDGED"
+    assert [item["origin"] for item in options] == ["abductive_bridge", "compatible_bounds", "compatible_bounds"]
+    assert options[0]["claim_status"] == "UNVERIFIED_HYPOTHESIS"
+    assert "< 0.47" in options[0]["test"]
+    assert options[1]["claim_status"] == "CONSISTENCY_CHECK"
+    assert "1.25" in options[1]["test"]
+    assert "does not introduce a mediating variable" in options[1]["test"]
+
+    _closed, closed_options = resolve_hypotheses(CLOSED_QUERY, rows, [])
+    assert [item["origin"] for item in closed_options] == [
+        "prompt_premise", "abductive_bridge", "compatible_bounds", "compatible_bounds",
+    ]

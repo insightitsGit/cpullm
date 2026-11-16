@@ -95,14 +95,14 @@ After those three finish, the abductive bridge reads the Nammade comparisons.
   passages give incompatible bounds on the same observable and differ on a
   regime variable named in those passages or the active domain ontology.
   The candidate stays an unverified hypothesis and is not written into the
-  index. The bridge abstains when the prompt already names the mediating
-  model, when one passage already links both regimes, or when the bounds
-  can share one constant. The reply then keeps a source prediction, or
-  compiles the stated premise against the stored bounds.
+  index. A pair that can share one constant becomes its own shared-constant
+  option. When the question already names a model, that premise stays a
+  separate option beside any bridge or shared-constant reading. A passage
+  that already links both regimes supplies no bridge.
 
-The chat reply still opens with the three parallel methods. A bridged
-candidate appears under Hypothesis generation, with the line that the
-mechanism is an unverified hypothesis and is not a stored fact. API clients
+The chat reply still opens with the three parallel methods. Hypothesis
+generation lists each reading as its own numbered option. A bridge option
+is labeled as an unverified hypothesis and is not a stored fact. API clients
 can read `research_methods`, `invention.proposals`, `research_options`,
 `nammade.evaluations`, and `abductive_bridge`.
 `research_methods.abductive_bridge` records the status and
@@ -139,8 +139,8 @@ test plan for an existing model class. A numerical fit remains to be run.
 That option is the core-size joiner: one passage states dwarf-galaxy core
 sizes in kiloparsecs, and another states the Bullet Cluster bound together
 with the mass-peak and galaxy-centroid wording. The abductive bridge is the
-later step described below. It replaces that joiner only when the joiner's
-two premise documents are the bridge anchors.
+later step described below. A core-size option stays in the list beside any
+bridge or shared-constant option.
 
 #### Example: bridge a bound only when the intervals conflict
 
@@ -158,24 +158,25 @@ sentences and was asked through `Research …`:
 
 The open question was how self-interacting dark matter can form dwarf-galaxy
 cores without violating the Bullet Cluster merger bound. With only the dwarf
-requirement and the 1.25 cm²/g bound, the bridge returned `NO_GAP` and the
-reply had no hypothesis. A constant between 1 and 1.25 cm²/g can satisfy
-both bounds. Nammade quoted the two physics sentences.
+requirement and the 1.25 cm²/g bound, the reply has one shared-constant
+option: a value between 1 and 1.25 cm²/g can satisfy both. Nammade still
+quotes the two physics sentences.
 
-Adding the 0.47 cm²/g cluster-merger limit changed that open question to
-`BRIDGED`. The anchors were the dwarf sentence and the 0.47 sentence. The
-shared observable was `cross_section_per_mass`, the mediating variable was
-`relative_velocity`, and the relation was `inverse_monotonic`. The hypothesis
-text was: cross section per mass decreases as relative velocity increases.
-The claim status stayed `UNVERIFIED_HYPOTHESIS`. The 1.25 cm²/g passage was
-quoted by Nammade and was not an anchor, because its interval still overlaps
-the dwarf requirement.
+Adding the 0.47 cm²/g cluster-merger limit adds a separate bridge option.
+Its anchors are the dwarf sentence and the 0.47 sentence. The shared
+observable is `cross_section_per_mass`, the mediating variable is
+`relative_velocity`, and the relation is `inverse_monotonic`. The hypothesis
+text is: cross section per mass decreases as relative velocity increases.
+The claim status stays `UNVERIFIED_HYPOTHESIS`. The same reply also keeps
+shared-constant options for the pairs that still overlap, including the
+dwarf requirement and the 1.25 cm²/g bound.
 
-The closed question already asked whether one velocity-dependent model can
-explain the dwarf cores and satisfy the Bullet Cluster constraints. On both
-corpora the bridge returned `NO_GAP` because the prompt names that model.
-The reply compiled that premise against the dwarf sentence and the 1.25
-cm²/g sentence, and it said not to add a second mechanism.
+The closed question already asks whether one velocity-dependent model can
+explain the dwarf cores and satisfy the Bullet Cluster constraints. That
+stated premise is one option, checked against the dwarf sentence and the
+1.25 cm²/g sentence. When the 0.47 cm²/g limit is stored, the bridge option
+and the shared-constant options are listed with it. Each item stays a
+separate option.
 
 This gives researchers a reproducible way to inspect how propositions compare
 under the Nammade model. Source citations support attribution. The diagnostic

@@ -17,9 +17,10 @@ hypothesis commands run innovation, source hypotheses, and the Nammade scan,
 then the bridge reads those comparisons. It emits one schema-bound
 `UNVERIFIED_HYPOTHESIS` when two passages give interval-disjoint bounds on
 one observable and differ on a regime variable from those passages or the
-active ontology. It abstains when the prompt already names the mediating
-model, when a passage already links both regimes, or when the bounds can
-share one constant. The candidate is not written back to the index.
+active ontology. A research or hypothesis reply lists that bridge, a
+shared-constant check for each overlapping pair, and the user's named model
+as separate options. A passage that already links both regimes supplies no
+bridge. The candidate is not written back to the index.
 A standalone Nammade scan does not run the bridge. The bridge is not a
 prompt flag.
 

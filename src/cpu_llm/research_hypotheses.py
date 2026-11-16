@@ -134,8 +134,31 @@ def hypothesis_for_bridge(bridge):
     )
 
 
+def compatible_bounds_option(left, right):
+    """One option for two stored bounds that a single constant can satisfy."""
+    observable = left.observable.replace("_", " ")
+    premises = [
+        dict(document_id=item.source_id, span=item.sentence, span_hash=span_hash(item.sentence))
+        for item in (left, right)
+    ]
+    return dict(
+        document_id=left.source_id,
+        qualification="bound_check",
+        origin="compatible_bounds",
+        claim_status="CONSISTENCY_CHECK",
+        prediction=f"A single constant value of {observable} can satisfy both stored bounds.",
+        test=(
+            "Shared-constant check. Keep a constant only when it lies in both intervals: "
+            f"\"{left.sentence}\" and \"{right.sentence}\". "
+            "This option does not introduce a mediating variable."
+        ),
+        premises=premises,
+        span_hash=premises[0]["span_hash"],
+    )
+
+
 def prompt_premise_hypothesis(query, comparisons):
-    """Compile the user's named model against stored bounds, without a new mechanism."""
+    """Compile the user's named model against the first two stored bounds."""
     from cpu_llm.abductive_bridge import extract_constraints, names_mediating_model
 
     if not names_mediating_model(query):
@@ -164,32 +187,32 @@ def prompt_premise_hypothesis(query, comparisons):
             "Parameter-space check for the stated premise. Fit one parameter set to both constraints: "
             f"\"{first.sentence}\" and \"{second.sentence}\". "
             "Reject the premise if no shared parameter set satisfies both. "
-            "Do not add a second mechanism."
+            "This option checks only the premise named in the question."
         ),
         premises=premises,
         span_hash=premises[0]["span_hash"],
     )
 
 
+def option_label(option):
+    """Short name for one research reading in the reply."""
+    return {
+        "abductive_bridge": "Abductive bridge",
+        "prompt_premise": "Stated premise",
+        "compatible_bounds": "Shared constant",
+        "cross_source_synthesis": "Cited premises",
+    }.get(option.get("origin"), "Source prediction")
+
+
 def resolve_hypotheses(query, comparisons, options):
-    """Use a bridged candidate when one exists; otherwise keep the prompt premise."""
+    """Keep every distinct reading: source options, the stated premise, bridges, and shared constants."""
     from cpu_llm.abductive_bridge import AbductiveBridgeNode
 
-    bridge = AbductiveBridgeNode().execute(query, comparisons)
-    if bridge.status == "BRIDGED" and bridge.candidate is not None:
-        anchors = set(bridge.candidate.anchor_chunk_ids)
-        kept = []
-        for item in options:
-            premises = item.get("premises") or []
-            same_pair = (
-                item.get("origin") == "cross_source_synthesis"
-                and anchors == {premise.get("document_id") for premise in premises}
-            )
-            if not same_pair:
-                kept.append(item)
-        return bridge, [hypothesis_for_bridge(bridge), *kept]
-    if bridge.status == "NO_GAP" and not options:
-        compiled = prompt_premise_hypothesis(query, comparisons)
-        if compiled is not None:
-            return bridge, [compiled]
-    return bridge, list(options)
+    bridge, bridges, compatible = AbductiveBridgeNode().collect(query, comparisons)
+    readings = list(options)
+    compiled = prompt_premise_hypothesis(query, comparisons)
+    if compiled is not None:
+        readings.append(compiled)
+    readings.extend(hypothesis_for_bridge(item) for item in bridges)
+    readings.extend(compatible_bounds_option(left, right) for left, right in compatible)
+    return bridge, readings

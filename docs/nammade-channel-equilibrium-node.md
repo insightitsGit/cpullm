@@ -45,8 +45,8 @@ persistence. The workers avoid concurrent writes to the appliance database.
 
 After the three branches return, `resolve_hypotheses` runs
 [the abductive bridge](abductive-bridge-node.md) on the Nammade evaluations.
-The bridge can prepend one unverified relational candidate, or it can compile
-the user's named model against stored bounds. It does not write the index.
+The reply lists each reading as its own option: a stated premise, every
+bridge, and every shared-constant pair. It does not write the index.
 A standalone Nammade scan does not call it. The recorded stage order is
 `taxonomy_invention`, `research_hypotheses`, `nammade_equilibrium`,
 `abductive_bridge`.

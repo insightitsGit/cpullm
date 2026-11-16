@@ -385,19 +385,33 @@ def _no_gap(reason: str) -> AbductiveBridgeResult:
     return AbductiveBridgeResult(status="NO_GAP", candidate=None, abstention_reason=reason)
 
 
+_MAX_RELATION_OPTIONS = 8
+
+
 class AbductiveBridgeNode:
-    """Compile one relational candidate from ranked Nammade comparisons, or abstain."""
+    """Compile relational readings from ranked Nammade comparisons, or abstain."""
 
     def execute(self, query: str, comparisons: list[dict]) -> AbductiveBridgeResult:
+        result, _bridges, _compatible = self.collect(query, comparisons)
+        return result
+
+    def collect(self, query: str, comparisons: list[dict]):
+        """Return the receipt, every bridge, and every pair that can share a constant.
+
+        The receipt keeps the first bridge. Later disjoint pairs stay in the
+        bridge list so a research reply can show each reading as its own option.
+        A prompt that already names a model does not hide these readings.
+        """
         comparisons = comparisons if isinstance(comparisons, list) else []
         passages = _passages(comparisons)
-        if names_mediating_model(query or ""):
-            return _no_gap("The prompt already names the mediating model.")
         domains = _active_domains(query or "", passages)
         if any(_links_regimes(text, domain) for _source, text in passages for domain in domains):
-            return _no_gap("A compared passage already links both regimes.")
+            return _no_gap("A compared passage already links both regimes."), [], []
         constraints = extract_constraints(query or "", comparisons)
+        bridges: list[AbductiveBridgeResult] = []
+        compatible: list[tuple[Constraint, Constraint]] = []
         saw_tension = False
+        texts = dict(passages)
         for domain in domains:
             regimes = {regime.name: regime for regime in domain.regimes}
             for index, left in enumerate(constraints):
@@ -405,6 +419,8 @@ class AbductiveBridgeNode:
                     if left.source_id == right.source_id or left.observable != right.observable:
                         continue
                     if not intervals_disjoint(left, right):
+                        if len(compatible) < _MAX_RELATION_OPTIONS:
+                            compatible.append((left, right))
                         continue
                     regime = regimes.get(left.regime)
                     if regime is None or not _differentiates(left, right, regime):
@@ -416,10 +432,11 @@ class AbductiveBridgeNode:
                         saw_tension = True
                         continue
                     low, high = (left, right) if left_rank <= right_rank else (right, left)
-                    texts = dict(passages)
                     allowed = _allowed_symbols(domain, texts[low.source_id], texts[high.source_id])
                     if low.observable not in allowed or regime.name not in allowed:
                         saw_tension = True
+                        continue
+                    if len(bridges) >= _MAX_RELATION_OPTIONS:
                         continue
                     relation = _relation(low, high, "\n".join(texts.values()))
                     conflicts = [
@@ -428,7 +445,7 @@ class AbductiveBridgeNode:
                         and item.observable == low.observable
                         and _contradicts(relation, low, high, item, regime)
                     ]
-                    return AbductiveBridgeResult(
+                    bridges.append(AbductiveBridgeResult(
                         status="BRIDGED",
                         candidate=RelationalBridge(
                             anchor_chunk_ids=[low.source_id, high.source_id],
@@ -439,10 +456,12 @@ class AbductiveBridgeNode:
                             proposed_relation=relation,
                         ),
                         contradiction_source_ids=list(dict.fromkeys(conflicts)),
-                    )
+                    ))
+        if bridges:
+            return bridges[0], bridges, compatible
         if saw_tension:
             return _insufficient(
                 "The same observable has incompatible bounds, and no regime variable in the "
                 "chunk schemas or the active ontology takes different values."
-            )
-        return _no_gap("The diagnostic comparisons do not show incompatible bounds.")
+            ), [], compatible
+        return _no_gap("The diagnostic comparisons do not show incompatible bounds."), [], compatible

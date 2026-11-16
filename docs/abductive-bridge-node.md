@@ -24,12 +24,11 @@ index or the Nammade span table.
 | Status | Candidate | When |
 | --- | --- | --- |
 | `BRIDGED` | required | Two passages share an observable, their bounds have an empty intersection, and they differ on one regime variable allowed by the passages or the active ontology. |
-| `NO_GAP` | forbidden | The prompt already names the mediating model, a compared passage already links both regimes, or the comparisons do not show incompatible bounds. |
+| `NO_GAP` | forbidden | A compared passage already links both regimes, or the comparisons do not show incompatible bounds. A named model in the prompt does not by itself select this status. |
 | `INSUFFICIENT_EVIDENCE` | forbidden | The same observable has incompatible bounds, and no regime variable in the chunk schemas or the active ontology takes different values. An abstention reason is required. |
 
 `NO_GAP` reasons, in decision order:
 
-- `The prompt already names the mediating model.`
 - `A compared passage already links both regimes.`
 - `The diagnostic comparisons do not show incompatible bounds.`
 
@@ -60,22 +59,24 @@ takes different values.`
 
 ## Decision order
 
-1. If the prompt names a mediating model class, return `NO_GAP`. The class
-   patterns are `velocity-dependent`, `temperature-dependent`, and
-   `halo-mass-dependent`, plus `dependent on` or `as a function of`
-   relative velocity, velocity, temperature, or halo mass. This check runs
-   before any bound comparison.
-2. If any compared passage contains the observable and already carries two
+1. If any compared passage contains the observable and already carries two
    regime labels, or two qualitative regime marks, return `NO_GAP`.
-3. Extract at most 32 comparison passages. Keep a sentence when it names an
+2. Extract at most 32 comparison passages. Keep a sentence when it names an
    active observable, a recognized unit, and a recognized bound.
-4. Take the first pair of constraints that share an observable, come from
-   different sources, have disjoint intervals, and differ on a regime
-   variable. That pair becomes the candidate.
-5. If a disjoint pair had no differentiating regime variable, remember that
-   tension. When no pair becomes a candidate, return `INSUFFICIENT_EVIDENCE`.
-6. Otherwise return `NO_GAP` because the comparisons do not show incompatible
-   bounds.
+3. Walk every pair from different sources that share an observable. A pair
+   whose intervals overlap is a shared-constant reading. A pair whose
+   intervals are disjoint and that differs on a regime variable is a bridge.
+   The receipt keeps the first bridge. Up to eight bridges and eight
+   shared-constant pairs are returned for the option list.
+4. If a disjoint pair had no differentiating regime variable, remember that
+   tension. When no pair becomes a bridge, return `INSUFFICIENT_EVIDENCE`.
+5. Otherwise return `NO_GAP` because the comparisons do not show incompatible
+   bounds. Overlapping pairs can still appear as shared-constant options.
+
+A prompt that names `velocity-dependent`, `temperature-dependent`,
+`halo-mass-dependent`, or a dependence on relative velocity, velocity,
+temperature, or halo mass does not suppress the walk. That named model is
+assembled later as its own stated-premise option.
 
 Intervals are disjoint when no single constant satisfies both. A lower bound
 of ≳ 1 and an upper bound of 1.25 overlap, so they are `NO_GAP`. A lower
@@ -129,12 +130,16 @@ Anchor passages are excluded. The claim status stays
 
 ## Hypothesis reply
 
-`resolve_hypotheses` applies the bridge to the options already produced by
-hypothesis generation.
+`resolve_hypotheses` appends every distinct reading to the options already
+produced by hypothesis generation. Source predictions and the core-size
+joiner stay in the list.
 
-On `BRIDGED`, a `cross_source_synthesis` option whose premise document ids
-are exactly the two anchors is dropped. Other options stay. The bridge
-option is prepended with `origin: abductive_bridge`. Its prediction is
+The stated-premise option is added when the prompt names a mediating model
+and at least two constraints of one observable come from different sources.
+Its origin is `prompt_premise`. The test checks that premise against the
+first two extracted constraints and does not replace the other readings.
+
+Each bridge is an option with `origin: abductive_bridge`. Its prediction is
 `Unverified hypothesis:` plus the scaling sentence, for example
 `cross section per mass decreases as relative velocity increases`. The test
 asks for one relative velocity-dependent scaling, keeps a parameter set only
@@ -142,29 +147,29 @@ when it satisfies both quoted constraints, and repeats the claim status.
 Recorded contradiction ids are appended with the instruction that they do
 not promote the claim.
 
-On `NO_GAP` with an empty option list, and only when the prompt names a
-mediating model, `prompt_premise_hypothesis` compiles the user's sentence
-against the first two extracted constraints of one observable from different
-sources. Its origin is `prompt_premise`. The test says to reject the premise
-when no shared parameter set satisfies both, and it says not to add a second
-mechanism. When hypothesis generation already returned an option, `NO_GAP`
-does not add another.
+Each overlapping pair is an option with `origin: compatible_bounds` and
+`claim_status: CONSISTENCY_CHECK`. The prediction says a single constant
+can satisfy both stored bounds. The test does not introduce a mediating
+variable.
 
-`INSUFFICIENT_EVIDENCE` leaves the option list unchanged and appends the
-abstention reason under Hypothesis generation.
+`INSUFFICIENT_EVIDENCE` appends the abstention reason under Hypothesis
+generation. Shared-constant options from other pairs still appear.
 
 The user-facing reply still begins `Three research methods ran in parallel`.
-The bridge is the fourth recorded method. `research_methods.abductive_bridge`
-is `{status, promotion: blocked}`. The full result is `abductive_bridge` on
-the response. `routing.post_stages` ends with `abductive_bridge` after
+Hypothesis generation numbers every reading and labels it `Stated premise`,
+`Abductive bridge`, `Shared constant`, `Cited premises`, or
+`Source prediction`. The bridge is the fourth recorded method.
+`research_methods.abductive_bridge` is `{status, promotion: blocked}`. The
+full result is `abductive_bridge` on the response, and its `candidate` is
+the first bridge. `routing.post_stages` ends with `abductive_bridge` after
 `taxonomy_invention`, `research_hypotheses`, and, when the scan ran,
 `nammade_equilibrium`.
 
 The older self-interacting-dark-matter joiner in `hypothesis_options` still
-runs first when one chunk states core sizes of `(LOW–HIGH) kpc` and another
-chunk states the Bullet Cluster bound together with the mass-peak and
-galaxy-centroid phrases. The bridge replaces that option only when those two
-document ids are the bridge anchors.
+runs when one chunk states core sizes of `(LOW–HIGH) kpc` and another chunk
+states the Bullet Cluster bound together with the mass-peak and
+galaxy-centroid phrases. That cited-premises option stays beside any bridge
+or shared-constant option.
 
 ## Recorded snapshot
 
@@ -175,13 +180,13 @@ was not admitted.
 Corpus A stored the dwarf requirement, ≳ 1 cm²/g, and the Bullet Cluster
 upper bound of 1.25 cm²/g at 68% confidence.
 
-- Open question, prefixed `Research how can self-interacting dark matter form cores in dwarf galaxies without violating the Bullet Cluster merger bound?` The bridge returned `NO_GAP`: `The diagnostic comparisons do not show incompatible bounds.` The reply had no hypothesis. Nammade quoted the two physics sentences.
-- Closed question, prefixed `Research can a single velocity-dependent self-interacting dark matter model explain dwarf-galaxy cores and satisfy Bullet Cluster merger constraints?` The bridge returned `NO_GAP`: `The prompt already names the mediating model.` One `prompt_premise` option compiled that sentence against the dwarf sentence and the 1.25 cm²/g sentence.
+- Open question, prefixed `Research how can self-interacting dark matter form cores in dwarf galaxies without violating the Bullet Cluster merger bound?` The receipt is `NO_GAP` because the intervals overlap. The reply has one `compatible_bounds` option: a single constant can satisfy both stored bounds. Nammade quotes the two physics sentences.
+- Closed question, prefixed `Research can a single velocity-dependent self-interacting dark matter model explain dwarf-galaxy cores and satisfy Bullet Cluster merger constraints?` The receipt is `NO_GAP` for the same overlap. The options are the `prompt_premise` check against the dwarf sentence and the 1.25 cm²/g sentence, then the same shared-constant option.
 
 Corpus B added: `A cluster merger sample limits the dark matter cross section per mass to < 0.47 cm²/g at 95 percent confidence.`
 
-- The same open question returned `BRIDGED`. Anchors were the dwarf sentence and the 0.47 sentence. `shared_observable` was `cross_section_per_mass`, `mediating_variable` was `relative_velocity`, and `proposed_relation` was `inverse_monotonic`. The prediction was `Unverified hypothesis: cross section per mass decreases as relative velocity increases.` `contradiction_source_ids` was empty. The 1.25 cm²/g sentence remained a Nammade excerpt because its interval overlaps the dwarf requirement.
-- The same closed question stayed `NO_GAP` and kept the single `prompt_premise` check against the dwarf sentence and the 1.25 cm²/g sentence.
+- The same open question returns `BRIDGED`. The first option is the bridge. Anchors are the dwarf sentence and the 0.47 sentence. `shared_observable` is `cross_section_per_mass`, `mediating_variable` is `relative_velocity`, and `proposed_relation` is `inverse_monotonic`. The prediction is `Unverified hypothesis: cross section per mass decreases as relative velocity increases.` The later options are shared-constant checks for the dwarf requirement with the 1.25 cm²/g bound, and for the 1.25 cm²/g bound with the 0.47 cm²/g bound.
+- The same closed question keeps that bridge and those shared-constant checks, and places the stated velocity-dependent premise first. The premise is checked against the dwarf sentence and the 1.25 cm²/g sentence.
 
 These outcomes are schema-bound readings of the stored sentences. They do
 not identify a dark-matter particle and they do not establish a physical law.
