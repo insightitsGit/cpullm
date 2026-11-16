@@ -14,9 +14,13 @@ with supported model adapters.
 
 Use **strict evidence mode** when you need exact source quotations, recognized
 calculations, or a clear unsupported result. Use the **research and invention
-routes** to explore relationships, join cited premises across knowledge bases,
-or formulate hypotheses. Hypotheses carry their own label, and numerical results
-are conditional on the selected model and supplied constraints.
+routes** as a deterministic literature-synthesis and hypothesis-generation
+tool: they compare authorized passages, separate bounds that cannot share one
+constant, and return each reading as a labeled option with a falsification
+check. A hypothesis from those routes stays `UNVERIFIED_HYPOTHESIS`. The
+routes do not run that check against a dataset and do not promote the claim.
+Numerical results on the separate constraint-check route stay conditional on
+the selected model and the supplied constraints.
 
 **Latest release** [CPU-LLM 1.13.1 on PyPI](https://pypi.org/project/cpu-llm/1.13.1/).
 Author **Amin Parva, Independent Engineer**.
@@ -45,7 +49,7 @@ Question + authorized knowledge base
        +-- CrossDomain --> Join cited premises across selected KBs
        +-- Invention ---> Propose hypotheses, or cite stored sentences
        +-- Nammade -----> Compare authorized passages and quote excerpts
-       +-- Abductive ---> One unverified relation when stored bounds conflict
+       +-- Abductive ---> Unverified hypotheses and shared-constant checks
 ```
 
 ## Verification contract compared with generative RAG
@@ -67,17 +71,35 @@ mode has different verification limits, including optional learned producers.
 
 ## Core capabilities
 
-### Nammade research diagnostics
+### Literature synthesis and hypothesis generation
 
 Available in the repository source. The published 1.13.1 package predates
 this feature.
 
-Nammade compares a question with authorized source passages under a
-four-coordinate experimental model. Use `Nammade: <topic>` for a standalone scan with cited excerpts. The
+`Research`, `Investigate`, `Invention`, and `Propose a testable hypothesis`
+are the literature and ideation layer of a research workflow. They mine one
+authorized snapshot, compare passages, and formulate grounded options. They
+are not an experimental execution layer. No node in this path fits a curve,
+runs a simulation, or changes a claim from `UNVERIFIED_HYPOTHESIS` into a
+verified result. There is no `VERIFIED_DERIVED` status. `promotion` on the
+abductive bridge stays `blocked`.
+
+Nammade is the comparison step. It reads the question against stored passages
+and quotes the passages that share the topic or pass the dense-core floor.
+The abductive bridge is the gap step. It emits a schema-bound hypothesis only
+when two quoted bounds on one observable have an empty intersection and differ
+on a regime variable already named by those passages or the active ontology.
+The bridge does not call a language model and does not invent a variable.
+Each reading remains its own option, with the source ids and the quoted
+bounds. A passage is eligible when it shares topic words with the question,
+passes the dense-core floor of 0.62, or is an explicit boundary premise.
+Channel labels compare wording. They do not verify a physical law, and they
+are not written into the trained 1024-d tensor.
+
+Use `Nammade: <topic>` for a standalone scan with cited excerpts. The
 structured `nammade` receipt records displacement, residual, density bands,
-polarity bridges, and word relations built only for that scan. Those labels
-compare wording. They do not verify a physical law, and they are not written
-into the trained 1024-d tensor.
+polarity bridges, and word relations built only for that scan. A standalone
+scan does not run the bridge.
 
 `Research <topic>`, `Investigate <topic>`, and `Propose a testable hypothesis
 about <topic>` run three methods in parallel against one authorized snapshot.
@@ -178,10 +200,9 @@ stated premise is one option, checked against the dwarf sentence and the
 and the shared-constant options are listed with it. Each item stays a
 separate option.
 
-This gives researchers a reproducible way to inspect how propositions compare
-under the Nammade model. Source citations support attribution. The diagnostic
-labels describe the model and require independent tests for empirical
-validation. Strict Evidence Mode skips the scan.
+The result is an auditable protocol: cited passages, separate options, and a
+check that a later fit or experiment can run. This pipeline stops at that
+protocol. Strict Evidence Mode skips the scan.
 
 
 ### What’s new in 1.13.1
