@@ -155,6 +155,28 @@ def test_flattened_mechanism_table_expands_a_named_model_and_asks_on_broad_topic
     assert 'Bisection on a fixed slice' in app.ask('Go deeper.', session_id='boundary')['reply']['text']
 
 
+def test_reworded_topic_returns_source_excerpts_without_inventing_an_edge():
+    app = appliance()
+    app.index.strict_source_rows.return_value = ([
+        dict(document_id='pdg-unknown-p0001',
+             chunk_text='A 2020 review states that the fundamental makeup of the large majority of the dark matter is unknown.'),
+        dict(document_id='rotation-p0001',
+             chunk_text='The measurements do not identify a dark-matter particle.'),
+        dict(document_id='candidates-p0001',
+             chunk_text='None of these proposals is an identification of the particle that constitutes the dark matter.'),
+        dict(document_id='water-p0001',
+             chunk_text='The boiling point of water at standard atmospheric pressure is 100 degrees Celsius.'),
+    ], 123)
+    result = app.ask('Invention: the dark matter particle.')
+    assert result['status'] == 'research_question'
+    assert not result['invention']['proposals']
+    cited = [item['document_id'] for item in result['invention']['research_context']]
+    assert cited == ['rotation-p0001', 'candidates-p0001']
+    assert 'water-p0001' not in cited
+    assert 'Source context:' in result['reply']['text']
+    assert result['reply']['text'].endswith(NOTE)
+
+
 def test_unstructured_topic_chunks_yield_cited_research_question_without_claiming_edges():
     app = appliance()
     app.index.strict_source_rows.return_value = ([
