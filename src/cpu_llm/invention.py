@@ -224,7 +224,7 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
 
     from concurrent.futures import ThreadPoolExecutor
     from cpu_llm.nammade.execute import execute_nammade
-    from cpu_llm.research_hypotheses import hypothesis_options, option_label, resolve_hypotheses
+    from cpu_llm.research_hypotheses import hypothesis_intro, hypothesis_options, option_block, resolve_hypotheses
 
     # Run the read-only branches from one authorized snapshot. The invention
     # branch retains access to the appliance encoder on the calling thread.
@@ -271,22 +271,11 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
         "\n### Hypothesis generation",
         "Surfaces source predictions or combines cited premises into a proposed test.",
     ]
-    if any(item.get("origin") == "abductive_bridge" for item in options):
-        lines.append(
-            "Each item below is a separate option. "
-            "An abductive-bridge item is an unverified hypothesis and is not a stored fact."
-        )
-    elif bridge.status == "INSUFFICIENT_EVIDENCE" and bridge.abstention_reason:
-        lines.append(bridge.abstention_reason)
-    elif options:
-        lines.append("Each item below is a separate option.")
+    lines.extend(hypothesis_intro(options, bridge))
     if not options:
         lines.append("No testable hypothesis option was found.")
     for index, option in enumerate(options, 1):
-        label = option_label(option)
-        lines.extend([f'H{index}. [{option["document_id"]}] ({label}) {option["prediction"]}', option["test"]])
-        if option.get("premises"):
-            lines.append("Premises included " + ", ".join(f'[{item["document_id"]}]' for item in option["premises"]))
+        lines.extend(option_block(index, option))
     lines.extend([
         "\n### Nammade comparison",
         "Compares passages under the Nammade model and records displacement, residuals, and density.",

@@ -94,7 +94,68 @@ def hypothesis_options(query, rows, *, limit=3):
     return [option for _, option in ranked[:limit]]
 
 
-def hypothesis_for_bridge(bridge):
+def _phrases():
+    from cpu_llm.abductive_bridge import bound_phrase, regime_phrase, shared_interval_phrase
+
+    return bound_phrase, regime_phrase, shared_interval_phrase
+
+
+def _bound_step(constraint):
+    bound_phrase, regime_phrase, _shared = _phrases()
+    step = {
+        "kind": "bound",
+        "source_id": constraint.source_id,
+        "bound": bound_phrase(constraint),
+        "sentence": constraint.sentence,
+    }
+    regime = regime_phrase(constraint)
+    if regime:
+        step["regime"] = regime
+    return step
+
+
+def _overlap_summary(left, right):
+    bound_phrase, _regime, shared_interval_phrase = _phrases()
+    interval = shared_interval_phrase(left, right)
+    if left.kind == right.kind == "upper":
+        summary = (
+            f"No new mechanism was added. Both passages are upper bounds, {bound_phrase(left)} and "
+            f"{bound_phrase(right)}. They overlap on {interval}, so the tighter ceiling still fits "
+            "inside the looser one."
+        )
+        finding = f"Overlap {interval}. The tighter ceiling fits inside the looser one."
+    elif left.kind == right.kind == "lower":
+        summary = (
+            f"No new mechanism was added. Both passages are lower bounds, {bound_phrase(left)} and "
+            f"{bound_phrase(right)}. They overlap on {interval}."
+        )
+        finding = f"Overlap {interval}."
+    else:
+        summary = (
+            f"No new mechanism was added. {bound_phrase(left).capitalize()} and {bound_phrase(right)} "
+            f"overlap on {interval}, so one constant can satisfy both stored bounds."
+        )
+        finding = f"Overlap {interval}. One constant in that range satisfies both bounds."
+    return summary, finding
+
+
+def _bridge_summary(low, high, scaling):
+    bound_phrase, regime_phrase, _shared = _phrases()
+    left = regime_phrase(low)
+    right = regime_phrase(high)
+    difference = ""
+    if left and right and left != right:
+        difference = f" The passages differ by regime: {left} versus {right}."
+    summary = (
+        f"No constant can be both {bound_phrase(low)} and {bound_phrase(high)}.{difference} "
+        f"That empty intersection is why this option is an UNVERIFIED_HYPOTHESIS: {scaling}. "
+        "It is not a stored fact."
+    )
+    finding = "No shared value. The bounds cannot both be true of one constant."
+    return summary, finding
+
+
+def hypothesis_for_bridge(bridge, low, high):
     """Falsification test for one abductive candidate. The claim stays unverified."""
     candidate = bridge.candidate
     variable = candidate.mediating_variable.replace("_", " ")
@@ -105,6 +166,7 @@ def hypothesis_for_bridge(bridge):
         "threshold_piecewise": f"{observable} changes across a threshold in {variable}",
         "regime_conditional": f"{observable} is conditional on {variable}",
     }[candidate.proposed_relation]
+    summary, finding = _bridge_summary(low, high, scaling)
     test = (
         f"Fit one {variable}-dependent scaling to both regimes. "
         f"Keep a parameter set only when it satisfies both constraints: "
@@ -131,16 +193,27 @@ def hypothesis_for_bridge(bridge):
         test=test,
         premises=premises,
         span_hash=premises[0]["span_hash"],
+        provenance={
+            "decision": "unverified_hypothesis",
+            "summary": summary,
+            "steps": [
+                _bound_step(low),
+                _bound_step(high),
+                {"kind": "comparison", "result": "empty", "finding": finding},
+            ],
+        },
     )
 
 
 def compatible_bounds_option(left, right):
     """One option for two stored bounds that a single constant can satisfy."""
+    _bound, _regime, shared_interval_phrase = _phrases()
     observable = left.observable.replace("_", " ")
     premises = [
         dict(document_id=item.source_id, span=item.sentence, span_hash=span_hash(item.sentence))
         for item in (left, right)
     ]
+    summary, finding = _overlap_summary(left, right)
     return dict(
         document_id=left.source_id,
         qualification="bound_check",
@@ -154,6 +227,16 @@ def compatible_bounds_option(left, right):
         ),
         premises=premises,
         span_hash=premises[0]["span_hash"],
+        provenance={
+            "decision": "no_new_mechanism",
+            "summary": summary,
+            "interval": shared_interval_phrase(left, right),
+            "steps": [
+                _bound_step(left),
+                _bound_step(right),
+                {"kind": "comparison", "result": "overlap", "finding": finding},
+            ],
+        },
     )
 
 
@@ -177,6 +260,24 @@ def prompt_premise_hypothesis(query, comparisons):
         dict(document_id=item.source_id, span=item.sentence, span_hash=span_hash(item.sentence))
         for item in (first, second)
     ]
+    from cpu_llm.abductive_bridge import intervals_disjoint
+
+    bound_phrase, _regime, shared_interval_phrase = _phrases()
+    if intervals_disjoint(first, second):
+        summary = (
+            f"This option checks only the premise named in the question. "
+            f"{bound_phrase(first).capitalize()} and {bound_phrase(second)} cannot share one constant."
+        )
+        finding = "No shared value between the two bounds used for this premise check."
+        comparison = "empty"
+    else:
+        interval = shared_interval_phrase(first, second)
+        summary = (
+            f"This option checks only the premise named in the question. "
+            f"{bound_phrase(first).capitalize()} and {bound_phrase(second)} overlap on {interval}."
+        )
+        finding = f"Overlap {interval}."
+        comparison = "overlap"
     return dict(
         document_id=first.source_id,
         qualification="hypothesis",
@@ -191,6 +292,15 @@ def prompt_premise_hypothesis(query, comparisons):
         ),
         premises=premises,
         span_hash=premises[0]["span_hash"],
+        provenance={
+            "decision": "stated_premise",
+            "summary": summary,
+            "steps": [
+                _bound_step(first),
+                _bound_step(second),
+                {"kind": "comparison", "result": comparison, "finding": finding},
+            ],
+        },
     )
 
 
@@ -213,6 +323,50 @@ def resolve_hypotheses(query, comparisons, options):
     compiled = prompt_premise_hypothesis(query, comparisons)
     if compiled is not None:
         readings.append(compiled)
-    readings.extend(hypothesis_for_bridge(item) for item in bridges)
+    readings.extend(hypothesis_for_bridge(item, low, high) for item, low, high in bridges)
     readings.extend(compatible_bounds_option(left, right) for left, right in compatible)
     return bridge, readings
+
+
+def hypothesis_intro(options, bridge):
+    """One opening that separates an overlap from an unverified hypothesis."""
+    has_bridge = any(item.get("origin") == "abductive_bridge" for item in options)
+    has_overlap = any(item.get("origin") == "compatible_bounds" for item in options)
+    lines = []
+    if options:
+        lines.append("Each item below is a separate option.")
+    if has_bridge and has_overlap:
+        lines.append(
+            "A shared-constant option means the bounds overlap, so no new mechanism was added. "
+            "An unverified-hypothesis option means no single constant can satisfy both bounds. "
+            "That hypothesis is not a stored fact."
+        )
+    elif has_bridge:
+        lines.append(
+            "No single constant can satisfy the bounds in the hypothesis option. "
+            "That hypothesis is unverified and is not a stored fact."
+        )
+    elif has_overlap:
+        lines.append("A shared-constant option means the bounds overlap, so no new mechanism was added.")
+    elif bridge.status == "INSUFFICIENT_EVIDENCE" and bridge.abstention_reason:
+        lines.append(bridge.abstention_reason)
+    return lines
+
+
+def option_block(index, option):
+    """Reply lines for one option, with the cited bounds before the decision."""
+    lines = [f'H{index}. ({option_label(option)}) {option["prediction"]}']
+    provenance = option.get("provenance") or {}
+    for step in provenance.get("steps") or []:
+        if step.get("kind") == "bound":
+            regime = f" — {step['regime']}" if step.get("regime") else ""
+            lines.append(f'  [{step["source_id"]}] {step["bound"]}{regime}')
+            lines.append(f'  "{step["sentence"]}"')
+        elif step.get("kind") == "comparison":
+            lines.append(f'  {step["finding"]}')
+    if provenance.get("summary"):
+        lines.append(provenance["summary"])
+    lines.append(option["test"])
+    if option.get("premises") and not provenance:
+        lines.append("Premises included " + ", ".join(f'[{item["document_id"]}]' for item in option["premises"]))
+    return lines

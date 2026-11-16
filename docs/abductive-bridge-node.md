@@ -152,6 +152,16 @@ Each overlapping pair is an option with `origin: compatible_bounds` and
 can satisfy both stored bounds. The test does not introduce a mediating
 variable.
 
+Every bridge, shared-constant, and stated-premise option carries a
+`provenance` trail. Each step cites a source id, the plain-language bound,
+the regime mark when one was written, and the source sentence. The last
+step is the comparison. An overlap such as `[1, 1.25] cm²/g` says no new
+mechanism was added. An empty intersection says no constant can satisfy
+both bounds, and that is why the option is an `UNVERIFIED_HYPOTHESIS`.
+Two upper bounds that still overlap say the tighter ceiling fits inside
+the looser one. The reply prints that trail under the option, then the
+summary, then the falsification check.
+
 `INSUFFICIENT_EVIDENCE` appends the abstention reason under Hypothesis
 generation. Shared-constant options from other pairs still appear.
 

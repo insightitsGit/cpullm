@@ -209,6 +209,27 @@ def test_research_prompt_runs_the_bridge_between_nammade_and_hypotheses():
     assert "not a stored fact" in result["reply"]["text"]
 
 
+def test_research_reply_shows_why_the_bounds_overlap_or_cannot():
+    app = appliance([
+        "Self-interacting dark matter simulations require a cross section per mass ≳ 1 cm²/g to form cores in dwarf galaxies.",
+        "The Bullet Cluster analysis reports an upper bound of 1.25 square centimeters per gram at 68 percent confidence on the dark matter cross section per mass.",
+        "A cluster merger sample limits the dark matter cross section per mass to < 0.47 cm²/g at 95 percent confidence.",
+        "The boiling point of water is 100 C.",
+    ])
+    result = app.ask(
+        "Research how can self-interacting dark matter form cores in dwarf galaxies "
+        "without violating the Bullet Cluster merger bound?"
+    )
+    text = result["reply"]["text"]
+    assert "Overlap [1, 1.25] cm²/g" in text
+    assert "No new mechanism was added" in text
+    assert "No shared value" in text
+    assert "less than 0.47 cm²/g" in text
+    assert "UNVERIFIED_HYPOTHESIS" in text
+    assert "[doc-p0001]" in text and "[doc-p0003]" in text
+    assert "boiling point" not in text.casefold()
+
+
 def test_named_model_on_the_research_path_keeps_the_premise_and_the_bridge():
     app = appliance([DWARF, CLUSTER])
     result = app.ask(
@@ -234,8 +255,19 @@ def test_overlapping_and_disjoint_bounds_are_separate_options():
     assert options[0]["claim_status"] == "UNVERIFIED_HYPOTHESIS"
     assert "< 0.47" in options[0]["test"]
     assert options[1]["claim_status"] == "CONSISTENCY_CHECK"
+    assert options[1]["provenance"]["decision"] == "no_new_mechanism"
+    assert options[1]["provenance"]["interval"] == "[1, 1.25] cm²/g"
+    assert "No new mechanism was added" in options[1]["provenance"]["summary"]
+    assert "overlap on [1, 1.25] cm²/g" in options[1]["provenance"]["summary"]
     assert "1.25" in options[1]["test"]
     assert "does not introduce a mediating variable" in options[1]["test"]
+    assert options[0]["provenance"]["decision"] == "unverified_hypothesis"
+    assert "less than 0.47 cm²/g" in options[0]["provenance"]["summary"]
+    assert "UNVERIFIED_HYPOTHESIS" in options[0]["provenance"]["summary"]
+    assert "not a stored fact" in options[0]["provenance"]["summary"]
+    assert options[0]["provenance"]["steps"][-1]["result"] == "empty"
+    assert "tighter ceiling" in options[2]["provenance"]["summary"]
+    assert options[2]["provenance"]["interval"] == "(-∞, 0.47) cm²/g"
 
     _closed, closed_options = resolve_hypotheses(CLOSED_QUERY, rows, [])
     assert [item["origin"] for item in closed_options] == [

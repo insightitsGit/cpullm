@@ -290,6 +290,66 @@ def _includes(bound: tuple[float, bool, float, bool], point: float) -> bool:
     return above_low and below_high
 
 
+def display_unit(constraint: Constraint) -> str:
+    """Unit text for a reader. The stored symbol stays ``cm^2/g``."""
+    if constraint.unit == "cm^2/g":
+        return "cm²/g"
+    return constraint.unit
+
+
+def _num(value: float) -> str:
+    if math.isinf(value):
+        return "-∞" if value < 0 else "∞"
+    if value == math.floor(value):
+        return str(int(value))
+    return format(value, "g")
+
+
+def bound_phrase(constraint: Constraint) -> str:
+    """Plain-language bound, such as ``at least 1 cm²/g``."""
+    unit = display_unit(constraint)
+    number = _num(constraint.value)
+    if constraint.kind == "lower":
+        word = "at least" if constraint.inclusive else "more than"
+    elif constraint.kind == "upper":
+        word = "at most" if constraint.inclusive else "less than"
+    else:
+        word = "equal to"
+    return f"{word} {number} {unit}"
+
+
+def regime_phrase(constraint: Constraint) -> str:
+    """Regime marks written on one passage, in reader language."""
+    parts = []
+    if len(constraint.labels) == 1:
+        parts.append(constraint.labels[0])
+    if constraint.qualitative:
+        parts.append(f"{constraint.qualitative} relative velocity")
+    if constraint.regime_value is not None:
+        parts.append(f"{_num(constraint.regime_value)} km/s")
+    return ", ".join(parts)
+
+
+def shared_interval_phrase(left: Constraint, right: Constraint) -> str:
+    """The overlap of two bounds, written with brackets. Empty when they are disjoint."""
+    a = _interval(left)
+    b = _interval(right)
+    low = max(a[0], b[0])
+    high = min(a[2], b[2])
+    low_open = (a[0] == low and a[1]) or (b[0] == low and b[1])
+    high_open = (a[2] == high and a[3]) or (b[2] == high and b[3])
+    unit = display_unit(left)
+    if math.isinf(low) and low < 0:
+        low_open = True
+    if math.isinf(high) and high > 0:
+        high_open = True
+    if low == high and not low_open and not high_open:
+        return "{" + _num(low) + "} " + unit
+    opening = "(" if low_open else "["
+    closing = ")" if high_open else "]"
+    return f"{opening}{_num(low)}, {_num(high)}{closing} {unit}"
+
+
 def intervals_disjoint(left: Constraint, right: Constraint) -> bool:
     """True when a single constant value cannot satisfy both bounds."""
     if left.unit != right.unit:
@@ -445,7 +505,7 @@ class AbductiveBridgeNode:
                         and item.observable == low.observable
                         and _contradicts(relation, low, high, item, regime)
                     ]
-                    bridges.append(AbductiveBridgeResult(
+                    bridges.append((AbductiveBridgeResult(
                         status="BRIDGED",
                         candidate=RelationalBridge(
                             anchor_chunk_ids=[low.source_id, high.source_id],
@@ -456,9 +516,9 @@ class AbductiveBridgeNode:
                             proposed_relation=relation,
                         ),
                         contradiction_source_ids=list(dict.fromkeys(conflicts)),
-                    ))
+                    ), low, high))
         if bridges:
-            return bridges[0], bridges, compatible
+            return bridges[0][0], bridges, compatible
         if saw_tension:
             return _insufficient(
                 "The same observable has incompatible bounds, and no regime variable in the "
