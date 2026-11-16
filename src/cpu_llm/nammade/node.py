@@ -90,6 +90,8 @@ class NammadeEquilibriumNode:
             else:
                 rank[position] = float(residuals[idx])
         order = np.argsort(rank, kind="stable")
+        if any(item.get("boundary_premise") for item in metadata):
+            order = np.array(sorted(order, key=lambda index: not metadata[int(valid_idx[index])].get("boundary_premise")))
         frontier_status = FrontierStatus.EVIDENCE_EXHAUSTED
         if len(order) > budget.max_candidates:
             order = order[: budget.max_candidates]

@@ -252,10 +252,15 @@ def execute_nammade(
 
     topic = topic_words(query)
     overlap = {span.source_id: len(topic & topic_words(span.span_text)) for span in spans}
+    from cpu_llm.research_hypotheses import sidm_boundary_option
+
+    boundary = sidm_boundary_option(query, rows)
+    boundary_ids = {item["document_id"] for item in boundary["premises"]} if boundary else set()
     spans = [
         span for span in spans if span.explicit
         or (any(line.strip() and not line.lstrip().startswith("#") for line in span.span_text.splitlines())
-            and (overlap[span.source_id] or (scores or {}).get(span.source_id, 0) >= DENSE_CORE_FLOOR))
+            and (span.source_id in boundary_ids or overlap[span.source_id]
+                 or (scores or {}).get(span.source_id, 0) >= DENSE_CORE_FLOOR))
     ]
     if spans:
         channels = np.stack([span.channel.as_channel_vec() for span in spans]).astype(np.float32, copy=False)
@@ -273,6 +278,7 @@ def execute_nammade(
             row["dense_gated"] = True
             row["force_admit"] = True
             row["topic_overlap"] = overlap[span.source_id]
+            row["boundary_premise"] = span.source_id in boundary_ids
             if cosine is not None:
                 row["dense_similarity"] = cosine
         metadata.append(row)

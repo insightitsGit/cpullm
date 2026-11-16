@@ -238,6 +238,13 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
     stages = response["routing"]["post_stages"]
     stages.append("research_hypotheses")
     response["research_options"] = options
+    innovation_text = response["reply"]["text"]
+    response["research_methods"] = {
+        "innovation": {"outcome": response["answer_status"]},
+        "hypothesis_generation": {"option_count": len(options)},
+        "nammade": {"outcome": diagnostic["answer_status"]},
+    }
+    scan_receipt = diagnostic.get("nammade", {})
     if "nammade" in diagnostic:
         response["nammade"] = dict(diagnostic["nammade"], mode="research_diagnostics",
                                    outcome=diagnostic["answer_status"])
@@ -248,20 +255,32 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
                         answer_evidence=diagnostic["answer_evidence"],
                         verification_scope=diagnostic["verification_scope"],
                         judgment=dict(outcome="nammade", complete=True))
-    if options:
-        reply = response["reply"]
-        text = reply["text"] + "\n\nSource-backed hypotheses to test:"
-        for index, option in enumerate(options, 1):
-            text += f'\nH{index}. [{option["document_id"]}] {option["prediction"]}\n{option["test"]}'
-        reply.update(text=text, body=text)
-        if response["answer_status"] == "insufficient_evidence":
-            response.update(status="hypotheses", answer_status="hypotheses",
-                            judgment=dict(outcome="hypotheses", complete=True))
-    if diagnostic.get("answer_evidence") and response["answer_status"] != "nammade":
-        reply = response["reply"]
-        source_ids = ", ".join(dict.fromkeys(item["document_id"] for item in diagnostic["answer_evidence"]))
-        text = reply["text"] + f"\n\nNammade comparison is available for these source passages: {source_ids}."
-        reply.update(text=text, body=text)
+    if options and response["answer_status"] == "insufficient_evidence":
+        response.update(status="hypotheses", answer_status="hypotheses",
+                        judgment=dict(outcome="hypotheses", complete=True))
+
+    lines = [
+        "Three research methods ran in parallel on the same authorized sources.",
+        "\n### Innovation",
+        "Looks for new proposals grounded in relationships across source passages.",
+        innovation_text,
+        "\n### Hypothesis generation",
+        "Surfaces source predictions or combines cited premises into a proposed test.",
+    ]
+    if not options:
+        lines.append("No testable hypothesis option was found.")
+    for index, option in enumerate(options, 1):
+        lines.extend([f'H{index}. [{option["document_id"]}] {option["prediction"]}', option["test"]])
+        if option.get("premises"):
+            lines.append("Premises included " + ", ".join(f'[{item["document_id"]}]' for item in option["premises"]))
+    lines.extend([
+        "\n### Nammade comparison",
+        "Compares passages under the Nammade model and records displacement, residuals, and density.",
+        f'Comparisons returned — {len(scan_receipt.get("evaluations", []))}.',
+        diagnostic["reply"]["text"],
+    ])
+    text = "\n".join(lines)
+    response["reply"].update(text=text, body=text)
     return response
 
 

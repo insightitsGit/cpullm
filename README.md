@@ -68,7 +68,7 @@ mode has different verification limits, including optional learned producers.
 
 ### Nammade research diagnostics
 
-Available in the current working tree. The published 1.13.1 package predates
+Available in the repository source. The published 1.13.1 package predates
 this feature.
 
 Nammade compares a question with authorized source passages under a
@@ -78,22 +78,25 @@ polarity bridges, and word relations built only for that scan. Those labels
 compare wording. They do not verify a physical law, and they are not written
 into the trained 1024-d tensor.
 
-`Research <topic>` and `Investigate <topic>` run three branches in parallel
-against one authorized snapshot. `Research report`, `Research article`, and
-`Research paper` stay on the document workflow. Invention looks for new
-proposals grounded in cross-chunk premises. When a subject has no typed
-relationship, sentences that contain each of its words are quoted as a
-research question. A hyphen is treated as a space, and a trailing plural is
-accepted. Hypothesis generation looks for source-stated predictions and
-suggests how to test them. Nammade compares relevant passages under its
-model. Each branch can return zero candidates. When `Research` or
-`Investigate` finds no proposal and no source prediction, the reply uses the
-Nammade excerpts. An `Invention:` prompt keeps its own reply and attaches the
-Nammade comparison when that scan finds excerpts.
+`Research <topic>`, `Investigate <topic>`, and `Propose a testable hypothesis
+about <topic>` run three methods in parallel against one authorized snapshot.
+The chat reply gives each method its own section, including cases with no candidates.
 
-Agents can read `invention.proposals`, `research_options`, and
-`nammade.evaluations`. The chat reply shows available proposals and hypothesis
-options with source IDs. Research documents can also carry Nammade diagnostics.
+- **Innovation** looks for new proposals grounded in relationships across
+  source passages. It can offer a research question when it finds relevant
+  excerpts but lacks a typed relationship.
+- **Hypothesis generation** presents source predictions and proposed tests.
+  For supported cases, it can combine independent premises into a falsifiable
+  test. For example, the self-interacting dark matter route combines cited
+  dwarf-galaxy evidence with a cited cluster-merger bound and states what
+  result would rule out the candidate under the study's assumptions.
+- **Nammade** shows the comparison count and leading cited excerpts. Its
+  diagnostics describe how passages compare under the model.
+
+API clients can read `research_methods`, `invention.proposals`,
+`research_options`, and `nammade.evaluations` for the individual outcomes,
+premises, and diagnostics. `Research report`, `Research article`, and
+`Research paper` use the document workflow and can carry Nammade diagnostics.
 Use `nammade=True` in Python or `"nammade": true` over HTTP for a standalone scan.
 
 This gives researchers a reproducible way to inspect how propositions compare

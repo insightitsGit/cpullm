@@ -397,5 +397,29 @@ def test_research_branches_overlap_and_return_hypothesis_options(monkeypatch):
     assert reply["research_options"][0]["document_id"] == "doc-p0001"
     assert "H1." in reply["reply"]["text"]
     assert "Nammade comparison" in reply["reply"]["text"]
+    for section in ("### Innovation", "### Hypothesis generation", "### Nammade comparison"):
+        assert section in reply["reply"]["text"]
+    assert reply["research_methods"]["innovation"]["outcome"] == "insufficient_evidence"
+    assert reply["research_methods"]["hypothesis_generation"]["option_count"] == 1
+    assert prediction in reply["reply"]["text"]
     assert reply["nammade"]["as_of"] == 123
     app.index.strict_source_rows.assert_called_once()
+
+def test_sidm_option_joins_an_observable_and_independent_bound():
+    from cpu_llm.research_hypotheses import hypothesis_options
+
+    rows = [
+        dict(document_id="review", chunk_text="SIDM simulations produce cores in dwarf galaxies with sizes of (0.3–1.5) kpc."),
+        dict(document_id="merger", chunk_text=(
+            "Bullet Cluster simulations with dark matter self-interactions used the mass peak and galaxy centroid. "
+            "They gave an upper bound of 1.25 square centimeters per gram at 68 percent confidence."
+        )),
+    ]
+    query = "self-interacting dark matter"
+    [option] = hypothesis_options(query, rows)
+    assert option["origin"] == "cross_source_synthesis"
+    assert "0.3–1.5 kpc" in option["prediction"]
+    assert "1.25 cm²/g" in option["test"]
+    assert [p["document_id"] for p in option["premises"]] == ["review", "merger"]
+    assert not hypothesis_options(query, rows[:1])
+    assert not hypothesis_options("dark matter identity", rows)

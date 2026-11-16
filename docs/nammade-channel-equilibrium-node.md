@@ -43,7 +43,7 @@ Nammade diagnostics. The Nammade worker uses its topical and explicit-span
 comparisons in memory. Its standalone route also supports dense retrieval and
 persistence. The workers avoid concurrent writes to the appliance database.
 
-The reply shows innovation proposals and available hypothesis options. API
+The combined reply names all three methods and shows each result, including empty branches. It includes the leading Nammade source excerpts and the comparison count. The API also exposes per-method outcomes in `research_methods`. API
 clients can inspect `invention.proposals`, `research_options`, and
 `nammade.evaluations`. Hypothesis options preserve the source prediction and
 suggest a test. They do not report that an experiment was run. Research
