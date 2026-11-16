@@ -65,6 +65,34 @@ mode has different verification limits, including optional learned producers.
 
 ## Core capabilities
 
+### Nammade research diagnostics
+
+Available in the current working tree. The published 1.13.1 package predates
+this feature.
+
+Nammade compares a question with authorized source passages under a
+four-coordinate experimental model. Use `Nammade: <topic>` for a standalone scan with cited excerpts. The
+structured `nammade` receipt records displacement, residual, density bands,
+and polarity bridges.
+
+Use `Research <topic>`, `Investigate <topic>`, or
+`Propose a testable hypothesis about <topic>` to run three branches in parallel
+against one authorized snapshot. Invention looks for new proposals grounded
+in cross-chunk premises. Hypothesis generation looks for source-stated
+predictions and suggests how to test them. Nammade compares relevant passages
+under its model. Each branch can return zero candidates.
+
+Agents can read `invention.proposals`, `research_options`, and
+`nammade.evaluations`. The chat reply shows available proposals and hypothesis
+options with source IDs. Research documents can also carry Nammade diagnostics.
+Use `nammade=True` in Python or `"nammade": true` over HTTP for a standalone scan.
+
+This gives researchers a reproducible way to inspect how propositions compare
+under the Nammade model. Source citations support attribution. The diagnostic
+labels describe the model and require independent tests for empirical
+validation. Strict Evidence Mode skips the scan.
+
+
 ### What’s new in 1.13.1
 
 Install this release with `python -m pip install "cpu-llm==1.13.1"`.

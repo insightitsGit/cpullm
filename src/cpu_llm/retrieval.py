@@ -30,6 +30,8 @@ from vectorprism.retrieval_engine import PSMRetrievalEngine
 ENCODER_NAME = "sentence-transformers/all-mpnet-base-v2"
 _PARAGRAPH = re.compile(r"-p\d+$")
 LOCAL_PG_DSN = "postgresql://vectorprism:vectorprism@localhost:5433/vectorprism"
+# Deep search and Nammade prose admission keep a paragraph at or above this dense-core cosine.
+DENSE_CORE_FLOOR = 0.62
 
 
 def default_checkpoint() -> Path:

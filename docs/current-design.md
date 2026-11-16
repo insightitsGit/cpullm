@@ -1,5 +1,16 @@
 # Current cpu-llm design
 
+The [Nammade channel and equilibrium node](nammade-channel-equilibrium-node.md)
+is implemented in `cpu_llm.nammade`. `Nammade: <query>` or `nammade=True` scans
+the caller's authorized spans, quotes them, and reports volumetric labels and
+polarity bridges. Ordinary paragraphs are admitted by the trained dense core
+at cosine 0.62. Explicit channel records still use the residual cap. Content
+words that share a span are related by that span's polarity, structure,
+scale, and density only while the Nammade scan is running. Those labels are
+not factual evidence. The companion treatise
+is [The Nammade Continuum (Verified Edition)](nammade-continuum-verified-edition.md).
+Saving that article did not run a physics audit.
+
 The [taxonomy-driven invention node](taxonomy-invention-spec.md) defines
 cross-chunk hypothesis generation, explicit activation, and a response disclosure.
 

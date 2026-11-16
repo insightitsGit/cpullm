@@ -123,7 +123,7 @@ from cpu_llm.ir.schema import EIRProposition
 from cpu_llm.manifest_spans import answer_numbers_allowed, build_span_grammar, canonical_values
 from cpu_llm.measurements import extract_stated_measurements, stated_million_amount
 from cpu_llm.realizer.surface import SemanticSurfaceRealizer
-from cpu_llm.retrieval import VectorPrismIndex
+from cpu_llm.retrieval import DENSE_CORE_FLOOR, VectorPrismIndex
 from cpu_llm.thinker_pool import WarmPrismThinker
 from cpu_llm.word_taxonomy import bind_word_taxonomy, load_word_index, recall_document_ids
 
@@ -222,7 +222,7 @@ class Appliance:
         self.shine = shine_gate()
         # Deep search keeps a reached paragraph only when its dense-core cosine to the prompt is at least this.
         # None keeps every reached paragraph.
-        self.deep_min_similarity: float | None = 0.62
+        self.deep_min_similarity: float | None = DENSE_CORE_FLOOR
         self.payment_policy = _payment_evaluator()
         cache = Path(".chorusgraph") / "cpu-llm" / (self.namespace or "")
         cache.mkdir(parents=True, exist_ok=True)
@@ -632,6 +632,8 @@ class Appliance:
         small_talk: bool | None = None,
         cycle_search: dict | None = None,
         invent: bool = False,
+        nammade: bool = False,
+        nammade_kappa: float | None = None,
     ) -> dict[str, Any]:
         """Separate explicit compound requests; each task uses the full pipeline."""
         from cpu_llm.request_planner import dispatch_request
@@ -685,16 +687,36 @@ class Appliance:
         from cpu_llm.request_planner import _BOUNDARY, _mask
         if type(invent) is not bool:
             raise ValueError('invent must be a boolean')
+        if type(nammade) is not bool:
+            raise ValueError('nammade must be a boolean')
+        if nammade_kappa is not None:
+            from cpu_llm.nammade.channel import require_kappa
+            require_kappa(nammade_kappa)
         invention_query = extract_layout(content)['content_query']
         from cpu_llm.cross_domain import cross_domain_seed, execute_cross_domain
+        from cpu_llm.nammade import execute_nammade, nammade_seed
+        from cpu_llm.nammade.execute import attach_research_scan, research_scan_seed
 
         cross_seed = cross_domain_seed(invention_query)
         seed = invention_seed(invention_query, forced=invent)
+        nammade_query = nammade_seed(invention_query, forced=nammade)
+        stiffness = 1.0 if nammade_kappa is None else nammade_kappa
         key = invention_session(self, caller, session_id, as_of)
         specialist = cycle_search is not None or any(value is not None for value in (
             payment, authority, objective, hypothesis, causal_graph,
         ))
         with self._session_turn(key):
+            if nammade_query is not None:
+                if specialist or invent or cross_seed is not None:
+                    raise ValueError('Submit Nammade and other specialist requests separately.')
+                continue_invention(self, key, raw_message, '', strict=enabled)
+                result = execute_nammade(
+                    self, raw_message, nammade_query, caller=caller, as_of=as_of, strict=enabled,
+                    kappa=stiffness,
+                )
+                from cpu_llm.response_policy import classify_response_request
+                result['response_plan'] = classify_response_request(content)
+                return finish_invention_response(result)
             if cross_seed is not None:
                 if specialist or invent:
                     raise ValueError('Submit CrossDomain and other specialist requests separately.')
@@ -711,9 +733,19 @@ class Appliance:
             if seed is not None and (invent or enabled or not _BOUNDARY.search(_mask(invention_query))):
                 if specialist:
                     raise ValueError('Submit invention and other specialist requests separately.')
-                result = execute_invention(self, raw_message, seed, caller=caller, as_of=as_of, strict=enabled)
+                result = execute_invention(self, raw_message, seed, caller=caller, as_of=as_of, strict=enabled,
+                                           nammade_kappa=stiffness)
                 remember_invention(self, key, result)
             if result is not None:
+                from cpu_llm.response_policy import classify_response_request
+                result['response_plan'] = classify_response_request(content)
+                return finish_invention_response(result)
+            research_query = research_scan_seed(invention_query)
+            if (research_query and not enabled and not specialist and not any((math, finance, imagine))
+                    and not _BOUNDARY.search(_mask(invention_query))):
+                result = execute_invention(self, raw_message, research_query, caller=caller,
+                                           as_of=as_of, nammade_kappa=stiffness, research_scan_fallback=True)
+                remember_invention(self, key, result)
                 from cpu_llm.response_policy import classify_response_request
                 result['response_plan'] = classify_response_request(content)
                 return finish_invention_response(result)
@@ -768,6 +800,9 @@ class Appliance:
             from cpu_llm.response_policy import classify_response_request
             result['response_plan'] = classify_response_request(content if prefix is None else message)
             result['response_plan']['document'] = document_plan
+            if not enabled and result.get('research_plan'):
+                attach_research_scan(self, result, raw_message, document_plan.get('topic'),
+                                     caller=caller, as_of=as_of, kappa=stiffness)
             if result.get('document'):
                 result['document']['retrieval'] = dict(strategy='bounded_authorized_time_valid_snapshot',
                     deep_search_requested=deep or document_plan.get('deep_requested',False), graph_expansion=False,

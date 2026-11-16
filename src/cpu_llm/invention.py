@@ -16,7 +16,8 @@ _HYPOTHESIS_REQUEST = (
 )
 INVENTION_START = (
     r'(?:(?:invent|imagine|create|design)\s+(?:a\s+)?'
-    r'(?:new\s+(?:concept|design|idea|hypothesis|solution)|something\s+new)\b'
+    r'(?:new\s+(?:concept|design|idea|solution)|(?:new\s+)?hypothesis|something\s+new)\b'
+    r'|(?:(?:can|could|would) you\s+)?(?:propose|formulate|generate|suggest)\s+(?:an?\s+)?(?:testable\s+|new\s+)?hypothes(?:is|es)\b'
     r'|invention(?=\s*(?:[:.!?;]|$)|\s+(?:for|from|about|using|with|based on)\b)'
     rf'|invent\b|{_BARE_IMAGINE}|{_HYPOTHESIS_REQUEST})'
 )
@@ -42,6 +43,19 @@ def invention_seed(message, *, forced=False):
     if match:
         return _SEED_PREFIX.sub('', text[match.end():].lstrip(' :')).strip()
     return text if forced else None
+
+
+def _topic_terms(subject: str) -> list[str]:
+    """Content words of one subject. A hyphen is a word break, as in ``dark-matter``."""
+    from cpu_llm.channels import _content_words
+
+    return _content_words(subject.replace("-", " "))
+
+
+def _covers_topic(sentence: str, terms: list[str]) -> bool:
+    """True when every subject word appears, allowing one trailing plural s."""
+    folded = sentence.casefold().replace("-", " ")
+    return all(re.search(r'(?<!\w)' + re.escape(term) + r's?(?!\w)', folded) for term in terms)
 
 
 def _source_facts(rows):
@@ -174,7 +188,8 @@ def _empirical_context(rows, source, target):
     return list(observables), constraints
 
 
-def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=False):
+def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=False,
+                      nammade_kappa=None, research_scan_fallback=False):
     import psycopg
     from cpu_llm.pipeline import _caller_for
 
@@ -204,6 +219,53 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
     except (ValueError, RuntimeError, psycopg.Error):
         receipt['complete'] = False
         return result('partial', 'The invention source snapshot was unavailable or exceeded its limit.', receipt)
+    if nammade_kappa is None:
+        return _innovation_options(app, seed, rows, when, receipt, result)
+
+    from concurrent.futures import ThreadPoolExecutor
+    from cpu_llm.nammade.execute import execute_nammade
+    from cpu_llm.research_hypotheses import hypothesis_options
+
+    # Run the read-only branches from one authorized snapshot. The invention
+    # branch retains access to the appliance encoder on the calling thread.
+    with ThreadPoolExecutor(max_workers=2, thread_name_prefix="cpu-llm-research") as pool:
+        hypotheses = pool.submit(hypothesis_options, seed, rows)
+        scan = pool.submit(execute_nammade, app, message, seed, caller=caller, as_of=as_of,
+                           kappa=nammade_kappa, _source_snapshot=(rows, when), _snapshot_only=True)
+        response = _innovation_options(app, seed, rows, when, receipt, result)
+        options = hypotheses.result()
+        diagnostic = scan.result()
+    stages = response["routing"]["post_stages"]
+    stages.append("research_hypotheses")
+    response["research_options"] = options
+    if "nammade" in diagnostic:
+        response["nammade"] = dict(diagnostic["nammade"], mode="research_diagnostics",
+                                   outcome=diagnostic["answer_status"])
+        stages.append("nammade_equilibrium")
+    if (research_scan_fallback and not options and response["answer_status"] == "insufficient_evidence"
+            and diagnostic["answer_status"] == "nammade"):
+        response.update(status="nammade", answer_status="nammade", reply=diagnostic["reply"],
+                        answer_evidence=diagnostic["answer_evidence"],
+                        verification_scope=diagnostic["verification_scope"],
+                        judgment=dict(outcome="nammade", complete=True))
+    if options:
+        reply = response["reply"]
+        text = reply["text"] + "\n\nSource-backed hypotheses to test:"
+        for index, option in enumerate(options, 1):
+            text += f'\nH{index}. [{option["document_id"]}] {option["prediction"]}\n{option["test"]}'
+        reply.update(text=text, body=text)
+        if response["answer_status"] == "insufficient_evidence":
+            response.update(status="hypotheses", answer_status="hypotheses",
+                            judgment=dict(outcome="hypotheses", complete=True))
+    if diagnostic.get("answer_evidence") and response["answer_status"] != "nammade":
+        reply = response["reply"]
+        source_ids = ", ".join(dict.fromkeys(item["document_id"] for item in diagnostic["answer_evidence"]))
+        text = reply["text"] + f"\n\nNammade comparison is available for these source passages: {source_ids}."
+        reply.update(text=text, body=text)
+    return response
+
+
+def _innovation_options(app, seed, rows, when, receipt, result):
     subjects = {normalize(term) for term in re.split(r',|\s+and\s+', seed, flags=re.I)}
     chunks = {row['document_id']: row['chunk_text'] for row in rows}
     facts = list(dict.fromkeys(fact for fact in _source_facts(rows)
@@ -355,15 +417,15 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
                     'give a measured interval or exclusion bound and a model that predicts it.')
             return result('research_question', body, receipt)
         # Technical prose may name the topic without expressing a typed edge.
-        # Preserve those excerpts as context and pose a question without inferring an edge.
-        anchors = [re.compile(r'(?<!\w)' + re.escape(term) + r'(?!\w)', re.I)
-                   for term in sorted(subjects) if term]
+        # A hyphen and a plural still name the subject. Preserve those excerpts
+        # and pose a question without inferring an edge.
+        topics = [terms for terms in (_topic_terms(subject) for subject in sorted(subjects)) if terms]
         excerpts = []
         for row in rows:
             chunk = row['chunk_text']
             quote = next((sentence for sentence in _sentences(chunk)
                           if 20 <= len(sentence) <= 1000 and sentence in chunk
-                          and any(pattern.search(sentence) for pattern in anchors)), None)
+                          and any(_covers_topic(sentence, terms) for terms in topics)), None)
             if quote:
                 start = chunk.index(quote)
                 excerpts.append(dict(document_id=row['document_id'], quote=quote, start=start,

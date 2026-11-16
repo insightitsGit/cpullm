@@ -567,6 +567,16 @@
             "type": "boolean",
             "default": false,
             "description": "Opt in to taxonomy-driven invention. The response labels proposals as hypotheses and discloses possible variability. Strict evidence disables this path."
+          },
+          "nammade": {
+            "type": "boolean",
+            "default": false,
+            "description": "Opt in to the Nammade equilibrium scan over the caller's authorized spans. The reply quotes spans and reports channel labels. Strict evidence disables this path."
+          },
+          "nammade_kappa": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "Positive finite volumetric stiffness used by an explicit Nammade scan. The default is 1."
           }
         },
         "description": "Supported request fields. Unknown keys are ignored, including style; pass tone in message text. Current runtime coerces message to a string and enforces strict_evidence/small_talk boolean types; this schema describes recommended client types, not a claim of universal runtime schema enforcement."

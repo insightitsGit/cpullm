@@ -99,6 +99,10 @@ FLAG_BINDINGS += (
         ('taxonomy_invention',), 'pre_graph',
         'Generate cited cross-chunk hypotheses; strict disables; append the variability disclosure after rendering.',
         'Create a new concept from Helios.'),
+    FlagBinding('request.nammade', 'explicit Nammade command or Python/HTTP flag',
+        ('nammade_equilibrium',), 'pre_graph',
+        'Scan authorized spans on the orthogonal 4D channel. Ordinary paragraphs are admitted by the trained dense core; explicit records use the residual cap. Word relations use the span polarity, structure, scale, and density. Report volumetric labels and polarity bridges. Strict disables. Labels are not new facts.',
+        'Nammade: light speed.'),
     FlagBinding('request.document.composition', 'ordinary document request; strict bypasses',
         ('document_compose', 'document_inverse_verify'), 'document_workflow',
         'Neutral supported predicate composition preserves proofs; explicit tone is a separate opt-in output stage.',
@@ -155,7 +159,7 @@ def validate_graph_consumers(nodes):
                 'document_plan', 'document_snapshot', 'document_coverage', 'document_render',
                 'research_plan', 'cycle_snapshot', 'cycle_explore', 'cycle_compose', 'cycle_verify', 'taxonomy_invention',
                 'document_compose', 'document_inverse_verify', 'crossdomin', 'constraint_check',
-                'chunk_inventory', 'chunk_delete'}
+                'chunk_inventory', 'chunk_delete', 'nammade_equilibrium'}
     expected = {node for binding in FLAG_BINDINGS for node in binding.consumers} - external
     if missing := expected - set(nodes):
         raise ValueError('Flag consumers missing from graph: ' + ', '.join(sorted(missing)))

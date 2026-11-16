@@ -3,6 +3,15 @@
 `invent` selects the taxonomy-driven invention node. The natural-language triggers,
 API option and disclosure are defined in [taxonomy-driven invention](taxonomy-invention-spec.md).
 
+`nammade` selects the equilibrium scan. `Nammade: light speed.` or
+`ask(..., nammade=True)` compares that query with authorized spans. Ordinary
+paragraphs are admitted by the trained dense core at cosine 0.62. Explicit
+`Nammade span:` records still use the residual cap. Word pairs in a span
+take their relation from that span's Nammade polarity, structure, scale, and
+density. Standalone research and investigation commands can also select the scan.
+Explicit invention and hypothesis routes can attach diagnostics to their own
+response. Strict evidence disables the scan. See [the Nammade node](nammade-channel-equilibrium-node.md).
+
 Generated from `cpu_llm.flag_contract.FLAG_BINDINGS`. The JSON companion is tested for exact registry agreement.
 
 The `graph.core` record lists the nodes reached through ordinary graph entry.
