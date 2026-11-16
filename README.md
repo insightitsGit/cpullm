@@ -86,10 +86,7 @@ The chat reply gives each method its own section, including cases with no candid
   source passages. It can offer a research question when it finds relevant
   excerpts but lacks a typed relationship.
 - **Hypothesis generation** presents source predictions and proposed tests.
-  For supported cases, it can combine independent premises into a falsifiable
-  test. For example, the self-interacting dark matter route combines cited
-  dwarf-galaxy evidence with a cited cluster-merger bound and states what
-  result would rule out the candidate under the study's assumptions.
+  Supported routes can combine independent premises into a falsifiable test.
 - **Nammade** shows the comparison count and leading cited excerpts. Its
   diagnostics describe how passages compare under the model.
 
@@ -98,6 +95,29 @@ API clients can read `research_methods`, `invention.proposals`,
 premises, and diagnostics. `Research report`, `Research article`, and
 `Research paper` use the document workflow and can carry Nammade diagnostics.
 Use `nammade=True` in Python or `"nammade": true` over HTTP for a standalone scan.
+
+#### Example: Turn dark-matter evidence into a test
+
+After indexing the research sources, ask:
+
+> Propose a testable hypothesis about self-interacting dark matter.
+
+In a live PostgreSQL run with 129 indexed chunks, the hypothesis branch
+proposed testing whether **one velocity-dependent model** can explain
+dwarf-galaxy cores and satisfy a cluster-merger constraint using the same
+parameters. The response linked a **0.3–1.5 kpc** core-size range from
+simulations to a **1.25 cm²/g** Bullet Cluster upper bound at **68% confidence**
+under that study's assumptions. [Particle Data Group review, §27.4.2](https://pdg.lbl.gov/2024/reviews/rpp2024-rev-dark-matter.pdf)
+· [Bullet Cluster analysis](https://arxiv.org/abs/0704.0261)
+
+The proposed test fits the model to independent dwarf-galaxy observations,
+accounts for baryonic feedback, and checks whether the same parameters
+satisfy the merger constraint. If no parameter set satisfies both, the
+candidate is ruled out within the tested model and study assumptions.
+
+The separate Nammade scan surfaced both supporting passages for inspection.
+Innovation generated zero new mechanisms in this run. The hypothesis is a
+test plan for an existing model class. A numerical fit remains to be run.
 
 This gives researchers a reproducible way to inspect how propositions compare
 under the Nammade model. Source citations support attribution. The diagnostic
