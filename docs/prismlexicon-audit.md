@@ -1,0 +1,9 @@
+# PrismLexicon repository audit
+
+- `src/cpu_llm/data/query-lexicon.json` and `src/cpu_llm/query_dictionary.py` ship a versioned query lexicon with spelling-level entries, relation names, sense descriptions, and anchored query patterns. Its retrieval licenses do not establish safe output substitutions or CEFR levels.
+- `src/cpu_llm/stylistic/lexicon.py` ships construction IDs with relation, POS bitmask, tone and intensity. The stylistic verifier licenses structured predicates. Keep that verifier as owner of those constructions.
+- `src/cpu_llm/realizer/inflect.py` supplies inflection helpers. Use explicit approved surface forms for this first release so application does not guess tense or agreement.
+- These are repository-owned resources under the repository's Apache-2.0 code license. No bundled sense-level CEFR dataset was found. Use original contextual rules with unknown CEFR provenance. Import no external lexicon. A future resource must provide edition-specific licensing and evidence of vocabulary difficulty by sense.
+- `pipeline.Appliance.ask` is the public delivery boundary for factual, specialist and research routes. Evidence judging and realization happen upstream. The delivery adapter will only change eligible plain display text. Exact evidence, structured renderings, specialist delivery, and canonical fields remain under their current contracts.
+- `serve.py` validates HTTP request options and delegates through `Entry.ask`. The service CLI is a host for HTTP options. There is no separate interactive CLI answer pipeline to patch.
+- The adapter uses only the authorized reply and its evidence metadata. Its rule data is immutable, and it persists no prompt, answer, or tenant vocabulary. Audit metadata is returned to the same caller. Existing guards, tenant access, and source proof remain upstream.

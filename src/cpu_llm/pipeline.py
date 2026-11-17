@@ -83,6 +83,7 @@ from pathlib import Path
 from typing import Any
 
 from cpu_llm.external_fallback import ExternalLLMFallback
+from cpu_llm.prismlexicon import lexical_delivery
 
 import numpy as np
 from vectorprism.tensor_contract import PSMTensorContract
@@ -175,6 +176,7 @@ class Appliance:
         strict_evidence: bool = False,
         small_talk: bool = True,
         external_llm_fallback: ExternalLLMFallback | None = None,
+        prismlexicon: bool = False,
     ) -> None:
         from cpu_llm.child_safety import ChildSafetyGate, enabled_by_default
 
@@ -185,6 +187,9 @@ class Appliance:
             raise ValueError('small_talk must be a boolean')
         self.small_talk = small_talk
         self.external_llm_fallback = external_llm_fallback
+        if type(prismlexicon) is not bool:
+            raise ValueError('prismlexicon must be a boolean')
+        self.prismlexicon = prismlexicon
 
         # A namespace gets its own Postgres schema and its own local memory folder.
         self.namespace = _namespace_slug(namespace) if namespace else None
@@ -605,6 +610,7 @@ class Appliance:
 
         return scan_leptogenesis(hypothesis, axes=axes, limits=limits)
 
+    @lexical_delivery
     def ask(
         self,
         message: str,
@@ -634,6 +640,7 @@ class Appliance:
         invent: bool = False,
         nammade: bool = False,
         nammade_kappa: float | None = None,
+        target_level: str | None = None,
     ) -> dict[str, Any]:
         """Separate explicit compound requests; each task uses the full pipeline."""
         from cpu_llm.request_planner import dispatch_request

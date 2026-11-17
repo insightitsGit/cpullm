@@ -577,6 +577,11 @@
             "type": "number",
             "exclusiveMinimum": 0,
             "description": "Positive finite volumetric stiffness used by an explicit Nammade scan. The default is 1."
+          },
+          "target_level": {
+            "type": "string",
+            "enum": ["off", "auto", "A1", "A2", "B1", "B2", "C1", "C2"],
+            "description": "Opt-in display vocabulary policy. Requires the server's --prismlexicon switch."
           }
         },
         "description": "Supported request fields. Unknown keys are ignored, including style; pass tone in message text. Current runtime coerces message to a string and enforces strict_evidence/small_talk boolean types; this schema describes recommended client types, not a claim of universal runtime schema enforcement."

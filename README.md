@@ -71,6 +71,19 @@ mode has different verification limits, including optional learned producers.
 
 ## Core capabilities
 
+### Experimental vocabulary adaptation
+
+PrismLexicon can simplify a small set of context-checked expressions in ordinary
+answers. Enable it with `Appliance(prismlexicon=True)` and request `target_level="A2"`,
+or append “Use simple English.” after a question. The adapter preserves source
+quotations, audit evidence, and underlying research results. It is off by default.
+The pilot uses one plain-language policy for A1, A2, B1, and `auto`. For example,
+“The researchers resided in Oslo prior to the study” becomes “The researchers
+lived in Oslo before the study.” B2, C1, and C2 preserve the current wording
+while the rule set has no approved policies for those levels.
+[PrismLexicon setup and limits](docs/prismlexicon.md) ·
+[Recorded level comparison](docs/prismlexicon-evaluation.md#recorded-level-comparison)
+
 ### Literature synthesis and hypothesis generation
 
 Available in the repository source. The published 1.13.1 package predates

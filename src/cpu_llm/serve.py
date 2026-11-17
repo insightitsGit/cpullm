@@ -18,7 +18,7 @@ from cpu_llm.access import AccessError, AuthenticationError, SourceForbidden, St
 from cpu_llm.documents import SourceDocument
 from cpu_llm.entry import Entry
 
-_ASK_FIELDS = ("discover", "imagine", "deep", "math", "finance", "as_of", "session_id", "strict_evidence", "small_talk", "cycle_search", "invent", "nammade", "nammade_kappa")
+_ASK_FIELDS = ("discover", "imagine", "deep", "math", "finance", "as_of", "session_id", "strict_evidence", "small_talk", "cycle_search", "invent", "nammade", "nammade_kappa", "target_level")
 
 
 MAX_REQUEST_BYTES = 1024 * 1024
@@ -59,6 +59,7 @@ def main() -> None:
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument('--strict-evidence', action='store_true', help='Require literal source evidence for every ask')
     parser.add_argument('--no-small-talk', action='store_true', help='Disable built-in conversational replies and greeting normalization')
+    parser.add_argument('--prismlexicon', action='store_true', help='Enable opt-in vocabulary adaptation for ordinary replies')
     parser.add_argument('--reference-backend', choices=['coreferee', 'fastcoref'])
     parser.add_argument('--prompt-backend', choices=['auto', 'rules', 'spacy'], default='auto')
     parser.add_argument(
@@ -80,6 +81,7 @@ def main() -> None:
             reference_backend=args.reference_backend,
             prompt_backend=args.prompt_backend,
             small_talk=not args.no_small_talk,
+            prismlexicon=args.prismlexicon,
         )
 
     def appliance_for(tenant: str) -> Any:
@@ -145,6 +147,10 @@ def _dispatch(entry: Entry, path: str, secret: str, payload: dict[str, Any], *, 
         if not message:
             raise ValueError("a message is required")
         kwargs = {key: payload[key] for key in _ASK_FIELDS if key in payload}
+        if 'target_level' in kwargs:
+            from cpu_llm.prismlexicon import normalize_level
+
+            kwargs['target_level'] = normalize_level(kwargs['target_level'])
         if 'invent' in kwargs and type(kwargs['invent']) is not bool:
             raise ValueError('invent must be a boolean')
         if 'nammade' in kwargs and type(kwargs['nammade']) is not bool:
