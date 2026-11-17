@@ -5,6 +5,7 @@ import unicodedata
 from cpu_llm.answerability import _sentences
 from cpu_llm.channels import _content_words
 from cpu_llm.nammade.encode import span_hash
+from cpu_llm.research_workspace import requested_model
 
 _PREDICTION = re.compile(r"\b(?:predicts?|should|would|might|could|hypothes[ei]s)\b", re.I)
 _NON_TOPIC = {"test", "research", "hypothesis", "hypotheses", "predict", "prediction"}
@@ -21,7 +22,7 @@ _MERGER_BOUND = re.compile(
 
 def sidm_boundary_option(query, rows):
     """Join a dwarf-core simulation result and an independent merger bound."""
-    if not _SIDM_TOPIC.search(query):
+    if not _SIDM_TOPIC.search(query) or requested_model(query) == "constant_cross_section":
         return None
     dwarf = merger = None
     for row in rows:
@@ -61,6 +62,22 @@ def sidm_boundary_option(query, rows):
             f"(the reported {confidence}% confidence bound). Compare with a collisionless baseline."
         ),
         premises=premises,
+        relation_to_request="candidate_model",
+        scan_requirements={"upper": float(limit), "source_id": merger_row["document_id"]},
+        plain_view=dict(
+            prediction=(
+                "Dark matter particles might be more likely to scatter at the lower speeds "
+                "found in small galaxies. Test whether one model can explain the simulated "
+                f"core sizes ({low}–{high} kpc) and satisfy the Bullet Cluster bound."
+            ),
+            test=(
+                "Fit the model to how stars move in small galaxies, accounting for ordinary matter. "
+                "Use the same settings to predict the gap between the mass peak and the galaxies "
+                f"in the merger. Under the cited study assumptions, rule out the candidate if no settings "
+                f"both fit the dwarf data and stay below {limit} cm²/g at cluster speeds "
+                f"(the reported {confidence}% confidence bound). Compare with a model without self-scattering."
+            ),
+        ),
         span_hash=premises[0]["span_hash"],
     )
 
@@ -69,6 +86,8 @@ def hypothesis_options(query, rows, *, limit=3):
     """Return source-attributed predictions with a proposed check for each."""
     if candidate := sidm_boundary_option(query, rows):
         return [candidate][:limit]
+    if _SIDM_TOPIC.search(query) and requested_model(query) == "constant_cross_section":
+        return []
     topic = set(_content_words(query)) - _NON_TOPIC
     if not topic:
         return []
@@ -325,6 +344,10 @@ def resolve_hypotheses(query, comparisons, options):
         readings.append(compiled)
     readings.extend(hypothesis_for_bridge(item, low, high) for item, low, high in bridges)
     readings.extend(compatible_bounds_option(left, right) for left, right in compatible)
+    if requested_model(query) == "constant_cross_section":
+        for option in readings:
+            if option["origin"] == "abductive_bridge":
+                option["relation_to_request"] = "alternative_to_constant_model"
     return bridge, readings
 
 
@@ -356,6 +379,8 @@ def hypothesis_intro(options, bridge):
 def option_block(index, option):
     """Reply lines for one option, with the cited bounds before the decision."""
     lines = [f'H{index}. ({option_label(option)}) {option["prediction"]}']
+    if option.get("relation_to_request") == "alternative_to_constant_model":
+        lines.append("Alternative that changes the requested constant-model assumption.")
     provenance = option.get("provenance") or {}
     for step in provenance.get("steps") or []:
         if step.get("kind") == "bound":

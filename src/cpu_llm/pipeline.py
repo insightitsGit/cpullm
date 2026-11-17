@@ -604,6 +604,13 @@ class Appliance:
                                               observable_units=observable_units, limits=limits)
 
     @staticmethod
+    def run_research_test(workspace, card_id, **inputs):
+        """Evaluate a selected research card with an application-supplied model."""
+        from cpu_llm.research_workspace import run_research_test
+
+        return run_research_test(workspace, card_id, **inputs)
+
+    @staticmethod
     def scan_leptogenesis(hypothesis, *, axes, limits):
         """Evaluate a selected hypothesis with the illustrative leptogenesis adapter."""
         from cpu_llm.leptogenesis import scan_leptogenesis

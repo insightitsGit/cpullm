@@ -71,6 +71,19 @@ mode has different verification limits, including optional learned producers.
 
 ## Core capabilities
 
+### Evidence and research workspace
+
+Completed replies can include `evidence_panel` with expandable source excerpts
+and calculation receipts. Research replies can include `research_workspace`
+with the requested assumption, per-option evidence, and the inputs needed to
+execute a numerical test. For supported hypotheses, PrismLexicon's simple
+English setting selects a plain view alongside the technical version.
+
+Applications can run a selected card through `Appliance.run_research_test`
+with a trusted predictor, parameter grid, and sourced limits. The result shows
+which sampled points passed each constraint.
+[Design](docs/evidence-research-design.md) · [API and integration](docs/evidence-research-spec.md)
+
 ### Experimental vocabulary adaptation
 
 PrismLexicon can simplify a small set of context-checked expressions in ordinary

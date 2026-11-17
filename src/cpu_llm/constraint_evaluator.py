@@ -28,6 +28,8 @@ def scan_constraints(
     axes: Sequence[ParameterAxis],
     observable_units: Mapping[str, str],
     limits: Sequence[ObservableLimit],
+    *,
+    exclusive_upper_ids: frozenset[str] = frozenset(),
 ) -> dict:
     """Return sampled points and adjacent transition brackets."""
     axes = tuple(axes)
@@ -68,7 +70,8 @@ def scan_constraints(
         for limit in limits:
             value = predictions[limit.observable]
             if ((limit.lower is not None and value < limit.lower)
-                    or (limit.upper is not None and value > limit.upper)):
+                    or (limit.upper is not None and (value > limit.upper
+                        or (value == limit.upper and limit.id in exclusive_upper_ids)))):
                 failed.append(limit.id)
         accepted += not failed
         point = dict(parameters=parameters, predictions=predictions, failed_limits=failed)

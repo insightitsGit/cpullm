@@ -131,8 +131,15 @@ def lexical_delivery(ask):
             # Preserve the question terminator when the instruction follows it.
             end = control.start() + int(message[control.start()] in "?!." )
             message = message[:end].rstrip()
-        response = ask(self, message, *args, **kwargs)
+        from cpu_llm.evidence_panel import evidence_delivery
+
+        response = evidence_delivery(ask(self, message, *args, **kwargs))
         if not enabled or level in {None, "off"}:
+            return response
+        workspace = response.get("research_workspace")
+        if (workspace and level in {"auto", "A1", "A2", "B1"}
+                and any(card.get("plain") for card in workspace["cards"])):
+            workspace["preferred_view"] = "plain"
             return response
         reply = response.get("reply") or {}
         text = reply.get("text")

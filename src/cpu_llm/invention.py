@@ -241,6 +241,10 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
     bridge, options = resolve_hypotheses(seed, scan_receipt.get("evaluations") or [], options)
     response["research_options"] = options
     response["abductive_bridge"] = bridge.model_dump()
+    from cpu_llm.research_workspace import research_workspace
+
+    workspace = research_workspace(seed, options, receipt["proposals"], response["abductive_bridge"])
+    response["research_workspace"] = workspace
     innovation_text = response["reply"]["text"]
     response["research_methods"] = {
         "innovation": {"outcome": response["answer_status"]},
@@ -272,6 +276,8 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
         "Surfaces source predictions or combines cited premises into a proposed test.",
     ]
     lines.extend(hypothesis_intro(options, bridge))
+    if workspace["requested_model"] == "constant_cross_section":
+        lines.append("Requested model: constant cross-section. Any proposed change is a separate alternative.")
     if not options:
         lines.append("No testable hypothesis option was found.")
     for index, option in enumerate(options, 1):
