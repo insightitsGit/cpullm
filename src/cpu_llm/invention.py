@@ -220,7 +220,9 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
         receipt['complete'] = False
         return result('partial', 'The invention source snapshot was unavailable or exceeded its limit.', receipt)
     if nammade_kappa is None:
-        return _innovation_options(app, seed, rows, when, receipt, result)
+        from cpu_llm.inference import attach_inference
+        return attach_inference(_innovation_options(app, seed, rows, when, receipt, result),
+                                seed, rows, snapshot=when, scope=allowed)
 
     from concurrent.futures import ThreadPoolExecutor
     from cpu_llm.nammade.execute import execute_nammade
@@ -290,7 +292,8 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
     ])
     text = "\n".join(lines)
     response["reply"].update(text=text, body=text)
-    return response
+    from cpu_llm.inference import attach_inference
+    return attach_inference(response, seed, rows, snapshot=when, scope=allowed)
 
 
 def _innovation_options(app, seed, rows, when, receipt, result):

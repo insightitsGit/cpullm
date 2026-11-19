@@ -73,6 +73,23 @@ mode has different verification limits, including optional learned producers.
 
 ### Experimental rule inference
 
+Innovation, hypothesis/research requests, and Nammade automatically check
+applicable registered inference rules on their authorized source snapshot.
+`research_inference.receipts` contains replayable proofs; `research_methods.inference`
+records the outcome. These checks do not validate or promote speculative proposals.
+Only the supported ordering and universal-possession rules apply; other scientific
+relationships return `no_applicable_rule`. At most eight topic-related deductions
+are checked per response, with resource limits recorded in `complete`.
+Direct questions such as `Is elephant bigger than cat?` and
+`Does Kestrel have radio?` also route to inference. Strict evidence mode retains
+its existing restrictions.
+
+For example, after ingesting the two ordering premises below, asking
+`Nammade: elephant` or `Propose a testable hypothesis about elephant.` also
+checks `elephant bigger_than cat`. The response lists the rule verdict and
+stores its full proof in `research_inference.receipts`. If no supported rule
+applies, the other research methods continue with `no_applicable_rule` recorded.
+
 The current repository source adds InferenceNode as graph stage 28. Its
 explicit deduction route reads an authorized snapshot and checks two supported
 rule forms. Ingest “The elephant is bigger than the donkey” and “The donkey is

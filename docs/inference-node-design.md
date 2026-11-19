@@ -250,3 +250,31 @@ complete the ordering chain, and adding an explicit negative premise changed
 the result to conflict. Local results are in
 `build/inference-live/results.json`. This validates the implemented subset;
 the remaining modes and the complete repository suite remain release gates.
+
+## Research integration
+
+Innovation, the combined hypothesis/research workflow, and Nammade invoke the
+shared bounded deductive checker using their authorized, versioned source snapshot.
+Candidate conclusions must follow registered rules and mention an explicit topic
+entity. Generated proposal text never supplies premises. Up to eight sorted targets
+are replayed; discovery uses the existing predicate/state/operation/hop caps.
+`research_inference.complete` is false on discovery truncation. Each receipt records
+its own verdict, source spans, proof, snapshot and scope. Conflicts remain conflicts;
+hypotheses retain their original status and are never promoted by these checks.
+Routing records `inference`; `research_methods.inference` reports proof count and
+`checked` or `no_applicable_rule`. This is not general scientific deduction.
+
+The classifier normalizes complete `Is X bigger than Y?` and `Does X have Y?`
+questions to explicit inference requests. Other conversational questions retain
+existing routing. Strict evidence and guard checks run before research inference.
+Integration regressions cover Innovation, research and Nammade public ask routes,
+conflicting premises, empty authorization, proof replay and ordinary question routing.
+
+### Integration acceptance results
+
+The focused integration suite passes 92 tests across `test_inference.py`,
+`test_invention.py`, `test_nammade.py`, `test_flag_contract.py`, and
+`test_research_workspace.py`. Public request regressions verify all three
+research entry points return the applicable ordering proof and record the
+inference stage. This result covers these components, not the full repository
+suite or general scientific reasoning.

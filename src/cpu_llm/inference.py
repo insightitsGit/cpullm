@@ -75,6 +75,8 @@ def request_from(message, option=None):
             return InferenceRequest(**fields)
         except TypeError as exc:
             raise ValueError("Inference request contains missing or unsupported fields.") from exc
+    from cpu_llm.classifier import inference_prompt
+    message = inference_prompt(message)
     match = _COMMAND.fullmatch(message.strip())
     if not match:
         return None
@@ -86,6 +88,47 @@ def request_from(message, option=None):
         if parsed := re.fullmatch(pattern, body, re.I):
             return InferenceRequest(parsed["s"], relation, parsed["o"])
     raise ValueError("Use 'Infer whether X is bigger than Y' or 'Infer whether X has Y'.")
+
+
+def attach_inference(response, query, rows, *, snapshot=None, scope=None):
+    """Share bounded rule proofs with research without promoting hypotheses."""
+    from cpu_llm.access import source_allowed
+
+    authorized = [row for row in rows if scope is None or source_allowed(row['document_id'], scope)]
+    facts = _extracted(authorized)
+    # Discover targets only from registered rules, never from generated prose.
+    probe = InferenceRequest('probe', 'has', 'target')
+    _, closure, capped = _closure(probe, facts)
+    candidates = []
+    for step in closure.values():
+        subject, relation, obj, negative = step['conclusion']
+        if step['rule'] == 'SOURCE' or negative or relation not in _RELATIONS:
+            continue
+        if not any(re.search(r'(?<!\w)' + re.escape(entity) + r'(?!\w)', query, re.I)
+                   for entity in (subject, obj)):
+            continue
+        candidates.append((subject, relation, obj))
+    targets = sorted(set(candidates))
+    receipts = [deduce(authorized, InferenceRequest(*target), snapshot=snapshot, scope=scope)
+                for target in targets[:8]]
+    response['research_inference'] = dict(triggered=True, mode='deductive', receipts=receipts,
+        complete=not capped and len(targets) <= 8,
+        outcome='checked' if receipts else 'no_applicable_rule',
+        hypothesis_promotion=False)
+    response.setdefault('research_methods', {})['inference'] = {
+        'outcome': response['research_inference']['outcome'], 'proof_count': len(receipts)}
+    stages = response.setdefault('routing', {}).setdefault('post_stages', [])
+    if 'inference' not in stages:
+        stages.append('inference')
+    lines = []
+    for receipt in receipts:
+        request = receipt['request']
+        conclusion = f"{request['subject']} {request['relation']} {request['object']}"
+        lines.append(f"{conclusion}: {receipt['verdict']}")
+    if lines:
+        text = response['reply']['text'] + '\n\nRule inference (source-grounded; hypotheses remain unverified):\n' + '\n'.join(lines)
+        response['reply'].update(text=text, body=text)
+    return response
 
 
 def _extracted(rows):

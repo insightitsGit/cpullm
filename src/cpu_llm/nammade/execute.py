@@ -325,4 +325,5 @@ def execute_nammade(
     response["verification_scope"] = "source_attribution" if evidence else None
     response["reply"].update(answer_evidence=evidence, answer_status=response["answer_status"],
                              verification_scope=response["verification_scope"])
-    return response
+    from cpu_llm.inference import attach_inference
+    return attach_inference(response, query, rows, snapshot=when, scope=allowed)

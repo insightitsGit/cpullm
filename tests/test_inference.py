@@ -6,6 +6,33 @@ from types import SimpleNamespace
 from cpu_llm.inference import InferenceRequest, deduce, digest, execute_inference, verify_proof
 
 
+def test_research_deduction_is_replayed_scoped_and_not_hypothesis_promotion():
+    from cpu_llm.inference import attach_inference, verify_receipt, request_from
+    source = rows('The elephant is bigger than the donkey.', 'The donkey is bigger than the cat.')
+    response = dict(reply=dict(text='An unverified proposal.'), answer_status='hypotheses')
+    attach_inference(response, 'Research elephant', source, snapshot=123)
+    receipt = response['research_inference']['receipts'][0]
+    assert receipt['verdict'] == 'ENTAILED_BY_RULES'
+    assert verify_receipt(receipt, source)
+    assert response['answer_status'] == 'hypotheses'
+    assert response['research_inference']['hypothesis_promotion'] is False
+    restricted = dict(reply=dict(text='No proposal.'))
+    attach_inference(restricted, 'elephant', source, scope=[])
+    assert restricted['research_inference']['receipts'] == []
+    assert request_from('Is elephant bigger than cat?') == InferenceRequest('elephant', 'bigger_than', 'cat')
+    assert request_from('Does Kestrel have radio?') == InferenceRequest('Kestrel', 'has', 'radio')
+    assert request_from('Explain whether this could work') is None
+
+
+def test_research_conflicting_premise_is_not_reported_as_entailed():
+    from cpu_llm.inference import attach_inference
+    source = rows('The elephant is bigger than the donkey.', 'The donkey is bigger than the cat.',
+                  'The donkey is not bigger than the cat.')
+    response = dict(reply=dict(text='Research.'))
+    attach_inference(response, 'elephant', source)
+    assert response['research_inference']['receipts'][0]['verdict'] == 'CONFLICT'
+
+
 def rows(*texts):
     return [dict(document_id=f"doc-p{int(hashlib.sha256(text.encode()).hexdigest()[:10], 16):012d}", chunk_text=text) for index, text in enumerate(texts, 1)]
 

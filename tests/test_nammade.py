@@ -23,6 +23,18 @@ from cpu_llm.nammade.types import FrontierStatus
 from cpu_llm.pipeline import Appliance
 
 
+@pytest.mark.parametrize('prompt', ['Nammade: elephant', 'Invent a new concept from elephant',
+                                  'Propose a testable hypothesis about elephant.'])
+def test_research_routes_consume_grounded_inference(prompt):
+    app = appliance(['The elephant is bigger than the donkey.', 'The donkey is bigger than the cat.'])
+    response = app.ask(prompt)
+    receipts = response['research_inference']['receipts']
+    assert any(item['verdict'] == 'ENTAILED_BY_RULES' for item in receipts)
+    assert response['research_methods']['inference']['proof_count'] >= 1
+    assert 'inference' in response['routing']['post_stages']
+    assert 'Rule inference' in response['reply']['text']
+
+
 def test_density_rejects_the_open_gap_and_snaps_raw_scalars():
     with pytest.raises(ValueError, match="Zero-free"):
         NammadeChannel4D(0, 0, 0, 0.25)
@@ -212,7 +224,8 @@ def test_prompt_scans_spans_and_quotes_bridges_with_source_attribution(prompt):
     assert locked["is_polarity_bridge"] is True
     assert "Light speed is constant." in result["reply"]["text"]
     assert "do not verify a physical law" in result["reply"]["text"]
-    assert result["routing"]["post_stages"] == ["nammade_equilibrium"]
+    assert result["routing"]["post_stages"] == ["nammade_equilibrium", "inference"]
+    assert result['research_inference']['outcome'] == 'no_applicable_rule'
 
 
 def test_other_routes_and_strict_mode_do_not_emit_a_nammade_scan():
@@ -391,7 +404,7 @@ def test_research_branches_overlap_and_return_hypothesis_options(monkeypatch):
     reply = app.ask("Propose a testable hypothesis about light speed.")
     assert reply["answer_status"] == "hypotheses"
     assert reply["routing"]["post_stages"] == [
-        "taxonomy_invention", "research_hypotheses", "nammade_equilibrium", "abductive_bridge",
+        "taxonomy_invention", "research_hypotheses", "nammade_equilibrium", "abductive_bridge", "inference",
     ]
     assert reply["research_options"][0]["prediction"] == prediction
     assert reply["research_options"][0]["document_id"] == "doc-p0001"

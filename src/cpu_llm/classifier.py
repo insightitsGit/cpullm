@@ -8,6 +8,18 @@ from __future__ import annotations
 
 import re
 
+
+def inference_prompt(message: str) -> str:
+    """Normalize only unambiguous supported deduction questions."""
+    text = message.strip()
+    comparison = re.fullmatch(r'Is (.+?) bigger than (.+?)\??', text, re.I)
+    possession = re.fullmatch(r'Does (.+?) have (.+?)\??', text, re.I)
+    if comparison:
+        return f'Infer whether {comparison[1]} is bigger than {comparison[2]}?'
+    if possession:
+        return f'Infer whether {possession[1]} has {possession[2]}?'
+    return message
+
 _REASONS: tuple[tuple[re.Pattern[str], str], ...] = (
     (
         re.compile(r"\b(?:imagine|imagined|imagination)\b", re.IGNORECASE),
