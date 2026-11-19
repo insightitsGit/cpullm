@@ -9,15 +9,45 @@ from __future__ import annotations
 import re
 
 
+def specialist_plan(message: str, *, invent: bool = False, nammade: bool = False) -> dict:
+    """One classification record; specialist parsers retain their input contracts.
+
+    Execution still applies authorization, strict mode, compound-task boundaries
+    and session continuation. A candidate is not permission to run a method.
+    """
+    from cpu_llm.invention import invention_seed
+    from cpu_llm.cross_domain import cross_domain_seed
+    from cpu_llm.nammade import nammade_seed
+    from cpu_llm.nammade.execute import research_scan_seed
+
+    seeds = dict(nammade=nammade_seed(message, forced=nammade),
+                 crossdomin=cross_domain_seed(message),
+                 invention=invention_seed(message, forced=invent),
+                 research=research_scan_seed(message))
+    candidates = [key for key, value in seeds.items() if value is not None]
+    return dict(seeds=seeds, candidates=candidates,
+                primary_candidate=candidates[0] if candidates else None,
+                precedence=['nammade', 'crossdomin', 'invention', 'research'])
+
+
 def inference_prompt(message: str) -> str:
     """Normalize only unambiguous supported deduction questions."""
     text = message.strip()
     comparison = re.fullmatch(r'Is (.+?) bigger than (.+?)\??', text, re.I)
     possession = re.fullmatch(r'Does (.+?) have (.+?)\??', text, re.I)
+    typed = re.fullmatch(r'Is (.+?) (a member of|a subclass of|a physical part of|located in) (.+?)\??', text, re.I)
+    requirement = re.fullmatch(r'Does (.+?) require (.+?)\??', text, re.I)
+    containment = re.fullmatch(r'Does (.+?) physically contain (.+?)\??', text, re.I)
     if comparison:
         return f'Infer whether {comparison[1]} is bigger than {comparison[2]}?'
     if possession:
         return f'Infer whether {possession[1]} has {possession[2]}?'
+    if typed:
+        return f'Infer whether {typed[1]} is {typed[2]} {typed[3]}?'
+    if requirement:
+        return f'Infer whether {requirement[1]} requires {requirement[2]}?'
+    if containment:
+        return f'Infer whether {containment[1]} physically contains {containment[2]}?'
     return message
 
 _REASONS: tuple[tuple[re.Pattern[str], str], ...] = (

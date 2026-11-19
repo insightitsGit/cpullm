@@ -584,20 +584,93 @@
             "description": "Opt-in display vocabulary policy. Requires the server's --prismlexicon switch."
           },
           "inference": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": ["subject", "relation", "object"],
-            "properties": {
-              "mode": {"const": "deductive"},
-              "subject": {"type": "string"},
-              "relation": {"enum": ["bigger_than", "has"]},
-              "object": {"type": "string"},
-              "max_hops": {"type": "integer", "minimum": 1, "maximum": 10, "default": 4},
-              "max_predicates": {"type": "integer", "minimum": 1, "maximum": 256, "default": 256},
-              "max_states": {"type": "integer", "minimum": 1, "maximum": 1024, "default": 1024},
-              "max_operations": {"type": "integer", "minimum": 1, "maximum": 100000, "default": 100000}
-            },
-            "description": "Experimental bounded deduction using source-bound predicates and built-in versioned rules. Strict Evidence Mode refuses derived inference."
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "subject",
+                  "relation",
+                  "object"
+                ],
+                "properties": {
+                  "mode": {
+                    "const": "deductive"
+                  },
+                  "subject": {
+                    "type": "string"
+                  },
+                  "relation": {
+                    "enum": [
+                      "bigger_than",
+                      "has",
+                      "member_of",
+                      "subclass_of",
+                      "physical_part_of",
+                      "physically_contains",
+                      "located_in",
+                      "requires"
+                    ]
+                  },
+                  "object": {
+                    "type": "string"
+                  },
+                  "max_hops": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 10,
+                    "default": 4
+                  },
+                  "max_predicates": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 256,
+                    "default": 256
+                  },
+                  "max_states": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1024,
+                    "default": 1024
+                  },
+                  "max_operations": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100000,
+                    "default": 100000
+                  }
+                },
+                "description": "Experimental bounded deduction using source-bound predicates and built-in versioned rules. Strict Evidence Mode refuses derived inference."
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "mode",
+                  "source_ids"
+                ],
+                "properties": {
+                  "mode": {
+                    "enum": [
+                      "temporal",
+                      "inductive",
+                      "abductive"
+                    ]
+                  },
+                  "source_ids": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 256,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[\\w.-]{1,200}$"
+                    }
+                  }
+                },
+                "description": "Opt-in analysis of selected authorized chunks containing inference-record-v1 JSON. Temporal calculations, Wilson statistical estimates and unverified explanation alternatives have distinct claim statuses; strict mode refuses them."
+              }
+            ]
           }
         },
         "description": "Supported request fields. Unknown keys are ignored, including style; pass tone in message text. Current runtime coerces message to a string and enforces strict_evidence/small_talk boolean types; this schema describes recommended client types, not a claim of universal runtime schema enforcement."

@@ -107,7 +107,7 @@ number of ordinary graph nodes.
 
 ## Explicit rule inference
 
-The repository source includes an experimental InferenceNode for two bounded
+The repository source includes an experimental InferenceNode for registered
 rule forms. For example, ingest “The elephant is bigger than the donkey” and
 “The donkey is bigger than the cat,” then ask “Infer whether the elephant is
 bigger than the cat.” A successful result uses `derived_inference` and includes
@@ -116,6 +116,20 @@ A contradictory premise produces a conflict. Missing support produces a
 nonanswer, and exhausting a resource limit produces a partial result.
 
 Python and HTTP clients can pass an `inference` object with `subject`,
-`relation` (`bigger_than` or `has`), and `object`. Strict Evidence Mode
-refuses this derived-answer route. Induction and causal explanations remain
-design work. [Design and current implementation](inference-node-design.md)
+`relation` (`bigger_than`, `has`, `member_of`, `subclass_of`, `physical_part_of`,
+`physically_contains`, `located_in`, or `requires`), and `object`. Direct supported
+questions also trigger the service. Research/Innovation/Nammade/CrossDomain share
+bounded deduction; combined research defers Nammade's check to its coordinator.
+CrossDomain uses only selected prefixes.
+
+Explicit `Temporal: sources: ...`, `Induction: sources: ...`, and
+`Abduction: sources: ...` commands (or `inference={mode, source_ids}`) select
+structured evidence analysis. They return calculations, estimates or unverified
+hypotheses, not rule proofs. Strict Evidence Mode refuses all these derived-answer
+routes. The graph adapter remains for compatibility; public standalone inference
+is owned by `execute_inference`, not a second graph execution.
+Ordinary questions fall back to existing answering on unresolved inference; in
+strict mode they retain quotation answering. Unsupported explicit commands ask
+for clarification. `classifier.specialist_plan` provides one record of specialist
+seeds and precedence; execution still applies authorization and session controls.
+[Formats and examples](../inference-guide.md).

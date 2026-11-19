@@ -183,6 +183,7 @@ def execute_nammade(
     budget: ResourceBudget | None = None,
     _source_snapshot=None,
     _snapshot_only: bool = False,
+    _defer_inference: bool = False,
 ) -> dict[str, Any]:
     from cpu_llm.invention import _snapshot
     from cpu_llm.pipeline import _caller_for
@@ -326,4 +327,6 @@ def execute_nammade(
     response["reply"].update(answer_evidence=evidence, answer_status=response["answer_status"],
                              verification_scope=response["verification_scope"])
     from cpu_llm.inference import attach_inference
+    if _defer_inference:
+        return response
     return attach_inference(response, query, rows, snapshot=when, scope=allowed)

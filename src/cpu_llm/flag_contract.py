@@ -61,9 +61,9 @@ FLAG_BINDINGS += (FlagBinding('request.strict_evidence', 'API, header, prompt ma
     ('strict_evidence.answer', 'document_snapshot', 'document_render'), 'pre_graph',
     'Enable wins; bypass normal graph and learned generation; bounded evidence quotes, exact arithmetic or abstention.',
     '[strict-evidence] followed by a newline'),)
-FLAG_BINDINGS += (FlagBinding('request.inference', 'explicit Infer whether command or validated API request',
+FLAG_BINDINGS += (FlagBinding('request.inference', 'supported direct question, explicit inference command, or validated API request',
     ('inference',), 'core_graph',
-    'Bounded source-grounded deduction with independently replayed proof; strict quotation bypasses.',
+    'Registered rule deduction or opt-in structured temporal, inductive, and abductive analysis; strict mode refuses derived output. Research shares prepared deduction.',
     'Infer whether the elephant is bigger than the cat.'),)
 FLAG_BINDINGS += (FlagBinding('request.small_talk', 'built-in default, API boolean, or operator disable',
     ('conversation.reply',), 'pre_graph',

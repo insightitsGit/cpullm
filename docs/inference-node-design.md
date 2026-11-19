@@ -1,7 +1,10 @@
 # InferenceNode architecture and implementation design
 
-Version 0.2, November 18, 2026. Status proposed. Supersedes the supplied v0.1
-sketch. Implementation and verification are pending.
+Version 0.3, November 18, 2026. Status: bounded source implementation available.
+The original proposal below provides historical design context; the current
+implemented subset and remaining boundaries are tracked in
+[the expansion specification](inference-expansion-implementation-spec.md) and
+[the source user guide](../inference-guide.md). This is not a general reasoner.
 
 ## Purpose
 
@@ -11,7 +14,7 @@ premises and rules, scoped counts, or qualified candidate explanations.
 
 ## Existing implementation and reuse
 
-The main graph in `src/cpu_llm/pipeline.py::_compile` registers 27 nodes.
+Before InferenceNode, `src/cpu_llm/pipeline.py::_compile` registered 27 nodes.
 It has source span, thinking, grammar and audit stages, but no single
 source-span/conflict-review node matching the original proposal.
 `semantic.py` defines AnswerRequest, AnswerDecision and ProofSpan.
@@ -202,7 +205,7 @@ Define the first aggregation population manifest adapter and causal rule
 schema before enabling those modes. No schema migration is justified until
 the existing storage and source version contracts have been inspected.
 
-## Initial implementation
+## Initial implementation (historical baseline)
 
 The experimental deductive service is implemented in `cpu_llm.inference`.
 The versioned built-in registry supports `bigger_than.transitive.v1` and
@@ -229,11 +232,14 @@ A hop is a rule application above its deepest premise. Direct facts have depth
 zero. The API caps predicates at 256, generated states at 1,024 and pair
 comparisons at 100,000. Budget exhaustion returns partial. A hop-limited
 nonanswer explicitly describes the bounded search. There is no source or
-inference cache.
+inference cache in that baseline. The expansion now uses request-local prepared
+facts, source digests and bounded closure caches; there is no cross-request cache.
 
-Inductive population manifests, causal candidate explanations, user-managed
-rule registries, automatic question classification and strict derived-answer
-policies remain pending. The implementation does not enable these modes.
+The baseline did not enable statistical analysis or broader explanation
+comparison. The expansion now supports opt-in structured Bernoulli analysis and
+declared explanation alternatives, plus supported question classification.
+Population completeness guarantees, general causal reasoning, user-managed rule
+registries and strict derived-answer policies remain outside the implementation.
 
 ## Validation recorded for the initial implementation
 
@@ -249,7 +255,8 @@ nonanswer, and an ordinary cited color lookup. A restricted caller could not
 complete the ordering chain, and adding an explicit negative premise changed
 the result to conflict. Local results are in
 `build/inference-live/results.json`. This validates the implemented subset;
-the remaining modes and the complete repository suite remain release gates.
+the later expansion is verified separately below and in the implementation
+tracker. The complete repository suite was not run for that initial validation.
 
 ## Research integration
 

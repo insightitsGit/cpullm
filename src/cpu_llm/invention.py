@@ -233,7 +233,8 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
     with ThreadPoolExecutor(max_workers=2, thread_name_prefix="cpu-llm-research") as pool:
         hypotheses = pool.submit(hypothesis_options, seed, rows)
         scan = pool.submit(execute_nammade, app, message, seed, caller=caller, as_of=as_of,
-                           kappa=nammade_kappa, _source_snapshot=(rows, when), _snapshot_only=True)
+                           kappa=nammade_kappa, _source_snapshot=(rows, when), _snapshot_only=True,
+                           _defer_inference=True)
         response = _innovation_options(app, seed, rows, when, receipt, result)
         options = hypotheses.result()
         diagnostic = scan.result()

@@ -217,7 +217,7 @@ def test_crossdomin_requires_two_authorized_domains_and_matching_conventions():
     app.index.strict_source_rows.return_value = (rows, 123)
     prompt = 'CrossDomain: Casas-Ibarra.'
     result = app.ask(prompt)
-    assert result['routing']['post_stages'] == ['crossdomin']
+    assert result['routing']['post_stages'] == ['crossdomin', 'inference']
     [join] = result['invention']['joins']
     assert [p['domain'] for p in join['premises']] == ['physics', 'mathematics']
     assert result['invention']['check']['passed']
@@ -283,9 +283,9 @@ def test_cross_domain_checks_a_prediction_against_an_experimental_bound():
     result = ask()
     [proof] = result['invention']['joins']
     assert proof['outcome'] == 'within_bound'
-    assert result['routing']['post_stages'] == ['crossdomin', 'constraint_check']
+    assert result['routing']['post_stages'] == ['crossdomin', 'constraint_check', 'inference']
     direct = ask('Constraint Check')
-    assert direct['routing']['post_stages'] == ['constraint_check']
+    assert direct['routing']['post_stages'] == ['constraint_check', 'inference']
     assert direct['invention']['joins'] == [proof]
     assert proof['normalized_intervals'][0]['upper'] == '7/250'
     assert len(proof['premises']) == 3

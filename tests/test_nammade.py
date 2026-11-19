@@ -23,6 +23,17 @@ from cpu_llm.nammade.types import FrontierStatus
 from cpu_llm.pipeline import Appliance
 
 
+def test_combined_research_prepares_inference_once_without_duplicate_sections():
+    import cpu_llm.inference as module
+    from unittest.mock import patch
+    app = appliance(['The elephant is bigger than the donkey.', 'The donkey is bigger than the cat.'])
+    with patch.object(module, 'attach_inference', wraps=module.attach_inference) as attach, \
+         patch.object(module, '_extracted', wraps=module._extracted) as extract:
+        response = app.ask('Propose a testable hypothesis about elephant.')
+    assert attach.call_count == extract.call_count == 1
+    assert response['reply']['text'].count('Rule inference (') == 1
+
+
 @pytest.mark.parametrize('prompt', ['Nammade: elephant', 'Invent a new concept from elephant',
                                   'Propose a testable hypothesis about elephant.'])
 def test_research_routes_consume_grounded_inference(prompt):

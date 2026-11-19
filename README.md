@@ -23,6 +23,11 @@ Numerical results on the separate constraint-check route stay conditional on
 the selected model and the supplied constraints.
 
 **Latest release** [CPU-LLM 1.14.0 on PyPI](https://pypi.org/project/cpu-llm/1.14.0/).
+**Repository additions:** the inference expansion documented below is newer
+than that release. Install this checkout to use the expanded deduction,
+temporal, statistical and explanation-comparison APIs; installing the published
+1.14.0 package alone does not include them. No new PyPI version is published by
+these repository changes.
 Author **Amin Parva, Independent Engineer**.
 
 Individuals and small teams can use CPU-LLM free of charge under Apache 2.0.
@@ -71,18 +76,28 @@ mode has different verification limits, including optional learned producers.
 
 ## Core capabilities
 
-### Experimental rule inference
+### Experimental inference: proofs, calculations and hypotheses
+
+These are different result contracts: deduction returns source-bound rule
+proofs; temporal analysis returns date calculations; induction returns statistical
+estimates; abduction returns unverified explanatory alternatives. None guarantees
+that an incorrect source is true. The structured modes below require explicitly
+selected evidence records; they do not automatically activate during ordinary chat.
 
 Innovation, hypothesis/research requests, and Nammade automatically check
 applicable registered inference rules on their authorized source snapshot.
 `research_inference.receipts` contains replayable proofs; `research_methods.inference`
 records the outcome. These checks do not validate or promote speculative proposals.
-Only the supported ordering and universal-possession rules apply; other scientific
-relationships return `no_applicable_rule`. At most eight topic-related deductions
+Registered ordering, taxonomy, physical-part/location, possession and class-requirement
+rules apply; other scientific relationships return `no_applicable_rule`. At most eight topic-related deductions
 are checked per response, with resource limits recorded in `complete`.
 Direct questions such as `Is elephant bigger than cat?` and
-`Does Kestrel have radio?` also route to inference. Strict evidence mode retains
-its existing restrictions.
+`Does Kestrel have radio?` can use a supported deduction. When it cannot settle
+an ordinary question, normal answering continues; strict questions retain their
+quotation route. Strict evidence mode retains
+its existing restrictions. CrossDomain also checks applicable rules, using only
+the selected KB prefixes. Combined research prepares deduction once and shares
+its facts and bounded closures rather than running it separately in each method.
 
 For example, after ingesting the two ordering premises below, asking
 `Nammade: elephant` or `Propose a testable hypothesis about elephant.` also
@@ -91,7 +106,7 @@ stores its full proof in `research_inference.receipts`. If no supported rule
 applies, the other research methods continue with `no_applicable_rule` recorded.
 
 The current repository source adds InferenceNode as graph stage 28. Its
-explicit deduction route reads an authorized snapshot and checks two supported
+explicit deduction route reads an authorized snapshot and checks registered
 rule forms. Ingest “The elephant is bigger than the donkey” and “The donkey is
 bigger than the cat,” then ask:
 
@@ -103,9 +118,30 @@ joins are also supported, such as “The Kestrel is a rescue cutter” plus
 “Every rescue cutter has a radio.”
 
 An `inference` object in Python or HTTP can specify `subject`, `relation`
-(`bigger_than` or `has`), `object`, and resource limits. Strict Evidence Mode
-refuses this derived-answer route. Inductive aggregation and causal candidate
-explanations remain proposed.
+(`bigger_than`, `has`, `member_of`, `subclass_of`, `physical_part_of`,
+`physically_contains`, `located_in`, or `requires`), `object`, and resource limits.
+For example, “Kestrel is a cutter,” “every cutter is a vessel,” and “every vessel
+requires a radio” support `Does Kestrel require a radio?` Generic relatedness,
+class averages and arbitrary conditional prose do not become trusted rules.
+
+The source version also supports opt-in analyses of selected JSON evidence chunks:
+
+```python
+# First ingest the two complete JSON records shown in the inference guide.
+result = app.ask(
+    "Compare the two dated intervals.",
+    inference={"mode": "temporal", "source_ids": ["dates-p0000", "dates-p0001"]},
+)
+```
+
+`temporal` compares explicit calendar-date intervals; `inductive` estimates a
+Bernoulli proportion with a 95% Wilson interval; `abductive` uses the existing
+AbductiveBridge to compare explicitly declared explanations and their tests.
+The last two return statistical estimates or **unverified hypotheses**, never
+deductive proof. They require structured records and are not enabled by ordinary
+chat. Strict Evidence Mode refuses all these derived-answer routes.
+[Record formats, triggers and examples](inference-guide.md)
+[Implementation tracker](docs/inference-expansion-implementation-spec.md)
 [Inference design and implementation status](docs/inference-node-design.md)
 
 ### Evidence and research workspace
@@ -409,7 +445,8 @@ This produces bounded new wording, not arbitrary creative prose or new facts.
 
 ### Six-signal retrieval and explicit routing
 
-The ordinary pipeline registers 27 graph nodes, including **dense, relational,
+The repository pipeline registers 28 graph stages (27 in the published 1.14.0
+baseline), including InferenceNode and **dense, relational,
 disentangled, hyperbolic, identity and causal** retrieval signals backed by
 PostgreSQL/pgvector. **Only dense and identity projection heads are trained and
 bundled**; the other channels use their implemented signals or symbolic paths.
@@ -424,6 +461,8 @@ See the [architecture](docs/current-design.md) and [prompt-to-node mapping](docs
 - `Calculate 17 times 24.` requests arithmetic. Use `app.ask(question, discover=True)` to request discovery after the ordinary reply.
 - `Write a detailed report about Helios.` selects the document workflow. `Invention: Leptogenesis.` selects invention. `Nammade: dark matter.` runs the standalone scan. `Investigate dark matter.` runs invention, source hypotheses, the Nammade comparison, and then the abductive bridge.
 - `Research Casas-Ibarra using KBs: physics, math.` selects CrossDomain. `Constraint Check: Leptogenesis using KBs: physics, math, experiment.` requests the interval comparison directly.
+- `Infer whether Kestrel requires a radio.` explicitly requests registered deduction. Supported ordinary questions can use a deduction when it settles the relationship; otherwise normal answering continues. Strict ordinary questions keep their quotation route.
+- `Temporal: sources: dates-p0000, dates-p0001`, `Induction: sources: trial-p0000, trial-p0001`, and `Abduction: sources: research-p0000, research-p0001, research-p0002` select structured analyses. The referenced chunks must already contain the documented JSON records. These source-only additions are described in the [inference guide](inference-guide.md).
 - `List chunks for notes.pdf.` opens scoped inventory. `Delete chunk notes-p0001.` opens a preview. The deletion API handles confirmation.
 
 Inspect `routing.executed_nodes` for graph execution and `routing.post_stages`
@@ -666,9 +705,23 @@ python -m pip check
 python -c "import cpu_llm; print(cpu_llm.__version__)"
 ```
 
-Before publication, install the supplied wheel instead of the version from PyPI.
-To build from a checkout, run `python -m pip install build` and then
+For the newer repository inference features, install from the repository root:
+
+```shell
+python -m pip install -e .
+python -m pip check
+```
+
+This uses the checked-out source; the version string may still match the latest
+published release. To build a distribution from a checkout, run
+`python -m pip install build` and then
 `python -m build --outdir dist/1.14.0`.
+
+The inference expansion passed **304 focused regression tests** and **8 synthetic
+PostgreSQL smoke cases**. These are component/integration checks, not a full-suite
+or enterprise accuracy score. See the [implementation tracker](docs/inference-expansion-implementation-spec.md)
+for scope and recorded results, and run `python examples/inference_expansion_smoke.py`
+after configuring your disposable pgvector database to reproduce the smoke cases.
 
 Document queries require PostgreSQL/pgvector and the pretrained
 `sentence-transformers/all-mpnet-base-v2` encoder assets. The trained projection

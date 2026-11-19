@@ -451,6 +451,44 @@ _MAX_RELATION_OPTIONS = 8
 class AbductiveBridgeNode:
     """Compile relational readings from ranked Nammade comparisons, or abstain."""
 
+    def compare_explanations(self, records: list[dict]) -> dict:
+        """Compare explicitly declared alternatives without asserting causation.
+
+        Coverage is supplied in structured records; it is not inferred from
+        similarity. Existing domain-specific Nammade bridge behavior is unchanged.
+        """
+        observations = [r for r in records if r.get('kind') == 'observation']
+        alternatives = [r for r in records if r.get('kind') == 'explanation']
+        if len(observations) + len(alternatives) != len(records) or not observations or len(alternatives) < 2:
+            raise ValueError('Abduction requires observations and at least two explicit explanation alternatives.')
+        identifiers = [r.get('id') for r in records]
+        if any(not isinstance(v, str) or not v for v in identifiers) or len(set(identifiers)) != len(identifiers):
+            raise ValueError('Explanation and observation IDs must be distinct nonempty strings.')
+        observed = {r['id'] for r in observations}
+        if any(not isinstance(r.get('description'), str) or not r['description'].strip() for r in observations):
+            raise ValueError('Observations need descriptions.')
+        candidates = []
+        for record in alternatives:
+            explains, contradicts = record.get('explains'), record.get('contradicts')
+            if any(not isinstance(v, list) or any(not isinstance(x, str) for x in v)
+                   for v in (explains, contradicts)):
+                raise ValueError('Alternatives require explains and contradicts observation-ID lists.')
+            if (not (set(explains) | set(contradicts)) <= observed or set(explains) & set(contradicts)
+                    or len(set(explains)) != len(explains) or len(set(contradicts)) != len(contradicts)):
+                raise ValueError('Coverage must reference distinct, consistent observed IDs.')
+            if any(not isinstance(record.get(key), str) or not record[key].strip() for key in ('description', 'test')):
+                raise ValueError('Each alternative requires a description and distinguishing test.')
+            candidates.append(dict(id=record['id'], description=record['description'],
+                explains=sorted(explains), contradicts=sorted(contradicts),
+                unexplained=sorted(observed - set(explains) - set(contradicts)),
+                test=record['test'], claim_status='UNVERIFIED_HYPOTHESIS'))
+        if len({item['test'].strip().casefold() for item in candidates}) < 2:
+            raise ValueError('Alternatives need distinct distinguishing tests.')
+        candidates.sort(key=lambda item: (len(item['contradicts']), -len(item['explains']), item['id']))
+        return dict(verdict='HYPOTHESES', claim_status='UNVERIFIED_HYPOTHESIS', candidates=candidates,
+                    policy='Declared contradiction count, then declared coverage, then ID; no probability score',
+                    limitation='Declared coverage is not independently established; experiments must test alternatives.')
+
     def execute(self, query: str, comparisons: list[dict]) -> AbductiveBridgeResult:
         result, _bridges, _compatible = self.collect(query, comparisons)
         return result

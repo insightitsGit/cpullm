@@ -659,10 +659,31 @@ class Appliance:
         enabled = enabled or getattr(self, 'strict_evidence', False)
         from cpu_llm.inference import request_from, execute_inference
 
-        inference_request = request_from(content, inference)
+        explicit_inference = inference is not None or bool(re.match(r'^(?:please\s+)?infer whether\b', content.strip(), re.I))
+        try:
+            inference_request = request_from(content, inference)
+        except ValueError as exc:
+            if inference is not None:
+                raise
+            if self.guard.check(raw_message).decision != 'allow':
+                return dict(status='blocked', answer_status='blocked', reply=dict(text='Request blocked.'))
+            return dict(status='needs_clarification', answer_status='needs_clarification',
+                        needs_clarification=True, reply=dict(text=str(exc)), answer_evidence=[], audit_passed=False)
+        from cpu_llm.evidence_analysis import EvidenceAnalysisRequest
+        explicit_inference = explicit_inference or isinstance(inference_request, EvidenceAnalysisRequest)
+        # Ordinary questions keep their strict quotation and specialist routes.
+        if not explicit_inference and (enabled or any((invent, nammade, imagine, math, finance))
+                or cycle_search is not None or any(value is not None for value in
+                    (payment, authority, objective, hypothesis, causal_graph))):
+            inference_request = None
         if inference_request is not None:
-            return execute_inference(self, raw_message, inference_request, caller=caller,
-                                     as_of=as_of, strict=enabled)
+            if any((invent, nammade, imagine, math, finance)) or cycle_search is not None or any(
+                    value is not None for value in (payment, authority, objective, hypothesis, causal_graph)):
+                raise ValueError('Submit standalone inference and other specialist requests separately; research integrates deduction automatically.')
+            inferred = execute_inference(self, raw_message, inference_request, caller=caller,
+                                         as_of=as_of, strict=enabled)
+            if explicit_inference or inferred['answer_status'] in {'derived_inference', 'conflicting', 'contradicted', 'blocked'}:
+                return inferred
         inventory = re.fullmatch(
             r'(?:how many chunks(?: (?:do we have|are there))?|(?:please )?(?:count|list) chunks)'
             r'(?:\s+(?:in|for|from|related to)\s+(.+?))?[.?!]?', content.strip(), re.I)
@@ -702,7 +723,7 @@ class Appliance:
                 style = tone_control['tone']
         from cpu_llm.invention import (
             continue_invention, execute_invention, finish_invention_response,
-            invention_seed, invention_session, remember_invention,
+            invention_session, remember_invention,
         )
         from cpu_llm.output_rendering import extract_layout
         from cpu_llm.request_planner import _BOUNDARY, _mask
@@ -714,13 +735,15 @@ class Appliance:
             from cpu_llm.nammade.channel import require_kappa
             require_kappa(nammade_kappa)
         invention_query = extract_layout(content)['content_query']
-        from cpu_llm.cross_domain import cross_domain_seed, execute_cross_domain
-        from cpu_llm.nammade import execute_nammade, nammade_seed
-        from cpu_llm.nammade.execute import attach_research_scan, research_scan_seed
+        from cpu_llm.cross_domain import execute_cross_domain
+        from cpu_llm.nammade import execute_nammade
+        from cpu_llm.nammade.execute import attach_research_scan
 
-        cross_seed = cross_domain_seed(invention_query)
-        seed = invention_seed(invention_query, forced=invent)
-        nammade_query = nammade_seed(invention_query, forced=nammade)
+        from cpu_llm.classifier import specialist_plan
+        specialist_classification = specialist_plan(invention_query, invent=invent, nammade=nammade)
+        cross_seed = specialist_classification['seeds']['crossdomin']
+        seed = specialist_classification['seeds']['invention']
+        nammade_query = specialist_classification['seeds']['nammade']
         stiffness = 1.0 if nammade_kappa is None else nammade_kappa
         key = invention_session(self, caller, session_id, as_of)
         specialist = cycle_search is not None or any(value is not None for value in (
@@ -761,7 +784,7 @@ class Appliance:
                 from cpu_llm.response_policy import classify_response_request
                 result['response_plan'] = classify_response_request(content)
                 return finish_invention_response(result)
-            research_query = research_scan_seed(invention_query)
+            research_query = specialist_classification['seeds']['research']
             if (research_query and not enabled and not specialist and not any((math, finance, imagine))
                     and not _BOUNDARY.search(_mask(invention_query))):
                 result = execute_invention(self, raw_message, research_query, caller=caller,
@@ -1878,9 +1901,19 @@ def _after_reply(state: dict[str, Any]) -> str:
 
 def _channel(appliance: Appliance, name: str):
     def node(state: dict[str, Any]) -> dict[str, Any]:
-        passages = _passages(appliance, state)
+        turn = appliance._turn if appliance._turn is not None else {}
+        # Related rows are stable across the six channel stages. Cache only
+        # inside this turn; retrieval changes invalidate the preparation.
+        signature = tuple((item.get('chunk_id'), item.get('chunk_text'), item.get('score'))
+                          for item in state.get('related') or [])
+        cached = turn.get('_channel_inputs')
+        if cached is None or cached[0] != signature:
+            cached = (signature, _passages(appliance, state), _identity_anchor(appliance))
+            turn['_channel_inputs'] = cached
+            appliance._turn = turn
+        passages = cached[1]
         flags = appliance.index.pipeline.enabled_channels
-        anchor_set, anchor = _identity_anchor(appliance)
+        anchor_set, anchor = cached[2]
         propositions = {}
         if name == "relational":
             propositions = {

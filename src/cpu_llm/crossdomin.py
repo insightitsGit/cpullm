@@ -24,6 +24,8 @@ def execute_cross_domain(app, message, seed, *, caller=None, as_of=None, strict=
     from cpu_llm.answerability import _sentences
     from cpu_llm.pipeline import _caller_for
 
+    inference_snapshot = None
+
     def result(status, body, *, constraint=False, **receipt):
         response = dict(message=message, tenant_id=app.tenant_id, status=status, answer_status=status,
                         answer=None, answer_evidence=[], audit_passed=False, reply=dict(text=body, body=body),
@@ -35,6 +37,10 @@ def execute_cross_domain(app, message, seed, *, caller=None, as_of=None, strict=
             if constraint and not constraint_only:
                 stages.append('constraint_check')
             response['routing'] = dict(post_stages=stages)
+        if inference_snapshot is not None:
+            from cpu_llm.inference import attach_inference
+            selected_rows, snapshot_time = inference_snapshot
+            return attach_inference(response, topic, selected_rows, snapshot=snapshot_time, scope=allowed)
         return response
 
     context = _caller_for(app, caller)
@@ -57,6 +63,11 @@ def execute_cross_domain(app, message, seed, *, caller=None, as_of=None, strict=
         rows, when = _snapshot(app, allowed, as_of)
     except (RuntimeError, ValueError, psycopg.Error):
         return result('partial', 'The CrossDomain source snapshot is unavailable.', joins=[])
+
+    selected = [row for row in rows if
+                ('mathematics' if row['document_id'].split('-', 1)[0].casefold() == 'math'
+                 else row['document_id'].split('-', 1)[0].casefold()) in requested]
+    inference_snapshot = (selected, when)
 
     from cpu_llm.cross_domain_claims import compare_claims
 
