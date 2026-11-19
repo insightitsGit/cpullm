@@ -201,3 +201,52 @@ resource limits and strict-derived-answer policy before implementation.
 Define the first aggregation population manifest adapter and causal rule
 schema before enabling those modes. No schema migration is justified until
 the existing storage and source version contracts have been inspected.
+
+## Initial implementation
+
+The experimental deductive service is implemented in `cpu_llm.inference`.
+The versioned built-in registry supports `bigger_than.transitive.v1` and
+`membership.possession.v1`. Explicit source clauses are the only predicate
+input. The request cannot register rules or supply arbitrary source triples.
+
+Use `Infer whether the elephant is bigger than the cat.`, or pass
+`inference={"subject": "elephant", "relation": "bigger_than", "object": "cat"}`
+to `ask` or the HTTP ask endpoint. The caller's authorized temporal snapshot
+is read once. The result includes an inference receipt with a proof DAG,
+input digest, rule versions and audit hash. Successful assertions use
+`derived_inference`, with leaf citations in the normal evidence panel.
+Strict Evidence Mode returns unsupported for this operation.
+
+Graph node 28 is registered between spans and think. Its adapter accepts only
+a validated internal request and reuses the service's deduction engine over
+the graph's permitted passages. Ordinary graph requests leave the stage idle.
+The explicit public route uses a full authorized snapshot before the ordinary
+graph, so top-k truncation cannot silently define its proof population. Its
+receipt records inference as a dispatch stage. This is an explicit routing
+choice for the first implementation.
+
+A hop is a rule application above its deepest premise. Direct facts have depth
+zero. The API caps predicates at 256, generated states at 1,024 and pair
+comparisons at 100,000. Budget exhaustion returns partial. A hop-limited
+nonanswer explicitly describes the bounded search. There is no source or
+inference cache.
+
+Inductive population manifests, causal candidate explanations, user-managed
+rule registries, automatic question classification and strict derived-answer
+policies remain pending. The implementation does not enable these modes.
+
+## Validation recorded for the initial implementation
+
+170 focused tests passed across inference, flag routing, existing answer
+selection, attribute repair, access-related design contracts, research and
+PrismLexicon. The inference regressions include proof tampering, document
+changes, input ordering, scope and snapshot isolation, contradictory premises,
+unsupported qualifiers, and resource caps.
+
+A disposable PostgreSQL/pgvector run ingested five synthetic source chunks.
+It returned two cited deductions (ordering and membership), a missing-support
+nonanswer, and an ordinary cited color lookup. A restricted caller could not
+complete the ordering chain, and adding an explicit negative premise changed
+the result to conflict. Local results are in
+`build/inference-live/results.json`. This validates the implemented subset;
+the remaining modes and the complete repository suite remain release gates.

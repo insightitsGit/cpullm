@@ -104,3 +104,18 @@ order and preserves all six channel receipts; document requests share the same
 authorized snapshot. It is disabled by a strict request/operator floor. See
 [usage and limits](research-cycle-user-guide.md). New flags do not change the
 number of ordinary graph nodes.
+
+## Explicit rule inference
+
+The repository source includes an experimental InferenceNode for two bounded
+rule forms. For example, ingest “The elephant is bigger than the donkey” and
+“The donkey is bigger than the cat,” then ask “Infer whether the elephant is
+bigger than the cat.” A successful result uses `derived_inference` and includes
+an independently replayed proof with both source spans and the versioned rule.
+A contradictory premise produces a conflict. Missing support produces a
+nonanswer, and exhausting a resource limit produces a partial result.
+
+Python and HTTP clients can pass an `inference` object with `subject`,
+`relation` (`bigger_than` or `has`), and `object`. Strict Evidence Mode
+refuses this derived-answer route. Induction and causal explanations remain
+design work. [Design and current implementation](inference-node-design.md)

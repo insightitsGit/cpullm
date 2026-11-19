@@ -14,11 +14,16 @@ with supported model adapters.
 
 Use **strict evidence mode** when you need exact source quotations, recognized
 calculations, or a clear unsupported result. Use the **research and invention
-routes** to explore relationships, join cited premises across knowledge bases,
-or formulate hypotheses. Hypotheses carry their own label, and numerical results
-are conditional on the selected model and supplied constraints.
+routes** as a deterministic literature-synthesis and hypothesis-generation
+tool: they compare authorized passages, separate bounds that cannot share one
+constant, and return each reading as a labeled option with a falsification
+check. A hypothesis from those routes stays `UNVERIFIED_HYPOTHESIS`. The
+routes do not run that check against a dataset and do not promote the claim.
+Numerical results on the separate constraint-check route stay conditional on
+the selected model and the supplied constraints.
 
-**This release: 1.13.1.** Author: **Amin Parva, Independent Engineer**.
+**This release** `1.14.0`.
+Author **Amin Parva, Independent Engineer**.
 
 Individuals and small teams can use CPU-LLM free of charge under Apache 2.0.
 Enterprise teams seeking a supported pilot, deployment, integration, or ongoing
@@ -39,10 +44,12 @@ Question + authorized knowledge base
   |
   +-- Strict evidence --> Exact quotes, deterministic checks, or unsupported
   |
-  +-- Research ---------> Retrieve evidence and assemble cited responses
+  +-- Research ---------> Invention, source hypotheses, and a Nammade comparison
        |
        +-- CrossDomain --> Join cited premises across selected KBs
-       +-- Invention ---> Propose hypotheses and run supported model scans
+       +-- Invention ---> Propose hypotheses, or cite stored sentences
+       +-- Nammade -----> Compare authorized passages and quote excerpts
+       +-- Abductive ---> Unverified hypotheses and shared-constant checks
 ```
 
 ## Verification contract compared with generative RAG
@@ -64,10 +71,164 @@ mode has different verification limits, including optional learned producers.
 
 ## Core capabilities
 
-### Recent source changes
+### Evidence and research workspace
 
-These updates are in the repository. Check the installed package version before
-using them in a deployment.
+Completed replies can include `evidence_panel` with expandable source excerpts
+and calculation receipts. Research replies can include `research_workspace`
+with the requested assumption, per-option evidence, and the inputs needed to
+execute a numerical test. For supported hypotheses, PrismLexicon's simple
+English setting selects a plain view alongside the technical version.
+
+Applications can run a selected card through `Appliance.run_research_test`
+with a trusted predictor, parameter grid, and sourced limits. The result shows
+which sampled points passed each constraint.
+[Design](https://github.com/insightitsGit/cpullm/blob/main/docs/evidence-research-design.md) · [API and integration](https://github.com/insightitsGit/cpullm/blob/main/docs/evidence-research-spec.md)
+
+### Experimental vocabulary adaptation
+
+PrismLexicon can simplify a small set of context-checked expressions in ordinary
+answers. Enable it with `Appliance(prismlexicon=True)` and request `target_level="A2"`,
+or append “Use simple English.” after a question. The adapter preserves source
+quotations, audit evidence, and underlying research results. It is off by default.
+The pilot uses one plain-language policy for A1, A2, B1, and `auto`. For example,
+“The researchers resided in Oslo prior to the study” becomes “The researchers
+lived in Oslo before the study.” B2, C1, and C2 preserve the current wording
+while the rule set has no approved policies for those levels.
+[PrismLexicon setup and limits](https://github.com/insightitsGit/cpullm/blob/main/docs/prismlexicon.md) ·
+[Recorded level comparison](https://github.com/insightitsGit/cpullm/blob/main/docs/prismlexicon-evaluation.md#recorded-level-comparison)
+
+### Literature synthesis and hypothesis generation
+
+`Research`, `Investigate`, `Invention`, and `Propose a testable hypothesis`
+are the literature and ideation layer of a research workflow. They mine one
+authorized snapshot, compare passages, and formulate grounded options. They
+are not an experimental execution layer. No node in this path fits a curve,
+runs a simulation, or changes a claim from `UNVERIFIED_HYPOTHESIS` into a
+verified result. There is no `VERIFIED_DERIVED` status. `promotion` on the
+abductive bridge stays `blocked`.
+
+Nammade is the comparison step. It reads the question against stored passages
+and quotes the passages that share the topic or pass the dense-core floor.
+The abductive bridge is the gap step. It emits a schema-bound hypothesis only
+when two quoted bounds on one observable have an empty intersection and differ
+on a regime variable already named by those passages or the active ontology.
+The bridge does not call a language model and does not invent a variable.
+Each reading remains its own option, with the source ids and the quoted
+bounds. A passage is eligible when it shares topic words with the question,
+passes the dense-core floor of 0.62, or is an explicit boundary premise.
+Channel labels compare wording. They do not verify a physical law, and they
+are not written into the trained 1024-d tensor.
+
+Use `Nammade: <topic>` for a standalone scan with cited excerpts. The
+structured `nammade` receipt records displacement, residual, density bands,
+polarity bridges, and word relations built only for that scan. A standalone
+scan does not run the bridge.
+
+`Research <topic>`, `Investigate <topic>`, and `Propose a testable hypothesis
+about <topic>` run three methods in parallel against one authorized snapshot.
+The chat reply gives each method its own section, including cases with no candidates.
+After those three finish, the abductive bridge reads the Nammade comparisons.
+
+- **Innovation** looks for new proposals grounded in relationships across
+  source passages. It can offer a research question when it finds relevant
+  excerpts but lacks a typed relationship.
+- **Hypothesis generation** presents source predictions and proposed tests.
+  Supported routes can combine independent premises into a falsifiable test.
+- **Nammade** shows the comparison count and leading cited excerpts. Its
+  diagnostics describe how passages compare under the model.
+- **Abductive bridge** compiles one relational candidate when two compared
+  passages give incompatible bounds on the same observable and differ on a
+  regime variable named in those passages or the active domain ontology.
+  The candidate stays an unverified hypothesis and is not written into the
+  index. A pair that can share one constant becomes its own shared-constant
+  option. When the question already names a model, that premise stays a
+  separate option beside any bridge or shared-constant reading. A passage
+  that already links both regimes supplies no bridge.
+
+The chat reply still opens with the three parallel methods. Hypothesis
+generation lists each reading as its own numbered option. A bridge option
+is labeled as an unverified hypothesis and is not a stored fact. API clients
+can read `research_methods`, `invention.proposals`, `research_options`,
+`nammade.evaluations`, and `abductive_bridge`.
+`research_methods.abductive_bridge` records the status and
+`promotion: blocked`. `Research report`, `Research article`, and
+`Research paper` use the document workflow and can carry Nammade diagnostics.
+Use `nammade=True` in Python or `"nammade": true` over HTTP for a standalone
+scan. A standalone scan does not run the bridge. A bare question that does
+not use `Research`, `Investigate`, `Invention`, or
+`Propose a testable hypothesis` stays on the ordinary route.
+The bridge contract is [the abductive bridge node](https://github.com/insightitsGit/cpullm/blob/main/docs/abductive-bridge-node.md).
+
+#### Example: Turn dark-matter evidence into a test
+
+After indexing the research sources, ask:
+
+> Propose a testable hypothesis about self-interacting dark matter.
+
+In a live PostgreSQL run with 129 indexed chunks, the hypothesis branch
+proposed testing whether **one velocity-dependent model** can explain
+dwarf-galaxy cores and satisfy a cluster-merger constraint using the same
+parameters. The response linked a **0.3–1.5 kpc** core-size range from
+simulations to a **1.25 cm²/g** Bullet Cluster upper bound at **68% confidence**
+under that study's assumptions. [Particle Data Group review, §27.4.2](https://pdg.lbl.gov/2024/reviews/rpp2024-rev-dark-matter.pdf)
+· [Bullet Cluster analysis](https://arxiv.org/abs/0704.0261)
+
+The proposed test fits the model to independent dwarf-galaxy observations,
+accounts for baryonic feedback, and checks whether the same parameters
+satisfy the merger constraint. If no parameter set satisfies both, the
+candidate is ruled out within the tested model and study assumptions.
+
+The separate Nammade scan surfaced both supporting passages for inspection.
+Innovation generated zero new mechanisms in this run. The hypothesis is a
+test plan for an existing model class. A numerical fit remains to be run.
+That option is the core-size joiner: one passage states dwarf-galaxy core
+sizes in kiloparsecs, and another states the Bullet Cluster bound together
+with the mass-peak and galaxy-centroid wording. The abductive bridge is the
+later step described below. A core-size option stays in the list beside any
+bridge or shared-constant option.
+
+#### Example: bridge a bound only when the intervals conflict
+
+A memory snapshot, without the encoder and without PostgreSQL, stored these
+sentences and was asked through `Research …`:
+
+- Self-interacting dark matter simulations require a cross section per mass
+  ≳ 1 cm²/g to form cores in dwarf galaxies.
+- The Bullet Cluster analysis reports an upper bound of 1.25 cm²/g at 68%
+  confidence.
+- A cluster merger sample limits the same observable to < 0.47 cm²/g at 95%
+  confidence. This sentence was added for the second corpus.
+- The boiling point of water is 100 C. That sentence was stored and was not
+  used.
+
+The open question was how self-interacting dark matter can form dwarf-galaxy
+cores without violating the Bullet Cluster merger bound. With only the dwarf
+requirement and the 1.25 cm²/g bound, the reply has one shared-constant
+option: a value between 1 and 1.25 cm²/g can satisfy both. Nammade still
+quotes the two physics sentences.
+
+Adding the 0.47 cm²/g cluster-merger limit adds a separate bridge option.
+Its anchors are the dwarf sentence and the 0.47 sentence. The shared
+observable is `cross_section_per_mass`, the mediating variable is
+`relative_velocity`, and the relation is `inverse_monotonic`. The hypothesis
+text is: cross section per mass decreases as relative velocity increases.
+The claim status stays `UNVERIFIED_HYPOTHESIS`. The same reply also keeps
+shared-constant options for the pairs that still overlap, including the
+dwarf requirement and the 1.25 cm²/g bound.
+
+The closed question already asks whether one velocity-dependent model can
+explain the dwarf cores and satisfy the Bullet Cluster constraints. That
+stated premise is one option, checked against the dwarf sentence and the
+1.25 cm²/g sentence. When the 0.47 cm²/g limit is stored, the bridge option
+and the shared-constant options are listed with it. Each item stays a
+separate option.
+
+The result is an auditable protocol: cited passages, separate options, and a
+check that a later fit or experiment can run. This pipeline stops at that
+protocol. Strict Evidence Mode skips the scan.
+
+
+### Request pipeline improvements introduced in 1.13.1
 
 - **Request handling.** The pipeline can split a shared color question into two
   cited lookups, preserve valid questions with repetitive trailing input within
@@ -222,7 +383,7 @@ See the [architecture](https://github.com/insightitsGit/cpullm/blob/main/docs/cu
 - `What did John eat?` routes to the event-frame node when the classifier recognizes the actor and action. The reply cites the matching source.
 - `Search deeply for apple.` or `app.ask(question, deep=True)` requests the deep-search node. A request for a longer answer changes the response budget.
 - `Calculate 17 times 24.` requests arithmetic. Use `app.ask(question, discover=True)` to request discovery after the ordinary reply.
-- `Write a detailed report about Helios.` selects the document workflow. `Invention: Leptogenesis.` selects invention.
+- `Write a detailed report about Helios.` selects the document workflow. `Invention: Leptogenesis.` selects invention. `Nammade: dark matter.` runs the standalone scan. `Investigate dark matter.` runs invention, source hypotheses, the Nammade comparison, and then the abductive bridge.
 - `Research Casas-Ibarra using KBs: physics, math.` selects CrossDomain. `Constraint Check: Leptogenesis using KBs: physics, math, experiment.` requests the interval comparison directly.
 - `List chunks for notes.pdf.` opens scoped inventory. `Delete chunk notes-p0001.` opens a preview. The deletion API handles confirmation.
 
@@ -257,7 +418,11 @@ python -m pip install -e .
   chunks and proposes new connections to test. Use `invent=True` in Python or
   `"invent": true` in HTTP. “Imagine a story” uses the existing story workflow.
   You can also say `Guess: Fernhouse.`, `Speculate about Fernhouse.`, or
-  `Brainstorm ideas for Fernhouse.` to request hypotheses.
+  `Brainstorm ideas for Fernhouse.` to request hypotheses. If the subject has
+  no typed relationship, the reply still returns a research question when at
+  least two stored sentences contain each subject word. `dark-matter particle`
+  matches a request for `the dark matter particle`. The reply quotes those
+  sentences and does not invent an edge.
 - **Loops inside a document:** `Write a detailed report about Alpha, including
   relationship loops through Alpha.` consumes the discovered paths in a
   Relationship loops section, using the same snapshot as the report.
@@ -457,14 +622,14 @@ Python 3.11+ is required. Release checks used Windows/Python 3.12.10.
 
 ```shell
 python -m pip install --upgrade pip
-python -m pip install "cpu-llm==1.13.1"
+python -m pip install "cpu-llm==1.14.0"
 python -m pip check
 python -c "import cpu_llm; print(cpu_llm.__version__)"
 ```
 
 Before publication, install the supplied wheel instead of the version from PyPI.
 To build from a checkout, run `python -m pip install build` and then
-`python -m build --outdir dist/1.13.1`.
+`python -m build --outdir dist/1.14.0`.
 
 Document queries require PostgreSQL/pgvector and the pretrained
 `sentence-transformers/all-mpnet-base-v2` encoder assets. The trained projection
@@ -605,6 +770,12 @@ for the intended application.
 - [Research planner and explicit cycle exploration](https://github.com/insightitsGit/cpullm/blob/main/docs/research-cycle-user-guide.md).
 - [Invention and CrossDomain](https://github.com/insightitsGit/cpullm/blob/main/docs/taxonomy-invention-spec.md) and
   [numerical constraint evaluator](https://github.com/insightitsGit/cpullm/blob/main/docs/invention-constraint-evaluator-spec.md).
+- [Nammade channel and equilibrium node](https://github.com/insightitsGit/cpullm/blob/main/docs/nammade-channel-equilibrium-node.md).
+  The companion article is the author's
+  [Nammade Continuum, Verified Edition](https://github.com/insightitsGit/cpullm/blob/main/docs/nammade-continuum-verified-edition.md).
+  Saving that article did not run a physics audit.
+- [Abductive bridge node](https://github.com/insightitsGit/cpullm/blob/main/docs/abductive-bridge-node.md). It compiles one
+  unverified relation from Nammade comparisons, or it abstains.
 
 - [1.11.1 release notes](https://github.com/insightitsGit/cpullm/blob/main/docs/releases/1.11.1.md) and [build validation](https://github.com/insightitsGit/cpullm/blob/main/docs/releases/1.11.1-build-validation.md).
 - [Whitepaper](https://www.insightits.com/research-tools/cpu-llm/whitepaper) and [1.11.1 PDF](https://www.insightits.com/assets/whitepapers/cpu-llm-1.11.1-whitepaper.pdf).

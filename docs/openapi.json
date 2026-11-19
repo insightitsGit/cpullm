@@ -582,6 +582,22 @@
             "type": "string",
             "enum": ["off", "auto", "A1", "A2", "B1", "B2", "C1", "C2"],
             "description": "Opt-in display vocabulary policy. Requires the server's --prismlexicon switch."
+          },
+          "inference": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["subject", "relation", "object"],
+            "properties": {
+              "mode": {"const": "deductive"},
+              "subject": {"type": "string"},
+              "relation": {"enum": ["bigger_than", "has"]},
+              "object": {"type": "string"},
+              "max_hops": {"type": "integer", "minimum": 1, "maximum": 10, "default": 4},
+              "max_predicates": {"type": "integer", "minimum": 1, "maximum": 256, "default": 256},
+              "max_states": {"type": "integer", "minimum": 1, "maximum": 1024, "default": 1024},
+              "max_operations": {"type": "integer", "minimum": 1, "maximum": 100000, "default": 100000}
+            },
+            "description": "Experimental bounded deduction using source-bound predicates and built-in versioned rules. Strict Evidence Mode refuses derived inference."
           }
         },
         "description": "Supported request fields. Unknown keys are ignored, including style; pass tone in message text. Current runtime coerces message to a string and enforces strict_evidence/small_talk boolean types; this schema describes recommended client types, not a claim of universal runtime schema enforcement."

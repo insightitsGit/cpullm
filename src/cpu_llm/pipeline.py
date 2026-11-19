@@ -648,6 +648,7 @@ class Appliance:
         nammade: bool = False,
         nammade_kappa: float | None = None,
         target_level: str | None = None,
+        inference: dict | None = None,
     ) -> dict[str, Any]:
         """Separate explicit compound requests; each task uses the full pipeline."""
         from cpu_llm.request_planner import dispatch_request
@@ -656,6 +657,12 @@ class Appliance:
         raw_message = message
         enabled, content = requested(message, strict_evidence)
         enabled = enabled or getattr(self, 'strict_evidence', False)
+        from cpu_llm.inference import request_from, execute_inference
+
+        inference_request = request_from(content, inference)
+        if inference_request is not None:
+            return execute_inference(self, raw_message, inference_request, caller=caller,
+                                     as_of=as_of, strict=enabled)
         inventory = re.fullmatch(
             r'(?:how many chunks(?: (?:do we have|are there))?|(?:please )?(?:count|list) chunks)'
             r'(?:\s+(?:in|for|from|related to)\s+(.+?))?[.?!]?', content.strip(), re.I)
@@ -1493,6 +1500,9 @@ def _compile(appliance: Appliance):
     register("catalog", _catalog(appliance))
     register("detail", _detail)
     register("spans", _spans(appliance))
+    from cpu_llm.inference import graph_inference
+
+    register("inference", graph_inference)
     register("think", _think(appliance))
     register("cognize", _cognize(appliance))
     register("grammar", _grammar(appliance))
@@ -1521,7 +1531,8 @@ def _compile(appliance: Appliance):
     graph.add_edge("causal", "catalog")
     graph.add_edge("catalog", "detail")
     graph.add_edge("detail", "spans")
-    graph.add_edge("spans", "think")
+    graph.add_edge("spans", "inference")
+    graph.add_edge("inference", "think")
     graph.add_edge("think", "cognize")
     graph.add_edge("cognize", "grammar")
     graph.add_edge("grammar", "shine")

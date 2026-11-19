@@ -22,7 +22,7 @@ routes do not run that check against a dataset and do not promote the claim.
 Numerical results on the separate constraint-check route stay conditional on
 the selected model and the supplied constraints.
 
-**Latest release** [CPU-LLM 1.13.1 on PyPI](https://pypi.org/project/cpu-llm/1.13.1/).
+**Latest release** [CPU-LLM 1.14.0 on PyPI](https://pypi.org/project/cpu-llm/1.14.0/).
 Author **Amin Parva, Independent Engineer**.
 
 Individuals and small teams can use CPU-LLM free of charge under Apache 2.0.
@@ -71,6 +71,26 @@ mode has different verification limits, including optional learned producers.
 
 ## Core capabilities
 
+### Experimental rule inference
+
+The current repository source adds InferenceNode as graph stage 28. Its
+explicit deduction route reads an authorized snapshot and checks two supported
+rule forms. Ingest “The elephant is bigger than the donkey” and “The donkey is
+bigger than the cat,” then ask:
+
+> Infer whether the elephant is bigger than the cat.
+
+The result uses `derived_inference` and contains a replayable proof with both
+source passages and the registered transitivity rule. Universal membership
+joins are also supported, such as “The Kestrel is a rescue cutter” plus
+“Every rescue cutter has a radio.”
+
+An `inference` object in Python or HTTP can specify `subject`, `relation`
+(`bigger_than` or `has`), `object`, and resource limits. Strict Evidence Mode
+refuses this derived-answer route. Inductive aggregation and causal candidate
+explanations remain proposed.
+[Inference design and implementation status](docs/inference-node-design.md)
+
 ### Evidence and research workspace
 
 Completed replies can include `evidence_panel` with expandable source excerpts
@@ -99,8 +119,7 @@ while the rule set has no approved policies for those levels.
 
 ### Literature synthesis and hypothesis generation
 
-Available in the repository source. The published 1.13.1 package predates
-this feature.
+Available in CPU-LLM 1.14.0.
 
 `Research`, `Investigate`, `Invention`, and `Propose a testable hypothesis`
 are the literature and ideation layer of a research workflow. They mine one
@@ -231,9 +250,7 @@ check that a later fit or experiment can run. This pipeline stops at that
 protocol. Strict Evidence Mode skips the scan.
 
 
-### What’s new in 1.13.1
-
-Install this release with `python -m pip install "cpu-llm==1.13.1"`.
+### Request pipeline improvements introduced in 1.13.1
 
 - **Request handling.** The pipeline can split a shared color question into two
   cited lookups, preserve valid questions with repetitive trailing input within
@@ -627,14 +644,14 @@ Python 3.11+ is required. Release checks used Windows/Python 3.12.10.
 
 ```shell
 python -m pip install --upgrade pip
-python -m pip install "cpu-llm==1.13.1"
+python -m pip install "cpu-llm==1.14.0"
 python -m pip check
 python -c "import cpu_llm; print(cpu_llm.__version__)"
 ```
 
 Before publication, install the supplied wheel instead of the version from PyPI.
 To build from a checkout, run `python -m pip install build` and then
-`python -m build --outdir dist/1.13.1`.
+`python -m build --outdir dist/1.14.0`.
 
 Document queries require PostgreSQL/pgvector and the pretrained
 `sentence-transformers/all-mpnet-base-v2` encoder assets. The trained projection
