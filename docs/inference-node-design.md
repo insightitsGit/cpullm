@@ -220,9 +220,11 @@ input digest, rule versions and audit hash. Successful assertions use
 `derived_inference`, with leaf citations in the normal evidence panel.
 Strict Evidence Mode returns unsupported for this operation.
 
-Graph node 28 is registered between spans and think. Its adapter accepts only
+In the historical baseline, graph node 28 was registered between spans and think. Its adapter accepted only
 a validated internal request and reuses the service's deduction engine over
-the graph's permitted passages. Ordinary graph requests leave the stage idle.
+the graph's permitted passages. Ordinary graph requests left the stage idle.
+The subsequent audit removed that unused adapter and registration. The current
+core graph has 27 stages, and inference runs through the shared service.
 The explicit public route uses a full authorized snapshot before the ordinary
 graph, so top-k truncation cannot silently define its proof population. Its
 receipt records inference as a dispatch stage. This is an explicit routing

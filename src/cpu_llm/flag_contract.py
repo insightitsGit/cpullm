@@ -62,8 +62,8 @@ FLAG_BINDINGS += (FlagBinding('request.strict_evidence', 'API, header, prompt ma
     'Enable wins; bypass normal graph and learned generation; bounded evidence quotes, exact arithmetic or abstention.',
     '[strict-evidence] followed by a newline'),)
 FLAG_BINDINGS += (FlagBinding('request.inference', 'supported direct question, explicit inference command, or validated API request',
-    ('inference',), 'core_graph',
-    'Registered rule deduction or opt-in structured temporal, inductive, and abductive analysis; strict mode refuses derived output. Research shares prepared deduction.',
+    ('inference',), 'service',
+    'Explicit requests use an authorized snapshot; implicit receipts use only retrieved evidence after ordinary answering. Research shares prepared deduction. Strict mode refuses explicit derived output.',
     'Infer whether the elephant is bigger than the cat.'),)
 FLAG_BINDINGS += (FlagBinding('request.small_talk', 'built-in default, API boolean, or operator disable',
     ('conversation.reply',), 'pre_graph',
@@ -163,7 +163,7 @@ def validate_graph_consumers(nodes):
                 'document_plan', 'document_snapshot', 'document_coverage', 'document_render',
                 'research_plan', 'cycle_snapshot', 'cycle_explore', 'cycle_compose', 'cycle_verify', 'taxonomy_invention',
                 'document_compose', 'document_inverse_verify', 'crossdomin', 'constraint_check',
-                'chunk_inventory', 'chunk_delete', 'nammade_equilibrium'}
+                'chunk_inventory', 'chunk_delete', 'nammade_equilibrium', 'inference'}
     expected = {node for binding in FLAG_BINDINGS for node in binding.consumers} - external
     if missing := expected - set(nodes):
         raise ValueError('Flag consumers missing from graph: ' + ', '.join(sorted(missing)))

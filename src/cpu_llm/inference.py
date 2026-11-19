@@ -57,6 +57,7 @@ def _applications(left, right=None):
 
 _ENTITY = r"[A-Za-z][A-Za-z0-9 '’-]{0,99}?"
 _COMMAND = re.compile(r"^(?:please\s+)?infer whether\s+(.+?)\s*[.?]?$", re.I)
+_UNSAFE_ENTITY = re.compile(r"\b(?:and|or|in|at|during|with|without|from|on|under|over|after|before|while|because|but)\b|,", re.I)
 _QUALIFIED = re.compile(r"\b(?:if|unless|may|might|could|would|should|allegedly|some|average|most|never)\b", re.I)
 
 
@@ -92,6 +93,8 @@ class InferenceRequest:
             object.__setattr__(self, label, name(value))
             if not getattr(self, label):
                 raise ValueError("Inference entities cannot be empty.")
+            if _UNSAFE_ENTITY.search(value):
+                raise ValueError("Inference requires atomic entity names without trailing clauses.")
             if _QUALIFIED.search(value) or re.match(r"^(?:every|all|no)\b", value, re.I):
                 raise ValueError("Inference requires individual entities.")
         for field, ceiling in (("max_hops", 10), ("max_predicates", 256), ("max_states", 1024),
@@ -190,6 +193,7 @@ def _extracted(rows):
     found = []
     for row in sorted(rows, key=lambda item: item["document_id"]):
         chunk = row["chunk_text"]
+        chunk_hash = hashlib.sha256(chunk.encode("utf8")).hexdigest()
         cursor = 0
         for sentence in _sentences(chunk):
             start = chunk.find(sentence, cursor)
@@ -217,11 +221,13 @@ def _extracted(rows):
             ):
                 match = re.fullmatch(pattern, text, re.I)
                 if match:
+                    if any(_UNSAFE_ENTITY.search(match[key]) for key in ("s", "o")):
+                        continue
                     found.append(dict(
                         subject=name(match["s"]), relation=relation, object=name(match["o"]),
                         negative=bool(match.groupdict().get("neg")),
                         source=dict(document_id=row["document_id"], span=sentence, start=start,
-                                    end=start + len(sentence), chunk_sha256=hashlib.sha256(chunk.encode("utf8")).hexdigest(),
+                                    end=start + len(sentence), chunk_sha256=chunk_hash,
                                     source_version=row.get("source_version")),
                     ))
                     break
@@ -320,7 +326,9 @@ class PreparedInference:
         from cpu_llm.access import source_allowed
         self.scope = sorted(scope) if scope is not None else None
         self.snapshot = deepcopy(snapshot)
-        self.rows = deepcopy([row for row in rows if source_allowed(row['document_id'], self.scope)])
+        self.rows = [dict(document_id=row['document_id'], chunk_text=row['chunk_text'],
+                          source_version=deepcopy(row.get('source_version')))
+                     for row in rows if source_allowed(row['document_id'], self.scope)]
         if len({row['document_id'] for row in self.rows}) != len(self.rows):
             raise ValueError('Inference requires one active version of each chunk ID.')
         self.facts = _extracted(self.rows)
@@ -412,19 +420,61 @@ def verify_receipt(receipt, rows):
         return False
 
 
+def inference_response(message, tenant_id, status, text):
+    """Consistent envelope for inference errors and ordinary service replies."""
+    return dict(message=message, tenant_id=tenant_id, status=status, answer_status=status,
+                answer=None, answer_evidence=[], supporting_evidence=[], audit_passed=False,
+                needs_clarification=status == 'needs_clarification',
+                routing=dict(post_stages=['inference'], execution_owner='inference_service'),
+                reply=dict(text=text, body=text, answer_status=status, answer_evidence=[]))
+
+
+def augment_retrieved_inference(response, message, *, as_of=None, scope=None):
+    """Attach useful proofs from retrieved rows without replacing normal answers.
+
+    No database access, no snapshot loading, and no implicit assertion that the
+    retrieved subset is the complete knowledge base.
+    """
+    if (response.get('guard_decision') not in (None, 'allow') or response.get('delivery_blocked')
+            or response.get('shine_enforced') or response.get('shine_ok') is False
+            or response.get('grammar_ok') is False or response.get('__partial__')
+            or response.get('__node_error__') or response.get('task_results')
+            or response.get('answer_status') in {'blocked', 'refused', 'external_unverified'}):
+        return response
+    request = request_from(message)
+    if not isinstance(request, InferenceRequest):
+        return response
+    selected = {}
+    for row in [*(response.get('passages') or []), *(response.get('related') or [])]:
+        identifier = row.get('document_id') or row.get('chunk_id')
+        text = row.get('chunk_text')
+        if identifier and isinstance(text, str):
+            if identifier in selected and selected[identifier]['chunk_text'] != text:
+                return response  # Conflicting active versions cannot form one proof.
+            selected[identifier] = dict(document_id=identifier, chunk_text=text,
+                                        source_version=row.get('source_version'))
+    if not selected:
+        return response
+    receipt = deduce(list(selected.values()), request, snapshot=as_of, scope=scope)
+    if receipt['verdict'] not in {'ENTAILED_BY_RULES', 'CONFLICT', 'CONTRADICTED_BY_RULES'}:
+        return response
+    response['inference'] = receipt
+    response['inference_evidence_scope'] = 'retrieved_subset'
+    response.setdefault('routing', {}).setdefault('post_stages', []).append('inference')
+    return response
+
+
 def execute_inference(app, message, request, *, caller=None, as_of=None, strict=False):
     from cpu_llm.invention import _snapshot
     from cpu_llm.pipeline import _caller_for
 
     context = _caller_for(app, caller)
     allowed = None if context is None else context.allowed_sources
-    result = dict(message=message, tenant_id=app.tenant_id, answer=None,
-                  answer_evidence=[], supporting_evidence=[], audit_passed=False,
-                  needs_clarification=False, routing=dict(post_stages=["inference"], execution_owner='inference_service'))
+    result = inference_response(message, app.tenant_id, 'pending', '')
 
     def finish(status, text):
         result.update(status=status, answer_status=status,
-                      reply=dict(text=text, answer_status=status,
+                      reply=dict(text=text, body=text, answer_status=status,
                                  answer_evidence=result["answer_evidence"]))
         return result
 
@@ -475,19 +525,3 @@ def execute_inference(app, message, request, *, caller=None, as_of=None, strict=
         text, status = "The authorized records do not establish the requested relationship within the hop limit.", "insufficient_evidence"
     text += "".join(f'\n[{item["document_id"]}] {item["span"]}' for item in result["answer_evidence"])
     return finish(status, text)
-
-
-def graph_inference(state):
-    """Graph adapter. Explicit requests use the same source-bound service."""
-    if state.get("guard_decision") != "allow":
-        return {}
-    request = state.get("inference_request")
-    if request is None:
-        return {}
-    if not isinstance(request, InferenceRequest):
-        raise ValueError("Graph inference requires a validated request.")
-    from cpu_llm.access import keep_allowed
-
-    return {"inference": deduce(keep_allowed(state.get("passages") or [], state.get("allowed_sources")), request,
-                               snapshot=state.get("as_of"),
-                               scope=sorted(state["allowed_sources"]) if state.get("allowed_sources") is not None else None)}

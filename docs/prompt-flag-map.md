@@ -126,10 +126,10 @@ Explicit `Temporal: sources: ...`, `Induction: sources: ...`, and
 `Abduction: sources: ...` commands (or `inference={mode, source_ids}`) select
 structured evidence analysis. They return calculations, estimates or unverified
 hypotheses, not rule proofs. Strict Evidence Mode refuses all these derived-answer
-routes. The graph adapter remains for compatibility; public standalone inference
-is owned by `execute_inference`, not a second graph execution.
-Ordinary questions fall back to existing answering on unresolved inference; in
-strict mode they retain quotation answering. Unsupported explicit commands ask
+routes. Inference is an external service, not a registered graph stage. Public
+standalone inference is owned by `execute_inference`. Ordinary questions retain
+their answer and can attach receipts over retrieved rows only, without a snapshot
+fetch; in strict mode they retain quotation answering. Unsupported explicit commands ask
 for clarification. `classifier.specialist_plan` provides one record of specialist
 seeds and precedence; execution still applies authorization and session controls.
 [Formats and examples](../inference-guide.md).

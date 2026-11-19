@@ -665,25 +665,20 @@ class Appliance:
         except ValueError as exc:
             if inference is not None:
                 raise
+            from cpu_llm.inference import inference_response
             if self.guard.check(raw_message).decision != 'allow':
-                return dict(status='blocked', answer_status='blocked', reply=dict(text='Request blocked.'))
-            return dict(status='needs_clarification', answer_status='needs_clarification',
-                        needs_clarification=True, reply=dict(text=str(exc)), answer_evidence=[], audit_passed=False)
+                return inference_response(raw_message, self.tenant_id, 'blocked', 'Request blocked.')
+            return inference_response(raw_message, self.tenant_id, 'needs_clarification', str(exc))
         from cpu_llm.evidence_analysis import EvidenceAnalysisRequest
         explicit_inference = explicit_inference or isinstance(inference_request, EvidenceAnalysisRequest)
-        # Ordinary questions keep their strict quotation and specialist routes.
-        if not explicit_inference and (enabled or any((invent, nammade, imagine, math, finance))
-                or cycle_search is not None or any(value is not None for value in
-                    (payment, authority, objective, hypothesis, causal_graph))):
-            inference_request = None
-        if inference_request is not None:
+        # Only explicit requests may fetch a full inference snapshot. Ordinary
+        # questions can receive a receipt from their already retrieved evidence.
+        if inference_request is not None and explicit_inference:
             if any((invent, nammade, imagine, math, finance)) or cycle_search is not None or any(
                     value is not None for value in (payment, authority, objective, hypothesis, causal_graph)):
                 raise ValueError('Submit standalone inference and other specialist requests separately; research integrates deduction automatically.')
-            inferred = execute_inference(self, raw_message, inference_request, caller=caller,
-                                         as_of=as_of, strict=enabled)
-            if explicit_inference or inferred['answer_status'] in {'derived_inference', 'conflicting', 'contradicted', 'blocked'}:
-                return inferred
+            return execute_inference(self, raw_message, inference_request, caller=caller,
+                                     as_of=as_of, strict=enabled)
         inventory = re.fullmatch(
             r'(?:how many chunks(?: (?:do we have|are there))?|(?:please )?(?:count|list) chunks)'
             r'(?:\s+(?:in|for|from|related to)\s+(.+?))?[.?!]?', content.strip(), re.I)
@@ -871,6 +866,10 @@ class Appliance:
             payment=payment, authority=authority, objective=objective, hypothesis=hypothesis,
             causal_graph=causal_graph, realization=realization, account=account, grade=grade,
             child_safety=child_safety, session_id=session_id, caller=caller, as_of=as_of))
+        from cpu_llm.inference import augment_retrieved_inference
+        inference_context = _caller_for(self, caller)
+        result = augment_retrieved_inference(result, content, as_of=as_of,
+            scope=None if inference_context is None else inference_context.allowed_sources)
         if prefix is not None:
             result.update(original_message=raw_message, conversation_prefix=prefix)
         if style is not None:
@@ -1523,9 +1522,6 @@ def _compile(appliance: Appliance):
     register("catalog", _catalog(appliance))
     register("detail", _detail)
     register("spans", _spans(appliance))
-    from cpu_llm.inference import graph_inference
-
-    register("inference", graph_inference)
     register("think", _think(appliance))
     register("cognize", _cognize(appliance))
     register("grammar", _grammar(appliance))
@@ -1554,8 +1550,7 @@ def _compile(appliance: Appliance):
     graph.add_edge("causal", "catalog")
     graph.add_edge("catalog", "detail")
     graph.add_edge("detail", "spans")
-    graph.add_edge("spans", "inference")
-    graph.add_edge("inference", "think")
+    graph.add_edge("spans", "think")
     graph.add_edge("think", "cognize")
     graph.add_edge("cognize", "grammar")
     graph.add_edge("grammar", "shine")

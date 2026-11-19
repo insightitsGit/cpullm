@@ -28,12 +28,20 @@ Class requirements are the implemented conditional deduction form. Arbitrary
 `if ... then ...` prose cannot install rules. Location itself is not declared
 transitive; class averages never become individual properties.
 
-Natural questions use inference only when it establishes or contradicts the
-relationship (or detects a conflict). Otherwise ordinary answering continues;
-strict-mode natural questions keep the strict quotation route. An unparseable
+Natural questions keep ordinary answering and can attach an `inference` receipt
+only when their retrieved subset establishes or contradicts the relationship
+(or detects a conflict). `inference_evidence_scope` labels this as
+`retrieved_subset`; no full-snapshot inference fetch is added and the normal
+answer is not replaced. Strict-mode natural questions keep the strict quotation route. An unparseable
 explicit command asks for clarification; malformed API options raise validation
 errors. Explicit negative evidence yields `CONTRADICTED_BY_RULES`, distinct from
 missing support and from mutually conflicting premises.
+
+Subjects and objects must be atomic names. Coordinators and trailing
+prepositional clauses are refused symmetrically in requests and source facts.
+For example, `radio and a crew of five` is not interpreted as a radio fact,
+and `donkey in Kenya` is not treated as an entity named donkey. This conservative
+subset can reject legitimate complex names; use unambiguous canonical names.
 
 Innovation, research, Nammade and CrossDomain invoke applicable deduction
 automatically. CrossDomain restricts this to its selected prefixes. Returned
@@ -115,3 +123,7 @@ No new runtime dependencies or general-purpose scientific solver are introduced.
 Standalone inference cannot be combined with conflicting specialist API flags;
 research automatically coordinates the applicable methods instead. Ordinary
 lookups do not activate structured statistics or explanation comparisons.
+
+Inference runs as a shared service, not a registered core graph stage. Explicit
+commands/API options read the authorized snapshot; research uses its own snapshot;
+ordinary augmentation consumes retrieved rows only. The core graph has 27 stages.

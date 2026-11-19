@@ -23,6 +23,33 @@ from cpu_llm.nammade.types import FrontierStatus
 from cpu_llm.pipeline import Appliance
 
 
+@pytest.mark.parametrize('prompt', ['Research elephant', 'Nammade: elephant',
+                                  'CrossDomain: elephant using KBs: pub, math'])
+def test_scoped_research_chain_receipts_are_serializable(prompt):
+    import json
+    from cpu_llm.access import CallerContext
+    app = appliance([])
+    app.index.strict_source_rows.return_value = ([
+        dict(document_id='pub-p0001', chunk_text='The elephant is bigger than the donkey.'),
+        dict(document_id='pub-p0002', chunk_text='The donkey is bigger than the cat.'),
+        dict(document_id='secret-p0001', chunk_text='The elephant is not bigger than the donkey.'),
+    ], 42)
+    caller = CallerContext(tenant_id='test', caller_id='reader', request_id='scoped-research',
+                           allowed_sources=frozenset({'pub-p'}))
+    response = app.ask(prompt, caller=caller)
+    assert response['research_inference']['receipts'][0]['verdict'] == 'ENTAILED_BY_RULES'
+    assert 'secret' not in json.dumps(response)
+
+
+def test_no_inference_stage_is_registered_in_core_graph():
+    from cpu_llm.flag_contract import FLAG_BINDINGS, validate_graph_consumers
+    nodes = {node for binding in FLAG_BINDINGS if binding.stage in {'core_graph', 'graph', 'channel'}
+             for node in binding.consumers}
+    assert 'inference' not in nodes
+    assert len(nodes) == 27
+    validate_graph_consumers(nodes)
+
+
 def test_combined_research_prepares_inference_once_without_duplicate_sections():
     import cpu_llm.inference as module
     from unittest.mock import patch

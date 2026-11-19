@@ -21,8 +21,8 @@ Tracking companion: `node-inference-lean-review.md`.
 2. Prepare immutable request-local facts and cache closure by family and resource
    budgets. Test extraction/closure counts, deterministic receipts, replay, limits,
    conflicting premises and authorization isolation.
-3. Retain the graph inference adapter for compatibility, explicitly describe the
-   public entry point as execution owner. Cache channel input preparation within
+3. Use the inference service as the execution owner; remove the unused graph
+   adapter (revised after the follow-up audit). Cache channel input preparation within
    the request; do not merge six distinct channel results.
 4. Add explicit taxonomy, registered relation composition/inverses and conditional
    class requirements to the deductive registry. Reject statistical inheritance,
@@ -62,8 +62,8 @@ Implementation results and remaining boundaries are recorded below as work lands
   original sources. No cross-request cache.
 - [x] WP3: the six channel stages share prepared passages and identity anchor in
   their request-local turn, invalidated when related rows change. Public explicit
-  inference records `execution_owner=inference_service`; graph adapter remains
-  a compatibility hook, not a second automatic invocation.
+  inference records `execution_owner=inference_service`. The follow-up audit
+  removed the unused adapter; the core graph now has 27 stages.
 - [x] WP4: taxonomy membership/subclass transitivity, strict physical-part
   transitivity, derived containment, physical-part/location joins and conditional
   class requirements. No arbitrary source-installed rules. Inverse containment
@@ -102,8 +102,8 @@ All capabilities above are bounded forms, not unrestricted inference engines.
 Generic arbitrary conditional programs, causal counterfactual solving, automatic
 discovery of explanatory coverage, free-text statistical extraction, holdout
 model learning and general scientific proof remain outside this implementation.
-The existing 28 graph stages remain; we removed measured duplicate preparation
-and deduction rather than deleting stages that enforce different guarantees.
+The core graph has 27 stages after removing its idle inference adapter. Shared
+service inference remains available without that duplicate execution path.
 No latency speedup, scientific discovery or enterprise benchmark score is claimed.
 
 ## Reproduction
@@ -131,3 +131,14 @@ revision and source hashes to identify the tested working tree.
   sandbox socket restrictions and passed when rerun with localhost access.
 - Smoke output is synthetic integration evidence, not a scientific validation or
   an enterprise accuracy benchmark. The tested source hashes are in its JSON file.
+
+### Follow-up audit, 2026-11-19
+
+The validated remaining issues and their fixes are recorded in
+[the audit resolution](inference-audit-resolution.md). Ordinary questions now
+attach receipts only from retrieved rows, avoiding a full-snapshot inference
+attempt. Prepared contexts retain only required source fields; extraction hashes
+each chunk once. Atomic-entity validation is shared by requests and source facts.
+Scoped Research, Nammade and CrossDomain now have serialization regressions.
+Verification: **338 regression tests** (310 focused, 25 live pipeline, 3 HTTP)
+and **8 PostgreSQL smoke cases** passed. See the resolution for scope and warnings.

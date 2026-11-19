@@ -52,8 +52,8 @@ def main():
             print(expected, prompt, flush=True)
             return result
 
-        run('Does Kestrel require a radio?', 'derived_inference')
-        run('Is pump located in dock?', 'derived_inference')
+        run('Infer whether Kestrel requires a radio.', 'derived_inference')
+        run('Infer whether pump is located in dock.', 'derived_inference')
         run('Temporal: sources: dates-p0001, dates-p0002', 'calculated')
         run('Estimate the trial rate.', 'statistical_estimate', inference=dict(
             mode='inductive', source_ids=[f'trial-p{i:04}' for i in range(10)]))

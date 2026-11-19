@@ -92,9 +92,10 @@ Registered ordering, taxonomy, physical-part/location, possession and class-requ
 rules apply; other scientific relationships return `no_applicable_rule`. At most eight topic-related deductions
 are checked per response, with resource limits recorded in `complete`.
 Direct questions such as `Is elephant bigger than cat?` and
-`Does Kestrel have radio?` can use a supported deduction. When it cannot settle
-an ordinary question, normal answering continues; strict questions retain their
-quotation route. Strict evidence mode retains
+`Does Kestrel have radio?` retain normal answering. A useful deduction from their
+already retrieved passages can be attached in `inference`, with
+`inference_evidence_scope="retrieved_subset"`; this does not replace the answer or
+scan the whole KB. Strict questions retain their quotation route. Strict evidence mode retains
 its existing restrictions. CrossDomain also checks applicable rules, using only
 the selected KB prefixes. Combined research prepares deduction once and shares
 its facts and bounded closures rather than running it separately in each method.
@@ -105,7 +106,7 @@ checks `elephant bigger_than cat`. The response lists the rule verdict and
 stores its full proof in `research_inference.receipts`. If no supported rule
 applies, the other research methods continue with `no_applicable_rule` recorded.
 
-The current repository source adds InferenceNode as graph stage 28. Its
+InferenceNode is a shared service outside the ordinary graph. Its
 explicit deduction route reads an authorized snapshot and checks registered
 rule forms. Ingest “The elephant is bigger than the donkey” and “The donkey is
 bigger than the cat,” then ask:
@@ -123,6 +124,8 @@ An `inference` object in Python or HTTP can specify `subject`, `relation`
 For example, “Kestrel is a cutter,” “every cutter is a vessel,” and “every vessel
 requires a radio” support `Does Kestrel require a radio?` Generic relatedness,
 class averages and arbitrary conditional prose do not become trusted rules.
+Compound names or trailing clauses such as `radio and a crew of five` and
+`donkey in Kenya` are rejected conservatively rather than turned into predicates.
 
 The source version also supports opt-in analyses of selected JSON evidence chunks:
 
@@ -445,13 +448,15 @@ This produces bounded new wording, not arbitrary creative prose or new facts.
 
 ### Six-signal retrieval and explicit routing
 
-The repository pipeline registers 28 graph stages (27 in the published 1.14.0
-baseline), including InferenceNode and **dense, relational,
+The ordinary pipeline registers 27 graph stages, including **dense, relational,
 disentangled, hyperbolic, identity and causal** retrieval signals backed by
 PostgreSQL/pgvector. **Only dense and identity projection heads are trained and
 bundled**; the other channels use their implemented signals or symbolic paths.
 A similarity score or connection is not factual proof. Strict requests and document
 workflows can bypass the ordinary graph; not every request runs every node.
+Inference is a separate shared service: explicit requests use a scoped snapshot,
+ordinary requests can attach receipts from retrieved evidence, and research
+coordinates its own scoped snapshot. There is no idle inference graph stage.
 See the [architecture](docs/current-design.md) and [prompt-to-node mapping](docs/prompt-flag-map.md).
 
 ## Which prompts trigger which nodes
@@ -461,7 +466,7 @@ See the [architecture](docs/current-design.md) and [prompt-to-node mapping](docs
 - `Calculate 17 times 24.` requests arithmetic. Use `app.ask(question, discover=True)` to request discovery after the ordinary reply.
 - `Write a detailed report about Helios.` selects the document workflow. `Invention: Leptogenesis.` selects invention. `Nammade: dark matter.` runs the standalone scan. `Investigate dark matter.` runs invention, source hypotheses, the Nammade comparison, and then the abductive bridge.
 - `Research Casas-Ibarra using KBs: physics, math.` selects CrossDomain. `Constraint Check: Leptogenesis using KBs: physics, math, experiment.` requests the interval comparison directly.
-- `Infer whether Kestrel requires a radio.` explicitly requests registered deduction. Supported ordinary questions can use a deduction when it settles the relationship; otherwise normal answering continues. Strict ordinary questions keep their quotation route.
+- `Infer whether Kestrel requires a radio.` explicitly requests registered deduction over the authorized snapshot. Supported ordinary questions can attach an inference receipt from retrieved evidence; their normal answer is preserved. Strict ordinary questions keep their quotation route.
 - `Temporal: sources: dates-p0000, dates-p0001`, `Induction: sources: trial-p0000, trial-p0001`, and `Abduction: sources: research-p0000, research-p0001, research-p0002` select structured analyses. The referenced chunks must already contain the documented JSON records. These source-only additions are described in the [inference guide](inference-guide.md).
 - `List chunks for notes.pdf.` opens scoped inventory. `Delete chunk notes-p0001.` opens a preview. The deletion API handles confirmation.
 
@@ -717,11 +722,13 @@ published release. To build a distribution from a checkout, run
 `python -m pip install build` and then
 `python -m build --outdir dist/1.14.0`.
 
-The inference expansion passed **304 focused regression tests** and **8 synthetic
-PostgreSQL smoke cases**. These are component/integration checks, not a full-suite
+The inference expansion and follow-up audit fixes passed **338 regression tests**
+across focused, live pipeline and HTTP suites, plus **8 synthetic PostgreSQL smoke
+cases**. These are component/integration checks, not a full-suite
 or enterprise accuracy score. See the [implementation tracker](docs/inference-expansion-implementation-spec.md)
 for scope and recorded results, and run `python examples/inference_expansion_smoke.py`
 after configuring your disposable pgvector database to reproduce the smoke cases.
+[Follow-up audit findings and resolutions](docs/inference-audit-resolution.md).
 
 Document queries require PostgreSQL/pgvector and the pretrained
 `sentence-transformers/all-mpnet-base-v2` encoder assets. The trained projection

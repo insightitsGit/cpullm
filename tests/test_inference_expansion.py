@@ -1,7 +1,7 @@
 import json
 from copy import deepcopy
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import pytest
 
@@ -213,6 +213,7 @@ def test_natural_question_parser_failure_falls_through_and_explicit_failure_clar
     assert request_from('Does the contract have a $5,000 cap?') is None
     assert request_from('Does the policy have some exclusions?') is None
     app = object.__new__(Appliance)
+    app.tenant_id = 'test'
     app.guard = SimpleNamespace(check=lambda _: SimpleNamespace(decision='allow'))
     response = app.ask('Infer whether the contract has a $5,000 cap.')
     assert response['answer_status'] == 'needs_clarification'
@@ -225,18 +226,66 @@ def test_natural_question_keeps_normal_answering_and_strict_quotation():
     app.tenant_id = 'test'
     app.small_talk = False
     app.guard = SimpleNamespace(check=lambda _: SimpleNamespace(decision='allow'))
-    app.index = SimpleNamespace(strict_source_rows=lambda allowed, as_of=None: (source, 42))
+    app.index = SimpleNamespace(strict_source_rows=Mock(side_effect=AssertionError('implicit full snapshot')))
     normal = dict(answer_status='answered', reply=dict(text='Normal answering retained.'))
     with patch('cpu_llm.request_planner.dispatch_request', return_value=normal) as dispatch:
         response = app.ask('Does the Kestrel have a radio?')
         assert response['reply']['text'] == 'Normal answering retained.'
         assert dispatch.call_count == 1
+        app.index.strict_source_rows.assert_not_called()
+    chain = rows('The Kestrel is a cutter.', 'Every cutter has a radio.')
+    augmented = dict(answer_status='answered', reply=dict(text='Original response.'), passages=chain)
+    with patch('cpu_llm.request_planner.dispatch_request', return_value=augmented):
+        response = app.ask('Does Kestrel have a radio?')
+        assert response['inference']['verdict'] == 'ENTAILED_BY_RULES'
+        assert response['reply']['text'] == 'Original response.'
+        app.index.strict_source_rows.assert_not_called()
     strict = dict(answer_status='evidence_quote', reply=dict(text='Strict quotation retained.'))
     with patch('cpu_llm.strict_evidence.answer', return_value=strict) as quote, \
          patch('cpu_llm.inference.execute_inference', side_effect=AssertionError('strict inference invoked')):
         response = app.ask('Does the Kestrel have a radio?', strict_evidence=True)
         assert response['answer_status'] == 'evidence_quote'
         assert quote.call_count == 1
+
+
+@pytest.mark.parametrize('subject,obj', [('Kestrel', 'radio and a crew of five'),
+                                      ('elephant', 'donkey in Kenya'), ('pump', 'engine at dock')])
+def test_compound_entities_are_rejected_symmetrically(subject, obj):
+    from cpu_llm.inference import _extracted, request_from
+    with pytest.raises(ValueError, match='atomic'):
+        InferenceRequest(subject, 'has', obj)
+    assert not _extracted(rows(f'The {subject} has a {obj}.'))
+    assert request_from(f'Does {subject} have a {obj}?') is None
+
+
+def test_prepared_input_ignores_heavy_auxiliary_metadata_and_hashes_chunk_once():
+    import cpu_llm.inference as module
+    class Heavy:
+        def __deepcopy__(self, memo):
+            raise AssertionError('Unused metadata copied')
+    source = rows('The elephant is bigger than the donkey. The donkey is bigger than the cat.')
+    source[0]['unused_metadata'] = Heavy()
+    prepared = PreparedInference(source)
+    assert 'unused_metadata' not in prepared.rows[0]
+    assert prepared.deduce(InferenceRequest('elephant', 'bigger_than', 'cat'))['verdict'] == 'ENTAILED_BY_RULES'
+    with patch.object(module.hashlib, 'sha256', wraps=module.hashlib.sha256) as hashed:
+        assert len(module._extracted(source)) == 2
+        assert hashed.call_count == 1
+
+
+def test_retrieved_augmentation_uses_subset_and_does_not_replace_answer():
+    from cpu_llm.inference import augment_retrieved_inference
+    source = rows('The elephant is bigger than the donkey.', 'The donkey is bigger than the cat.')
+    response = dict(answer_status='answered', reply=dict(text='Original response.'), passages=source)
+    original = deepcopy(response['reply'])
+    augment_retrieved_inference(response, 'Is elephant bigger than cat?', as_of=42)
+    assert response['inference']['verdict'] == 'ENTAILED_BY_RULES'
+    assert response['inference_evidence_scope'] == 'retrieved_subset'
+    assert response['reply'] == original
+    assert verify_receipt(response['inference'], source)
+    restricted = dict(reply=dict(text='Original'), passages=source)
+    augment_retrieved_inference(restricted, 'Is elephant bigger than cat?', scope=[])
+    assert 'inference' not in restricted
 
 
 def test_abbreviation_newline_does_not_abort_unrelated_inference():
