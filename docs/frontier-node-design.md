@@ -86,7 +86,7 @@ Implemented in `src/cpu_llm/frontier.py`; tests in `tests/test_frontier.py`; eva
 - **Batch size and budgets.** `FrontierLimits` (validated like `CycleLimits`, charged on the shared
   `cycle_exploration.Budget` ledger): `max_rounds` 1,000 (ceiling 100,000; one round = one batch),
   `batch_size` 256 (≤ 10,000), `max_candidates` 200,000 (≤ 2,000,000), `max_edges` 50,000 (≤ 200,000),
-  `max_bytes` 64 MiB (≤ 128 MiB, estimated as in cycle search), `max_seconds` 20 (≤ 120),
+  `max_bytes` 64 MiB (≤ 128 MiB, estimated as in cycle search), `max_seconds` 60 (≤ 120; raised from 20 once dependency parsing was added),
   `max_path_edges` 2 (2 or 3), `max_results` 50 (hard cap 50), `min_results` 10.
 - **Pre-thinker checks.** Malformed (empty, over six words, leading/trailing preposition or determiner,
   pronoun, quantifier phrase, count or time span, broken token, bare adjective or comparative, vague head

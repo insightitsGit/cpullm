@@ -54,7 +54,7 @@ class FrontierLimits:
     max_candidates: int = 200_000
     max_edges: int = 50_000
     max_bytes: int = 64 * 1024 * 1024
-    max_seconds: float = 20.0
+    max_seconds: float = 60.0
     batch_size: int = 256
     max_path_edges: int = 2
     max_results: int = HARD_CAP
@@ -592,6 +592,22 @@ class RelationGraph:
         return set.intersection(*sets) if sets else set()
 
 
+_RELATION_CACHE = {}
+_RELATION_CACHE_LIMIT = 50_000
+
+
+def _cached_relations(chunk_hash, sentences):
+    """Relations for one chunk, cached by its SHA-256 and the active parser (text-derived, never stale)."""
+    key = (chunk_hash, parser_name())
+    found = _RELATION_CACHE.get(key)
+    if found is None:
+        found = sentence_relations(sentences)
+        if len(_RELATION_CACHE) >= _RELATION_CACHE_LIMIT:
+            _RELATION_CACHE.clear()
+        _RELATION_CACHE[key] = found
+    return found
+
+
 def build_graph(rows, budget):
     from cpu_llm.answerability import _sentences
     from cpu_llm.knowledge_graph import extract_facts
@@ -606,7 +622,7 @@ def build_graph(rows, budget):
             chunk_hash = hashlib.sha256(chunk.encode()).hexdigest()
             seen = set()
             sentences = _sentences(chunk)
-            for sentence, relations in zip(sentences, sentence_relations(sentences)):
+            for sentence, relations in zip(sentences, _cached_relations(chunk_hash, sentences)):
                 stems = set(_content(_tokens(sentence)))
                 index = len(graph.sentences)
                 graph.sentences.append((row['document_id'], stems, bool(relations)))
