@@ -1,0 +1,196 @@
+{
+ "prompt": "Frontier: AI compute cost.",
+ "run": 3,
+ "wall_seconds": 20.169,
+ "python_peak_bytes": 36183586,
+ "answer_status": "shortage",
+ "routing": {
+  "schema": "flag-routing-contract-v1",
+  "executed_nodes": [],
+  "post_stages": [
+   "frontier_snapshot",
+   "frontier_generate",
+   "frontier_abductive",
+   "frontier_deductive",
+   "frontier_pre_thinker",
+   "frontier_rank"
+  ]
+ },
+ "frontier": {
+  "schema": "frontier-v1",
+  "triggered": true,
+  "topic": "AI compute cost",
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "limits": {
+   "max_rounds": 1000,
+   "max_candidates": 200000,
+   "max_edges": 50000,
+   "max_bytes": 67108864,
+   "max_seconds": 20.0,
+   "batch_size": 256,
+   "max_path_edges": 2,
+   "max_results": 50,
+   "min_results": 10
+  },
+  "topic_terms": [
+   "ai",
+   "compute",
+   "cost"
+  ],
+  "focus_terms": [
+   "ai",
+   "compute",
+   "cost"
+  ],
+  "chunk_count": 1054,
+  "parser": "en_core_web_lg",
+  "bridge_check": "encoder",
+  "encoded_terms": 124,
+  "hub_deferred": 0,
+  "status": "shortage",
+  "hypotheses": [
+   {
+    "id": "02f4210c7b9c",
+    "text": "Inadequate access may reduce performance gap through certain groups ability (read as ability of large compute investors).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "Inadequate access",
+     "performance gap"
+    ],
+    "via": [
+     "certain groups ability (read as ability of large compute investors)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2307-04699-p0012",
+     "arxiv-2311-15377-p0053"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2307-04699-p0012",
+      "quote": "Inadequate access to internet services, computing power, or availability of machine learning training/expertise will also hinder certain groups’ ability to benefit fully from AI advances.",
+      "start": 228,
+      "end": 415,
+      "chunk_sha256": "ce9ee636336f95ece864100afc87704e9809a2ee9f8d295feac6f962e3744209",
+      "relation": "decreases",
+      "subject": "Inadequate access",
+      "object": "certain groups ability",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2311-15377-p0053",
+      "quote": "The ability of large compute investors to rapidly scale their investment greatly increases the performance gap between them and other actors, who only have limited capacity to scale.",
+      "start": 57,
+      "end": 239,
+      "chunk_sha256": "7c9e45b9ce9c6d8906c6eedf48d2261761e1a798b08d52e1f0790bda8e73c9de",
+      "relation": "increases",
+      "subject": "ability of large compute investors",
+      "object": "performance gap",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.742,
+     "novelty": 0.619
+    },
+    "falsification_test": "Compare settings where Inadequate access differs while other inputs are matched. The hypothesis fails if performance gap does not fall with Inadequate access, or if fixing certain groups ability (read as ability of large compute investors) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "certain group ability"
+   },
+   {
+    "id": "44bd080dfe15",
+    "text": "dual use nature of general purpose may reduce performance gap through Frontier AI Collaborative ability (read as ability of large compute investors).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "dual use nature of general purpose",
+     "performance gap"
+    ],
+    "via": [
+     "Frontier AI Collaborative ability (read as ability of large compute investors)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2307-04699-p0010",
+     "arxiv-2311-15377-p0053"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2307-04699-p0010",
+      "quote": "The potentially dual-use nature of general purpose AI technologies might hamper a Frontier AI Collaborative’s ability to distribute beneficial systems widely, and the significant obstacles to underserved societies making use of AI systems raises questions about its effectiveness as a means of promoting sustainable development.",
+      "start": 397,
+      "end": 725,
+      "chunk_sha256": "fa10d2d491cbdf6055767f13a135e88359abf4d9440fb01811892d7547f47068",
+      "relation": "decreases",
+      "subject": "dual use nature of general purpose",
+      "object": "Frontier AI Collaborative ability",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2311-15377-p0053",
+      "quote": "The ability of large compute investors to rapidly scale their investment greatly increases the performance gap between them and other actors, who only have limited capacity to scale.",
+      "start": 57,
+      "end": 239,
+      "chunk_sha256": "7c9e45b9ce9c6d8906c6eedf48d2261761e1a798b08d52e1f0790bda8e73c9de",
+      "relation": "increases",
+      "subject": "ability of large compute investors",
+      "object": "performance gap",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.742,
+     "novelty": 0.615
+    },
+    "falsification_test": "Compare settings where dual use nature of general purpose differs while other inputs are matched. The hypothesis fails if performance gap does not fall with dual use nature of general purpose, or if fixing Frontier AI Collaborative ability (read as ability of large compute investors) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "frontier ai collaborative ability"
+   }
+  ],
+  "survivors": 2,
+  "candidates_generated": 256,
+  "candidates_passed": {
+   "abductive": 3,
+   "deductive": 3,
+   "pre_thinker": 3
+  },
+  "candidates_rejected": {},
+  "relation_edges": 528,
+  "scoped_edges": 197,
+  "budget_used": {
+   "rounds": 1,
+   "candidates": 256,
+   "edges": 528,
+   "bytes": 254509,
+   "seconds": 20.082
+  },
+  "incomplete": true,
+  "stop_reason": "deadline",
+  "shortage": {
+   "returned": 2,
+   "target_min": 10,
+   "reason": "Fewer candidates survived the filters than the target; the list is not padded."
+  },
+  "snapshot": {
+   "as_of": 1795252584,
+   "chunk_count": 1054
+  }
+ },
+ "reply": "Frontier hypotheses for AI compute cost. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 256. Passed abductive check: 3; deductive check: 3; pre-thinker validation: 3.\n\n1. Inadequate access may reduce performance gap through certain groups ability (read as ability of large compute investors).\n[arxiv-2307-04699-p0012] Inadequate access to internet services, computing power, or availability of machine learning training/expertise will also hinder certain groups’ ability to benefit fully from AI advances.\n[arxiv-2311-15377-p0053] The ability of large compute investors to rapidly scale their investment greatly increases the performance gap between them and other actors, who only have limited capacity to scale.\nFalsification test: Compare settings where Inadequate access differs while other inputs are matched. The hypothesis fails if performance gap does not fall with Inadequate access, or if fixing certain groups ability (read as ability of large compute investors) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.74, novelty 0.62.\n\n2. dual use nature of general purpose may reduce performance gap through Frontier AI Collaborative ability (read as ability of large compute investors).\n[arxiv-2307-04699-p0010] The potentially dual-use nature of general purpose AI technologies might hamper a Frontier AI Collaborative’s ability to distribute beneficial systems widely, and the significant obstacles to underserved societies making use of AI systems raises questions about its effectiveness as a means of promoting sustainable development.\n[arxiv-2311-15377-p0053] The ability of large compute investors to rapidly scale their investment greatly increases the performance gap between them and other actors, who only have limited capacity to scale.\nFalsification test: Compare settings where dual use nature of general purpose differs while other inputs are matched. The hypothesis fails if performance gap does not fall with dual use nature of general purpose, or if fixing Frontier AI Collaborative ability (read as ability of large compute investors) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.74, novelty 0.61.\n\nOnly 2 hypotheses survived the filters (target at least 10). The list is not padded.\n\nSearch incomplete: deadline. Results cover only the candidates examined before the budget stopped the run.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

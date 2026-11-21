@@ -1,0 +1,471 @@
+{
+ "prompt": "Frontier: memory bandwidth bottlenecks.",
+ "run": 3,
+ "wall_seconds": 19.74,
+ "python_peak_bytes": 35927933,
+ "answer_status": "shortage",
+ "routing": {
+  "schema": "flag-routing-contract-v1",
+  "executed_nodes": [],
+  "post_stages": [
+   "frontier_snapshot",
+   "frontier_generate",
+   "frontier_abductive",
+   "frontier_deductive",
+   "frontier_pre_thinker",
+   "frontier_rank"
+  ]
+ },
+ "frontier": {
+  "schema": "frontier-v1",
+  "triggered": true,
+  "topic": "memory bandwidth bottlenecks",
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "limits": {
+   "max_rounds": 1000,
+   "max_candidates": 200000,
+   "max_edges": 50000,
+   "max_bytes": 67108864,
+   "max_seconds": 20.0,
+   "batch_size": 256,
+   "max_path_edges": 2,
+   "max_results": 50,
+   "min_results": 10
+  },
+  "topic_terms": [
+   "memory",
+   "bandwidth",
+   "bottleneck"
+  ],
+  "focus_terms": [
+   "memory",
+   "bandwidth",
+   "bottleneck"
+  ],
+  "chunk_count": 1054,
+  "parser": "en_core_web_lg",
+  "bridge_check": "encoder",
+  "encoded_terms": 24,
+  "hub_deferred": 0,
+  "status": "shortage",
+  "hypotheses": [
+   {
+    "id": "41cf2e5640bd",
+    "text": "second row column bundling may increase memory fragmentation through size of data chunks (read as larger block size).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "second row column bundling",
+     "memory fragmentation"
+    ],
+    "via": [
+     "size of data chunks (read as larger block size)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2312-11514-p0003",
+     "arxiv-2309-06180-p0025"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2312-11514-p0003",
+      "quote": "First, “windowing” strategically reduces data transfer by reusing previously activated neurons, and second, “row-column bundling”, tailored to the sequential data access strengths of flash memory, increases the size of data chunks read from flash memory.",
+      "start": 536,
+      "end": 790,
+      "chunk_sha256": "d5ede701095bae58f5bf969d1483ec6467f296088cc0dfee762f76965458bc5f",
+      "relation": "increases",
+      "subject": "second row column bundling",
+      "object": "size of data chunks",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2309-06180-p0025",
+      "quote": "However, a larger block size also increases memory fragmentation.",
+      "start": 522,
+      "end": 587,
+      "chunk_sha256": "86f43ba80f2b6067141fdada066491d200e80fdb73df36b33bc6f0b622ce4e53",
+      "relation": "increases",
+      "subject": "larger block size",
+      "object": "memory fragmentation",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.642,
+     "novelty": 0.564
+    },
+    "falsification_test": "Compare settings where second row column bundling differs while other inputs are matched. The hypothesis fails if memory fragmentation does not rise with second row column bundling, or if fixing size of data chunks (read as larger block size) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "size of data chunk"
+   },
+   {
+    "id": "6a4f7b878a05",
+    "text": "chunked prefill may increase divergence through memory access for prefill jobs (read as access).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "chunked prefill",
+     "divergence"
+    ],
+    "via": [
+     "memory access for prefill jobs (read as access)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2401-09670-p0014",
+     "arxiv-2010-15581-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2401-09670-p0014",
+      "quote": "Also, chunked-prefill causes significantly more memory access for the prefill jobs.",
+      "start": 961,
+      "end": 1044,
+      "chunk_sha256": "8da95c52aad5ddbcd66ce6c4091da41143134045dbf39b2fb3870de166a507a9",
+      "relation": "causes",
+      "subject": "chunked prefill",
+      "object": "memory access for prefill jobs",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2010-15581-p0002",
+      "quote": "Using machine learning based text analysis methods, we provide additional evidence that the divergence between these two groups—large firms and non-elite universities—is driven by access to computing power or compute, which we term as the “compute divide”.",
+      "start": 1233,
+      "end": 1489,
+      "chunk_sha256": "eb59bd8ec0c227f41014aa123718e117df4fbceba7ae9f219dccf86b93ab24dc",
+      "relation": "increases",
+      "subject": "access",
+      "object": "divergence",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.551,
+     "novelty": 0.628
+    },
+    "falsification_test": "Compare settings where chunked prefill differs while other inputs are matched. The hypothesis fails if divergence does not rise with chunked prefill, or if fixing memory access for prefill jobs (read as access) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "memory access for prefill job"
+   },
+   {
+    "id": "41a207287364",
+    "text": "chunked prefill may affect Training large AI models and delivering through memory access for prefill jobs (read as access).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "chunked prefill",
+     "Training large AI models and delivering"
+    ],
+    "via": [
+     "memory access for prefill jobs (read as access)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2401-09670-p0014",
+     "arxiv-2402-08797-p0031"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2401-09670-p0014",
+      "quote": "Also, chunked-prefill causes significantly more memory access for the prefill jobs.",
+      "start": 961,
+      "end": 1044,
+      "chunk_sha256": "8da95c52aad5ddbcd66ce6c4091da41143134045dbf39b2fb3870de166a507a9",
+      "relation": "causes",
+      "subject": "chunked prefill",
+      "object": "memory access for prefill jobs",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2402-08797-p0031",
+      "quote": "Training large AI models and delivering access to them at scale requires access to large amounts of compute.",
+      "start": 395,
+      "end": 503,
+      "chunk_sha256": "bc80b8825ef2cd2f04c8b9d70c1f4bb9d9dbc98afcf344daeedaeb85f1908a3d",
+      "relation": "constrains",
+      "subject": "access",
+      "object": "Training large AI models and delivering",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.432,
+     "novelty": 0.619
+    },
+    "falsification_test": "Compare settings where chunked prefill differs while other inputs are matched. The hypothesis fails if Training large AI models and delivering does not change with chunked prefill, or if fixing memory access for prefill jobs (read as access) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "memory access for prefill job"
+   },
+   {
+    "id": "c27ef534cf82",
+    "text": "performances of swapping and problem may move together because both depend on bandwidth.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "performances of swapping",
+     "problem",
+     "bandwidth"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2309-06180-p0032",
+     "arxiv-2403-14123-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2309-06180-p0032",
+      "quote": "The performances of swapping and recomputation depend on the bandwidth between CPU RAM and GPU memory and the computation power of the GPU.",
+      "start": 1369,
+      "end": 1508,
+      "chunk_sha256": "dcd018cf17b754412801bc282b5687e1d4afe4b7d3cf170d648ad53104376ae1",
+      "relation": "constrains",
+      "subject": "bandwidth",
+      "object": "performances of swapping",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2403-14123-p0004",
+      "quote": "This means that no matter how fast the hardware could perform arithmetics per second, the problem will be entirely limited by DRAM bandwidth.",
+      "start": 504,
+      "end": 645,
+      "chunk_sha256": "4339ab1968e53d150042c8a51dffb427d6be1c864ed828e464685f46f6cba4dc",
+      "relation": "constrains",
+      "subject": "DRAM bandwidth",
+      "object": "problem",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.647,
+     "novelty": 0.6
+    },
+    "falsification_test": "Track performances of swapping and problem across periods where bandwidth changes and where it does not. The hypothesis fails if they co-vary just as strongly when bandwidth is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "bandwidth"
+   },
+   {
+    "id": "bbaeb53831c2",
+    "text": "Hardware limitations and Regulatory hurdles may jointly drive bottlenecks, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "Hardware limitations",
+     "Regulatory hurdles",
+     "bottlenecks"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2207-02852-p0032",
+     "arxiv-2405-21015-p0019"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2207-02852-p0032",
+      "quote": "In addition, we can generate some predictions from our hypotheses on the parameter gap: • Hardware limitations might cause discontinuities or bottlenecks in scaling by limiting model size rather than compute.",
+      "start": 0,
+      "end": 208,
+      "chunk_sha256": "5baca926df59643de8de1b01d17cf30c57f6653b872bc6e04e2ea9f85f5020e9",
+      "relation": "causes",
+      "subject": "Hardware limitations",
+      "object": "bottlenecks",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2405-21015-p0019",
+      "quote": "Regulatory and logistical hurdles to secure power supplies may cause bottlenecks in the coming years, but we leave that topic to future work.",
+      "start": 610,
+      "end": 751,
+      "chunk_sha256": "a4426ee75973ab86132a6e16a3a8056bd3124abc05413ae1b762c0139d9cc530",
+      "relation": "causes",
+      "subject": "Regulatory hurdles",
+      "object": "bottlenecks",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.592,
+     "novelty": 0.683
+    },
+    "falsification_test": "Vary Hardware limitations and Regulatory hurdles separately and together. The hypothesis fails if the joint change in bottlenecks equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "bottleneck"
+   },
+   {
+    "id": "1069d625b8bc",
+    "text": "Gains in batch size from second row column bundling may be offset by inefficient memory management.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "inefficient memory management",
+     "second row column bundling",
+     "batch size"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2309-06180-p0015",
+     "arxiv-2312-11514-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2309-06180-p0015",
+      "quote": "Moreover, inefficient memory management can further decrease the batch size, as shown in Fig. 2.",
+      "start": 827,
+      "end": 923,
+      "chunk_sha256": "4d719a97f7d1f5ff1bae148bd7540f7c4895b0a31c7cacb4d0e21a2bbd35538a",
+      "relation": "decreases",
+      "subject": "inefficient memory management",
+      "object": "batch size",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2312-11514-p0003",
+      "quote": "First, “windowing” strategically reduces data transfer by reusing previously activated neurons, and second, “row-column bundling”, tailored to the sequential data access strengths of flash memory, increases the size of data chunks read from flash memory.",
+      "start": 536,
+      "end": 790,
+      "chunk_sha256": "d5ede701095bae58f5bf969d1483ec6467f296088cc0dfee762f76965458bc5f",
+      "relation": "increases",
+      "subject": "second row column bundling",
+      "object": "size of data chunks",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.57,
+     "novelty": 0.623
+    },
+    "falsification_test": "Measure batch size where both inefficient memory management and second row column bundling vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "batch size"
+   },
+   {
+    "id": "33f34cde8371",
+    "text": "chunked prefill and future regulations may interact in their effect on memory access for prefill jobs.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "chunked prefill",
+     "future regulations",
+     "memory access for prefill jobs"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2401-09670-p0014",
+     "arxiv-2307-04699-p0028"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2401-09670-p0014",
+      "quote": "Also, chunked-prefill causes significantly more memory access for the prefill jobs.",
+      "start": 961,
+      "end": 1044,
+      "chunk_sha256": "8da95c52aad5ddbcd66ce6c4091da41143134045dbf39b2fb3870de166a507a9",
+      "relation": "causes",
+      "subject": "chunked prefill",
+      "object": "memory access for prefill jobs",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2307-04699-p0028",
+      "quote": "(It is possible that future regulations will limit access to powerful AI technologies in jurisdictions with inadequate AI governance.) Implementation support would help reduce obstacles to countries meeting international standards and therefore enable greater access to advanced AI.",
+      "start": 1199,
+      "end": 1481,
+      "chunk_sha256": "0d2b03a8c7e2493b56200fcdbdc7ee2c3b1aef0da1252b88b0fdb84ee2b3bf5e",
+      "relation": "constrains",
+      "subject": "future regulations",
+      "object": "access",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.499,
+     "novelty": 0.628
+    },
+    "falsification_test": "Vary chunked prefill and future regulations separately and together. The hypothesis fails if the joint change in memory access for prefill jobs equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "memory access for prefill job"
+   }
+  ],
+  "survivors": 7,
+  "candidates_generated": 49,
+  "candidates_passed": {
+   "abductive": 45,
+   "deductive": 45,
+   "pre_thinker": 7
+  },
+  "candidates_rejected": {
+   "abductive:unrelated_bridge": 4,
+   "pre_thinker:malformed": 26,
+   "pre_thinker:single_source": 12
+  },
+  "relation_edges": 528,
+  "scoped_edges": 49,
+  "budget_used": {
+   "rounds": 1,
+   "candidates": 49,
+   "edges": 528,
+   "bytes": 258383,
+   "seconds": 19.623
+  },
+  "incomplete": false,
+  "stop_reason": null,
+  "shortage": {
+   "returned": 7,
+   "target_min": 10,
+   "reason": "Fewer candidates survived the filters than the target; the list is not padded."
+  },
+  "snapshot": {
+   "as_of": 1795252464,
+   "chunk_count": 1054
+  }
+ },
+ "reply": "Frontier hypotheses for memory bandwidth bottlenecks. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 49. Passed abductive check: 45; deductive check: 45; pre-thinker validation: 7.\n\n1. second row column bundling may increase memory fragmentation through size of data chunks (read as larger block size).\n[arxiv-2312-11514-p0003] First, “windowing” strategically reduces data transfer by reusing previously activated neurons, and second, “row-column bundling”, tailored to the sequential data access strengths of flash memory, increases the size of data chunks read from flash memory.\n[arxiv-2309-06180-p0025] However, a larger block size also increases memory fragmentation.\nFalsification test: Compare settings where second row column bundling differs while other inputs are matched. The hypothesis fails if memory fragmentation does not rise with second row column bundling, or if fixing size of data chunks (read as larger block size) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.64, novelty 0.56.\n\n2. chunked prefill may increase divergence through memory access for prefill jobs (read as access).\n[arxiv-2401-09670-p0014] Also, chunked-prefill causes significantly more memory access for the prefill jobs.\n[arxiv-2010-15581-p0002] Using machine learning based text analysis methods, we provide additional evidence that the divergence between these two groups—large firms and non-elite universities—is driven by access to computing power or compute, which we term as the “compute divide”.\nFalsification test: Compare settings where chunked prefill differs while other inputs are matched. The hypothesis fails if divergence does not rise with chunked prefill, or if fixing memory access for prefill jobs (read as access) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.55, novelty 0.63.\n\n3. chunked prefill may affect Training large AI models and delivering through memory access for prefill jobs (read as access).\n[arxiv-2401-09670-p0014] Also, chunked-prefill causes significantly more memory access for the prefill jobs.\n[arxiv-2402-08797-p0031] Training large AI models and delivering access to them at scale requires access to large amounts of compute.\nFalsification test: Compare settings where chunked prefill differs while other inputs are matched. The hypothesis fails if Training large AI models and delivering does not change with chunked prefill, or if fixing memory access for prefill jobs (read as access) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.43, novelty 0.62.\n\n4. performances of swapping and problem may move together because both depend on bandwidth.\n[arxiv-2309-06180-p0032] The performances of swapping and recomputation depend on the bandwidth between CPU RAM and GPU memory and the computation power of the GPU.\n[arxiv-2403-14123-p0004] This means that no matter how fast the hardware could perform arithmetics per second, the problem will be entirely limited by DRAM bandwidth.\nFalsification test: Track performances of swapping and problem across periods where bandwidth changes and where it does not. The hypothesis fails if they co-vary just as strongly when bandwidth is held fixed.\nScores: source support 0.55, deductive relevance 0.65, novelty 0.60.\n\n5. Hardware limitations and Regulatory hurdles may jointly drive bottlenecks, and their effects may compound.\n[arxiv-2207-02852-p0032] In addition, we can generate some predictions from our hypotheses on the parameter gap: • Hardware limitations might cause discontinuities or bottlenecks in scaling by limiting model size rather than compute.\n[arxiv-2405-21015-p0019] Regulatory and logistical hurdles to secure power supplies may cause bottlenecks in the coming years, but we leave that topic to future work.\nFalsification test: Vary Hardware limitations and Regulatory hurdles separately and together. The hypothesis fails if the joint change in bottlenecks equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.59, novelty 0.68.\n\n6. Gains in batch size from second row column bundling may be offset by inefficient memory management.\n[arxiv-2309-06180-p0015] Moreover, inefficient memory management can further decrease the batch size, as shown in Fig. 2.\n[arxiv-2312-11514-p0003] First, “windowing” strategically reduces data transfer by reusing previously activated neurons, and second, “row-column bundling”, tailored to the sequential data access strengths of flash memory, increases the size of data chunks read from flash memory.\nFalsification test: Measure batch size where both inefficient memory management and second row column bundling vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.62.\n\n7. chunked prefill and future regulations may interact in their effect on memory access for prefill jobs.\n[arxiv-2401-09670-p0014] Also, chunked-prefill causes significantly more memory access for the prefill jobs.\n[arxiv-2307-04699-p0028] (It is possible that future regulations will limit access to powerful AI technologies in jurisdictions with inadequate AI governance.) Implementation support would help reduce obstacles to countries meeting international standards and therefore enable greater access to advanced AI.\nFalsification test: Vary chunked prefill and future regulations separately and together. The hypothesis fails if the joint change in memory access for prefill jobs equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.50, novelty 0.63.\n\nOnly 7 hypotheses survived the filters (target at least 10). The list is not padded.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}
