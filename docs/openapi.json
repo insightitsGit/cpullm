@@ -578,6 +578,34 @@
             "exclusiveMinimum": 0,
             "description": "Positive finite volumetric stiffness used by an explicit Nammade scan. The default is 1."
           },
+          "frontier": {
+            "description": "Opt in to the Frontier node: 10 to 50 ranked UNVERIFIED_HYPOTHESIS entries (hard cap 50) built from relation combinations across the caller's authorized snapshot. true uses default budgets; an object may name the topic and limits. Results are never promoted or written to the index. Strict evidence disables this path.",
+            "oneOf": [
+              {"type": "boolean", "default": false},
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "topic": {"type": "string", "minLength": 1, "maxLength": 240},
+                  "limits": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "max_rounds": {"type": "integer", "default": 1000, "minimum": 1, "maximum": 100000},
+                      "max_candidates": {"type": "integer", "default": 200000, "minimum": 1, "maximum": 2000000},
+                      "max_edges": {"type": "integer", "default": 50000, "minimum": 1, "maximum": 200000},
+                      "max_bytes": {"type": "integer", "default": 67108864, "minimum": 1, "maximum": 134217728},
+                      "max_seconds": {"type": "number", "default": 20, "exclusiveMinimum": 0, "maximum": 120},
+                      "batch_size": {"type": "integer", "default": 256, "minimum": 1, "maximum": 10000},
+                      "max_path_edges": {"type": "integer", "default": 2, "minimum": 2, "maximum": 3},
+                      "max_results": {"type": "integer", "default": 50, "minimum": 1, "maximum": 50},
+                      "min_results": {"type": "integer", "default": 10, "minimum": 1, "maximum": 50}
+                    }
+                  }
+                }
+              }
+            ]
+          },
           "target_level": {
             "type": "string",
             "enum": ["off", "auto", "A1", "A2", "B1", "B2", "C1", "C2"],

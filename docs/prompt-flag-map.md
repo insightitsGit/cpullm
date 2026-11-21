@@ -105,6 +105,22 @@ authorized snapshot. It is disabled by a strict request/operator floor. See
 [usage and limits](research-cycle-user-guide.md). New flags do not change the
 number of ordinary graph nodes.
 
+## Frontier hypotheses (unreleased)
+
+`request.frontier` is selected by `Frontier: <topic>.`, `ask(..., frontier=True)`
+or `"frontier": true` on `/v1/ask`. An object form, `{"topic": ..., "limits": {...}}`,
+sets the topic and budgets. Frontier is its own pre-graph route; it does not run
+inside `Research`. It reads one authorized snapshot (`frontier_snapshot`), streams
+every relation combination around the topic in batches (`frontier_generate`), and
+filters each candidate through `frontier_abductive`, `frontier_deductive` and
+`frontier_pre_thinker` before `frontier_rank` returns 10 to 50 hypotheses (hard
+cap 50). A shortage is reported, never padded. Every entry is an
+`UNVERIFIED_HYPOTHESIS` with `promotion: blocked`, and the node never writes to the
+index. Round, time, memory, edge and candidate budgets set `incomplete` when they
+stop the run. Strict evidence disables the route. The response carries a
+`frontier` receipt and the standard invention note. See
+[the Frontier design](frontier-node-design.md).
+
 ## Explicit rule inference
 
 The repository source includes an experimental InferenceNode for registered

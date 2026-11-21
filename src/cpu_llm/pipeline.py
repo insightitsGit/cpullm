@@ -649,6 +649,7 @@ class Appliance:
         nammade_kappa: float | None = None,
         target_level: str | None = None,
         inference: dict | None = None,
+        frontier: bool | dict | None = None,
     ) -> dict[str, Any]:
         """Separate explicit compound requests; each task uses the full pipeline."""
         from cpu_llm.request_planner import dispatch_request
@@ -671,6 +672,22 @@ class Appliance:
             return inference_response(raw_message, self.tenant_id, 'needs_clarification', str(exc))
         from cpu_llm.evidence_analysis import EvidenceAnalysisRequest
         explicit_inference = explicit_inference or isinstance(inference_request, EvidenceAnalysisRequest)
+        from cpu_llm.frontier import execute_frontier, finish_frontier_response, frontier_seed, validate_frontier_option
+        frontier_options = validate_frontier_option(frontier)
+        frontier_topic = frontier_seed(content, forced=frontier_options is not None)
+        if frontier_topic is not None:
+            if frontier_options is not None and frontier_options['topic']:
+                frontier_topic = frontier_options['topic']
+            if any((invent, nammade, imagine, math, finance)) or cycle_search is not None or inference is not None or any(
+                    value is not None for value in (payment, authority, objective, hypothesis, causal_graph)):
+                raise ValueError('Submit Frontier and other specialist requests separately.')
+            from cpu_llm.output_rendering import extract_layout
+            from cpu_llm.response_policy import classify_response_request
+            topic = extract_layout(frontier_topic)['content_query'].strip().rstrip('.!?').strip()
+            result = execute_frontier(self, raw_message, topic, options=frontier_options, caller=caller,
+                                      as_of=as_of, strict=enabled)
+            result['response_plan'] = classify_response_request(content)
+            return finish_frontier_response(result)
         # Only explicit requests may fetch a full inference snapshot. Ordinary
         # questions can receive a receipt from their already retrieved evidence.
         if inference_request is not None and explicit_inference:

@@ -119,6 +119,11 @@ FLAG_BINDINGS += (
         ('cycle_snapshot', 'cycle_explore', 'cycle_compose', 'cycle_verify'), 'pre_graph',
         'Bounded multiple lexical cycles; independently verified path sentences; document mode shares one authorized snapshot; strict disables; no shortcut inference.',
         'Show relationship loops for Alpha.'),
+    FlagBinding('request.frontier', 'explicit Frontier: prompt or Python/HTTP frontier flag',
+        ('frontier_snapshot', 'frontier_generate', 'frontier_abductive', 'frontier_deductive',
+         'frontier_pre_thinker', 'frontier_rank'), 'pre_graph',
+        'Own route over one authorized snapshot; streamed exhaustive relation combinations under round, time, memory and candidate budgets; abductive, deductive and pre-thinker filters; 10 to 50 ranked UNVERIFIED_HYPOTHESIS entries, never promoted or indexed; strict disables.',
+        'Frontier: AI bottlenecks.'),
 )
 OPTIONAL_ORDER = ('deep', 'gather', 'compare', 'brief', 'math', 'finance', 'frame')
 _AFTER = {'shine': -1, 'deep': 0, 'imagine': 1, 'compare': 2, 'brief': 3, 'math': 4, 'finance': 5, 'frame': 6}
@@ -163,7 +168,9 @@ def validate_graph_consumers(nodes):
                 'document_plan', 'document_snapshot', 'document_coverage', 'document_render',
                 'research_plan', 'cycle_snapshot', 'cycle_explore', 'cycle_compose', 'cycle_verify', 'taxonomy_invention',
                 'document_compose', 'document_inverse_verify', 'crossdomin', 'constraint_check',
-                'chunk_inventory', 'chunk_delete', 'nammade_equilibrium', 'inference'}
+                'chunk_inventory', 'chunk_delete', 'nammade_equilibrium', 'inference',
+                'frontier_snapshot', 'frontier_generate', 'frontier_abductive', 'frontier_deductive',
+                'frontier_pre_thinker', 'frontier_rank'}
     expected = {node for binding in FLAG_BINDINGS for node in binding.consumers} - external
     if missing := expected - set(nodes):
         raise ValueError('Flag consumers missing from graph: ' + ', '.join(sorted(missing)))
