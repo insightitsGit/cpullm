@@ -1,0 +1,723 @@
+{
+ "prompt": "Frontier: hard problem of consciousness.",
+ "run": 2,
+ "wall_seconds": 4.671,
+ "python_peak_bytes": 31692784,
+ "answer_status": "hypotheses",
+ "routing": {
+  "schema": "flag-routing-contract-v1",
+  "executed_nodes": [],
+  "post_stages": [
+   "frontier_snapshot",
+   "frontier_generate",
+   "frontier_abductive",
+   "frontier_deductive",
+   "frontier_pre_thinker",
+   "frontier_rank"
+  ]
+ },
+ "frontier": {
+  "schema": "frontier-v1",
+  "triggered": true,
+  "topic": "hard problem of consciousness",
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "limits": {
+   "max_rounds": 1000,
+   "max_candidates": 200000,
+   "max_edges": 50000,
+   "max_bytes": 67108864,
+   "max_seconds": 20.0,
+   "batch_size": 256,
+   "max_path_edges": 2,
+   "max_results": 50,
+   "min_results": 10
+  },
+  "topic_terms": [
+   "hard",
+   "problem",
+   "consciousness"
+  ],
+  "focus_terms": [
+   "hard",
+   "problem"
+  ],
+  "chunk_count": 1241,
+  "status": "hypotheses",
+  "hypotheses": [
+   {
+    "id": "8a2238c245b7",
+    "text": "physical laws or principles may constrain situation through explanation.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "physical laws or principles",
+     "situation"
+    ],
+    "via": [
+     "explanation"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1606-07184-p0002",
+     "arxiv-2505-05480-p0007"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1606-07184-p0002",
+      "quote": "He argued that subjective experience constitutes a \"hard problem\" in the sense that its explanation will ultimately require new physical laws or principles.",
+      "start": 127,
+      "end": 283,
+      "chunk_sha256": "406ba3b4f870101f9fc97b78b7167fc6a6721d0ef7ec70aecd6af7bb16c9f0e5",
+      "relation": "constrains",
+      "subject": "physical laws or principles",
+      "object": "explanation",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2505-05480-p0007",
+      "quote": "This situation demands an explanation.",
+      "start": 1885,
+      "end": 1923,
+      "chunk_sha256": "f284a748c08ddfb053da104da5949987df4811dea0978c0ec0bdd254283a9504",
+      "relation": "constrains",
+      "subject": "explanation",
+      "object": "situation",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.8,
+     "novelty": 0.564
+    },
+    "falsification_test": "Compare settings where physical laws or principles differs while other inputs are matched. The hypothesis fails if situation does not stay bounded with physical laws or principles, or if fixing explanation removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "64da674e9719",
+    "text": "Chalmers and formulation may jointly drive view, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "Chalmers",
+     "formulation",
+     "view"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2509-16859-p0005",
+     "arxiv-2407-09488-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2509-16859-p0005",
+      "quote": "However, in his 2018 work on the meta-problem of consciousness, Chalmers expanded his view by introducing a new category of \"easy problems\" that are intimately connected to the hard problem.",
+      "start": 355,
+      "end": 545,
+      "chunk_sha256": "6162b90b2eaca330734107b4f90ab6165baae3df658fd3ce4a8a445ab3ee7d4a",
+      "relation": "increases",
+      "subject": "Chalmers",
+      "object": "view",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2407-09488-p0011",
+      "quote": "Remark: This formulation supports the view that emotion and cognition are not independent modules, but coupled components in a recursive inference loop.",
+      "start": 0,
+      "end": 152,
+      "chunk_sha256": "6baed18a5225aa2e0cb97b82703c08b000c9ea11a627e4ced9540840b4f293d5",
+      "relation": "supports",
+      "subject": "formulation",
+      "object": "view",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.725,
+     "novelty": 0.657
+    },
+    "falsification_test": "Vary Chalmers and formulation separately and together. The hypothesis fails if the joint change in view equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "27ffdd20d39a",
+    "text": "brain processes and how do physical processes may jointly drive subjective experiences, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "brain processes",
+     "how do physical processes",
+     "subjective experiences"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-02370-p0009",
+     "arxiv-2510-01864-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-02370-p0009",
+      "quote": "Even with a comprehensive map of the NCC, unravelling the mechanisms by which brain processes give rise to subjective experiences (the \"hard problem\" of consciousness) remains an elusive endeavour.",
+      "start": 3387,
+      "end": 3584,
+      "chunk_sha256": "3fc6ff8e55403842487258dde0153c4709b5c81f2a07f342e4754f103c986a06",
+      "relation": "causes",
+      "subject": "brain processes",
+      "object": "subjective experiences",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2510-01864-p0003",
+      "quote": "These limitations become salient in relation to the “hard problem” (Chalmers, 1995): why and how do physical processes give rise to subjective experience?",
+      "start": 1780,
+      "end": 1934,
+      "chunk_sha256": "def64065589975f69cebb554e3b66b33e83c5f2c3556cc7164b10694170fe104",
+      "relation": "causes",
+      "subject": "how do physical processes",
+      "object": "subjective experience",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.725,
+     "novelty": 0.628
+    },
+    "falsification_test": "Vary brain processes and how do physical processes separately and together. The hypothesis fails if the joint change in subjective experiences equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "7eaea6c51892",
+    "text": "brain processes may affect ignored the question of why NCC through subjective experiences.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "brain processes",
+     "ignored the question of why NCC"
+    ],
+    "via": [
+     "subjective experiences"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-02370-p0009",
+     "arxiv-2309-15566-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-02370-p0009",
+      "quote": "Even with a comprehensive map of the NCC, unravelling the mechanisms by which brain processes give rise to subjective experiences (the \"hard problem\" of consciousness) remains an elusive endeavour.",
+      "start": 3387,
+      "end": 3584,
+      "chunk_sha256": "3fc6ff8e55403842487258dde0153c4709b5c81f2a07f342e4754f103c986a06",
+      "relation": "causes",
+      "subject": "brain processes",
+      "object": "subjective experiences",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2309-15566-p0011",
+      "quote": "Until recently, neuroscience has focussed on the neural correlates of consciousness (NCC), and generally ignored the question of why NCC require subjective experience (Wu, 2018).",
+      "start": 0,
+      "end": 178,
+      "chunk_sha256": "3a0c7df20240c8288775a0667f3dbc1a1c7f15fad06602c869b9e0c706580d01",
+      "relation": "constrains",
+      "subject": "subjective experience",
+      "object": "ignored the question of why NCC",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.65,
+     "novelty": 0.572
+    },
+    "falsification_test": "Compare settings where brain processes differs while other inputs are matched. The hypothesis fails if ignored the question of why NCC does not change with brain processes, or if fixing subjective experiences removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "9f189a0280db",
+    "text": "how do physical processes may affect ignored the question of why NCC through subjective experience.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "how do physical processes",
+     "ignored the question of why NCC"
+    ],
+    "via": [
+     "subjective experience"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2510-01864-p0003",
+     "arxiv-2309-15566-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2510-01864-p0003",
+      "quote": "These limitations become salient in relation to the “hard problem” (Chalmers, 1995): why and how do physical processes give rise to subjective experience?",
+      "start": 1780,
+      "end": 1934,
+      "chunk_sha256": "def64065589975f69cebb554e3b66b33e83c5f2c3556cc7164b10694170fe104",
+      "relation": "causes",
+      "subject": "how do physical processes",
+      "object": "subjective experience",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2309-15566-p0011",
+      "quote": "Until recently, neuroscience has focussed on the neural correlates of consciousness (NCC), and generally ignored the question of why NCC require subjective experience (Wu, 2018).",
+      "start": 0,
+      "end": 178,
+      "chunk_sha256": "3a0c7df20240c8288775a0667f3dbc1a1c7f15fad06602c869b9e0c706580d01",
+      "relation": "constrains",
+      "subject": "subjective experience",
+      "object": "ignored the question of why NCC",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.65,
+     "novelty": 0.572
+    },
+    "falsification_test": "Compare settings where how do physical processes differs while other inputs are matched. The hypothesis fails if ignored the question of why NCC does not change with how do physical processes, or if fixing subjective experience removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "e9942bb49ae8",
+    "text": "how do physical processes and physical system may jointly drive subjective experience, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "how do physical processes",
+     "physical system",
+     "subjective experience"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2510-01864-p0003",
+     "arxiv-2608-20723-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2510-01864-p0003",
+      "quote": "These limitations become salient in relation to the “hard problem” (Chalmers, 1995): why and how do physical processes give rise to subjective experience?",
+      "start": 1780,
+      "end": 1934,
+      "chunk_sha256": "def64065589975f69cebb554e3b66b33e83c5f2c3556cc7164b10694170fe104",
+      "relation": "causes",
+      "subject": "how do physical processes",
+      "object": "subjective experience",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2608-20723-p0004",
+      "quote": "We suggest that this gridlock follows from a widely shared, and rarely examined, assumption: that a theory of consciousness must, to be complete, specify the conditions under which a physical system gives rise to subjective experience.",
+      "start": 1959,
+      "end": 2194,
+      "chunk_sha256": "3293482394a490af0cbfb54afcf9788ff27b5c819ba200d3752be34ae953d02a",
+      "relation": "causes",
+      "subject": "physical system",
+      "object": "subjective experience",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.725,
+     "novelty": 0.628
+    },
+    "falsification_test": "Vary how do physical processes and physical system separately and together. The hypothesis fails if the joint change in subjective experience equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "8b2f6d10ae3e",
+    "text": "brain processes and physical system may jointly drive subjective experiences, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "brain processes",
+     "physical system",
+     "subjective experiences"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-02370-p0009",
+     "arxiv-2608-20723-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-02370-p0009",
+      "quote": "Even with a comprehensive map of the NCC, unravelling the mechanisms by which brain processes give rise to subjective experiences (the \"hard problem\" of consciousness) remains an elusive endeavour.",
+      "start": 3387,
+      "end": 3584,
+      "chunk_sha256": "3fc6ff8e55403842487258dde0153c4709b5c81f2a07f342e4754f103c986a06",
+      "relation": "causes",
+      "subject": "brain processes",
+      "object": "subjective experiences",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2608-20723-p0004",
+      "quote": "We suggest that this gridlock follows from a widely shared, and rarely examined, assumption: that a theory of consciousness must, to be complete, specify the conditions under which a physical system gives rise to subjective experience.",
+      "start": 1959,
+      "end": 2194,
+      "chunk_sha256": "3293482394a490af0cbfb54afcf9788ff27b5c819ba200d3752be34ae953d02a",
+      "relation": "causes",
+      "subject": "physical system",
+      "object": "subjective experience",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.725,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary brain processes and physical system separately and together. The hypothesis fails if the joint change in subjective experiences equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "455701b94a28",
+    "text": "how do physical processes and how physical processes in the brain may jointly drive subjective experience, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "how do physical processes",
+     "how physical processes in the brain",
+     "subjective experience"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2510-01864-p0003",
+     "arxiv-1804-03606-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2510-01864-p0003",
+      "quote": "These limitations become salient in relation to the “hard problem” (Chalmers, 1995): why and how do physical processes give rise to subjective experience?",
+      "start": 1780,
+      "end": 1934,
+      "chunk_sha256": "def64065589975f69cebb554e3b66b33e83c5f2c3556cc7164b10694170fe104",
+      "relation": "causes",
+      "subject": "how do physical processes",
+      "object": "subjective experience",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-1804-03606-p0002",
+      "quote": "The hard problem in consciousness is the problem of understanding how physical processes in the brain could give rise to subjective conscious experience.",
+      "start": 0,
+      "end": 153,
+      "chunk_sha256": "6b124809b5b796aeae753fdd207ff09e77f4f07c3b74d84286ab78fe472a38a8",
+      "relation": "causes",
+      "subject": "how physical processes in the brain",
+      "object": "subjective conscious experience",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.64,
+     "novelty": 0.572
+    },
+    "falsification_test": "Vary how do physical processes and how physical processes in the brain separately and together. The hypothesis fails if the joint change in subjective experience equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "cef26a865dd1",
+    "text": "how physical processes in the brain and physical system may jointly drive subjective conscious experience, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "how physical processes in the brain",
+     "physical system",
+     "subjective conscious experience"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1804-03606-p0002",
+     "arxiv-2608-20723-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1804-03606-p0002",
+      "quote": "The hard problem in consciousness is the problem of understanding how physical processes in the brain could give rise to subjective conscious experience.",
+      "start": 0,
+      "end": 153,
+      "chunk_sha256": "6b124809b5b796aeae753fdd207ff09e77f4f07c3b74d84286ab78fe472a38a8",
+      "relation": "causes",
+      "subject": "how physical processes in the brain",
+      "object": "subjective conscious experience",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2608-20723-p0004",
+      "quote": "We suggest that this gridlock follows from a widely shared, and rarely examined, assumption: that a theory of consciousness must, to be complete, specify the conditions under which a physical system gives rise to subjective experience.",
+      "start": 1959,
+      "end": 2194,
+      "chunk_sha256": "3293482394a490af0cbfb54afcf9788ff27b5c819ba200d3752be34ae953d02a",
+      "relation": "causes",
+      "subject": "physical system",
+      "object": "subjective experience",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.64,
+     "novelty": 0.527
+    },
+    "falsification_test": "Vary how physical processes in the brain and physical system separately and together. The hypothesis fails if the joint change in subjective conscious experience equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "71aae98814c7",
+    "text": "rich inner world of phenomenal consciousness and subjective conscious experience may move together because both depend on how certain brain processes.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "rich inner world of phenomenal consciousness",
+     "subjective conscious experience",
+     "how certain brain processes"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2509-16859-p0004",
+     "arxiv-1804-03606-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2509-16859-p0004",
+      "quote": "In contrast, the hard problem concerns the subjective experience of consciousness itself—why and how certain brain processes give rise to the rich inner world of phenomenal consciousness or qualia, a question that remains largely unexplained and deeply mysterious",
+      "start": 308,
+      "end": 571,
+      "chunk_sha256": "edd356899af8efa37784121dfa7a20c7b797a5acf323678f4ae5e5153f40c673",
+      "relation": "causes",
+      "subject": "how certain brain processes",
+      "object": "rich inner world of phenomenal consciousness",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-1804-03606-p0002",
+      "quote": "The hard problem in consciousness is the problem of understanding how physical processes in the brain could give rise to subjective conscious experience.",
+      "start": 0,
+      "end": 153,
+      "chunk_sha256": "6b124809b5b796aeae753fdd207ff09e77f4f07c3b74d84286ab78fe472a38a8",
+      "relation": "causes",
+      "subject": "how physical processes in the brain",
+      "object": "subjective conscious experience",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.62,
+     "novelty": 0.517
+    },
+    "falsification_test": "Track rich inner world of phenomenal consciousness and subjective conscious experience across periods where how certain brain processes changes and where it does not. The hypothesis fails if they co-vary just as strongly when how certain brain processes is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "e3ba50f45030",
+    "text": "subjective experience and subjective conscious experience may move together because both depend on how do physical processes.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "subjective experience",
+     "subjective conscious experience",
+     "how do physical processes"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2510-01864-p0003",
+     "arxiv-1804-03606-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2510-01864-p0003",
+      "quote": "These limitations become salient in relation to the “hard problem” (Chalmers, 1995): why and how do physical processes give rise to subjective experience?",
+      "start": 1780,
+      "end": 1934,
+      "chunk_sha256": "def64065589975f69cebb554e3b66b33e83c5f2c3556cc7164b10694170fe104",
+      "relation": "causes",
+      "subject": "how do physical processes",
+      "object": "subjective experience",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-1804-03606-p0002",
+      "quote": "The hard problem in consciousness is the problem of understanding how physical processes in the brain could give rise to subjective conscious experience.",
+      "start": 0,
+      "end": 153,
+      "chunk_sha256": "6b124809b5b796aeae753fdd207ff09e77f4f07c3b74d84286ab78fe472a38a8",
+      "relation": "causes",
+      "subject": "how physical processes in the brain",
+      "object": "subjective conscious experience",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.62,
+     "novelty": 0.522
+    },
+    "falsification_test": "Track subjective experience and subjective conscious experience across periods where how do physical processes changes and where it does not. The hypothesis fails if they co-vary just as strongly when how do physical processes is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "afe019a7d0cc",
+    "text": "how physical processes in the brain may affect ignored the question of why NCC through subjective conscious experience (read as subjective experience).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "how physical processes in the brain",
+     "ignored the question of why NCC"
+    ],
+    "via": [
+     "subjective conscious experience (read as subjective experience)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1804-03606-p0002",
+     "arxiv-2309-15566-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1804-03606-p0002",
+      "quote": "The hard problem in consciousness is the problem of understanding how physical processes in the brain could give rise to subjective conscious experience.",
+      "start": 0,
+      "end": 153,
+      "chunk_sha256": "6b124809b5b796aeae753fdd207ff09e77f4f07c3b74d84286ab78fe472a38a8",
+      "relation": "causes",
+      "subject": "how physical processes in the brain",
+      "object": "subjective conscious experience",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2309-15566-p0011",
+      "quote": "Until recently, neuroscience has focussed on the neural correlates of consciousness (NCC), and generally ignored the question of why NCC require subjective experience (Wu, 2018).",
+      "start": 0,
+      "end": 178,
+      "chunk_sha256": "3a0c7df20240c8288775a0667f3dbc1a1c7f15fad06602c869b9e0c706580d01",
+      "relation": "constrains",
+      "subject": "subjective experience",
+      "object": "ignored the question of why NCC",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.58,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where how physical processes in the brain differs while other inputs are matched. The hypothesis fails if ignored the question of why NCC does not change with how physical processes in the brain, or if fixing subjective conscious experience (read as subjective experience) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   }
+  ],
+  "survivors": 12,
+  "candidates_generated": 28,
+  "candidates_passed": {
+   "abductive": 18,
+   "deductive": 18,
+   "pre_thinker": 12
+  },
+  "candidates_rejected": {
+   "abductive:no_explanatory_relation": 5,
+   "abductive:unrelated_bridge": 5,
+   "pre_thinker:circular": 1,
+   "pre_thinker:restates_source": 4,
+   "pre_thinker:single_source": 1
+  },
+  "relation_edges": 536,
+  "scoped_edges": 33,
+  "budget_used": {
+   "rounds": 1,
+   "candidates": 28,
+   "edges": 536,
+   "bytes": 267694,
+   "seconds": 4.572
+  },
+  "incomplete": false,
+  "stop_reason": null,
+  "shortage": null,
+  "snapshot": {
+   "as_of": 1795250807,
+   "chunk_count": 1241
+  }
+ },
+ "reply": "Frontier hypotheses for hard problem of consciousness. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 28. Passed abductive check: 18; deductive check: 18; pre-thinker validation: 12.\n\n1. physical laws or principles may constrain situation through explanation.\n[arxiv-1606-07184-p0002] He argued that subjective experience constitutes a \"hard problem\" in the sense that its explanation will ultimately require new physical laws or principles.\n[arxiv-2505-05480-p0007] This situation demands an explanation.\nFalsification test: Compare settings where physical laws or principles differs while other inputs are matched. The hypothesis fails if situation does not stay bounded with physical laws or principles, or if fixing explanation removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.80, novelty 0.56.\n\n2. Chalmers and formulation may jointly drive view, and their effects may compound.\n[arxiv-2509-16859-p0005] However, in his 2018 work on the meta-problem of consciousness, Chalmers expanded his view by introducing a new category of \"easy problems\" that are intimately connected to the hard problem.\n[arxiv-2407-09488-p0011] Remark: This formulation supports the view that emotion and cognition are not independent modules, but coupled components in a recursive inference loop.\nFalsification test: Vary Chalmers and formulation separately and together. The hypothesis fails if the joint change in view equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.72, novelty 0.66.\n\n3. brain processes and how do physical processes may jointly drive subjective experiences, and their effects may compound.\n[arxiv-2405-02370-p0009] Even with a comprehensive map of the NCC, unravelling the mechanisms by which brain processes give rise to subjective experiences (the \"hard problem\" of consciousness) remains an elusive endeavour.\n[arxiv-2510-01864-p0003] These limitations become salient in relation to the “hard problem” (Chalmers, 1995): why and how do physical processes give rise to subjective experience?\nFalsification test: Vary brain processes and how do physical processes separately and together. The hypothesis fails if the joint change in subjective experiences equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.72, novelty 0.63.\n\n4. brain processes may affect ignored the question of why NCC through subjective experiences.\n[arxiv-2405-02370-p0009] Even with a comprehensive map of the NCC, unravelling the mechanisms by which brain processes give rise to subjective experiences (the \"hard problem\" of consciousness) remains an elusive endeavour.\n[arxiv-2309-15566-p0011] Until recently, neuroscience has focussed on the neural correlates of consciousness (NCC), and generally ignored the question of why NCC require subjective experience (Wu, 2018).\nFalsification test: Compare settings where brain processes differs while other inputs are matched. The hypothesis fails if ignored the question of why NCC does not change with brain processes, or if fixing subjective experiences removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.65, novelty 0.57.\n\n5. how do physical processes may affect ignored the question of why NCC through subjective experience.\n[arxiv-2510-01864-p0003] These limitations become salient in relation to the “hard problem” (Chalmers, 1995): why and how do physical processes give rise to subjective experience?\n[arxiv-2309-15566-p0011] Until recently, neuroscience has focussed on the neural correlates of consciousness (NCC), and generally ignored the question of why NCC require subjective experience (Wu, 2018).\nFalsification test: Compare settings where how do physical processes differs while other inputs are matched. The hypothesis fails if ignored the question of why NCC does not change with how do physical processes, or if fixing subjective experience removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.65, novelty 0.57.\n\n6. how do physical processes and physical system may jointly drive subjective experience, and their effects may compound.\n[arxiv-2510-01864-p0003] These limitations become salient in relation to the “hard problem” (Chalmers, 1995): why and how do physical processes give rise to subjective experience?\n[arxiv-2608-20723-p0004] We suggest that this gridlock follows from a widely shared, and rarely examined, assumption: that a theory of consciousness must, to be complete, specify the conditions under which a physical system gives rise to subjective experience.\nFalsification test: Vary how do physical processes and physical system separately and together. The hypothesis fails if the joint change in subjective experience equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.72, novelty 0.63.\n\n7. brain processes and physical system may jointly drive subjective experiences, and their effects may compound.\n[arxiv-2405-02370-p0009] Even with a comprehensive map of the NCC, unravelling the mechanisms by which brain processes give rise to subjective experiences (the \"hard problem\" of consciousness) remains an elusive endeavour.\n[arxiv-2608-20723-p0004] We suggest that this gridlock follows from a widely shared, and rarely examined, assumption: that a theory of consciousness must, to be complete, specify the conditions under which a physical system gives rise to subjective experience.\nFalsification test: Vary brain processes and physical system separately and together. The hypothesis fails if the joint change in subjective experiences equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.72, novelty 0.60.\n\n8. how do physical processes and how physical processes in the brain may jointly drive subjective experience, and their effects may compound.\n[arxiv-2510-01864-p0003] These limitations become salient in relation to the “hard problem” (Chalmers, 1995): why and how do physical processes give rise to subjective experience?\n[arxiv-1804-03606-p0002] The hard problem in consciousness is the problem of understanding how physical processes in the brain could give rise to subjective conscious experience.\nFalsification test: Vary how do physical processes and how physical processes in the brain separately and together. The hypothesis fails if the joint change in subjective experience equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.64, novelty 0.57.\n\n9. how physical processes in the brain and physical system may jointly drive subjective conscious experience, and their effects may compound.\n[arxiv-1804-03606-p0002] The hard problem in consciousness is the problem of understanding how physical processes in the brain could give rise to subjective conscious experience.\n[arxiv-2608-20723-p0004] We suggest that this gridlock follows from a widely shared, and rarely examined, assumption: that a theory of consciousness must, to be complete, specify the conditions under which a physical system gives rise to subjective experience.\nFalsification test: Vary how physical processes in the brain and physical system separately and together. The hypothesis fails if the joint change in subjective conscious experience equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.64, novelty 0.53.\n\n10. rich inner world of phenomenal consciousness and subjective conscious experience may move together because both depend on how certain brain processes.\n[arxiv-2509-16859-p0004] In contrast, the hard problem concerns the subjective experience of consciousness itself—why and how certain brain processes give rise to the rich inner world of phenomenal consciousness or qualia, a question that remains largely unexplained and deeply mysterious\n[arxiv-1804-03606-p0002] The hard problem in consciousness is the problem of understanding how physical processes in the brain could give rise to subjective conscious experience.\nFalsification test: Track rich inner world of phenomenal consciousness and subjective conscious experience across periods where how certain brain processes changes and where it does not. The hypothesis fails if they co-vary just as strongly when how certain brain processes is held fixed.\nScores: source support 0.55, deductive relevance 0.62, novelty 0.52.\n\n11. subjective experience and subjective conscious experience may move together because both depend on how do physical processes.\n[arxiv-2510-01864-p0003] These limitations become salient in relation to the “hard problem” (Chalmers, 1995): why and how do physical processes give rise to subjective experience?\n[arxiv-1804-03606-p0002] The hard problem in consciousness is the problem of understanding how physical processes in the brain could give rise to subjective conscious experience.\nFalsification test: Track subjective experience and subjective conscious experience across periods where how do physical processes changes and where it does not. The hypothesis fails if they co-vary just as strongly when how do physical processes is held fixed.\nScores: source support 0.55, deductive relevance 0.62, novelty 0.52.\n\n12. how physical processes in the brain may affect ignored the question of why NCC through subjective conscious experience (read as subjective experience).\n[arxiv-1804-03606-p0002] The hard problem in consciousness is the problem of understanding how physical processes in the brain could give rise to subjective conscious experience.\n[arxiv-2309-15566-p0011] Until recently, neuroscience has focussed on the neural correlates of consciousness (NCC), and generally ignored the question of why NCC require subjective experience (Wu, 2018).\nFalsification test: Compare settings where how physical processes in the brain differs while other inputs are matched. The hypothesis fails if ignored the question of why NCC does not change with how physical processes in the brain, or if fixing subjective conscious experience (read as subjective experience) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.58, novelty 0.60.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}
