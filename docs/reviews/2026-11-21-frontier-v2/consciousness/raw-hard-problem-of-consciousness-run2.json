@@ -1,0 +1,309 @@
+{
+ "prompt": "Frontier: hard problem of consciousness.",
+ "run": 2,
+ "wall_seconds": 20.431,
+ "python_peak_bytes": 39383587,
+ "answer_status": "shortage",
+ "routing": {
+  "schema": "flag-routing-contract-v1",
+  "executed_nodes": [],
+  "post_stages": [
+   "frontier_snapshot",
+   "frontier_generate",
+   "frontier_abductive",
+   "frontier_deductive",
+   "frontier_pre_thinker",
+   "frontier_rank"
+  ]
+ },
+ "frontier": {
+  "schema": "frontier-v1",
+  "triggered": true,
+  "topic": "hard problem of consciousness",
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "limits": {
+   "max_rounds": 1000,
+   "max_candidates": 200000,
+   "max_edges": 50000,
+   "max_bytes": 67108864,
+   "max_seconds": 20.0,
+   "batch_size": 256,
+   "max_path_edges": 2,
+   "max_results": 50,
+   "min_results": 10
+  },
+  "topic_terms": [
+   "hard",
+   "problem",
+   "consciousness"
+  ],
+  "focus_terms": [
+   "hard",
+   "problem"
+  ],
+  "chunk_count": 1241,
+  "parser": "en_core_web_lg",
+  "bridge_check": "encoder",
+  "encoded_terms": 24,
+  "hub_deferred": 1,
+  "status": "shortage",
+  "hypotheses": [
+   {
+    "id": "0290e23a38de",
+    "text": "brain may support effect repertoire through consciousness.",
+    "pattern": "chain",
+    "relation": "supports",
+    "anchors": [
+     "brain",
+     "effect repertoire"
+    ],
+    "via": [
+     "consciousness"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2204-07164-p0004",
+     "arxiv-2510-04084-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2204-07164-p0004",
+      "quote": "Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).",
+      "start": 0,
+      "end": 204,
+      "chunk_sha256": "bbf63c86bd51602f06714c9df1ee5d7c874a790612428872036a06eabbb0ee89",
+      "relation": "supports",
+      "subject": "brain",
+      "object": "consciousness",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2510-04084-p0004",
+      "quote": "IIT, grounded in phenomenology, holds that consciousness is identical to a system’s integrated causal structure—an irreducible cause–effect repertoire quantified by Φ—which specifies how experience exists here and now as an intrinsic property of the system.",
+      "start": 183,
+      "end": 440,
+      "chunk_sha256": "c48d38d9bbfcfd24894e1ca7b376cd59f7471aa018bf9879276dbcb9c93e2065",
+      "relation": "alias_of",
+      "subject": "consciousness",
+      "object": "effect repertoire",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.65,
+     "novelty": 0.6
+    },
+    "falsification_test": "Construct a coherent case where brain is accepted. The hypothesis fails if effect repertoire still fails in that case, or if the argument does not need consciousness.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "consciousness"
+   },
+   {
+    "id": "938d9b5c057d",
+    "text": "brain may support in- through consciousness.",
+    "pattern": "chain",
+    "relation": "supports",
+    "anchors": [
+     "brain",
+     "in-"
+    ],
+    "via": [
+     "consciousness"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2204-07164-p0004",
+     "arxiv-2606-00226-p0012"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2204-07164-p0004",
+      "quote": "Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).",
+      "start": 0,
+      "end": 204,
+      "chunk_sha256": "bbf63c86bd51602f06714c9df1ee5d7c874a790612428872036a06eabbb0ee89",
+      "relation": "supports",
+      "subject": "brain",
+      "object": "consciousness",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2606-00226-p0012",
+      "quote": "The proposal is that consciousness is identical to in-",
+      "start": 203,
+      "end": 257,
+      "chunk_sha256": "07b03d6268eb210bd0b70c650295d0ee5a31b45c9fd361eb42446b0af62295e9",
+      "relation": "alias_of",
+      "subject": "consciousness",
+      "object": "in-",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.65,
+     "novelty": 0.55
+    },
+    "falsification_test": "Construct a coherent case where brain is accepted. The hypothesis fails if in- still fails in that case, or if the argument does not need consciousness.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "consciousness"
+   },
+   {
+    "id": "be5d97848bc5",
+    "text": "brain may support system integrated causal structure through consciousness.",
+    "pattern": "chain",
+    "relation": "supports",
+    "anchors": [
+     "brain",
+     "system integrated causal structure"
+    ],
+    "via": [
+     "consciousness"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2204-07164-p0004",
+     "arxiv-2510-04084-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2204-07164-p0004",
+      "quote": "Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).",
+      "start": 0,
+      "end": 204,
+      "chunk_sha256": "bbf63c86bd51602f06714c9df1ee5d7c874a790612428872036a06eabbb0ee89",
+      "relation": "supports",
+      "subject": "brain",
+      "object": "consciousness",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2510-04084-p0004",
+      "quote": "IIT, grounded in phenomenology, holds that consciousness is identical to a system’s integrated causal structure—an irreducible cause–effect repertoire quantified by Φ—which specifies how experience exists here and now as an intrinsic property of the system.",
+      "start": 183,
+      "end": 440,
+      "chunk_sha256": "c48d38d9bbfcfd24894e1ca7b376cd59f7471aa018bf9879276dbcb9c93e2065",
+      "relation": "alias_of",
+      "subject": "consciousness",
+      "object": "system integrated causal structure",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.65,
+     "novelty": 0.488
+    },
+    "falsification_test": "Construct a coherent case where brain is accepted. The hypothesis fails if system integrated causal structure still fails in that case, or if the argument does not need consciousness.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "consciousness"
+   },
+   {
+    "id": "e2a35348ac49",
+    "text": "brain may affect informational entropy of possible future outcomes through consciousness.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "brain",
+     "informational entropy of possible future outcomes"
+    ],
+    "via": [
+     "consciousness"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2204-07164-p0004",
+     "arxiv-2606-04011-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2204-07164-p0004",
+      "quote": "Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).",
+      "start": 0,
+      "end": 204,
+      "chunk_sha256": "bbf63c86bd51602f06714c9df1ee5d7c874a790612428872036a06eabbb0ee89",
+      "relation": "supports",
+      "subject": "brain",
+      "object": "consciousness",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2606-04011-p0002",
+      "quote": "From an ideometrics-based perspective, consciousness may reduce the informational entropy of many randomly possible future outcomes through ideometric processes.",
+      "start": 0,
+      "end": 161,
+      "chunk_sha256": "ffc2dafcb8e18e1e6d29bcb32db4a5e2c64492f5dc0002782e827fccc96e72e2",
+      "relation": "decreases",
+      "subject": "consciousness",
+      "object": "informational entropy of possible future outcomes",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.45,
+     "novelty": 0.461
+    },
+    "falsification_test": "Compare settings where brain differs while other inputs are matched. The hypothesis fails if informational entropy of possible future outcomes does not change with brain, or if fixing consciousness removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "consciousness"
+   }
+  ],
+  "survivors": 4,
+  "candidates_generated": 105,
+  "candidates_passed": {
+   "abductive": 6,
+   "deductive": 6,
+   "pre_thinker": 4
+  },
+  "candidates_rejected": {
+   "abductive:incoherent_composition": 3,
+   "pre_thinker:restates_source": 1,
+   "pre_thinker:single_source": 1
+  },
+  "relation_edges": 442,
+  "scoped_edges": 67,
+  "budget_used": {
+   "rounds": 1,
+   "candidates": 105,
+   "edges": 442,
+   "bytes": 217507,
+   "seconds": 20.323
+  },
+  "incomplete": true,
+  "stop_reason": "deadline",
+  "shortage": {
+   "returned": 4,
+   "target_min": 10,
+   "reason": "Fewer candidates survived the filters than the target; the list is not padded."
+  },
+  "snapshot": {
+   "as_of": 1795252971,
+   "chunk_count": 1241
+  }
+ },
+ "reply": "Frontier hypotheses for hard problem of consciousness. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 105. Passed abductive check: 6; deductive check: 6; pre-thinker validation: 4.\n\n1. brain may support effect repertoire through consciousness.\n[arxiv-2204-07164-p0004] Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).\n[arxiv-2510-04084-p0004] IIT, grounded in phenomenology, holds that consciousness is identical to a system’s integrated causal structure—an irreducible cause–effect repertoire quantified by Φ—which specifies how experience exists here and now as an intrinsic property of the system.\nFalsification test: Construct a coherent case where brain is accepted. The hypothesis fails if effect repertoire still fails in that case, or if the argument does not need consciousness.\nScores: source support 0.80, deductive relevance 0.65, novelty 0.60.\n\n2. brain may support in- through consciousness.\n[arxiv-2204-07164-p0004] Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).\n[arxiv-2606-00226-p0012] The proposal is that consciousness is identical to in-\nFalsification test: Construct a coherent case where brain is accepted. The hypothesis fails if in- still fails in that case, or if the argument does not need consciousness.\nScores: source support 0.80, deductive relevance 0.65, novelty 0.55.\n\n3. brain may support system integrated causal structure through consciousness.\n[arxiv-2204-07164-p0004] Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).\n[arxiv-2510-04084-p0004] IIT, grounded in phenomenology, holds that consciousness is identical to a system’s integrated causal structure—an irreducible cause–effect repertoire quantified by Φ—which specifies how experience exists here and now as an intrinsic property of the system.\nFalsification test: Construct a coherent case where brain is accepted. The hypothesis fails if system integrated causal structure still fails in that case, or if the argument does not need consciousness.\nScores: source support 0.80, deductive relevance 0.65, novelty 0.49.\n\n4. brain may affect informational entropy of possible future outcomes through consciousness.\n[arxiv-2204-07164-p0004] Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).\n[arxiv-2606-04011-p0002] From an ideometrics-based perspective, consciousness may reduce the informational entropy of many randomly possible future outcomes through ideometric processes.\nFalsification test: Compare settings where brain differs while other inputs are matched. The hypothesis fails if informational entropy of possible future outcomes does not change with brain, or if fixing consciousness removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.45, novelty 0.46.\n\nOnly 4 hypotheses survived the filters (target at least 10). The list is not padded.\n\nSearch incomplete: deadline. Results cover only the candidates examined before the budget stopped the run.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}
