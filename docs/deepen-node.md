@@ -37,6 +37,11 @@ A Frontier run in the appliance checks its first five entries with Deepen by def
 sentences=...)`, so the snapshot is read and parsed once. Each checked entry carries `check.verdict` and per-link
 statuses. Contested entries are flagged in the reply with the contrary quotes.
 
+**Reading the verdicts.** Each Frontier entry is built from source edges, so each of its links has at least its own
+premise, and "all links supported" is close to guaranteed for those entries. The informative results are
+`contested` (a source states the opposite or negates a link) and `missing`/`weak` (a link rests on a bridge that no
+source states). For a hypothesis written by a person, every status is informative.
+
 ## Contract
 
 The hypothesis remains `UNVERIFIED_HYPOTHESIS` with `promotion: blocked`. Nothing is written to the index. The

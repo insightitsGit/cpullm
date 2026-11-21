@@ -1,0 +1,3010 @@
+{
+ "prompt": "Frontier: grokking.",
+ "run": 1,
+ "wall_seconds": 7.054,
+ "python_peak_bytes": 56723601,
+ "answer_status": "hypotheses",
+ "routing": {
+  "schema": "flag-routing-contract-v1",
+  "executed_nodes": [],
+  "post_stages": [
+   "frontier_snapshot",
+   "frontier_generate",
+   "frontier_abductive",
+   "frontier_deductive",
+   "frontier_pre_thinker",
+   "frontier_rank"
+  ]
+ },
+ "frontier": {
+  "schema": "frontier-v1",
+  "triggered": true,
+  "topic": "grokking",
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "limits": {
+   "max_rounds": 1000,
+   "max_candidates": 200000,
+   "max_edges": 50000,
+   "max_bytes": 67108864,
+   "max_seconds": 60.0,
+   "batch_size": 256,
+   "max_path_edges": 2,
+   "max_results": 50,
+   "min_results": 10
+  },
+  "topic_terms": [
+   "grokking"
+  ],
+  "focus_terms": [
+   "grokking"
+  ],
+  "chunk_count": 1652,
+  "parser": "en_core_web_lg",
+  "bridge_check": "encoder",
+  "encoded_terms": 39,
+  "hub_deferred": 80,
+  "deepened": 5,
+  "status": "hypotheses",
+  "hypotheses": [
+   {
+    "id": "72d06bf55a33",
+    "text": "Misalignment of Low Loss Regions and particular loss landscapes may jointly drive Grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "Misalignment of Low Loss Regions",
+     "particular loss landscapes",
+     "Grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2610-00620-p0001",
+     "arxiv-2210-01117-p0019"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2610-00620-p0001",
+      "quote": "# Misalignment of Low-Loss Regions Causes Grokking",
+      "start": 0,
+      "end": 50,
+      "chunk_sha256": "77b4beca6ccf182d0255f8124a528444b513150f00fb59ba311acb211978892f",
+      "relation": "causes",
+      "subject": "Misalignment of Low Loss Regions",
+      "object": "Grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2210-01117-p0019",
+      "quote": "We elaborate below how these particular loss landscapes lead to grokking.",
+      "start": 876,
+      "end": 949,
+      "chunk_sha256": "f9cadc8b57c6f7766f47a922990ab381f6b7418bd25a16998643e0c11c9281e6",
+      "relation": "causes",
+      "subject": "particular loss landscapes",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.807,
+     "novelty": 0.668
+    },
+    "falsification_test": "Vary Misalignment of Low Loss Regions and particular loss landscapes separately and together. The hypothesis fails if the joint change in Grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking",
+    "check": {
+     "verdict": "all_links_supported",
+     "links": [
+      {
+       "source": "Misalignment of Low Loss Regions",
+       "target": "Grokking",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "particular loss landscapes",
+       "target": "Grokking",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "530d9fcc85fc",
+    "text": "intrinsic task symmetries and Misalignment of Low Loss Regions may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "intrinsic task symmetries",
+     "Misalignment of Low Loss Regions",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-01968-p0002",
+     "arxiv-2610-00620-p0001"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-01968-p0002",
+      "quote": "We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.",
+      "start": 203,
+      "end": 329,
+      "chunk_sha256": "4aafb9b244a700d08c919f79649ff2567b6bdb5303481cba686d23e1b284c238",
+      "relation": "increases",
+      "subject": "intrinsic task symmetries",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0001",
+      "quote": "# Misalignment of Low-Loss Regions Causes Grokking",
+      "start": 0,
+      "end": 50,
+      "chunk_sha256": "77b4beca6ccf182d0255f8124a528444b513150f00fb59ba311acb211978892f",
+      "relation": "causes",
+      "subject": "Misalignment of Low Loss Regions",
+      "object": "Grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.788,
+     "novelty": 0.642
+    },
+    "falsification_test": "Vary intrinsic task symmetries and Misalignment of Low Loss Regions separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking",
+    "check": {
+     "verdict": "all_links_supported",
+     "links": [
+      {
+       "source": "intrinsic task symmetries",
+       "target": "grokking",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "Misalignment of Low Loss Regions",
+       "target": "grokking",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "fc3f75c42cec",
+    "text": "Misalignment of Low Loss Regions may affect Statistical Phenomenon semantic features of digits through Grokking.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "Misalignment of Low Loss Regions",
+     "Statistical Phenomenon semantic features of digits"
+    ],
+    "via": [
+     "Grokking"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2610-00620-p0001",
+     "arxiv-2502-01774-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2610-00620-p0001",
+      "quote": "# Misalignment of Low-Loss Regions Causes Grokking",
+      "start": 0,
+      "end": 50,
+      "chunk_sha256": "77b4beca6ccf182d0255f8124a528444b513150f00fb59ba311acb211978892f",
+      "relation": "causes",
+      "subject": "Misalignment of Low Loss Regions",
+      "object": "Grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0006",
+      "quote": "Grokking Explained: — A Statistical Phenomenon semantic features of the digits, ensuring that the induced clusters are meaningful and aligned with the model’s learned representations.",
+      "start": 0,
+      "end": 183,
+      "chunk_sha256": "91b1dcde3e2d0f7ca95b670b909ede480db90939c940fa5ae261978812710bd2",
+      "relation": "supports",
+      "subject": "Grokking",
+      "object": "Statistical Phenomenon semantic features of digits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.785,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where Misalignment of Low Loss Regions differs while other inputs are matched. The hypothesis fails if Statistical Phenomenon semantic features of digits does not change with Misalignment of Low Loss Regions, or if fixing Grokking removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking",
+    "check": {
+     "verdict": "all_links_supported",
+     "links": [
+      {
+       "source": "Misalignment of Low Loss Regions",
+       "target": "Grokking",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "Grokking",
+       "target": "Statistical Phenomenon semantic features of digits",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "48db6e9e1443",
+    "text": "mismatch and training partition may interact in their effect on A1 Grokking.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "mismatch",
+     "training partition",
+     "A1 Grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0003",
+     "arxiv-2610-00620-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0003",
+      "quote": "This paper aims to answer these questions by analyzing neural loss landscapes: A1 Grokking is caused by the mismatch between training and test loss landscapes.",
+      "start": 577,
+      "end": 736,
+      "chunk_sha256": "7eb2628161ed023596c0ca5c7dc2657194fb57b8057b3d1bef5b0c5393074c34",
+      "relation": "causes",
+      "subject": "mismatch",
+      "object": "A1 Grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0022",
+      "quote": "A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.",
+      "start": 512,
+      "end": 648,
+      "chunk_sha256": "e71c57eda06f31100ef26e89b29602cc58a792fb840ddc3932ecc254d695fd69",
+      "relation": "constrains",
+      "subject": "training partition",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.744,
+     "novelty": 0.564
+    },
+    "falsification_test": "Vary mismatch and training partition separately and together. The hypothesis fails if the joint change in A1 Grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "a1 grokking",
+    "check": {
+     "verdict": "all_links_supported",
+     "links": [
+      {
+       "source": "mismatch",
+       "target": "A1 Grokking",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "training partition",
+       "target": "A1 Grokking",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "0ae55a415db6",
+    "text": "Low weight decay may increase generalization through emergence phase (read as grokking phase).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "Low weight decay",
+     "generalization"
+    ],
+    "via": [
+     "emergence phase (read as grokking phase)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2408-08944-p0012",
+     "arxiv-2205-10343-p0021"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2408-08944-p0012",
+      "quote": "Low weight decay delays the emergence phase We first study the most common setting of grokking for a model trained with low weight decay of 0.1.",
+      "start": 93,
+      "end": 237,
+      "chunk_sha256": "410b99860d75ac8c0cee75b0076da8882fbcd7bfcf538ebe552b817bd0412c4c",
+      "relation": "decreases",
+      "subject": "Low weight decay",
+      "object": "emergence phase",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2205-10343-p0021",
+      "quote": "The 2D plane is split into four phases: comprehension, grokking, memorization and confusion, defined in Table 1 in Appendix A. Both comprehension and grokking are able to generalize (in the “Goldilocks zone”), although the grokking phase has delayed generalization.",
+      "start": 1742,
+      "end": 2007,
+      "chunk_sha256": "b2218cd4d49e7b23211128b14c86a48057f6d75ead8ab1c4f41ba5641e702602",
+      "relation": "decreases",
+      "subject": "grokking phase",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.739,
+     "novelty": 0.45
+    },
+    "falsification_test": "Compare settings where Low weight decay differs while other inputs are matched. The hypothesis fails if generalization does not rise with Low weight decay, or if fixing emergence phase (read as grokking phase) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "emergence phase",
+    "check": {
+     "verdict": "contested",
+     "links": [
+      {
+       "source": "Low weight decay",
+       "target": "emergence phase",
+       "status": "contested",
+       "counter": [
+        {
+         "document_id": "arxiv-2408-08944-p0005",
+         "quote": "We find that weight initialization and increasing weight decay directly leads to an emergent phase and reduces the delayed generalization gap • We present preliminary findings indicating that the subnetworks at the emergent phase may be causally related",
+         "start": 107,
+         "end": 360,
+         "chunk_sha256": "5fab17f4204d25fd74b8ecd3943a555d1d6fbebc45a586e98d7511c6fc2b49fc",
+         "relation": "causes",
+         "subject": "increasing weight decay",
+         "object": "emergent phase",
+         "hedged": false
+        }
+       ]
+      },
+      {
+       "source": "emergence phase",
+       "target": "generalization",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "4a81fcd5273e",
+    "text": "Gains in generalization from popular components may be offset by grokking phase.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "grokking phase",
+     "popular components",
+     "generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2205-10343-p0021",
+     "arxiv-2403-02241-p0005"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2205-10343-p0021",
+      "quote": "The 2D plane is split into four phases: comprehension, grokking, memorization and confusion, defined in Table 1 in Appendix A. Both comprehension and grokking are able to generalize (in the “Goldilocks zone”), although the grokking phase has delayed generalization.",
+      "start": 1742,
+      "end": 2007,
+      "chunk_sha256": "b2218cd4d49e7b23211128b14c86a48057f6d75ead8ab1c4f41ba5641e702602",
+      "relation": "decreases",
+      "subject": "grokking phase",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2403-02241-p0005",
+      "quote": "(3) Generalization is enabled by popular components like ReLUs setting this bias to a low complexity that often aligns with the target function.",
+      "start": 344,
+      "end": 488,
+      "chunk_sha256": "5ca5bce2be2675379e893941328133c8539b1964f84f9fc2b440efc1c9e3426e",
+      "relation": "increases",
+      "subject": "popular components",
+      "object": "Generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.725,
+     "novelty": 0.636
+    },
+    "falsification_test": "Measure generalization where both grokking phase and popular components vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "generalization"
+   },
+   {
+    "id": "33324d8f8dea",
+    "text": "Gains in generalization from ensembling may be offset by grokking phase.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "ensembling",
+     "grokking phase",
+     "generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2410-16201-p0002",
+     "arxiv-2205-10343-p0021"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2410-16201-p0002",
+      "quote": "In contrast to the underparameterized regime, where ensembling typically induces regularization and increases generalization, we prove with minimal assumptions that infinite ensembles of overparameterized RF regressors become pointwise equivalent to (single) infinite-width RF regressors, and finite width ensembles rapidly converge to single models with the same parameter budget.",
+      "start": 470,
+      "end": 851,
+      "chunk_sha256": "557b23c0964fc2a5aca6f4e4c1243a616e9c9ed7bedb6819c32b412bfccc0e99",
+      "relation": "increases",
+      "subject": "ensembling",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2205-10343-p0021",
+      "quote": "The 2D plane is split into four phases: comprehension, grokking, memorization and confusion, defined in Table 1 in Appendix A. Both comprehension and grokking are able to generalize (in the “Goldilocks zone”), although the grokking phase has delayed generalization.",
+      "start": 1742,
+      "end": 2007,
+      "chunk_sha256": "b2218cd4d49e7b23211128b14c86a48057f6d75ead8ab1c4f41ba5641e702602",
+      "relation": "decreases",
+      "subject": "grokking phase",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.725,
+     "novelty": 0.6
+    },
+    "falsification_test": "Measure generalization where both ensembling and grokking phase vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "generalization"
+   },
+   {
+    "id": "e09a06f40827",
+    "text": "scenario may increase different outcomes through differences.",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "scenario",
+     "different outcomes"
+    ],
+    "via": [
+     "differences"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2311-02622-p0008",
+     "arxiv-2210-01117-p0015"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2311-02622-p0008",
+      "quote": "We define separate measures for each scenario to account for the differences in how the hierarchical simplicity bias",
+      "start": 476,
+      "end": 592,
+      "chunk_sha256": "5e0485f85e659f8b33f1950f77903d7c47173815db70552d5e8316052c8ff3fd",
+      "relation": "causes",
+      "subject": "scenario",
+      "object": "differences",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2210-01117-p0015",
+      "quote": "We show how their loss landscapes depend on representations differently, and how the difference leads to different outcomes (grokking or not).",
+      "start": 1289,
+      "end": 1431,
+      "chunk_sha256": "5c93eb301b35af661c69f69d6f886ba8a5d902c97cfe3cd92020152559518b1c",
+      "relation": "causes",
+      "subject": "difference",
+      "object": "different outcomes",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.66,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where scenario differs while other inputs are matched. The hypothesis fails if different outcomes does not rise with scenario, or if fixing differences removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "difference"
+   },
+   {
+    "id": "223418b17f72",
+    "text": "emergence phase and Large initialization runs may move together because both depend on Low weight decay.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "emergence phase",
+     "Large initialization runs",
+     "Low weight decay"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2408-08944-p0012",
+     "arxiv-2210-01117-p0009"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2408-08944-p0012",
+      "quote": "Low weight decay delays the emergence phase We first study the most common setting of grokking for a model trained with low weight decay of 0.1.",
+      "start": 93,
+      "end": 237,
+      "chunk_sha256": "410b99860d75ac8c0cee75b0076da8882fbcd7bfcf538ebe552b817bd0412c4c",
+      "relation": "decreases",
+      "subject": "Low weight decay",
+      "object": "emergence phase",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2210-01117-p0009",
+      "quote": "Large initialization runs (top) depended on weight decay: no regularization fails to generalize, small regularization generalizes slowly (grokking), while large regularization generalizes faster.",
+      "start": 1332,
+      "end": 1527,
+      "chunk_sha256": "3fd48c6e02faa62160c811c933be26fabe9fd8693e63ff17130b6e283cb13bf5",
+      "relation": "constrains",
+      "subject": "weight decay",
+      "object": "Large initialization runs",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.602,
+     "novelty": 0.642
+    },
+    "falsification_test": "Track emergence phase and Large initialization runs across periods where Low weight decay changes and where it does not. The hypothesis fails if they co-vary just as strongly when Low weight decay is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "low weight decay"
+   },
+   {
+    "id": "0e3fee5b3a06",
+    "text": "Low weight decay and representation may jointly constrain emergence phase, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "Low weight decay",
+     "representation",
+     "emergence phase"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2408-08944-p0012",
+     "arxiv-2205-10343-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2408-08944-p0012",
+      "quote": "Low weight decay delays the emergence phase We first study the most common setting of grokking for a model trained with low weight decay of 0.1.",
+      "start": 93,
+      "end": 237,
+      "chunk_sha256": "410b99860d75ac8c0cee75b0076da8882fbcd7bfcf538ebe552b817bd0412c4c",
+      "relation": "decreases",
+      "subject": "Low weight decay",
+      "object": "emergence phase",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2205-10343-p0022",
+      "quote": "The ideal phase (comprehension) requires representation learning to be faster, but not too much, than the decoder.",
+      "start": 644,
+      "end": 758,
+      "chunk_sha256": "c4057ef18c0404e59e8b0cbfe7b56389fb1968c7270b79bd6fc4115181680090",
+      "relation": "constrains",
+      "subject": "representation",
+      "object": "ideal phase",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.59,
+     "novelty": 0.592
+    },
+    "falsification_test": "Relieve Low weight decay alone while measuring emergence phase. The hypothesis fails if emergence phase keeps improving without representation becoming the binding limit, or if relieving representation alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "emergence phase"
+   },
+   {
+    "id": "8069da6d8fba",
+    "text": "ideal phase and loss landscapes may move together because both depend on representation.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "ideal phase",
+     "loss landscapes",
+     "representation"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2205-10343-p0022",
+     "arxiv-2210-01117-p0015"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2205-10343-p0022",
+      "quote": "The ideal phase (comprehension) requires representation learning to be faster, but not too much, than the decoder.",
+      "start": 644,
+      "end": 758,
+      "chunk_sha256": "c4057ef18c0404e59e8b0cbfe7b56389fb1968c7270b79bd6fc4115181680090",
+      "relation": "constrains",
+      "subject": "representation",
+      "object": "ideal phase",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2210-01117-p0015",
+      "quote": "We show how their loss landscapes depend on representations differently, and how the difference leads to different outcomes (grokking or not).",
+      "start": 1289,
+      "end": 1431,
+      "chunk_sha256": "5c93eb301b35af661c69f69d6f886ba8a5d902c97cfe3cd92020152559518b1c",
+      "relation": "constrains",
+      "subject": "representations",
+      "object": "loss landscapes",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.572,
+     "novelty": 0.628
+    },
+    "falsification_test": "Track ideal phase and loss landscapes across periods where representation changes and where it does not. The hypothesis fails if they co-vary just as strongly when representation is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "representation"
+   },
+   {
+    "id": "2ae336cfdbbf",
+    "text": "Large initialization runs and learning may move together because both depend on weight decay.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "Large initialization runs",
+     "learning",
+     "weight decay"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0009",
+     "arxiv-2511-01938-p0008",
+     "arxiv-2511-01938-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0009",
+      "quote": "Large initialization runs (top) depended on weight decay: no regularization fails to generalize, small regularization generalizes slowly (grokking), while large regularization generalizes faster.",
+      "start": 1332,
+      "end": 1527,
+      "chunk_sha256": "3fd48c6e02faa62160c811c933be26fabe9fd8693e63ff17130b6e283cb13bf5",
+      "relation": "constrains",
+      "subject": "weight decay",
+      "object": "Large initialization runs",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2511-01938-p0008",
+      "quote": "In the second phase, learning is entirely driven by weight decay.",
+      "start": 906,
+      "end": 971,
+      "chunk_sha256": "30ba744c472d75548f5f12620f28164fc51cb72fb0e4311049c14c98ac95eb2a",
+      "relation": "increases",
+      "subject": "weight decay",
+      "object": "learning",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2511-01938-p0022",
+      "quote": "In other words, the loss gradient does not induce any movement near Z. After a memorizing solution is reached, learning will be driven entirely by weight decay.",
+      "start": 13,
+      "end": 173,
+      "chunk_sha256": "7eddd35075324cf0279e1da7aa57e3a42b9df79024ba813cebc2f1b9308c44cb",
+      "relation": "increases",
+      "subject": "weight decay",
+      "object": "learning",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.558,
+     "novelty": 0.6
+    },
+    "falsification_test": "Track Large initialization runs and learning across periods where weight decay changes and where it does not. The hypothesis fails if they co-vary just as strongly when weight decay is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "weight decay"
+   },
+   {
+    "id": "91dcdbc5cf83",
+    "text": "mismatch and symmetry- geometry prompting strategies may jointly drive A1 Grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "mismatch",
+     "symmetry- geometry prompting strategies",
+     "A1 Grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0003",
+     "arxiv-2603-01968-p0008"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0003",
+      "quote": "This paper aims to answer these questions by analyzing neural loss landscapes: A1 Grokking is caused by the mismatch between training and test loss landscapes.",
+      "start": 577,
+      "end": 736,
+      "chunk_sha256": "7eb2628161ed023596c0ca5c7dc2657194fb57b8057b3d1bef5b0c5393074c34",
+      "relation": "causes",
+      "subject": "mismatch",
+      "object": "A1 Grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2603-01968-p0008",
+      "quote": "• Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.",
+      "start": 0,
+      "end": 234,
+      "chunk_sha256": "bfe4013b766c9cf464688b1de75b8af68324363ad9e3b34c44b3acb1844e27dc",
+      "relation": "increases",
+      "subject": "symmetry- geometry prompting strategies",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.85,
+     "novelty": 0.714
+    },
+    "falsification_test": "Vary mismatch and symmetry- geometry prompting strategies separately and together. The hypothesis fails if the joint change in A1 Grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "a1 grokking"
+   },
+   {
+    "id": "1a6601e8d40a",
+    "text": "mismatch and model ability may jointly drive A1 Grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "mismatch",
+     "model ability",
+     "A1 Grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0003",
+     "arxiv-2502-01774-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0003",
+      "quote": "This paper aims to answer these questions by analyzing neural loss landscapes: A1 Grokking is caused by the mismatch between training and test loss landscapes.",
+      "start": 577,
+      "end": 736,
+      "chunk_sha256": "7eb2628161ed023596c0ca5c7dc2657194fb57b8057b3d1bef5b0c5393074c34",
+      "relation": "causes",
+      "subject": "mismatch",
+      "object": "A1 Grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0002",
+      "quote": "We also show that when classes form an equivariant map, grokking can be explained by the model’s ability to learn from similar classes or sub-categories.",
+      "start": 953,
+      "end": 1106,
+      "chunk_sha256": "a92c56bd1355cbdb6b76119111c3810ae273a850889e2d003c4890d982763df5",
+      "relation": "supports",
+      "subject": "model ability",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.792,
+     "novelty": 0.683
+    },
+    "falsification_test": "Vary mismatch and model ability separately and together. The hypothesis fails if the joint change in A1 Grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "a1 grokking"
+   },
+   {
+    "id": "16ef4f4984ef",
+    "text": "distribution shifts and Misalignment of Low Loss Regions may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "distribution shifts",
+     "Misalignment of Low Loss Regions",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2502-01774-p0007",
+     "arxiv-2502-01774-p0016",
+     "arxiv-2610-00620-p0001"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2502-01774-p0007",
+      "quote": "While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.",
+      "start": 257,
+      "end": 438,
+      "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+      "relation": "causes",
+      "subject": "distribution shifts",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0016",
+      "quote": "The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.",
+      "start": 859,
+      "end": 977,
+      "chunk_sha256": "e46483042e639a5b9c1f29d4321ac6a29d20c1f1cffe9e5c30e807d38d93ed17",
+      "relation": "causes",
+      "subject": "distribution shifts",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0001",
+      "quote": "# Misalignment of Low-Loss Regions Causes Grokking",
+      "start": 0,
+      "end": 50,
+      "chunk_sha256": "77b4beca6ccf182d0255f8124a528444b513150f00fb59ba311acb211978892f",
+      "relation": "causes",
+      "subject": "Misalignment of Low Loss Regions",
+      "object": "Grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.78,
+     "novelty": 0.714
+    },
+    "falsification_test": "Vary distribution shifts and Misalignment of Low Loss Regions separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "b4db33b66ddd",
+    "text": "Larger datasets and Misalignment of Low Loss Regions may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "Larger datasets",
+     "Misalignment of Low Loss Regions",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0010",
+     "arxiv-2610-00620-p0001"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0010",
+      "quote": "(2) Larger datasets lead to de-grokking.",
+      "start": 536,
+      "end": 576,
+      "chunk_sha256": "1243dc1b5f4550c9a2f84dcc7ef1ea1ac1ebfd4bd0835e00b12122028e9733ef",
+      "relation": "causes",
+      "subject": "Larger datasets",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0001",
+      "quote": "# Misalignment of Low-Loss Regions Causes Grokking",
+      "start": 0,
+      "end": 50,
+      "chunk_sha256": "77b4beca6ccf182d0255f8124a528444b513150f00fb59ba311acb211978892f",
+      "relation": "causes",
+      "subject": "Misalignment of Low Loss Regions",
+      "object": "Grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.779,
+     "novelty": 0.714
+    },
+    "falsification_test": "Vary Larger datasets and Misalignment of Low Loss Regions separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "7becd051c9e3",
+    "text": "intrinsic task symmetries and particular loss landscapes may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "intrinsic task symmetries",
+     "particular loss landscapes",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-01968-p0002",
+     "arxiv-2210-01117-p0019"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-01968-p0002",
+      "quote": "We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.",
+      "start": 203,
+      "end": 329,
+      "chunk_sha256": "4aafb9b244a700d08c919f79649ff2567b6bdb5303481cba686d23e1b284c238",
+      "relation": "increases",
+      "subject": "intrinsic task symmetries",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2210-01117-p0019",
+      "quote": "We elaborate below how these particular loss landscapes lead to grokking.",
+      "start": 876,
+      "end": 949,
+      "chunk_sha256": "f9cadc8b57c6f7766f47a922990ab381f6b7418bd25a16998643e0c11c9281e6",
+      "relation": "causes",
+      "subject": "particular loss landscapes",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.759,
+     "novelty": 0.623
+    },
+    "falsification_test": "Vary intrinsic task symmetries and particular loss landscapes separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "c3f517f9b2a1",
+    "text": "distribution shifts and particular loss landscapes may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "distribution shifts",
+     "particular loss landscapes",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2502-01774-p0007",
+     "arxiv-2502-01774-p0016",
+     "arxiv-2210-01117-p0019"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2502-01774-p0007",
+      "quote": "While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.",
+      "start": 257,
+      "end": 438,
+      "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+      "relation": "causes",
+      "subject": "distribution shifts",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0016",
+      "quote": "The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.",
+      "start": 859,
+      "end": 977,
+      "chunk_sha256": "e46483042e639a5b9c1f29d4321ac6a29d20c1f1cffe9e5c30e807d38d93ed17",
+      "relation": "causes",
+      "subject": "distribution shifts",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2210-01117-p0019",
+      "quote": "We elaborate below how these particular loss landscapes lead to grokking.",
+      "start": 876,
+      "end": 949,
+      "chunk_sha256": "f9cadc8b57c6f7766f47a922990ab381f6b7418bd25a16998643e0c11c9281e6",
+      "relation": "causes",
+      "subject": "particular loss landscapes",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.75,
+     "novelty": 0.65
+    },
+    "falsification_test": "Vary distribution shifts and particular loss landscapes separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "fd2857758f1c",
+    "text": "particular loss landscapes may affect Statistical Phenomenon semantic features of digits through grokking.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "particular loss landscapes",
+     "Statistical Phenomenon semantic features of digits"
+    ],
+    "via": [
+     "grokking"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0019",
+     "arxiv-2502-01774-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0019",
+      "quote": "We elaborate below how these particular loss landscapes lead to grokking.",
+      "start": 876,
+      "end": 949,
+      "chunk_sha256": "f9cadc8b57c6f7766f47a922990ab381f6b7418bd25a16998643e0c11c9281e6",
+      "relation": "causes",
+      "subject": "particular loss landscapes",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0006",
+      "quote": "Grokking Explained: — A Statistical Phenomenon semantic features of the digits, ensuring that the induced clusters are meaningful and aligned with the model’s learned representations.",
+      "start": 0,
+      "end": 183,
+      "chunk_sha256": "91b1dcde3e2d0f7ca95b670b909ede480db90939c940fa5ae261978812710bd2",
+      "relation": "supports",
+      "subject": "Grokking",
+      "object": "Statistical Phenomenon semantic features of digits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.746,
+     "novelty": 0.577
+    },
+    "falsification_test": "Compare settings where particular loss landscapes differs while other inputs are matched. The hypothesis fails if Statistical Phenomenon semantic features of digits does not change with particular loss landscapes, or if fixing grokking removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "9f9736b88609",
+    "text": "data and Misalignment of Low Loss Regions may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "data",
+     "Misalignment of Low Loss Regions",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-13253-p0009",
+     "arxiv-2610-00620-p0001"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-13253-p0009",
+      "quote": "In general, more data leads to faster grokking (i.e.",
+      "start": 965,
+      "end": 1017,
+      "chunk_sha256": "04445a7597880c948af6f569c5554de9a205139187c5999e8321335f5c648317",
+      "relation": "causes",
+      "subject": "data",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0001",
+      "quote": "# Misalignment of Low-Loss Regions Causes Grokking",
+      "start": 0,
+      "end": 50,
+      "chunk_sha256": "77b4beca6ccf182d0255f8124a528444b513150f00fb59ba311acb211978892f",
+      "relation": "causes",
+      "subject": "Misalignment of Low Loss Regions",
+      "object": "Grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.733,
+     "novelty": 0.7
+    },
+    "falsification_test": "Vary data and Misalignment of Low Loss Regions separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "8df32cb9f67a",
+    "text": "distribution shifts and mismatch may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "distribution shifts",
+     "mismatch",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2502-01774-p0007",
+     "arxiv-2502-01774-p0016",
+     "arxiv-2210-01117-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2502-01774-p0007",
+      "quote": "While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.",
+      "start": 257,
+      "end": 438,
+      "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+      "relation": "causes",
+      "subject": "distribution shifts",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0016",
+      "quote": "The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.",
+      "start": 859,
+      "end": 977,
+      "chunk_sha256": "e46483042e639a5b9c1f29d4321ac6a29d20c1f1cffe9e5c30e807d38d93ed17",
+      "relation": "causes",
+      "subject": "distribution shifts",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2210-01117-p0003",
+      "quote": "This paper aims to answer these questions by analyzing neural loss landscapes: A1 Grokking is caused by the mismatch between training and test loss landscapes.",
+      "start": 577,
+      "end": 736,
+      "chunk_sha256": "7eb2628161ed023596c0ca5c7dc2657194fb57b8057b3d1bef5b0c5393074c34",
+      "relation": "causes",
+      "subject": "mismatch",
+      "object": "A1 Grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.726,
+     "novelty": 0.663
+    },
+    "falsification_test": "Vary distribution shifts and mismatch separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "bd2c9c3b8a72",
+    "text": "intrinsic task symmetries and Larger datasets may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "intrinsic task symmetries",
+     "Larger datasets",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-01968-p0002",
+     "arxiv-2210-01117-p0010"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-01968-p0002",
+      "quote": "We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.",
+      "start": 203,
+      "end": 329,
+      "chunk_sha256": "4aafb9b244a700d08c919f79649ff2567b6bdb5303481cba686d23e1b284c238",
+      "relation": "increases",
+      "subject": "intrinsic task symmetries",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2210-01117-p0010",
+      "quote": "(2) Larger datasets lead to de-grokking.",
+      "start": 536,
+      "end": 576,
+      "chunk_sha256": "1243dc1b5f4550c9a2f84dcc7ef1ea1ac1ebfd4bd0835e00b12122028e9733ef",
+      "relation": "causes",
+      "subject": "Larger datasets",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.731,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary intrinsic task symmetries and Larger datasets separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "52e913a262d4",
+    "text": "intrinsic task symmetries and mismatch may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "intrinsic task symmetries",
+     "mismatch",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-01968-p0002",
+     "arxiv-2210-01117-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-01968-p0002",
+      "quote": "We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.",
+      "start": 203,
+      "end": 329,
+      "chunk_sha256": "4aafb9b244a700d08c919f79649ff2567b6bdb5303481cba686d23e1b284c238",
+      "relation": "increases",
+      "subject": "intrinsic task symmetries",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2210-01117-p0003",
+      "quote": "This paper aims to answer these questions by analyzing neural loss landscapes: A1 Grokking is caused by the mismatch between training and test loss landscapes.",
+      "start": 577,
+      "end": 736,
+      "chunk_sha256": "7eb2628161ed023596c0ca5c7dc2657194fb57b8057b3d1bef5b0c5393074c34",
+      "relation": "causes",
+      "subject": "mismatch",
+      "object": "A1 Grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.734,
+     "novelty": 0.572
+    },
+    "falsification_test": "Vary intrinsic task symmetries and mismatch separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "06c2c180d9e4",
+    "text": "distribution shifts and intrinsic task symmetries may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "distribution shifts",
+     "intrinsic task symmetries",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2502-01774-p0007",
+     "arxiv-2502-01774-p0016",
+     "arxiv-2603-01968-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2502-01774-p0007",
+      "quote": "While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.",
+      "start": 257,
+      "end": 438,
+      "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+      "relation": "causes",
+      "subject": "distribution shifts",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0016",
+      "quote": "The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.",
+      "start": 859,
+      "end": 977,
+      "chunk_sha256": "e46483042e639a5b9c1f29d4321ac6a29d20c1f1cffe9e5c30e807d38d93ed17",
+      "relation": "causes",
+      "subject": "distribution shifts",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2603-01968-p0002",
+      "quote": "We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.",
+      "start": 203,
+      "end": 329,
+      "chunk_sha256": "4aafb9b244a700d08c919f79649ff2567b6bdb5303481cba686d23e1b284c238",
+      "relation": "increases",
+      "subject": "intrinsic task symmetries",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.731,
+     "novelty": 0.55
+    },
+    "falsification_test": "Vary distribution shifts and intrinsic task symmetries separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "5f4aea0cffc7",
+    "text": "training partition may affect Statistical Phenomenon semantic features of digits through grokking.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "training partition",
+     "Statistical Phenomenon semantic features of digits"
+    ],
+    "via": [
+     "grokking"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2610-00620-p0022",
+     "arxiv-2502-01774-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2610-00620-p0022",
+      "quote": "A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.",
+      "start": 512,
+      "end": 648,
+      "chunk_sha256": "e71c57eda06f31100ef26e89b29602cc58a792fb840ddc3932ecc254d695fd69",
+      "relation": "constrains",
+      "subject": "training partition",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0006",
+      "quote": "Grokking Explained: — A Statistical Phenomenon semantic features of the digits, ensuring that the induced clusters are meaningful and aligned with the model’s learned representations.",
+      "start": 0,
+      "end": 183,
+      "chunk_sha256": "91b1dcde3e2d0f7ca95b670b909ede480db90939c940fa5ae261978812710bd2",
+      "relation": "supports",
+      "subject": "Grokking",
+      "object": "Statistical Phenomenon semantic features of digits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.728,
+     "novelty": 0.55
+    },
+    "falsification_test": "Compare settings where training partition differs while other inputs are matched. The hypothesis fails if Statistical Phenomenon semantic features of digits does not change with training partition, or if fixing grokking removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "0fa4c20bedc9",
+    "text": "distribution shifts and Larger datasets may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "distribution shifts",
+     "Larger datasets",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2502-01774-p0007",
+     "arxiv-2502-01774-p0016",
+     "arxiv-2210-01117-p0010"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2502-01774-p0007",
+      "quote": "While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.",
+      "start": 257,
+      "end": 438,
+      "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+      "relation": "causes",
+      "subject": "distribution shifts",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0016",
+      "quote": "The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.",
+      "start": 859,
+      "end": 977,
+      "chunk_sha256": "e46483042e639a5b9c1f29d4321ac6a29d20c1f1cffe9e5c30e807d38d93ed17",
+      "relation": "causes",
+      "subject": "distribution shifts",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2210-01117-p0010",
+      "quote": "(2) Larger datasets lead to de-grokking.",
+      "start": 536,
+      "end": 576,
+      "chunk_sha256": "1243dc1b5f4550c9a2f84dcc7ef1ea1ac1ebfd4bd0835e00b12122028e9733ef",
+      "relation": "causes",
+      "subject": "Larger datasets",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.723,
+     "novelty": 0.633
+    },
+    "falsification_test": "Vary distribution shifts and Larger datasets separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "c76d4ec24b2e",
+    "text": "Gains in generalization from individual data samples may be offset by grokking phase.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "grokking phase",
+     "individual data samples",
+     "generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2205-10343-p0021",
+     "arxiv-2610-16161-p0026"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2205-10343-p0021",
+      "quote": "The 2D plane is split into four phases: comprehension, grokking, memorization and confusion, defined in Table 1 in Appendix A. Both comprehension and grokking are able to generalize (in the “Goldilocks zone”), although the grokking phase has delayed generalization.",
+      "start": 1742,
+      "end": 2007,
+      "chunk_sha256": "b2218cd4d49e7b23211128b14c86a48057f6d75ead8ab1c4f41ba5641e702602",
+      "relation": "decreases",
+      "subject": "grokking phase",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-16161-p0026",
+      "quote": "4 Contributions of Individual Samples 4.1 Sample Contributions to the Eigenspectrum To better understand how individual data samples contribute to generalization and the structure of the Fisher information, we examine the participation ratios associated with individual samples in the eigenspectrum of the (layerwise) Fisher.",
+      "start": 0,
+      "end": 325,
+      "chunk_sha256": "bb3eb539fd8fac2f7ea7b73cd710c0f0f87907985566f3d33556df9fafdc9f75",
+      "relation": "causes",
+      "subject": "individual data samples",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.72,
+     "novelty": 0.6
+    },
+    "falsification_test": "Measure generalization where both grokking phase and individual data samples vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "generalization"
+   },
+   {
+    "id": "24411487ac13",
+    "text": "intrinsic task symmetries may affect Statistical Phenomenon semantic features of digits through grokking.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "intrinsic task symmetries",
+     "Statistical Phenomenon semantic features of digits"
+    ],
+    "via": [
+     "grokking"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-01968-p0002",
+     "arxiv-2502-01774-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-01968-p0002",
+      "quote": "We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.",
+      "start": 203,
+      "end": 329,
+      "chunk_sha256": "4aafb9b244a700d08c919f79649ff2567b6bdb5303481cba686d23e1b284c238",
+      "relation": "increases",
+      "subject": "intrinsic task symmetries",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0006",
+      "quote": "Grokking Explained: — A Statistical Phenomenon semantic features of the digits, ensuring that the induced clusters are meaningful and aligned with the model’s learned representations.",
+      "start": 0,
+      "end": 183,
+      "chunk_sha256": "91b1dcde3e2d0f7ca95b670b909ede480db90939c940fa5ae261978812710bd2",
+      "relation": "supports",
+      "subject": "Grokking",
+      "object": "Statistical Phenomenon semantic features of digits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.723,
+     "novelty": 0.577
+    },
+    "falsification_test": "Compare settings where intrinsic task symmetries differs while other inputs are matched. The hypothesis fails if Statistical Phenomenon semantic features of digits does not change with intrinsic task symmetries, or if fixing grokking removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "b86396c6b5b3",
+    "text": "Gains in generalization from ResMem algorithm may be offset by grokking phase.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "grokking phase",
+     "ResMem algorithm",
+     "generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2205-10343-p0021",
+     "arxiv-2302-01576-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2205-10343-p0021",
+      "quote": "The 2D plane is split into four phases: comprehension, grokking, memorization and confusion, defined in Table 1 in Appendix A. Both comprehension and grokking are able to generalize (in the “Goldilocks zone”), although the grokking phase has delayed generalization.",
+      "start": 1742,
+      "end": 2007,
+      "chunk_sha256": "b2218cd4d49e7b23211128b14c86a48057f6d75ead8ab1c4f41ba5641e702602",
+      "relation": "decreases",
+      "subject": "grokking phase",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2302-01576-p0016",
+      "quote": "3.3 A decomposition of the prediction error We now introduce a decomposition of the prediction risk that reveals how ResMem algorithm boosts generalization.",
+      "start": 290,
+      "end": 446,
+      "chunk_sha256": "d17c6e22d4f712a50f1500957846a096e469a8043d5329c3932fcc145fd01f45",
+      "relation": "increases",
+      "subject": "ResMem algorithm",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.714,
+     "novelty": 0.636
+    },
+    "falsification_test": "Measure generalization where both grokking phase and ResMem algorithm vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "generalization"
+   },
+   {
+    "id": "a34d08c18e0d",
+    "text": "grokking and induction may move together because both depend on Larger datasets.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "grokking",
+     "induction",
+     "Larger datasets"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0010",
+     "arxiv-2502-01774-p0019"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0010",
+      "quote": "(2) Larger datasets lead to de-grokking.",
+      "start": 536,
+      "end": 576,
+      "chunk_sha256": "1243dc1b5f4550c9a2f84dcc7ef1ea1ac1ebfd4bd0835e00b12122028e9733ef",
+      "relation": "causes",
+      "subject": "Larger datasets",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0019",
+      "quote": "New Synthetic Datasets for Grokking The two synthetic datasets introduced in this paper enable the induction of grokking with minimal tuning of model parameters, avoiding an extensive search of the parameter space.",
+      "start": 3425,
+      "end": 3639,
+      "chunk_sha256": "75ee60e16f426b1e51a7cd3d20917f9409fb8f46182a6333746e637330e5b95c",
+      "relation": "increases",
+      "subject": "Synthetic Datasets",
+      "object": "induction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.71,
+     "novelty": 0.613
+    },
+    "falsification_test": "Track grokking and induction across periods where Larger datasets changes and where it does not. The hypothesis fails if they co-vary just as strongly when Larger datasets is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "larger dataset"
+   },
+   {
+    "id": "5b271673b98e",
+    "text": "Larger datasets may affect Statistical Phenomenon semantic features of digits through grokking.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "Larger datasets",
+     "Statistical Phenomenon semantic features of digits"
+    ],
+    "via": [
+     "grokking"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0010",
+     "arxiv-2502-01774-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0010",
+      "quote": "(2) Larger datasets lead to de-grokking.",
+      "start": 536,
+      "end": 576,
+      "chunk_sha256": "1243dc1b5f4550c9a2f84dcc7ef1ea1ac1ebfd4bd0835e00b12122028e9733ef",
+      "relation": "causes",
+      "subject": "Larger datasets",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0006",
+      "quote": "Grokking Explained: — A Statistical Phenomenon semantic features of the digits, ensuring that the induced clusters are meaningful and aligned with the model’s learned representations.",
+      "start": 0,
+      "end": 183,
+      "chunk_sha256": "91b1dcde3e2d0f7ca95b670b909ede480db90939c940fa5ae261978812710bd2",
+      "relation": "supports",
+      "subject": "Grokking",
+      "object": "Statistical Phenomenon semantic features of digits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.711,
+     "novelty": 0.55
+    },
+    "falsification_test": "Compare settings where Larger datasets differs while other inputs are matched. The hypothesis fails if Statistical Phenomenon semantic features of digits does not change with Larger datasets, or if fixing grokking removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "d69d967e91dc",
+    "text": "data and particular loss landscapes may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "data",
+     "particular loss landscapes",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-13253-p0009",
+     "arxiv-2210-01117-p0019"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-13253-p0009",
+      "quote": "In general, more data leads to faster grokking (i.e.",
+      "start": 965,
+      "end": 1017,
+      "chunk_sha256": "04445a7597880c948af6f569c5554de9a205139187c5999e8321335f5c648317",
+      "relation": "causes",
+      "subject": "data",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2210-01117-p0019",
+      "quote": "We elaborate below how these particular loss landscapes lead to grokking.",
+      "start": 876,
+      "end": 949,
+      "chunk_sha256": "f9cadc8b57c6f7766f47a922990ab381f6b7418bd25a16998643e0c11c9281e6",
+      "relation": "causes",
+      "subject": "particular loss landscapes",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.704,
+     "novelty": 0.628
+    },
+    "falsification_test": "Vary data and particular loss landscapes separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "1f1c84240794",
+    "text": "particular loss landscapes and training partition may interact in their effect on grokking.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "particular loss landscapes",
+     "training partition",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0019",
+     "arxiv-2610-00620-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0019",
+      "quote": "We elaborate below how these particular loss landscapes lead to grokking.",
+      "start": 876,
+      "end": 949,
+      "chunk_sha256": "f9cadc8b57c6f7766f47a922990ab381f6b7418bd25a16998643e0c11c9281e6",
+      "relation": "causes",
+      "subject": "particular loss landscapes",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0022",
+      "quote": "A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.",
+      "start": 512,
+      "end": 648,
+      "chunk_sha256": "e71c57eda06f31100ef26e89b29602cc58a792fb840ddc3932ecc254d695fd69",
+      "relation": "constrains",
+      "subject": "training partition",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.701,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary particular loss landscapes and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "8d3d78ec30c9",
+    "text": "Gains in generalization from Neural Collapse may be offset by grokking phase.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "grokking phase",
+     "Neural Collapse",
+     "generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2205-10343-p0021",
+     "arxiv-2411-13733-p0035"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2205-10343-p0021",
+      "quote": "The 2D plane is split into four phases: comprehension, grokking, memorization and confusion, defined in Table 1 in Appendix A. Both comprehension and grokking are able to generalize (in the “Goldilocks zone”), although the grokking phase has delayed generalization.",
+      "start": 1742,
+      "end": 2007,
+      "chunk_sha256": "b2218cd4d49e7b23211128b14c86a48057f6d75ead8ab1c4f41ba5641e702602",
+      "relation": "decreases",
+      "subject": "grokking phase",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2411-13733-p0035",
+      "quote": "Neural Collapse improves the generalization bound.",
+      "start": 663,
+      "end": 713,
+      "chunk_sha256": "f6938e50d500fc11e489a60e8f62d3691eb98f422fd89d94d5ed06e756d603c9",
+      "relation": "increases",
+      "subject": "Neural Collapse",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.702,
+     "novelty": 0.586
+    },
+    "falsification_test": "Measure generalization where both grokking phase and Neural Collapse vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "generalization"
+   },
+   {
+    "id": "68f21b77adda",
+    "text": "grokking and geometric separation may move together because both depend on data.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "grokking",
+     "geometric separation",
+     "data"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-13253-p0009",
+     "arxiv-2610-16161-p0005"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-13253-p0009",
+      "quote": "In general, more data leads to faster grokking (i.e.",
+      "start": 965,
+      "end": 1017,
+      "chunk_sha256": "04445a7597880c948af6f569c5554de9a205139187c5999e8321335f5c648317",
+      "relation": "causes",
+      "subject": "data",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-16161-p0005",
+      "quote": "Second, we find that the geometric separation between memorization and generalization depends sharply on the data used to evaluate the Fisher: a denoised dataset yields cleaner separation than the full training distribution.",
+      "start": 1718,
+      "end": 1942,
+      "chunk_sha256": "7e3a32125ba9b8e97ca8b1341836b7cab015facceefb300c3941206a55683d8f",
+      "relation": "constrains",
+      "subject": "data",
+      "object": "geometric separation",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.691,
+     "novelty": 0.6
+    },
+    "falsification_test": "Track grokking and geometric separation across periods where data changes and where it does not. The hypothesis fails if they co-vary just as strongly when data is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "data"
+   },
+   {
+    "id": "1de2ed3cf187",
+    "text": "data and intrinsic task symmetries may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "data",
+     "intrinsic task symmetries",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-13253-p0009",
+     "arxiv-2603-01968-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-13253-p0009",
+      "quote": "In general, more data leads to faster grokking (i.e.",
+      "start": 965,
+      "end": 1017,
+      "chunk_sha256": "04445a7597880c948af6f569c5554de9a205139187c5999e8321335f5c648317",
+      "relation": "causes",
+      "subject": "data",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2603-01968-p0002",
+      "quote": "We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.",
+      "start": 203,
+      "end": 329,
+      "chunk_sha256": "4aafb9b244a700d08c919f79649ff2567b6bdb5303481cba686d23e1b284c238",
+      "relation": "increases",
+      "subject": "intrinsic task symmetries",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.685,
+     "novelty": 0.522
+    },
+    "falsification_test": "Vary data and intrinsic task symmetries separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "f9b9ee7da09e",
+    "text": "data and Larger datasets may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "data",
+     "Larger datasets",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-13253-p0009",
+     "arxiv-2210-01117-p0010"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-13253-p0009",
+      "quote": "In general, more data leads to faster grokking (i.e.",
+      "start": 965,
+      "end": 1017,
+      "chunk_sha256": "04445a7597880c948af6f569c5554de9a205139187c5999e8321335f5c648317",
+      "relation": "causes",
+      "subject": "data",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2210-01117-p0010",
+      "quote": "(2) Larger datasets lead to de-grokking.",
+      "start": 536,
+      "end": 576,
+      "chunk_sha256": "1243dc1b5f4550c9a2f84dcc7ef1ea1ac1ebfd4bd0835e00b12122028e9733ef",
+      "relation": "causes",
+      "subject": "Larger datasets",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.676,
+     "novelty": 0.675
+    },
+    "falsification_test": "Vary data and Larger datasets separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "f7e0180896cb",
+    "text": "distribution shifts and training partition may interact in their effect on grokking.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "distribution shifts",
+     "training partition",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2502-01774-p0007",
+     "arxiv-2502-01774-p0016",
+     "arxiv-2610-00620-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2502-01774-p0007",
+      "quote": "While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.",
+      "start": 257,
+      "end": 438,
+      "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+      "relation": "causes",
+      "subject": "distribution shifts",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0016",
+      "quote": "The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.",
+      "start": 859,
+      "end": 977,
+      "chunk_sha256": "e46483042e639a5b9c1f29d4321ac6a29d20c1f1cffe9e5c30e807d38d93ed17",
+      "relation": "causes",
+      "subject": "distribution shifts",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0022",
+      "quote": "A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.",
+      "start": 512,
+      "end": 648,
+      "chunk_sha256": "e71c57eda06f31100ef26e89b29602cc58a792fb840ddc3932ecc254d695fd69",
+      "relation": "constrains",
+      "subject": "training partition",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.676,
+     "novelty": 0.636
+    },
+    "falsification_test": "Vary distribution shifts and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "ca192649f824",
+    "text": "intrinsic task symmetries and training partition may interact in their effect on grokking.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "intrinsic task symmetries",
+     "training partition",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-01968-p0002",
+     "arxiv-2610-00620-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-01968-p0002",
+      "quote": "We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.",
+      "start": 203,
+      "end": 329,
+      "chunk_sha256": "4aafb9b244a700d08c919f79649ff2567b6bdb5303481cba686d23e1b284c238",
+      "relation": "increases",
+      "subject": "intrinsic task symmetries",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0022",
+      "quote": "A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.",
+      "start": 512,
+      "end": 648,
+      "chunk_sha256": "e71c57eda06f31100ef26e89b29602cc58a792fb840ddc3932ecc254d695fd69",
+      "relation": "constrains",
+      "subject": "training partition",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.684,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary intrinsic task symmetries and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "450f11618c7d",
+    "text": "Larger datasets and training partition may interact in their effect on grokking.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "Larger datasets",
+     "training partition",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0010",
+     "arxiv-2610-00620-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0010",
+      "quote": "(2) Larger datasets lead to de-grokking.",
+      "start": 536,
+      "end": 576,
+      "chunk_sha256": "1243dc1b5f4550c9a2f84dcc7ef1ea1ac1ebfd4bd0835e00b12122028e9733ef",
+      "relation": "causes",
+      "subject": "Larger datasets",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0022",
+      "quote": "A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.",
+      "start": 512,
+      "end": 648,
+      "chunk_sha256": "e71c57eda06f31100ef26e89b29602cc58a792fb840ddc3932ecc254d695fd69",
+      "relation": "constrains",
+      "subject": "training partition",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.676,
+     "novelty": 0.586
+    },
+    "falsification_test": "Vary Larger datasets and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "5b455f44bae6",
+    "text": "data and distribution shifts may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "data",
+     "distribution shifts",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-13253-p0009",
+     "arxiv-2502-01774-p0007",
+     "arxiv-2502-01774-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-13253-p0009",
+      "quote": "In general, more data leads to faster grokking (i.e.",
+      "start": 965,
+      "end": 1017,
+      "chunk_sha256": "04445a7597880c948af6f569c5554de9a205139187c5999e8321335f5c648317",
+      "relation": "causes",
+      "subject": "data",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0007",
+      "quote": "While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.",
+      "start": 257,
+      "end": 438,
+      "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+      "relation": "causes",
+      "subject": "distribution shifts",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0016",
+      "quote": "The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.",
+      "start": 859,
+      "end": 977,
+      "chunk_sha256": "e46483042e639a5b9c1f29d4321ac6a29d20c1f1cffe9e5c30e807d38d93ed17",
+      "relation": "causes",
+      "subject": "distribution shifts",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.677,
+     "novelty": 0.562
+    },
+    "falsification_test": "Vary data and distribution shifts separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "0e44422cabca",
+    "text": "data may affect Statistical Phenomenon semantic features of digits through grokking.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "data",
+     "Statistical Phenomenon semantic features of digits"
+    ],
+    "via": [
+     "grokking"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-13253-p0009",
+     "arxiv-2502-01774-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-13253-p0009",
+      "quote": "In general, more data leads to faster grokking (i.e.",
+      "start": 965,
+      "end": 1017,
+      "chunk_sha256": "04445a7597880c948af6f569c5554de9a205139187c5999e8321335f5c648317",
+      "relation": "causes",
+      "subject": "data",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0006",
+      "quote": "Grokking Explained: — A Statistical Phenomenon semantic features of the digits, ensuring that the induced clusters are meaningful and aligned with the model’s learned representations.",
+      "start": 0,
+      "end": 183,
+      "chunk_sha256": "91b1dcde3e2d0f7ca95b670b909ede480db90939c940fa5ae261978812710bd2",
+      "relation": "supports",
+      "subject": "Grokking",
+      "object": "Statistical Phenomenon semantic features of digits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.652,
+     "novelty": 0.517
+    },
+    "falsification_test": "Compare settings where data differs while other inputs are matched. The hypothesis fails if Statistical Phenomenon semantic features of digits does not change with data, or if fixing grokking removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "9b24c4d4bcb1",
+    "text": "data and training partition may interact in their effect on grokking.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "data",
+     "training partition",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-13253-p0009",
+     "arxiv-2610-00620-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-13253-p0009",
+      "quote": "In general, more data leads to faster grokking (i.e.",
+      "start": 965,
+      "end": 1017,
+      "chunk_sha256": "04445a7597880c948af6f569c5554de9a205139187c5999e8321335f5c648317",
+      "relation": "causes",
+      "subject": "data",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0022",
+      "quote": "A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.",
+      "start": 512,
+      "end": 648,
+      "chunk_sha256": "e71c57eda06f31100ef26e89b29602cc58a792fb840ddc3932ecc254d695fd69",
+      "relation": "constrains",
+      "subject": "training partition",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.634,
+     "novelty": 0.55
+    },
+    "falsification_test": "Vary data and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "1e67c9ea3151",
+    "text": "emergence phase and learning may move together because both depend on Low weight decay.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "emergence phase",
+     "learning",
+     "Low weight decay"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2408-08944-p0012",
+     "arxiv-2511-01938-p0008",
+     "arxiv-2511-01938-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2408-08944-p0012",
+      "quote": "Low weight decay delays the emergence phase We first study the most common setting of grokking for a model trained with low weight decay of 0.1.",
+      "start": 93,
+      "end": 237,
+      "chunk_sha256": "410b99860d75ac8c0cee75b0076da8882fbcd7bfcf538ebe552b817bd0412c4c",
+      "relation": "decreases",
+      "subject": "Low weight decay",
+      "object": "emergence phase",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2511-01938-p0008",
+      "quote": "In the second phase, learning is entirely driven by weight decay.",
+      "start": 906,
+      "end": 971,
+      "chunk_sha256": "30ba744c472d75548f5f12620f28164fc51cb72fb0e4311049c14c98ac95eb2a",
+      "relation": "increases",
+      "subject": "weight decay",
+      "object": "learning",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2511-01938-p0022",
+      "quote": "In other words, the loss gradient does not induce any movement near Z. After a memorizing solution is reached, learning will be driven entirely by weight decay.",
+      "start": 13,
+      "end": 173,
+      "chunk_sha256": "7eddd35075324cf0279e1da7aa57e3a42b9df79024ba813cebc2f1b9308c44cb",
+      "relation": "increases",
+      "subject": "weight decay",
+      "object": "learning",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.535,
+     "novelty": 0.55
+    },
+    "falsification_test": "Track emergence phase and learning across periods where Low weight decay changes and where it does not. The hypothesis fails if they co-vary just as strongly when Low weight decay is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "low weight decay"
+   },
+   {
+    "id": "9b54ba5b07b4",
+    "text": "labels and generalization may move together because both depend on known algorithm.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "labels",
+     "generalization",
+     "known algorithm"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2502-01774-p0011",
+     "arxiv-2302-01576-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2502-01774-p0011",
+      "quote": "In the paper that first reported the phenomenon (Power et al., 2022), the grokking signature has a large ∆S (see Figure 2) as evaluated predominantly on algorithmic datasets, that is, where the labels are produced by a known algorithm, such as a mathematical operation.",
+      "start": 354,
+      "end": 623,
+      "chunk_sha256": "25672ed4aa9382ed19de4d4730a7ca663df4a114146c21ec923cef8dc1f9d462",
+      "relation": "causes",
+      "subject": "known algorithm",
+      "object": "labels",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2302-01576-p0016",
+      "quote": "3.3 A decomposition of the prediction error We now introduce a decomposition of the prediction risk that reveals how ResMem algorithm boosts generalization.",
+      "start": 290,
+      "end": 446,
+      "chunk_sha256": "d17c6e22d4f712a50f1500957846a096e469a8043d5329c3932fcc145fd01f45",
+      "relation": "increases",
+      "subject": "ResMem algorithm",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.482,
+     "novelty": 0.657
+    },
+    "falsification_test": "Track labels and generalization across periods where known algorithm changes and where it does not. The hypothesis fails if they co-vary just as strongly when known algorithm is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "known algorithm"
+   },
+   {
+    "id": "f0620aa97e7f",
+    "text": "Misalignment of Low Loss Regions and symmetry- geometry prompting strategies may jointly drive Grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "Misalignment of Low Loss Regions",
+     "symmetry- geometry prompting strategies",
+     "Grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2610-00620-p0001",
+     "arxiv-2603-01968-p0008"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2610-00620-p0001",
+      "quote": "# Misalignment of Low-Loss Regions Causes Grokking",
+      "start": 0,
+      "end": 50,
+      "chunk_sha256": "77b4beca6ccf182d0255f8124a528444b513150f00fb59ba311acb211978892f",
+      "relation": "causes",
+      "subject": "Misalignment of Low Loss Regions",
+      "object": "Grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2603-01968-p0008",
+      "quote": "• Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.",
+      "start": 0,
+      "end": 234,
+      "chunk_sha256": "bfe4013b766c9cf464688b1de75b8af68324363ad9e3b34c44b3acb1844e27dc",
+      "relation": "increases",
+      "subject": "symmetry- geometry prompting strategies",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.836,
+     "novelty": 0.735
+    },
+    "falsification_test": "Vary Misalignment of Low Loss Regions and symmetry- geometry prompting strategies separately and together. The hypothesis fails if the joint change in Grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "cb971777c267",
+    "text": "particular loss landscapes and symmetry- geometry prompting strategies may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "particular loss landscapes",
+     "symmetry- geometry prompting strategies",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0019",
+     "arxiv-2603-01968-p0008"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0019",
+      "quote": "We elaborate below how these particular loss landscapes lead to grokking.",
+      "start": 876,
+      "end": 949,
+      "chunk_sha256": "f9cadc8b57c6f7766f47a922990ab381f6b7418bd25a16998643e0c11c9281e6",
+      "relation": "causes",
+      "subject": "particular loss landscapes",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2603-01968-p0008",
+      "quote": "• Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.",
+      "start": 0,
+      "end": 234,
+      "chunk_sha256": "bfe4013b766c9cf464688b1de75b8af68324363ad9e3b34c44b3acb1844e27dc",
+      "relation": "increases",
+      "subject": "symmetry- geometry prompting strategies",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.807,
+     "novelty": 0.683
+    },
+    "falsification_test": "Vary particular loss landscapes and symmetry- geometry prompting strategies separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "6b1f55d877a3",
+    "text": "difficulty of optimization and symmetry- geometry prompting strategies may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "difficulty of optimization",
+     "symmetry- geometry prompting strategies",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2408-08944-p0027",
+     "arxiv-2603-01968-p0008"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2408-08944-p0027",
+      "quote": "Loss Geometry Our experiments illustrated that grokking might be caused by the difficulty of optimization to navigate the loss landscapes.",
+      "start": 0,
+      "end": 138,
+      "chunk_sha256": "51bf14a32af2f1e3fe00db477ba16bd436559e9976f83b237e63b60151101df5",
+      "relation": "causes",
+      "subject": "difficulty of optimization",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2603-01968-p0008",
+      "quote": "• Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.",
+      "start": 0,
+      "end": 234,
+      "chunk_sha256": "bfe4013b766c9cf464688b1de75b8af68324363ad9e3b34c44b3acb1844e27dc",
+      "relation": "increases",
+      "subject": "symmetry- geometry prompting strategies",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.804,
+     "novelty": 0.668
+    },
+    "falsification_test": "Vary difficulty of optimization and symmetry- geometry prompting strategies separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "a070740fa05f",
+    "text": "difficulty of optimization and Misalignment of Low Loss Regions may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "difficulty of optimization",
+     "Misalignment of Low Loss Regions",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2408-08944-p0027",
+     "arxiv-2610-00620-p0001"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2408-08944-p0027",
+      "quote": "Loss Geometry Our experiments illustrated that grokking might be caused by the difficulty of optimization to navigate the loss landscapes.",
+      "start": 0,
+      "end": 138,
+      "chunk_sha256": "51bf14a32af2f1e3fe00db477ba16bd436559e9976f83b237e63b60151101df5",
+      "relation": "causes",
+      "subject": "difficulty of optimization",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0001",
+      "quote": "# Misalignment of Low-Loss Regions Causes Grokking",
+      "start": 0,
+      "end": 50,
+      "chunk_sha256": "77b4beca6ccf182d0255f8124a528444b513150f00fb59ba311acb211978892f",
+      "relation": "causes",
+      "subject": "Misalignment of Low Loss Regions",
+      "object": "Grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.804,
+     "novelty": 0.668
+    },
+    "falsification_test": "Vary difficulty of optimization and Misalignment of Low Loss Regions separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   {
+    "id": "16c826512953",
+    "text": "symmetry- geometry prompting strategies may affect Statistical Phenomenon semantic features of digits through grokking.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "symmetry- geometry prompting strategies",
+     "Statistical Phenomenon semantic features of digits"
+    ],
+    "via": [
+     "grokking"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-01968-p0008",
+     "arxiv-2502-01774-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-01968-p0008",
+      "quote": "• Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.",
+      "start": 0,
+      "end": 234,
+      "chunk_sha256": "bfe4013b766c9cf464688b1de75b8af68324363ad9e3b34c44b3acb1844e27dc",
+      "relation": "increases",
+      "subject": "symmetry- geometry prompting strategies",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0006",
+      "quote": "Grokking Explained: — A Statistical Phenomenon semantic features of the digits, ensuring that the induced clusters are meaningful and aligned with the model’s learned representations.",
+      "start": 0,
+      "end": 183,
+      "chunk_sha256": "91b1dcde3e2d0f7ca95b670b909ede480db90939c940fa5ae261978812710bd2",
+      "relation": "supports",
+      "subject": "Grokking",
+      "object": "Statistical Phenomenon semantic features of digits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.785,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where symmetry- geometry prompting strategies differs while other inputs are matched. The hypothesis fails if Statistical Phenomenon semantic features of digits does not change with symmetry- geometry prompting strategies, or if fixing grokking removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   }
+  ],
+  "survivors": 94,
+  "candidates_generated": 262,
+  "candidates_passed": {
+   "abductive": 238,
+   "deductive": 238,
+   "pre_thinker": 94
+  },
+  "candidates_rejected": {
+   "abductive:incoherent_composition": 16,
+   "abductive:no_explanatory_relation": 3,
+   "abductive:unrelated_bridge": 5,
+   "pre_thinker:circular": 1,
+   "pre_thinker:malformed": 125,
+   "pre_thinker:restates_source": 2,
+   "pre_thinker:single_source": 16
+  },
+  "relation_edges": 454,
+  "scoped_edges": 79,
+  "budget_used": {
+   "rounds": 2,
+   "candidates": 262,
+   "edges": 454,
+   "bytes": 289522,
+   "seconds": 6.965
+  },
+  "incomplete": false,
+  "stop_reason": null,
+  "shortage": null,
+  "snapshot": {
+   "as_of": 1795287016,
+   "chunk_count": 1652
+  }
+ },
+ "reply": "Frontier hypotheses for grokking. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 262. Passed abductive check: 238; deductive check: 238; pre-thinker validation: 94.\n\n1. Misalignment of Low Loss Regions and particular loss landscapes may jointly drive Grokking, and their effects may compound.\n[arxiv-2610-00620-p0001] # Misalignment of Low-Loss Regions Causes Grokking\n[arxiv-2210-01117-p0019] We elaborate below how these particular loss landscapes lead to grokking.\nFalsification test: Vary Misalignment of Low Loss Regions and particular loss landscapes separately and together. The hypothesis fails if the joint change in Grokking equals the sum of the separate changes.\nDeepen check: all links supported (Misalignment of Low Loss Regions -> Grokking: supported, particular loss landscapes -> Grokking: supported).\nScores: source support 0.80, deductive relevance 0.81, novelty 0.67.\n\n2. intrinsic task symmetries and Misalignment of Low Loss Regions may jointly drive grokking, and their effects may compound.\n[arxiv-2603-01968-p0002] We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.\n[arxiv-2610-00620-p0001] # Misalignment of Low-Loss Regions Causes Grokking\nFalsification test: Vary intrinsic task symmetries and Misalignment of Low Loss Regions separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nDeepen check: all links supported (intrinsic task symmetries -> grokking: supported, Misalignment of Low Loss Regions -> grokking: supported).\nScores: source support 0.80, deductive relevance 0.79, novelty 0.64.\n\n3. Misalignment of Low Loss Regions may affect Statistical Phenomenon semantic features of digits through Grokking.\n[arxiv-2610-00620-p0001] # Misalignment of Low-Loss Regions Causes Grokking\n[arxiv-2502-01774-p0006] Grokking Explained: — A Statistical Phenomenon semantic features of the digits, ensuring that the induced clusters are meaningful and aligned with the model’s learned representations.\nFalsification test: Compare settings where Misalignment of Low Loss Regions differs while other inputs are matched. The hypothesis fails if Statistical Phenomenon semantic features of digits does not change with Misalignment of Low Loss Regions, or if fixing Grokking removes no part of the effect.\nDeepen check: all links supported (Misalignment of Low Loss Regions -> Grokking: supported, Grokking -> Statistical Phenomenon semantic features of digits: supported).\nScores: source support 0.80, deductive relevance 0.79, novelty 0.60.\n\n4. mismatch and training partition may interact in their effect on A1 Grokking.\n[arxiv-2210-01117-p0003] This paper aims to answer these questions by analyzing neural loss landscapes: A1 Grokking is caused by the mismatch between training and test loss landscapes.\n[arxiv-2610-00620-p0022] A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.\nFalsification test: Vary mismatch and training partition separately and together. The hypothesis fails if the joint change in A1 Grokking equals the sum of the separate changes.\nDeepen check: all links supported (mismatch -> A1 Grokking: supported, training partition -> A1 Grokking: supported).\nScores: source support 0.80, deductive relevance 0.74, novelty 0.56.\n\n5. Low weight decay may increase generalization through emergence phase (read as grokking phase).\n[arxiv-2408-08944-p0012] Low weight decay delays the emergence phase We first study the most common setting of grokking for a model trained with low weight decay of 0.1.\n[arxiv-2205-10343-p0021] The 2D plane is split into four phases: comprehension, grokking, memorization and confusion, defined in Table 1 in Appendix A. Both comprehension and grokking are able to generalize (in the “Goldilocks zone”), although the grokking phase has delayed generalization.\nFalsification test: Compare settings where Low weight decay differs while other inputs are matched. The hypothesis fails if generalization does not rise with Low weight decay, or if fixing emergence phase (read as grokking phase) removes no part of the effect.\nWarning, contested: contested (Low weight decay -> emergence phase: contested, emergence phase -> generalization: supported).\n  - [arxiv-2408-08944-p0005] We find that weight initialization and increasing weight decay directly leads to an emergent phase and reduces the delayed generalization gap • We present preliminary findings indicating that the subnetworks at the emergent phase may be causally related\nScores: source support 0.80, deductive relevance 0.74, novelty 0.45.\n\n6. Gains in generalization from popular components may be offset by grokking phase.\n[arxiv-2205-10343-p0021] The 2D plane is split into four phases: comprehension, grokking, memorization and confusion, defined in Table 1 in Appendix A. Both comprehension and grokking are able to generalize (in the “Goldilocks zone”), although the grokking phase has delayed generalization.\n[arxiv-2403-02241-p0005] (3) Generalization is enabled by popular components like ReLUs setting this bias to a low complexity that often aligns with the target function.\nFalsification test: Measure generalization where both grokking phase and popular components vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.72, novelty 0.64.\n\n7. Gains in generalization from ensembling may be offset by grokking phase.\n[arxiv-2410-16201-p0002] In contrast to the underparameterized regime, where ensembling typically induces regularization and increases generalization, we prove with minimal assumptions that infinite ensembles of overparameterized RF regressors become pointwise equivalent to (single) infinite-width RF regressors, and finite width ensembles rapidly converge to single models with the same parameter budget.\n[arxiv-2205-10343-p0021] The 2D plane is split into four phases: comprehension, grokking, memorization and confusion, defined in Table 1 in Appendix A. Both comprehension and grokking are able to generalize (in the “Goldilocks zone”), although the grokking phase has delayed generalization.\nFalsification test: Measure generalization where both ensembling and grokking phase vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.72, novelty 0.60.\n\n8. scenario may increase different outcomes through differences.\n[arxiv-2311-02622-p0008] We define separate measures for each scenario to account for the differences in how the hierarchical simplicity bias\n[arxiv-2210-01117-p0015] We show how their loss landscapes depend on representations differently, and how the difference leads to different outcomes (grokking or not).\nFalsification test: Compare settings where scenario differs while other inputs are matched. The hypothesis fails if different outcomes does not rise with scenario, or if fixing differences removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.66, novelty 0.60.\n\n9. emergence phase and Large initialization runs may move together because both depend on Low weight decay.\n[arxiv-2408-08944-p0012] Low weight decay delays the emergence phase We first study the most common setting of grokking for a model trained with low weight decay of 0.1.\n[arxiv-2210-01117-p0009] Large initialization runs (top) depended on weight decay: no regularization fails to generalize, small regularization generalizes slowly (grokking), while large regularization generalizes faster.\nFalsification test: Track emergence phase and Large initialization runs across periods where Low weight decay changes and where it does not. The hypothesis fails if they co-vary just as strongly when Low weight decay is held fixed.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.64.\n\n10. Low weight decay and representation may jointly constrain emergence phase, so relieving one may shift the bottleneck to the other.\n[arxiv-2408-08944-p0012] Low weight decay delays the emergence phase We first study the most common setting of grokking for a model trained with low weight decay of 0.1.\n[arxiv-2205-10343-p0022] The ideal phase (comprehension) requires representation learning to be faster, but not too much, than the decoder.\nFalsification test: Relieve Low weight decay alone while measuring emergence phase. The hypothesis fails if emergence phase keeps improving without representation becoming the binding limit, or if relieving representation alone has no effect.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.59.\n\n11. ideal phase and loss landscapes may move together because both depend on representation.\n[arxiv-2205-10343-p0022] The ideal phase (comprehension) requires representation learning to be faster, but not too much, than the decoder.\n[arxiv-2210-01117-p0015] We show how their loss landscapes depend on representations differently, and how the difference leads to different outcomes (grokking or not).\nFalsification test: Track ideal phase and loss landscapes across periods where representation changes and where it does not. The hypothesis fails if they co-vary just as strongly when representation is held fixed.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.63.\n\n12. Large initialization runs and learning may move together because both depend on weight decay.\n[arxiv-2210-01117-p0009] Large initialization runs (top) depended on weight decay: no regularization fails to generalize, small regularization generalizes slowly (grokking), while large regularization generalizes faster.\n[arxiv-2511-01938-p0008] In the second phase, learning is entirely driven by weight decay.\n[arxiv-2511-01938-p0022] In other words, the loss gradient does not induce any movement near Z. After a memorizing solution is reached, learning will be driven entirely by weight decay.\nFalsification test: Track Large initialization runs and learning across periods where weight decay changes and where it does not. The hypothesis fails if they co-vary just as strongly when weight decay is held fixed.\nScores: source support 0.80, deductive relevance 0.56, novelty 0.60.\n\n13. mismatch and symmetry- geometry prompting strategies may jointly drive A1 Grokking, and their effects may compound.\n[arxiv-2210-01117-p0003] This paper aims to answer these questions by analyzing neural loss landscapes: A1 Grokking is caused by the mismatch between training and test loss landscapes.\n[arxiv-2603-01968-p0008] • Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.\nFalsification test: Vary mismatch and symmetry- geometry prompting strategies separately and together. The hypothesis fails if the joint change in A1 Grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.85, novelty 0.71.\n\n14. mismatch and model ability may jointly drive A1 Grokking, and their effects may compound.\n[arxiv-2210-01117-p0003] This paper aims to answer these questions by analyzing neural loss landscapes: A1 Grokking is caused by the mismatch between training and test loss landscapes.\n[arxiv-2502-01774-p0002] We also show that when classes form an equivariant map, grokking can be explained by the model’s ability to learn from similar classes or sub-categories.\nFalsification test: Vary mismatch and model ability separately and together. The hypothesis fails if the joint change in A1 Grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.79, novelty 0.68.\n\n15. distribution shifts and Misalignment of Low Loss Regions may jointly drive grokking, and their effects may compound.\n[arxiv-2502-01774-p0007] While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.\n[arxiv-2502-01774-p0016] The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.\n[arxiv-2610-00620-p0001] # Misalignment of Low-Loss Regions Causes Grokking\nFalsification test: Vary distribution shifts and Misalignment of Low Loss Regions separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.78, novelty 0.71.\n\n16. Larger datasets and Misalignment of Low Loss Regions may jointly drive grokking, and their effects may compound.\n[arxiv-2210-01117-p0010] (2) Larger datasets lead to de-grokking.\n[arxiv-2610-00620-p0001] # Misalignment of Low-Loss Regions Causes Grokking\nFalsification test: Vary Larger datasets and Misalignment of Low Loss Regions separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.78, novelty 0.71.\n\n17. intrinsic task symmetries and particular loss landscapes may jointly drive grokking, and their effects may compound.\n[arxiv-2603-01968-p0002] We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.\n[arxiv-2210-01117-p0019] We elaborate below how these particular loss landscapes lead to grokking.\nFalsification test: Vary intrinsic task symmetries and particular loss landscapes separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.76, novelty 0.62.\n\n18. distribution shifts and particular loss landscapes may jointly drive grokking, and their effects may compound.\n[arxiv-2502-01774-p0007] While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.\n[arxiv-2502-01774-p0016] The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.\n[arxiv-2210-01117-p0019] We elaborate below how these particular loss landscapes lead to grokking.\nFalsification test: Vary distribution shifts and particular loss landscapes separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.75, novelty 0.65.\n\n19. particular loss landscapes may affect Statistical Phenomenon semantic features of digits through grokking.\n[arxiv-2210-01117-p0019] We elaborate below how these particular loss landscapes lead to grokking.\n[arxiv-2502-01774-p0006] Grokking Explained: — A Statistical Phenomenon semantic features of the digits, ensuring that the induced clusters are meaningful and aligned with the model’s learned representations.\nFalsification test: Compare settings where particular loss landscapes differs while other inputs are matched. The hypothesis fails if Statistical Phenomenon semantic features of digits does not change with particular loss landscapes, or if fixing grokking removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.75, novelty 0.58.\n\n20. data and Misalignment of Low Loss Regions may jointly drive grokking, and their effects may compound.\n[arxiv-2306-13253-p0009] In general, more data leads to faster grokking (i.e.\n[arxiv-2610-00620-p0001] # Misalignment of Low-Loss Regions Causes Grokking\nFalsification test: Vary data and Misalignment of Low Loss Regions separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.73, novelty 0.70.\n\n21. distribution shifts and mismatch may jointly drive grokking, and their effects may compound.\n[arxiv-2502-01774-p0007] While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.\n[arxiv-2502-01774-p0016] The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.\n[arxiv-2210-01117-p0003] This paper aims to answer these questions by analyzing neural loss landscapes: A1 Grokking is caused by the mismatch between training and test loss landscapes.\nFalsification test: Vary distribution shifts and mismatch separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.73, novelty 0.66.\n\n22. intrinsic task symmetries and Larger datasets may jointly drive grokking, and their effects may compound.\n[arxiv-2603-01968-p0002] We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.\n[arxiv-2210-01117-p0010] (2) Larger datasets lead to de-grokking.\nFalsification test: Vary intrinsic task symmetries and Larger datasets separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.73, novelty 0.60.\n\n23. intrinsic task symmetries and mismatch may jointly drive grokking, and their effects may compound.\n[arxiv-2603-01968-p0002] We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.\n[arxiv-2210-01117-p0003] This paper aims to answer these questions by analyzing neural loss landscapes: A1 Grokking is caused by the mismatch between training and test loss landscapes.\nFalsification test: Vary intrinsic task symmetries and mismatch separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.73, novelty 0.57.\n\n24. distribution shifts and intrinsic task symmetries may jointly drive grokking, and their effects may compound.\n[arxiv-2502-01774-p0007] While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.\n[arxiv-2502-01774-p0016] The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.\n[arxiv-2603-01968-p0002] We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.\nFalsification test: Vary distribution shifts and intrinsic task symmetries separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.73, novelty 0.55.\n\n25. training partition may affect Statistical Phenomenon semantic features of digits through grokking.\n[arxiv-2610-00620-p0022] A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.\n[arxiv-2502-01774-p0006] Grokking Explained: — A Statistical Phenomenon semantic features of the digits, ensuring that the induced clusters are meaningful and aligned with the model’s learned representations.\nFalsification test: Compare settings where training partition differs while other inputs are matched. The hypothesis fails if Statistical Phenomenon semantic features of digits does not change with training partition, or if fixing grokking removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.73, novelty 0.55.\n\n26. distribution shifts and Larger datasets may jointly drive grokking, and their effects may compound.\n[arxiv-2502-01774-p0007] While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.\n[arxiv-2502-01774-p0016] The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.\n[arxiv-2210-01117-p0010] (2) Larger datasets lead to de-grokking.\nFalsification test: Vary distribution shifts and Larger datasets separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.72, novelty 0.63.\n\n27. Gains in generalization from individual data samples may be offset by grokking phase.\n[arxiv-2205-10343-p0021] The 2D plane is split into four phases: comprehension, grokking, memorization and confusion, defined in Table 1 in Appendix A. Both comprehension and grokking are able to generalize (in the “Goldilocks zone”), although the grokking phase has delayed generalization.\n[arxiv-2610-16161-p0026] 4 Contributions of Individual Samples 4.1 Sample Contributions to the Eigenspectrum To better understand how individual data samples contribute to generalization and the structure of the Fisher information, we examine the participation ratios associated with individual samples in the eigenspectrum of the (layerwise) Fisher.\nFalsification test: Measure generalization where both grokking phase and individual data samples vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.72, novelty 0.60.\n\n28. intrinsic task symmetries may affect Statistical Phenomenon semantic features of digits through grokking.\n[arxiv-2603-01968-p0002] We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.\n[arxiv-2502-01774-p0006] Grokking Explained: — A Statistical Phenomenon semantic features of the digits, ensuring that the induced clusters are meaningful and aligned with the model’s learned representations.\nFalsification test: Compare settings where intrinsic task symmetries differs while other inputs are matched. The hypothesis fails if Statistical Phenomenon semantic features of digits does not change with intrinsic task symmetries, or if fixing grokking removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.72, novelty 0.58.\n\n29. Gains in generalization from ResMem algorithm may be offset by grokking phase.\n[arxiv-2205-10343-p0021] The 2D plane is split into four phases: comprehension, grokking, memorization and confusion, defined in Table 1 in Appendix A. Both comprehension and grokking are able to generalize (in the “Goldilocks zone”), although the grokking phase has delayed generalization.\n[arxiv-2302-01576-p0016] 3.3 A decomposition of the prediction error We now introduce a decomposition of the prediction risk that reveals how ResMem algorithm boosts generalization.\nFalsification test: Measure generalization where both grokking phase and ResMem algorithm vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.71, novelty 0.64.\n\n30. grokking and induction may move together because both depend on Larger datasets.\n[arxiv-2210-01117-p0010] (2) Larger datasets lead to de-grokking.\n[arxiv-2502-01774-p0019] New Synthetic Datasets for Grokking The two synthetic datasets introduced in this paper enable the induction of grokking with minimal tuning of model parameters, avoiding an extensive search of the parameter space.\nFalsification test: Track grokking and induction across periods where Larger datasets changes and where it does not. The hypothesis fails if they co-vary just as strongly when Larger datasets is held fixed.\nScores: source support 0.80, deductive relevance 0.71, novelty 0.61.\n\n31. Larger datasets may affect Statistical Phenomenon semantic features of digits through grokking.\n[arxiv-2210-01117-p0010] (2) Larger datasets lead to de-grokking.\n[arxiv-2502-01774-p0006] Grokking Explained: — A Statistical Phenomenon semantic features of the digits, ensuring that the induced clusters are meaningful and aligned with the model’s learned representations.\nFalsification test: Compare settings where Larger datasets differs while other inputs are matched. The hypothesis fails if Statistical Phenomenon semantic features of digits does not change with Larger datasets, or if fixing grokking removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.71, novelty 0.55.\n\n32. data and particular loss landscapes may jointly drive grokking, and their effects may compound.\n[arxiv-2306-13253-p0009] In general, more data leads to faster grokking (i.e.\n[arxiv-2210-01117-p0019] We elaborate below how these particular loss landscapes lead to grokking.\nFalsification test: Vary data and particular loss landscapes separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.70, novelty 0.63.\n\n33. particular loss landscapes and training partition may interact in their effect on grokking.\n[arxiv-2210-01117-p0019] We elaborate below how these particular loss landscapes lead to grokking.\n[arxiv-2610-00620-p0022] A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.\nFalsification test: Vary particular loss landscapes and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.70, novelty 0.60.\n\n34. Gains in generalization from Neural Collapse may be offset by grokking phase.\n[arxiv-2205-10343-p0021] The 2D plane is split into four phases: comprehension, grokking, memorization and confusion, defined in Table 1 in Appendix A. Both comprehension and grokking are able to generalize (in the “Goldilocks zone”), although the grokking phase has delayed generalization.\n[arxiv-2411-13733-p0035] Neural Collapse improves the generalization bound.\nFalsification test: Measure generalization where both grokking phase and Neural Collapse vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.70, novelty 0.59.\n\n35. grokking and geometric separation may move together because both depend on data.\n[arxiv-2306-13253-p0009] In general, more data leads to faster grokking (i.e.\n[arxiv-2610-16161-p0005] Second, we find that the geometric separation between memorization and generalization depends sharply on the data used to evaluate the Fisher: a denoised dataset yields cleaner separation than the full training distribution.\nFalsification test: Track grokking and geometric separation across periods where data changes and where it does not. The hypothesis fails if they co-vary just as strongly when data is held fixed.\nScores: source support 0.80, deductive relevance 0.69, novelty 0.60.\n\n36. data and intrinsic task symmetries may jointly drive grokking, and their effects may compound.\n[arxiv-2306-13253-p0009] In general, more data leads to faster grokking (i.e.\n[arxiv-2603-01968-p0002] We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.\nFalsification test: Vary data and intrinsic task symmetries separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.69, novelty 0.52.\n\n37. data and Larger datasets may jointly drive grokking, and their effects may compound.\n[arxiv-2306-13253-p0009] In general, more data leads to faster grokking (i.e.\n[arxiv-2210-01117-p0010] (2) Larger datasets lead to de-grokking.\nFalsification test: Vary data and Larger datasets separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.68, novelty 0.68.\n\n38. distribution shifts and training partition may interact in their effect on grokking.\n[arxiv-2502-01774-p0007] While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.\n[arxiv-2502-01774-p0016] The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.\n[arxiv-2610-00620-p0022] A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.\nFalsification test: Vary distribution shifts and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.68, novelty 0.64.\n\n39. intrinsic task symmetries and training partition may interact in their effect on grokking.\n[arxiv-2603-01968-p0002] We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.\n[arxiv-2610-00620-p0022] A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.\nFalsification test: Vary intrinsic task symmetries and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.68, novelty 0.60.\n\n40. Larger datasets and training partition may interact in their effect on grokking.\n[arxiv-2210-01117-p0010] (2) Larger datasets lead to de-grokking.\n[arxiv-2610-00620-p0022] A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.\nFalsification test: Vary Larger datasets and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.68, novelty 0.59.\n\n41. data and distribution shifts may jointly drive grokking, and their effects may compound.\n[arxiv-2306-13253-p0009] In general, more data leads to faster grokking (i.e.\n[arxiv-2502-01774-p0007] While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.\n[arxiv-2502-01774-p0016] The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.\nFalsification test: Vary data and distribution shifts separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.68, novelty 0.56.\n\n42. data may affect Statistical Phenomenon semantic features of digits through grokking.\n[arxiv-2306-13253-p0009] In general, more data leads to faster grokking (i.e.\n[arxiv-2502-01774-p0006] Grokking Explained: — A Statistical Phenomenon semantic features of the digits, ensuring that the induced clusters are meaningful and aligned with the model’s learned representations.\nFalsification test: Compare settings where data differs while other inputs are matched. The hypothesis fails if Statistical Phenomenon semantic features of digits does not change with data, or if fixing grokking removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.65, novelty 0.52.\n\n43. data and training partition may interact in their effect on grokking.\n[arxiv-2306-13253-p0009] In general, more data leads to faster grokking (i.e.\n[arxiv-2610-00620-p0022] A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.\nFalsification test: Vary data and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.63, novelty 0.55.\n\n44. emergence phase and learning may move together because both depend on Low weight decay.\n[arxiv-2408-08944-p0012] Low weight decay delays the emergence phase We first study the most common setting of grokking for a model trained with low weight decay of 0.1.\n[arxiv-2511-01938-p0008] In the second phase, learning is entirely driven by weight decay.\n[arxiv-2511-01938-p0022] In other words, the loss gradient does not induce any movement near Z. After a memorizing solution is reached, learning will be driven entirely by weight decay.\nFalsification test: Track emergence phase and learning across periods where Low weight decay changes and where it does not. The hypothesis fails if they co-vary just as strongly when Low weight decay is held fixed.\nScores: source support 0.80, deductive relevance 0.54, novelty 0.55.\n\n45. labels and generalization may move together because both depend on known algorithm.\n[arxiv-2502-01774-p0011] In the paper that first reported the phenomenon (Power et al., 2022), the grokking signature has a large ∆S (see Figure 2) as evaluated predominantly on algorithmic datasets, that is, where the labels are produced by a known algorithm, such as a mathematical operation.\n[arxiv-2302-01576-p0016] 3.3 A decomposition of the prediction error We now introduce a decomposition of the prediction risk that reveals how ResMem algorithm boosts generalization.\nFalsification test: Track labels and generalization across periods where known algorithm changes and where it does not. The hypothesis fails if they co-vary just as strongly when known algorithm is held fixed.\nScores: source support 0.80, deductive relevance 0.48, novelty 0.66.\n\n46. Misalignment of Low Loss Regions and symmetry- geometry prompting strategies may jointly drive Grokking, and their effects may compound.\n[arxiv-2610-00620-p0001] # Misalignment of Low-Loss Regions Causes Grokking\n[arxiv-2603-01968-p0008] • Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.\nFalsification test: Vary Misalignment of Low Loss Regions and symmetry- geometry prompting strategies separately and together. The hypothesis fails if the joint change in Grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.84, novelty 0.73.\n\n47. particular loss landscapes and symmetry- geometry prompting strategies may jointly drive grokking, and their effects may compound.\n[arxiv-2210-01117-p0019] We elaborate below how these particular loss landscapes lead to grokking.\n[arxiv-2603-01968-p0008] • Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.\nFalsification test: Vary particular loss landscapes and symmetry- geometry prompting strategies separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.81, novelty 0.68.\n\n48. difficulty of optimization and symmetry- geometry prompting strategies may jointly drive grokking, and their effects may compound.\n[arxiv-2408-08944-p0027] Loss Geometry Our experiments illustrated that grokking might be caused by the difficulty of optimization to navigate the loss landscapes.\n[arxiv-2603-01968-p0008] • Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.\nFalsification test: Vary difficulty of optimization and symmetry- geometry prompting strategies separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.80, novelty 0.67.\n\n49. difficulty of optimization and Misalignment of Low Loss Regions may jointly drive grokking, and their effects may compound.\n[arxiv-2408-08944-p0027] Loss Geometry Our experiments illustrated that grokking might be caused by the difficulty of optimization to navigate the loss landscapes.\n[arxiv-2610-00620-p0001] # Misalignment of Low-Loss Regions Causes Grokking\nFalsification test: Vary difficulty of optimization and Misalignment of Low Loss Regions separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.80, novelty 0.67.\n\n50. symmetry- geometry prompting strategies may affect Statistical Phenomenon semantic features of digits through grokking.\n[arxiv-2603-01968-p0008] • Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.\n[arxiv-2502-01774-p0006] Grokking Explained: — A Statistical Phenomenon semantic features of the digits, ensuring that the induced clusters are meaningful and aligned with the model’s learned representations.\nFalsification test: Compare settings where symmetry- geometry prompting strategies differs while other inputs are matched. The hypothesis fails if Statistical Phenomenon semantic features of digits does not change with symmetry- geometry prompting strategies, or if fixing grokking removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.79, novelty 0.60.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}
