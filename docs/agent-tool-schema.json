@@ -1,0 +1,78 @@
+{
+  "schema": "cpu-llm-agent-tools-v1",
+  "version": "1.15.0",
+  "description": "Function-calling tool definitions for CPU-LLM. Each tool lists its JSON-Schema parameters and how it maps to the Python API and the HTTP service. CPU-LLM is an evidence engine, not a generative model: results are source-backed, derived, unverified (labelled UNVERIFIED_HYPOTHESIS), or refused. Branch on answer_status; never present unverified results as facts.",
+  "transport": {
+    "python": "from cpu_llm.pipeline import Appliance; app = Appliance(namespace=...)",
+    "http": "cpu-llm-serve --secrets credentials.json; POST with header 'Authorization: Bearer <secret>'",
+    "openapi": "docs/openapi.json"
+  },
+  "tools": [
+    {
+      "name": "cpu_llm_ask",
+      "description": "Ask the knowledge base. Returns a result with answer_status, reply.text, answer_evidence (document_id, quote, offsets, chunk_sha256), judgment, routing and a node receipt. Prompt forms select nodes: 'What is the <attribute> of <entity>?' with strict_evidence for exact quotes; 'Write a detailed report about X' for cited documents; 'Infer whether A is bigger than C' for rule proofs; 'Research X' for literature synthesis; 'Frontier: X' or 'What unexplored connections exist around X?' for ranked hypotheses; 'Deepen idea N' or 'Check this hypothesis: ...' to check one hypothesis. Send one specialist option per call.",
+      "python": "app.ask(message, **options)",
+      "http": "POST /v1/ask {\"message\": ..., ...options}",
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["message"],
+        "properties": {
+          "message": {"type": "string", "minLength": 1, "description": "The question or command."},
+          "strict_evidence": {"type": "boolean", "default": false, "description": "Exact source quotations, recognized exact calculations, or 'unsupported'. Answers named-attribute questions. Disables every hypothesis route."},
+          "session_id": {"type": "string", "description": "Reuse for follow-ups: clarifications, 'Deepen idea 3' after Frontier, 'Explain proposal 1' after Invention."},
+          "deep": {"type": "boolean", "default": false, "description": "Wider authorized search."},
+          "math": {"type": "boolean", "default": false, "description": "Arithmetic from the prompt's fields."},
+          "finance": {"type": "boolean", "default": false, "description": "Check supplied LedgerCovenant or RefundProof fields."},
+          "inference": {"type": "object", "description": "Explicit rule deduction {subject, relation, object} with relation in bigger_than, has, member_of, subclass_of, physical_part_of, physically_contains, located_in, requires; or a structured analysis {mode: temporal|inductive|abductive, source_ids: [...]}."},
+          "frontier": {"description": "Run Frontier: ranked, cited, unverified hypotheses across the knowledge base. true, or {topic, limits, deepen_top}.", "oneOf": [{"type": "boolean"}, {"type": "object", "properties": {"topic": {"type": "string"}, "deepen_top": {"type": "integer", "minimum": 0, "maximum": 10}, "limits": {"type": "object"}}}]},
+          "deepen": {"description": "Run Deepen on one hypothesis: a Frontier hypothesis object (preferred), its text, or true to read the message.", "oneOf": [{"type": "boolean"}, {"type": "string"}, {"type": "object"}]},
+          "invent": {"type": "boolean", "default": false, "description": "Concept invention from cited cross-chunk relationships (unverified)."},
+          "nammade": {"type": "boolean", "default": false, "description": "Passage-comparison scan (diagnostic)."},
+          "cycle_search": {"type": "object", "description": "Relationship loops {seed, limits}."},
+          "as_of": {"type": "integer", "description": "Answer from the knowledge base as of this Unix time."},
+          "target_level": {"type": "string", "description": "Simpler wording level such as A2 (needs Appliance(prismlexicon=True))."}
+        }
+      },
+      "result_statuses": {
+        "source_backed_or_derived": ["answered", "evidence_quote", "derived_inference"],
+        "unverified": ["hypotheses", "shortage", "research_question", "deepened", "nammade"],
+        "refusal": ["insufficient_evidence", "unsupported", "blocked"],
+        "disagreement": ["conflicting", "contradicted"],
+        "needs_user": ["needs_clarification"],
+        "incomplete": ["partial"],
+        "no_evidence": ["conversation", "external_unverified"]
+      }
+    },
+    {
+      "name": "cpu_llm_ingest",
+      "description": "Add or replace a source. Re-ingesting the same name replaces its paragraphs. Accepted files: .txt .md .html .pdf .docx .csv .xlsx .xlsm .epub, or a folder.",
+      "python": "app.ingest(path) or app.ingest(SourceDocument(name, (paragraph, ...)))",
+      "http": "POST /v1/ingest {\"name\": ..., \"paragraphs\": [...]} or {\"source\": \"<server-side path>\"}",
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {"type": "string", "description": "Source name; chunk ids become <name>-p0001, ..."},
+          "paragraphs": {"type": "array", "items": {"type": "string"}, "description": "Paragraph texts."},
+          "source": {"type": "string", "description": "A file or folder path readable by the service."}
+        }
+      }
+    },
+    {
+      "name": "cpu_llm_list_chunks",
+      "description": "Count and list active chunk ids visible to the caller, optionally for one source.",
+      "python": "app.chunk_inventory(source=None, limit=50, offset=0)",
+      "http": "POST /v1/chunks {\"source\": ..., \"limit\": 50, \"offset\": 0}",
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "source": {"type": "string", "description": "Ingested filename or source prefix."},
+          "limit": {"type": "integer", "minimum": 1, "maximum": 200, "default": 50},
+          "offset": {"type": "integer", "minimum": 0, "default": 0}
+        }
+      }
+    }
+  ]
+}

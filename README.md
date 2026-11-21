@@ -1,403 +1,379 @@
 # CPU-LLM: Evidence-Based AI Engine
 
-**A neuro-symbolic and constraint engine for source-backed answers, deterministic checks, and cross-domain research on commodity CPUs.**
+**A CPU-first, neuro-symbolic evidence engine: it answers from your documents with exact citations, checks rules and
+calculations deterministically, and proposes cited, unverified research hypotheses.**
 
 [![PyPI](https://img.shields.io/pypi/v/cpu-llm)](https://pypi.org/project/cpu-llm/)
 [![Code license Apache 2.0](https://img.shields.io/badge/Code-Apache_2.0-green)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue)](pyproject.toml)
 
-`cpu-llm` / `cpullm` is an embeddable, CPU-first Python library that retrieves
-evidence from your knowledge base and uses it to answer questions, verify rules
-and calculations, and assemble cited reports. Version 1.12.0 also
-supports cross-domain research, hypothesis generation, and numerical scans
-with supported model adapters.
+**Latest release:** [1.15.0](https://pypi.org/project/cpu-llm/1.15.0/), which adds the
+[Frontier](#frontier-ranked-hypotheses-across-a-knowledge-base) and
+[Deepen](#deepen-examine-one-hypothesis) hypothesis nodes. See the [changelog](CHANGELOG.md).
+Author **Amin Parva, Independent Engineer**. Code under Apache 2.0; free for individuals and teams.
+[Enterprise enquiries](https://www.insightits.com/research-tools/cpu-llm).
 
-Use **strict evidence mode** when you need exact source quotations, recognized
-calculations, or a clear unsupported result. Use the **research and invention
-routes** as a deterministic literature-synthesis and hypothesis-generation
-tool: they compare authorized passages, separate bounds that cannot share one
-constant, and return each reading as a labeled option with a falsification
-check. A hypothesis from those routes stays `UNVERIFIED_HYPOTHESIS`. The
-routes do not run that check against a dataset and do not promote the claim.
-Numerical results on the separate constraint-check route stay conditional on
-the selected model and the supplied constraints.
+## What it is, and what it is not
 
-**Latest release** [CPU-LLM 1.15.0 on PyPI](https://pypi.org/project/cpu-llm/1.15.0/).
-New in 1.15.0: the [Frontier](#frontier-ranked-hypotheses-across-a-knowledge-base) and
-[Deepen](#deepen-examine-one-hypothesis) hypothesis nodes, natural-language routing to both, and the expanded
-grounded inference (deduction, temporal, statistical and explanation-comparison APIs). See the
-[1.15.0 release notes](docs/releases/1.15.0.md).
-Author **Amin Parva, Independent Engineer**.
+- **It is** an embeddable Python library and a local HTTP service. You ingest your documents (stored in
+  PostgreSQL/pgvector), ask questions or give commands, and get back a structured result: an answer bound to exact
+  source spans, a deterministic calculation, a refusal, or a labelled hypothesis.
+- **It is not a large language model.** Despite the name, no billion-parameter model writes its answers. It uses
+  small trained models for meaning and grammar (the `all-mpnet-base-v2` sentence encoder, an optional spaCy parser,
+  trained projection heads) and symbolic code for retrieval, rules, arithmetic and checks. "CPU-LLM" refers to its
+  CPU-first language pipeline.
+- **Every output says what kind of claim it is.**
+  - **Source-backed:** quoted spans with document IDs, offsets and chunk hashes.
+  - **Derived:** a replayable rule proof or an exact calculation.
+  - **Unverified:** hypotheses labelled `UNVERIFIED_HYPOTHESIS`, never promoted to facts or written back to the index.
+  - **Refused:** `unsupported`, `insufficient_evidence`, or a clarification question.
 
-Individuals and small teams can use CPU-LLM free of charge under Apache 2.0.
-Enterprise teams seeking a supported pilot, deployment, integration, or ongoing
-support should contact the author to discuss scope and negotiate pricing.
-[Enterprise enquiries](https://www.insightits.com/research-tools/cpu-llm)
+## When to use it
 
-**Licenses:** code [Apache-2.0](LICENSE); bundled WikiText-2 data has separate
-**CC BY-SA 3.0/GFDL** terms and attribution. See [third-party notices](THIRD_PARTY_NOTICES.md).
+| Use it for | Prefer something else for |
+|---|---|
+| Answers that must quote your sources exactly, or refuse (regulated, audited or on-premises work) | Fluent open-ended writing, chat or brainstorming without sources |
+| Checking stated rules, intervals and arithmetic with an inspectable trace | Questions your documents do not cover |
+| Cited reports and documents assembled from your sources | Creative prose (only bounded, source-checked wording is produced) |
+| Literature synthesis: finding untested connections across many documents, then checking each one | Proving theorems or running experiments; hypotheses stay unverified |
+| Running on ordinary CPUs, offline, with repeatable results | GPU-scale generation |
 
-## Architecture in 30 seconds
+## Quickstart
 
-CPU-LLM is a Python evidence engine. The package name refers to its CPU-first
-language pipeline. It uses a pretrained encoder for retrieval and applies
-rules or model adapters according to the request.
+Python 3.11 or later. About 3 GB of RAM for a running appliance.
 
-```text
-Question + authorized knowledge base
-  |
-  +-- Strict evidence --> Exact quotes, deterministic checks, or unsupported
-  |
-  +-- Research ---------> Invention, source hypotheses, and a Nammade comparison
-       |
-       +-- CrossDomain --> Join cited premises across selected KBs
-       +-- Invention ---> Propose hypotheses, or cite stored sentences
-       +-- Nammade -----> Compare authorized passages and quote excerpts
-       +-- Abductive ---> Unverified hypotheses and shared-constant checks
-  |
-  +-- Frontier ---------> 10 to 50 ranked, cited hypotheses across the whole KB
-        |
-        +-- Deepen ------> One hypothesis: evidence per link, confounders, test plan
+**1. Install.**
+
+```shell
+python -m pip install "cpu-llm==1.15.0"
+# Optional, recommended for Frontier and Deepen: a dependency parser.
+python -m pip install "cpu-llm[prompt_nlp]==1.15.0"
+python -m spacy download en_core_web_lg      # or en_core_web_sm
 ```
 
-## Verification contract compared with generative RAG
+**2. Start PostgreSQL with pgvector 0.7 or later.** From a checkout, `docker compose up -d --wait postgres` starts
+one on `127.0.0.1:5433` that matches the default connection string. Otherwise point `VECTORPRISM_PG_DSN` at your own
+database. [Database setup](docs/development-database.md).
 
-This compares execution contracts, not measured product accuracy or cost.
-Generative RAG systems can also add citations, calculators and deployment controls.
+**3. Allow the encoder download once.** The first appliance downloads `sentence-transformers/all-mpnet-base-v2`
+from Hugging Face. To run offline, prepare the cache first: [encoder caching](docs/offline-setup.md).
 
-| Dimension           | Generative RAG without enforced verification   | CPU-LLM verification contract                                                    |
-| ------------------- | --------------------------------------------- | -------------------------------------------------------------------------------- |
-| Answer construction | Generated prose needs independent checks.     | Strict mode quotes exact spans, runs supported checks, or returns `unsupported`. |
-| Arithmetic          | Accuracy depends on the calculator in use.    | Inspectable decimal and integer policies, including explicit half-up rounding.   |
-| Infrastructure      | Depends on model and hosting choices.         | CPU-first Python, PostgreSQL with pgvector, and cached encoder assets.             |
-| Audit evidence      | Depends on the application's evidence layer.  | Source IDs, quote offsets, chunk hashes, and receipts for supported tone output.  |
-| Data location       | Hosted or self-managed.                       | On-premises execution with prepared assets. Operators enforce network isolation. |
-
-“Zero hallucination” is not a universal accuracy guarantee. Strict selection can
-preserve an incorrect source, and an unsupported request can be refused. Ordinary
-mode has different verification limits, including optional learned producers.
-
-## Core capabilities
-
-### Experimental inference: proofs, calculations and hypotheses
-
-Expanded in 1.15.0.
-
-These are different result contracts: deduction returns source-bound rule
-proofs; temporal analysis returns date calculations; induction returns statistical
-estimates; abduction returns unverified explanatory alternatives. None guarantees
-that an incorrect source is true. The structured modes below require explicitly
-selected evidence records; they do not automatically activate during ordinary chat.
-
-Innovation, hypothesis/research requests, and Nammade automatically check
-applicable registered inference rules on their authorized source snapshot.
-`research_inference.receipts` contains replayable proofs; `research_methods.inference`
-records the outcome. These checks do not validate or promote speculative proposals.
-Registered ordering, taxonomy, physical-part/location, possession and class-requirement
-rules apply; other scientific relationships return `no_applicable_rule`. At most eight topic-related deductions
-are checked per response, with resource limits recorded in `complete`.
-Direct questions such as `Is elephant bigger than cat?` and
-`Does Kestrel have radio?` retain normal answering. A useful deduction from their
-already retrieved passages can be attached in `inference`, with
-`inference_evidence_scope="retrieved_subset"`; this does not replace the answer or
-scan the whole KB. Strict questions retain their quotation route. Strict evidence mode retains
-its existing restrictions. CrossDomain also checks applicable rules, using only
-the selected KB prefixes. Combined research prepares deduction once and shares
-its facts and bounded closures rather than running it separately in each method.
-
-For example, after ingesting the two ordering premises below, asking
-`Nammade: elephant` or `Propose a testable hypothesis about elephant.` also
-checks `elephant bigger_than cat`. The response lists the rule verdict and
-stores its full proof in `research_inference.receipts`. If no supported rule
-applies, the other research methods continue with `no_applicable_rule` recorded.
-
-InferenceNode is a shared service outside the ordinary graph. Its
-explicit deduction route reads an authorized snapshot and checks registered
-rule forms. Ingest “The elephant is bigger than the donkey” and “The donkey is
-bigger than the cat,” then ask:
-
-> Infer whether the elephant is bigger than the cat.
-
-The result uses `derived_inference` and contains a replayable proof with both
-source passages and the registered transitivity rule. Universal membership
-joins are also supported, such as “The Kestrel is a rescue cutter” plus
-“Every rescue cutter has a radio.”
-
-An `inference` object in Python or HTTP can specify `subject`, `relation`
-(`bigger_than`, `has`, `member_of`, `subclass_of`, `physical_part_of`,
-`physically_contains`, `located_in`, or `requires`), `object`, and resource limits.
-For example, “Kestrel is a cutter,” “every cutter is a vessel,” and “every vessel
-requires a radio” support `Does Kestrel require a radio?` Generic relatedness,
-class averages and arbitrary conditional prose do not become trusted rules.
-Compound names or trailing clauses such as `radio and a crew of five` and
-`donkey in Kenya` are rejected conservatively rather than turned into predicates.
-
-The source version also supports opt-in analyses of selected JSON evidence chunks:
-
-```python
-# First ingest the two complete JSON records shown in the inference guide.
-result = app.ask(
-    "Compare the two dated intervals.",
-    inference={"mode": "temporal", "source_ids": ["dates-p0000", "dates-p0001"]},
-)
-```
-
-`temporal` compares explicit calendar-date intervals; `inductive` estimates a
-Bernoulli proportion with a 95% Wilson interval; `abductive` uses the existing
-AbductiveBridge to compare explicitly declared explanations and their tests.
-The last two return statistical estimates or **unverified hypotheses**, never
-deductive proof. They require structured records and are not enabled by ordinary
-chat. Strict Evidence Mode refuses all these derived-answer routes.
-[Record formats, triggers and examples](inference-guide.md)
-[Implementation tracker](docs/inference-expansion-implementation-spec.md)
-[Inference design and implementation status](docs/inference-node-design.md)
-
-### Evidence and research workspace
-
-Completed replies can include `evidence_panel` with expandable source excerpts
-and calculation receipts. Research replies can include `research_workspace`
-with the requested assumption, per-option evidence, and the inputs needed to
-execute a numerical test. For supported hypotheses, PrismLexicon's simple
-English setting selects a plain view alongside the technical version.
-
-Applications can run a selected card through `Appliance.run_research_test`
-with a trusted predictor, parameter grid, and sourced limits. The result shows
-which sampled points passed each constraint.
-[Design](docs/evidence-research-design.md) · [API and integration](docs/evidence-research-spec.md)
-
-### Experimental vocabulary adaptation
-
-PrismLexicon can simplify a small set of context-checked expressions in ordinary
-answers. Enable it with `Appliance(prismlexicon=True)` and request `target_level="A2"`,
-or append “Use simple English.” after a question. The adapter preserves source
-quotations, audit evidence, and underlying research results. It is off by default.
-The pilot uses one plain-language policy for A1, A2, B1, and `auto`. For example,
-“The researchers resided in Oslo prior to the study” becomes “The researchers
-lived in Oslo before the study.” B2, C1, and C2 preserve the current wording
-while the rule set has no approved policies for those levels.
-[PrismLexicon setup and limits](docs/prismlexicon.md) ·
-[Recorded level comparison](docs/prismlexicon-evaluation.md#recorded-level-comparison)
-
-### Literature synthesis and hypothesis generation
-
-Available in CPU-LLM 1.14.0.
-
-`Research`, `Investigate`, `Invention`, and `Propose a testable hypothesis`
-are the literature and ideation layer of a research workflow. They mine one
-authorized snapshot, compare passages, and formulate grounded options. They
-are not an experimental execution layer. No node in this path fits a curve,
-runs a simulation, or changes a claim from `UNVERIFIED_HYPOTHESIS` into a
-verified result. There is no `VERIFIED_DERIVED` status. `promotion` on the
-abductive bridge stays `blocked`.
-
-Nammade is the comparison step. It reads the question against stored passages
-and quotes the passages that share the topic or pass the dense-core floor.
-The abductive bridge is the gap step. It emits a schema-bound hypothesis only
-when two quoted bounds on one observable have an empty intersection and differ
-on a regime variable already named by those passages or the active ontology.
-The bridge does not call a language model and does not invent a variable.
-Each reading remains its own option, with the source ids and the quoted
-bounds. A passage is eligible when it shares topic words with the question,
-passes the dense-core floor of 0.62, or is an explicit boundary premise.
-Channel labels compare wording. They do not verify a physical law, and they
-are not written into the trained 1024-d tensor.
-
-Use `Nammade: <topic>` for a standalone scan with cited excerpts. The
-structured `nammade` receipt records displacement, residual, density bands,
-polarity bridges, and word relations built only for that scan. A standalone
-scan does not run the bridge.
-
-`Research <topic>`, `Investigate <topic>`, and `Propose a testable hypothesis
-about <topic>` run three methods in parallel against one authorized snapshot.
-The chat reply gives each method its own section, including cases with no candidates.
-After those three finish, the abductive bridge reads the Nammade comparisons.
-
-- **Innovation** looks for new proposals grounded in relationships across
-  source passages. It can offer a research question when it finds relevant
-  excerpts but lacks a typed relationship.
-- **Hypothesis generation** presents source predictions and proposed tests.
-  Supported routes can combine independent premises into a falsifiable test.
-- **Nammade** shows the comparison count and leading cited excerpts. Its
-  diagnostics describe how passages compare under the model.
-- **Abductive bridge** compiles one relational candidate when two compared
-  passages give incompatible bounds on the same observable and differ on a
-  regime variable named in those passages or the active domain ontology.
-  The candidate stays an unverified hypothesis and is not written into the
-  index. A pair that can share one constant becomes its own shared-constant
-  option. When the question already names a model, that premise stays a
-  separate option beside any bridge or shared-constant reading. A passage
-  that already links both regimes supplies no bridge.
-
-The chat reply still opens with the three parallel methods. Hypothesis
-generation lists each reading as its own numbered option. A bridge option
-is labeled as an unverified hypothesis and is not a stored fact. API clients
-can read `research_methods`, `invention.proposals`, `research_options`,
-`nammade.evaluations`, and `abductive_bridge`.
-`research_methods.abductive_bridge` records the status and
-`promotion: blocked`. `Research report`, `Research article`, and
-`Research paper` use the document workflow and can carry Nammade diagnostics.
-Use `nammade=True` in Python or `"nammade": true` over HTTP for a standalone
-scan. A standalone scan does not run the bridge. A bare question that does
-not use `Research`, `Investigate`, `Invention`, or
-`Propose a testable hypothesis` stays on the ordinary route.
-The bridge contract is [the abductive bridge node](docs/abductive-bridge-node.md).
-
-#### Example: Turn dark-matter evidence into a test
-
-After indexing the research sources, ask:
-
-> Propose a testable hypothesis about self-interacting dark matter.
-
-In a live PostgreSQL run with 129 indexed chunks, the hypothesis branch
-proposed testing whether **one velocity-dependent model** can explain
-dwarf-galaxy cores and satisfy a cluster-merger constraint using the same
-parameters. The response linked a **0.3–1.5 kpc** core-size range from
-simulations to a **1.25 cm²/g** Bullet Cluster upper bound at **68% confidence**
-under that study's assumptions. [Particle Data Group review, §27.4.2](https://pdg.lbl.gov/2024/reviews/rpp2024-rev-dark-matter.pdf)
-· [Bullet Cluster analysis](https://arxiv.org/abs/0704.0261)
-
-The proposed test fits the model to independent dwarf-galaxy observations,
-accounts for baryonic feedback, and checks whether the same parameters
-satisfy the merger constraint. If no parameter set satisfies both, the
-candidate is ruled out within the tested model and study assumptions.
-
-The separate Nammade scan surfaced both supporting passages for inspection.
-Innovation generated zero new mechanisms in this run. The hypothesis is a
-test plan for an existing model class. A numerical fit remains to be run.
-That option is the core-size joiner: one passage states dwarf-galaxy core
-sizes in kiloparsecs, and another states the Bullet Cluster bound together
-with the mass-peak and galaxy-centroid wording. The abductive bridge is the
-later step described below. A core-size option stays in the list beside any
-bridge or shared-constant option.
-
-#### Example: bridge a bound only when the intervals conflict
-
-A memory snapshot, without the encoder and without PostgreSQL, stored these
-sentences and was asked through `Research …`:
-
-- Self-interacting dark matter simulations require a cross section per mass
-  ≳ 1 cm²/g to form cores in dwarf galaxies.
-- The Bullet Cluster analysis reports an upper bound of 1.25 cm²/g at 68%
-  confidence.
-- A cluster merger sample limits the same observable to < 0.47 cm²/g at 95%
-  confidence. This sentence was added for the second corpus.
-- The boiling point of water is 100 C. That sentence was stored and was not
-  used.
-
-The open question was how self-interacting dark matter can form dwarf-galaxy
-cores without violating the Bullet Cluster merger bound. With only the dwarf
-requirement and the 1.25 cm²/g bound, the reply has one shared-constant
-option: a value between 1 and 1.25 cm²/g can satisfy both. Nammade still
-quotes the two physics sentences.
-
-Adding the 0.47 cm²/g cluster-merger limit adds a separate bridge option.
-Its anchors are the dwarf sentence and the 0.47 sentence. The shared
-observable is `cross_section_per_mass`, the mediating variable is
-`relative_velocity`, and the relation is `inverse_monotonic`. The hypothesis
-text is: cross section per mass decreases as relative velocity increases.
-The claim status stays `UNVERIFIED_HYPOTHESIS`. The same reply also keeps
-shared-constant options for the pairs that still overlap, including the
-dwarf requirement and the 1.25 cm²/g bound.
-
-The closed question already asks whether one velocity-dependent model can
-explain the dwarf cores and satisfy the Bullet Cluster constraints. That
-stated premise is one option, checked against the dwarf sentence and the
-1.25 cm²/g sentence. When the 0.47 cm²/g limit is stored, the bridge option
-and the shared-constant options are listed with it. Each item stays a
-separate option.
-
-The result is an auditable protocol: cited passages, separate options, and a
-check that a later fit or experiment can run. This pipeline stops at that
-protocol. Strict Evidence Mode skips the scan.
-
-
-### Request pipeline improvements introduced in 1.13.1
-
-- **Request handling.** The pipeline can split a shared color question into two
-  cited lookups, preserve valid questions with repetitive trailing input within
-  the applicable limits, and separate supported presentation instructions from
-  fact lookup. It searches for evidence before clarifying explicit factual
-  requests and distinguishes a class definition from an example of the class.
-- **Evidence and formatting.** Direct measurements, color checks, exact location
-  quotes, and possession joins retain their source evidence. Grounded summaries
-  requested as bullets render each selected sentence as a separate item.
-- **Spelling repair.** The engine can repair recognized question words and
-  conservative corpus-backed typos. Bare color statements use a shared
-  vocabulary. For a custom value, ingest an explicit statement such as
-  “The color of the Peregrine is Harbor-47.” Spelling repair changes the query
-  while keeping source quotations intact.
-- **Optional external LLM fallback.** Off by default. A configured Python
-  provider adapter can handle eligible unsupported standalone requests using
-  an API key or an OIDC access-token callback. Replies are labeled
-  `external_unverified`. Strict Evidence Mode bypasses the node.
-  [Configuration and routing details](docs/library-consumer-guide.md#optional-external-llm-fallback)
-- **Service operations.** The authenticated service can reload file-backed
-  credentials at authentication time and optionally record mutation attempts
-  with `--audit-db` and `--audit-retention-days`.
-  [Enterprise pilot runbook](docs/enterprise-pilot-runbook.md)
-
-The clean `7adf319` run passed **460/460** revised synthetic request rows,
-including **278/278** expected answers and **86/86** expected abstentions.
-A separate harbor fixture exposed a gap with *ochre* at **20/24**. Its replay
-passed **24/24** after the vocabulary fix, and an expanded replay with four typo
-prompts passed **32/32** across both retrieval configurations. These counts
-describe the tested fixtures. See the [benchmark validity review](docs/benchmark-validity-review.md#recorded-results).
-
-
-### Strict evidence: quote or abstain
-
-After setup, ingest atomic statements and ask an explicit attribute question.
-Save this as a script; use the main guard on Windows:
+**4. Ingest and ask.** Save as a script; on Windows keep the `__main__` guard (the appliance starts worker
+processes).
 
 ```python
 from cpu_llm.pipeline import Appliance
 from cpu_llm.documents import SourceDocument
 
 def main():
-    with Appliance(namespace="label_example", prompt_backend="rules") as app:
-        app.ingest(SourceDocument("fictional-label", (
-            "The strength of Fictional Luma is 0.75 mg.",
+    with Appliance(namespace="quickstart") as app:
+        app.ingest(SourceDocument("helios-manual", (
+            "Helios is a backup service.",
+            "The retention period of Helios is 30 days.",
+            "Helios stores encrypted backups.",
         )))
-        for question in (
-            "What is the strength of Fictional Luma?",
-            "Which antibiotic should Case Birch receive?",
-        ):
-            result = app.ask(question, strict_evidence=True, small_talk=False)
-            print(result["answer_status"])
-            print(result["reply"]["text"])
-            print(result.get("answer_evidence", []))
+        # Strict: an exact quote or a refusal.
+        strict = app.ask("What is the retention period of Helios?", strict_evidence=True)
+        print(strict["answer_status"])       # evidence_quote
+        print(strict["answer_evidence"])     # [{'document_id': 'helios-manual-p0002', ...}]
+        # Ordinary: a grounded answer with its citation.
+        ordinary = app.ask("What does Helios store?")
+        print(ordinary["answer_status"])     # answered
+        print(ordinary["reply"]["text"])     # Helios stores encrypted backups.
 
 if __name__ == "__main__":
     main()
 ```
 
-The [recorded healthcare demo](examples/healthcare/sample-run/README.md) shows:
+Strict mode answers explicit named-attribute questions ("What is the *attribute* of *entity*?") and refuses
+everything else with `unsupported`. Ordinary mode answers a wider range of questions and still cites its sources.
+
+`app.ingest` also accepts a file or folder path (`.txt`, `.md`, `.html`, `.pdf`, `.docx`, `.csv`, `.xlsx`, `.xlsm`,
+`.epub`) and splits it into paragraph chunks with IDs such as `helios-manual-p0001`.
+
+**5. Read the result.** Branch on `answer_status`; see [Reading a result](#reading-a-result).
+
+To serve the same API over HTTP, see [HTTP service](#http-service). For agents, see
+[Using CPU-LLM from an AI agent](#using-cpu-llm-from-an-ai-agent).
+
+## Capability map
+
+Every capability goes through `app.ask(message, **options)`, or `POST /v1/ask` with the same options in the JSON
+body. Most can be triggered by the prompt itself or by an explicit option.
+
+| Task | Prompt form | Python / HTTP option | Read | Kind of claim |
+|---|---|---|---|---|
+| Answer only with exact quotes, or refuse | "What is the *attribute* of *entity*?" | `strict_evidence=True` | `reply.text`, `answer_evidence` | source-backed |
+| Ordinary grounded answer | any question | (default) | `answer_status`, `judgment`, `answer_evidence` | source-backed |
+| Cited article, report, email or memo | "Write a detailed report about X" | — | `document`, `research_plan` | source-backed composition |
+| Wider search | "Search deeply for X" | `deep=True` | `reply.text` | source-backed |
+| Rule proof (transitivity, membership, parts, requirements) | "Infer whether A is bigger than C" | `inference={...}` | `inference` (proof) | derived |
+| Dated intervals, proportions, explanation comparison | "Temporal: sources: a-p0000, b-p0001" | `inference={"mode": ...}` | `inference` | derived / unverified |
+| Arithmetic | "Calculate 17 times 24" | `math=True` | `math_result` | derived |
+| Covenant and refund checks | "Decide this LedgerCovenant test …" | `finance=True` | `finance_result` | derived |
+| Interval check across knowledge bases | "Constraint Check: X using KBs: a, b" | — | `invention` (`node: constraint_check`) | derived |
+| Join premises across knowledge bases | "CrossDomain: X using KBs: a, b" | — | `invention` (`node: crossdomin`) | unverified |
+| Research: invention, source hypotheses, comparison | "Research X", "Investigate X" | — | `research_options`, `research_workspace` | unverified |
+| Concept invention | "Invention: X", "Create a new concept from X" | `invent=True` | `invention.proposals` | unverified |
+| Passage comparison scan | "Nammade: X" | `nammade=True` | `nammade.evaluations` | diagnostic |
+| Relationship loops | "Show relationship loops for X" | `cycle_search={"seed": "X"}` | `cycle_exploration` | source-backed paths |
+| Ranked hypotheses across the whole knowledge base | "Frontier: X", "What unexplored connections exist around X?" | `frontier=True` or `{...}` | `frontier.hypotheses` | unverified, checked |
+| Check one hypothesis link by link, with a test plan | "Deepen: …", "Check this hypothesis: …", "Deepen idea 3" | `deepen=<hypothesis>` | `deepen` | unverified, checked |
+| Count, list or delete chunks | "List chunks for notes.pdf" | `app.chunk_inventory()`, `app.delete_chunk()` | `chunk_inventory` | — |
+| Simpler wording | "… Use simple English." | `target_level="A2"` with `Appliance(prismlexicon=True)` | `reply.text` | same as the answer |
+
+Natural wording routes to the specialist nodes only when the prompt clearly asks for them. Ordinary questions keep
+the normal answer path. The full trigger list is the [prompt-to-node map](docs/prompt-flag-map.md), and a
+machine-readable copy is [prompt-flag-map.json](docs/prompt-flag-map.json).
+
+## Reading a result
+
+`ask` returns a dictionary. These fields are present on almost every result:
+
+| Field | Meaning |
+|---|---|
+| `answer_status` | What kind of result this is (table below). Branch on this first. |
+| `reply.text` | The text to show. It carries the labels and notes the result needs. |
+| `answer_evidence` | The source spans behind the reply: `document_id`, quote, offsets, `chunk_sha256` |
+| `judgment` | The delivery judgment: `outcome`, verification scope, accepted and rejected spans |
+| `routing` | `executed_nodes` (graph stages that ran) and `post_stages` (routes outside the graph) |
+| node receipt | `frontier`, `deepen`, `inference`, `invention` (also CrossDomain and Constraint Check), `nammade`, `document`, `cycle_exploration`, `math_result`, `finance_result`: the full structured output of the node that answered |
+
+| `answer_status` | What it means | What to do |
+|---|---|---|
+| `answered` | An ordinary answer whose claims passed the grounding checks | Use it; cite `answer_evidence` |
+| `evidence_quote` | The reply is the exact supporting passage(s) | Use the quote as the answer |
+| `derived_inference` | A rule proof over cited records | Use it; the proof is in `inference.proof` |
+| `deepened` | Deepen finished its link-by-link check | Read `deepen.verdict` and `deepen.links` |
+| `hypotheses` | Unverified hypotheses with citations and tests | Present them as candidates to examine, never as facts |
+| `shortage` | Frontier found fewer than 10 hypotheses; the list is not padded | As above; expect fewer |
+| `research_question` | Relevant sources but no testable proposal; a research question is returned | Present it as a question |
+| `nammade` | A passage-comparison scan | Diagnostic only |
+| `insufficient_evidence` | The sources do not settle it | Say so; ingest more material if appropriate |
+| `unsupported` | Outside what the route can answer (for example strict mode on an open question) | Rephrase as an explicit question, or use another route |
+| `conflicting`, `contradicted` | The sources disagree, or explicitly contradict the requested relation | Show both sides; do not pick one |
+| `needs_clarification` | The request is ambiguous; `reply.text` is the question to ask | Ask the user, then repeat with the same `session_id` |
+| `partial` | A budget or snapshot limit stopped the work; results may be incomplete | Use with care; check `incomplete` and `stop_reason` |
+| `blocked` | The guard or access policy refused the request | Do not retry the same request |
+| `conversation` | A built-in social reply ("Who are you?") | No evidence involved |
+| `external_unverified` | The optional external-LLM fallback answered (off by default) | Treat as unverified |
+
+There is no single "verified" flag. For a production integration, read the layers in order: transport errors,
+delivery holds, the producing node, then evidence. The [consumer guide](docs/library-consumer-guide.md#result-routing-for-an-agent)
+gives a helper that collects them.
+
+## Using CPU-LLM from an AI agent
+
+CPU-LLM works well as a tool behind an agent. The agent handles conversation and judgment; CPU-LLM supplies
+evidence, checks and candidate hypotheses that the agent can cite.
+
+**Rules for an agent**
+
+1. **Use `strict_evidence=True` for named-attribute lookups** ("What is the dosage of X?"). You get an exact quote
+   or a refusal, never paraphrase. For other questions use ordinary mode, which still cites its sources.
+2. **Never state an `UNVERIFIED_HYPOTHESIS` as a fact.** Present `hypotheses`, `research_question`, invention and
+   Frontier output as candidates, with their citations and falsification tests.
+3. **Keep the citations.** Pass `answer_evidence` (or the node's citations) through to the user. They are the value.
+4. **On `needs_clarification`, ask the user.** Send the answer back with the same `session_id`.
+5. **Use `session_id` for follow-ups.** It powers "Deepen idea 3", "Explain proposal 1" and clarification turns.
+6. **Respect refusals.** `insufficient_evidence`, `unsupported` and `blocked` are correct answers, not errors to
+   work around.
+7. **Submit one specialist request per call.** Combining, for example, `frontier` and `invent` raises an error.
+
+**Recommended workflows**
+
+- **Answer a question:** for a named attribute, `ask(question, strict_evidence=True)`. Otherwise, or when strict
+  returns `unsupported`, call `ask(question)` and read `answer_status`, `answer_evidence` and `judgment`.
+- **Write a cited document:** `ask("Write a detailed report about X")`, then read `document` and `research_plan`.
+- **Explore an open question:**
+  1. `ask("Frontier: X", session_id=s)` returns up to 50 ranked hypotheses; the first five are already checked.
+  2. Skip entries flagged `contested`.
+  3. `ask("Deepen idea 3", session_id=s)` gives that entry's evidence per link, confounders and a test plan.
+- **Check a claim someone made:** `ask("Check this hypothesis: A may constrain C through B.")`.
+- **Verify a rule-based conclusion:** `ask("Infer whether the Kestrel requires a radio.")`, then read
+  `inference.proof`.
+
+**Tool definitions.** [`docs/agent-tool-schema.json`](docs/agent-tool-schema.json) defines `cpu_llm_ask`,
+`cpu_llm_ingest` and `cpu_llm_list_chunks` as function-calling tools, mapped to the Python API and the HTTP
+routes. [`AGENTS.md`](AGENTS.md) is a one-page brief that agent frameworks can load directly. The HTTP contract is
+[OpenAPI 3.1](docs/openapi.json).
+
+## Feature guides
+
+### Strict evidence: quote or abstain
+
+`strict_evidence=True`, the `X-CPU-LLM-Evidence-Mode: strict` header, a `[strict-evidence]` prompt marker, or an
+operator floor (`Appliance(strict_evidence=True)`, `cpu-llm-serve --strict-evidence`) turns on strict mode. Strict
+answers are exact source spans, recognized exact calculations, or `unsupported`. Learned producers, tone rewriting,
+invention, research, Frontier and Deepen are all off. Ingest one factual statement per record for the recognized
+grammar.
 
 ```text
-What is the strength of Fictional Luma?
-status: evidence_quote
-The strength of Fictional Luma is 0.75 mg.
-
-Which antibiotic should Case Birch receive?
-status: unsupported
-Unsupported strict request; use explicit named attribute questions.
+What is the strength of Fictional Luma?        -> evidence_quote: The strength of Fictional Luma is 0.75 mg.
+Which antibiotic should Case Birch receive?    -> unsupported
 ```
 
-Evidence includes document IDs, quotation offsets and chunk hashes. These are
-fictional label-handling fixtures, not a diagnostic or prescribing system.
-Use one factual statement per record for the recognized strict grammar;
-multisentence records can be rejected rather than losing a qualifier.
-[Strict grammar and limits](docs/strict-evidence-spec.md).
+These are fictional label fixtures, not a clinical system. [Recorded healthcare demo](examples/healthcare/sample-run/README.md)
+· [Strict grammar and limits](docs/strict-evidence-spec.md).
 
-### Deterministic finance: explicit fields and precision
+### Ordinary answers and retrieval
 
-`LedgerCovenant` evaluates supplied covenant fields. `RefundProof` reviews
-supplied sales-tax findings; it is a separate check, not a covenant synonym.
-The direct validator needs no database or encoder:
+The ordinary pipeline runs 27 graph stages. Retrieval combines six signals over PostgreSQL/pgvector: dense,
+relational, disentangled, hyperbolic, identity and causal. Only the dense and identity projection heads are trained
+and bundled; the others use their implemented signals or symbolic paths.
+
+Before grounding, the request planner:
+- splits compound questions;
+- repairs conservative typos;
+- separates presentation instructions ("as a table") from the facts requested;
+- normalizes conversational wording ("Can you tell me what …").
+
+A similarity score is never treated as proof. [Architecture](docs/current-design.md) ·
+[Prompt ingestion](docs/prompt-ingestion.md) · [Answer contract](docs/library-consumer-guide.md#complete-ask-contract).
+
+### Cited documents and tone
+
+"Write a detailed article about Helios", "Draft a concise email to Alex about Helios" or "Write a report about
+Helios in 60 items" build an inspectable `research_plan`. They then select evidence from one authorized snapshot and
+compose sections whose sentences are checked against source predicates. Numbers, negation and qualifiers are
+kept. Evidence shortage is reported, never padded. Appending "in a friendly tone" adds a verified tone stage. Strict
+documents keep plain quotations.
+
+```text
+Helios stores encrypted backups and uses PostgreSQL for metadata.
+```
+
+[Document and tone manual](docs/document-generation-user-guide.md) · [Tone specification](docs/stylistic-generation-spec.md).
+
+### Inference: proofs, calculations and structured analyses
+
+- **Deduction.**
+  - "Infer whether the elephant is bigger than the cat" (after ingesting "The elephant is bigger than the donkey"
+    and "The donkey is bigger than the cat") returns `derived_inference` with a replayable proof.
+  - The rule families cover ordering, taxonomy, physical parts and location, possession, and class requirements:
+    `bigger_than`, `has`, `member_of`, `subclass_of`, `physical_part_of`, `physically_contains`, `located_in`,
+    `requires`.
+  - In the automatic research checks, other relationships record `no_applicable_rule`. Compound names and trailing
+    clauses are rejected rather than turned into predicates.
+- **Research checks.** Research, invention, Nammade and CrossDomain check the applicable rules automatically
+  (`research_inference.receipts`). This never promotes their hypotheses.
+- **Structured analyses** over explicitly selected JSON records:
+  - `temporal` (date intervals);
+  - `inductive` (a Bernoulli proportion with a 95% Wilson interval);
+  - `abductive` (declared explanations compared by coverage).
+
+  Call them with, for example, `ask("Compare the two intervals.", inference={"mode": "temporal", "source_ids": [...]})`.
+
+Strict mode refuses derived answers. [Inference guide](inference-guide.md) · [Design](docs/inference-node-design.md).
+
+### Research, invention and comparison
+
+"Research X", "Investigate X" and "Propose a testable hypothesis about X" run three methods in parallel on one
+authorized snapshot:
+- **Innovation:** cross-chunk proposals;
+- **Hypothesis generation:** source predictions with proposed tests;
+- **Nammade:** passage comparison.
+
+The **abductive bridge** then emits a schema-bound hypothesis only when two quoted bounds on one observable conflict
+and differ on a regime variable named in the passages. Everything stays `UNVERIFIED_HYPOTHESIS` with
+`promotion: blocked`.
+
+"Invention: X" proposes cited cross-chunk connections. Follow it with "Explain proposal 1" and "Go deeper" in the
+same session.
+
+Worked examples:
+- dark matter: a velocity-dependent cross-section test linking dwarf-galaxy cores to the Bullet Cluster bound;
+- the Fernhouse invention fixture;
+- leptogenesis, from a cited hypothesis to a numerical scan with `app.scan_leptogenesis`.
+
+[Research and cycles guide](docs/research-cycle-user-guide.md) · [Invention and CrossDomain](docs/taxonomy-invention-spec.md) ·
+[Abductive bridge](docs/abductive-bridge-node.md) · [Nammade](docs/nammade-channel-equilibrium-node.md) ·
+[Constraint evaluator](docs/invention-constraint-evaluator-spec.md) · [Evidence research workspace](docs/evidence-research-spec.md).
+
+### Several knowledge bases: CrossDomain and Constraint Check
+
+Name sources with a knowledge-base prefix (`physics-seesaw.md`, `math-rotations.md`) and select two to seven
+prefixes. "CrossDomain: Casas-Ibarra using KBs: physics, math" joins one cited premise from each and checks a shared
+relation. "Constraint Check: Leptogenesis using KBs: physics, math, experiment" compares a prediction with a bound,
+or two measured intervals, after unit conversion. A missing premise is reported as a gap.
+[CrossDomain spec](docs/cross-domain-research-spec.md).
+
+### Relationship loops
+
+"Show relationship loops for Alpha", or `cycle_search={"seed": "Alpha", "limits": {"max_rounds": 1000}}`, finds
+closed source-backed paths. For example: "Alpha causes Beta; Beta causes Gamma; Gamma causes Alpha". It never infers
+the shortcut. Default 1,000 rounds, ceiling 100,000. [Cycle guide](docs/research-cycle-user-guide.md).
+
+### Frontier: ranked hypotheses across a knowledge base
+
+Added in 1.15.0. Frontier proposes possibilities that no single source states. It collects the relations your
+sources state ("A limits B", "B drives C", "X undermines Y") and tries every combination around a topic, within
+budgets. A candidate is kept only if it passes three checks:
+
+1. **Abductive:** the relations combine into a coherent explanation.
+2. **Deductive:** every premise is an exact source span, no source negates a premise or the conclusion, and the rule
+   engine does not contradict it.
+3. **Pre-thinker:** the candidate is not malformed, circular, drawn from one source, or a restatement of one
+   sentence.
+
+```python
+reply = app.ask("Frontier: grokking.")                          # or "What unexplored connections exist around grokking?"
+receipt = reply["frontier"]
+receipt["status"]                                               # hypotheses, shortage, insufficient_evidence, partial
+for item in receipt["hypotheses"]:
+    item["text"], item["scores"], item["citations"], item["falsification_test"], item.get("check")
+reply = app.ask("grokking", frontier={"deepen_top": 3, "limits": {"max_seconds": 60}})
+```
+
+- **Output.**
+  - 10 to 50 entries (hard cap 50). Fewer gives `shortage`; the list is never padded.
+  - Each entry has `source_support`, `deductive_relevance` and `novelty` scores (0–1), citations with exact quotes,
+    assumptions and a falsification test.
+  - Ranking is by support, then relevance, then novelty. Relevance is lowered for terms found almost everywhere, and
+    no single term may fill the top of the list.
+- **Automatic check.** The first five entries are checked with Deepen and marked with their verdict. A contested
+  entry is flagged with the contradicting quote. Set `deepen_top` (0–10) to change how many.
+- **Budgets.**
+  - Rounds, candidates, edges, memory and time, with defaults of 1,000 rounds of 256 candidates, 200,000
+    candidates and 60 s.
+  - A stopped run sets `incomplete: true`.
+  - The first prompt on a knowledge base parses it (tens of seconds for about 1,000 chunks); later prompts take
+    seconds.
+- **Parser.** With the `prompt_nlp` extra and an English spaCy model, relations come from a dependency parse;
+  otherwise a regex reader is used. `FRONTIER_PARSER` names a model or forces `regex`.
+
+On evaluation corpora of 64–153 arXiv papers, a minority of entries were strong research leads and many were weak.
+Treat the list as candidates to screen. [Design](docs/frontier-node-design.md) ·
+[Evaluation](docs/reviews/2026-11-21-frontier-v3/report.md).
+
+### Deepen: examine one hypothesis
+
+Added in 1.15.0. Deepen takes one hypothesis and checks it link by link against the same sources. Pass a Frontier
+entry, write "Deepen: A may constrain C through B.", or say "Deepen idea 3" after a Frontier answer in the same
+session.
+
+```python
+receipt = app.ask("Deepen this.", deepen=frontier_entry)["deepen"]
+receipt["verdict"]          # all_links_supported, partly_supported, contested, unsupported
+receipt["links"]            # each: source, target, status, support, counter
+receipt["predictions"], receipt["setups"], receipt["confounders"]
+receipt["test_plan"]        # design, manipulate, measure, mediator, controls, steps, fails_if
+```
+
+Each link is `supported`, `contested`, `counter_only`, `weak` or `missing`; a source stating the opposite direction
+or negating the link counts against it. For Frontier's own entries, "supported" is nearly guaranteed, because each
+entry is built from source sentences. The informative signals are `contested` and `missing`. In one evaluation run,
+Frontier proposed that low weight decay increases generalization through the grokking phase; Deepen marked it
+contested, because the cited paper also states that *increasing* weight decay leads to that phase.
+[Deepen node](docs/deepen-node.md).
+
+### Deterministic finance
+
+`LedgerCovenant` evaluates supplied covenant fields and `RefundProof` reviews supplied sales-tax findings, with
+explicit precision and rounding. The direct validator needs no database:
 
 ```python
 from cpu_llm.finance import validate_message
-
 result = validate_message("""Decide this LedgerCovenant test.
 comparator: lte
 threshold: 4.50
@@ -405,601 +381,132 @@ numerator: compliance_certificate 9000001
 denominator: compliance_certificate 2000000
 ratio places: 6
 """)
-print(result["text"])
-print(result["checks"])
+print(result["text"])     # 4.5000005 -> six-place half-up 4.500001 > 4.500000: BREACH
 ```
 
-```text
-Raw ratio:               9000001 / 2000000 = 4.5000005
-Six-place half-up value: 4.500001x
-Allowed threshold:      lte 4.500000x
-Decision:               BREACH
-```
+Supplied fields are not authenticated records, and a breach result is not a legal finding.
 
-The block summarizes the inspectable calculation; the command prints the full
-result and precedence trace. `4.500001` is the policy-rounded value, not the raw
-quotient. Precision is explicit, not a universal six-decimal rule or binary-float
-approximation. Supplied fields are not authenticated financial records, and a
-breach result is not a legal declaration of default.
+### Simpler wording (PrismLexicon)
 
-### Verified document generation: bounded inverse grammar
+Off by default. `Appliance(prismlexicon=True)` plus `target_level="A2"`, or "Use simple English." after a question,
+simplifies a small set of context-checked expressions. Quotations and evidence are unchanged.
+[PrismLexicon](docs/prismlexicon.md).
 
-Using an appliance configured as above:
+### Chunk management and large documents
 
-```python
-app.ingest(SourceDocument("helios-manual", (
-    "Helios is a backup service.",
-    "Helios stores encrypted backups.",
-    "Helios uses PostgreSQL for metadata.",
-    "Helios does not support automatic regional failover.",
-)))
-result = app.ask("Write a detailed article about Helios in a friendly tone.")
-print(result["reply"]["text"])
-```
+- **Inventory:** "How many chunks do we have?" or "List chunks for notes.pdf"; also `app.chunk_inventory(...)` and
+  `POST /v1/chunks`.
+- **Deleting one chunk:** "Delete chunk notes-p0001" or `app.delete_chunk(...)` returns a preview and a
+  confirmation token (five minutes, tied to the caller and row revision). Team callers need the `admin` role.
+- **Large files:** `app.ingest("book.pdf", encoder_workers=4)` tries parallel encoding (one to four workers). A
+  162-page PDF took 85.7 s with one worker.
 
-Supported predicate joins can produce:
+[Chunk management](docs/chunk-management-spec.md) · [Ingestion performance](docs/ingestion-performance-spec.md).
 
-```text
-Helios stores encrypted backups and uses PostgreSQL for metadata.
-```
+### Optional external LLM fallback
 
-The tone request is removed from the retrieval topic. Bounded inverse grammar
-checks supported constructions against source predicates while retaining proofs,
-numbers, negation and qualifiers. Unsupported constructions remain quotations;
-missing sections remain explicit. Strict documents bypass tone rewriting.
-This produces bounded new wording, not arbitrary creative prose or new facts.
-[Article/report receipts](docs/examples/2026-11-03-prompt-tone/README.md) ·
-[Document and tone manual](docs/document-generation-user-guide.md).
+Off by default. A configured provider adapter can answer eligible unsupported standalone requests. Those replies
+are labelled `external_unverified`; strict mode bypasses it.
+[Configuration](docs/library-consumer-guide.md#optional-external-llm-fallback).
 
-### Six-signal retrieval and explicit routing
-
-The ordinary pipeline registers 27 graph stages, including **dense, relational,
-disentangled, hyperbolic, identity and causal** retrieval signals backed by
-PostgreSQL/pgvector. **Only dense and identity projection heads are trained and
-bundled**; the other channels use their implemented signals or symbolic paths.
-A similarity score or connection is not factual proof. Strict requests and document
-workflows can bypass the ordinary graph; not every request runs every node.
-Inference is a separate shared service: explicit requests use a scoped snapshot,
-ordinary requests can attach receipts from retrieved evidence, and research
-coordinates its own scoped snapshot. There is no idle inference graph stage.
-See the [architecture](docs/current-design.md) and [prompt-to-node mapping](docs/prompt-flag-map.md).
-
-## Which prompts trigger which nodes
-
-- `What did John eat?` routes to the event-frame node when the classifier recognizes the actor and action. The reply cites the matching source.
-- `Search deeply for apple.` or `app.ask(question, deep=True)` requests the deep-search node. A request for a longer answer changes the response budget.
-- `Calculate 17 times 24.` requests arithmetic. Use `app.ask(question, discover=True)` to request discovery after the ordinary reply.
-- `Write a detailed report about Helios.` selects the document workflow. `Invention: Leptogenesis.` selects invention. `Nammade: dark matter.` runs the standalone scan. `Investigate dark matter.` runs invention, source hypotheses, the Nammade comparison, and then the abductive bridge.
-- `Research Casas-Ibarra using KBs: physics, math.` selects CrossDomain. `Constraint Check: Leptogenesis using KBs: physics, math, experiment.` requests the interval comparison directly.
-- `Infer whether Kestrel requires a radio.` explicitly requests registered deduction over the authorized snapshot. Supported ordinary questions can attach an inference receipt from retrieved evidence; their normal answer is preserved. Strict ordinary questions keep their quotation route.
-- `Temporal: sources: dates-p0000, dates-p0001`, `Induction: sources: trial-p0000, trial-p0001`, and `Abduction: sources: research-p0000, research-p0001, research-p0002` select structured analyses. The referenced chunks must already contain the documented JSON records. These source-only additions are described in the [inference guide](inference-guide.md).
-- `List chunks for notes.pdf.` opens scoped inventory. `Delete chunk notes-p0001.` opens a preview. The deletion API handles confirmation.
-- `Frontier: AI energy bottlenecks.`, `app.ask(topic, frontier=True)` or `"frontier": true` over HTTP runs the Frontier node: ranked, cited `UNVERIFIED_HYPOTHESIS` entries built from relations across the whole authorized knowledge base. See [Frontier](#frontier-ranked-hypotheses-across-a-knowledge-base).
-- `Deepen: <hypothesis>.` or `app.ask(message, deepen=frontier_hypothesis)` examines one hypothesis link by link: supporting and contrary evidence, predictions, existing setups, confounders and a test plan. See [Deepen](#deepen-examine-one-hypothesis).
-- Natural wording also routes to these two nodes when no other specialist claims the prompt. "What unexplored connections exist around grokking?" or "What don't we know about AI energy bottlenecks?" runs Frontier. "Check this hypothesis: A may constrain C through B." runs Deepen. After a Frontier answer in the same session, "Deepen idea 3" examines that entry. See the [natural-route list](docs/prompt-flag-map.md#natural-language-routes-to-frontier-and-deepen).
-
-Inspect `routing.executed_nodes` for graph execution and `routing.post_stages`
-where available for work outside the graph. See the
-[trigger guide](docs/prompt-flag-map.md), [machine-readable map](docs/prompt-flag-map.json),
-and [whitepaper routing addendum](docs/whitepapers/prompt-routing-addendum.md).
-
-## Research, relationship loops, invention, and CrossDomain
-
-These features are included in **1.12.0**. For a development install from a Git
-checkout, use the commands below and complete the database and encoder setup
-in the quickstart.
+## HTTP service
 
 ```shell
-git clone https://github.com/insightitsGit/cpullm.git
-cd cpullm
-python -m pip install -e .
+cpu-llm-serve --secrets credentials.json --host 127.0.0.1 --port 8765
 ```
-
-- **Research planning:** `Write a detailed article about Helios.` or
-  `Draft a concise email to Alex about Helios.` automatically creates an
-  inspectable `research_plan`. Named topics and one layer of explicit relations
-  select evidence from one authorized snapshot.
-- **Long responses:** `Write an article about Helios in 1000 words.` uses a
-  source-body word target; `Write a report about Helios in 60 items.` can select
-  60 separate source items. Evidence shortage is reported, never padded.
-- **Loop exploration:** `Show relationship loops for Alpha.` or
-  `Explore cycles through Alpha.` activates bounded multi-cycle search.
-- **Invention:** `Invention: Fernhouse.`, `Imagine Fernhouse.`, or
-  `Create a new concept from Fernhouse.` combines cited relationships across
-  chunks and proposes new connections to test. Use `invent=True` in Python or
-  `"invent": true` in HTTP. “Imagine a story” uses the existing story workflow.
-  You can also say `Guess: Fernhouse.`, `Speculate about Fernhouse.`, or
-  `Brainstorm ideas for Fernhouse.` to request hypotheses. If the subject has
-  no typed relationship, the reply still returns a research question when at
-  least two stored sentences contain each subject word. `dark-matter particle`
-  matches a request for `the dark matter particle`. The reply quotes those
-  sentences and does not invent an edge.
-- **Loops inside a document:** `Write a detailed report about Alpha, including
-  relationship loops through Alpha.` consumes the discovered paths in a
-  Relationship loops section, using the same snapshot as the report.
-- **Tone:** append `in a friendly tone` for the supported tone stage. Ordinary
-  documents already use neutral inverse-verified composition. Path sentences
-  preserve their source clauses and are not rewritten by tone.
-
-Inside an existing appliance (use the main guard on Windows), a minimal fixture:
-
-```python
-app.ingest(SourceDocument("loop-example", (
-    "Alpha causes Beta.",
-    "Beta causes Gamma.",
-    "Gamma causes Alpha.",
-)))
-result = app.ask("Show relationship loops for Alpha.")
-print(result["reply"]["text"])
-```
-
-Supported output includes:
-
-```text
-The source records describe a closed lexical path: Alpha causes Beta; Beta causes Gamma; Gamma causes Alpha.
-```
-
-Each clause keeps its source proof, direction and six-channel receipt. This
-does **not** infer the shortcut “Alpha causes Gamma” or resolve word senses.
-Quoted/negative/background instructions do not activate loop search. General
-articles do not automatically activate it either.
-
-Python and HTTP `/v1/ask` can instead supply
-`cycle_search={"seed": "Alpha", "limits": {"max_rounds": 1000}}`.
-Explicit API options override the prompt seed. Default maximum rounds: 1,000;
-absolute configurable ceiling: 100,000, with additional time/memory/edge limits.
-Strict API/header/operator mode disables cycle exploration and prose rewriting.
-Check `cycle_composition`, `cycle_exploration`, `answer_evidence` and coverage for
-omitted paths or incomplete searches. [Full trigger and budget guide](docs/research-cycle-user-guide.md).
-
-### Invention example
-
-In a fictional greenhouse fixture, one source says Fernhouse uses soil moisture
-sensors and another says it stores irrigation event logs. `Invention: Fernhouse.`
-proposed a shared interface between them, cited both records, and suggested a
-prototype comparison. The proposed link was absent from the five fixture records.
-The shipped checkpoint scored dense and identity channels. The response keeps
-all six channel outcomes and labels the proposals as hypotheses.
-
-Every run sets `invention.potentially_nondeterministic=true` and appends this
-note after the response, including empty and partial runs. The note applies to
-the invention proposals within a mixed response. Strict-evidence mode disables
-invention.
-
-> Invention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs.
-
-See the fixture, ranked proposals, and current template limits in the
-[invention spec](docs/taxonomy-invention-spec.md#fernhouse-test-record).
-
-To develop a proposal over several turns, reuse the same `session_id`:
-
-```python
-app.ask("Invention: Fernhouse.", session_id="fernhouse-design")
-app.ask("Explain proposal 1.", session_id="fernhouse-design")
-app.ask("Go deeper.", session_id="fernhouse-design")
-```
-
-When there is one proposal, “Can you explain more?” is enough. When several
-are available, the engine asks which one to expand. The first follow-up outlines
-a prototype test and retrieves cited relationships involving the proposal's
-terms. The second adds test controls and searches from the terms found in the
-first follow-up. Proposed relationships stay labeled as hypotheses, and the
-engine rechecks the cited premises on each turn. See the
-[follow-up spec](docs/taxonomy-invention-spec.md#conversation-follow-ups).
-
-### Join multiple knowledge bases with CrossDomain
-
-Give sources an alphanumeric KB prefix followed by a hyphen, such as
-`physics-seesaw.md`, `math-rotations.md`, or `numerics-rotation-checks.md`.
-Ingest them into the same appliance with `app.ingest(...)`, then select
-two to seven prefixes:
-
-```python
-reply = app.ask("CrossDomain: Casas-Ibarra using KBs: physics, math, numerics.")
-print(reply["reply"]["text"])
-```
-
-The first KB anchors the topic. Each selected KB must contribute a cited
-premise for the same join. The short prompt `CrossDomain: Casas-Ibarra.`
-defaults to physics and mathematics. Research prompts also route here when they
-name KBs explicitly, for example `Research Casas-Ibarra using KBs: physics, math, numerics.`
-Use `Research`, `Investigate`, or `Explore` with that suffix. Ordinary research
-requests use the research planner. CrossDomain currently verifies complex
-orthogonality in the transpose convention. If a selected KB lacks a matching
-premise, the reply names the gap and asks you to ingest a source under that prefix.
-Strict evidence mode disables this invention route. See the
-[CrossDomain spec](docs/taxonomy-invention-spec.md#crossdomain) for the join rule.
-
-#### When to use CrossDomain and Constraint Check
-
-Use **CrossDomain** to join source premises and check a shared mathematical
-relation. Use **Constraint Check** to compare a prediction with a bound or
-compare two reported measurement intervals after converting units.
-
-For a numerical check, ingest one `CrossDomain claim: {…}` record per selected
-KB. Give the records the same topic, quantity, conditions, and convention. A
-prediction-versus-bound check uses a prediction record, a method record, and
-a bound record. A measurement comparison uses two measurement records.
-
-```python
-math_check = app.ask("CrossDomain: Casas-Ibarra using KBs: physics, math.")
-bound_check = app.ask("Constraint Check: Leptogenesis using KBs: physics, math, experiment.")
-print(math_check["reply"]["text"])
-print(bound_check["reply"]["text"])
-```
-
-In the leptogenesis example, the first node checks the rotation identity. The
-second can check whether the illustrative **6.31 meV** prediction falls within
-the supplied **28 meV** scenario. It cites each input and returns
-`insufficient_evidence` when required claims are missing or incompatible.
-CrossDomain prompts over structured claims still work and delegate the
-comparison to Constraint Check. See the
-[structured claim format](docs/cross-domain-research-spec.md#first-milestone).
-
-#### Baryon asymmetry example
-
-Why did the early universe end up with more matter than antimatter?
-Leptogenesis is one proposed explanation. In this example, CrossDomain checks
-one mathematical ingredient of the Casas–Ibarra parameterization used in a
-leptogenesis model.
-
-We ingested a physics note based on the
-[Casas–Ibarra paper](https://arxiv.org/abs/hep-ph/0103065) and a math note derived
-from [Orloff’s *Complex Variables with Applications*, section 2.8](https://math.libretexts.org/Bookshelves/Analysis/Complex_Variables_with_Applications_%28Orloff%29/02%3A_Analytic_Functions/2.08%3A_Gallery_of_Functions).
-The live PostgreSQL/pgvector run returned `insufficient_evidence` with the
-physics note alone. After ingesting both notes, it returned `hypotheses`:
-
-```text
-Prompt: CrossDomain: Casas-Ibarra.
-
-Proposed model check: Verify the complex rotation using R^T R = I. For the rotation row, check cos(z)^2 + sin(z)^2 = 1.
-The built-in check sampled three complex angles with maximum residual 2.29e-16.
-[physics-casas-ibarra-p0001] The Casas-Ibarra matrix R is complex orthogonal and satisfies R^T R = I.
-[math-orloff-complex-trigonometry-p0002] For complex z, the rotation built from cos(z) and sin(z) is complex orthogonal and satisfies R^T R = I.
-
-Invention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs.
-```
-
-The result checks the rotation identity at three complex angles. The separate
-leptogenesis scan below explores whether the illustrative model satisfies the
-cosmological and laboratory constraints.
-
-### From a cited hypothesis to a numerical scan
-
-With a knowledge base that describes competing explanations for baryon asymmetry,
-`Invention: Baryogenesis.` can ask which mechanism to investigate.
-`Invention: Leptogenesis.` can then propose testing whether a model reproduces
-the observed asymmetry while satisfying neutrinoless double-beta decay constraints.
-`Can you explain more?` and `Go deeper.` carry the hypothesis and its citation
-forward. When the source names an observable but supplies no usable numerical
-limit, the reply reports that gap.
-
-When the leptogenesis brief lacks numeric constraints, chat runs a built-in
-illustrative profile and cites its separate inputs. Follow-ups report a sampled
-point and the refined crossing when available. For custom bounds or a different
-grid, run the scan explicitly in Python:
-
-```python
-from cpu_llm.constraint_evaluator import ObservableLimit, ParameterAxis
-
-reply = app.ask("Invention: Leptogenesis.", session_id="baryogenesis")
-hypothesis = reply["invention"]["proposals"][0]  # Select a cited proposal from the reply.
-scan = app.scan_leptogenesis(
-    hypothesis,
-    axes=[
-        ParameterAxis("M1", "GeV", [1e11, 2e11, 3e11]),
-        ParameterAxis("m_lightest", "eV", [0.003579]),
-        ParameterAxis("re_z", "rad", [-0.7853981633974483]),
-        ParameterAxis("im_z", "rad", [0.6333333333333333]),
-    ],
-    limits=[
-        ObservableLimit("asymmetry", "eta_B", "1", "Diagnostic acceptance window",
-                        lower=5.62e-10, upper=6.62e-10),
-        ObservableLimit("effective-mass", "m_beta_beta", "eV", "Historical benchmark scenario",
-                        upper=0.036),
-    ],
-)
-print(scan["status"], scan["accepted_count"], scan["transition_brackets"])
-```
-
-The illustrative adapter uses normal ordering and an unflavored approximation.
-Its brackets describe transitions between sampled points. See the
-[constraint evaluator spec](docs/invention-constraint-evaluator-spec.md) for the
-full scan inputs, reported limits, and interpretation.
-
-## Frontier: ranked hypotheses across a knowledge base
-
-Added in 1.15.0.
-
-Frontier proposes possibilities that no single source states. It reads one
-authorized snapshot and collects the relations its sources state, such as
-"A limits B", "B drives C" or "X undermines Y". It then tries every combination
-of those relations around a topic, within budgets, and keeps a candidate only if
-it passes three checks:
-
-1. **Abductive.** The relations combine into a coherent explanation.
-2. **Deductive.** Every premise is an exact source span, nothing in the sources
-   negates the premises or the conclusion, and the registered rule engine does
-   not contradict it.
-3. **Pre-thinker.** The candidate is not malformed, circular, drawn from one
-   source, or a restatement of one source sentence.
-
-Survivors are ranked by source support, then deductive relevance, then
-novelty. All three scores are shown.
-
-```python
-reply = app.ask("Frontier: grokking.")                    # prompt form
-reply = app.ask("grokking", frontier=True)                # Python flag
-reply = app.ask("grokking", frontier={"topic": "grokking",
-                                       "limits": {"max_path_edges": 3, "max_seconds": 60}})
-receipt = reply["frontier"]
-receipt["status"]                 # hypotheses, shortage, insufficient_evidence, ...
-receipt["candidates_generated"], receipt["candidates_passed"]   # per filter
-receipt["incomplete"], receipt["budget_used"]
-for item in receipt["hypotheses"]:
-    item["text"], item["scores"], item["citations"], item["falsification_test"]
-```
-
-Over HTTP, send `{"message": "grokking", "frontier": true}` to `/v1/ask`.
-
-- **Output.** Between 10 and 50 entries, with 50 as the hard cap. If fewer survive,
-  `status` is `shortage` and the list is not padded. Each entry carries its
-  hypothesis text, cited source IDs and exact quotes, the three scores, its
-  assumptions and a falsification test.
-- **Contract.** Every entry is an `UNVERIFIED_HYPOTHESIS` with
-  `promotion: blocked`. Nothing is written to the index. The standard invention
-  note is appended. Strict evidence mode disables Frontier.
-- **Budgets.** Round, candidate, edge, memory and time limits apply. The defaults
-  are 1,000 rounds of 256 candidates, 200,000 candidates and 60 s. A stopped run
-  sets `incomplete: true` and says so in the reply.
-- **Reading the sources.**
-  - With spaCy and an English model installed (the `prompt_nlp` extra plus
-    `en_core_web_lg` or `en_core_web_sm`), relations come from a dependency
-    parse. Otherwise a regex reader is used. `FRONTIER_PARSER` selects a model or
-    `regex`.
-  - When the appliance has an encoder, a link between two different terms with
-    the same head noun must pass a cosine check.
-  - At most three of the leading entries may share one term.
-- **Checking and ranking.**
-  - The first five entries are checked automatically with [Deepen](#deepen-examine-one-hypothesis).
-    Each one is marked with its verdict, and contested entries are flagged with the quotes that contradict them.
-  - Set `frontier={"deepen_top": n}` to choose how many are checked (0–10; 0 turns the check off).
-  - Relevance is scaled by how specific the hypothesis's terms are in the corpus, so entries built on terms found
-    everywhere ("training", "brain") rank lower.
-- **Who judges.** Frontier generates, filters and ranks. A person decides whether
-  a hypothesis is true or worth pursuing, using the cited passages and the
-  falsification test.
-
-Example from the deep-learning generalization evaluation (106 arXiv papers).
-The two cited papers each state one premise; neither states the conclusion:
-
-> Additional noise may reduce generalization error for diagonal linear networks
-> through implicit bias. Scores: source support 0.80, deductive relevance 0.75,
-> novelty 0.53. Sources: arXiv 2402.08344, 2505.21423.
-
-Evaluations so far are in
-[docs/reviews/2026-11-21-frontier](docs/reviews/2026-11-21-frontier/report.md)
-(AI bottlenecks, with held-out findings),
-[deep-learning generalization](docs/reviews/2026-11-21-frontier-dl-generalization/report.md),
-[consciousness](docs/reviews/2026-11-21-frontier-consciousness/report.md) and the
-[before/after comparison](docs/reviews/2026-11-21-frontier-v2/report.md).
-
-On these corpora, a minority of entries are strong research leads and many are
-weak. Treat the list as candidates to screen, not as findings. Design and
-decisions: [Frontier design](docs/frontier-node-design.md).
-
-## Deepen: examine one hypothesis
-
-Added in 1.15.0.
-
-Frontier searches wide; Deepen takes one of its hypotheses and checks it link by link against the same sources.
-
-```python
-frontier = app.ask("Frontier: grokking.")["frontier"]
-reply = app.ask("Deepen this.", deepen=frontier["hypotheses"][0])   # or "Deepen: A may constrain C through B."
-receipt = reply["deepen"]
-receipt["verdict"]                     # all_links_supported, partly_supported, contested, unsupported
-[(l["source"], l["target"], l["status"]) for l in receipt["links"]]
-receipt["predictions"], receipt["setups"], receipt["confounders"]
-receipt["test_plan"]                   # design, manipulate, measure, mediator, controls, steps, fails_if
-```
-
-Each link is `supported`, `contested`, `counter_only`, `weak` or `missing`. A source that states the opposite
-direction, or negates the link, counts against it.
-
-Example: Frontier proposed "low weight decay may increase generalization through the grokking phase". Deepen marked
-the first link contested, because the same paper (arXiv 2408.08944) also states that *increasing* weight decay
-leads to the emergent phase.
-
-The hypothesis stays unverified and is never written to the index. Strict evidence disables Deepen.
-Specification: [Deepen node](docs/deepen-node.md). Evaluation: [Deepen review](docs/reviews/2026-11-21-deepen/report.md).
-
-## Quickstart and reproduction
-
-Python 3.11+ is required. Release checks used Windows/Python 3.12.10.
 
 ```shell
-python -m pip install --upgrade pip
-python -m pip install "cpu-llm==1.15.0"
-python -m pip check
-python -c "import cpu_llm; print(cpu_llm.__version__)"
+curl -s http://127.0.0.1:8765/v1/ask -H "Authorization: Bearer $CPU_LLM_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Frontier: grokking.", "session_id": "s1"}'
 ```
 
-For the newer repository inference features, install from the repository root:
+- **Routes** (all POST): `/v1/ask`, `/v1/ingest`, `/v1/correct`, `/v1/delete`, `/v1/chunks`, `/v1/delete-chunk`.
+- **Credentials:** the file stores SHA-256 digests only, each with a tenant and the allowed source prefixes.
+  Plaintext secrets are refused.
+- **Strict mode** is available per request (`"strict_evidence": true` or the header) or for the whole service
+  (`--strict-evidence`).
+- **Capacity:** the service handles one request at a time, has no built-in TLS, and binds to loopback by default.
+  Put it behind your own gateway.
 
-```shell
-python -m pip install -e .
-python -m pip check
-```
+[OpenAPI 3.1 contract](docs/openapi.json) · [HTTP and credentials](docs/library-consumer-guide.md#authenticated-http-service) ·
+[Enterprise pilot runbook](docs/enterprise-pilot-runbook.md).
 
-This uses the checked-out source; the version string may still match the latest
-published release. To build a distribution from a checkout, run
-`python -m pip install build` and then
-`python -m build --outdir dist/1.15.0`.
+## Requirements and limits
 
-The inference expansion and follow-up audit fixes passed **338 regression tests**
-across focused, live pipeline and HTTP suites, plus **8 synthetic PostgreSQL smoke
-cases**. These are component/integration checks, not a full-suite
-or enterprise accuracy score. See the [implementation tracker](docs/inference-expansion-implementation-spec.md)
-for scope and recorded results, and run `python examples/inference_expansion_smoke.py`
-after configuring your disposable pgvector database to reproduce the smoke cases.
-[Follow-up audit findings and resolutions](docs/inference-audit-resolution.md).
+- **Runtime:**
+  - Python 3.11 or later;
+  - PostgreSQL with pgvector 0.7 or later (older versions lack `subvector`);
+  - about 3 GB of RAM per appliance;
+  - the `all-mpnet-base-v2` encoder cache (a one-time download, or prepared offline).
+- **Optional:**
+  - the `prompt_nlp` extra and a spaCy English model, for better Frontier and Deepen extraction and prompt parsing;
+  - the `coreference` and `fastcoreference` extras, for reference resolution.
+- **Windows:** construct and call the appliance under `if __name__ == "__main__":`.
+- **Language:** English, with bounded grammars. Topic matching is lexical, and aliases, joins and conflict detection
+  are incomplete.
+- **Evidence:** hashes prove consistency with stored text, not that a source is true. A strict quote can preserve an
+  incorrect source. "Zero hallucination" is a property of the strict contract, not a general accuracy guarantee.
+- **Hypotheses:** no node fits curves, runs simulations or changes a hypothesis into a verified result.
 
-Document queries require PostgreSQL/pgvector and the pretrained
-`sentence-transformers/all-mpnet-base-v2` encoder assets. The trained projection
-is bundled; no retraining is required for these demos. Follow the
-[database setup](docs/development-database.md) and [encoder preparation](docs/offline-setup.md).
-Recorded installed-package checks used native PostgreSQL 18/pgvector.
+## Verification
 
-**Docker alternative — configuration documented; container startup remains
-unverified on the maintainer's current host.** For a disposable development
-instance, this command binds only to loopback:
+The repository suite for 1.15.0 reports **1,287 passed, 56 skipped, 3 xfailed and 3 failed**. The three failures
+predate this release (`test_cycle_composition` ×2 and `test_request_pipeline_benchmark`). The run used a disposable
+PostgreSQL 16 with pgvector 0.8. The installed wheel was checked in a clean environment.
+[1.15.0 build validation](docs/releases/1.15.0-build-validation.md) · [Testing results](docs/testing-results.md).
 
-```shell
-docker run -d --name pgvector-test -p 127.0.0.1:5434:5432 -e POSTGRES_PASSWORD=postgres pgvector/pgvector:pg16
-docker exec pgvector-test pg_isready -U postgres -d postgres
-```
-
-After readiness succeeds, enable the extension:
-
-```shell
-docker exec pgvector-test psql -U postgres -d postgres -c "CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public;"
-```
-
-Set the matching connection string before running Python. POSIX shell:
-
-```shell
-export VECTORPRISM_PG_DSN='postgresql://postgres:postgres@127.0.0.1:5434/postgres'
-```
-
-PowerShell:
-
-```powershell
-$env:VECTORPRISM_PG_DSN = 'postgresql://postgres:postgres@127.0.0.1:5434/postgres'
-```
-
-After database and encoder preparation:
+Demos (after database and encoder setup):
 
 ```shell
 cpu-llm-demo healthcare --out healthcare-demo-output
 cpu-llm-demo conversation --out conversation-demo-output
 ```
 
-Use fresh output directories. The commands ingest demo records and save responses,
-evidence and outcome checks. Initial encoder download time depends on connectivity
-and caching; it is preparation, not training. For disconnected deployments,
-prepare the Python wheelhouse, database installation/image and encoder cache
-before transfer. Offline flags are not a substitute for network isolation.
+These are component and integration checks on authored fixtures, not an independent accuracy benchmark.
 
 ## Enterprise and commercial evaluation
 
-The Apache 2.0 package is available for self-managed use by organizations of any
-size. For paid enterprise pilots, implementation, or ongoing support, contact
-**Amin Parva** through Insight IT Solutions to discuss scope and negotiate
-pricing. [CPU-LLM research and commercial enquiries](https://www.insightits.com/research-tools/cpu-llm)
+The Apache 2.0 package is free for self-managed use by organizations of any size. For paid pilots, implementation
+or support, contact **Amin Parva** through Insight IT Solutions:
+[CPU-LLM enquiries](https://www.insightits.com/research-tools/cpu-llm).
 
-Pilot scopes include the following.
+Pilot scopes include private-credit covenant monitoring, on-premises and sovereign deployments, and regulatory
+workflow adapters. These are integration opportunities, not claims of deployed results or automatic compliance.
 
-- **Private-credit covenant monitoring:** map explicit source fields and policies
-  into LedgerCovenant checks, with reviewable arithmetic and evidence.
-- **On-premises and sovereign deployments:** prepare CPU runtime assets and
-  evaluate isolation, identity and gateway controls in the target environment.
-- **Regulatory workflow adapters:** integrate existing tenant/source permissions
-  with enterprise RBAC, retention and audit systems. SOX/HIPAA requirements need
-  a deployment-specific assessment; no certification is claimed.
+## Documentation map
 
-These are pilot integration opportunities, not claims of deployed customer
-results, automatic legal compliance or a turnkey zero-trust enclave.
+- **Start here:**
+  - [Consumer guide](docs/library-consumer-guide.md): the full ask contract, result routing, HTTP;
+  - [Prompt-to-node map](docs/prompt-flag-map.md);
+  - [Changelog](CHANGELOG.md).
+- **Answers and documents:**
+  - [Strict evidence](docs/strict-evidence-spec.md);
+  - [Document manual](docs/document-generation-user-guide.md);
+  - [Architecture](docs/current-design.md).
+- **Reasoning:**
+  - [Inference guide](inference-guide.md);
+  - [Research and cycles](docs/research-cycle-user-guide.md);
+  - [Invention and CrossDomain](docs/taxonomy-invention-spec.md);
+  - [Abductive bridge](docs/abductive-bridge-node.md).
+- **Hypothesis nodes:**
+  - [Frontier design](docs/frontier-node-design.md);
+  - [Deepen node](docs/deepen-node.md);
+  - [Evaluations](docs/reviews/2026-11-21-frontier-v3/report.md).
+- **Operations:**
+  - [Database](docs/development-database.md);
+  - [Offline encoder](docs/offline-setup.md);
+  - [Enterprise runbook](docs/enterprise-pilot-runbook.md);
+  - [Release provenance](docs/release-publishing.md).
+- **Background:**
+  - [Whitepaper](https://www.insightits.com/research-tools/cpu-llm/whitepaper);
+  - [Nammade Continuum, Verified Edition](docs/nammade-continuum-verified-edition.md), the author's companion article
+    (saving it did not run a physics audit).
 
-## Inspect and manage chunks
+## License and citation
 
-Chunk inventory, confirmed deletion, team roles, and parallel ingestion are included in 1.13.0.
+Code: [Apache-2.0](LICENSE). Bundled WikiText-2 data is under **CC BY-SA 3.0/GFDL** with separate attribution;
+see [third-party notices](THIRD_PARTY_NOTICES.md). The Apache label does not cover the bundled data.
 
-Ask `How many chunks do we have?`, `How many chunks are there in notes.pdf?`,
-or `List chunks for notes.pdf.` Counts include active chunks visible to the
-caller. Use the ingested filename or source prefix to filter by document.
-The Python method `app.chunk_inventory("notes.pdf", limit=50, offset=0)`
-and HTTP `POST /v1/chunks` return the total, exact chunk IDs, and the next
-offset if another page is available. Omit the source to count the accessible
-knowledge base.
-
-### Delete one chunk with confirmation
-
-In a team deployment, configure `"role": "admin"` on a trusted credential
-record for users who can preview and confirm chunk deletion or delete a source.
-Credentials without a role default to `reader`. Administrators still need
-access to the target source or chunk. Readers can use inventory within their
-source scope. A standalone Python appliance without a caller context acts as
-the local operator.
-
-Use `Delete chunk notes-p0001.` to preview the exact chunk in chat, or call
-`app.delete_chunk("notes-p0001")` to obtain the preview and confirmation token.
-After reviewing it, pass the token as `confirmation=` to a second call with the
-same chunk ID. HTTP clients can POST the same fields to `/v1/delete-chunk`.
-The token expires in five minutes and is tied to the caller and row revision.
-Sibling chunks and correction versions require their own confirmations.
-The legacy source deletion API operates on whole sources.
-The shared resonance ledger and word-relation file are retained.
-See the [chunk management spec](docs/chunk-management-spec.md) for receipts,
-approval behavior, and team permissions.
-
-### Ingest large documents
-
-Ingestion encodes each chunk once and reuses the result for storage and graph
-processing. Use `app.ingest("book.pdf", encoder_workers=4)` to try parallel
-encoding. The default is one worker, and the maximum is four. In the 162-page
-MIT PDF test, one worker completed in 85.7 seconds and used 3.00 GiB peak
-process memory. Four workers took 113.7 seconds and used 6.53 GiB. Both
-produced identical chunk text and dense vectors.
-[Ingestion performance spec](docs/ingestion-performance-spec.md)
-
-## Verification and deployment limits
-
-The 1.11.2 source run reports **925 passed, 56 skipped, 3 expected
-failures**: 54 skips were disabled opt-in integration cases; two lacked optional
-extractor checkpoints. See the [1.11.2 build validation](docs/releases/1.11.2-build-validation.md). Separate installed-wheel checks covered strict/ordinary
-HTTP and the healthcare demo's 12/12 authored outcomes.
-[Commands, scope and receipts](docs/testing-results.md). No independent clinical,
-customer-corpus or hosted-model comparison establishes superiority.
-
-The authenticated HTTP service exposes POST `/v1/ask`, `/v1/ingest`, `/v1/correct`
-and `/v1/delete`. Version 1.13.0 adds `/v1/chunks` and `/v1/delete-chunk`.
-It serves requests serially. Lazy factories must construct
-appliances on the serving thread. There is no built-in TLS or production gateway,
-and long work blocks other requests. See [OpenAPI](docs/openapi.json) and the
-[consumer guide](docs/library-consumer-guide.md#authenticated-http-service).
-
-**Included in 1.11.2:** learned writer fallback requires
-`CPU_LLM_ALLOW_LEARNED_WRITER=1`; HTTP bodies are capped at 1 MiB with a 10-second
-socket inactivity timeout. Explicit child-safety controls warn that no pipeline
-gate is applied; the standalone gate remains unvalidated. These changes extend 1.11.1. See the [hardening specification](docs/audit-hardening-spec.md).
-
-Known limits include bounded English grammars, lexical topic matching, incomplete
-aliases/joins and conflict detection. Hashes prove consistency with stored text,
-not source authenticity or truth. Inspect response status, evidence and coverage
-for the intended application.
-
-## Documentation
-
-- [Research planner and explicit cycle exploration](docs/research-cycle-user-guide.md).
-- [Invention and CrossDomain](docs/taxonomy-invention-spec.md) and
-  [numerical constraint evaluator](docs/invention-constraint-evaluator-spec.md).
-- [Nammade channel and equilibrium node](docs/nammade-channel-equilibrium-node.md).
-  The companion article is the author's
-  [Nammade Continuum, Verified Edition](docs/nammade-continuum-verified-edition.md).
-  Saving that article did not run a physics audit.
-- [Abductive bridge node](docs/abductive-bridge-node.md). It compiles one
-  unverified relation from Nammade comparisons, or it abstains.
-- [Deepen node](docs/deepen-node.md): one hypothesis checked link by link, with a test plan.
-- [Frontier node design](docs/frontier-node-design.md) and the
-  [Frontier evaluation reports](docs/reviews/2026-11-21-frontier-v2/report.md).
-  It returns ranked, cited, unverified hypotheses across a knowledge base.
-
-- [1.11.1 release notes](docs/releases/1.11.1.md) and [build validation](docs/releases/1.11.1-build-validation.md).
-- [Whitepaper](https://www.insightits.com/research-tools/cpu-llm/whitepaper) and [1.11.1 PDF](https://www.insightits.com/assets/whitepapers/cpu-llm-1.11.1-whitepaper.pdf).
-- [Strict evidence](docs/strict-evidence-spec.md), [tone specification](docs/stylistic-generation-spec.md), [flag mapping](docs/prompt-flag-map.md).
-- [Extended implementation reference](docs/reference/implementation-guide.md) and [release provenance](docs/release-publishing.md).
-
-For citations: **cpu-llm: Evidence-Based AI Engine**, Amin Parva, repository URL,
-and the exact version/commit evaluated. The Apache code label does not replace
-bundled-data notices.
+Cite as **cpu-llm: Evidence-Based AI Engine**, Amin Parva, the repository URL, and the exact version or commit
+evaluated.
