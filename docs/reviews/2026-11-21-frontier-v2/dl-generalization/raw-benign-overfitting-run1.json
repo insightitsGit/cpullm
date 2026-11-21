@@ -1,9 +1,9 @@
 {
  "prompt": "Frontier: benign overfitting.",
  "run": 1,
- "wall_seconds": 20.261,
- "python_peak_bytes": 39384578,
- "answer_status": "insufficient_evidence",
+ "wall_seconds": 2.288,
+ "python_peak_bytes": 36064437,
+ "answer_status": "shortage",
  "routing": {
   "schema": "flag-routing-contract-v1",
   "executed_nodes": [],
@@ -29,7 +29,7 @@
    "max_candidates": 200000,
    "max_edges": 50000,
    "max_bytes": 67108864,
-   "max_seconds": 20.0,
+   "max_seconds": 60.0,
    "batch_size": 256,
    "max_path_edges": 2,
    "max_results": 50,
@@ -46,38 +46,435 @@
   "chunk_count": 1652,
   "parser": "en_core_web_lg",
   "bridge_check": "encoder",
-  "encoded_terms": 6,
-  "hub_deferred": 0,
-  "status": "insufficient_evidence",
-  "hypotheses": [],
-  "survivors": 0,
-  "candidates_generated": 0,
+  "encoded_terms": 9,
+  "hub_deferred": 1,
+  "status": "shortage",
+  "hypotheses": [
+   {
+    "id": "f8763b69b910",
+    "text": "imbalanced trajectory and overparametrization may jointly drive harmful overfitting, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "imbalanced trajectory",
+     "overparametrization",
+     "harmful overfitting"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-19791-p0024",
+     "arxiv-2103-09177-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-19791-p0024",
+      "quote": "Such an imbalanced trajectory prevents timely generalization and leads to harmful overfitting.",
+      "start": 875,
+      "end": 969,
+      "chunk_sha256": "2a7474aa085e171a7ebfe0f3534d52ffb06fded94f01b27dde12a07d22eb45d0",
+      "relation": "causes",
+      "subject": "imbalanced trajectory",
+      "object": "harmful overfitting",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2103-09177-p0002",
+      "quote": "We conjecture that specific principles underlie these phenomena: that overparametrization allows gradient methods to find interpolating solutions, that these methods implicitly impose regularization, and that overparametrization leads to benign overfitting, that is, accurate predictions despite overfitting training data.",
+      "start": 392,
+      "end": 714,
+      "chunk_sha256": "345c023eabf9c000b82b22b50a69557996995634dd0d1e514876884d37c3b2bd",
+      "relation": "causes",
+      "subject": "overparametrization",
+      "object": "benign overfitting",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.804,
+     "novelty": 0.628
+    },
+    "falsification_test": "Vary imbalanced trajectory and overparametrization separately and together. The hypothesis fails if the joint change in harmful overfitting equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "harmful overfitting"
+   },
+   {
+    "id": "a126fd0a3707",
+    "text": "de - memorization performance and dimension may move together because both depend on samples.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "de - memorization performance",
+     "dimension",
+     "samples"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2610-16161-p0007",
+     "arxiv-2205-13525-p0004",
+     "arxiv-2205-13525-p0032"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2610-16161-p0007",
+      "quote": "• We show that de-memorization performance depends on the samples used to compute the Fisher: the structure of Fisher eigenspaces with respect to memorization is data-dependent.",
+      "start": 270,
+      "end": 447,
+      "chunk_sha256": "647f853c9ef4a07d2da4e5ed5846614a914fc2ebf68a65c5aaed8b9d9a10fb30",
+      "relation": "constrains",
+      "subject": "samples",
+      "object": "de - memorization performance",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2205-13525-p0004",
+      "quote": "Several recent works have demonstrated the existence of benign interpolation in high dimensions (e.g., when dimension is scales linearly with the number of samples).",
+      "start": 543,
+      "end": 708,
+      "chunk_sha256": "afbf51cd0fc5360d39dab072858580b1f86072674e02c88853835cd63b642822",
+      "relation": "increases",
+      "subject": "samples",
+      "object": "dimension",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2205-13525-p0032",
+      "quote": "Further, to counteract the error due to noise, the bandwidth should be much larger than the data resolution in each dimension, i.e., M > N. However, when the dimensions grow with the number of samples, say d = ω(log n), the resolution N = n1/d = O(1) in each dimension is approximately constant, and therefore the bandwidth does not need to increase with d,n to satisfy M >N. As increasing the bandwidth in general will worsen the approximation error, the constancy of the bandwidth is a form of the blessing of dimensionality.",
+      "start": 2196,
+      "end": 2723,
+      "chunk_sha256": "c77d0df7d25084a75191dda726e70cf5652df57fe41128dd4064570421d17469",
+      "relation": "increases",
+      "subject": "samples",
+      "object": "dimension",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.55,
+     "novelty": 0.6
+    },
+    "falsification_test": "Track de - memorization performance and dimension across periods where samples changes and where it does not. The hypothesis fails if they co-vary just as strongly when samples is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "sample"
+   },
+   {
+    "id": "6fc3497bc101",
+    "text": "overparametrization and overparametrized models may jointly drive benign overfitting, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "overparametrization",
+     "overparametrized models",
+     "benign overfitting"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2103-09177-p0002",
+     "arxiv-1805-08522-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2103-09177-p0002",
+      "quote": "We conjecture that specific principles underlie these phenomena: that overparametrization allows gradient methods to find interpolating solutions, that these methods implicitly impose regularization, and that overparametrization leads to benign overfitting, that is, accurate predictions despite overfitting training data.",
+      "start": 392,
+      "end": 714,
+      "chunk_sha256": "345c023eabf9c000b82b22b50a69557996995634dd0d1e514876884d37c3b2bd",
+      "relation": "causes",
+      "subject": "overparametrization",
+      "object": "benign overfitting",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1805-08522-p0004",
+      "quote": "Classical learning theory suggests that overparametrized models lead to overfitting, and so poorer generalization performance.",
+      "start": 132,
+      "end": 258,
+      "chunk_sha256": "17504e29aaee731c7fde33018e81e87bdef20178faf9107036a796f15d99b441",
+      "relation": "causes",
+      "subject": "overparametrized models",
+      "object": "overfitting",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.904,
+     "novelty": 0.633
+    },
+    "falsification_test": "Vary overparametrization and overparametrized models separately and together. The hypothesis fails if the joint change in benign overfitting equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "benign overfitting"
+   },
+   {
+    "id": "287b0cb623bf",
+    "text": "dimensional setting and overparametrization may interact in their effect on benign overfitting.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "dimensional setting",
+     "overparametrization",
+     "benign overfitting"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2305-14077-p0003",
+     "arxiv-2103-09177-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2305-14077-p0003",
+      "quote": "While benign overfitting in fixed dimension has been established for some learning methods, current literature suggests that for regression with typical kernel methods and wide neural networks, benign overfitting requires a high-dimensional setting where the dimension grows with the sample size.",
+      "start": 249,
+      "end": 545,
+      "chunk_sha256": "13f978986448febb56219c9fbd68f1894d888fb4045706e2a41a204c5f735e32",
+      "relation": "constrains",
+      "subject": "dimensional setting",
+      "object": "benign overfitting",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2103-09177-p0002",
+      "quote": "We conjecture that specific principles underlie these phenomena: that overparametrization allows gradient methods to find interpolating solutions, that these methods implicitly impose regularization, and that overparametrization leads to benign overfitting, that is, accurate predictions despite overfitting training data.",
+      "start": 392,
+      "end": 714,
+      "chunk_sha256": "345c023eabf9c000b82b22b50a69557996995634dd0d1e514876884d37c3b2bd",
+      "relation": "causes",
+      "subject": "overparametrization",
+      "object": "benign overfitting",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.85,
+     "novelty": 0.586
+    },
+    "falsification_test": "Vary dimensional setting and overparametrization separately and together. The hypothesis fails if the joint change in benign overfitting equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "benign overfitting"
+   },
+   {
+    "id": "80f20d29b705",
+    "text": "dimensional setting and overparametrized models may interact in their effect on benign overfitting.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "dimensional setting",
+     "overparametrized models",
+     "benign overfitting"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2305-14077-p0003",
+     "arxiv-1805-08522-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2305-14077-p0003",
+      "quote": "While benign overfitting in fixed dimension has been established for some learning methods, current literature suggests that for regression with typical kernel methods and wide neural networks, benign overfitting requires a high-dimensional setting where the dimension grows with the sample size.",
+      "start": 249,
+      "end": 545,
+      "chunk_sha256": "13f978986448febb56219c9fbd68f1894d888fb4045706e2a41a204c5f735e32",
+      "relation": "constrains",
+      "subject": "dimensional setting",
+      "object": "benign overfitting",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1805-08522-p0004",
+      "quote": "Classical learning theory suggests that overparametrized models lead to overfitting, and so poorer generalization performance.",
+      "start": 132,
+      "end": 258,
+      "chunk_sha256": "17504e29aaee731c7fde33018e81e87bdef20178faf9107036a796f15d99b441",
+      "relation": "causes",
+      "subject": "overparametrized models",
+      "object": "overfitting",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.833,
+     "novelty": 0.663
+    },
+    "falsification_test": "Vary dimensional setting and overparametrized models separately and together. The hypothesis fails if the joint change in benign overfitting equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "benign overfitting"
+   },
+   {
+    "id": "b9f961441d08",
+    "text": "imbalanced trajectory and overparametrized models may jointly drive harmful overfitting, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "imbalanced trajectory",
+     "overparametrized models",
+     "harmful overfitting"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-19791-p0024",
+     "arxiv-1805-08522-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-19791-p0024",
+      "quote": "Such an imbalanced trajectory prevents timely generalization and leads to harmful overfitting.",
+      "start": 875,
+      "end": 969,
+      "chunk_sha256": "2a7474aa085e171a7ebfe0f3534d52ffb06fded94f01b27dde12a07d22eb45d0",
+      "relation": "causes",
+      "subject": "imbalanced trajectory",
+      "object": "harmful overfitting",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1805-08522-p0004",
+      "quote": "Classical learning theory suggests that overparametrized models lead to overfitting, and so poorer generalization performance.",
+      "start": 132,
+      "end": 258,
+      "chunk_sha256": "17504e29aaee731c7fde33018e81e87bdef20178faf9107036a796f15d99b441",
+      "relation": "causes",
+      "subject": "overparametrized models",
+      "object": "overfitting",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.654,
+     "novelty": 0.65
+    },
+    "falsification_test": "Vary imbalanced trajectory and overparametrized models separately and together. The hypothesis fails if the joint change in harmful overfitting equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "harmful overfitting"
+   },
+   {
+    "id": "b2340c9c1b38",
+    "text": "dimensional setting and imbalanced trajectory may interact in their effect on benign overfitting.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "dimensional setting",
+     "imbalanced trajectory",
+     "benign overfitting"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2305-14077-p0003",
+     "arxiv-2601-19791-p0024"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2305-14077-p0003",
+      "quote": "While benign overfitting in fixed dimension has been established for some learning methods, current literature suggests that for regression with typical kernel methods and wide neural networks, benign overfitting requires a high-dimensional setting where the dimension grows with the sample size.",
+      "start": 249,
+      "end": 545,
+      "chunk_sha256": "13f978986448febb56219c9fbd68f1894d888fb4045706e2a41a204c5f735e32",
+      "relation": "constrains",
+      "subject": "dimensional setting",
+      "object": "benign overfitting",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2601-19791-p0024",
+      "quote": "Such an imbalanced trajectory prevents timely generalization and leads to harmful overfitting.",
+      "start": 875,
+      "end": 969,
+      "chunk_sha256": "2a7474aa085e171a7ebfe0f3534d52ffb06fded94f01b27dde12a07d22eb45d0",
+      "relation": "causes",
+      "subject": "imbalanced trajectory",
+      "object": "harmful overfitting",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.833,
+     "novelty": 0.663
+    },
+    "falsification_test": "Vary dimensional setting and imbalanced trajectory separately and together. The hypothesis fails if the joint change in benign overfitting equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "benign overfitting"
+   }
+  ],
+  "survivors": 7,
+  "candidates_generated": 38,
   "candidates_passed": {
-   "abductive": 0,
-   "deductive": 0,
-   "pre_thinker": 0
+   "abductive": 35,
+   "deductive": 35,
+   "pre_thinker": 7
   },
-  "candidates_rejected": {},
-  "relation_edges": 401,
-  "scoped_edges": 27,
+  "candidates_rejected": {
+   "abductive:unrelated_bridge": 3,
+   "pre_thinker:circular": 2,
+   "pre_thinker:malformed": 23,
+   "pre_thinker:single_source": 3
+  },
+  "relation_edges": 458,
+  "scoped_edges": 36,
   "budget_used": {
-   "rounds": 0,
-   "candidates": 0,
-   "edges": 401,
-   "bytes": 188189,
-   "seconds": 20.139
+   "rounds": 1,
+   "candidates": 38,
+   "edges": 458,
+   "bytes": 221872,
+   "seconds": 2.179
   },
-  "incomplete": true,
-  "stop_reason": "deadline",
+  "incomplete": false,
+  "stop_reason": null,
   "shortage": {
-   "returned": 0,
+   "returned": 7,
    "target_min": 10,
    "reason": "Fewer candidates survived the filters than the target; the list is not padded."
   },
   "snapshot": {
-   "as_of": 1795252749,
+   "as_of": 1795253413,
    "chunk_count": 1652
   }
  },
- "reply": "Frontier hypotheses for benign overfitting. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 0. Passed abductive check: 0; deductive check: 0; pre-thinker validation: 0.\n\nOnly 0 hypotheses survived the filters (target at least 10). The list is not padded.\n\nSearch incomplete: deadline. Results cover only the candidates examined before the budget stopped the run.\nNo candidate survived the filters.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+ "reply": "Frontier hypotheses for benign overfitting. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 38. Passed abductive check: 35; deductive check: 35; pre-thinker validation: 7.\n\n1. imbalanced trajectory and overparametrization may jointly drive harmful overfitting, and their effects may compound.\n[arxiv-2601-19791-p0024] Such an imbalanced trajectory prevents timely generalization and leads to harmful overfitting.\n[arxiv-2103-09177-p0002] We conjecture that specific principles underlie these phenomena: that overparametrization allows gradient methods to find interpolating solutions, that these methods implicitly impose regularization, and that overparametrization leads to benign overfitting, that is, accurate predictions despite overfitting training data.\nFalsification test: Vary imbalanced trajectory and overparametrization separately and together. The hypothesis fails if the joint change in harmful overfitting equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.80, novelty 0.63.\n\n2. de - memorization performance and dimension may move together because both depend on samples.\n[arxiv-2610-16161-p0007] • We show that de-memorization performance depends on the samples used to compute the Fisher: the structure of Fisher eigenspaces with respect to memorization is data-dependent.\n[arxiv-2205-13525-p0004] Several recent works have demonstrated the existence of benign interpolation in high dimensions (e.g., when dimension is scales linearly with the number of samples).\n[arxiv-2205-13525-p0032] Further, to counteract the error due to noise, the bandwidth should be much larger than the data resolution in each dimension, i.e., M > N. However, when the dimensions grow with the number of samples, say d = ω(log n), the resolution N = n1/d = O(1) in each dimension is approximately constant, and therefore the bandwidth does not need to increase with d,n to satisfy M >N. As increasing the bandwidth in general will worsen the approximation error, the constancy of the bandwidth is a form of the blessing of dimensionality.\nFalsification test: Track de - memorization performance and dimension across periods where samples changes and where it does not. The hypothesis fails if they co-vary just as strongly when samples is held fixed.\nScores: source support 0.80, deductive relevance 0.55, novelty 0.60.\n\n3. overparametrization and overparametrized models may jointly drive benign overfitting, and their effects may compound.\n[arxiv-2103-09177-p0002] We conjecture that specific principles underlie these phenomena: that overparametrization allows gradient methods to find interpolating solutions, that these methods implicitly impose regularization, and that overparametrization leads to benign overfitting, that is, accurate predictions despite overfitting training data.\n[arxiv-1805-08522-p0004] Classical learning theory suggests that overparametrized models lead to overfitting, and so poorer generalization performance.\nFalsification test: Vary overparametrization and overparametrized models separately and together. The hypothesis fails if the joint change in benign overfitting equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.90, novelty 0.63.\n\n4. dimensional setting and overparametrization may interact in their effect on benign overfitting.\n[arxiv-2305-14077-p0003] While benign overfitting in fixed dimension has been established for some learning methods, current literature suggests that for regression with typical kernel methods and wide neural networks, benign overfitting requires a high-dimensional setting where the dimension grows with the sample size.\n[arxiv-2103-09177-p0002] We conjecture that specific principles underlie these phenomena: that overparametrization allows gradient methods to find interpolating solutions, that these methods implicitly impose regularization, and that overparametrization leads to benign overfitting, that is, accurate predictions despite overfitting training data.\nFalsification test: Vary dimensional setting and overparametrization separately and together. The hypothesis fails if the joint change in benign overfitting equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.85, novelty 0.59.\n\n5. dimensional setting and overparametrized models may interact in their effect on benign overfitting.\n[arxiv-2305-14077-p0003] While benign overfitting in fixed dimension has been established for some learning methods, current literature suggests that for regression with typical kernel methods and wide neural networks, benign overfitting requires a high-dimensional setting where the dimension grows with the sample size.\n[arxiv-1805-08522-p0004] Classical learning theory suggests that overparametrized models lead to overfitting, and so poorer generalization performance.\nFalsification test: Vary dimensional setting and overparametrized models separately and together. The hypothesis fails if the joint change in benign overfitting equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.83, novelty 0.66.\n\n6. imbalanced trajectory and overparametrized models may jointly drive harmful overfitting, and their effects may compound.\n[arxiv-2601-19791-p0024] Such an imbalanced trajectory prevents timely generalization and leads to harmful overfitting.\n[arxiv-1805-08522-p0004] Classical learning theory suggests that overparametrized models lead to overfitting, and so poorer generalization performance.\nFalsification test: Vary imbalanced trajectory and overparametrized models separately and together. The hypothesis fails if the joint change in harmful overfitting equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.65, novelty 0.65.\n\n7. dimensional setting and imbalanced trajectory may interact in their effect on benign overfitting.\n[arxiv-2305-14077-p0003] While benign overfitting in fixed dimension has been established for some learning methods, current literature suggests that for regression with typical kernel methods and wide neural networks, benign overfitting requires a high-dimensional setting where the dimension grows with the sample size.\n[arxiv-2601-19791-p0024] Such an imbalanced trajectory prevents timely generalization and leads to harmful overfitting.\nFalsification test: Vary dimensional setting and imbalanced trajectory separately and together. The hypothesis fails if the joint change in benign overfitting equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.83, novelty 0.66.\n\nOnly 7 hypotheses survived the filters (target at least 10). The list is not padded.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
 }

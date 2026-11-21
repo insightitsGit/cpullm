@@ -1,9 +1,9 @@
 {
  "prompt": "Frontier: generalization of overparameterized networks.",
  "run": 3,
- "wall_seconds": 20.864,
- "python_peak_bytes": 39181038,
- "answer_status": "insufficient_evidence",
+ "wall_seconds": 3.919,
+ "python_peak_bytes": 37590320,
+ "answer_status": "hypotheses",
  "routing": {
   "schema": "flag-routing-contract-v1",
   "executed_nodes": [],
@@ -29,7 +29,7 @@
    "max_candidates": 200000,
    "max_edges": 50000,
    "max_bytes": 67108864,
-   "max_seconds": 20.0,
+   "max_seconds": 60.0,
    "batch_size": 256,
    "max_path_edges": 2,
    "max_results": 50,
@@ -48,38 +48,2762 @@
   "chunk_count": 1652,
   "parser": "en_core_web_lg",
   "bridge_check": "encoder",
-  "encoded_terms": 140,
-  "hub_deferred": 0,
-  "status": "insufficient_evidence",
-  "hypotheses": [],
-  "survivors": 0,
-  "candidates_generated": 0,
+  "encoded_terms": 156,
+  "hub_deferred": 257,
+  "status": "hypotheses",
+  "hypotheses": [
+   {
+    "id": "748acef337cb",
+    "text": "ensembling and ResMem may jointly drive generalization, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "ensembling",
+     "ResMem",
+     "generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2410-16201-p0002",
+     "arxiv-2302-01576-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2410-16201-p0002",
+      "quote": "In contrast to the underparameterized regime, where ensembling typically induces regularization and increases generalization, we prove with minimal assumptions that infinite ensembles of overparameterized RF regressors become pointwise equivalent to (single) infinite-width RF regressors, and finite width ensembles rapidly converge to single models with the same parameter budget.",
+      "start": 470,
+      "end": 851,
+      "chunk_sha256": "557b23c0964fc2a5aca6f4e4c1243a616e9c9ed7bedb6819c32b412bfccc0e99",
+      "relation": "increases",
+      "subject": "ensembling",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2302-01576-p0002",
+      "quote": "Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.",
+      "start": 863,
+      "end": 1050,
+      "chunk_sha256": "861b02af79fe479b6c8f613c0c3d2ccbe039c0f8249a64c366104f8f9c0e7500",
+      "relation": "increases",
+      "subject": "ResMem",
+      "object": "test set generalization of original prediction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.91,
+     "deductive_relevance": 0.67,
+     "novelty": 0.707
+    },
+    "falsification_test": "Vary ensembling and ResMem separately and together. The hypothesis fails if the joint change in generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "generalization"
+   },
+   {
+    "id": "289652c21e1f",
+    "text": "increasing overparameterization and ResMem may jointly drive generalization of SGD, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "increasing overparameterization",
+     "ResMem",
+     "generalization of SGD"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-03848-p0004",
+     "arxiv-2302-01576-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-03848-p0004",
+      "quote": "• We show that increasing overparameterization in terms of width improves the generalization of SGD, while for randomly sampled networks, it remains mostly unaffected.",
+      "start": 1874,
+      "end": 2041,
+      "chunk_sha256": "749fe7c811d46553e18870a7786659891c0f2fd4edeeae8ed9e87cca85eeffb8",
+      "relation": "increases",
+      "subject": "increasing overparameterization",
+      "object": "generalization of SGD",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2302-01576-p0002",
+      "quote": "Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.",
+      "start": 863,
+      "end": 1050,
+      "chunk_sha256": "861b02af79fe479b6c8f613c0c3d2ccbe039c0f8249a64c366104f8f9c0e7500",
+      "relation": "increases",
+      "subject": "ResMem",
+      "object": "test set generalization of original prediction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.91,
+     "deductive_relevance": 0.67,
+     "novelty": 0.628
+    },
+    "falsification_test": "Vary increasing overparameterization and ResMem separately and together. The hypothesis fails if the joint change in generalization of SGD equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "generalization of sgd"
+   },
+   {
+    "id": "f48ea10cf30a",
+    "text": "ResMem may affect common wisdom through test set generalization of original prediction (read as generalization of neural networks).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "ResMem",
+     "common wisdom"
+    ],
+    "via": [
+     "test set generalization of original prediction (read as generalization of neural networks)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2302-01576-p0002",
+     "arxiv-2407-03848-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2302-01576-p0002",
+      "quote": "Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.",
+      "start": 863,
+      "end": 1050,
+      "chunk_sha256": "861b02af79fe479b6c8f613c0c3d2ccbe039c0f8249a64c366104f8f9c0e7500",
+      "relation": "increases",
+      "subject": "ResMem",
+      "object": "test set generalization of original prediction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0003",
+      "quote": "The generalization of neural networks challenges common wisdom in classical statistical learning theory (Vapnik & Chervonenkis, 1971): the number of parameters in today’s neural networks is much larger than necessary to fit the data (Zhang et al., 2017), and further increasing network size, i.e., more overparameterization, yields better generalization (Hestness et al., 2017; Allen-Zhu et al., 2019).",
+      "start": 0,
+      "end": 402,
+      "chunk_sha256": "8b8a4dde795798c50b7ace162c2d25dabdde6268151b1282b6c3d176c475b55f",
+      "relation": "undermines",
+      "subject": "generalization of neural networks",
+      "object": "common wisdom",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.91,
+     "deductive_relevance": 0.618,
+     "novelty": 0.619
+    },
+    "falsification_test": "Compare settings where ResMem differs while other inputs are matched. The hypothesis fails if common wisdom does not change with ResMem, or if fixing test set generalization of original prediction (read as generalization of neural networks) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "test set generalization of original prediction"
+   },
+   {
+    "id": "218f8a0b1cd9",
+    "text": "P for hypotheses and ResMem may jointly drive generic generalization, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "P for hypotheses",
+     "ResMem",
+     "generic generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2412-09810-p0013",
+     "arxiv-2302-01576-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2412-09810-p0013",
+      "quote": "(2023) argue for generalization to be understood using Kolmogorov complexity, and apply the Solomonoff prior, P (h) = 2−K(h) for hypotheses h to a finite hypothesis bound (Langford and Seeger, 2001) to produce a generic generalization bound based on the Kolmogorov complexity.",
+      "start": 1470,
+      "end": 1746,
+      "chunk_sha256": "9fe2d68b01cb5edeb8d598a142d10205be19b7b11563bdc7faa69c6577115901",
+      "relation": "causes",
+      "subject": "P for hypotheses",
+      "object": "generic generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2302-01576-p0002",
+      "quote": "Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.",
+      "start": 863,
+      "end": 1050,
+      "chunk_sha256": "861b02af79fe479b6c8f613c0c3d2ccbe039c0f8249a64c366104f8f9c0e7500",
+      "relation": "increases",
+      "subject": "ResMem",
+      "object": "test set generalization of original prediction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.91,
+     "deductive_relevance": 0.57,
+     "novelty": 0.663
+    },
+    "falsification_test": "Vary P for hypotheses and ResMem separately and together. The hypothesis fails if the joint change in generic generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "generic generalization"
+   },
+   {
+    "id": "4864c938978d",
+    "text": "behavior and ResMem may jointly drive poor generalization, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "behavior",
+     "ResMem",
+     "poor generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2412-07684-p0002",
+     "arxiv-2302-01576-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2412-07684-p0002",
+      "quote": "This behavior leads to poor generalization when the learned explanations rely on spurious correlations.",
+      "start": 148,
+      "end": 251,
+      "chunk_sha256": "602730a5c6bd980203f0f8568f555d9a70852b0a12d3b9bcca45376ec0de46c9",
+      "relation": "causes",
+      "subject": "behavior",
+      "object": "poor generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2302-01576-p0002",
+      "quote": "Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.",
+      "start": 863,
+      "end": 1050,
+      "chunk_sha256": "861b02af79fe479b6c8f613c0c3d2ccbe039c0f8249a64c366104f8f9c0e7500",
+      "relation": "increases",
+      "subject": "ResMem",
+      "object": "test set generalization of original prediction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.91,
+     "deductive_relevance": 0.57,
+     "novelty": 0.663
+    },
+    "falsification_test": "Vary behavior and ResMem separately and together. The hypothesis fails if the joint change in poor generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "poor generalization"
+   },
+   {
+    "id": "5a993eebf193",
+    "text": "Neural Collapse and ResMem may jointly drive generalization, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "Neural Collapse",
+     "ResMem",
+     "generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2411-13733-p0035",
+     "arxiv-2302-01576-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2411-13733-p0035",
+      "quote": "Neural Collapse improves the generalization bound.",
+      "start": 663,
+      "end": 713,
+      "chunk_sha256": "f6938e50d500fc11e489a60e8f62d3691eb98f422fd89d94d5ed06e756d603c9",
+      "relation": "increases",
+      "subject": "Neural Collapse",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2302-01576-p0002",
+      "quote": "Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.",
+      "start": 863,
+      "end": 1050,
+      "chunk_sha256": "861b02af79fe479b6c8f613c0c3d2ccbe039c0f8249a64c366104f8f9c0e7500",
+      "relation": "increases",
+      "subject": "ResMem",
+      "object": "test set generalization of original prediction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.91,
+     "deductive_relevance": 0.57,
+     "novelty": 0.663
+    },
+    "falsification_test": "Vary Neural Collapse and ResMem separately and together. The hypothesis fails if the joint change in generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "generalization"
+   },
+   {
+    "id": "093b82451bbb",
+    "text": "property of Adam and ResMem may jointly drive superior generalization, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "property of Adam",
+     "ResMem",
+     "superior generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2505-24022-p0003",
+     "arxiv-2302-01576-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2505-24022-p0003",
+      "quote": "Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.",
+      "start": 1099,
+      "end": 1428,
+      "chunk_sha256": "4b39f810d9ba864b87735252bb1cc245208264c582fc6343ac00fefb2d0a2d9c",
+      "relation": "causes",
+      "subject": "property of Adam",
+      "object": "superior generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2302-01576-p0002",
+      "quote": "Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.",
+      "start": 863,
+      "end": 1050,
+      "chunk_sha256": "861b02af79fe479b6c8f613c0c3d2ccbe039c0f8249a64c366104f8f9c0e7500",
+      "relation": "increases",
+      "subject": "ResMem",
+      "object": "test set generalization of original prediction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.91,
+     "deductive_relevance": 0.57,
+     "novelty": 0.628
+    },
+    "falsification_test": "Vary property of Adam and ResMem separately and together. The hypothesis fails if the joint change in superior generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "superior generalization"
+   },
+   {
+    "id": "7708e5ff9d83",
+    "text": "individual data samples and ResMem may jointly drive generalization, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "individual data samples",
+     "ResMem",
+     "generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2610-16161-p0026",
+     "arxiv-2302-01576-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2610-16161-p0026",
+      "quote": "4 Contributions of Individual Samples 4.1 Sample Contributions to the Eigenspectrum To better understand how individual data samples contribute to generalization and the structure of the Fisher information, we examine the participation ratios associated with individual samples in the eigenspectrum of the (layerwise) Fisher.",
+      "start": 0,
+      "end": 325,
+      "chunk_sha256": "bb3eb539fd8fac2f7ea7b73cd710c0f0f87907985566f3d33556df9fafdc9f75",
+      "relation": "causes",
+      "subject": "individual data samples",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2302-01576-p0002",
+      "quote": "Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.",
+      "start": 863,
+      "end": 1050,
+      "chunk_sha256": "861b02af79fe479b6c8f613c0c3d2ccbe039c0f8249a64c366104f8f9c0e7500",
+      "relation": "increases",
+      "subject": "ResMem",
+      "object": "test set generalization of original prediction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.91,
+     "deductive_relevance": 0.57,
+     "novelty": 0.628
+    },
+    "falsification_test": "Vary individual data samples and ResMem separately and together. The hypothesis fails if the joint change in generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "generalization"
+   },
+   {
+    "id": "6e3c211ddbc2",
+    "text": "flatness of minima of loss function and ResMem may jointly drive good generalization, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "flatness of minima of loss function",
+     "ResMem",
+     "good generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1703-04933-p0002",
+     "arxiv-2302-01576-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1703-04933-p0002",
+      "quote": "(2017), is that the flatness of minima of the loss function found by stochastic gradient based methods results in good generalization.",
+      "start": 349,
+      "end": 483,
+      "chunk_sha256": "57e946894713b8c25d6e69b9907b5e96636a21c80ae061d15306e64c208869cf",
+      "relation": "causes",
+      "subject": "flatness of minima of loss function",
+      "object": "good generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2302-01576-p0002",
+      "quote": "Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.",
+      "start": 863,
+      "end": 1050,
+      "chunk_sha256": "861b02af79fe479b6c8f613c0c3d2ccbe039c0f8249a64c366104f8f9c0e7500",
+      "relation": "increases",
+      "subject": "ResMem",
+      "object": "test set generalization of original prediction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.91,
+     "deductive_relevance": 0.57,
+     "novelty": 0.577
+    },
+    "falsification_test": "Vary flatness of minima of loss function and ResMem separately and together. The hypothesis fails if the joint change in good generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "good generalization"
+   },
+   {
+    "id": "113477df96d2",
+    "text": "learned activations and ResMem may jointly drive accuracy, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "learned activations",
+     "ResMem",
+     "accuracy"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2503-10065-p0006",
+     "arxiv-2302-01576-p0005"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2503-10065-p0006",
+      "quote": "(1) For regression tasks and tabular data, new learned activations greatly improve accuracy by helping learn complex functions.",
+      "start": 202,
+      "end": 329,
+      "chunk_sha256": "a89952778d8e432f08de72b93b9bf3c5f7697c8c2e394e17a7ce8c65bd381e99",
+      "relation": "increases",
+      "subject": "learned activations",
+      "object": "accuracy",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2302-01576-p0005",
+      "quote": "Empirically, we show that such explicit memorization indeed leads to generalization benefits: ResMem consistently improves the test accuracy of a baseline DeepNet on image classification tasks with CIFAR100 [33], and autoregressive language modeling on C4 [42] (Section 4).",
+      "start": 0,
+      "end": 273,
+      "chunk_sha256": "0dd2f23aaa3097a8d7d000b24dacc9e08d22211bc1cd19a2f20e6b7057494314",
+      "relation": "increases",
+      "subject": "ResMem",
+      "object": "test accuracy of baseline",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.91,
+     "deductive_relevance": 0.504,
+     "novelty": 0.663
+    },
+    "falsification_test": "Vary learned activations and ResMem separately and together. The hypothesis fails if the joint change in accuracy equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "accuracy"
+   },
+   {
+    "id": "a5bb78ec6d06",
+    "text": "good match and ResMem may interact in their effect on good generalization.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "good match",
+     "ResMem",
+     "good generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2403-02241-p0019",
+     "arxiv-2302-01576-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2403-02241-p0019",
+      "quote": "The NRS proposes that good generalization requires a good match between the complexity preferred by the architecture and the target function.",
+      "start": 0,
+      "end": 141,
+      "chunk_sha256": "b7c659dcd2e62790085b492b1dff91ac9711b7ab01e9fd7ccc94447c263255b9",
+      "relation": "constrains",
+      "subject": "good match",
+      "object": "good generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2302-01576-p0002",
+      "quote": "Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.",
+      "start": 863,
+      "end": 1050,
+      "chunk_sha256": "861b02af79fe479b6c8f613c0c3d2ccbe039c0f8249a64c366104f8f9c0e7500",
+      "relation": "increases",
+      "subject": "ResMem",
+      "object": "test set generalization of original prediction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.91,
+     "deductive_relevance": 0.499,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary good match and ResMem separately and together. The hypothesis fails if the joint change in good generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "good generalization"
+   },
+   {
+    "id": "6ea0ad984b7e",
+    "text": "ResMem and training may jointly drive test accuracy of baseline, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "ResMem",
+     "training",
+     "test accuracy of baseline"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2302-01576-p0005",
+     "arxiv-2505-24022-p0028"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2302-01576-p0005",
+      "quote": "Empirically, we show that such explicit memorization indeed leads to generalization benefits: ResMem consistently improves the test accuracy of a baseline DeepNet on image classification tasks with CIFAR100 [33], and autoregressive language modeling on C4 [42] (Section 4).",
+      "start": 0,
+      "end": 273,
+      "chunk_sha256": "0dd2f23aaa3097a8d7d000b24dacc9e08d22211bc1cd19a2f20e6b7057494314",
+      "relation": "increases",
+      "subject": "ResMem",
+      "object": "test accuracy of baseline",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2505-24022-p0028",
+      "quote": "Table 3: Training with Adam leads to better worst-group accuracy on the original and core-only test sets, and after decoding, on the Dominoes (MNIST-CIFAR) dataset (95% spurious correlation), as compared to SGD, for a",
+      "start": 0,
+      "end": 217,
+      "chunk_sha256": "2279e74ee756a3d8ef269b2f7932225a98582b6fadb0a4e5666887d6c5ef561f",
+      "relation": "causes",
+      "subject": "Training",
+      "object": "better worst group accuracy",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.91,
+     "deductive_relevance": 0.504,
+     "novelty": 0.528
+    },
+    "falsification_test": "Vary ResMem and training separately and together. The hypothesis fails if the joint change in test accuracy of baseline equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "test accuracy of baseline"
+   },
+   {
+    "id": "541e8c807d2e",
+    "text": "ResMem may affect traditional stopping criteria through test set generalization of original prediction (read as Late generalization).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "ResMem",
+     "traditional stopping criteria"
+    ],
+    "via": [
+     "test set generalization of original prediction (read as Late generalization)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2302-01576-p0002",
+     "arxiv-2502-01774-p0007"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2302-01576-p0002",
+      "quote": "Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.",
+      "start": 863,
+      "end": 1050,
+      "chunk_sha256": "861b02af79fe479b6c8f613c0c3d2ccbe039c0f8249a64c366104f8f9c0e7500",
+      "relation": "increases",
+      "subject": "ResMem",
+      "object": "test set generalization of original prediction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0007",
+      "quote": "Late generalization challenges traditional stopping criteria, which rely on monitoring training and test set losses.",
+      "start": 140,
+      "end": 256,
+      "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+      "relation": "undermines",
+      "subject": "Late generalization",
+      "object": "traditional stopping criteria",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.91,
+     "deductive_relevance": 0.452,
+     "novelty": 0.581
+    },
+    "falsification_test": "Compare settings where ResMem differs while other inputs are matched. The hypothesis fails if traditional stopping criteria does not change with ResMem, or if fixing test set generalization of original prediction (read as Late generalization) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "test set generalization of original prediction"
+   },
+   {
+    "id": "5b8f68456d78",
+    "text": "additional noise may reduce generalization error for diagonal linear networks through implicit bias.",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "additional noise",
+     "generalization error for diagonal linear networks"
+    ],
+    "via": [
+     "implicit bias"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-08344-p0002",
+     "arxiv-2505-21423-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-08344-p0002",
+      "quote": "We theoretically analyse the solutions obtained with continuous versions of Noisy- SGD for the Linear Least Square and Diagonal Linear Network settings, and reveal that the implicit bias is indeed amplified by the additional noise.",
+      "start": 784,
+      "end": 1015,
+      "chunk_sha256": "de2226491aa51e8dcd5f1cfac6d82da72b3174efa8281bd1b9682bfbcd1a4c4b",
+      "relation": "increases",
+      "subject": "additional noise",
+      "object": "implicit bias",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2505-21423-p0002",
+      "quote": "We furthermore prove that neither implicit bias alone minimizes the generalization error for diagonal linear networks trained on a simple regression task.",
+      "start": 547,
+      "end": 701,
+      "chunk_sha256": "7ec31a3b2ccf1d3d74267c9bab8a9f241683b66e461c2a162ae6b2a6f4e89912",
+      "relation": "decreases",
+      "subject": "implicit bias",
+      "object": "generalization error for diagonal linear networks",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.833,
+     "novelty": 0.532
+    },
+    "falsification_test": "Compare settings where additional noise differs while other inputs are matched. The hypothesis fails if generalization error for diagonal linear networks does not fall with additional noise, or if fixing implicit bias removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "implicit bia"
+   },
+   {
+    "id": "abdbf3ef920f",
+    "text": "noise may increase network size through parameters.",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "noise",
+     "network size"
+    ],
+    "via": [
+     "parameters"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1710-06451-p0002",
+     "arxiv-2407-03848-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1710-06451-p0002",
+      "quote": "We propose that the noise introduced by small mini-batches drives the parameters towards minima whose evidence is large.",
+      "start": 719,
+      "end": 839,
+      "chunk_sha256": "22d1138313b37ab3dc86e70d0c8131855d09a89e08a990fbf37eb79118632508",
+      "relation": "increases",
+      "subject": "noise",
+      "object": "parameters",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0003",
+      "quote": "The generalization of neural networks challenges common wisdom in classical statistical learning theory (Vapnik & Chervonenkis, 1971): the number of parameters in today’s neural networks is much larger than necessary to fit the data (Zhang et al., 2017), and further increasing network size, i.e., more overparameterization, yields better generalization (Hestness et al., 2017; Allen-Zhu et al., 2019).",
+      "start": 0,
+      "end": 402,
+      "chunk_sha256": "8b8a4dde795798c50b7ace162c2d25dabdde6268151b1282b6c3d176c475b55f",
+      "relation": "increases",
+      "subject": "parameters",
+      "object": "network size",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.767,
+     "novelty": 0.5
+    },
+    "falsification_test": "Compare settings where noise differs while other inputs are matched. The hypothesis fails if network size does not rise with noise, or if fixing parameters removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "parameter"
+   },
+   {
+    "id": "2607a2d5ea37",
+    "text": "common wisdom and traditional stopping criteria may stand or fall together because both rest on generalization of neural networks.",
+    "pattern": "divergent",
+    "relation": "common_ground",
+    "anchors": [
+     "common wisdom",
+     "traditional stopping criteria",
+     "generalization of neural networks"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-03848-p0003",
+     "arxiv-2502-01774-p0007"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-03848-p0003",
+      "quote": "The generalization of neural networks challenges common wisdom in classical statistical learning theory (Vapnik & Chervonenkis, 1971): the number of parameters in today’s neural networks is much larger than necessary to fit the data (Zhang et al., 2017), and further increasing network size, i.e., more overparameterization, yields better generalization (Hestness et al., 2017; Allen-Zhu et al., 2019).",
+      "start": 0,
+      "end": 402,
+      "chunk_sha256": "8b8a4dde795798c50b7ace162c2d25dabdde6268151b1282b6c3d176c475b55f",
+      "relation": "undermines",
+      "subject": "generalization of neural networks",
+      "object": "common wisdom",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0007",
+      "quote": "Late generalization challenges traditional stopping criteria, which rely on monitoring training and test set losses.",
+      "start": 140,
+      "end": 256,
+      "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+      "relation": "undermines",
+      "subject": "Late generalization",
+      "object": "traditional stopping criteria",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.713,
+     "novelty": 0.658
+    },
+    "falsification_test": "Find a position that keeps common wisdom and rejects traditional stopping criteria, or the reverse, without giving up generalization of neural networks. The hypothesis fails if such a position is coherent.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "generalization of neural network"
+   },
+   {
+    "id": "364911aec14a",
+    "text": "increasing overparameterization and Top Fisher subspaces may jointly drive generalization of SGD, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "increasing overparameterization",
+     "Top Fisher subspaces",
+     "generalization of SGD"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-03848-p0004",
+     "arxiv-2610-16161-p0025"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-03848-p0004",
+      "quote": "• We show that increasing overparameterization in terms of width improves the generalization of SGD, while for randomly sampled networks, it remains mostly unaffected.",
+      "start": 1874,
+      "end": 2041,
+      "chunk_sha256": "749fe7c811d46553e18870a7786659891c0f2fd4edeeae8ed9e87cca85eeffb8",
+      "relation": "increases",
+      "subject": "increasing overparameterization",
+      "object": "generalization of SGD",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-16161-p0025",
+      "quote": "Top Fisher subspaces improve task generalization (green) at the cost of performance on memorized tasks (blue).",
+      "start": 499,
+      "end": 609,
+      "chunk_sha256": "e8fe5a8ffd929babb503205168db0afec7b14738036e9cae1d96b8c7dcc65ef2",
+      "relation": "increases",
+      "subject": "Top Fisher subspaces",
+      "object": "task generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.67,
+     "novelty": 0.668
+    },
+    "falsification_test": "Vary increasing overparameterization and Top Fisher subspaces separately and together. The hypothesis fails if the joint change in generalization of SGD equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "generalization of sgd"
+   },
+   {
+    "id": "36e88ba13b14",
+    "text": "increasing overparameterization and individual data samples may jointly drive generalization of SGD, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "increasing overparameterization",
+     "individual data samples",
+     "generalization of SGD"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-03848-p0004",
+     "arxiv-2610-16161-p0026"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-03848-p0004",
+      "quote": "• We show that increasing overparameterization in terms of width improves the generalization of SGD, while for randomly sampled networks, it remains mostly unaffected.",
+      "start": 1874,
+      "end": 2041,
+      "chunk_sha256": "749fe7c811d46553e18870a7786659891c0f2fd4edeeae8ed9e87cca85eeffb8",
+      "relation": "increases",
+      "subject": "increasing overparameterization",
+      "object": "generalization of SGD",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-16161-p0026",
+      "quote": "4 Contributions of Individual Samples 4.1 Sample Contributions to the Eigenspectrum To better understand how individual data samples contribute to generalization and the structure of the Fisher information, we examine the participation ratios associated with individual samples in the eigenspectrum of the (layerwise) Fisher.",
+      "start": 0,
+      "end": 325,
+      "chunk_sha256": "bb3eb539fd8fac2f7ea7b73cd710c0f0f87907985566f3d33556df9fafdc9f75",
+      "relation": "causes",
+      "subject": "individual data samples",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.67,
+     "novelty": 0.668
+    },
+    "falsification_test": "Vary increasing overparameterization and individual data samples separately and together. The hypothesis fails if the joint change in generalization of SGD equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "generalization of sgd"
+   },
+   {
+    "id": "8d038d7552ea",
+    "text": "behavior and ensembling may jointly drive poor generalization, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "behavior",
+     "ensembling",
+     "poor generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2412-07684-p0002",
+     "arxiv-2410-16201-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2412-07684-p0002",
+      "quote": "This behavior leads to poor generalization when the learned explanations rely on spurious correlations.",
+      "start": 148,
+      "end": 251,
+      "chunk_sha256": "602730a5c6bd980203f0f8568f555d9a70852b0a12d3b9bcca45376ec0de46c9",
+      "relation": "causes",
+      "subject": "behavior",
+      "object": "poor generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2410-16201-p0002",
+      "quote": "In contrast to the underparameterized regime, where ensembling typically induces regularization and increases generalization, we prove with minimal assumptions that infinite ensembles of overparameterized RF regressors become pointwise equivalent to (single) infinite-width RF regressors, and finite width ensembles rapidly converge to single models with the same parameter budget.",
+      "start": 470,
+      "end": 851,
+      "chunk_sha256": "557b23c0964fc2a5aca6f4e4c1243a616e9c9ed7bedb6819c32b412bfccc0e99",
+      "relation": "increases",
+      "subject": "ensembling",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.67,
+     "novelty": 0.663
+    },
+    "falsification_test": "Vary behavior and ensembling separately and together. The hypothesis fails if the joint change in poor generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "poor generalization"
+   },
+   {
+    "id": "c53011bfa800",
+    "text": "ERM and implicit bias of SGD may jointly drive neural networks, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "ERM",
+     "implicit bias of SGD",
+     "neural networks"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2412-07684-p0004",
+     "arxiv-2407-03848-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2412-07684-p0004",
+      "quote": "ERM enables neural networks to quickly capture spurious correlations and, with sufficient capacity, memorize the remaining examples rather than learning the true patterns that explain the entire dataset.",
+      "start": 884,
+      "end": 1087,
+      "chunk_sha256": "a543ce6bcafc39f0f960a88489e1cf0aab615c757dc75135810fc1489eca94ef",
+      "relation": "increases",
+      "subject": "ERM",
+      "object": "neural networks",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0006",
+      "quote": "In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,",
+      "start": 184,
+      "end": 348,
+      "chunk_sha256": "4a8e743f61ed0a159a79c1f8230406e469459ca4dd1c1ad106aa74f86092da96",
+      "relation": "causes",
+      "subject": "implicit bias of SGD",
+      "object": "networks",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.67,
+     "novelty": 0.65
+    },
+    "falsification_test": "Vary ERM and implicit bias of SGD separately and together. The hypothesis fails if the joint change in neural networks equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "neural network"
+   },
+   {
+    "id": "8946ab1e3d44",
+    "text": "simple features xs may constrain degree of sharpening through network.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "simple features xs",
+     "degree of sharpening"
+    ],
+    "via": [
+     "network"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2311-02622-p0007",
+     "arxiv-2103-00065-p0012"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2311-02622-p0007",
+      "quote": "Due to simplicity bias, the network only depends on the simple features xs for prediction.",
+      "start": 147,
+      "end": 237,
+      "chunk_sha256": "c70a5585bf393eaa8bcda11d31eac4d482c4f642219231117b049becbda2a264",
+      "relation": "constrains",
+      "subject": "simple features xs",
+      "object": "network",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2103-00065-p0012",
+      "quote": "While the degree of sharpening depends on both the network and the task, our experiments in §4 demonstrate that progressive sharpening occurs to a dramatic degree for standard architectures on the standard dataset CIFAR-10.",
+      "start": 2771,
+      "end": 2994,
+      "chunk_sha256": "0b2f8c5e798d123aec0284910f0190fe079c4b4e803b95877780320c3227c1ea",
+      "relation": "constrains",
+      "subject": "network",
+      "object": "degree of sharpening",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.667,
+     "novelty": 0.636
+    },
+    "falsification_test": "Compare settings where simple features xs differs while other inputs are matched. The hypothesis fails if degree of sharpening does not stay bounded with simple features xs, or if fixing network removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "network"
+   },
+   {
+    "id": "f6d3287ae47e",
+    "text": "spurious artifacts may constrain degree of sharpening through networks.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "spurious artifacts",
+     "degree of sharpening"
+    ],
+    "via": [
+     "networks"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-09404-p0003",
+     "arxiv-2103-00065-p0012"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-09404-p0003",
+      "quote": "Prior studies found that these networks rely on spurious artifacts that are correlated with a target label (Schölkopf et al., 2012; Lapuschkin et al., 2019; Geirhos et al., 2019, 2020, inter alia).",
+      "start": 117,
+      "end": 314,
+      "chunk_sha256": "c66c94b8750c946dd5519a40832976b4d02155a781b02d8782f0383b17e2f2a1",
+      "relation": "constrains",
+      "subject": "spurious artifacts",
+      "object": "networks",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2103-00065-p0012",
+      "quote": "While the degree of sharpening depends on both the network and the task, our experiments in §4 demonstrate that progressive sharpening occurs to a dramatic degree for standard architectures on the standard dataset CIFAR-10.",
+      "start": 2771,
+      "end": 2994,
+      "chunk_sha256": "0b2f8c5e798d123aec0284910f0190fe079c4b4e803b95877780320c3227c1ea",
+      "relation": "constrains",
+      "subject": "network",
+      "object": "degree of sharpening",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.667,
+     "novelty": 0.636
+    },
+    "falsification_test": "Compare settings where spurious artifacts differs while other inputs are matched. The hypothesis fails if degree of sharpening does not stay bounded with spurious artifacts, or if fixing networks removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "network"
+   },
+   {
+    "id": "fa17a0908dd6",
+    "text": "simple features may constrain degree of sharpening through networks.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "simple features",
+     "degree of sharpening"
+    ],
+    "via": [
+     "networks"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2311-02622-p0018",
+     "arxiv-2103-00065-p0012"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2311-02622-p0018",
+      "quote": "HIERARCHICAL SIMPLICITY BIAS OF NEURAL NETWORKS ues illustrate that networks predominantly depend on simple features and largely ignore complex features.",
+      "start": 0,
+      "end": 153,
+      "chunk_sha256": "efc86c55aadda4faf867a0a8e794846241c10abb4eb7b92f5b35cc323d82b0e6",
+      "relation": "constrains",
+      "subject": "simple features",
+      "object": "networks",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2103-00065-p0012",
+      "quote": "While the degree of sharpening depends on both the network and the task, our experiments in §4 demonstrate that progressive sharpening occurs to a dramatic degree for standard architectures on the standard dataset CIFAR-10.",
+      "start": 2771,
+      "end": 2994,
+      "chunk_sha256": "0b2f8c5e798d123aec0284910f0190fe079c4b4e803b95877780320c3227c1ea",
+      "relation": "constrains",
+      "subject": "network",
+      "object": "degree of sharpening",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.667,
+     "novelty": 0.636
+    },
+    "falsification_test": "Compare settings where simple features differs while other inputs are matched. The hypothesis fails if degree of sharpening does not stay bounded with simple features, or if fixing networks removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "network"
+   },
+   {
+    "id": "11650d1a0b3a",
+    "text": "behavior and increasing overparameterization may jointly drive poor generalization, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "behavior",
+     "increasing overparameterization",
+     "poor generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2412-07684-p0002",
+     "arxiv-2407-03848-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2412-07684-p0002",
+      "quote": "This behavior leads to poor generalization when the learned explanations rely on spurious correlations.",
+      "start": 148,
+      "end": 251,
+      "chunk_sha256": "602730a5c6bd980203f0f8568f555d9a70852b0a12d3b9bcca45376ec0de46c9",
+      "relation": "causes",
+      "subject": "behavior",
+      "object": "poor generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0004",
+      "quote": "• We show that increasing overparameterization in terms of width improves the generalization of SGD, while for randomly sampled networks, it remains mostly unaffected.",
+      "start": 1874,
+      "end": 2041,
+      "chunk_sha256": "749fe7c811d46553e18870a7786659891c0f2fd4edeeae8ed9e87cca85eeffb8",
+      "relation": "increases",
+      "subject": "increasing overparameterization",
+      "object": "generalization of SGD",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.67,
+     "novelty": 0.633
+    },
+    "falsification_test": "Vary behavior and increasing overparameterization separately and together. The hypothesis fails if the joint change in poor generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "poor generalization"
+   },
+   {
+    "id": "b53061270498",
+    "text": "common components may constrain networks through simplicity bias (read as implicit bias of SGD).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "common components",
+     "networks"
+    ],
+    "via": [
+     "simplicity bias (read as implicit bias of SGD)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2403-02241-p0006",
+     "arxiv-2407-03848-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2403-02241-p0006",
+      "quote": "• We show that the simplicity bias is not universal but depends on common components (ReLUs, residual connections, layer normalizations).",
+      "start": 546,
+      "end": 683,
+      "chunk_sha256": "4f2208c142a3d7983b7a4451ab54755af7e7cda501a167b9797291a48b7d4aef",
+      "relation": "constrains",
+      "subject": "common components",
+      "object": "simplicity bias",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0006",
+      "quote": "In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,",
+      "start": 184,
+      "end": 348,
+      "chunk_sha256": "4a8e743f61ed0a159a79c1f8230406e469459ca4dd1c1ad106aa74f86092da96",
+      "relation": "causes",
+      "subject": "implicit bias of SGD",
+      "object": "networks",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.67,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where common components differs while other inputs are matched. The hypothesis fails if networks does not stay bounded with common components, or if fixing simplicity bias (read as implicit bias of SGD) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "simplicity bia"
+   },
+   {
+    "id": "ed5bd66f0bcf",
+    "text": "flatness of minima of loss function and increasing overparameterization may jointly drive good generalization, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "flatness of minima of loss function",
+     "increasing overparameterization",
+     "good generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1703-04933-p0002",
+     "arxiv-2407-03848-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1703-04933-p0002",
+      "quote": "(2017), is that the flatness of minima of the loss function found by stochastic gradient based methods results in good generalization.",
+      "start": 349,
+      "end": 483,
+      "chunk_sha256": "57e946894713b8c25d6e69b9907b5e96636a21c80ae061d15306e64c208869cf",
+      "relation": "causes",
+      "subject": "flatness of minima of loss function",
+      "object": "good generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0004",
+      "quote": "• We show that increasing overparameterization in terms of width improves the generalization of SGD, while for randomly sampled networks, it remains mostly unaffected.",
+      "start": 1874,
+      "end": 2041,
+      "chunk_sha256": "749fe7c811d46553e18870a7786659891c0f2fd4edeeae8ed9e87cca85eeffb8",
+      "relation": "increases",
+      "subject": "increasing overparameterization",
+      "object": "generalization of SGD",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.67,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary flatness of minima of loss function and increasing overparameterization separately and together. The hypothesis fails if the joint change in good generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "good generalization"
+   },
+   {
+    "id": "f2f247a30f4c",
+    "text": "Gains in dimensional network from implicit bias of SGD may be offset by expression.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "expression",
+     "implicit bias of SGD",
+     "dimensional network"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2310-03789-p0022",
+     "arxiv-2407-03848-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2310-03789-p0022",
+      "quote": "Notably, this expression reduces the high-dimensional network posterior into a scalar probability involving only the relevant order parameter (Φ = w · w∗).",
+      "start": 0,
+      "end": 155,
+      "chunk_sha256": "ad578eda9ad6a6878b0ce3e6aaa65720893d99a3c7edca0a2d343bda756243fe",
+      "relation": "decreases",
+      "subject": "expression",
+      "object": "dimensional network",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0006",
+      "quote": "In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,",
+      "start": 184,
+      "end": 348,
+      "chunk_sha256": "4a8e743f61ed0a159a79c1f8230406e469459ca4dd1c1ad106aa74f86092da96",
+      "relation": "causes",
+      "subject": "implicit bias of SGD",
+      "object": "networks",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.67,
+     "novelty": 0.6
+    },
+    "falsification_test": "Measure dimensional network where both expression and implicit bias of SGD vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "dimensional network"
+   },
+   {
+    "id": "8a8b54afb573",
+    "text": "extent of similarity and network size may move together because both depend on parameters.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "extent of similarity",
+     "network size",
+     "parameters"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-08344-p0022",
+     "arxiv-2407-03848-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-08344-p0022",
+      "quote": "The extent of this similarity depends on the parameters used.",
+      "start": 366,
+      "end": 427,
+      "chunk_sha256": "300de363a2ec5c498a73b58dcf9e9f00981933d709790a670a1878537c168f01",
+      "relation": "constrains",
+      "subject": "parameters",
+      "object": "extent of similarity",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0003",
+      "quote": "The generalization of neural networks challenges common wisdom in classical statistical learning theory (Vapnik & Chervonenkis, 1971): the number of parameters in today’s neural networks is much larger than necessary to fit the data (Zhang et al., 2017), and further increasing network size, i.e., more overparameterization, yields better generalization (Hestness et al., 2017; Allen-Zhu et al., 2019).",
+      "start": 0,
+      "end": 402,
+      "chunk_sha256": "8b8a4dde795798c50b7ace162c2d25dabdde6268151b1282b6c3d176c475b55f",
+      "relation": "increases",
+      "subject": "parameters",
+      "object": "network size",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.667,
+     "novelty": 0.578
+    },
+    "falsification_test": "Track extent of similarity and network size across periods where parameters changes and where it does not. The hypothesis fails if they co-vary just as strongly when parameters is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "parameter"
+   },
+   {
+    "id": "a62db5e8db9b",
+    "text": "common components may affect generalization error for diagonal linear networks through simplicity bias (read as implicit bias).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "common components",
+     "generalization error for diagonal linear networks"
+    ],
+    "via": [
+     "simplicity bias (read as implicit bias)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2403-02241-p0006",
+     "arxiv-2505-21423-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2403-02241-p0006",
+      "quote": "• We show that the simplicity bias is not universal but depends on common components (ReLUs, residual connections, layer normalizations).",
+      "start": 546,
+      "end": 683,
+      "chunk_sha256": "4f2208c142a3d7983b7a4451ab54755af7e7cda501a167b9797291a48b7d4aef",
+      "relation": "constrains",
+      "subject": "common components",
+      "object": "simplicity bias",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2505-21423-p0002",
+      "quote": "We furthermore prove that neither implicit bias alone minimizes the generalization error for diagonal linear networks trained on a simple regression task.",
+      "start": 547,
+      "end": 701,
+      "chunk_sha256": "7ec31a3b2ccf1d3d74267c9bab8a9f241683b66e461c2a162ae6b2a6f4e89912",
+      "relation": "decreases",
+      "subject": "implicit bias",
+      "object": "generalization error for diagonal linear networks",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.666,
+     "novelty": 0.581
+    },
+    "falsification_test": "Compare settings where common components differs while other inputs are matched. The hypothesis fails if generalization error for diagonal linear networks does not change with common components, or if fixing simplicity bias (read as implicit bias) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "simplicity bia"
+   },
+   {
+    "id": "35909663ced2",
+    "text": "Using a tighter characterization of training may increase test set predictions through slower training (read as gradient based training of wide neural).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "Using a tighter characterization of training",
+     "test set predictions"
+    ],
+    "via": [
+     "slower training (read as gradient based training of wide neural)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1901-08584-p0002",
+     "arxiv-1902-06720-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1901-08584-p0002",
+      "quote": "This paper analyzes training and generalization for a simple 2-layer ReLU net with random initialization, and provides the following improvements over recent works: (i) Using a tighter characterization of training speed than recent papers, an explanation for why training a neural net with random labels leads to slower training, as originally observed in [Zhang et al.",
+      "start": 131,
+      "end": 500,
+      "chunk_sha256": "693bc054472c5f8ec9e9433dbc259795894e63c7365693b385fbd78b6b89a1eb",
+      "relation": "causes",
+      "subject": "Using a tighter characterization of training",
+      "object": "slower training",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1902-06720-p0002",
+      "quote": "Furthermore, mirroring the correspondence between wide Bayesian neural networks and Gaussian processes, gradient-based training of wide neural networks with a squared loss produces test set predictions drawn from a Gaussian process with a particular compositional kernel.",
+      "start": 485,
+      "end": 756,
+      "chunk_sha256": "576d10b2d79412eeeb18eb22beb4979c4dca756da7251d0333260e88e0a486d9",
+      "relation": "causes",
+      "subject": "gradient based training of wide neural",
+      "object": "test set predictions",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.651,
+     "novelty": 0.636
+    },
+    "falsification_test": "Compare settings where Using a tighter characterization of training differs while other inputs are matched. The hypothesis fails if test set predictions does not rise with Using a tighter characterization of training, or if fixing slower training (read as gradient based training of wide neural) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "slower training"
+   },
+   {
+    "id": "b3b78ce3be94",
+    "text": "Top Fisher subspaces may affect common wisdom through task generalization (read as generalization of neural networks).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "Top Fisher subspaces",
+     "common wisdom"
+    ],
+    "via": [
+     "task generalization (read as generalization of neural networks)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2610-16161-p0025",
+     "arxiv-2407-03848-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2610-16161-p0025",
+      "quote": "Top Fisher subspaces improve task generalization (green) at the cost of performance on memorized tasks (blue).",
+      "start": 499,
+      "end": 609,
+      "chunk_sha256": "e8fe5a8ffd929babb503205168db0afec7b14738036e9cae1d96b8c7dcc65ef2",
+      "relation": "increases",
+      "subject": "Top Fisher subspaces",
+      "object": "task generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0003",
+      "quote": "The generalization of neural networks challenges common wisdom in classical statistical learning theory (Vapnik & Chervonenkis, 1971): the number of parameters in today’s neural networks is much larger than necessary to fit the data (Zhang et al., 2017), and further increasing network size, i.e., more overparameterization, yields better generalization (Hestness et al., 2017; Allen-Zhu et al., 2019).",
+      "start": 0,
+      "end": 402,
+      "chunk_sha256": "8b8a4dde795798c50b7ace162c2d25dabdde6268151b1282b6c3d176c475b55f",
+      "relation": "undermines",
+      "subject": "generalization of neural networks",
+      "object": "common wisdom",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.618,
+     "novelty": 0.642
+    },
+    "falsification_test": "Compare settings where Top Fisher subspaces differs while other inputs are matched. The hypothesis fails if common wisdom does not change with Top Fisher subspaces, or if fixing task generalization (read as generalization of neural networks) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "task generalization"
+   },
+   {
+    "id": "c2c9bbca76a6",
+    "text": "property of Adam may affect common wisdom through superior generalization (read as generalization of neural networks).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "property of Adam",
+     "common wisdom"
+    ],
+    "via": [
+     "superior generalization (read as generalization of neural networks)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2505-24022-p0003",
+     "arxiv-2407-03848-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2505-24022-p0003",
+      "quote": "Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.",
+      "start": 1099,
+      "end": 1428,
+      "chunk_sha256": "4b39f810d9ba864b87735252bb1cc245208264c582fc6343ac00fefb2d0a2d9c",
+      "relation": "causes",
+      "subject": "property of Adam",
+      "object": "superior generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0003",
+      "quote": "The generalization of neural networks challenges common wisdom in classical statistical learning theory (Vapnik & Chervonenkis, 1971): the number of parameters in today’s neural networks is much larger than necessary to fit the data (Zhang et al., 2017), and further increasing network size, i.e., more overparameterization, yields better generalization (Hestness et al., 2017; Allen-Zhu et al., 2019).",
+      "start": 0,
+      "end": 402,
+      "chunk_sha256": "8b8a4dde795798c50b7ace162c2d25dabdde6268151b1282b6c3d176c475b55f",
+      "relation": "undermines",
+      "subject": "generalization of neural networks",
+      "object": "common wisdom",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.618,
+     "novelty": 0.623
+    },
+    "falsification_test": "Compare settings where property of Adam differs while other inputs are matched. The hypothesis fails if common wisdom does not change with property of Adam, or if fixing superior generalization (read as generalization of neural networks) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "superior generalization"
+   },
+   {
+    "id": "a0aaacd6030c",
+    "text": "SAM may affect common wisdom through model generalization (read as generalization of neural networks).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "SAM",
+     "common wisdom"
+    ],
+    "via": [
+     "model generalization (read as generalization of neural networks)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2010-01412-p0002",
+     "arxiv-2407-03848-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2010-01412-p0002",
+      "quote": "We present empirical results showing that SAM improves model generalization across a variety of benchmark datasets (e.g., CIFAR-10, CIFAR-100, ImageNet, finetuning tasks) and models, yielding novel state-of-the-art performance for several.",
+      "start": 700,
+      "end": 939,
+      "chunk_sha256": "80df7399092138c4aa0ae3e731150f6aad46565cbd5f7cd4ed263aea896871ef",
+      "relation": "increases",
+      "subject": "SAM",
+      "object": "model generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0003",
+      "quote": "The generalization of neural networks challenges common wisdom in classical statistical learning theory (Vapnik & Chervonenkis, 1971): the number of parameters in today’s neural networks is much larger than necessary to fit the data (Zhang et al., 2017), and further increasing network size, i.e., more overparameterization, yields better generalization (Hestness et al., 2017; Allen-Zhu et al., 2019).",
+      "start": 0,
+      "end": 402,
+      "chunk_sha256": "8b8a4dde795798c50b7ace162c2d25dabdde6268151b1282b6c3d176c475b55f",
+      "relation": "undermines",
+      "subject": "generalization of neural networks",
+      "object": "common wisdom",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.618,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where SAM differs while other inputs are matched. The hypothesis fails if common wisdom does not change with SAM, or if fixing model generalization (read as generalization of neural networks) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "model generalization"
+   },
+   {
+    "id": "d18beb4270a3",
+    "text": "P for hypotheses may affect common wisdom through generic generalization (read as generalization of neural networks).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "P for hypotheses",
+     "common wisdom"
+    ],
+    "via": [
+     "generic generalization (read as generalization of neural networks)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2412-09810-p0013",
+     "arxiv-2407-03848-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2412-09810-p0013",
+      "quote": "(2023) argue for generalization to be understood using Kolmogorov complexity, and apply the Solomonoff prior, P (h) = 2−K(h) for hypotheses h to a finite hypothesis bound (Langford and Seeger, 2001) to produce a generic generalization bound based on the Kolmogorov complexity.",
+      "start": 1470,
+      "end": 1746,
+      "chunk_sha256": "9fe2d68b01cb5edeb8d598a142d10205be19b7b11563bdc7faa69c6577115901",
+      "relation": "causes",
+      "subject": "P for hypotheses",
+      "object": "generic generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0003",
+      "quote": "The generalization of neural networks challenges common wisdom in classical statistical learning theory (Vapnik & Chervonenkis, 1971): the number of parameters in today’s neural networks is much larger than necessary to fit the data (Zhang et al., 2017), and further increasing network size, i.e., more overparameterization, yields better generalization (Hestness et al., 2017; Allen-Zhu et al., 2019).",
+      "start": 0,
+      "end": 402,
+      "chunk_sha256": "8b8a4dde795798c50b7ace162c2d25dabdde6268151b1282b6c3d176c475b55f",
+      "relation": "undermines",
+      "subject": "generalization of neural networks",
+      "object": "common wisdom",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.618,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where P for hypotheses differs while other inputs are matched. The hypothesis fails if common wisdom does not change with P for hypotheses, or if fixing generic generalization (read as generalization of neural networks) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "generic generalization"
+   },
+   {
+    "id": "8dc7b519ec28",
+    "text": "evaluation strategies and experiments may stand or fall together because both rest on considerations.",
+    "pattern": "divergent",
+    "relation": "common_ground",
+    "anchors": [
+     "evaluation strategies",
+     "experiments",
+     "considerations"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-09404-p0004",
+     "arxiv-2610-16161-p0005"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-09404-p0004",
+      "quote": "These considerations motivate evaluation strategies that are intrinsic to a network and indicate model generalization while not posing practical bottlenecks in terms of specialized labeled sets.",
+      "start": 955,
+      "end": 1149,
+      "chunk_sha256": "d4d528d0950d4e979f810f5fda7f80816476f43949eae8837487238cf2045ffe",
+      "relation": "supports",
+      "subject": "considerations",
+      "object": "evaluation strategies",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-16161-p0005",
+      "quote": "These considerations motivate our experiments.",
+      "start": 897,
+      "end": 943,
+      "chunk_sha256": "7e3a32125ba9b8e97ca8b1341836b7cab015facceefb300c3941206a55683d8f",
+      "relation": "supports",
+      "subject": "considerations",
+      "object": "experiments",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.6,
+     "novelty": 0.683
+    },
+    "falsification_test": "Find a position that keeps evaluation strategies and rejects experiments, or the reverse, without giving up considerations. The hypothesis fails if such a position is coherent.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "consideration"
+   },
+   {
+    "id": "147019ddc744",
+    "text": "Ameet may constrain recent breakthroughs through AI Correspondence (read as correspondence).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "Ameet",
+     "recent breakthroughs"
+    ],
+    "via": [
+     "AI Correspondence (read as correspondence)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2103-00065-p0002",
+     "arxiv-2110-12231-p0005"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2103-00065-p0002",
+      "quote": "Published as a conference paper at ICLR 2021 GRADIENT DESCENT ON NEURAL NETWORKS TYPI- CALLY OCCURS AT THE EDGE OF STABILITY Jeremy Cohen Simran Kaur Yuanzhi Li J. Zico Kolter1 and Ameet Talwalkar2 Carnegie Mellon University and: 1Bosch AI 2 Determined AI Correspondence to: jeremycohen@cmu.edu",
+      "start": 0,
+      "end": 294,
+      "chunk_sha256": "27b7886f0ce0293e608cfa26b7a7fbd819337891c6ea26654acb72360734106e",
+      "relation": "constrains",
+      "subject": "Ameet",
+      "object": "AI Correspondence",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2110-12231-p0005",
+      "quote": "The correspondence enables exact Bayesian inference in the associated GP model for infinitewidth NNs on regression tasks and has led to some recent breakthroughs in our understanding of overparameterized NNs [Jacot et al., 2018, Lee et al., 2019, Arora et al., 2019, Belkin et al., 2018, Daniely et al., 2016, Yang and Salman, 2019, Bietti and Mairal, 2019].",
+      "start": 1858,
+      "end": 2216,
+      "chunk_sha256": "b3d8b51c65625895a2c0b0e6633023270095acbd873676549e588b513141ed1d",
+      "relation": "causes",
+      "subject": "correspondence",
+      "object": "recent breakthroughs",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.604,
+     "novelty": 0.663
+    },
+    "falsification_test": "Compare settings where Ameet differs while other inputs are matched. The hypothesis fails if recent breakthroughs does not stay bounded with Ameet, or if fixing AI Correspondence (read as correspondence) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "ai correspondence"
+   },
+   {
+    "id": "6e83b5a25bd7",
+    "text": "Talwalkar2 may constrain recent breakthroughs through AI Correspondence (read as correspondence).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "Talwalkar2",
+     "recent breakthroughs"
+    ],
+    "via": [
+     "AI Correspondence (read as correspondence)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2103-00065-p0002",
+     "arxiv-2110-12231-p0005"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2103-00065-p0002",
+      "quote": "Published as a conference paper at ICLR 2021 GRADIENT DESCENT ON NEURAL NETWORKS TYPI- CALLY OCCURS AT THE EDGE OF STABILITY Jeremy Cohen Simran Kaur Yuanzhi Li J. Zico Kolter1 and Ameet Talwalkar2 Carnegie Mellon University and: 1Bosch AI 2 Determined AI Correspondence to: jeremycohen@cmu.edu",
+      "start": 0,
+      "end": 294,
+      "chunk_sha256": "27b7886f0ce0293e608cfa26b7a7fbd819337891c6ea26654acb72360734106e",
+      "relation": "constrains",
+      "subject": "Talwalkar2",
+      "object": "AI Correspondence",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2110-12231-p0005",
+      "quote": "The correspondence enables exact Bayesian inference in the associated GP model for infinitewidth NNs on regression tasks and has led to some recent breakthroughs in our understanding of overparameterized NNs [Jacot et al., 2018, Lee et al., 2019, Arora et al., 2019, Belkin et al., 2018, Daniely et al., 2016, Yang and Salman, 2019, Bietti and Mairal, 2019].",
+      "start": 1858,
+      "end": 2216,
+      "chunk_sha256": "b3d8b51c65625895a2c0b0e6633023270095acbd873676549e588b513141ed1d",
+      "relation": "causes",
+      "subject": "correspondence",
+      "object": "recent breakthroughs",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.604,
+     "novelty": 0.663
+    },
+    "falsification_test": "Compare settings where Talwalkar2 differs while other inputs are matched. The hypothesis fails if recent breakthroughs does not stay bounded with Talwalkar2, or if fixing AI Correspondence (read as correspondence) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "ai correspondence"
+   },
+   {
+    "id": "c63b14d94480",
+    "text": "ability may constrain nonlinear decision boundary through Neural network training (read as training).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "ability",
+     "nonlinear decision boundary"
+    ],
+    "via": [
+     "Neural network training (read as training)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1712-09913-p0002",
+     "arxiv-2505-24022-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1712-09913-p0002",
+      "quote": "Neural network training relies on our ability to find \"good\" minimizers of highly non-convex loss functions.",
+      "start": 0,
+      "end": 108,
+      "chunk_sha256": "f6293e69d4daded71ffb7be72562334571916d5adf4c678d982e6e60c72e7e0c",
+      "relation": "constrains",
+      "subject": "ability",
+      "object": "Neural network training",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2505-24022-p0006",
+      "quote": "First, we consider an MNIST-based task with a colored patch as a spurious feature and show that compared to SGD, training with Adam leads to a more nonlinear decision boundary, larger margins overall, and has better generalization on a test set with flipped correlation.",
+      "start": 3125,
+      "end": 3395,
+      "chunk_sha256": "be04e4cdb8701f7996bd92d8e112477b70d43338f42cdde3975de2ae3e36f944",
+      "relation": "causes",
+      "subject": "training",
+      "object": "nonlinear decision boundary",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.604,
+     "novelty": 0.65
+    },
+    "falsification_test": "Compare settings where ability differs while other inputs are matched. The hypothesis fails if nonlinear decision boundary does not stay bounded with ability, or if fixing Neural network training (read as training) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "neural network training"
+   },
+   {
+    "id": "ced4b957bf50",
+    "text": "J. Zico Kolter1 may constrain exact Bayesian inference through AI Correspondence (read as correspondence).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "J. Zico Kolter1",
+     "exact Bayesian inference"
+    ],
+    "via": [
+     "AI Correspondence (read as correspondence)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2103-00065-p0002",
+     "arxiv-2110-12231-p0005"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2103-00065-p0002",
+      "quote": "Published as a conference paper at ICLR 2021 GRADIENT DESCENT ON NEURAL NETWORKS TYPI- CALLY OCCURS AT THE EDGE OF STABILITY Jeremy Cohen Simran Kaur Yuanzhi Li J. Zico Kolter1 and Ameet Talwalkar2 Carnegie Mellon University and: 1Bosch AI 2 Determined AI Correspondence to: jeremycohen@cmu.edu",
+      "start": 0,
+      "end": 294,
+      "chunk_sha256": "27b7886f0ce0293e608cfa26b7a7fbd819337891c6ea26654acb72360734106e",
+      "relation": "constrains",
+      "subject": "J. Zico Kolter1",
+      "object": "AI Correspondence",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2110-12231-p0005",
+      "quote": "The correspondence enables exact Bayesian inference in the associated GP model for infinitewidth NNs on regression tasks and has led to some recent breakthroughs in our understanding of overparameterized NNs [Jacot et al., 2018, Lee et al., 2019, Arora et al., 2019, Belkin et al., 2018, Daniely et al., 2016, Yang and Salman, 2019, Bietti and Mairal, 2019].",
+      "start": 1858,
+      "end": 2216,
+      "chunk_sha256": "b3d8b51c65625895a2c0b0e6633023270095acbd873676549e588b513141ed1d",
+      "relation": "increases",
+      "subject": "correspondence",
+      "object": "exact Bayesian inference",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.604,
+     "novelty": 0.65
+    },
+    "falsification_test": "Compare settings where J. Zico Kolter1 differs while other inputs are matched. The hypothesis fails if exact Bayesian inference does not stay bounded with J. Zico Kolter1, or if fixing AI Correspondence (read as correspondence) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "ai correspondence"
+   },
+   {
+    "id": "25429726cb08",
+    "text": "ability may constrain larger margins through Neural network training (read as training).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "ability",
+     "larger margins"
+    ],
+    "via": [
+     "Neural network training (read as training)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1712-09913-p0002",
+     "arxiv-2505-24022-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1712-09913-p0002",
+      "quote": "Neural network training relies on our ability to find \"good\" minimizers of highly non-convex loss functions.",
+      "start": 0,
+      "end": 108,
+      "chunk_sha256": "f6293e69d4daded71ffb7be72562334571916d5adf4c678d982e6e60c72e7e0c",
+      "relation": "constrains",
+      "subject": "ability",
+      "object": "Neural network training",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2505-24022-p0006",
+      "quote": "First, we consider an MNIST-based task with a colored patch as a spurious feature and show that compared to SGD, training with Adam leads to a more nonlinear decision boundary, larger margins overall, and has better generalization on a test set with flipped correlation.",
+      "start": 3125,
+      "end": 3395,
+      "chunk_sha256": "be04e4cdb8701f7996bd92d8e112477b70d43338f42cdde3975de2ae3e36f944",
+      "relation": "causes",
+      "subject": "training",
+      "object": "larger margins",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.604,
+     "novelty": 0.628
+    },
+    "falsification_test": "Compare settings where ability differs while other inputs are matched. The hypothesis fails if larger margins does not stay bounded with ability, or if fixing Neural network training (read as training) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "neural network training"
+   },
+   {
+    "id": "1e8785021323",
+    "text": "ability and Using a tighter characterization of training may interact in their effect on Neural network training.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "ability",
+     "Using a tighter characterization of training",
+     "Neural network training"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1712-09913-p0002",
+     "arxiv-1901-08584-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1712-09913-p0002",
+      "quote": "Neural network training relies on our ability to find \"good\" minimizers of highly non-convex loss functions.",
+      "start": 0,
+      "end": 108,
+      "chunk_sha256": "f6293e69d4daded71ffb7be72562334571916d5adf4c678d982e6e60c72e7e0c",
+      "relation": "constrains",
+      "subject": "ability",
+      "object": "Neural network training",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1901-08584-p0002",
+      "quote": "This paper analyzes training and generalization for a simple 2-layer ReLU net with random initialization, and provides the following improvements over recent works: (i) Using a tighter characterization of training speed than recent papers, an explanation for why training a neural net with random labels leads to slower training, as originally observed in [Zhang et al.",
+      "start": 131,
+      "end": 500,
+      "chunk_sha256": "693bc054472c5f8ec9e9433dbc259795894e63c7365693b385fbd78b6b89a1eb",
+      "relation": "causes",
+      "subject": "Using a tighter characterization of training",
+      "object": "slower training",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.599,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary ability and Using a tighter characterization of training separately and together. The hypothesis fails if the joint change in Neural network training equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "neural network training"
+   },
+   {
+    "id": "b4632b949212",
+    "text": "expression and simple features may jointly constrain dimensional network, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "expression",
+     "simple features",
+     "dimensional network"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2310-03789-p0022",
+     "arxiv-2311-02622-p0018"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2310-03789-p0022",
+      "quote": "Notably, this expression reduces the high-dimensional network posterior into a scalar probability involving only the relevant order parameter (Φ = w · w∗).",
+      "start": 0,
+      "end": 155,
+      "chunk_sha256": "ad578eda9ad6a6878b0ce3e6aaa65720893d99a3c7edca0a2d343bda756243fe",
+      "relation": "decreases",
+      "subject": "expression",
+      "object": "dimensional network",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2311-02622-p0018",
+      "quote": "HIERARCHICAL SIMPLICITY BIAS OF NEURAL NETWORKS ues illustrate that networks predominantly depend on simple features and largely ignore complex features.",
+      "start": 0,
+      "end": 153,
+      "chunk_sha256": "efc86c55aadda4faf867a0a8e794846241c10abb4eb7b92f5b35cc323d82b0e6",
+      "relation": "constrains",
+      "subject": "simple features",
+      "object": "networks",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.594,
+     "novelty": 0.714
+    },
+    "falsification_test": "Relieve expression alone while measuring dimensional network. The hypothesis fails if dimensional network keeps improving without simple features becoming the binding limit, or if relieving simple features alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "dimensional network"
+   },
+   {
+    "id": "c6b9eeb2b52a",
+    "text": "expression and spurious artifacts may jointly constrain dimensional network, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "expression",
+     "spurious artifacts",
+     "dimensional network"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2310-03789-p0022",
+     "arxiv-2210-09404-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2310-03789-p0022",
+      "quote": "Notably, this expression reduces the high-dimensional network posterior into a scalar probability involving only the relevant order parameter (Φ = w · w∗).",
+      "start": 0,
+      "end": 155,
+      "chunk_sha256": "ad578eda9ad6a6878b0ce3e6aaa65720893d99a3c7edca0a2d343bda756243fe",
+      "relation": "decreases",
+      "subject": "expression",
+      "object": "dimensional network",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2210-09404-p0003",
+      "quote": "Prior studies found that these networks rely on spurious artifacts that are correlated with a target label (Schölkopf et al., 2012; Lapuschkin et al., 2019; Geirhos et al., 2019, 2020, inter alia).",
+      "start": 117,
+      "end": 314,
+      "chunk_sha256": "c66c94b8750c946dd5519a40832976b4d02155a781b02d8782f0383b17e2f2a1",
+      "relation": "constrains",
+      "subject": "spurious artifacts",
+      "object": "networks",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.594,
+     "novelty": 0.714
+    },
+    "falsification_test": "Relieve expression alone while measuring dimensional network. The hypothesis fails if dimensional network keeps improving without spurious artifacts becoming the binding limit, or if relieving spurious artifacts alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "dimensional network"
+   },
+   {
+    "id": "12bf8f8e2c8a",
+    "text": "MNIST digit for classification and spurious artifacts may jointly constrain trained network, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "MNIST digit for classification",
+     "spurious artifacts",
+     "trained network"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2311-02622-p0003",
+     "arxiv-2210-09404-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2311-02622-p0003",
+      "quote": "It turns out that the trained network only depends on the MNIST digit for classification.",
+      "start": 1436,
+      "end": 1525,
+      "chunk_sha256": "10270fe5f971f1c9b2ad6ae688bce8546609b9a5825c23776b713fe66a3f5162",
+      "relation": "constrains",
+      "subject": "MNIST digit for classification",
+      "object": "trained network",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2210-09404-p0003",
+      "quote": "Prior studies found that these networks rely on spurious artifacts that are correlated with a target label (Schölkopf et al., 2012; Lapuschkin et al., 2019; Geirhos et al., 2019, 2020, inter alia).",
+      "start": 117,
+      "end": 314,
+      "chunk_sha256": "c66c94b8750c946dd5519a40832976b4d02155a781b02d8782f0383b17e2f2a1",
+      "relation": "constrains",
+      "subject": "spurious artifacts",
+      "object": "networks",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.594,
+     "novelty": 0.658
+    },
+    "falsification_test": "Relieve MNIST digit for classification alone while measuring trained network. The hypothesis fails if trained network keeps improving without spurious artifacts becoming the binding limit, or if relieving spurious artifacts alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "trained network"
+   },
+   {
+    "id": "2fd4f52ba40b",
+    "text": "test set predictions and nonlinear decision boundary may move together because both depend on gradient based training of wide neural.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "test set predictions",
+     "nonlinear decision boundary",
+     "gradient based training of wide neural"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1902-06720-p0002",
+     "arxiv-2505-24022-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1902-06720-p0002",
+      "quote": "Furthermore, mirroring the correspondence between wide Bayesian neural networks and Gaussian processes, gradient-based training of wide neural networks with a squared loss produces test set predictions drawn from a Gaussian process with a particular compositional kernel.",
+      "start": 485,
+      "end": 756,
+      "chunk_sha256": "576d10b2d79412eeeb18eb22beb4979c4dca756da7251d0333260e88e0a486d9",
+      "relation": "causes",
+      "subject": "gradient based training of wide neural",
+      "object": "test set predictions",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2505-24022-p0006",
+      "quote": "First, we consider an MNIST-based task with a colored patch as a spurious feature and show that compared to SGD, training with Adam leads to a more nonlinear decision boundary, larger margins overall, and has better generalization on a test set with flipped correlation.",
+      "start": 3125,
+      "end": 3395,
+      "chunk_sha256": "be04e4cdb8701f7996bd92d8e112477b70d43338f42cdde3975de2ae3e36f944",
+      "relation": "causes",
+      "subject": "training",
+      "object": "nonlinear decision boundary",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.58,
+     "novelty": 0.6
+    },
+    "falsification_test": "Track test set predictions and nonlinear decision boundary across periods where gradient based training of wide neural changes and where it does not. The hypothesis fails if they co-vary just as strongly when gradient based training of wide neural is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "gradient based training of wide neural"
+   },
+   {
+    "id": "5c4bbf891980",
+    "text": "test set predictions and larger margins may move together because both depend on gradient based training of wide neural.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "test set predictions",
+     "larger margins",
+     "gradient based training of wide neural"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1902-06720-p0002",
+     "arxiv-2505-24022-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1902-06720-p0002",
+      "quote": "Furthermore, mirroring the correspondence between wide Bayesian neural networks and Gaussian processes, gradient-based training of wide neural networks with a squared loss produces test set predictions drawn from a Gaussian process with a particular compositional kernel.",
+      "start": 485,
+      "end": 756,
+      "chunk_sha256": "576d10b2d79412eeeb18eb22beb4979c4dca756da7251d0333260e88e0a486d9",
+      "relation": "causes",
+      "subject": "gradient based training of wide neural",
+      "object": "test set predictions",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2505-24022-p0006",
+      "quote": "First, we consider an MNIST-based task with a colored patch as a spurious feature and show that compared to SGD, training with Adam leads to a more nonlinear decision boundary, larger margins overall, and has better generalization on a test set with flipped correlation.",
+      "start": 3125,
+      "end": 3395,
+      "chunk_sha256": "be04e4cdb8701f7996bd92d8e112477b70d43338f42cdde3975de2ae3e36f944",
+      "relation": "causes",
+      "subject": "training",
+      "object": "larger margins",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.58,
+     "novelty": 0.586
+    },
+    "falsification_test": "Track test set predictions and larger margins across periods where gradient based training of wide neural changes and where it does not. The hypothesis fails if they co-vary just as strongly when gradient based training of wide neural is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "gradient based training of wide neural"
+   },
+   {
+    "id": "a52204e53416",
+    "text": "P for hypotheses and property of Adam may jointly drive generic generalization, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "P for hypotheses",
+     "property of Adam",
+     "generic generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2412-09810-p0013",
+     "arxiv-2505-24022-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2412-09810-p0013",
+      "quote": "(2023) argue for generalization to be understood using Kolmogorov complexity, and apply the Solomonoff prior, P (h) = 2−K(h) for hypotheses h to a finite hypothesis bound (Langford and Seeger, 2001) to produce a generic generalization bound based on the Kolmogorov complexity.",
+      "start": 1470,
+      "end": 1746,
+      "chunk_sha256": "9fe2d68b01cb5edeb8d598a142d10205be19b7b11563bdc7faa69c6577115901",
+      "relation": "causes",
+      "subject": "P for hypotheses",
+      "object": "generic generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2505-24022-p0003",
+      "quote": "Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.",
+      "start": 1099,
+      "end": 1428,
+      "chunk_sha256": "4b39f810d9ba864b87735252bb1cc245208264c582fc6343ac00fefb2d0a2d9c",
+      "relation": "causes",
+      "subject": "property of Adam",
+      "object": "superior generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.57,
+     "novelty": 0.683
+    },
+    "falsification_test": "Vary P for hypotheses and property of Adam separately and together. The hypothesis fails if the joint change in generic generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "generic generalization"
+   },
+   {
+    "id": "9b14785a0eea",
+    "text": "property of Adam and Top Fisher subspaces may jointly drive superior generalization, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "property of Adam",
+     "Top Fisher subspaces",
+     "superior generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2505-24022-p0003",
+     "arxiv-2610-16161-p0025"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2505-24022-p0003",
+      "quote": "Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.",
+      "start": 1099,
+      "end": 1428,
+      "chunk_sha256": "4b39f810d9ba864b87735252bb1cc245208264c582fc6343ac00fefb2d0a2d9c",
+      "relation": "causes",
+      "subject": "property of Adam",
+      "object": "superior generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-16161-p0025",
+      "quote": "Top Fisher subspaces improve task generalization (green) at the cost of performance on memorized tasks (blue).",
+      "start": 499,
+      "end": 609,
+      "chunk_sha256": "e8fe5a8ffd929babb503205168db0afec7b14738036e9cae1d96b8c7dcc65ef2",
+      "relation": "increases",
+      "subject": "Top Fisher subspaces",
+      "object": "task generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.57,
+     "novelty": 0.668
+    },
+    "falsification_test": "Vary property of Adam and Top Fisher subspaces separately and together. The hypothesis fails if the joint change in superior generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "superior generalization"
+   },
+   {
+    "id": "c9f5f8a6082d",
+    "text": "SAM and Top Fisher subspaces may jointly drive model generalization, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "SAM",
+     "Top Fisher subspaces",
+     "model generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2010-01412-p0002",
+     "arxiv-2610-16161-p0025"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2010-01412-p0002",
+      "quote": "We present empirical results showing that SAM improves model generalization across a variety of benchmark datasets (e.g., CIFAR-10, CIFAR-100, ImageNet, finetuning tasks) and models, yielding novel state-of-the-art performance for several.",
+      "start": 700,
+      "end": 939,
+      "chunk_sha256": "80df7399092138c4aa0ae3e731150f6aad46565cbd5f7cd4ed263aea896871ef",
+      "relation": "increases",
+      "subject": "SAM",
+      "object": "model generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-16161-p0025",
+      "quote": "Top Fisher subspaces improve task generalization (green) at the cost of performance on memorized tasks (blue).",
+      "start": 499,
+      "end": 609,
+      "chunk_sha256": "e8fe5a8ffd929babb503205168db0afec7b14738036e9cae1d96b8c7dcc65ef2",
+      "relation": "increases",
+      "subject": "Top Fisher subspaces",
+      "object": "task generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.57,
+     "novelty": 0.65
+    },
+    "falsification_test": "Vary SAM and Top Fisher subspaces separately and together. The hypothesis fails if the joint change in model generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "model generalization"
+   },
+   {
+    "id": "784fd4f37f71",
+    "text": "ResMem and structured representation of input embeddings may jointly drive test set generalization of original prediction, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "ResMem",
+     "structured representation of input embeddings",
+     "test set generalization of original prediction"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2302-01576-p0002",
+     "arxiv-2205-10343-p0012"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2302-01576-p0002",
+      "quote": "Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.",
+      "start": 863,
+      "end": 1050,
+      "chunk_sha256": "861b02af79fe479b6c8f613c0c3d2ccbe039c0f8249a64c366104f8f9c0e7500",
+      "relation": "increases",
+      "subject": "ResMem",
+      "object": "test set generalization of original prediction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2205-10343-p0012",
+      "quote": "In Figure 3, we see that the predicted ˆAcc aligns well with the true accuracy Acc, establishing good evidence that structured representation of input embeddings leads to generalization.",
+      "start": 170,
+      "end": 356,
+      "chunk_sha256": "547f96597612ffd85fa78cb5ac8d9be686b18963acf20a19db65cac9516de105",
+      "relation": "causes",
+      "subject": "structured representation of input embeddings",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.57,
+     "novelty": 0.636
+    },
+    "falsification_test": "Vary ResMem and structured representation of input embeddings separately and together. The hypothesis fails if the joint change in test set generalization of original prediction equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "test set generalization of original prediction"
+   }
+  ],
+  "survivors": 382,
+  "candidates_generated": 1037,
   "candidates_passed": {
-   "abductive": 0,
-   "deductive": 0,
-   "pre_thinker": 0
+   "abductive": 832,
+   "deductive": 832,
+   "pre_thinker": 400
   },
-  "candidates_rejected": {},
-  "relation_edges": 408,
-  "scoped_edges": 186,
+  "candidates_rejected": {
+   "abductive:incoherent_composition": 42,
+   "abductive:no_explanatory_relation": 5,
+   "abductive:unrelated_bridge": 158,
+   "pre_thinker:circular": 17,
+   "pre_thinker:malformed": 318,
+   "pre_thinker:restates_source": 12,
+   "pre_thinker:single_source": 85
+  },
+  "relation_edges": 458,
+  "scoped_edges": 205,
   "budget_used": {
-   "rounds": 0,
-   "candidates": 0,
-   "edges": 408,
-   "bytes": 191107,
-   "seconds": 20.739
+   "rounds": 5,
+   "candidates": 1037,
+   "edges": 458,
+   "bytes": 566596,
+   "seconds": 3.781
   },
-  "incomplete": true,
-  "stop_reason": "deadline",
-  "shortage": {
-   "returned": 0,
-   "target_min": 10,
-   "reason": "Fewer candidates survived the filters than the target; the list is not padded."
-  },
+  "incomplete": false,
+  "stop_reason": null,
+  "shortage": null,
   "snapshot": {
-   "as_of": 1795252728,
+   "as_of": 1795253409,
    "chunk_count": 1652
   }
  },
- "reply": "Frontier hypotheses for generalization of overparameterized networks. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 0. Passed abductive check: 0; deductive check: 0; pre-thinker validation: 0.\n\nOnly 0 hypotheses survived the filters (target at least 10). The list is not padded.\n\nSearch incomplete: deadline. Results cover only the candidates examined before the budget stopped the run.\nNo candidate survived the filters.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+ "reply": "Frontier hypotheses for generalization of overparameterized networks. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 1037. Passed abductive check: 832; deductive check: 832; pre-thinker validation: 400.\n\n1. ensembling and ResMem may jointly drive generalization, and their effects may compound.\n[arxiv-2410-16201-p0002] In contrast to the underparameterized regime, where ensembling typically induces regularization and increases generalization, we prove with minimal assumptions that infinite ensembles of overparameterized RF regressors become pointwise equivalent to (single) infinite-width RF regressors, and finite width ensembles rapidly converge to single models with the same parameter budget.\n[arxiv-2302-01576-p0002] Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.\nFalsification test: Vary ensembling and ResMem separately and together. The hypothesis fails if the joint change in generalization equals the sum of the separate changes.\nScores: source support 0.91, deductive relevance 0.67, novelty 0.71.\n\n2. increasing overparameterization and ResMem may jointly drive generalization of SGD, and their effects may compound.\n[arxiv-2407-03848-p0004] • We show that increasing overparameterization in terms of width improves the generalization of SGD, while for randomly sampled networks, it remains mostly unaffected.\n[arxiv-2302-01576-p0002] Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.\nFalsification test: Vary increasing overparameterization and ResMem separately and together. The hypothesis fails if the joint change in generalization of SGD equals the sum of the separate changes.\nScores: source support 0.91, deductive relevance 0.67, novelty 0.63.\n\n3. ResMem may affect common wisdom through test set generalization of original prediction (read as generalization of neural networks).\n[arxiv-2302-01576-p0002] Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.\n[arxiv-2407-03848-p0003] The generalization of neural networks challenges common wisdom in classical statistical learning theory (Vapnik & Chervonenkis, 1971): the number of parameters in today’s neural networks is much larger than necessary to fit the data (Zhang et al., 2017), and further increasing network size, i.e., more overparameterization, yields better generalization (Hestness et al., 2017; Allen-Zhu et al., 2019).\nFalsification test: Compare settings where ResMem differs while other inputs are matched. The hypothesis fails if common wisdom does not change with ResMem, or if fixing test set generalization of original prediction (read as generalization of neural networks) removes no part of the effect.\nScores: source support 0.91, deductive relevance 0.62, novelty 0.62.\n\n4. P for hypotheses and ResMem may jointly drive generic generalization, and their effects may compound.\n[arxiv-2412-09810-p0013] (2023) argue for generalization to be understood using Kolmogorov complexity, and apply the Solomonoff prior, P (h) = 2−K(h) for hypotheses h to a finite hypothesis bound (Langford and Seeger, 2001) to produce a generic generalization bound based on the Kolmogorov complexity.\n[arxiv-2302-01576-p0002] Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.\nFalsification test: Vary P for hypotheses and ResMem separately and together. The hypothesis fails if the joint change in generic generalization equals the sum of the separate changes.\nScores: source support 0.91, deductive relevance 0.57, novelty 0.66.\n\n5. behavior and ResMem may jointly drive poor generalization, and their effects may compound.\n[arxiv-2412-07684-p0002] This behavior leads to poor generalization when the learned explanations rely on spurious correlations.\n[arxiv-2302-01576-p0002] Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.\nFalsification test: Vary behavior and ResMem separately and together. The hypothesis fails if the joint change in poor generalization equals the sum of the separate changes.\nScores: source support 0.91, deductive relevance 0.57, novelty 0.66.\n\n6. Neural Collapse and ResMem may jointly drive generalization, and their effects may compound.\n[arxiv-2411-13733-p0035] Neural Collapse improves the generalization bound.\n[arxiv-2302-01576-p0002] Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.\nFalsification test: Vary Neural Collapse and ResMem separately and together. The hypothesis fails if the joint change in generalization equals the sum of the separate changes.\nScores: source support 0.91, deductive relevance 0.57, novelty 0.66.\n\n7. property of Adam and ResMem may jointly drive superior generalization, and their effects may compound.\n[arxiv-2505-24022-p0003] Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.\n[arxiv-2302-01576-p0002] Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.\nFalsification test: Vary property of Adam and ResMem separately and together. The hypothesis fails if the joint change in superior generalization equals the sum of the separate changes.\nScores: source support 0.91, deductive relevance 0.57, novelty 0.63.\n\n8. individual data samples and ResMem may jointly drive generalization, and their effects may compound.\n[arxiv-2610-16161-p0026] 4 Contributions of Individual Samples 4.1 Sample Contributions to the Eigenspectrum To better understand how individual data samples contribute to generalization and the structure of the Fisher information, we examine the participation ratios associated with individual samples in the eigenspectrum of the (layerwise) Fisher.\n[arxiv-2302-01576-p0002] Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.\nFalsification test: Vary individual data samples and ResMem separately and together. The hypothesis fails if the joint change in generalization equals the sum of the separate changes.\nScores: source support 0.91, deductive relevance 0.57, novelty 0.63.\n\n9. flatness of minima of loss function and ResMem may jointly drive good generalization, and their effects may compound.\n[arxiv-1703-04933-p0002] (2017), is that the flatness of minima of the loss function found by stochastic gradient based methods results in good generalization.\n[arxiv-2302-01576-p0002] Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.\nFalsification test: Vary flatness of minima of loss function and ResMem separately and together. The hypothesis fails if the joint change in good generalization equals the sum of the separate changes.\nScores: source support 0.91, deductive relevance 0.57, novelty 0.58.\n\n10. learned activations and ResMem may jointly drive accuracy, and their effects may compound.\n[arxiv-2503-10065-p0006] (1) For regression tasks and tabular data, new learned activations greatly improve accuracy by helping learn complex functions.\n[arxiv-2302-01576-p0005] Empirically, we show that such explicit memorization indeed leads to generalization benefits: ResMem consistently improves the test accuracy of a baseline DeepNet on image classification tasks with CIFAR100 [33], and autoregressive language modeling on C4 [42] (Section 4).\nFalsification test: Vary learned activations and ResMem separately and together. The hypothesis fails if the joint change in accuracy equals the sum of the separate changes.\nScores: source support 0.91, deductive relevance 0.50, novelty 0.66.\n\n11. good match and ResMem may interact in their effect on good generalization.\n[arxiv-2403-02241-p0019] The NRS proposes that good generalization requires a good match between the complexity preferred by the architecture and the target function.\n[arxiv-2302-01576-p0002] Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.\nFalsification test: Vary good match and ResMem separately and together. The hypothesis fails if the joint change in good generalization equals the sum of the separate changes.\nScores: source support 0.91, deductive relevance 0.50, novelty 0.60.\n\n12. ResMem and training may jointly drive test accuracy of baseline, and their effects may compound.\n[arxiv-2302-01576-p0005] Empirically, we show that such explicit memorization indeed leads to generalization benefits: ResMem consistently improves the test accuracy of a baseline DeepNet on image classification tasks with CIFAR100 [33], and autoregressive language modeling on C4 [42] (Section 4).\n[arxiv-2505-24022-p0028] Table 3: Training with Adam leads to better worst-group accuracy on the original and core-only test sets, and after decoding, on the Dominoes (MNIST-CIFAR) dataset (95% spurious correlation), as compared to SGD, for a\nFalsification test: Vary ResMem and training separately and together. The hypothesis fails if the joint change in test accuracy of baseline equals the sum of the separate changes.\nScores: source support 0.91, deductive relevance 0.50, novelty 0.53.\n\n13. ResMem may affect traditional stopping criteria through test set generalization of original prediction (read as Late generalization).\n[arxiv-2302-01576-p0002] Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.\n[arxiv-2502-01774-p0007] Late generalization challenges traditional stopping criteria, which rely on monitoring training and test set losses.\nFalsification test: Compare settings where ResMem differs while other inputs are matched. The hypothesis fails if traditional stopping criteria does not change with ResMem, or if fixing test set generalization of original prediction (read as Late generalization) removes no part of the effect.\nScores: source support 0.91, deductive relevance 0.45, novelty 0.58.\n\n14. additional noise may reduce generalization error for diagonal linear networks through implicit bias.\n[arxiv-2402-08344-p0002] We theoretically analyse the solutions obtained with continuous versions of Noisy- SGD for the Linear Least Square and Diagonal Linear Network settings, and reveal that the implicit bias is indeed amplified by the additional noise.\n[arxiv-2505-21423-p0002] We furthermore prove that neither implicit bias alone minimizes the generalization error for diagonal linear networks trained on a simple regression task.\nFalsification test: Compare settings where additional noise differs while other inputs are matched. The hypothesis fails if generalization error for diagonal linear networks does not fall with additional noise, or if fixing implicit bias removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.83, novelty 0.53.\n\n15. noise may increase network size through parameters.\n[arxiv-1710-06451-p0002] We propose that the noise introduced by small mini-batches drives the parameters towards minima whose evidence is large.\n[arxiv-2407-03848-p0003] The generalization of neural networks challenges common wisdom in classical statistical learning theory (Vapnik & Chervonenkis, 1971): the number of parameters in today’s neural networks is much larger than necessary to fit the data (Zhang et al., 2017), and further increasing network size, i.e., more overparameterization, yields better generalization (Hestness et al., 2017; Allen-Zhu et al., 2019).\nFalsification test: Compare settings where noise differs while other inputs are matched. The hypothesis fails if network size does not rise with noise, or if fixing parameters removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.77, novelty 0.50.\n\n16. common wisdom and traditional stopping criteria may stand or fall together because both rest on generalization of neural networks.\n[arxiv-2407-03848-p0003] The generalization of neural networks challenges common wisdom in classical statistical learning theory (Vapnik & Chervonenkis, 1971): the number of parameters in today’s neural networks is much larger than necessary to fit the data (Zhang et al., 2017), and further increasing network size, i.e., more overparameterization, yields better generalization (Hestness et al., 2017; Allen-Zhu et al., 2019).\n[arxiv-2502-01774-p0007] Late generalization challenges traditional stopping criteria, which rely on monitoring training and test set losses.\nFalsification test: Find a position that keeps common wisdom and rejects traditional stopping criteria, or the reverse, without giving up generalization of neural networks. The hypothesis fails if such a position is coherent.\nScores: source support 0.80, deductive relevance 0.71, novelty 0.66.\n\n17. increasing overparameterization and Top Fisher subspaces may jointly drive generalization of SGD, and their effects may compound.\n[arxiv-2407-03848-p0004] • We show that increasing overparameterization in terms of width improves the generalization of SGD, while for randomly sampled networks, it remains mostly unaffected.\n[arxiv-2610-16161-p0025] Top Fisher subspaces improve task generalization (green) at the cost of performance on memorized tasks (blue).\nFalsification test: Vary increasing overparameterization and Top Fisher subspaces separately and together. The hypothesis fails if the joint change in generalization of SGD equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.67.\n\n18. increasing overparameterization and individual data samples may jointly drive generalization of SGD, and their effects may compound.\n[arxiv-2407-03848-p0004] • We show that increasing overparameterization in terms of width improves the generalization of SGD, while for randomly sampled networks, it remains mostly unaffected.\n[arxiv-2610-16161-p0026] 4 Contributions of Individual Samples 4.1 Sample Contributions to the Eigenspectrum To better understand how individual data samples contribute to generalization and the structure of the Fisher information, we examine the participation ratios associated with individual samples in the eigenspectrum of the (layerwise) Fisher.\nFalsification test: Vary increasing overparameterization and individual data samples separately and together. The hypothesis fails if the joint change in generalization of SGD equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.67.\n\n19. behavior and ensembling may jointly drive poor generalization, and their effects may compound.\n[arxiv-2412-07684-p0002] This behavior leads to poor generalization when the learned explanations rely on spurious correlations.\n[arxiv-2410-16201-p0002] In contrast to the underparameterized regime, where ensembling typically induces regularization and increases generalization, we prove with minimal assumptions that infinite ensembles of overparameterized RF regressors become pointwise equivalent to (single) infinite-width RF regressors, and finite width ensembles rapidly converge to single models with the same parameter budget.\nFalsification test: Vary behavior and ensembling separately and together. The hypothesis fails if the joint change in poor generalization equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.66.\n\n20. ERM and implicit bias of SGD may jointly drive neural networks, and their effects may compound.\n[arxiv-2412-07684-p0004] ERM enables neural networks to quickly capture spurious correlations and, with sufficient capacity, memorize the remaining examples rather than learning the true patterns that explain the entire dataset.\n[arxiv-2407-03848-p0006] In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,\nFalsification test: Vary ERM and implicit bias of SGD separately and together. The hypothesis fails if the joint change in neural networks equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.65.\n\n21. simple features xs may constrain degree of sharpening through network.\n[arxiv-2311-02622-p0007] Due to simplicity bias, the network only depends on the simple features xs for prediction.\n[arxiv-2103-00065-p0012] While the degree of sharpening depends on both the network and the task, our experiments in §4 demonstrate that progressive sharpening occurs to a dramatic degree for standard architectures on the standard dataset CIFAR-10.\nFalsification test: Compare settings where simple features xs differs while other inputs are matched. The hypothesis fails if degree of sharpening does not stay bounded with simple features xs, or if fixing network removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.64.\n\n22. spurious artifacts may constrain degree of sharpening through networks.\n[arxiv-2210-09404-p0003] Prior studies found that these networks rely on spurious artifacts that are correlated with a target label (Schölkopf et al., 2012; Lapuschkin et al., 2019; Geirhos et al., 2019, 2020, inter alia).\n[arxiv-2103-00065-p0012] While the degree of sharpening depends on both the network and the task, our experiments in §4 demonstrate that progressive sharpening occurs to a dramatic degree for standard architectures on the standard dataset CIFAR-10.\nFalsification test: Compare settings where spurious artifacts differs while other inputs are matched. The hypothesis fails if degree of sharpening does not stay bounded with spurious artifacts, or if fixing networks removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.64.\n\n23. simple features may constrain degree of sharpening through networks.\n[arxiv-2311-02622-p0018] HIERARCHICAL SIMPLICITY BIAS OF NEURAL NETWORKS ues illustrate that networks predominantly depend on simple features and largely ignore complex features.\n[arxiv-2103-00065-p0012] While the degree of sharpening depends on both the network and the task, our experiments in §4 demonstrate that progressive sharpening occurs to a dramatic degree for standard architectures on the standard dataset CIFAR-10.\nFalsification test: Compare settings where simple features differs while other inputs are matched. The hypothesis fails if degree of sharpening does not stay bounded with simple features, or if fixing networks removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.64.\n\n24. behavior and increasing overparameterization may jointly drive poor generalization, and their effects may compound.\n[arxiv-2412-07684-p0002] This behavior leads to poor generalization when the learned explanations rely on spurious correlations.\n[arxiv-2407-03848-p0004] • We show that increasing overparameterization in terms of width improves the generalization of SGD, while for randomly sampled networks, it remains mostly unaffected.\nFalsification test: Vary behavior and increasing overparameterization separately and together. The hypothesis fails if the joint change in poor generalization equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.63.\n\n25. common components may constrain networks through simplicity bias (read as implicit bias of SGD).\n[arxiv-2403-02241-p0006] • We show that the simplicity bias is not universal but depends on common components (ReLUs, residual connections, layer normalizations).\n[arxiv-2407-03848-p0006] In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,\nFalsification test: Compare settings where common components differs while other inputs are matched. The hypothesis fails if networks does not stay bounded with common components, or if fixing simplicity bias (read as implicit bias of SGD) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.60.\n\n26. flatness of minima of loss function and increasing overparameterization may jointly drive good generalization, and their effects may compound.\n[arxiv-1703-04933-p0002] (2017), is that the flatness of minima of the loss function found by stochastic gradient based methods results in good generalization.\n[arxiv-2407-03848-p0004] • We show that increasing overparameterization in terms of width improves the generalization of SGD, while for randomly sampled networks, it remains mostly unaffected.\nFalsification test: Vary flatness of minima of loss function and increasing overparameterization separately and together. The hypothesis fails if the joint change in good generalization equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.60.\n\n27. Gains in dimensional network from implicit bias of SGD may be offset by expression.\n[arxiv-2310-03789-p0022] Notably, this expression reduces the high-dimensional network posterior into a scalar probability involving only the relevant order parameter (Φ = w · w∗).\n[arxiv-2407-03848-p0006] In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,\nFalsification test: Measure dimensional network where both expression and implicit bias of SGD vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.60.\n\n28. extent of similarity and network size may move together because both depend on parameters.\n[arxiv-2402-08344-p0022] The extent of this similarity depends on the parameters used.\n[arxiv-2407-03848-p0003] The generalization of neural networks challenges common wisdom in classical statistical learning theory (Vapnik & Chervonenkis, 1971): the number of parameters in today’s neural networks is much larger than necessary to fit the data (Zhang et al., 2017), and further increasing network size, i.e., more overparameterization, yields better generalization (Hestness et al., 2017; Allen-Zhu et al., 2019).\nFalsification test: Track extent of similarity and network size across periods where parameters changes and where it does not. The hypothesis fails if they co-vary just as strongly when parameters is held fixed.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.58.\n\n29. common components may affect generalization error for diagonal linear networks through simplicity bias (read as implicit bias).\n[arxiv-2403-02241-p0006] • We show that the simplicity bias is not universal but depends on common components (ReLUs, residual connections, layer normalizations).\n[arxiv-2505-21423-p0002] We furthermore prove that neither implicit bias alone minimizes the generalization error for diagonal linear networks trained on a simple regression task.\nFalsification test: Compare settings where common components differs while other inputs are matched. The hypothesis fails if generalization error for diagonal linear networks does not change with common components, or if fixing simplicity bias (read as implicit bias) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.58.\n\n30. Using a tighter characterization of training may increase test set predictions through slower training (read as gradient based training of wide neural).\n[arxiv-1901-08584-p0002] This paper analyzes training and generalization for a simple 2-layer ReLU net with random initialization, and provides the following improvements over recent works: (i) Using a tighter characterization of training speed than recent papers, an explanation for why training a neural net with random labels leads to slower training, as originally observed in [Zhang et al.\n[arxiv-1902-06720-p0002] Furthermore, mirroring the correspondence between wide Bayesian neural networks and Gaussian processes, gradient-based training of wide neural networks with a squared loss produces test set predictions drawn from a Gaussian process with a particular compositional kernel.\nFalsification test: Compare settings where Using a tighter characterization of training differs while other inputs are matched. The hypothesis fails if test set predictions does not rise with Using a tighter characterization of training, or if fixing slower training (read as gradient based training of wide neural) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.65, novelty 0.64.\n\n31. Top Fisher subspaces may affect common wisdom through task generalization (read as generalization of neural networks).\n[arxiv-2610-16161-p0025] Top Fisher subspaces improve task generalization (green) at the cost of performance on memorized tasks (blue).\n[arxiv-2407-03848-p0003] The generalization of neural networks challenges common wisdom in classical statistical learning theory (Vapnik & Chervonenkis, 1971): the number of parameters in today’s neural networks is much larger than necessary to fit the data (Zhang et al., 2017), and further increasing network size, i.e., more overparameterization, yields better generalization (Hestness et al., 2017; Allen-Zhu et al., 2019).\nFalsification test: Compare settings where Top Fisher subspaces differs while other inputs are matched. The hypothesis fails if common wisdom does not change with Top Fisher subspaces, or if fixing task generalization (read as generalization of neural networks) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.64.\n\n32. property of Adam may affect common wisdom through superior generalization (read as generalization of neural networks).\n[arxiv-2505-24022-p0003] Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.\n[arxiv-2407-03848-p0003] The generalization of neural networks challenges common wisdom in classical statistical learning theory (Vapnik & Chervonenkis, 1971): the number of parameters in today’s neural networks is much larger than necessary to fit the data (Zhang et al., 2017), and further increasing network size, i.e., more overparameterization, yields better generalization (Hestness et al., 2017; Allen-Zhu et al., 2019).\nFalsification test: Compare settings where property of Adam differs while other inputs are matched. The hypothesis fails if common wisdom does not change with property of Adam, or if fixing superior generalization (read as generalization of neural networks) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.62.\n\n33. SAM may affect common wisdom through model generalization (read as generalization of neural networks).\n[arxiv-2010-01412-p0002] We present empirical results showing that SAM improves model generalization across a variety of benchmark datasets (e.g., CIFAR-10, CIFAR-100, ImageNet, finetuning tasks) and models, yielding novel state-of-the-art performance for several.\n[arxiv-2407-03848-p0003] The generalization of neural networks challenges common wisdom in classical statistical learning theory (Vapnik & Chervonenkis, 1971): the number of parameters in today’s neural networks is much larger than necessary to fit the data (Zhang et al., 2017), and further increasing network size, i.e., more overparameterization, yields better generalization (Hestness et al., 2017; Allen-Zhu et al., 2019).\nFalsification test: Compare settings where SAM differs while other inputs are matched. The hypothesis fails if common wisdom does not change with SAM, or if fixing model generalization (read as generalization of neural networks) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.60.\n\n34. P for hypotheses may affect common wisdom through generic generalization (read as generalization of neural networks).\n[arxiv-2412-09810-p0013] (2023) argue for generalization to be understood using Kolmogorov complexity, and apply the Solomonoff prior, P (h) = 2−K(h) for hypotheses h to a finite hypothesis bound (Langford and Seeger, 2001) to produce a generic generalization bound based on the Kolmogorov complexity.\n[arxiv-2407-03848-p0003] The generalization of neural networks challenges common wisdom in classical statistical learning theory (Vapnik & Chervonenkis, 1971): the number of parameters in today’s neural networks is much larger than necessary to fit the data (Zhang et al., 2017), and further increasing network size, i.e., more overparameterization, yields better generalization (Hestness et al., 2017; Allen-Zhu et al., 2019).\nFalsification test: Compare settings where P for hypotheses differs while other inputs are matched. The hypothesis fails if common wisdom does not change with P for hypotheses, or if fixing generic generalization (read as generalization of neural networks) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.60.\n\n35. evaluation strategies and experiments may stand or fall together because both rest on considerations.\n[arxiv-2210-09404-p0004] These considerations motivate evaluation strategies that are intrinsic to a network and indicate model generalization while not posing practical bottlenecks in terms of specialized labeled sets.\n[arxiv-2610-16161-p0005] These considerations motivate our experiments.\nFalsification test: Find a position that keeps evaluation strategies and rejects experiments, or the reverse, without giving up considerations. The hypothesis fails if such a position is coherent.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.68.\n\n36. Ameet may constrain recent breakthroughs through AI Correspondence (read as correspondence).\n[arxiv-2103-00065-p0002] Published as a conference paper at ICLR 2021 GRADIENT DESCENT ON NEURAL NETWORKS TYPI- CALLY OCCURS AT THE EDGE OF STABILITY Jeremy Cohen Simran Kaur Yuanzhi Li J. Zico Kolter1 and Ameet Talwalkar2 Carnegie Mellon University and: 1Bosch AI 2 Determined AI Correspondence to: jeremycohen@cmu.edu\n[arxiv-2110-12231-p0005] The correspondence enables exact Bayesian inference in the associated GP model for infinitewidth NNs on regression tasks and has led to some recent breakthroughs in our understanding of overparameterized NNs [Jacot et al., 2018, Lee et al., 2019, Arora et al., 2019, Belkin et al., 2018, Daniely et al., 2016, Yang and Salman, 2019, Bietti and Mairal, 2019].\nFalsification test: Compare settings where Ameet differs while other inputs are matched. The hypothesis fails if recent breakthroughs does not stay bounded with Ameet, or if fixing AI Correspondence (read as correspondence) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.66.\n\n37. Talwalkar2 may constrain recent breakthroughs through AI Correspondence (read as correspondence).\n[arxiv-2103-00065-p0002] Published as a conference paper at ICLR 2021 GRADIENT DESCENT ON NEURAL NETWORKS TYPI- CALLY OCCURS AT THE EDGE OF STABILITY Jeremy Cohen Simran Kaur Yuanzhi Li J. Zico Kolter1 and Ameet Talwalkar2 Carnegie Mellon University and: 1Bosch AI 2 Determined AI Correspondence to: jeremycohen@cmu.edu\n[arxiv-2110-12231-p0005] The correspondence enables exact Bayesian inference in the associated GP model for infinitewidth NNs on regression tasks and has led to some recent breakthroughs in our understanding of overparameterized NNs [Jacot et al., 2018, Lee et al., 2019, Arora et al., 2019, Belkin et al., 2018, Daniely et al., 2016, Yang and Salman, 2019, Bietti and Mairal, 2019].\nFalsification test: Compare settings where Talwalkar2 differs while other inputs are matched. The hypothesis fails if recent breakthroughs does not stay bounded with Talwalkar2, or if fixing AI Correspondence (read as correspondence) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.66.\n\n38. ability may constrain nonlinear decision boundary through Neural network training (read as training).\n[arxiv-1712-09913-p0002] Neural network training relies on our ability to find \"good\" minimizers of highly non-convex loss functions.\n[arxiv-2505-24022-p0006] First, we consider an MNIST-based task with a colored patch as a spurious feature and show that compared to SGD, training with Adam leads to a more nonlinear decision boundary, larger margins overall, and has better generalization on a test set with flipped correlation.\nFalsification test: Compare settings where ability differs while other inputs are matched. The hypothesis fails if nonlinear decision boundary does not stay bounded with ability, or if fixing Neural network training (read as training) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.65.\n\n39. J. Zico Kolter1 may constrain exact Bayesian inference through AI Correspondence (read as correspondence).\n[arxiv-2103-00065-p0002] Published as a conference paper at ICLR 2021 GRADIENT DESCENT ON NEURAL NETWORKS TYPI- CALLY OCCURS AT THE EDGE OF STABILITY Jeremy Cohen Simran Kaur Yuanzhi Li J. Zico Kolter1 and Ameet Talwalkar2 Carnegie Mellon University and: 1Bosch AI 2 Determined AI Correspondence to: jeremycohen@cmu.edu\n[arxiv-2110-12231-p0005] The correspondence enables exact Bayesian inference in the associated GP model for infinitewidth NNs on regression tasks and has led to some recent breakthroughs in our understanding of overparameterized NNs [Jacot et al., 2018, Lee et al., 2019, Arora et al., 2019, Belkin et al., 2018, Daniely et al., 2016, Yang and Salman, 2019, Bietti and Mairal, 2019].\nFalsification test: Compare settings where J. Zico Kolter1 differs while other inputs are matched. The hypothesis fails if exact Bayesian inference does not stay bounded with J. Zico Kolter1, or if fixing AI Correspondence (read as correspondence) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.65.\n\n40. ability may constrain larger margins through Neural network training (read as training).\n[arxiv-1712-09913-p0002] Neural network training relies on our ability to find \"good\" minimizers of highly non-convex loss functions.\n[arxiv-2505-24022-p0006] First, we consider an MNIST-based task with a colored patch as a spurious feature and show that compared to SGD, training with Adam leads to a more nonlinear decision boundary, larger margins overall, and has better generalization on a test set with flipped correlation.\nFalsification test: Compare settings where ability differs while other inputs are matched. The hypothesis fails if larger margins does not stay bounded with ability, or if fixing Neural network training (read as training) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.63.\n\n41. ability and Using a tighter characterization of training may interact in their effect on Neural network training.\n[arxiv-1712-09913-p0002] Neural network training relies on our ability to find \"good\" minimizers of highly non-convex loss functions.\n[arxiv-1901-08584-p0002] This paper analyzes training and generalization for a simple 2-layer ReLU net with random initialization, and provides the following improvements over recent works: (i) Using a tighter characterization of training speed than recent papers, an explanation for why training a neural net with random labels leads to slower training, as originally observed in [Zhang et al.\nFalsification test: Vary ability and Using a tighter characterization of training separately and together. The hypothesis fails if the joint change in Neural network training equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.60.\n\n42. expression and simple features may jointly constrain dimensional network, so relieving one may shift the bottleneck to the other.\n[arxiv-2310-03789-p0022] Notably, this expression reduces the high-dimensional network posterior into a scalar probability involving only the relevant order parameter (Φ = w · w∗).\n[arxiv-2311-02622-p0018] HIERARCHICAL SIMPLICITY BIAS OF NEURAL NETWORKS ues illustrate that networks predominantly depend on simple features and largely ignore complex features.\nFalsification test: Relieve expression alone while measuring dimensional network. The hypothesis fails if dimensional network keeps improving without simple features becoming the binding limit, or if relieving simple features alone has no effect.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.71.\n\n43. expression and spurious artifacts may jointly constrain dimensional network, so relieving one may shift the bottleneck to the other.\n[arxiv-2310-03789-p0022] Notably, this expression reduces the high-dimensional network posterior into a scalar probability involving only the relevant order parameter (Φ = w · w∗).\n[arxiv-2210-09404-p0003] Prior studies found that these networks rely on spurious artifacts that are correlated with a target label (Schölkopf et al., 2012; Lapuschkin et al., 2019; Geirhos et al., 2019, 2020, inter alia).\nFalsification test: Relieve expression alone while measuring dimensional network. The hypothesis fails if dimensional network keeps improving without spurious artifacts becoming the binding limit, or if relieving spurious artifacts alone has no effect.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.71.\n\n44. MNIST digit for classification and spurious artifacts may jointly constrain trained network, so relieving one may shift the bottleneck to the other.\n[arxiv-2311-02622-p0003] It turns out that the trained network only depends on the MNIST digit for classification.\n[arxiv-2210-09404-p0003] Prior studies found that these networks rely on spurious artifacts that are correlated with a target label (Schölkopf et al., 2012; Lapuschkin et al., 2019; Geirhos et al., 2019, 2020, inter alia).\nFalsification test: Relieve MNIST digit for classification alone while measuring trained network. The hypothesis fails if trained network keeps improving without spurious artifacts becoming the binding limit, or if relieving spurious artifacts alone has no effect.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.66.\n\n45. test set predictions and nonlinear decision boundary may move together because both depend on gradient based training of wide neural.\n[arxiv-1902-06720-p0002] Furthermore, mirroring the correspondence between wide Bayesian neural networks and Gaussian processes, gradient-based training of wide neural networks with a squared loss produces test set predictions drawn from a Gaussian process with a particular compositional kernel.\n[arxiv-2505-24022-p0006] First, we consider an MNIST-based task with a colored patch as a spurious feature and show that compared to SGD, training with Adam leads to a more nonlinear decision boundary, larger margins overall, and has better generalization on a test set with flipped correlation.\nFalsification test: Track test set predictions and nonlinear decision boundary across periods where gradient based training of wide neural changes and where it does not. The hypothesis fails if they co-vary just as strongly when gradient based training of wide neural is held fixed.\nScores: source support 0.80, deductive relevance 0.58, novelty 0.60.\n\n46. test set predictions and larger margins may move together because both depend on gradient based training of wide neural.\n[arxiv-1902-06720-p0002] Furthermore, mirroring the correspondence between wide Bayesian neural networks and Gaussian processes, gradient-based training of wide neural networks with a squared loss produces test set predictions drawn from a Gaussian process with a particular compositional kernel.\n[arxiv-2505-24022-p0006] First, we consider an MNIST-based task with a colored patch as a spurious feature and show that compared to SGD, training with Adam leads to a more nonlinear decision boundary, larger margins overall, and has better generalization on a test set with flipped correlation.\nFalsification test: Track test set predictions and larger margins across periods where gradient based training of wide neural changes and where it does not. The hypothesis fails if they co-vary just as strongly when gradient based training of wide neural is held fixed.\nScores: source support 0.80, deductive relevance 0.58, novelty 0.59.\n\n47. P for hypotheses and property of Adam may jointly drive generic generalization, and their effects may compound.\n[arxiv-2412-09810-p0013] (2023) argue for generalization to be understood using Kolmogorov complexity, and apply the Solomonoff prior, P (h) = 2−K(h) for hypotheses h to a finite hypothesis bound (Langford and Seeger, 2001) to produce a generic generalization bound based on the Kolmogorov complexity.\n[arxiv-2505-24022-p0003] Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.\nFalsification test: Vary P for hypotheses and property of Adam separately and together. The hypothesis fails if the joint change in generic generalization equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.68.\n\n48. property of Adam and Top Fisher subspaces may jointly drive superior generalization, and their effects may compound.\n[arxiv-2505-24022-p0003] Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.\n[arxiv-2610-16161-p0025] Top Fisher subspaces improve task generalization (green) at the cost of performance on memorized tasks (blue).\nFalsification test: Vary property of Adam and Top Fisher subspaces separately and together. The hypothesis fails if the joint change in superior generalization equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.67.\n\n49. SAM and Top Fisher subspaces may jointly drive model generalization, and their effects may compound.\n[arxiv-2010-01412-p0002] We present empirical results showing that SAM improves model generalization across a variety of benchmark datasets (e.g., CIFAR-10, CIFAR-100, ImageNet, finetuning tasks) and models, yielding novel state-of-the-art performance for several.\n[arxiv-2610-16161-p0025] Top Fisher subspaces improve task generalization (green) at the cost of performance on memorized tasks (blue).\nFalsification test: Vary SAM and Top Fisher subspaces separately and together. The hypothesis fails if the joint change in model generalization equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.65.\n\n50. ResMem and structured representation of input embeddings may jointly drive test set generalization of original prediction, and their effects may compound.\n[arxiv-2302-01576-p0002] Then, we empirically show that ResMem consistently improves the test set generalization of the original prediction model across standard vision and natural language processing benchmarks.\n[arxiv-2205-10343-p0012] In Figure 3, we see that the predicted ˆAcc aligns well with the true accuracy Acc, establishing good evidence that structured representation of input embeddings leads to generalization.\nFalsification test: Vary ResMem and structured representation of input embeddings separately and together. The hypothesis fails if the joint change in test set generalization of original prediction equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.64.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
 }
