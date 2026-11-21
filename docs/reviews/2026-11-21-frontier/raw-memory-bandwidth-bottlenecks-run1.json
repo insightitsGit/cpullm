@@ -1,0 +1,87 @@
+{
+ "prompt": "Frontier: memory bandwidth bottlenecks.",
+ "run": 1,
+ "wall_seconds": 4.11,
+ "python_peak_bytes": 26806812,
+ "answer_status": "insufficient_evidence",
+ "routing": {
+  "schema": "flag-routing-contract-v1",
+  "executed_nodes": [],
+  "post_stages": [
+   "frontier_snapshot",
+   "frontier_generate",
+   "frontier_abductive",
+   "frontier_deductive",
+   "frontier_pre_thinker",
+   "frontier_rank"
+  ]
+ },
+ "frontier": {
+  "schema": "frontier-v1",
+  "triggered": true,
+  "topic": "memory bandwidth bottlenecks",
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "limits": {
+   "max_rounds": 1000,
+   "max_candidates": 200000,
+   "max_edges": 50000,
+   "max_bytes": 67108864,
+   "max_seconds": 20.0,
+   "batch_size": 256,
+   "max_path_edges": 2,
+   "max_results": 50,
+   "min_results": 10
+  },
+  "topic_terms": [
+   "memory",
+   "bandwidth",
+   "bottleneck"
+  ],
+  "focus_terms": [
+   "memory",
+   "bandwidth",
+   "bottleneck"
+  ],
+  "chunk_count": 1054,
+  "status": "insufficient_evidence",
+  "hypotheses": [],
+  "survivors": 0,
+  "candidates_generated": 42,
+  "candidates_passed": {
+   "abductive": 32,
+   "deductive": 32,
+   "pre_thinker": 0
+  },
+  "candidates_rejected": {
+   "abductive:incoherent_composition": 2,
+   "abductive:no_explanatory_relation": 2,
+   "abductive:unrelated_bridge": 6,
+   "pre_thinker:malformed": 24,
+   "pre_thinker:single_source": 8
+  },
+  "relation_edges": 550,
+  "scoped_edges": 60,
+  "budget_used": {
+   "rounds": 1,
+   "candidates": 42,
+   "edges": 550,
+   "bytes": 259425,
+   "seconds": 4.023
+  },
+  "incomplete": false,
+  "stop_reason": null,
+  "shortage": {
+   "returned": 0,
+   "target_min": 10,
+   "reason": "Fewer candidates survived the filters than the target; the list is not padded."
+  },
+  "snapshot": {
+   "as_of": 1795242881,
+   "chunk_count": 1054
+  }
+ },
+ "reply": "Frontier hypotheses for memory bandwidth bottlenecks. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 42. Passed abductive check: 32; deductive check: 32; pre-thinker validation: 0.\n\nOnly 0 hypotheses survived the filters (target at least 10). The list is not padded.\nNo candidate survived the filters.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

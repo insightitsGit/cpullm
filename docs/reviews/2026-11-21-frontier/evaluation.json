@@ -1,0 +1,1445 @@
+{
+ "prompts": {
+  "Frontier: AI bottlenecks.": {
+   "status": "hypotheses",
+   "returned": 19,
+   "survivors": 19,
+   "generated": 143,
+   "passed": {
+    "abductive": 69,
+    "deductive": 69,
+    "pre_thinker": 19
+   },
+   "rejected": {
+    "abductive:incoherent_composition": 6,
+    "abductive:no_explanatory_relation": 37,
+    "abductive:unrelated_bridge": 31,
+    "pre_thinker:circular": 3,
+    "pre_thinker:malformed": 39,
+    "pre_thinker:single_source": 8
+   },
+   "relation_edges": 550,
+   "scoped_edges": 101,
+   "focus": [
+    "ai",
+    "bottleneck"
+   ],
+   "focus_fallback": false,
+   "budget_used": [
+    {
+     "rounds": 1,
+     "candidates": 143,
+     "edges": 550,
+     "bytes": 275947,
+     "seconds": 3.576
+    },
+    {
+     "rounds": 1,
+     "candidates": 143,
+     "edges": 550,
+     "bytes": 275947,
+     "seconds": 3.546
+    },
+    {
+     "rounds": 1,
+     "candidates": 143,
+     "edges": 550,
+     "bytes": 275947,
+     "seconds": 3.447
+    }
+   ],
+   "incomplete": [
+    false,
+    false,
+    false
+   ],
+   "wall_seconds": [
+    3.815,
+    3.629,
+    3.531
+   ],
+   "python_peak_mb": [
+    26.5,
+    25.6,
+    25.6
+   ],
+   "identical_ids_across_runs": true,
+   "identical_text_across_runs": true,
+   "top10": [
+    {
+     "text": "far more compute may constrain AI model’s capabilities through single training run (read as final training run).",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.65,
+      "novelty": 0.508
+     },
+     "sources": [
+      "arxiv-2402-08797-p0023",
+      "arxiv-2405-21015-p0009"
+     ],
+     "pattern": "chain",
+     "relation": "constrains",
+     "quotes": [
+      "Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.",
+      "2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial."
+     ],
+     "falsification": "Compare settings where far more compute differs while other inputs are matched. The hypothesis fails if AI model’s capabilities does not stay bounded with far more compute, or if fixing single training run (read as final training run) removes no part of the effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "large investments and tens of thousands of GPUs may jointly constrain Training advanced AI models, so relieving one may shift the bottleneck to the other.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.61,
+      "novelty": 0.65
+     },
+     "sources": [
+      "arxiv-2311-15377-p0002",
+      "arxiv-2405-10799-p0021"
+     ],
+     "pattern": "convergent",
+     "relation": "co_constrain",
+     "quotes": [
+      "Training advanced AI models requires large investments in computational resources, or compute.",
+      "AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars."
+     ],
+     "falsification": "Relieve large investments alone while measuring Training advanced AI models. The hypothesis fails if Training advanced AI models keeps improving without tens of thousands of GPUs becoming the binding limit, or if relieving tens of thousands of GPUs alone has no effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "compute used to train a model and final training run may jointly constrain capabilities, so relieving one may shift the bottleneck to the other.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.51,
+      "novelty": 0.608
+     },
+     "sources": [
+      "arxiv-2405-10799-p0007",
+      "arxiv-2405-10799-p0020",
+      "arxiv-2405-21015-p0009"
+     ],
+     "pattern": "convergent",
+     "relation": "co_constrain",
+     "quotes": [
+      "• Difficulty of circumvention: Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.",
+      "• Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.",
+      "2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial."
+     ],
+     "falsification": "Relieve compute used to train a model alone while measuring capabilities. The hypothesis fails if capabilities keeps improving without final training run becoming the binding limit, or if relieving final training run alone has no effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "Projects for civilian use may affect Training advanced AI models through Japan’s consistent investment (read as large investments).",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.49,
+      "novelty": 0.6
+     },
+     "sources": [
+      "arxiv-2402-08797-p0030",
+      "arxiv-2311-15377-p0002"
+     ],
+     "pattern": "chain",
+     "relation": "affects",
+     "quotes": [
+      "Projects for civilian use include Japan’s consistent investment in supercomputing, including the nearly $1 billion Fugaku, and Australia’s National Research Infrastructure (though these focus more on scientific computing rather than AI).",
+      "Training advanced AI models requires large investments in computational resources, or compute."
+     ],
+     "falsification": "Compare settings where Projects for civilian use differs while other inputs are matched. The hypothesis fails if Training advanced AI models does not change with Projects for civilian use, or if fixing Japan’s consistent investment (read as large investments) removes no part of the effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "data and tens of thousands of GPUs may interact in their effect on training increasingly large models.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.43,
+      "novelty": 0.55
+     },
+     "sources": [
+      "arxiv-2112-06905-p0008",
+      "arxiv-2405-10799-p0021"
+     ],
+     "pattern": "convergent",
+     "relation": "jointly_affect",
+     "quotes": [
+      "The abundance of compute and data enables training increasingly large models via unsupervised pre-training.",
+      "AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars."
+     ],
+     "falsification": "Vary data and tens of thousands of GPUs separately and together. The hypothesis fails if the joint change in training increasingly large models equals the sum of the separate changes.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "data and large investments may interact in their effect on training increasingly large models.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.43,
+      "novelty": 0.488
+     },
+     "sources": [
+      "arxiv-2112-06905-p0008",
+      "arxiv-2311-15377-p0002"
+     ],
+     "pattern": "convergent",
+     "relation": "jointly_affect",
+     "quotes": [
+      "The abundance of compute and data enables training increasingly large models via unsupervised pre-training.",
+      "Training advanced AI models requires large investments in computational resources, or compute."
+     ],
+     "falsification": "Vary data and large investments separately and together. The hypothesis fails if the joint change in training increasingly large models equals the sum of the separate changes.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "how an AI system interacts and Large compute investors should help may jointly constrain Risks, so relieving one may shift the bottleneck to the other.",
+     "scores": {
+      "source_support": 0.55,
+      "deductive_relevance": 0.7,
+      "novelty": 0.65
+     },
+     "sources": [
+      "arxiv-2305-15324-p0041",
+      "arxiv-2311-15377-p0012"
+     ],
+     "pattern": "convergent",
+     "relation": "co_constrain",
+     "quotes": [
+      "Risks will depend on how an AI system interacts with a complex world.",
+      "• Large compute investors should help mitigate risks from the proliferation of advanced capabilities."
+     ],
+     "falsification": "Relieve how an AI system interacts alone while measuring Risks. The hypothesis fails if Risks keeps improving without Large compute investors should help becoming the binding limit, or if relieving Large compute investors should help alone has no effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term."
+    },
+    {
+     "text": "Gains in capabilities from progress in AI development may be offset by compute used to train a model.",
+     "scores": {
+      "source_support": 0.55,
+      "deductive_relevance": 0.675,
+      "novelty": 0.628
+     },
+     "sources": [
+      "arxiv-2405-10799-p0007",
+      "arxiv-2405-10799-p0020",
+      "arxiv-2305-15324-p0003"
+     ],
+     "pattern": "convergent",
+     "relation": "offset",
+     "quotes": [
+      "• Difficulty of circumvention: Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.",
+      "• Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.",
+      "Further progress in AI development could lead to capabilities that pose extreme risks, such as offensive cyber capabilities or strong manipulation skills."
+     ],
+     "falsification": "Measure capabilities where both compute used to train a model and progress in AI development vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term."
+    },
+    {
+     "text": "governance functions and how an AI system interacts may jointly constrain managing its risks, so relieving one may shift the bottleneck to the other.",
+     "scores": {
+      "source_support": 0.55,
+      "deductive_relevance": 0.61,
+      "novelty": 0.658
+     },
+     "sources": [
+      "arxiv-2307-04699-p0011",
+      "arxiv-2305-15324-p0041"
+     ],
+     "pattern": "convergent",
+     "relation": "co_constrain",
+     "quotes": [
+      "Because of characteristics like its high barriers to development/utilization and the possibility of cross-border use, it is possible that harnessing AI’s potential for global benefit and managing its risks could require governance functions at the international level.",
+      "Risks will depend on how an AI system interacts with a complex world."
+     ],
+     "falsification": "Relieve governance functions alone while measuring managing its risks. The hypothesis fails if managing its risks keeps improving without how an AI system interacts becoming the binding limit, or if relieving how an AI system interacts alone has no effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "concrete discussion of how to better and Large compute investors should help may jointly constrain risks of advanced AI systems, so relieving one may shift the bottleneck to the other.",
+     "scores": {
+      "source_support": 0.55,
+      "deductive_relevance": 0.61,
+      "novelty": 0.656
+     },
+     "sources": [
+      "arxiv-2307-03718-p0007",
+      "arxiv-2311-15377-p0012"
+     ],
+     "pattern": "convergent",
+     "relation": "co_constrain",
+     "quotes": [
+      "While we remain uncertain about many aspects of the ideas in this paper, we hope it can contribute to a more informed and concrete discussion of how to better govern the risks of advanced AI systems while enabling the benefits of innovation to society.",
+      "• Large compute investors should help mitigate risks from the proliferation of advanced capabilities."
+     ],
+     "falsification": "Relieve concrete discussion of how to better alone while measuring risks of advanced AI systems. The hypothesis fails if risks of advanced AI systems keeps improving without Large compute investors should help becoming the binding limit, or if relieving Large compute investors should help alone has no effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    }
+   ]
+  },
+  "Frontier: AI energy bottlenecks.": {
+   "status": "hypotheses",
+   "returned": 23,
+   "survivors": 23,
+   "generated": 196,
+   "passed": {
+    "abductive": 94,
+    "deductive": 86,
+    "pre_thinker": 23
+   },
+   "rejected": {
+    "abductive:incoherent_composition": 9,
+    "abductive:no_explanatory_relation": 49,
+    "abductive:unrelated_bridge": 44,
+    "deductive:premise_contradicted": 8,
+    "pre_thinker:circular": 3,
+    "pre_thinker:malformed": 51,
+    "pre_thinker:single_source": 9
+   },
+   "relation_edges": 550,
+   "scoped_edges": 134,
+   "focus": [
+    "ai",
+    "energy",
+    "bottleneck"
+   ],
+   "focus_fallback": false,
+   "budget_used": [
+    {
+     "rounds": 1,
+     "candidates": 196,
+     "edges": 550,
+     "bytes": 279485,
+     "seconds": 3.29
+    },
+    {
+     "rounds": 1,
+     "candidates": 196,
+     "edges": 550,
+     "bytes": 279485,
+     "seconds": 3.6
+    },
+    {
+     "rounds": 1,
+     "candidates": 196,
+     "edges": 550,
+     "bytes": 279485,
+     "seconds": 3.61
+    }
+   ],
+   "incomplete": [
+    false,
+    false,
+    false
+   ],
+   "wall_seconds": [
+    3.376,
+    3.693,
+    3.703
+   ],
+   "python_peak_mb": [
+    25.6,
+    25.6,
+    25.6
+   ],
+   "identical_ids_across_runs": true,
+   "identical_text_across_runs": true,
+   "top10": [
+    {
+     "text": "far more compute may constrain AI model’s capabilities through single training run (read as final training run).",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.567,
+      "novelty": 0.508
+     },
+     "sources": [
+      "arxiv-2402-08797-p0023",
+      "arxiv-2405-21015-p0009"
+     ],
+     "pattern": "chain",
+     "relation": "constrains",
+     "quotes": [
+      "Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.",
+      "2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial."
+     ],
+     "falsification": "Compare settings where far more compute differs while other inputs are matched. The hypothesis fails if AI model’s capabilities does not stay bounded with far more compute, or if fixing single training run (read as final training run) removes no part of the effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "large investments and tens of thousands of GPUs may jointly constrain Training advanced AI models, so relieving one may shift the bottleneck to the other.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.527,
+      "novelty": 0.65
+     },
+     "sources": [
+      "arxiv-2311-15377-p0002",
+      "arxiv-2405-10799-p0021"
+     ],
+     "pattern": "convergent",
+     "relation": "co_constrain",
+     "quotes": [
+      "Training advanced AI models requires large investments in computational resources, or compute.",
+      "AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars."
+     ],
+     "falsification": "Relieve large investments alone while measuring Training advanced AI models. The hypothesis fails if Training advanced AI models keeps improving without tens of thousands of GPUs becoming the binding limit, or if relieving tens of thousands of GPUs alone has no effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "large investments and splitting the model’s weights may jointly constrain Training advanced AI models, so relieving one may shift the bottleneck to the other.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.527,
+      "novelty": 0.636
+     },
+     "sources": [
+      "arxiv-2311-15377-p0002",
+      "arxiv-2303-11341-p0023"
+     ],
+     "pattern": "convergent",
+     "relation": "co_constrain",
+     "quotes": [
+      "Training advanced AI models requires large investments in computational resources, or compute.",
+      "Large NNs have too many weights to fit in the high-bandwidth memory of a single ML device, so efficiently training a model requires splitting the model’s weights into weight shards, and placing a shard on each chip [57]."
+     ],
+     "falsification": "Relieve large investments alone while measuring Training advanced AI models. The hypothesis fails if Training advanced AI models keeps improving without splitting the model’s weights becoming the binding limit, or if relieving splitting the model’s weights alone has no effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "accuracy improvements and certain groups’ ability may move together because both depend on availability of exceptionally large computational resources.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.52,
+      "novelty": 0.564
+     },
+     "sources": [
+      "arxiv-1906-02243-p0002",
+      "arxiv-2307-04699-p0012"
+     ],
+     "pattern": "divergent",
+     "relation": "common_driver",
+     "quotes": [
+      "However, these accuracy improvements depend on the availability of exceptionally large computational resources that necessitate similarly substantial energy consumption.",
+      "Inadequate access to internet services, computing power, or availability of machine learning training/expertise will also hinder certain groups’ ability to benefit fully from AI advances."
+     ],
+     "falsification": "Track accuracy improvements and certain groups’ ability across periods where availability of exceptionally large computational resources changes and where it does not. The hypothesis fails if they co-vary just as strongly when availability of exceptionally large computational resources is held fixed.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "splitting the model’s weights and tens of thousands of GPUs may jointly constrain training a model, so relieving one may shift the bottleneck to the other.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.46,
+      "novelty": 0.658
+     },
+     "sources": [
+      "arxiv-2303-11341-p0023",
+      "arxiv-2405-10799-p0021"
+     ],
+     "pattern": "convergent",
+     "relation": "co_constrain",
+     "quotes": [
+      "Large NNs have too many weights to fit in the high-bandwidth memory of a single ML device, so efficiently training a model requires splitting the model’s weights into weight shards, and placing a shard on each chip [57].",
+      "AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars."
+     ],
+     "falsification": "Relieve splitting the model’s weights alone while measuring training a model. The hypothesis fails if training a model keeps improving without tens of thousands of GPUs becoming the binding limit, or if relieving tens of thousands of GPUs alone has no effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "compute used to train a model and final training run may jointly constrain capabilities, so relieving one may shift the bottleneck to the other.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.46,
+      "novelty": 0.608
+     },
+     "sources": [
+      "arxiv-2405-10799-p0007",
+      "arxiv-2405-10799-p0020",
+      "arxiv-2405-21015-p0009"
+     ],
+     "pattern": "convergent",
+     "relation": "co_constrain",
+     "quotes": [
+      "• Difficulty of circumvention: Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.",
+      "• Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.",
+      "2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial."
+     ],
+     "falsification": "Relieve compute used to train a model alone while measuring capabilities. The hypothesis fails if capabilities keeps improving without final training run becoming the binding limit, or if relieving final training run alone has no effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "Projects for civilian use may affect Training advanced AI models through Japan’s consistent investment (read as large investments).",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.407,
+      "novelty": 0.6
+     },
+     "sources": [
+      "arxiv-2402-08797-p0030",
+      "arxiv-2311-15377-p0002"
+     ],
+     "pattern": "chain",
+     "relation": "affects",
+     "quotes": [
+      "Projects for civilian use include Japan’s consistent investment in supercomputing, including the nearly $1 billion Fugaku, and Australia’s National Research Infrastructure (though these focus more on scientific computing rather than AI).",
+      "Training advanced AI models requires large investments in computational resources, or compute."
+     ],
+     "falsification": "Compare settings where Projects for civilian use differs while other inputs are matched. The hypothesis fails if Training advanced AI models does not change with Projects for civilian use, or if fixing Japan’s consistent investment (read as large investments) removes no part of the effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "data and tens of thousands of GPUs may interact in their effect on training increasingly large models.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.38,
+      "novelty": 0.55
+     },
+     "sources": [
+      "arxiv-2112-06905-p0008",
+      "arxiv-2405-10799-p0021"
+     ],
+     "pattern": "convergent",
+     "relation": "jointly_affect",
+     "quotes": [
+      "The abundance of compute and data enables training increasingly large models via unsupervised pre-training.",
+      "AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars."
+     ],
+     "falsification": "Vary data and tens of thousands of GPUs separately and together. The hypothesis fails if the joint change in training increasingly large models equals the sum of the separate changes.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "data and large investments may interact in their effect on training increasingly large models.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.38,
+      "novelty": 0.488
+     },
+     "sources": [
+      "arxiv-2112-06905-p0008",
+      "arxiv-2311-15377-p0002"
+     ],
+     "pattern": "convergent",
+     "relation": "jointly_affect",
+     "quotes": [
+      "The abundance of compute and data enables training increasingly large models via unsupervised pre-training.",
+      "Training advanced AI models requires large investments in computational resources, or compute."
+     ],
+     "falsification": "Vary data and large investments separately and together. The hypothesis fails if the joint change in training increasingly large models equals the sum of the separate changes.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "how an AI system interacts and Large compute investors should help may jointly constrain Risks, so relieving one may shift the bottleneck to the other.",
+     "scores": {
+      "source_support": 0.55,
+      "deductive_relevance": 0.617,
+      "novelty": 0.65
+     },
+     "sources": [
+      "arxiv-2305-15324-p0041",
+      "arxiv-2311-15377-p0012"
+     ],
+     "pattern": "convergent",
+     "relation": "co_constrain",
+     "quotes": [
+      "Risks will depend on how an AI system interacts with a complex world.",
+      "• Large compute investors should help mitigate risks from the proliferation of advanced capabilities."
+     ],
+     "falsification": "Relieve how an AI system interacts alone while measuring Risks. The hypothesis fails if Risks keeps improving without Large compute investors should help becoming the binding limit, or if relieving Large compute investors should help alone has no effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term."
+    }
+   ]
+  },
+  "Frontier: memory bandwidth bottlenecks.": {
+   "status": "insufficient_evidence",
+   "returned": 0,
+   "survivors": 0,
+   "generated": 42,
+   "passed": {
+    "abductive": 32,
+    "deductive": 32,
+    "pre_thinker": 0
+   },
+   "rejected": {
+    "abductive:incoherent_composition": 2,
+    "abductive:no_explanatory_relation": 2,
+    "abductive:unrelated_bridge": 6,
+    "pre_thinker:malformed": 24,
+    "pre_thinker:single_source": 8
+   },
+   "relation_edges": 550,
+   "scoped_edges": 60,
+   "focus": [
+    "memory",
+    "bandwidth",
+    "bottleneck"
+   ],
+   "focus_fallback": false,
+   "budget_used": [
+    {
+     "rounds": 1,
+     "candidates": 42,
+     "edges": 550,
+     "bytes": 259425,
+     "seconds": 4.023
+    },
+    {
+     "rounds": 1,
+     "candidates": 42,
+     "edges": 550,
+     "bytes": 259425,
+     "seconds": 3.385
+    },
+    {
+     "rounds": 1,
+     "candidates": 42,
+     "edges": 550,
+     "bytes": 259425,
+     "seconds": 3.41
+    }
+   ],
+   "incomplete": [
+    false,
+    false,
+    false
+   ],
+   "wall_seconds": [
+    4.11,
+    3.476,
+    3.504
+   ],
+   "python_peak_mb": [
+    25.6,
+    25.6,
+    25.5
+   ],
+   "identical_ids_across_runs": true,
+   "identical_text_across_runs": true,
+   "top10": []
+  },
+  "Frontier: training data supply.": {
+   "status": "hypotheses",
+   "returned": 50,
+   "survivors": 62,
+   "generated": 611,
+   "passed": {
+    "abductive": 230,
+    "deductive": 230,
+    "pre_thinker": 62
+   },
+   "rejected": {
+    "abductive:incoherent_composition": 25,
+    "abductive:no_explanatory_relation": 115,
+    "abductive:unrelated_bridge": 241,
+    "pre_thinker:circular": 2,
+    "pre_thinker:malformed": 156,
+    "pre_thinker:restates_source": 2,
+    "pre_thinker:single_source": 8
+   },
+   "relation_edges": 550,
+   "scoped_edges": 168,
+   "focus": [
+    "training",
+    "data",
+    "supply"
+   ],
+   "focus_fallback": false,
+   "budget_used": [
+    {
+     "rounds": 3,
+     "candidates": 611,
+     "edges": 550,
+     "bytes": 314309,
+     "seconds": 3.569
+    },
+    {
+     "rounds": 3,
+     "candidates": 611,
+     "edges": 550,
+     "bytes": 314309,
+     "seconds": 3.549
+    },
+    {
+     "rounds": 3,
+     "candidates": 611,
+     "edges": 550,
+     "bytes": 314309,
+     "seconds": 3.723
+    }
+   ],
+   "incomplete": [
+    false,
+    false,
+    false
+   ],
+   "wall_seconds": [
+    3.655,
+    3.634,
+    3.809
+   ],
+   "python_peak_mb": [
+    25.6,
+    25.6,
+    25.6
+   ],
+   "identical_ids_across_runs": true,
+   "identical_text_across_runs": true,
+   "top10": [
+    {
+     "text": "Global deduplication upsamples may reduce training increasingly large models through quality data (read as data).",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.733,
+      "novelty": 0.642
+     },
+     "sources": [
+      "arxiv-2406-17557-p0018",
+      "arxiv-2112-06905-p0008"
+     ],
+     "pattern": "chain",
+     "relation": "decreases",
+     "quotes": [
+      "Global deduplication upsamples lower-quality data in the last deduplicated crawl, resulting in worse performance of the retained data compared to the removed",
+      "The abundance of compute and data enables training increasingly large models via unsupervised pre-training."
+     ],
+     "falsification": "Compare settings where Global deduplication upsamples differs while other inputs are matched. The hypothesis fails if training increasingly large models does not fall with Global deduplication upsamples, or if fixing quality data (read as data) removes no part of the effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "GLaM MoE models and central ingredient our model may move together because both depend on less data.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.653,
+      "novelty": 0.65
+     },
+     "sources": [
+      "arxiv-2112-06905-p0024",
+      "arxiv-2306-11644-p0006"
+     ],
+     "pattern": "divergent",
+     "relation": "common_driver",
+     "quotes": [
+      "We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.",
+      "As alluded to in the title of the paper, the central ingredient our model relies on textbook-quality training data."
+     ],
+     "falsification": "Track GLaM MoE models and central ingredient our model across periods where less data changes and where it does not. The hypothesis fails if they co-vary just as strongly when less data is held fixed.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "GLaM MoE models and NNs may move together because both depend on less data.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.653,
+      "novelty": 0.628
+     },
+     "sources": [
+      "arxiv-2112-06905-p0024",
+      "arxiv-2403-14123-p0011"
+     ],
+     "pattern": "divergent",
+     "relation": "common_driver",
+     "quotes": [
+      "We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.",
+      "Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient."
+     ],
+     "falsification": "Track GLaM MoE models and NNs across periods where less data changes and where it does not. The hypothesis fails if they co-vary just as strongly when less data is held fixed.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "training increasingly large models and central ingredient our model may move together because both depend on data.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.653,
+      "novelty": 0.623
+     },
+     "sources": [
+      "arxiv-2112-06905-p0008",
+      "arxiv-2306-11644-p0006"
+     ],
+     "pattern": "divergent",
+     "relation": "common_driver",
+     "quotes": [
+      "The abundance of compute and data enables training increasingly large models via unsupervised pre-training.",
+      "As alluded to in the title of the paper, the central ingredient our model relies on textbook-quality training data."
+     ],
+     "falsification": "Track training increasingly large models and central ingredient our model across periods where data changes and where it does not. The hypothesis fails if they co-vary just as strongly when data is held fixed.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "sequence parallelism of the Transformer architecture may increase substantial boost through parallel training (read as training on CodeExercises).",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.647,
+      "novelty": 0.6
+     },
+     "sources": [
+      "arxiv-2211-05102-p0004",
+      "arxiv-2306-11644-p0023"
+     ],
+     "pattern": "chain",
+     "relation": "increases",
+     "quotes": [
+      "While the sequence parallelism of the Transformer architecture enables highly parallel training, efficient deployment of these models is challenging in practice because generative inference proceeds one token at a time and the computation for each token sequentially depends on the previously generated tokens.",
+      "5 Data pruning for unbiased performance evaluation In Figure 2.1, we see that training on CodeExercises leads to a substantial boost in the performance of the model on the HumanEval benchmark."
+     ],
+     "falsification": "Compare settings where sequence parallelism of the Transformer architecture differs while other inputs are matched. The hypothesis fails if substantial boost does not rise with sequence parallelism of the Transformer architecture, or if fixing parallel training (read as training on CodeExercises) removes no part of the effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "training increasingly large models and NNs may move together because both depend on data.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.653,
+      "novelty": 0.6
+     },
+     "sources": [
+      "arxiv-2112-06905-p0008",
+      "arxiv-2403-14123-p0011"
+     ],
+     "pattern": "divergent",
+     "relation": "common_driver",
+     "quotes": [
+      "The abundance of compute and data enables training increasingly large models via unsupervised pre-training.",
+      "Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient."
+     ],
+     "falsification": "Track training increasingly large models and NNs across periods where data changes and where it does not. The hypothesis fails if they co-vary just as strongly when data is held fixed.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "central ingredient our model and NNs may move together because both depend on textbook-quality training data.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.653,
+      "novelty": 0.577
+     },
+     "sources": [
+      "arxiv-2306-11644-p0006",
+      "arxiv-2403-14123-p0011"
+     ],
+     "pattern": "divergent",
+     "relation": "common_driver",
+     "quotes": [
+      "As alluded to in the title of the paper, the central ingredient our model relies on textbook-quality training data.",
+      "Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient."
+     ],
+     "falsification": "Track central ingredient our model and NNs across periods where textbook-quality training data changes and where it does not. The hypothesis fails if they co-vary just as strongly when textbook-quality training data is held fixed.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "estimate may affect training increasingly large models through data.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.633,
+      "novelty": 0.488
+     },
+     "sources": [
+      "arxiv-2211-04325-p0019",
+      "arxiv-2112-06905-p0008"
+     ],
+     "pattern": "chain",
+     "relation": "affects",
+     "quotes": [
+      "This estimate includes both data on the indexed web and the deep web, and therefore serves as an upper bound on the size of",
+      "The abundance of compute and data enables training increasingly large models via unsupervised pre-training."
+     ],
+     "falsification": "Compare settings where estimate differs while other inputs are matched. The hypothesis fails if training increasingly large models does not change with estimate, or if fixing data removes no part of the effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term."
+    },
+    {
+     "text": "Global deduplication upsamples may affect NNs through quality data (read as training data).",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.613,
+      "novelty": 0.65
+     },
+     "sources": [
+      "arxiv-2406-17557-p0018",
+      "arxiv-2403-14123-p0011"
+     ],
+     "pattern": "chain",
+     "relation": "affects",
+     "quotes": [
+      "Global deduplication upsamples lower-quality data in the last deduplicated crawl, resulting in worse performance of the retained data compared to the removed",
+      "Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient."
+     ],
+     "falsification": "Compare settings where Global deduplication upsamples differs while other inputs are matched. The hypothesis fails if NNs does not change with Global deduplication upsamples, or if fixing quality data (read as training data) removes no part of the effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "Global deduplication upsamples may affect central ingredient our model through quality data (read as textbook-quality training data).",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.613,
+      "novelty": 0.619
+     },
+     "sources": [
+      "arxiv-2406-17557-p0018",
+      "arxiv-2306-11644-p0006"
+     ],
+     "pattern": "chain",
+     "relation": "affects",
+     "quotes": [
+      "Global deduplication upsamples lower-quality data in the last deduplicated crawl, resulting in worse performance of the retained data compared to the removed",
+      "As alluded to in the title of the paper, the central ingredient our model relies on textbook-quality training data."
+     ],
+     "falsification": "Compare settings where Global deduplication upsamples differs while other inputs are matched. The hypothesis fails if central ingredient our model does not change with Global deduplication upsamples, or if fixing quality data (read as textbook-quality training data) removes no part of the effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    }
+   ]
+  },
+  "Frontier: AI compute cost.": {
+   "status": "hypotheses",
+   "returned": 50,
+   "survivors": 63,
+   "generated": 393,
+   "passed": {
+    "abductive": 206,
+    "deductive": 206,
+    "pre_thinker": 63
+   },
+   "rejected": {
+    "abductive:incoherent_composition": 29,
+    "abductive:no_explanatory_relation": 84,
+    "abductive:unrelated_bridge": 74,
+    "pre_thinker:circular": 3,
+    "pre_thinker:malformed": 121,
+    "pre_thinker:restates_source": 3,
+    "pre_thinker:single_source": 16
+   },
+   "relation_edges": 550,
+   "scoped_edges": 161,
+   "focus": [
+    "ai",
+    "compute",
+    "cost"
+   ],
+   "focus_fallback": false,
+   "budget_used": [
+    {
+     "rounds": 2,
+     "candidates": 393,
+     "edges": 550,
+     "bytes": 315952,
+     "seconds": 3.43
+    },
+    {
+     "rounds": 2,
+     "candidates": 393,
+     "edges": 550,
+     "bytes": 315952,
+     "seconds": 3.588
+    },
+    {
+     "rounds": 2,
+     "candidates": 393,
+     "edges": 550,
+     "bytes": 315952,
+     "seconds": 3.54
+    }
+   ],
+   "incomplete": [
+    false,
+    false,
+    false
+   ],
+   "wall_seconds": [
+    3.512,
+    3.673,
+    3.624
+   ],
+   "python_peak_mb": [
+    25.6,
+    25.6,
+    25.6
+   ],
+   "identical_ids_across_runs": true,
+   "identical_text_across_runs": true,
+   "top10": [
+    {
+     "text": "far more compute may constrain AI model’s capabilities through single training run (read as final training run).",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.833,
+      "novelty": 0.508
+     },
+     "sources": [
+      "arxiv-2402-08797-p0023",
+      "arxiv-2405-21015-p0009"
+     ],
+     "pattern": "chain",
+     "relation": "constrains",
+     "quotes": [
+      "Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.",
+      "2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial."
+     ],
+     "falsification": "Compare settings where far more compute differs while other inputs are matched. The hypothesis fails if AI model’s capabilities does not stay bounded with far more compute, or if fixing single training run (read as final training run) removes no part of the effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "large investments and tens of thousands of GPUs may jointly constrain Training advanced AI models, so relieving one may shift the bottleneck to the other.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.727,
+      "novelty": 0.65
+     },
+     "sources": [
+      "arxiv-2311-15377-p0002",
+      "arxiv-2405-10799-p0021"
+     ],
+     "pattern": "convergent",
+     "relation": "co_constrain",
+     "quotes": [
+      "Training advanced AI models requires large investments in computational resources, or compute.",
+      "AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars."
+     ],
+     "falsification": "Relieve large investments alone while measuring Training advanced AI models. The hypothesis fails if Training advanced AI models keeps improving without tens of thousands of GPUs becoming the binding limit, or if relieving tens of thousands of GPUs alone has no effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "compute used to train a model and final training run may jointly constrain capabilities, so relieving one may shift the bottleneck to the other.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.727,
+      "novelty": 0.608
+     },
+     "sources": [
+      "arxiv-2405-10799-p0007",
+      "arxiv-2405-10799-p0020",
+      "arxiv-2405-21015-p0009"
+     ],
+     "pattern": "convergent",
+     "relation": "co_constrain",
+     "quotes": [
+      "• Difficulty of circumvention: Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.",
+      "• Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.",
+      "2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial."
+     ],
+     "falsification": "Relieve compute used to train a model alone while measuring capabilities. The hypothesis fails if capabilities keeps improving without final training run becoming the binding limit, or if relieving final training run alone has no effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "matrix-vector products may constrain single training run through compute (read as far more compute).",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.667,
+      "novelty": 0.6
+     },
+     "sources": [
+      "arxiv-2210-17323-p0023",
+      "arxiv-2402-08797-p0023"
+     ],
+     "pattern": "chain",
+     "relation": "constrains",
+     "quotes": [
+      "Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products.",
+      "Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference."
+     ],
+     "falsification": "Compare settings where matrix-vector products differs while other inputs are matched. The hypothesis fails if single training run does not stay bounded with matrix-vector products, or if fixing compute (read as far more compute) removes no part of the effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "investment may constrain single training run through increased compute (read as far more compute).",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.667,
+      "novelty": 0.55
+     },
+     "sources": [
+      "arxiv-2010-15581-p0014",
+      "arxiv-2402-08797-p0023"
+     ],
+     "pattern": "chain",
+     "relation": "constrains",
+     "quotes": [
+      "However, this increased compute requires significant investment in relevant technologies such as GPUs or compute cloud.",
+      "Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference."
+     ],
+     "falsification": "Compare settings where investment differs while other inputs are matched. The hypothesis fails if single training run does not stay bounded with investment, or if fixing increased compute (read as far more compute) removes no part of the effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "increased compute and Training advanced AI models may move together because both depend on investment.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.653,
+      "novelty": 0.527
+     },
+     "sources": [
+      "arxiv-2010-15581-p0014",
+      "arxiv-2311-15377-p0002"
+     ],
+     "pattern": "divergent",
+     "relation": "common_driver",
+     "quotes": [
+      "However, this increased compute requires significant investment in relevant technologies such as GPUs or compute cloud.",
+      "Training advanced AI models requires large investments in computational resources, or compute."
+     ],
+     "falsification": "Track increased compute and Training advanced AI models across periods where investment changes and where it does not. The hypothesis fails if they co-vary just as strongly when investment is held fixed.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "rapid growth and Training advanced AI models may move together because both depend on increased investments.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.587,
+      "novelty": 0.55
+     },
+     "sources": [
+      "arxiv-2405-10799-p0016",
+      "arxiv-2311-15377-p0002"
+     ],
+     "pattern": "divergent",
+     "relation": "common_driver",
+     "quotes": [
+      "This rapid growth is largely driven by increased investments in computational resources for training larger models, which have demonstrated improved capabilities (figure from Sastry et al.",
+      "Training advanced AI models requires large investments in computational resources, or compute."
+     ],
+     "falsification": "Track rapid growth and Training advanced AI models across periods where increased investments changes and where it does not. The hypothesis fails if they co-vary just as strongly when increased investments is held fixed.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "data and tens of thousands of GPUs may interact in their effect on training increasingly large models.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.58,
+      "novelty": 0.55
+     },
+     "sources": [
+      "arxiv-2112-06905-p0008",
+      "arxiv-2405-10799-p0021"
+     ],
+     "pattern": "convergent",
+     "relation": "jointly_affect",
+     "quotes": [
+      "The abundance of compute and data enables training increasingly large models via unsupervised pre-training.",
+      "AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars."
+     ],
+     "falsification": "Vary data and tens of thousands of GPUs separately and together. The hypothesis fails if the joint change in training increasingly large models equals the sum of the separate changes.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "dequantization may affect single training run through extra compute (read as far more compute).",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.547,
+      "novelty": 0.6
+     },
+     "sources": [
+      "arxiv-2210-17323-p0023",
+      "arxiv-2402-08797-p0023"
+     ],
+     "pattern": "chain",
+     "relation": "affects",
+     "quotes": [
+      "While dequantization consumes extra compute, the kernel has to access a lot less memory, leading to significant speedups, as shown in Table 6.",
+      "Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference."
+     ],
+     "falsification": "Compare settings where dequantization differs while other inputs are matched. The hypothesis fails if single training run does not change with dequantization, or if fixing extra compute (read as far more compute) removes no part of the effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    },
+    {
+     "text": "investment and matrix-vector products may jointly constrain increased compute, so relieving one may shift the bottleneck to the other.",
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.527,
+      "novelty": 0.714
+     },
+     "sources": [
+      "arxiv-2010-15581-p0014",
+      "arxiv-2210-17323-p0023"
+     ],
+     "pattern": "convergent",
+     "relation": "co_constrain",
+     "quotes": [
+      "However, this increased compute requires significant investment in relevant technologies such as GPUs or compute cloud.",
+      "Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products."
+     ],
+     "falsification": "Relieve investment alone while measuring increased compute. The hypothesis fails if increased compute keeps improving without matrix-vector products becoming the binding limit, or if relieving matrix-vector products alone has no effect.",
+     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity."
+    }
+   ]
+  }
+ },
+ "holdout": {
+  "H1": {
+   "finding": "Memory bandwidth, not compute, has become the primary bottleneck for LLM serving and decoder inference.",
+   "full": [],
+   "partial": []
+  },
+  "H2": {
+   "finding": "At a fixed compute budget, model size and training tokens should scale equally; many large models are undertrained for lack of data.",
+   "full": [],
+   "partial": [
+    [
+     "data and tens of thousands of GPUs may interact in their effect on training increasingly large models.",
+     [
+      "Frontier: AI bottlenecks.",
+      "Frontier: AI energy bottlenecks.",
+      "Frontier: training data supply.",
+      "Frontier: AI compute cost."
+     ]
+    ],
+    [
+     "data and large investments may interact in their effect on training increasingly large models.",
+     [
+      "Frontier: AI bottlenecks.",
+      "Frontier: AI energy bottlenecks.",
+      "Frontier: training data supply.",
+      "Frontier: AI compute cost."
+     ]
+    ],
+    [
+     "Global deduplication upsamples may reduce training increasingly large models through quality data (read as data).",
+     [
+      "Frontier: training data supply."
+     ]
+    ],
+    [
+     "GLaM MoE models and central ingredient our model may move together because both depend on less data.",
+     [
+      "Frontier: training data supply."
+     ]
+    ],
+    [
+     "GLaM MoE models and NNs may move together because both depend on less data.",
+     [
+      "Frontier: training data supply."
+     ]
+    ],
+    [
+     "training increasingly large models and central ingredient our model may move together because both depend on data.",
+     [
+      "Frontier: training data supply."
+     ]
+    ],
+    [
+     "training increasingly large models and NNs may move together because both depend on data.",
+     [
+      "Frontier: training data supply."
+     ]
+    ],
+    [
+     "central ingredient our model and NNs may move together because both depend on textbook-quality training data.",
+     [
+      "Frontier: training data supply."
+     ]
+    ],
+    [
+     "estimate may affect training increasingly large models through data.",
+     [
+      "Frontier: training data supply.",
+      "Frontier: AI compute cost."
+     ]
+    ],
+    [
+     "Global deduplication upsamples may affect NNs through quality data (read as training data).",
+     [
+      "Frontier: training data supply."
+     ]
+    ],
+    [
+     "Global deduplication upsamples may affect central ingredient our model through quality data (read as textbook-quality training data).",
+     [
+      "Frontier: training data supply."
+     ]
+    ],
+    [
+     "data and splitting the model’s weights may interact in their effect on training increasingly large models.",
+     [
+      "Frontier: training data supply."
+     ]
+    ],
+    [
+     "estimate may affect NNs through data (read as training data).",
+     [
+      "Frontier: training data supply."
+     ]
+    ],
+    [
+     "estimate may affect central ingredient our model through data (read as textbook-quality training data).",
+     [
+      "Frontier: training data supply."
+     ]
+    ],
+    [
+     "Global deduplication upsamples may affect GLaM MoE models through quality data (read as less data).",
+     [
+      "Frontier: training data supply."
+     ]
+    ],
+    [
+     "estimate may affect GLaM MoE models through data (read as less data).",
+     [
+      "Frontier: training data supply."
+     ]
+    ],
+    [
+     "Global deduplication upsamples may reduce SOTA of large language models through quality data (read as high quality data).",
+     [
+      "Frontier: training data supply."
+     ]
+    ],
+    [
+     "training increasingly large models and SOTA of large language models may move together because both depend on data.",
+     [
+      "Frontier: training data supply."
+     ]
+    ],
+    [
+     "SOTA of large language models and NNs may move together because both depend on high quality data.",
+     [
+      "Frontier: training data supply."
+     ]
+    ],
+    [
+     "SOTA of large language models and GLaM MoE models may move together because both depend on high quality data.",
+     [
+      "Frontier: training data supply."
+     ]
+    ],
+    [
+     "estimate may affect SOTA of large language models through data (read as high quality data).",
+     [
+      "Frontier: training data supply."
+     ]
+    ]
+   ]
+  },
+  "H3": {
+   "finding": "The stock of public human-generated text will be exhausted by LLM training datasets around 2026-2032.",
+   "full": [],
+   "partial": []
+  },
+  "H4": {
+   "finding": "Algorithmic efficiency gains (doubling every ~16 months) cut the compute needed for fixed capability faster than hardware gains.",
+   "full": [],
+   "partial": [
+    [
+     "quantization of activations to int8 may increase secondary actor through cost improvement (read as compute efficiency improvements).",
+     [
+      "Frontier: AI compute cost."
+     ]
+    ],
+    [
+     "quantization of activations to int8 may increase performance available through cost improvement (read as efficiency improvements).",
+     [
+      "Frontier: AI compute cost."
+     ]
+    ]
+   ]
+  },
+  "H5": {
+   "finding": "The choice of model, datacenter and processor can reduce the carbon footprint of training by up to ~100-1000x.",
+   "full": [],
+   "partial": []
+  },
+  "H6": {
+   "finding": "Under data constraints, repeating data up to ~4 epochs is nearly as good as unique data, after which extra compute loses value.",
+   "full": [],
+   "partial": []
+  },
+  "H7": {
+   "finding": "Deep learning progress is strongly reliant on growing compute, which makes it economically and environmentally unsustainable along current lines.",
+   "full": [
+    [
+     "Gains in capabilities from progress in AI development may be offset by compute used to train a model.",
+     [
+      "Frontier: AI bottlenecks.",
+      "Frontier: AI energy bottlenecks.",
+      "Frontier: training data supply.",
+      "Frontier: AI compute cost."
+     ]
+    ],
+    [
+     "high training compute generally indicates and progress in AI development may jointly drive model capabilities, and their effects may compound.",
+     [
+      "Frontier: training data supply.",
+      "Frontier: AI compute cost."
+     ]
+    ],
+    [
+     "quantization of activations to int8 may increase secondary actor through cost improvement (read as compute efficiency improvements).",
+     [
+      "Frontier: AI compute cost."
+     ]
+    ]
+   ],
+   "partial": [
+    [
+     "far more compute may constrain AI model’s capabilities through single training run (read as final training run).",
+     [
+      "Frontier: AI bottlenecks.",
+      "Frontier: AI energy bottlenecks.",
+      "Frontier: training data supply.",
+      "Frontier: AI compute cost."
+     ]
+    ],
+    [
+     "compute used to train a model and final training run may jointly constrain capabilities, so relieving one may shift the bottleneck to the other.",
+     [
+      "Frontier: AI bottlenecks.",
+      "Frontier: AI energy bottlenecks.",
+      "Frontier: training data supply.",
+      "Frontier: AI compute cost."
+     ]
+    ],
+    [
+     "increased compute and performance gap between them may move together because both depend on investment.",
+     [
+      "Frontier: AI compute cost."
+     ]
+    ],
+    [
+     "final training run and high training compute generally indicates may interact in their effect on AI model’s capabilities.",
+     [
+      "Frontier: AI compute cost."
+     ]
+    ],
+    [
+     "model capabilities and concentration may move together because both depend on high training compute generally indicates.",
+     [
+      "Frontier: AI compute cost."
+     ]
+    ]
+   ]
+  },
+  "H8": {
+   "finding": "AI accelerator chips (and staff) are the largest expenses in training frontier models. The growth rate of training cost is context, not part of this finding.",
+   "full": [
+    [
+     "quantization of activations to int8 may increase secondary actor through cost improvement (read as compute efficiency improvements).",
+     [
+      "Frontier: AI compute cost."
+     ]
+    ]
+   ],
+   "partial": [
+    [
+     "environmental cost of LLMs and homogeneous may move together because both depend on smaller models requiring less training.",
+     [
+      "Frontier: training data supply."
+     ]
+    ],
+    [
+     "sequence parallelism of the Transformer architecture may reduce environmental cost of LLMs through parallel training (read as smaller models requiring less training).",
+     [
+      "Frontier: training data supply."
+     ]
+    ],
+    [
+     "smaller models requiring less training may reduce disparity between the haves through environmental cost of LLMs (read as high costs of equipment).",
+     [
+      "Frontier: AI compute cost."
+     ]
+    ]
+   ]
+  },
+  "H9": {
+   "finding": "Training on model-generated content causes irreversible model collapse.",
+   "full": [],
+   "partial": []
+  }
+ },
+ "distinct_hypotheses": 93,
+ "corpus": {
+  "namespace": "ai_bottlenecks_frontier",
+  "documents": 64,
+  "ingest_seconds": 852.48,
+  "chunks": 1054,
+  "max_rss_mb": 2977.2
+ }
+}

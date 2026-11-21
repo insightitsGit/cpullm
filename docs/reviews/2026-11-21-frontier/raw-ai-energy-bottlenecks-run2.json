@@ -1,0 +1,1337 @@
+{
+ "prompt": "Frontier: AI energy bottlenecks.",
+ "run": 2,
+ "wall_seconds": 3.693,
+ "python_peak_bytes": 26801551,
+ "answer_status": "hypotheses",
+ "routing": {
+  "schema": "flag-routing-contract-v1",
+  "executed_nodes": [],
+  "post_stages": [
+   "frontier_snapshot",
+   "frontier_generate",
+   "frontier_abductive",
+   "frontier_deductive",
+   "frontier_pre_thinker",
+   "frontier_rank"
+  ]
+ },
+ "frontier": {
+  "schema": "frontier-v1",
+  "triggered": true,
+  "topic": "AI energy bottlenecks",
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "limits": {
+   "max_rounds": 1000,
+   "max_candidates": 200000,
+   "max_edges": 50000,
+   "max_bytes": 67108864,
+   "max_seconds": 20.0,
+   "batch_size": 256,
+   "max_path_edges": 2,
+   "max_results": 50,
+   "min_results": 10
+  },
+  "topic_terms": [
+   "ai",
+   "energy",
+   "bottleneck"
+  ],
+  "focus_terms": [
+   "ai",
+   "energy",
+   "bottleneck"
+  ],
+  "chunk_count": 1054,
+  "status": "hypotheses",
+  "hypotheses": [
+   {
+    "id": "28ad00661de6",
+    "text": "far more compute may constrain AI model’s capabilities through single training run (read as final training run).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "far more compute",
+     "AI model’s capabilities"
+    ],
+    "via": [
+     "single training run (read as final training run)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-08797-p0023",
+     "arxiv-2405-21015-p0009"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-08797-p0023",
+      "quote": "Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.",
+      "start": 161,
+      "end": 357,
+      "chunk_sha256": "7e346f2bd74ec7647d0e65a3a852243eccabbaa574bbbb51a63b94d0c0d49cd8",
+      "relation": "constrains",
+      "subject": "far more compute",
+      "object": "single training run",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2405-21015-p0009",
+      "quote": "2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.",
+      "start": 421,
+      "end": 612,
+      "chunk_sha256": "5fe1a7ed7f611503d52f84a850d3abbabf1f1466503c0868015dcb0da68892a7",
+      "relation": "constrains",
+      "subject": "final training run",
+      "object": "AI model’s capabilities",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.567,
+     "novelty": 0.508
+    },
+    "falsification_test": "Compare settings where far more compute differs while other inputs are matched. The hypothesis fails if AI model’s capabilities does not stay bounded with far more compute, or if fixing single training run (read as final training run) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT"
+   },
+   {
+    "id": "f4fee18d3122",
+    "text": "large investments and tens of thousands of GPUs may jointly constrain Training advanced AI models, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "large investments",
+     "tens of thousands of GPUs",
+     "Training advanced AI models"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2311-15377-p0002",
+     "arxiv-2405-10799-p0021"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2311-15377-p0002",
+      "quote": "Training advanced AI models requires large investments in computational resources, or compute.",
+      "start": 0,
+      "end": 94,
+      "chunk_sha256": "3a3053a30341058103af1a5f5cc17051786ae7acd2c171e5484ea523fcce6d16",
+      "relation": "constrains",
+      "subject": "large investments",
+      "object": "Training advanced AI models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2405-10799-p0021",
+      "quote": "AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars.",
+      "start": 763,
+      "end": 934,
+      "chunk_sha256": "675ece2b880b715409c248a3d28395052ee62bb9cc19b57e858e58bc071d2dd9",
+      "relation": "constrains",
+      "subject": "tens of thousands of GPUs",
+      "object": "training stateof-the-art models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.527,
+     "novelty": 0.65
+    },
+    "falsification_test": "Relieve large investments alone while measuring Training advanced AI models. The hypothesis fails if Training advanced AI models keeps improving without tens of thousands of GPUs becoming the binding limit, or if relieving tens of thousands of GPUs alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "4a39384b2b54",
+    "text": "large investments and splitting the model’s weights may jointly constrain Training advanced AI models, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "large investments",
+     "splitting the model’s weights",
+     "Training advanced AI models"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2311-15377-p0002",
+     "arxiv-2303-11341-p0023"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2311-15377-p0002",
+      "quote": "Training advanced AI models requires large investments in computational resources, or compute.",
+      "start": 0,
+      "end": 94,
+      "chunk_sha256": "3a3053a30341058103af1a5f5cc17051786ae7acd2c171e5484ea523fcce6d16",
+      "relation": "constrains",
+      "subject": "large investments",
+      "object": "Training advanced AI models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2303-11341-p0023",
+      "quote": "Large NNs have too many weights to fit in the high-bandwidth memory of a single ML device, so efficiently training a model requires splitting the model’s weights into weight shards, and placing a shard on each chip [57].",
+      "start": 177,
+      "end": 397,
+      "chunk_sha256": "206afa30d64006433b6afc3f9ea1ceff10963d24d7371df1150d78dacb903222",
+      "relation": "constrains",
+      "subject": "splitting the model’s weights",
+      "object": "training a model",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.527,
+     "novelty": 0.636
+    },
+    "falsification_test": "Relieve large investments alone while measuring Training advanced AI models. The hypothesis fails if Training advanced AI models keeps improving without splitting the model’s weights becoming the binding limit, or if relieving splitting the model’s weights alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "abc0086336e4",
+    "text": "accuracy improvements and certain groups’ ability may move together because both depend on availability of exceptionally large computational resources.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "accuracy improvements",
+     "certain groups’ ability",
+     "availability of exceptionally large computational resources"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1906-02243-p0002",
+     "arxiv-2307-04699-p0012"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1906-02243-p0002",
+      "quote": "However, these accuracy improvements depend on the availability of exceptionally large computational resources that necessitate similarly substantial energy consumption.",
+      "start": 225,
+      "end": 394,
+      "chunk_sha256": "ba23198b91d5f618a17943f1bcc9e3ff7b500dd31debcaad228dc9516093ebf8",
+      "relation": "constrains",
+      "subject": "availability of exceptionally large computational resources",
+      "object": "accuracy improvements",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2307-04699-p0012",
+      "quote": "Inadequate access to internet services, computing power, or availability of machine learning training/expertise will also hinder certain groups’ ability to benefit fully from AI advances.",
+      "start": 228,
+      "end": 415,
+      "chunk_sha256": "ce9ee636336f95ece864100afc87704e9809a2ee9f8d295feac6f962e3744209",
+      "relation": "decreases",
+      "subject": "availability of machine learning training expertise",
+      "object": "certain groups’ ability",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.52,
+     "novelty": 0.564
+    },
+    "falsification_test": "Track accuracy improvements and certain groups’ ability across periods where availability of exceptionally large computational resources changes and where it does not. The hypothesis fails if they co-vary just as strongly when availability of exceptionally large computational resources is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "a81eb15149d2",
+    "text": "splitting the model’s weights and tens of thousands of GPUs may jointly constrain training a model, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "splitting the model’s weights",
+     "tens of thousands of GPUs",
+     "training a model"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2303-11341-p0023",
+     "arxiv-2405-10799-p0021"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2303-11341-p0023",
+      "quote": "Large NNs have too many weights to fit in the high-bandwidth memory of a single ML device, so efficiently training a model requires splitting the model’s weights into weight shards, and placing a shard on each chip [57].",
+      "start": 177,
+      "end": 397,
+      "chunk_sha256": "206afa30d64006433b6afc3f9ea1ceff10963d24d7371df1150d78dacb903222",
+      "relation": "constrains",
+      "subject": "splitting the model’s weights",
+      "object": "training a model",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2405-10799-p0021",
+      "quote": "AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars.",
+      "start": 763,
+      "end": 934,
+      "chunk_sha256": "675ece2b880b715409c248a3d28395052ee62bb9cc19b57e858e58bc071d2dd9",
+      "relation": "constrains",
+      "subject": "tens of thousands of GPUs",
+      "object": "training stateof-the-art models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.46,
+     "novelty": 0.658
+    },
+    "falsification_test": "Relieve splitting the model’s weights alone while measuring training a model. The hypothesis fails if training a model keeps improving without tens of thousands of GPUs becoming the binding limit, or if relieving tens of thousands of GPUs alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "cba17bdcd6a7",
+    "text": "compute used to train a model and final training run may jointly constrain capabilities, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "compute used to train a model",
+     "final training run",
+     "capabilities"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-10799-p0007",
+     "arxiv-2405-10799-p0020",
+     "arxiv-2405-21015-p0009"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-10799-p0007",
+      "quote": "• Difficulty of circumvention: Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.",
+      "start": 0,
+      "end": 228,
+      "chunk_sha256": "06aa6df5f7462e4b7a896f1d1496412c4322bdd43e7b701ef6c52ad9ccef9843",
+      "relation": "decreases",
+      "subject": "compute used to train a model",
+      "object": "capabilities",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2405-10799-p0020",
+      "quote": "• Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.",
+      "start": 126,
+      "end": 325,
+      "chunk_sha256": "7e49783b4f1b79dbc69dfd74404c1071c372dc8d05ad166513259704ccbe0ad9",
+      "relation": "decreases",
+      "subject": "compute used to train a model",
+      "object": "capabilities",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2405-21015-p0009",
+      "quote": "2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.",
+      "start": 421,
+      "end": 612,
+      "chunk_sha256": "5fe1a7ed7f611503d52f84a850d3abbabf1f1466503c0868015dcb0da68892a7",
+      "relation": "constrains",
+      "subject": "final training run",
+      "object": "AI model’s capabilities",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.46,
+     "novelty": 0.608
+    },
+    "falsification_test": "Relieve compute used to train a model alone while measuring capabilities. The hypothesis fails if capabilities keeps improving without final training run becoming the binding limit, or if relieving final training run alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "3792fce926e9",
+    "text": "Projects for civilian use may affect Training advanced AI models through Japan’s consistent investment (read as large investments).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "Projects for civilian use",
+     "Training advanced AI models"
+    ],
+    "via": [
+     "Japan’s consistent investment (read as large investments)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-08797-p0030",
+     "arxiv-2311-15377-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-08797-p0030",
+      "quote": "Projects for civilian use include Japan’s consistent investment in supercomputing, including the nearly $1 billion Fugaku, and Australia’s National Research Infrastructure (though these focus more on scientific computing rather than AI).",
+      "start": 18,
+      "end": 255,
+      "chunk_sha256": "aa5a0cf15666ef0491e1c7d4299e65f6c0b11f8945fb74d65f44d71fa6fa9e7c",
+      "relation": "has",
+      "subject": "Projects for civilian use",
+      "object": "Japan’s consistent investment",
+      "hedged": false,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2311-15377-p0002",
+      "quote": "Training advanced AI models requires large investments in computational resources, or compute.",
+      "start": 0,
+      "end": 94,
+      "chunk_sha256": "3a3053a30341058103af1a5f5cc17051786ae7acd2c171e5484ea523fcce6d16",
+      "relation": "constrains",
+      "subject": "large investments",
+      "object": "Training advanced AI models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.407,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where Projects for civilian use differs while other inputs are matched. The hypothesis fails if Training advanced AI models does not change with Projects for civilian use, or if fixing Japan’s consistent investment (read as large investments) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "d70ff2f8b4df",
+    "text": "data and tens of thousands of GPUs may interact in their effect on training increasingly large models.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "data",
+     "tens of thousands of GPUs",
+     "training increasingly large models"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2112-06905-p0008",
+     "arxiv-2405-10799-p0021"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2112-06905-p0008",
+      "quote": "The abundance of compute and data enables training increasingly large models via unsupervised pre-training.",
+      "start": 427,
+      "end": 534,
+      "chunk_sha256": "74c60a931ddb7a13d52938974dbfa2aa066c2d133736087ed2c6dbd4f4511da6",
+      "relation": "increases",
+      "subject": "data",
+      "object": "training increasingly large models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2405-10799-p0021",
+      "quote": "AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars.",
+      "start": 763,
+      "end": 934,
+      "chunk_sha256": "675ece2b880b715409c248a3d28395052ee62bb9cc19b57e858e58bc071d2dd9",
+      "relation": "constrains",
+      "subject": "tens of thousands of GPUs",
+      "object": "training stateof-the-art models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.38,
+     "novelty": 0.55
+    },
+    "falsification_test": "Vary data and tens of thousands of GPUs separately and together. The hypothesis fails if the joint change in training increasingly large models equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "de0b502794ab",
+    "text": "data and large investments may interact in their effect on training increasingly large models.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "data",
+     "large investments",
+     "training increasingly large models"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2112-06905-p0008",
+     "arxiv-2311-15377-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2112-06905-p0008",
+      "quote": "The abundance of compute and data enables training increasingly large models via unsupervised pre-training.",
+      "start": 427,
+      "end": 534,
+      "chunk_sha256": "74c60a931ddb7a13d52938974dbfa2aa066c2d133736087ed2c6dbd4f4511da6",
+      "relation": "increases",
+      "subject": "data",
+      "object": "training increasingly large models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2311-15377-p0002",
+      "quote": "Training advanced AI models requires large investments in computational resources, or compute.",
+      "start": 0,
+      "end": 94,
+      "chunk_sha256": "3a3053a30341058103af1a5f5cc17051786ae7acd2c171e5484ea523fcce6d16",
+      "relation": "constrains",
+      "subject": "large investments",
+      "object": "Training advanced AI models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.38,
+     "novelty": 0.488
+    },
+    "falsification_test": "Vary data and large investments separately and together. The hypothesis fails if the joint change in training increasingly large models equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "2341cf48a39c",
+    "text": "how an AI system interacts and Large compute investors should help may jointly constrain Risks, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "how an AI system interacts",
+     "Large compute investors should help",
+     "Risks"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2305-15324-p0041",
+     "arxiv-2311-15377-p0012"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2305-15324-p0041",
+      "quote": "Risks will depend on how an AI system interacts with a complex world.",
+      "start": 206,
+      "end": 275,
+      "chunk_sha256": "c0d022f4e4dd45866538f794698f6aec50fd9431cf46709835c79ed06cf45aa7",
+      "relation": "constrains",
+      "subject": "how an AI system interacts",
+      "object": "Risks",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2311-15377-p0012",
+      "quote": "• Large compute investors should help mitigate risks from the proliferation of advanced capabilities.",
+      "start": 495,
+      "end": 596,
+      "chunk_sha256": "2f6162106d470d85dd2b86f7e5e6fd4167c1a23252cbbcf52d5a1897b16dcf3a",
+      "relation": "decreases",
+      "subject": "Large compute investors should help",
+      "object": "risks",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.617,
+     "novelty": 0.65
+    },
+    "falsification_test": "Relieve how an AI system interacts alone while measuring Risks. The hypothesis fails if Risks keeps improving without Large compute investors should help becoming the binding limit, or if relieving Large compute investors should help alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "fbdf280e1fad",
+    "text": "Gains in capabilities from progress in AI development may be offset by compute used to train a model.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "compute used to train a model",
+     "progress in AI development",
+     "capabilities"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-10799-p0007",
+     "arxiv-2405-10799-p0020",
+     "arxiv-2305-15324-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-10799-p0007",
+      "quote": "• Difficulty of circumvention: Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.",
+      "start": 0,
+      "end": 228,
+      "chunk_sha256": "06aa6df5f7462e4b7a896f1d1496412c4322bdd43e7b701ef6c52ad9ccef9843",
+      "relation": "decreases",
+      "subject": "compute used to train a model",
+      "object": "capabilities",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2405-10799-p0020",
+      "quote": "• Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.",
+      "start": 126,
+      "end": 325,
+      "chunk_sha256": "7e49783b4f1b79dbc69dfd74404c1071c372dc8d05ad166513259704ccbe0ad9",
+      "relation": "decreases",
+      "subject": "compute used to train a model",
+      "object": "capabilities",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2305-15324-p0003",
+      "quote": "Further progress in AI development could lead to capabilities that pose extreme risks, such as offensive cyber capabilities or strong manipulation skills.",
+      "start": 427,
+      "end": 581,
+      "chunk_sha256": "6cf5cec40898300fc6942b4c210b9018655a77ed44718212d130e5c0e03fffe3",
+      "relation": "causes",
+      "subject": "progress in AI development",
+      "object": "capabilities",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.592,
+     "novelty": 0.628
+    },
+    "falsification_test": "Measure capabilities where both compute used to train a model and progress in AI development vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "c84ebd38a0b9",
+    "text": "analysis may increase paradigm shift away through innovation (read as innovation in AI).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "analysis",
+     "paradigm shift away"
+    ],
+    "via": [
+     "innovation (read as innovation in AI)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2007-05558-p0035",
+     "arxiv-2405-10799-p0025"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2007-05558-p0035",
+      "quote": "Thus, because our analysis accounts for innovation and because it is not misled by overly-optimistic scaling down studies, we believe it provides a better long-term view of the evolution of computing power as higher model performance",
+      "start": 993,
+      "end": 1226,
+      "chunk_sha256": "97535f63edfb9bc832bb3bfa14f3e76ecafe0a23433a953ad03b3a60cce973b6",
+      "relation": "causes",
+      "subject": "analysis",
+      "object": "innovation",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2405-10799-p0025",
+      "quote": "However, innovation in AI might gradually lead to a paradigm shift away from deep learning, or the pre-training phase might become less crucial for determining the final capabilities of AI models.",
+      "start": 411,
+      "end": 607,
+      "chunk_sha256": "b438c3e0e41eaded5e3e4d7101b77c7db843d7161b0c0cc9dab8c1f2932a3ef9",
+      "relation": "causes",
+      "subject": "innovation in AI",
+      "object": "paradigm shift away",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.547,
+     "novelty": 0.572
+    },
+    "falsification_test": "Compare settings where analysis differs while other inputs are matched. The hypothesis fails if paradigm shift away does not rise with analysis, or if fixing innovation (read as innovation in AI) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "4fb53dce550a",
+    "text": "governance functions and how an AI system interacts may jointly constrain managing its risks, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "governance functions",
+     "how an AI system interacts",
+     "managing its risks"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2307-04699-p0011",
+     "arxiv-2305-15324-p0041"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2307-04699-p0011",
+      "quote": "Because of characteristics like its high barriers to development/utilization and the possibility of cross-border use, it is possible that harnessing AI’s potential for global benefit and managing its risks could require governance functions at the international level.",
+      "start": 2387,
+      "end": 2655,
+      "chunk_sha256": "9eaba6131c5c69588ecac4cb3a3e4dbc8ca03bb6363486bbdb16930599ccb0be",
+      "relation": "constrains",
+      "subject": "governance functions",
+      "object": "managing its risks",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2305-15324-p0041",
+      "quote": "Risks will depend on how an AI system interacts with a complex world.",
+      "start": 206,
+      "end": 275,
+      "chunk_sha256": "c0d022f4e4dd45866538f794698f6aec50fd9431cf46709835c79ed06cf45aa7",
+      "relation": "constrains",
+      "subject": "how an AI system interacts",
+      "object": "Risks",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.527,
+     "novelty": 0.658
+    },
+    "falsification_test": "Relieve governance functions alone while measuring managing its risks. The hypothesis fails if managing its risks keeps improving without how an AI system interacts becoming the binding limit, or if relieving how an AI system interacts alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "aa91c0df311d",
+    "text": "concrete discussion of how to better and Large compute investors should help may jointly constrain risks of advanced AI systems, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "concrete discussion of how to better",
+     "Large compute investors should help",
+     "risks of advanced AI systems"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2307-03718-p0007",
+     "arxiv-2311-15377-p0012"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2307-03718-p0007",
+      "quote": "While we remain uncertain about many aspects of the ideas in this paper, we hope it can contribute to a more informed and concrete discussion of how to better govern the risks of advanced AI systems while enabling the benefits of innovation to society.",
+      "start": 797,
+      "end": 1049,
+      "chunk_sha256": "a7dbac5bfaa7a1de69b0c017602f09b68336011f75f0d9d29fdb570fdeae02f2",
+      "relation": "constrains",
+      "subject": "concrete discussion of how to better",
+      "object": "risks of advanced AI systems",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2311-15377-p0012",
+      "quote": "• Large compute investors should help mitigate risks from the proliferation of advanced capabilities.",
+      "start": 495,
+      "end": 596,
+      "chunk_sha256": "2f6162106d470d85dd2b86f7e5e6fd4167c1a23252cbbcf52d5a1897b16dcf3a",
+      "relation": "decreases",
+      "subject": "Large compute investors should help",
+      "object": "risks",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.527,
+     "novelty": 0.656
+    },
+    "falsification_test": "Relieve concrete discussion of how to better alone while measuring risks of advanced AI systems. The hypothesis fails if risks of advanced AI systems keeps improving without Large compute investors should help becoming the binding limit, or if relieving Large compute investors should help alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "a08cac8fdbc4",
+    "text": "future regulations may constrain non-elite universities through access.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "future regulations",
+     "non-elite universities"
+    ],
+    "via": [
+     "access"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2307-04699-p0028",
+     "arxiv-2010-15581-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2307-04699-p0028",
+      "quote": "(It is possible that future regulations will limit access to powerful AI technologies in jurisdictions with inadequate AI governance.) Implementation support would help reduce obstacles to countries meeting international standards and therefore enable greater access to advanced AI.",
+      "start": 1199,
+      "end": 1481,
+      "chunk_sha256": "0d2b03a8c7e2493b56200fcdbdc7ee2c3b1aef0da1252b88b0fdb84ee2b3bf5e",
+      "relation": "constrains",
+      "subject": "future regulations",
+      "object": "access",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2010-15581-p0002",
+      "quote": "Using machine learning based text analysis methods, we provide additional evidence that the divergence between these two groups—large firms and non-elite universities—is driven by access to computing power or compute, which we term as the “compute divide”.",
+      "start": 1233,
+      "end": 1489,
+      "chunk_sha256": "eb59bd8ec0c227f41014aa123718e117df4fbceba7ae9f219dccf86b93ab24dc",
+      "relation": "increases",
+      "subject": "access",
+      "object": "non-elite universities",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.525,
+     "novelty": 0.636
+    },
+    "falsification_test": "Compare settings where future regulations differs while other inputs are matched. The hypothesis fails if non-elite universities does not stay bounded with future regulations, or if fixing access removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT"
+   },
+   {
+    "id": "aad77b7796d3",
+    "text": "concrete discussion of how to better and governance functions may jointly constrain risks of advanced AI systems, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "concrete discussion of how to better",
+     "governance functions",
+     "risks of advanced AI systems"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2307-03718-p0007",
+     "arxiv-2307-04699-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2307-03718-p0007",
+      "quote": "While we remain uncertain about many aspects of the ideas in this paper, we hope it can contribute to a more informed and concrete discussion of how to better govern the risks of advanced AI systems while enabling the benefits of innovation to society.",
+      "start": 797,
+      "end": 1049,
+      "chunk_sha256": "a7dbac5bfaa7a1de69b0c017602f09b68336011f75f0d9d29fdb570fdeae02f2",
+      "relation": "constrains",
+      "subject": "concrete discussion of how to better",
+      "object": "risks of advanced AI systems",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2307-04699-p0011",
+      "quote": "Because of characteristics like its high barriers to development/utilization and the possibility of cross-border use, it is possible that harnessing AI’s potential for global benefit and managing its risks could require governance functions at the international level.",
+      "start": 2387,
+      "end": 2655,
+      "chunk_sha256": "9eaba6131c5c69588ecac4cb3a3e4dbc8ca03bb6363486bbdb16930599ccb0be",
+      "relation": "constrains",
+      "subject": "governance functions",
+      "object": "managing its risks",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.527,
+     "novelty": 0.617
+    },
+    "falsification_test": "Relieve concrete discussion of how to better alone while measuring risks of advanced AI systems. The hypothesis fails if risks of advanced AI systems keeps improving without governance functions becoming the binding limit, or if relieving governance functions alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "a7e0fe6356fe",
+    "text": "concrete discussion of how to better and how an AI system interacts may jointly constrain risks of advanced AI systems, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "concrete discussion of how to better",
+     "how an AI system interacts",
+     "risks of advanced AI systems"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2307-03718-p0007",
+     "arxiv-2305-15324-p0041"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2307-03718-p0007",
+      "quote": "While we remain uncertain about many aspects of the ideas in this paper, we hope it can contribute to a more informed and concrete discussion of how to better govern the risks of advanced AI systems while enabling the benefits of innovation to society.",
+      "start": 797,
+      "end": 1049,
+      "chunk_sha256": "a7dbac5bfaa7a1de69b0c017602f09b68336011f75f0d9d29fdb570fdeae02f2",
+      "relation": "constrains",
+      "subject": "concrete discussion of how to better",
+      "object": "risks of advanced AI systems",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2305-15324-p0041",
+      "quote": "Risks will depend on how an AI system interacts with a complex world.",
+      "start": 206,
+      "end": 275,
+      "chunk_sha256": "c0d022f4e4dd45866538f794698f6aec50fd9431cf46709835c79ed06cf45aa7",
+      "relation": "constrains",
+      "subject": "how an AI system interacts",
+      "object": "Risks",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.527,
+     "novelty": 0.6
+    },
+    "falsification_test": "Relieve concrete discussion of how to better alone while measuring risks of advanced AI systems. The hypothesis fails if risks of advanced AI systems keeps improving without how an AI system interacts becoming the binding limit, or if relieving how an AI system interacts alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "521059f39d8f",
+    "text": "observation may constrain productivity of actors building dual use through model.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "observation",
+     "productivity of actors building dual use"
+    ],
+    "via": [
+     "model"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2211-04325-p0016",
+     "arxiv-2305-15324-p0019"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2211-04325-p0016",
+      "quote": "This model relies on the observation that much of the internet’s text data is user-generated and stored on platforms such as social media, blogs, and forums.",
+      "start": 110,
+      "end": 267,
+      "chunk_sha256": "269ab97a53e427fe55f30d867ce6768ecb5bfd0fa63d9c4d27cf3677997eaf84",
+      "relation": "constrains",
+      "subject": "observation",
+      "object": "model",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2305-15324-p0019",
+      "quote": "As an assistant, the model could significantly improve the productivity of actors building dual use AI capabilities.",
+      "start": 219,
+      "end": 335,
+      "chunk_sha256": "26338cc44cd5b0461d5e550096877da3c28af4b3324b290cb8edfc54660fefaa",
+      "relation": "increases",
+      "subject": "model",
+      "object": "productivity of actors building dual use",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.525,
+     "novelty": 0.517
+    },
+    "falsification_test": "Compare settings where observation differs while other inputs are matched. The hypothesis fails if productivity of actors building dual use does not stay bounded with observation, or if fixing model removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT"
+   },
+   {
+    "id": "f55b774bb420",
+    "text": "language understanding tasks and productivity of actors building dual use may move together because both depend on model.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "language understanding tasks",
+     "productivity of actors building dual use",
+     "model"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2112-06905-p0019",
+     "arxiv-2305-15324-p0019"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2112-06905-p0019",
+      "quote": "Most language understanding tasks require the model to select one correct answer from multiple options.",
+      "start": 1527,
+      "end": 1630,
+      "chunk_sha256": "857522e34967a505be19cfd610d09a9b09ba28084cd572231f74578407c19e73",
+      "relation": "constrains",
+      "subject": "model",
+      "object": "language understanding tasks",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2305-15324-p0019",
+      "quote": "As an assistant, the model could significantly improve the productivity of actors building dual use AI capabilities.",
+      "start": 219,
+      "end": 335,
+      "chunk_sha256": "26338cc44cd5b0461d5e550096877da3c28af4b3324b290cb8edfc54660fefaa",
+      "relation": "increases",
+      "subject": "model",
+      "object": "productivity of actors building dual use",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.5,
+     "novelty": 0.619
+    },
+    "falsification_test": "Track language understanding tasks and productivity of actors building dual use across periods where model changes and where it does not. The hypothesis fails if they co-vary just as strongly when model is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "a14c70b68102",
+    "text": "questions about the governance of AI and likelihood of adequate AI governance may move together because both depend on benefits of AI.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "questions about the governance of AI",
+     "likelihood of adequate AI governance",
+     "benefits of AI"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-08797-p0005",
+     "arxiv-2307-04699-p0005"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-08797-p0005",
+      "quote": "The risks and benefits of AI raise questions about the governance of AI: what are the norms, institutions, and policies that can influence the trajectory of AI for the better (Dafoe 2018)?",
+      "start": 705,
+      "end": 893,
+      "chunk_sha256": "2e63d0b62bada86f77d651bf24b08ef693bf0ca925cf16864b7dd9f4cfaed359",
+      "relation": "increases",
+      "subject": "benefits of AI",
+      "object": "questions about the governance of AI",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2307-04699-p0005",
+      "quote": "Furthermore, the significant geopolitical benefits of rapid AI development decreases the likelihood of adequate AI governance",
+      "start": 357,
+      "end": 482,
+      "chunk_sha256": "ee234652921eb3196f71a8e2b4d39c0826596d2e0dfe3a3e2807d520a4bff6e2",
+      "relation": "decreases",
+      "subject": "geopolitical benefits of rapid AI development",
+      "object": "likelihood of adequate AI governance",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.487,
+     "novelty": 0.6
+    },
+    "falsification_test": "Track questions about the governance of AI and likelihood of adequate AI governance across periods where benefits of AI changes and where it does not. The hypothesis fails if they co-vary just as strongly when benefits of AI is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "33947c5b9aae",
+    "text": "governance functions and Large compute investors should help may jointly constrain managing its risks, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "governance functions",
+     "Large compute investors should help",
+     "managing its risks"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2307-04699-p0011",
+     "arxiv-2311-15377-p0012"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2307-04699-p0011",
+      "quote": "Because of characteristics like its high barriers to development/utilization and the possibility of cross-border use, it is possible that harnessing AI’s potential for global benefit and managing its risks could require governance functions at the international level.",
+      "start": 2387,
+      "end": 2655,
+      "chunk_sha256": "9eaba6131c5c69588ecac4cb3a3e4dbc8ca03bb6363486bbdb16930599ccb0be",
+      "relation": "constrains",
+      "subject": "governance functions",
+      "object": "managing its risks",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2311-15377-p0012",
+      "quote": "• Large compute investors should help mitigate risks from the proliferation of advanced capabilities.",
+      "start": 495,
+      "end": 596,
+      "chunk_sha256": "2f6162106d470d85dd2b86f7e5e6fd4167c1a23252cbbcf52d5a1897b16dcf3a",
+      "relation": "decreases",
+      "subject": "Large compute investors should help",
+      "object": "risks",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.46,
+     "novelty": 0.65
+    },
+    "falsification_test": "Relieve governance functions alone while measuring managing its risks. The hypothesis fails if managing its risks keeps improving without Large compute investors should help becoming the binding limit, or if relieving Large compute investors should help alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "fad826a72894",
+    "text": "indicates may affect range of perspectives through concentration (read as concentration of AI development).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "indicates",
+     "range of perspectives"
+    ],
+    "via": [
+     "concentration (read as concentration of AI development)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2010-15581-p0006",
+     "arxiv-2405-21015-p0021"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2010-15581-p0006",
+      "quote": "While recent evidence (Frank et al., 2019) also indicates increased concentration within AI research, until now, there has not been any systematic study on large organizations, in particular, large firms' dominance in modern AI.",
+      "start": 1023,
+      "end": 1251,
+      "chunk_sha256": "4564f80ba0cd0363d273944a0385a909239e98b370c232ecc96e94f41bc7cc93",
+      "relation": "increases",
+      "subject": "indicates",
+      "object": "concentration",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2405-21015-p0021",
+      "quote": "This concentration of AI development could limit the range of perspectives and approaches considered, especially from academia and broader society.",
+      "start": 129,
+      "end": 276,
+      "chunk_sha256": "bf27d247ea10da09da18129dc0dbe8cca1ffd54e8db9490d69a5c7fbaf550438",
+      "relation": "constrains",
+      "subject": "concentration of AI development",
+      "object": "range of perspectives",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.447,
+     "novelty": 0.572
+    },
+    "falsification_test": "Compare settings where indicates differs while other inputs are matched. The hypothesis fails if range of perspectives does not change with indicates, or if fixing concentration (read as concentration of AI development) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "58f87aa71811",
+    "text": "final training run and progress in AI development may interact in their effect on AI model’s capabilities.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "final training run",
+     "progress in AI development",
+     "AI model’s capabilities"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-21015-p0009",
+     "arxiv-2305-15324-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-21015-p0009",
+      "quote": "2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.",
+      "start": 421,
+      "end": 612,
+      "chunk_sha256": "5fe1a7ed7f611503d52f84a850d3abbabf1f1466503c0868015dcb0da68892a7",
+      "relation": "constrains",
+      "subject": "final training run",
+      "object": "AI model’s capabilities",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2305-15324-p0003",
+      "quote": "Further progress in AI development could lead to capabilities that pose extreme risks, such as offensive cyber capabilities or strong manipulation skills.",
+      "start": 427,
+      "end": 581,
+      "chunk_sha256": "6cf5cec40898300fc6942b4c210b9018655a77ed44718212d130e5c0e03fffe3",
+      "relation": "causes",
+      "subject": "progress in AI development",
+      "object": "capabilities",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.447,
+     "novelty": 0.5
+    },
+    "falsification_test": "Vary final training run and progress in AI development separately and together. The hypothesis fails if the joint change in AI model’s capabilities equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   }
+  ],
+  "survivors": 23,
+  "candidates_generated": 196,
+  "candidates_passed": {
+   "abductive": 94,
+   "deductive": 86,
+   "pre_thinker": 23
+  },
+  "candidates_rejected": {
+   "abductive:incoherent_composition": 9,
+   "abductive:no_explanatory_relation": 49,
+   "abductive:unrelated_bridge": 44,
+   "deductive:premise_contradicted": 8,
+   "pre_thinker:circular": 3,
+   "pre_thinker:malformed": 51,
+   "pre_thinker:single_source": 9
+  },
+  "relation_edges": 550,
+  "scoped_edges": 134,
+  "budget_used": {
+   "rounds": 1,
+   "candidates": 196,
+   "edges": 550,
+   "bytes": 279485,
+   "seconds": 3.6
+  },
+  "incomplete": false,
+  "stop_reason": null,
+  "shortage": null,
+  "snapshot": {
+   "as_of": 1795242873,
+   "chunk_count": 1054
+  }
+ },
+ "reply": "Frontier hypotheses for AI energy bottlenecks. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 196. Passed abductive check: 94; deductive check: 86; pre-thinker validation: 23.\n\n1. far more compute may constrain AI model’s capabilities through single training run (read as final training run).\n[arxiv-2402-08797-p0023] Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.\n[arxiv-2405-21015-p0009] 2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.\nFalsification test: Compare settings where far more compute differs while other inputs are matched. The hypothesis fails if AI model’s capabilities does not stay bounded with far more compute, or if fixing single training run (read as final training run) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.51.\n\n2. large investments and tens of thousands of GPUs may jointly constrain Training advanced AI models, so relieving one may shift the bottleneck to the other.\n[arxiv-2311-15377-p0002] Training advanced AI models requires large investments in computational resources, or compute.\n[arxiv-2405-10799-p0021] AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars.\nFalsification test: Relieve large investments alone while measuring Training advanced AI models. The hypothesis fails if Training advanced AI models keeps improving without tens of thousands of GPUs becoming the binding limit, or if relieving tens of thousands of GPUs alone has no effect.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.65.\n\n3. large investments and splitting the model’s weights may jointly constrain Training advanced AI models, so relieving one may shift the bottleneck to the other.\n[arxiv-2311-15377-p0002] Training advanced AI models requires large investments in computational resources, or compute.\n[arxiv-2303-11341-p0023] Large NNs have too many weights to fit in the high-bandwidth memory of a single ML device, so efficiently training a model requires splitting the model’s weights into weight shards, and placing a shard on each chip [57].\nFalsification test: Relieve large investments alone while measuring Training advanced AI models. The hypothesis fails if Training advanced AI models keeps improving without splitting the model’s weights becoming the binding limit, or if relieving splitting the model’s weights alone has no effect.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.64.\n\n4. accuracy improvements and certain groups’ ability may move together because both depend on availability of exceptionally large computational resources.\n[arxiv-1906-02243-p0002] However, these accuracy improvements depend on the availability of exceptionally large computational resources that necessitate similarly substantial energy consumption.\n[arxiv-2307-04699-p0012] Inadequate access to internet services, computing power, or availability of machine learning training/expertise will also hinder certain groups’ ability to benefit fully from AI advances.\nFalsification test: Track accuracy improvements and certain groups’ ability across periods where availability of exceptionally large computational resources changes and where it does not. The hypothesis fails if they co-vary just as strongly when availability of exceptionally large computational resources is held fixed.\nScores: source support 0.80, deductive relevance 0.52, novelty 0.56.\n\n5. splitting the model’s weights and tens of thousands of GPUs may jointly constrain training a model, so relieving one may shift the bottleneck to the other.\n[arxiv-2303-11341-p0023] Large NNs have too many weights to fit in the high-bandwidth memory of a single ML device, so efficiently training a model requires splitting the model’s weights into weight shards, and placing a shard on each chip [57].\n[arxiv-2405-10799-p0021] AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars.\nFalsification test: Relieve splitting the model’s weights alone while measuring training a model. The hypothesis fails if training a model keeps improving without tens of thousands of GPUs becoming the binding limit, or if relieving tens of thousands of GPUs alone has no effect.\nScores: source support 0.80, deductive relevance 0.46, novelty 0.66.\n\n6. compute used to train a model and final training run may jointly constrain capabilities, so relieving one may shift the bottleneck to the other.\n[arxiv-2405-10799-p0007] • Difficulty of circumvention: Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.\n[arxiv-2405-10799-p0020] • Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.\n[arxiv-2405-21015-p0009] 2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.\nFalsification test: Relieve compute used to train a model alone while measuring capabilities. The hypothesis fails if capabilities keeps improving without final training run becoming the binding limit, or if relieving final training run alone has no effect.\nScores: source support 0.80, deductive relevance 0.46, novelty 0.61.\n\n7. Projects for civilian use may affect Training advanced AI models through Japan’s consistent investment (read as large investments).\n[arxiv-2402-08797-p0030] Projects for civilian use include Japan’s consistent investment in supercomputing, including the nearly $1 billion Fugaku, and Australia’s National Research Infrastructure (though these focus more on scientific computing rather than AI).\n[arxiv-2311-15377-p0002] Training advanced AI models requires large investments in computational resources, or compute.\nFalsification test: Compare settings where Projects for civilian use differs while other inputs are matched. The hypothesis fails if Training advanced AI models does not change with Projects for civilian use, or if fixing Japan’s consistent investment (read as large investments) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.41, novelty 0.60.\n\n8. data and tens of thousands of GPUs may interact in their effect on training increasingly large models.\n[arxiv-2112-06905-p0008] The abundance of compute and data enables training increasingly large models via unsupervised pre-training.\n[arxiv-2405-10799-p0021] AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars.\nFalsification test: Vary data and tens of thousands of GPUs separately and together. The hypothesis fails if the joint change in training increasingly large models equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.38, novelty 0.55.\n\n9. data and large investments may interact in their effect on training increasingly large models.\n[arxiv-2112-06905-p0008] The abundance of compute and data enables training increasingly large models via unsupervised pre-training.\n[arxiv-2311-15377-p0002] Training advanced AI models requires large investments in computational resources, or compute.\nFalsification test: Vary data and large investments separately and together. The hypothesis fails if the joint change in training increasingly large models equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.38, novelty 0.49.\n\n10. how an AI system interacts and Large compute investors should help may jointly constrain Risks, so relieving one may shift the bottleneck to the other.\n[arxiv-2305-15324-p0041] Risks will depend on how an AI system interacts with a complex world.\n[arxiv-2311-15377-p0012] • Large compute investors should help mitigate risks from the proliferation of advanced capabilities.\nFalsification test: Relieve how an AI system interacts alone while measuring Risks. The hypothesis fails if Risks keeps improving without Large compute investors should help becoming the binding limit, or if relieving Large compute investors should help alone has no effect.\nScores: source support 0.55, deductive relevance 0.62, novelty 0.65.\n\n11. Gains in capabilities from progress in AI development may be offset by compute used to train a model.\n[arxiv-2405-10799-p0007] • Difficulty of circumvention: Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.\n[arxiv-2405-10799-p0020] • Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.\n[arxiv-2305-15324-p0003] Further progress in AI development could lead to capabilities that pose extreme risks, such as offensive cyber capabilities or strong manipulation skills.\nFalsification test: Measure capabilities where both compute used to train a model and progress in AI development vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.55, deductive relevance 0.59, novelty 0.63.\n\n12. analysis may increase paradigm shift away through innovation (read as innovation in AI).\n[arxiv-2007-05558-p0035] Thus, because our analysis accounts for innovation and because it is not misled by overly-optimistic scaling down studies, we believe it provides a better long-term view of the evolution of computing power as higher model performance\n[arxiv-2405-10799-p0025] However, innovation in AI might gradually lead to a paradigm shift away from deep learning, or the pre-training phase might become less crucial for determining the final capabilities of AI models.\nFalsification test: Compare settings where analysis differs while other inputs are matched. The hypothesis fails if paradigm shift away does not rise with analysis, or if fixing innovation (read as innovation in AI) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.57.\n\n13. governance functions and how an AI system interacts may jointly constrain managing its risks, so relieving one may shift the bottleneck to the other.\n[arxiv-2307-04699-p0011] Because of characteristics like its high barriers to development/utilization and the possibility of cross-border use, it is possible that harnessing AI’s potential for global benefit and managing its risks could require governance functions at the international level.\n[arxiv-2305-15324-p0041] Risks will depend on how an AI system interacts with a complex world.\nFalsification test: Relieve governance functions alone while measuring managing its risks. The hypothesis fails if managing its risks keeps improving without how an AI system interacts becoming the binding limit, or if relieving how an AI system interacts alone has no effect.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.66.\n\n14. concrete discussion of how to better and Large compute investors should help may jointly constrain risks of advanced AI systems, so relieving one may shift the bottleneck to the other.\n[arxiv-2307-03718-p0007] While we remain uncertain about many aspects of the ideas in this paper, we hope it can contribute to a more informed and concrete discussion of how to better govern the risks of advanced AI systems while enabling the benefits of innovation to society.\n[arxiv-2311-15377-p0012] • Large compute investors should help mitigate risks from the proliferation of advanced capabilities.\nFalsification test: Relieve concrete discussion of how to better alone while measuring risks of advanced AI systems. The hypothesis fails if risks of advanced AI systems keeps improving without Large compute investors should help becoming the binding limit, or if relieving Large compute investors should help alone has no effect.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.66.\n\n15. future regulations may constrain non-elite universities through access.\n[arxiv-2307-04699-p0028] (It is possible that future regulations will limit access to powerful AI technologies in jurisdictions with inadequate AI governance.) Implementation support would help reduce obstacles to countries meeting international standards and therefore enable greater access to advanced AI.\n[arxiv-2010-15581-p0002] Using machine learning based text analysis methods, we provide additional evidence that the divergence between these two groups—large firms and non-elite universities—is driven by access to computing power or compute, which we term as the “compute divide”.\nFalsification test: Compare settings where future regulations differs while other inputs are matched. The hypothesis fails if non-elite universities does not stay bounded with future regulations, or if fixing access removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.64.\n\n16. concrete discussion of how to better and governance functions may jointly constrain risks of advanced AI systems, so relieving one may shift the bottleneck to the other.\n[arxiv-2307-03718-p0007] While we remain uncertain about many aspects of the ideas in this paper, we hope it can contribute to a more informed and concrete discussion of how to better govern the risks of advanced AI systems while enabling the benefits of innovation to society.\n[arxiv-2307-04699-p0011] Because of characteristics like its high barriers to development/utilization and the possibility of cross-border use, it is possible that harnessing AI’s potential for global benefit and managing its risks could require governance functions at the international level.\nFalsification test: Relieve concrete discussion of how to better alone while measuring risks of advanced AI systems. The hypothesis fails if risks of advanced AI systems keeps improving without governance functions becoming the binding limit, or if relieving governance functions alone has no effect.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.62.\n\n17. concrete discussion of how to better and how an AI system interacts may jointly constrain risks of advanced AI systems, so relieving one may shift the bottleneck to the other.\n[arxiv-2307-03718-p0007] While we remain uncertain about many aspects of the ideas in this paper, we hope it can contribute to a more informed and concrete discussion of how to better govern the risks of advanced AI systems while enabling the benefits of innovation to society.\n[arxiv-2305-15324-p0041] Risks will depend on how an AI system interacts with a complex world.\nFalsification test: Relieve concrete discussion of how to better alone while measuring risks of advanced AI systems. The hypothesis fails if risks of advanced AI systems keeps improving without how an AI system interacts becoming the binding limit, or if relieving how an AI system interacts alone has no effect.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.60.\n\n18. observation may constrain productivity of actors building dual use through model.\n[arxiv-2211-04325-p0016] This model relies on the observation that much of the internet’s text data is user-generated and stored on platforms such as social media, blogs, and forums.\n[arxiv-2305-15324-p0019] As an assistant, the model could significantly improve the productivity of actors building dual use AI capabilities.\nFalsification test: Compare settings where observation differs while other inputs are matched. The hypothesis fails if productivity of actors building dual use does not stay bounded with observation, or if fixing model removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.52.\n\n19. language understanding tasks and productivity of actors building dual use may move together because both depend on model.\n[arxiv-2112-06905-p0019] Most language understanding tasks require the model to select one correct answer from multiple options.\n[arxiv-2305-15324-p0019] As an assistant, the model could significantly improve the productivity of actors building dual use AI capabilities.\nFalsification test: Track language understanding tasks and productivity of actors building dual use across periods where model changes and where it does not. The hypothesis fails if they co-vary just as strongly when model is held fixed.\nScores: source support 0.55, deductive relevance 0.50, novelty 0.62.\n\n20. questions about the governance of AI and likelihood of adequate AI governance may move together because both depend on benefits of AI.\n[arxiv-2402-08797-p0005] The risks and benefits of AI raise questions about the governance of AI: what are the norms, institutions, and policies that can influence the trajectory of AI for the better (Dafoe 2018)?\n[arxiv-2307-04699-p0005] Furthermore, the significant geopolitical benefits of rapid AI development decreases the likelihood of adequate AI governance\nFalsification test: Track questions about the governance of AI and likelihood of adequate AI governance across periods where benefits of AI changes and where it does not. The hypothesis fails if they co-vary just as strongly when benefits of AI is held fixed.\nScores: source support 0.55, deductive relevance 0.49, novelty 0.60.\n\n21. governance functions and Large compute investors should help may jointly constrain managing its risks, so relieving one may shift the bottleneck to the other.\n[arxiv-2307-04699-p0011] Because of characteristics like its high barriers to development/utilization and the possibility of cross-border use, it is possible that harnessing AI’s potential for global benefit and managing its risks could require governance functions at the international level.\n[arxiv-2311-15377-p0012] • Large compute investors should help mitigate risks from the proliferation of advanced capabilities.\nFalsification test: Relieve governance functions alone while measuring managing its risks. The hypothesis fails if managing its risks keeps improving without Large compute investors should help becoming the binding limit, or if relieving Large compute investors should help alone has no effect.\nScores: source support 0.55, deductive relevance 0.46, novelty 0.65.\n\n22. indicates may affect range of perspectives through concentration (read as concentration of AI development).\n[arxiv-2010-15581-p0006] While recent evidence (Frank et al., 2019) also indicates increased concentration within AI research, until now, there has not been any systematic study on large organizations, in particular, large firms' dominance in modern AI.\n[arxiv-2405-21015-p0021] This concentration of AI development could limit the range of perspectives and approaches considered, especially from academia and broader society.\nFalsification test: Compare settings where indicates differs while other inputs are matched. The hypothesis fails if range of perspectives does not change with indicates, or if fixing concentration (read as concentration of AI development) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.45, novelty 0.57.\n\n23. final training run and progress in AI development may interact in their effect on AI model’s capabilities.\n[arxiv-2405-21015-p0009] 2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.\n[arxiv-2305-15324-p0003] Further progress in AI development could lead to capabilities that pose extreme risks, such as offensive cyber capabilities or strong manipulation skills.\nFalsification test: Vary final training run and progress in AI development separately and together. The hypothesis fails if the joint change in AI model’s capabilities equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.45, novelty 0.50.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

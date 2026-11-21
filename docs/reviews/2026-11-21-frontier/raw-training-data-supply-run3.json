@@ -1,0 +1,2823 @@
+{
+ "prompt": "Frontier: training data supply.",
+ "run": 3,
+ "wall_seconds": 3.809,
+ "python_peak_bytes": 26835157,
+ "answer_status": "hypotheses",
+ "routing": {
+  "schema": "flag-routing-contract-v1",
+  "executed_nodes": [],
+  "post_stages": [
+   "frontier_snapshot",
+   "frontier_generate",
+   "frontier_abductive",
+   "frontier_deductive",
+   "frontier_pre_thinker",
+   "frontier_rank"
+  ]
+ },
+ "frontier": {
+  "schema": "frontier-v1",
+  "triggered": true,
+  "topic": "training data supply",
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "limits": {
+   "max_rounds": 1000,
+   "max_candidates": 200000,
+   "max_edges": 50000,
+   "max_bytes": 67108864,
+   "max_seconds": 20.0,
+   "batch_size": 256,
+   "max_path_edges": 2,
+   "max_results": 50,
+   "min_results": 10
+  },
+  "topic_terms": [
+   "training",
+   "data",
+   "supply"
+  ],
+  "focus_terms": [
+   "training",
+   "data",
+   "supply"
+  ],
+  "chunk_count": 1054,
+  "status": "hypotheses",
+  "hypotheses": [
+   {
+    "id": "431a013c7925",
+    "text": "Global deduplication upsamples may reduce training increasingly large models through quality data (read as data).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "Global deduplication upsamples",
+     "training increasingly large models"
+    ],
+    "via": [
+     "quality data (read as data)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2406-17557-p0018",
+     "arxiv-2112-06905-p0008"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2406-17557-p0018",
+      "quote": "Global deduplication upsamples lower-quality data in the last deduplicated crawl, resulting in worse performance of the retained data compared to the removed",
+      "start": 92,
+      "end": 249,
+      "chunk_sha256": "394c1e73094b3866ffd3e0ac457c9bf3588979cf46137c72a4c17dc52e094403",
+      "relation": "decreases",
+      "subject": "Global deduplication upsamples",
+      "object": "quality data",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2112-06905-p0008",
+      "quote": "The abundance of compute and data enables training increasingly large models via unsupervised pre-training.",
+      "start": 427,
+      "end": 534,
+      "chunk_sha256": "74c60a931ddb7a13d52938974dbfa2aa066c2d133736087ed2c6dbd4f4511da6",
+      "relation": "increases",
+      "subject": "data",
+      "object": "training increasingly large models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.733,
+     "novelty": 0.642
+    },
+    "falsification_test": "Compare settings where Global deduplication upsamples differs while other inputs are matched. The hypothesis fails if training increasingly large models does not fall with Global deduplication upsamples, or if fixing quality data (read as data) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "2b412ac2d7d1",
+    "text": "GLaM MoE models and central ingredient our model may move together because both depend on less data.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "GLaM MoE models",
+     "central ingredient our model",
+     "less data"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2112-06905-p0024",
+     "arxiv-2306-11644-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2112-06905-p0024",
+      "quote": "We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.",
+      "start": 302,
+      "end": 464,
+      "chunk_sha256": "2acddc685a89695f573c19171095f2f7d8a2e18e38c9f7554009b8573ef60cce",
+      "relation": "constrains",
+      "subject": "less data",
+      "object": "GLaM MoE models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2306-11644-p0006",
+      "quote": "As alluded to in the title of the paper, the central ingredient our model relies on textbook-quality training data.",
+      "start": 994,
+      "end": 1109,
+      "chunk_sha256": "2fcab2144b8d21ab1118a38bf5bab20c91bf678324283dd0034bac1cd3eae00e",
+      "relation": "constrains",
+      "subject": "textbook-quality training data",
+      "object": "central ingredient our model",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.653,
+     "novelty": 0.65
+    },
+    "falsification_test": "Track GLaM MoE models and central ingredient our model across periods where less data changes and where it does not. The hypothesis fails if they co-vary just as strongly when less data is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "d23ac2a9dc77",
+    "text": "GLaM MoE models and NNs may move together because both depend on less data.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "GLaM MoE models",
+     "NNs",
+     "less data"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2112-06905-p0024",
+     "arxiv-2403-14123-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2112-06905-p0024",
+      "quote": "We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.",
+      "start": 302,
+      "end": 464,
+      "chunk_sha256": "2acddc685a89695f573c19171095f2f7d8a2e18e38c9f7554009b8573ef60cce",
+      "relation": "constrains",
+      "subject": "less data",
+      "object": "GLaM MoE models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2403-14123-p0011",
+      "quote": "Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.",
+      "start": 2131,
+      "end": 2258,
+      "chunk_sha256": "6cb3cc4e4e00360378cb8a4971f1597037d4898535bbe2ac335a66a460a4f807",
+      "relation": "constrains",
+      "subject": "training data",
+      "object": "NNs",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.653,
+     "novelty": 0.628
+    },
+    "falsification_test": "Track GLaM MoE models and NNs across periods where less data changes and where it does not. The hypothesis fails if they co-vary just as strongly when less data is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "09b9ded4ee08",
+    "text": "training increasingly large models and central ingredient our model may move together because both depend on data.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "training increasingly large models",
+     "central ingredient our model",
+     "data"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2112-06905-p0008",
+     "arxiv-2306-11644-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2112-06905-p0008",
+      "quote": "The abundance of compute and data enables training increasingly large models via unsupervised pre-training.",
+      "start": 427,
+      "end": 534,
+      "chunk_sha256": "74c60a931ddb7a13d52938974dbfa2aa066c2d133736087ed2c6dbd4f4511da6",
+      "relation": "increases",
+      "subject": "data",
+      "object": "training increasingly large models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2306-11644-p0006",
+      "quote": "As alluded to in the title of the paper, the central ingredient our model relies on textbook-quality training data.",
+      "start": 994,
+      "end": 1109,
+      "chunk_sha256": "2fcab2144b8d21ab1118a38bf5bab20c91bf678324283dd0034bac1cd3eae00e",
+      "relation": "constrains",
+      "subject": "textbook-quality training data",
+      "object": "central ingredient our model",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.653,
+     "novelty": 0.623
+    },
+    "falsification_test": "Track training increasingly large models and central ingredient our model across periods where data changes and where it does not. The hypothesis fails if they co-vary just as strongly when data is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "51cded3eb321",
+    "text": "sequence parallelism of the Transformer architecture may increase substantial boost through parallel training (read as training on CodeExercises).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "sequence parallelism of the Transformer architecture",
+     "substantial boost"
+    ],
+    "via": [
+     "parallel training (read as training on CodeExercises)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2211-05102-p0004",
+     "arxiv-2306-11644-p0023"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2211-05102-p0004",
+      "quote": "While the sequence parallelism of the Transformer architecture enables highly parallel training, efficient deployment of these models is challenging in practice because generative inference proceeds one token at a time and the computation for each token sequentially depends on the previously generated tokens.",
+      "start": 407,
+      "end": 717,
+      "chunk_sha256": "f418a88115769a5649b370a09400622b6c309e609ed675fbb2795fc0ca1f1d00",
+      "relation": "increases",
+      "subject": "sequence parallelism of the Transformer architecture",
+      "object": "parallel training",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2306-11644-p0023",
+      "quote": "5 Data pruning for unbiased performance evaluation In Figure 2.1, we see that training on CodeExercises leads to a substantial boost in the performance of the model on the HumanEval benchmark.",
+      "start": 777,
+      "end": 969,
+      "chunk_sha256": "b3ac6366d92195273366a63c9361e037df0adbc73e6191f3e29b36178dcd5361",
+      "relation": "causes",
+      "subject": "training on CodeExercises",
+      "object": "substantial boost",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.647,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where sequence parallelism of the Transformer architecture differs while other inputs are matched. The hypothesis fails if substantial boost does not rise with sequence parallelism of the Transformer architecture, or if fixing parallel training (read as training on CodeExercises) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "de1aeb7a3be9",
+    "text": "training increasingly large models and NNs may move together because both depend on data.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "training increasingly large models",
+     "NNs",
+     "data"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2112-06905-p0008",
+     "arxiv-2403-14123-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2112-06905-p0008",
+      "quote": "The abundance of compute and data enables training increasingly large models via unsupervised pre-training.",
+      "start": 427,
+      "end": 534,
+      "chunk_sha256": "74c60a931ddb7a13d52938974dbfa2aa066c2d133736087ed2c6dbd4f4511da6",
+      "relation": "increases",
+      "subject": "data",
+      "object": "training increasingly large models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2403-14123-p0011",
+      "quote": "Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.",
+      "start": 2131,
+      "end": 2258,
+      "chunk_sha256": "6cb3cc4e4e00360378cb8a4971f1597037d4898535bbe2ac335a66a460a4f807",
+      "relation": "constrains",
+      "subject": "training data",
+      "object": "NNs",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.653,
+     "novelty": 0.6
+    },
+    "falsification_test": "Track training increasingly large models and NNs across periods where data changes and where it does not. The hypothesis fails if they co-vary just as strongly when data is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "578f3965db78",
+    "text": "central ingredient our model and NNs may move together because both depend on textbook-quality training data.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "central ingredient our model",
+     "NNs",
+     "textbook-quality training data"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-11644-p0006",
+     "arxiv-2403-14123-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-11644-p0006",
+      "quote": "As alluded to in the title of the paper, the central ingredient our model relies on textbook-quality training data.",
+      "start": 994,
+      "end": 1109,
+      "chunk_sha256": "2fcab2144b8d21ab1118a38bf5bab20c91bf678324283dd0034bac1cd3eae00e",
+      "relation": "constrains",
+      "subject": "textbook-quality training data",
+      "object": "central ingredient our model",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2403-14123-p0011",
+      "quote": "Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.",
+      "start": 2131,
+      "end": 2258,
+      "chunk_sha256": "6cb3cc4e4e00360378cb8a4971f1597037d4898535bbe2ac335a66a460a4f807",
+      "relation": "constrains",
+      "subject": "training data",
+      "object": "NNs",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.653,
+     "novelty": 0.577
+    },
+    "falsification_test": "Track central ingredient our model and NNs across periods where textbook-quality training data changes and where it does not. The hypothesis fails if they co-vary just as strongly when textbook-quality training data is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "c193fd4faa50",
+    "text": "estimate may affect training increasingly large models through data.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "estimate",
+     "training increasingly large models"
+    ],
+    "via": [
+     "data"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2211-04325-p0019",
+     "arxiv-2112-06905-p0008"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2211-04325-p0019",
+      "quote": "This estimate includes both data on the indexed web and the deep web, and therefore serves as an upper bound on the size of",
+      "start": 855,
+      "end": 978,
+      "chunk_sha256": "196ad1453e46aaeef202360ee8752d7369474599612c9fafcf531c3136e31c3f",
+      "relation": "has",
+      "subject": "estimate",
+      "object": "data",
+      "hedged": false,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2112-06905-p0008",
+      "quote": "The abundance of compute and data enables training increasingly large models via unsupervised pre-training.",
+      "start": 427,
+      "end": 534,
+      "chunk_sha256": "74c60a931ddb7a13d52938974dbfa2aa066c2d133736087ed2c6dbd4f4511da6",
+      "relation": "increases",
+      "subject": "data",
+      "object": "training increasingly large models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.633,
+     "novelty": 0.488
+    },
+    "falsification_test": "Compare settings where estimate differs while other inputs are matched. The hypothesis fails if training increasingly large models does not change with estimate, or if fixing data removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "feb833799dad",
+    "text": "Global deduplication upsamples may affect NNs through quality data (read as training data).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "Global deduplication upsamples",
+     "NNs"
+    ],
+    "via": [
+     "quality data (read as training data)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2406-17557-p0018",
+     "arxiv-2403-14123-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2406-17557-p0018",
+      "quote": "Global deduplication upsamples lower-quality data in the last deduplicated crawl, resulting in worse performance of the retained data compared to the removed",
+      "start": 92,
+      "end": 249,
+      "chunk_sha256": "394c1e73094b3866ffd3e0ac457c9bf3588979cf46137c72a4c17dc52e094403",
+      "relation": "decreases",
+      "subject": "Global deduplication upsamples",
+      "object": "quality data",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2403-14123-p0011",
+      "quote": "Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.",
+      "start": 2131,
+      "end": 2258,
+      "chunk_sha256": "6cb3cc4e4e00360378cb8a4971f1597037d4898535bbe2ac335a66a460a4f807",
+      "relation": "constrains",
+      "subject": "training data",
+      "object": "NNs",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.613,
+     "novelty": 0.65
+    },
+    "falsification_test": "Compare settings where Global deduplication upsamples differs while other inputs are matched. The hypothesis fails if NNs does not change with Global deduplication upsamples, or if fixing quality data (read as training data) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "a22372bb998e",
+    "text": "Global deduplication upsamples may affect central ingredient our model through quality data (read as textbook-quality training data).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "Global deduplication upsamples",
+     "central ingredient our model"
+    ],
+    "via": [
+     "quality data (read as textbook-quality training data)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2406-17557-p0018",
+     "arxiv-2306-11644-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2406-17557-p0018",
+      "quote": "Global deduplication upsamples lower-quality data in the last deduplicated crawl, resulting in worse performance of the retained data compared to the removed",
+      "start": 92,
+      "end": 249,
+      "chunk_sha256": "394c1e73094b3866ffd3e0ac457c9bf3588979cf46137c72a4c17dc52e094403",
+      "relation": "decreases",
+      "subject": "Global deduplication upsamples",
+      "object": "quality data",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2306-11644-p0006",
+      "quote": "As alluded to in the title of the paper, the central ingredient our model relies on textbook-quality training data.",
+      "start": 994,
+      "end": 1109,
+      "chunk_sha256": "2fcab2144b8d21ab1118a38bf5bab20c91bf678324283dd0034bac1cd3eae00e",
+      "relation": "constrains",
+      "subject": "textbook-quality training data",
+      "object": "central ingredient our model",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.613,
+     "novelty": 0.619
+    },
+    "falsification_test": "Compare settings where Global deduplication upsamples differs while other inputs are matched. The hypothesis fails if central ingredient our model does not change with Global deduplication upsamples, or if fixing quality data (read as textbook-quality training data) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "4eaa21083e32",
+    "text": "data and splitting the model’s weights may interact in their effect on training increasingly large models.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "data",
+     "splitting the model’s weights",
+     "training increasingly large models"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2112-06905-p0008",
+     "arxiv-2303-11341-p0023"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2112-06905-p0008",
+      "quote": "The abundance of compute and data enables training increasingly large models via unsupervised pre-training.",
+      "start": 427,
+      "end": 534,
+      "chunk_sha256": "74c60a931ddb7a13d52938974dbfa2aa066c2d133736087ed2c6dbd4f4511da6",
+      "relation": "increases",
+      "subject": "data",
+      "object": "training increasingly large models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2303-11341-p0023",
+      "quote": "Large NNs have too many weights to fit in the high-bandwidth memory of a single ML device, so efficiently training a model requires splitting the model’s weights into weight shards, and placing a shard on each chip [57].",
+      "start": 177,
+      "end": 397,
+      "chunk_sha256": "206afa30d64006433b6afc3f9ea1ceff10963d24d7371df1150d78dacb903222",
+      "relation": "constrains",
+      "subject": "splitting the model’s weights",
+      "object": "training a model",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.613,
+     "novelty": 0.572
+    },
+    "falsification_test": "Vary data and splitting the model’s weights separately and together. The hypothesis fails if the joint change in training increasingly large models equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "d70ff2f8b4df",
+    "text": "data and tens of thousands of GPUs may interact in their effect on training increasingly large models.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "data",
+     "tens of thousands of GPUs",
+     "training increasingly large models"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2112-06905-p0008",
+     "arxiv-2405-10799-p0021"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2112-06905-p0008",
+      "quote": "The abundance of compute and data enables training increasingly large models via unsupervised pre-training.",
+      "start": 427,
+      "end": 534,
+      "chunk_sha256": "74c60a931ddb7a13d52938974dbfa2aa066c2d133736087ed2c6dbd4f4511da6",
+      "relation": "increases",
+      "subject": "data",
+      "object": "training increasingly large models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2405-10799-p0021",
+      "quote": "AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars.",
+      "start": 763,
+      "end": 934,
+      "chunk_sha256": "675ece2b880b715409c248a3d28395052ee62bb9cc19b57e858e58bc071d2dd9",
+      "relation": "constrains",
+      "subject": "tens of thousands of GPUs",
+      "object": "training stateof-the-art models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.613,
+     "novelty": 0.55
+    },
+    "falsification_test": "Vary data and tens of thousands of GPUs separately and together. The hypothesis fails if the joint change in training increasingly large models equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "de0b502794ab",
+    "text": "data and large investments may interact in their effect on training increasingly large models.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "data",
+     "large investments",
+     "training increasingly large models"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2112-06905-p0008",
+     "arxiv-2311-15377-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2112-06905-p0008",
+      "quote": "The abundance of compute and data enables training increasingly large models via unsupervised pre-training.",
+      "start": 427,
+      "end": 534,
+      "chunk_sha256": "74c60a931ddb7a13d52938974dbfa2aa066c2d133736087ed2c6dbd4f4511da6",
+      "relation": "increases",
+      "subject": "data",
+      "object": "training increasingly large models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2311-15377-p0002",
+      "quote": "Training advanced AI models requires large investments in computational resources, or compute.",
+      "start": 0,
+      "end": 94,
+      "chunk_sha256": "3a3053a30341058103af1a5f5cc17051786ae7acd2c171e5484ea523fcce6d16",
+      "relation": "constrains",
+      "subject": "large investments",
+      "object": "Training advanced AI models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.613,
+     "novelty": 0.488
+    },
+    "falsification_test": "Vary data and large investments separately and together. The hypothesis fails if the joint change in training increasingly large models equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "699b683fc280",
+    "text": "observation may constrain language understanding tasks through model.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "observation",
+     "language understanding tasks"
+    ],
+    "via": [
+     "model"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2211-04325-p0016",
+     "arxiv-2112-06905-p0019"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2211-04325-p0016",
+      "quote": "This model relies on the observation that much of the internet’s text data is user-generated and stored on platforms such as social media, blogs, and forums.",
+      "start": 110,
+      "end": 267,
+      "chunk_sha256": "269ab97a53e427fe55f30d867ce6768ecb5bfd0fa63d9c4d27cf3677997eaf84",
+      "relation": "constrains",
+      "subject": "observation",
+      "object": "model",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2112-06905-p0019",
+      "quote": "Most language understanding tasks require the model to select one correct answer from multiple options.",
+      "start": 1527,
+      "end": 1630,
+      "chunk_sha256": "857522e34967a505be19cfd610d09a9b09ba28084cd572231f74578407c19e73",
+      "relation": "constrains",
+      "subject": "model",
+      "object": "language understanding tasks",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.6,
+     "novelty": 0.564
+    },
+    "falsification_test": "Compare settings where observation differs while other inputs are matched. The hypothesis fails if language understanding tasks does not stay bounded with observation, or if fixing model removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT"
+   },
+   {
+    "id": "3a39f68bac24",
+    "text": "different conclusions and substantial boost may move together because both depend on looking at inference rather than training.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "different conclusions",
+     "substantial boost",
+     "looking at inference rather than training"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2311-16863-p0004",
+     "arxiv-2306-11644-p0023"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2311-16863-p0004",
+      "quote": "In particular, looking at inference rather than training leads to drastically different conclusions when considering the multi-purpose (or “general-purpose”) aspect specifically.",
+      "start": 2037,
+      "end": 2215,
+      "chunk_sha256": "7e3c6a04c4109622ba3a28646f50e448dc204e901d98f80e687840d2072ac713",
+      "relation": "causes",
+      "subject": "looking at inference rather than training",
+      "object": "different conclusions",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2306-11644-p0023",
+      "quote": "5 Data pruning for unbiased performance evaluation In Figure 2.1, we see that training on CodeExercises leads to a substantial boost in the performance of the model on the HumanEval benchmark.",
+      "start": 777,
+      "end": 969,
+      "chunk_sha256": "b3ac6366d92195273366a63c9361e037df0adbc73e6191f3e29b36178dcd5361",
+      "relation": "causes",
+      "subject": "training on CodeExercises",
+      "object": "substantial boost",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.587,
+     "novelty": 0.6
+    },
+    "falsification_test": "Track different conclusions and substantial boost across periods where looking at inference rather than training changes and where it does not. The hypothesis fails if they co-vary just as strongly when looking at inference rather than training is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "3b450b1fcebf",
+    "text": "matrix-vector products may constrain single training run through compute (read as far more compute).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "matrix-vector products",
+     "single training run"
+    ],
+    "via": [
+     "compute (read as far more compute)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-17323-p0023",
+     "arxiv-2402-08797-p0023"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-17323-p0023",
+      "quote": "Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products.",
+      "start": 1438,
+      "end": 1570,
+      "chunk_sha256": "3a4b6b83e44488b6e9a404f0ab9294c350d52d2fd7ef516c9dd3da5d360183b6",
+      "relation": "constrains",
+      "subject": "matrix-vector products",
+      "object": "compute",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2402-08797-p0023",
+      "quote": "Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.",
+      "start": 161,
+      "end": 357,
+      "chunk_sha256": "7e346f2bd74ec7647d0e65a3a852243eccabbaa574bbbb51a63b94d0c0d49cd8",
+      "relation": "constrains",
+      "subject": "far more compute",
+      "object": "single training run",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.567,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where matrix-vector products differs while other inputs are matched. The hypothesis fails if single training run does not stay bounded with matrix-vector products, or if fixing compute (read as far more compute) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT"
+   },
+   {
+    "id": "2171a4dde055",
+    "text": "estimate may affect NNs through data (read as training data).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "estimate",
+     "NNs"
+    ],
+    "via": [
+     "data (read as training data)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2211-04325-p0019",
+     "arxiv-2403-14123-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2211-04325-p0019",
+      "quote": "This estimate includes both data on the indexed web and the deep web, and therefore serves as an upper bound on the size of",
+      "start": 855,
+      "end": 978,
+      "chunk_sha256": "196ad1453e46aaeef202360ee8752d7369474599612c9fafcf531c3136e31c3f",
+      "relation": "has",
+      "subject": "estimate",
+      "object": "data",
+      "hedged": false,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2403-14123-p0011",
+      "quote": "Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.",
+      "start": 2131,
+      "end": 2258,
+      "chunk_sha256": "6cb3cc4e4e00360378cb8a4971f1597037d4898535bbe2ac335a66a460a4f807",
+      "relation": "constrains",
+      "subject": "training data",
+      "object": "NNs",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.573,
+     "novelty": 0.586
+    },
+    "falsification_test": "Compare settings where estimate differs while other inputs are matched. The hypothesis fails if NNs does not change with estimate, or if fixing data (read as training data) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "ba252ce174d0",
+    "text": "estimate may affect central ingredient our model through data (read as textbook-quality training data).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "estimate",
+     "central ingredient our model"
+    ],
+    "via": [
+     "data (read as textbook-quality training data)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2211-04325-p0019",
+     "arxiv-2306-11644-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2211-04325-p0019",
+      "quote": "This estimate includes both data on the indexed web and the deep web, and therefore serves as an upper bound on the size of",
+      "start": 855,
+      "end": 978,
+      "chunk_sha256": "196ad1453e46aaeef202360ee8752d7369474599612c9fafcf531c3136e31c3f",
+      "relation": "has",
+      "subject": "estimate",
+      "object": "data",
+      "hedged": false,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2306-11644-p0006",
+      "quote": "As alluded to in the title of the paper, the central ingredient our model relies on textbook-quality training data.",
+      "start": 994,
+      "end": 1109,
+      "chunk_sha256": "2fcab2144b8d21ab1118a38bf5bab20c91bf678324283dd0034bac1cd3eae00e",
+      "relation": "constrains",
+      "subject": "textbook-quality training data",
+      "object": "central ingredient our model",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.573,
+     "novelty": 0.55
+    },
+    "falsification_test": "Compare settings where estimate differs while other inputs are matched. The hypothesis fails if central ingredient our model does not change with estimate, or if fixing data (read as textbook-quality training data) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "28ad00661de6",
+    "text": "far more compute may constrain AI model’s capabilities through single training run (read as final training run).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "far more compute",
+     "AI model’s capabilities"
+    ],
+    "via": [
+     "single training run (read as final training run)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-08797-p0023",
+     "arxiv-2405-21015-p0009"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-08797-p0023",
+      "quote": "Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.",
+      "start": 161,
+      "end": 357,
+      "chunk_sha256": "7e346f2bd74ec7647d0e65a3a852243eccabbaa574bbbb51a63b94d0c0d49cd8",
+      "relation": "constrains",
+      "subject": "far more compute",
+      "object": "single training run",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2405-21015-p0009",
+      "quote": "2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.",
+      "start": 421,
+      "end": 612,
+      "chunk_sha256": "5fe1a7ed7f611503d52f84a850d3abbabf1f1466503c0868015dcb0da68892a7",
+      "relation": "constrains",
+      "subject": "final training run",
+      "object": "AI model’s capabilities",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.567,
+     "novelty": 0.508
+    },
+    "falsification_test": "Compare settings where far more compute differs while other inputs are matched. The hypothesis fails if AI model’s capabilities does not stay bounded with far more compute, or if fixing single training run (read as final training run) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT"
+   },
+   {
+    "id": "5b429c8a1c6e",
+    "text": "sequence parallelism of the Transformer architecture may increase different conclusions through parallel training (read as looking at inference rather than training).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "sequence parallelism of the Transformer architecture",
+     "different conclusions"
+    ],
+    "via": [
+     "parallel training (read as looking at inference rather than training)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2211-05102-p0004",
+     "arxiv-2311-16863-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2211-05102-p0004",
+      "quote": "While the sequence parallelism of the Transformer architecture enables highly parallel training, efficient deployment of these models is challenging in practice because generative inference proceeds one token at a time and the computation for each token sequentially depends on the previously generated tokens.",
+      "start": 407,
+      "end": 717,
+      "chunk_sha256": "f418a88115769a5649b370a09400622b6c309e609ed675fbb2795fc0ca1f1d00",
+      "relation": "increases",
+      "subject": "sequence parallelism of the Transformer architecture",
+      "object": "parallel training",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2311-16863-p0004",
+      "quote": "In particular, looking at inference rather than training leads to drastically different conclusions when considering the multi-purpose (or “general-purpose”) aspect specifically.",
+      "start": 2037,
+      "end": 2215,
+      "chunk_sha256": "7e3c6a04c4109622ba3a28646f50e448dc204e901d98f80e687840d2072ac713",
+      "relation": "causes",
+      "subject": "looking at inference rather than training",
+      "object": "different conclusions",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.547,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where sequence parallelism of the Transformer architecture differs while other inputs are matched. The hypothesis fails if different conclusions does not rise with sequence parallelism of the Transformer architecture, or if fixing parallel training (read as looking at inference rather than training) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "a81eb15149d2",
+    "text": "splitting the model’s weights and tens of thousands of GPUs may jointly constrain training a model, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "splitting the model’s weights",
+     "tens of thousands of GPUs",
+     "training a model"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2303-11341-p0023",
+     "arxiv-2405-10799-p0021"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2303-11341-p0023",
+      "quote": "Large NNs have too many weights to fit in the high-bandwidth memory of a single ML device, so efficiently training a model requires splitting the model’s weights into weight shards, and placing a shard on each chip [57].",
+      "start": 177,
+      "end": 397,
+      "chunk_sha256": "206afa30d64006433b6afc3f9ea1ceff10963d24d7371df1150d78dacb903222",
+      "relation": "constrains",
+      "subject": "splitting the model’s weights",
+      "object": "training a model",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2405-10799-p0021",
+      "quote": "AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars.",
+      "start": 763,
+      "end": 934,
+      "chunk_sha256": "675ece2b880b715409c248a3d28395052ee62bb9cc19b57e858e58bc071d2dd9",
+      "relation": "constrains",
+      "subject": "tens of thousands of GPUs",
+      "object": "training stateof-the-art models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.527,
+     "novelty": 0.658
+    },
+    "falsification_test": "Relieve splitting the model’s weights alone while measuring training a model. The hypothesis fails if training a model keeps improving without tens of thousands of GPUs becoming the binding limit, or if relieving tens of thousands of GPUs alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "7f1239922ef3",
+    "text": "computing resources and tens of thousands of GPUs may jointly constrain training these large dense models, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "computing resources",
+     "tens of thousands of GPUs",
+     "training these large dense models"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2112-06905-p0003",
+     "arxiv-2405-10799-p0021"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2112-06905-p0003",
+      "quote": "However, training these large dense models requires significant amounts of computing resources.",
+      "start": 103,
+      "end": 198,
+      "chunk_sha256": "ed18aece3480a86d033c2908c917b4a2d044699e1ed8638d4c43d5f6fb70014e",
+      "relation": "constrains",
+      "subject": "computing resources",
+      "object": "training these large dense models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2405-10799-p0021",
+      "quote": "AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars.",
+      "start": 763,
+      "end": 934,
+      "chunk_sha256": "675ece2b880b715409c248a3d28395052ee62bb9cc19b57e858e58bc071d2dd9",
+      "relation": "constrains",
+      "subject": "tens of thousands of GPUs",
+      "object": "training stateof-the-art models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.527,
+     "novelty": 0.65
+    },
+    "falsification_test": "Relieve computing resources alone while measuring training these large dense models. The hypothesis fails if training these large dense models keeps improving without tens of thousands of GPUs becoming the binding limit, or if relieving tens of thousands of GPUs alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "f4fee18d3122",
+    "text": "large investments and tens of thousands of GPUs may jointly constrain Training advanced AI models, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "large investments",
+     "tens of thousands of GPUs",
+     "Training advanced AI models"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2311-15377-p0002",
+     "arxiv-2405-10799-p0021"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2311-15377-p0002",
+      "quote": "Training advanced AI models requires large investments in computational resources, or compute.",
+      "start": 0,
+      "end": 94,
+      "chunk_sha256": "3a3053a30341058103af1a5f5cc17051786ae7acd2c171e5484ea523fcce6d16",
+      "relation": "constrains",
+      "subject": "large investments",
+      "object": "Training advanced AI models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2405-10799-p0021",
+      "quote": "AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars.",
+      "start": 763,
+      "end": 934,
+      "chunk_sha256": "675ece2b880b715409c248a3d28395052ee62bb9cc19b57e858e58bc071d2dd9",
+      "relation": "constrains",
+      "subject": "tens of thousands of GPUs",
+      "object": "training stateof-the-art models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.527,
+     "novelty": 0.65
+    },
+    "falsification_test": "Relieve large investments alone while measuring Training advanced AI models. The hypothesis fails if Training advanced AI models keeps improving without tens of thousands of GPUs becoming the binding limit, or if relieving tens of thousands of GPUs alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "4a39384b2b54",
+    "text": "large investments and splitting the model’s weights may jointly constrain Training advanced AI models, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "large investments",
+     "splitting the model’s weights",
+     "Training advanced AI models"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2311-15377-p0002",
+     "arxiv-2303-11341-p0023"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2311-15377-p0002",
+      "quote": "Training advanced AI models requires large investments in computational resources, or compute.",
+      "start": 0,
+      "end": 94,
+      "chunk_sha256": "3a3053a30341058103af1a5f5cc17051786ae7acd2c171e5484ea523fcce6d16",
+      "relation": "constrains",
+      "subject": "large investments",
+      "object": "Training advanced AI models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2303-11341-p0023",
+      "quote": "Large NNs have too many weights to fit in the high-bandwidth memory of a single ML device, so efficiently training a model requires splitting the model’s weights into weight shards, and placing a shard on each chip [57].",
+      "start": 177,
+      "end": 397,
+      "chunk_sha256": "206afa30d64006433b6afc3f9ea1ceff10963d24d7371df1150d78dacb903222",
+      "relation": "constrains",
+      "subject": "splitting the model’s weights",
+      "object": "training a model",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.527,
+     "novelty": 0.636
+    },
+    "falsification_test": "Relieve large investments alone while measuring Training advanced AI models. The hypothesis fails if Training advanced AI models keeps improving without splitting the model’s weights becoming the binding limit, or if relieving splitting the model’s weights alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "e2fd4118ef1e",
+    "text": "computing resources and splitting the model’s weights may jointly constrain training these large dense models, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "computing resources",
+     "splitting the model’s weights",
+     "training these large dense models"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2112-06905-p0003",
+     "arxiv-2303-11341-p0023"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2112-06905-p0003",
+      "quote": "However, training these large dense models requires significant amounts of computing resources.",
+      "start": 103,
+      "end": 198,
+      "chunk_sha256": "ed18aece3480a86d033c2908c917b4a2d044699e1ed8638d4c43d5f6fb70014e",
+      "relation": "constrains",
+      "subject": "computing resources",
+      "object": "training these large dense models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2303-11341-p0023",
+      "quote": "Large NNs have too many weights to fit in the high-bandwidth memory of a single ML device, so efficiently training a model requires splitting the model’s weights into weight shards, and placing a shard on each chip [57].",
+      "start": 177,
+      "end": 397,
+      "chunk_sha256": "206afa30d64006433b6afc3f9ea1ceff10963d24d7371df1150d78dacb903222",
+      "relation": "constrains",
+      "subject": "splitting the model’s weights",
+      "object": "training a model",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.527,
+     "novelty": 0.636
+    },
+    "falsification_test": "Relieve computing resources alone while measuring training these large dense models. The hypothesis fails if training these large dense models keeps improving without splitting the model’s weights becoming the binding limit, or if relieving splitting the model’s weights alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "a128613d74c8",
+    "text": "computing resources and large investments may jointly constrain training these large dense models, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "computing resources",
+     "large investments",
+     "training these large dense models"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2112-06905-p0003",
+     "arxiv-2311-15377-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2112-06905-p0003",
+      "quote": "However, training these large dense models requires significant amounts of computing resources.",
+      "start": 103,
+      "end": 198,
+      "chunk_sha256": "ed18aece3480a86d033c2908c917b4a2d044699e1ed8638d4c43d5f6fb70014e",
+      "relation": "constrains",
+      "subject": "computing resources",
+      "object": "training these large dense models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2311-15377-p0002",
+      "quote": "Training advanced AI models requires large investments in computational resources, or compute.",
+      "start": 0,
+      "end": 94,
+      "chunk_sha256": "3a3053a30341058103af1a5f5cc17051786ae7acd2c171e5484ea523fcce6d16",
+      "relation": "constrains",
+      "subject": "large investments",
+      "object": "Training advanced AI models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.527,
+     "novelty": 0.619
+    },
+    "falsification_test": "Relieve computing resources alone while measuring training these large dense models. The hypothesis fails if training these large dense models keeps improving without large investments becoming the binding limit, or if relieving large investments alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "cba17bdcd6a7",
+    "text": "compute used to train a model and final training run may jointly constrain capabilities, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "compute used to train a model",
+     "final training run",
+     "capabilities"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-10799-p0007",
+     "arxiv-2405-10799-p0020",
+     "arxiv-2405-21015-p0009"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-10799-p0007",
+      "quote": "• Difficulty of circumvention: Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.",
+      "start": 0,
+      "end": 228,
+      "chunk_sha256": "06aa6df5f7462e4b7a896f1d1496412c4322bdd43e7b701ef6c52ad9ccef9843",
+      "relation": "decreases",
+      "subject": "compute used to train a model",
+      "object": "capabilities",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2405-10799-p0020",
+      "quote": "• Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.",
+      "start": 126,
+      "end": 325,
+      "chunk_sha256": "7e49783b4f1b79dbc69dfd74404c1071c372dc8d05ad166513259704ccbe0ad9",
+      "relation": "decreases",
+      "subject": "compute used to train a model",
+      "object": "capabilities",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2405-21015-p0009",
+      "quote": "2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.",
+      "start": 421,
+      "end": 612,
+      "chunk_sha256": "5fe1a7ed7f611503d52f84a850d3abbabf1f1466503c0868015dcb0da68892a7",
+      "relation": "constrains",
+      "subject": "final training run",
+      "object": "AI model’s capabilities",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.527,
+     "novelty": 0.608
+    },
+    "falsification_test": "Relieve compute used to train a model alone while measuring capabilities. The hypothesis fails if capabilities keeps improving without final training run becoming the binding limit, or if relieving final training run alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "612a9e9d1942",
+    "text": "Empirical research may affect substantial boost through identified correlations between a model’s training (read as training on CodeExercises).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "Empirical research",
+     "substantial boost"
+    ],
+    "via": [
+     "identified correlations between a model’s training (read as training on CodeExercises)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-10799-p0005",
+     "arxiv-2405-10799-p0017",
+     "arxiv-2306-11644-p0023"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-10799-p0005",
+      "quote": "Empirical research has identified correlations, known as scaling laws, between a model’s training compute and its training loss, test loss, or validation loss.",
+      "start": 92,
+      "end": 251,
+      "chunk_sha256": "3db0cc3ee48738476c7b8a150336f8fa8eae02bf08744311d4165911a12092bb",
+      "relation": "has",
+      "subject": "Empirical research",
+      "object": "identified correlations between a model’s training",
+      "hedged": false,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2405-10799-p0017",
+      "quote": "Empirical research has identified correlations, known as scaling laws, between a model’s training compute and its training loss, test loss, or validation loss (Hernandez et al., 2021; Hoffmann et al., 2022; Kaplan et al., 2020; Sutton, 2019; Villalobos, 2023).",
+      "start": 1063,
+      "end": 1323,
+      "chunk_sha256": "4c25a2352ec8be5786db3489baf1ed29d7d9d65a0f1360a9c59a9ea958715675",
+      "relation": "has",
+      "subject": "Empirical research",
+      "object": "identified correlations between a model’s training",
+      "hedged": false,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2306-11644-p0023",
+      "quote": "5 Data pruning for unbiased performance evaluation In Figure 2.1, we see that training on CodeExercises leads to a substantial boost in the performance of the model on the HumanEval benchmark.",
+      "start": 777,
+      "end": 969,
+      "chunk_sha256": "b3ac6366d92195273366a63c9361e037df0adbc73e6191f3e29b36178dcd5361",
+      "relation": "causes",
+      "subject": "training on CodeExercises",
+      "object": "substantial boost",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.507,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where Empirical research differs while other inputs are matched. The hypothesis fails if substantial boost does not change with Empirical research, or if fixing identified correlations between a model’s training (read as training on CodeExercises) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "c824299ac535",
+    "text": "rapid growth and Training advanced AI models may move together because both depend on increased investments.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "rapid growth",
+     "Training advanced AI models",
+     "increased investments"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-10799-p0016",
+     "arxiv-2311-15377-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-10799-p0016",
+      "quote": "This rapid growth is largely driven by increased investments in computational resources for training larger models, which have demonstrated improved capabilities (figure from Sastry et al.",
+      "start": 575,
+      "end": 763,
+      "chunk_sha256": "9afa0172ff56be6e34d7d3fa02e051890ceefa885ca89e6e4aefb386e2eb0396",
+      "relation": "increases",
+      "subject": "increased investments",
+      "object": "rapid growth",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2311-15377-p0002",
+      "quote": "Training advanced AI models requires large investments in computational resources, or compute.",
+      "start": 0,
+      "end": 94,
+      "chunk_sha256": "3a3053a30341058103af1a5f5cc17051786ae7acd2c171e5484ea523fcce6d16",
+      "relation": "constrains",
+      "subject": "large investments",
+      "object": "Training advanced AI models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.487,
+     "novelty": 0.55
+    },
+    "falsification_test": "Track rapid growth and Training advanced AI models across periods where increased investments changes and where it does not. The hypothesis fails if they co-vary just as strongly when increased investments is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "eb96065f5179",
+    "text": "analysis may increase solutions of larger problem instances through innovation (read as Algorithmic innovations).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "analysis",
+     "solutions of larger problem instances"
+    ],
+    "via": [
+     "innovation (read as Algorithmic innovations)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2007-05558-p0035",
+     "arxiv-2403-05812-p0005"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2007-05558-p0035",
+      "quote": "Thus, because our analysis accounts for innovation and because it is not misled by overly-optimistic scaling down studies, we believe it provides a better long-term view of the evolution of computing power as higher model performance",
+      "start": 993,
+      "end": 1226,
+      "chunk_sha256": "97535f63edfb9bc832bb3bfa14f3e76ecafe0a23433a953ad03b3a60cce973b6",
+      "relation": "causes",
+      "subject": "analysis",
+      "object": "innovation",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2403-05812-p0005",
+      "quote": "Algorithmic innovations enable solutions of larger problem instances, expand the scope of tractable problem classes, and reduce data and/or computation required to achieve fixed performance thresholds.",
+      "start": 0,
+      "end": 201,
+      "chunk_sha256": "2a4f5239e0376f795cab72867d20bd061e3dbd68ef5859526e6fc9dd637cdc71",
+      "relation": "increases",
+      "subject": "Algorithmic innovations",
+      "object": "solutions of larger problem instances",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.48,
+     "novelty": 0.55
+    },
+    "falsification_test": "Compare settings where analysis differs while other inputs are matched. The hypothesis fails if solutions of larger problem instances does not rise with analysis, or if fixing innovation (read as Algorithmic innovations) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "08fdd654e8c2",
+    "text": "Global deduplication upsamples may affect GLaM MoE models through quality data (read as less data).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "Global deduplication upsamples",
+     "GLaM MoE models"
+    ],
+    "via": [
+     "quality data (read as less data)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2406-17557-p0018",
+     "arxiv-2112-06905-p0024"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2406-17557-p0018",
+      "quote": "Global deduplication upsamples lower-quality data in the last deduplicated crawl, resulting in worse performance of the retained data compared to the removed",
+      "start": 92,
+      "end": 249,
+      "chunk_sha256": "394c1e73094b3866ffd3e0ac457c9bf3588979cf46137c72a4c17dc52e094403",
+      "relation": "decreases",
+      "subject": "Global deduplication upsamples",
+      "object": "quality data",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2112-06905-p0024",
+      "quote": "We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.",
+      "start": 302,
+      "end": 464,
+      "chunk_sha256": "2acddc685a89695f573c19171095f2f7d8a2e18e38c9f7554009b8573ef60cce",
+      "relation": "constrains",
+      "subject": "less data",
+      "object": "GLaM MoE models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.447,
+     "novelty": 0.668
+    },
+    "falsification_test": "Compare settings where Global deduplication upsamples differs while other inputs are matched. The hypothesis fails if GLaM MoE models does not change with Global deduplication upsamples, or if fixing quality data (read as less data) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "a3a643249143",
+    "text": "Deployment and matrix-vector products may interact in their effect on compute.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "Deployment",
+     "matrix-vector products",
+     "compute"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2207-02852-p0027",
+     "arxiv-2210-17323-p0023"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2207-02852-p0027",
+      "quote": "Deployment usually consumes much more compute than training: Patterson et al.",
+      "start": 0,
+      "end": 77,
+      "chunk_sha256": "9107029560ef93765df69daea72ae8c728cdc19cad7e27abc45cb0f2e7946dbf",
+      "relation": "increases",
+      "subject": "Deployment",
+      "object": "compute",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2210-17323-p0023",
+      "quote": "Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products.",
+      "start": 1438,
+      "end": 1570,
+      "chunk_sha256": "3a4b6b83e44488b6e9a404f0ab9294c350d52d2fd7ef516c9dd3da5d360183b6",
+      "relation": "constrains",
+      "subject": "matrix-vector products",
+      "object": "compute",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.45,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary Deployment and matrix-vector products separately and together. The hypothesis fails if the joint change in compute equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "bf37a8c09e27",
+    "text": "available safety evaluations and observation may interact in their effect on models.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "available safety evaluations",
+     "observation",
+     "models"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2305-15324-p0049",
+     "arxiv-2211-04325-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2305-15324-p0049",
+      "quote": "There is a risk that widely available safety evaluations will lead to models that exhibit only superficially desirable behaviours.",
+      "start": 45,
+      "end": 175,
+      "chunk_sha256": "1edf75189fbcdecddfa1c93e59e374a46dba22b2152415c4295ada7046586a3a",
+      "relation": "causes",
+      "subject": "available safety evaluations",
+      "object": "models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2211-04325-p0016",
+      "quote": "This model relies on the observation that much of the internet’s text data is user-generated and stored on platforms such as social media, blogs, and forums.",
+      "start": 110,
+      "end": 267,
+      "chunk_sha256": "269ab97a53e427fe55f30d867ce6768ecb5bfd0fa63d9c4d27cf3677997eaf84",
+      "relation": "constrains",
+      "subject": "observation",
+      "object": "model",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.45,
+     "novelty": 0.564
+    },
+    "falsification_test": "Vary available safety evaluations and observation separately and together. The hypothesis fails if the joint change in models equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "731c8834b6db",
+    "text": "Empirical research may affect different conclusions through identified correlations between a model’s training (read as looking at inference rather than training).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "Empirical research",
+     "different conclusions"
+    ],
+    "via": [
+     "identified correlations between a model’s training (read as looking at inference rather than training)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-10799-p0005",
+     "arxiv-2405-10799-p0017",
+     "arxiv-2311-16863-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-10799-p0005",
+      "quote": "Empirical research has identified correlations, known as scaling laws, between a model’s training compute and its training loss, test loss, or validation loss.",
+      "start": 92,
+      "end": 251,
+      "chunk_sha256": "3db0cc3ee48738476c7b8a150336f8fa8eae02bf08744311d4165911a12092bb",
+      "relation": "has",
+      "subject": "Empirical research",
+      "object": "identified correlations between a model’s training",
+      "hedged": false,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2405-10799-p0017",
+      "quote": "Empirical research has identified correlations, known as scaling laws, between a model’s training compute and its training loss, test loss, or validation loss (Hernandez et al., 2021; Hoffmann et al., 2022; Kaplan et al., 2020; Sutton, 2019; Villalobos, 2023).",
+      "start": 1063,
+      "end": 1323,
+      "chunk_sha256": "4c25a2352ec8be5786db3489baf1ed29d7d9d65a0f1360a9c59a9ea958715675",
+      "relation": "has",
+      "subject": "Empirical research",
+      "object": "identified correlations between a model’s training",
+      "hedged": false,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2311-16863-p0004",
+      "quote": "In particular, looking at inference rather than training leads to drastically different conclusions when considering the multi-purpose (or “general-purpose”) aspect specifically.",
+      "start": 2037,
+      "end": 2215,
+      "chunk_sha256": "7e3c6a04c4109622ba3a28646f50e448dc204e901d98f80e687840d2072ac713",
+      "relation": "causes",
+      "subject": "looking at inference rather than training",
+      "object": "different conclusions",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.407,
+     "novelty": 0.636
+    },
+    "falsification_test": "Compare settings where Empirical research differs while other inputs are matched. The hypothesis fails if different conclusions does not change with Empirical research, or if fixing identified correlations between a model’s training (read as looking at inference rather than training) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "2351190dbce5",
+    "text": "estimate may affect GLaM MoE models through data (read as less data).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "estimate",
+     "GLaM MoE models"
+    ],
+    "via": [
+     "data (read as less data)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2211-04325-p0019",
+     "arxiv-2112-06905-p0024"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2211-04325-p0019",
+      "quote": "This estimate includes both data on the indexed web and the deep web, and therefore serves as an upper bound on the size of",
+      "start": 855,
+      "end": 978,
+      "chunk_sha256": "196ad1453e46aaeef202360ee8752d7369474599612c9fafcf531c3136e31c3f",
+      "relation": "has",
+      "subject": "estimate",
+      "object": "data",
+      "hedged": false,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2112-06905-p0024",
+      "quote": "We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.",
+      "start": 302,
+      "end": 464,
+      "chunk_sha256": "2acddc685a89695f573c19171095f2f7d8a2e18e38c9f7554009b8573ef60cce",
+      "relation": "constrains",
+      "subject": "less data",
+      "object": "GLaM MoE models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.407,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where estimate differs while other inputs are matched. The hypothesis fails if GLaM MoE models does not change with estimate, or if fixing data (read as less data) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "59eddb9b9a62",
+    "text": "Global deduplication upsamples may reduce SOTA of large language models through quality data (read as high quality data).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "Global deduplication upsamples",
+     "SOTA of large language models"
+    ],
+    "via": [
+     "quality data (read as high quality data)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2406-17557-p0018",
+     "arxiv-2306-11644-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2406-17557-p0018",
+      "quote": "Global deduplication upsamples lower-quality data in the last deduplicated crawl, resulting in worse performance of the retained data compared to the removed",
+      "start": 92,
+      "end": 249,
+      "chunk_sha256": "394c1e73094b3866ffd3e0ac457c9bf3588979cf46137c72a4c17dc52e094403",
+      "relation": "decreases",
+      "subject": "Global deduplication upsamples",
+      "object": "quality data",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2306-11644-p0004",
+      "quote": "In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.",
+      "start": 1191,
+      "end": 1407,
+      "chunk_sha256": "cc660f0a14dd0d680749702eae26051b543dfe1021068552b11897340bfce2b3",
+      "relation": "increases",
+      "subject": "high quality data",
+      "object": "SOTA of large language models",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.667,
+     "novelty": 0.581
+    },
+    "falsification_test": "Compare settings where Global deduplication upsamples differs while other inputs are matched. The hypothesis fails if SOTA of large language models does not fall with Global deduplication upsamples, or if fixing quality data (read as high quality data) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "1f331cd67216",
+    "text": "training increasingly large models and SOTA of large language models may move together because both depend on data.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "training increasingly large models",
+     "SOTA of large language models",
+     "data"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2112-06905-p0008",
+     "arxiv-2306-11644-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2112-06905-p0008",
+      "quote": "The abundance of compute and data enables training increasingly large models via unsupervised pre-training.",
+      "start": 427,
+      "end": 534,
+      "chunk_sha256": "74c60a931ddb7a13d52938974dbfa2aa066c2d133736087ed2c6dbd4f4511da6",
+      "relation": "increases",
+      "subject": "data",
+      "object": "training increasingly large models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2306-11644-p0004",
+      "quote": "In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.",
+      "start": 1191,
+      "end": 1407,
+      "chunk_sha256": "cc660f0a14dd0d680749702eae26051b543dfe1021068552b11897340bfce2b3",
+      "relation": "increases",
+      "subject": "high quality data",
+      "object": "SOTA of large language models",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.653,
+     "novelty": 0.577
+    },
+    "falsification_test": "Track training increasingly large models and SOTA of large language models across periods where data changes and where it does not. The hypothesis fails if they co-vary just as strongly when data is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "27a69f265aef",
+    "text": "sequence parallelism of the Transformer architecture may increase homogeneous through parallel training (read as training on model outputs).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "sequence parallelism of the Transformer architecture",
+     "homogeneous"
+    ],
+    "via": [
+     "parallel training (read as training on model outputs)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2211-05102-p0004",
+     "arxiv-2211-04325-p0043"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2211-05102-p0004",
+      "quote": "While the sequence parallelism of the Transformer architecture enables highly parallel training, efficient deployment of these models is challenging in practice because generative inference proceeds one token at a time and the computation for each token sequentially depends on the previously generated tokens.",
+      "start": 407,
+      "end": 717,
+      "chunk_sha256": "f418a88115769a5649b370a09400622b6c309e609ed675fbb2795fc0ca1f1d00",
+      "relation": "increases",
+      "subject": "sequence parallelism of the Transformer architecture",
+      "object": "parallel training",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2211-04325-p0043",
+      "quote": "One challenge is that models might lose information about the original human data distribution, such that iteratively training on model outputs results in increasingly homogeneous and unrealistic outputs (Shumailov et al., 2023).",
+      "start": 496,
+      "end": 725,
+      "chunk_sha256": "72d5d1e304d5fac41e123db5814a62e1b1f767edc861541f83fc0804440bdf5c",
+      "relation": "causes",
+      "subject": "training on model outputs",
+      "object": "homogeneous",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.647,
+     "novelty": 0.558
+    },
+    "falsification_test": "Compare settings where sequence parallelism of the Transformer architecture differs while other inputs are matched. The hypothesis fails if homogeneous does not rise with sequence parallelism of the Transformer architecture, or if fixing parallel training (read as training on model outputs) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "2c308910f224",
+    "text": "SOTA of large language models and NNs may move together because both depend on high quality data.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "SOTA of large language models",
+     "NNs",
+     "high quality data"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-11644-p0004",
+     "arxiv-2403-14123-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-11644-p0004",
+      "quote": "In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.",
+      "start": 1191,
+      "end": 1407,
+      "chunk_sha256": "cc660f0a14dd0d680749702eae26051b543dfe1021068552b11897340bfce2b3",
+      "relation": "increases",
+      "subject": "high quality data",
+      "object": "SOTA of large language models",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2403-14123-p0011",
+      "quote": "Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.",
+      "start": 2131,
+      "end": 2258,
+      "chunk_sha256": "6cb3cc4e4e00360378cb8a4971f1597037d4898535bbe2ac335a66a460a4f807",
+      "relation": "constrains",
+      "subject": "training data",
+      "object": "NNs",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.653,
+     "novelty": 0.558
+    },
+    "falsification_test": "Track SOTA of large language models and NNs across periods where high quality data changes and where it does not. The hypothesis fails if they co-vary just as strongly when high quality data is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "2993c7ccf21e",
+    "text": "substantial boost and homogeneous may move together because both depend on training on CodeExercises.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "substantial boost",
+     "homogeneous",
+     "training on CodeExercises"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-11644-p0023",
+     "arxiv-2211-04325-p0043"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-11644-p0023",
+      "quote": "5 Data pruning for unbiased performance evaluation In Figure 2.1, we see that training on CodeExercises leads to a substantial boost in the performance of the model on the HumanEval benchmark.",
+      "start": 777,
+      "end": 969,
+      "chunk_sha256": "b3ac6366d92195273366a63c9361e037df0adbc73e6191f3e29b36178dcd5361",
+      "relation": "causes",
+      "subject": "training on CodeExercises",
+      "object": "substantial boost",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2211-04325-p0043",
+      "quote": "One challenge is that models might lose information about the original human data distribution, such that iteratively training on model outputs results in increasingly homogeneous and unrealistic outputs (Shumailov et al., 2023).",
+      "start": 496,
+      "end": 725,
+      "chunk_sha256": "72d5d1e304d5fac41e123db5814a62e1b1f767edc861541f83fc0804440bdf5c",
+      "relation": "causes",
+      "subject": "training on model outputs",
+      "object": "homogeneous",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.587,
+     "novelty": 0.628
+    },
+    "falsification_test": "Track substantial boost and homogeneous across periods where training on CodeExercises changes and where it does not. The hypothesis fails if they co-vary just as strongly when training on CodeExercises is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "25b30726a39f",
+    "text": "different conclusions and homogeneous may move together because both depend on looking at inference rather than training.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "different conclusions",
+     "homogeneous",
+     "looking at inference rather than training"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2311-16863-p0004",
+     "arxiv-2211-04325-p0043"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2311-16863-p0004",
+      "quote": "In particular, looking at inference rather than training leads to drastically different conclusions when considering the multi-purpose (or “general-purpose”) aspect specifically.",
+      "start": 2037,
+      "end": 2215,
+      "chunk_sha256": "7e3c6a04c4109622ba3a28646f50e448dc204e901d98f80e687840d2072ac713",
+      "relation": "causes",
+      "subject": "looking at inference rather than training",
+      "object": "different conclusions",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2211-04325-p0043",
+      "quote": "One challenge is that models might lose information about the original human data distribution, such that iteratively training on model outputs results in increasingly homogeneous and unrealistic outputs (Shumailov et al., 2023).",
+      "start": 496,
+      "end": 725,
+      "chunk_sha256": "72d5d1e304d5fac41e123db5814a62e1b1f767edc861541f83fc0804440bdf5c",
+      "relation": "causes",
+      "subject": "training on model outputs",
+      "object": "homogeneous",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.587,
+     "novelty": 0.577
+    },
+    "falsification_test": "Track different conclusions and homogeneous across periods where looking at inference rather than training changes and where it does not. The hypothesis fails if they co-vary just as strongly when looking at inference rather than training is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "5821d4bbfe34",
+    "text": "environmental cost of LLMs and homogeneous may move together because both depend on smaller models requiring less training.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "environmental cost of LLMs",
+     "homogeneous",
+     "smaller models requiring less training"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-11644-p0004",
+     "arxiv-2211-04325-p0043"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-11644-p0004",
+      "quote": "Importantly, smaller models requiring less training can significantly reduce the environmental cost of LLMs [BGMMS21].",
+      "start": 1408,
+      "end": 1526,
+      "chunk_sha256": "cc660f0a14dd0d680749702eae26051b543dfe1021068552b11897340bfce2b3",
+      "relation": "decreases",
+      "subject": "smaller models requiring less training",
+      "object": "environmental cost of LLMs",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2211-04325-p0043",
+      "quote": "One challenge is that models might lose information about the original human data distribution, such that iteratively training on model outputs results in increasingly homogeneous and unrealistic outputs (Shumailov et al., 2023).",
+      "start": 496,
+      "end": 725,
+      "chunk_sha256": "72d5d1e304d5fac41e123db5814a62e1b1f767edc861541f83fc0804440bdf5c",
+      "relation": "causes",
+      "subject": "training on model outputs",
+      "object": "homogeneous",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.587,
+     "novelty": 0.558
+    },
+    "falsification_test": "Track environmental cost of LLMs and homogeneous across periods where smaller models requiring less training changes and where it does not. The hypothesis fails if they co-vary just as strongly when smaller models requiring less training is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "faaba1367545",
+    "text": "SOTA of large language models and GLaM MoE models may move together because both depend on high quality data.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "SOTA of large language models",
+     "GLaM MoE models",
+     "high quality data"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-11644-p0004",
+     "arxiv-2112-06905-p0024"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-11644-p0004",
+      "quote": "In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.",
+      "start": 1191,
+      "end": 1407,
+      "chunk_sha256": "cc660f0a14dd0d680749702eae26051b543dfe1021068552b11897340bfce2b3",
+      "relation": "increases",
+      "subject": "high quality data",
+      "object": "SOTA of large language models",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2112-06905-p0024",
+      "quote": "We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.",
+      "start": 302,
+      "end": 464,
+      "chunk_sha256": "2acddc685a89695f573c19171095f2f7d8a2e18e38c9f7554009b8573ef60cce",
+      "relation": "constrains",
+      "subject": "less data",
+      "object": "GLaM MoE models",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.587,
+     "novelty": 0.531
+    },
+    "falsification_test": "Track SOTA of large language models and GLaM MoE models across periods where high quality data changes and where it does not. The hypothesis fails if they co-vary just as strongly when high quality data is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "4bcb0f92dbcb",
+    "text": "sequence parallelism of the Transformer architecture may reduce environmental cost of LLMs through parallel training (read as smaller models requiring less training).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "sequence parallelism of the Transformer architecture",
+     "environmental cost of LLMs"
+    ],
+    "via": [
+     "parallel training (read as smaller models requiring less training)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2211-05102-p0004",
+     "arxiv-2306-11644-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2211-05102-p0004",
+      "quote": "While the sequence parallelism of the Transformer architecture enables highly parallel training, efficient deployment of these models is challenging in practice because generative inference proceeds one token at a time and the computation for each token sequentially depends on the previously generated tokens.",
+      "start": 407,
+      "end": 717,
+      "chunk_sha256": "f418a88115769a5649b370a09400622b6c309e609ed675fbb2795fc0ca1f1d00",
+      "relation": "increases",
+      "subject": "sequence parallelism of the Transformer architecture",
+      "object": "parallel training",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2306-11644-p0004",
+      "quote": "Importantly, smaller models requiring less training can significantly reduce the environmental cost of LLMs [BGMMS21].",
+      "start": 1408,
+      "end": 1526,
+      "chunk_sha256": "cc660f0a14dd0d680749702eae26051b543dfe1021068552b11897340bfce2b3",
+      "relation": "decreases",
+      "subject": "smaller models requiring less training",
+      "object": "environmental cost of LLMs",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.567,
+     "novelty": 0.583
+    },
+    "falsification_test": "Compare settings where sequence parallelism of the Transformer architecture differs while other inputs are matched. The hypothesis fails if environmental cost of LLMs does not fall with sequence parallelism of the Transformer architecture, or if fixing parallel training (read as smaller models requiring less training) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "fbdf280e1fad",
+    "text": "Gains in capabilities from progress in AI development may be offset by compute used to train a model.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "compute used to train a model",
+     "progress in AI development",
+     "capabilities"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-10799-p0007",
+     "arxiv-2405-10799-p0020",
+     "arxiv-2305-15324-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-10799-p0007",
+      "quote": "• Difficulty of circumvention: Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.",
+      "start": 0,
+      "end": 228,
+      "chunk_sha256": "06aa6df5f7462e4b7a896f1d1496412c4322bdd43e7b701ef6c52ad9ccef9843",
+      "relation": "decreases",
+      "subject": "compute used to train a model",
+      "object": "capabilities",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2405-10799-p0020",
+      "quote": "• Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.",
+      "start": 126,
+      "end": 325,
+      "chunk_sha256": "7e49783b4f1b79dbc69dfd74404c1071c372dc8d05ad166513259704ccbe0ad9",
+      "relation": "decreases",
+      "subject": "compute used to train a model",
+      "object": "capabilities",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2305-15324-p0003",
+      "quote": "Further progress in AI development could lead to capabilities that pose extreme risks, such as offensive cyber capabilities or strong manipulation skills.",
+      "start": 427,
+      "end": 581,
+      "chunk_sha256": "6cf5cec40898300fc6942b4c210b9018655a77ed44718212d130e5c0e03fffe3",
+      "relation": "causes",
+      "subject": "progress in AI development",
+      "object": "capabilities",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.525,
+     "novelty": 0.628
+    },
+    "falsification_test": "Measure capabilities where both compute used to train a model and progress in AI development vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "521059f39d8f",
+    "text": "observation may constrain productivity of actors building dual use through model.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "observation",
+     "productivity of actors building dual use"
+    ],
+    "via": [
+     "model"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2211-04325-p0016",
+     "arxiv-2305-15324-p0019"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2211-04325-p0016",
+      "quote": "This model relies on the observation that much of the internet’s text data is user-generated and stored on platforms such as social media, blogs, and forums.",
+      "start": 110,
+      "end": 267,
+      "chunk_sha256": "269ab97a53e427fe55f30d867ce6768ecb5bfd0fa63d9c4d27cf3677997eaf84",
+      "relation": "constrains",
+      "subject": "observation",
+      "object": "model",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2305-15324-p0019",
+      "quote": "As an assistant, the model could significantly improve the productivity of actors building dual use AI capabilities.",
+      "start": 219,
+      "end": 335,
+      "chunk_sha256": "26338cc44cd5b0461d5e550096877da3c28af4b3324b290cb8edfc54660fefaa",
+      "relation": "increases",
+      "subject": "model",
+      "object": "productivity of actors building dual use",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.525,
+     "novelty": 0.517
+    },
+    "falsification_test": "Compare settings where observation differs while other inputs are matched. The hypothesis fails if productivity of actors building dual use does not stay bounded with observation, or if fixing model removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT"
+   },
+   {
+    "id": "266fad858f1d",
+    "text": "high training compute generally indicates and progress in AI development may jointly drive model capabilities, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "high training compute generally indicates",
+     "progress in AI development",
+     "model capabilities"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-10799-p0007",
+     "arxiv-2305-15324-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-10799-p0007",
+      "quote": "While high training compute generally indicates increased model capabilities and potential risks, some high-compute models may pose minimal concerns, whereas certain low-compute models could present significant risks (with the latter partially addressed through complementary non-GPAI regulations).",
+      "start": 399,
+      "end": 697,
+      "chunk_sha256": "06aa6df5f7462e4b7a896f1d1496412c4322bdd43e7b701ef6c52ad9ccef9843",
+      "relation": "increases",
+      "subject": "high training compute generally indicates",
+      "object": "model capabilities",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2305-15324-p0003",
+      "quote": "Further progress in AI development could lead to capabilities that pose extreme risks, such as offensive cyber capabilities or strong manipulation skills.",
+      "start": 427,
+      "end": 581,
+      "chunk_sha256": "6cf5cec40898300fc6942b4c210b9018655a77ed44718212d130e5c0e03fffe3",
+      "relation": "causes",
+      "subject": "progress in AI development",
+      "object": "capabilities",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.507,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary high training compute generally indicates and progress in AI development separately and together. The hypothesis fails if the joint change in model capabilities equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "7f45bdc2bff5",
+    "text": "Empirical research may affect homogeneous through identified correlations between a model’s training (read as training on model outputs).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "Empirical research",
+     "homogeneous"
+    ],
+    "via": [
+     "identified correlations between a model’s training (read as training on model outputs)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-10799-p0005",
+     "arxiv-2405-10799-p0017",
+     "arxiv-2211-04325-p0043"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-10799-p0005",
+      "quote": "Empirical research has identified correlations, known as scaling laws, between a model’s training compute and its training loss, test loss, or validation loss.",
+      "start": 92,
+      "end": 251,
+      "chunk_sha256": "3db0cc3ee48738476c7b8a150336f8fa8eae02bf08744311d4165911a12092bb",
+      "relation": "has",
+      "subject": "Empirical research",
+      "object": "identified correlations between a model’s training",
+      "hedged": false,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2405-10799-p0017",
+      "quote": "Empirical research has identified correlations, known as scaling laws, between a model’s training compute and its training loss, test loss, or validation loss (Hernandez et al., 2021; Hoffmann et al., 2022; Kaplan et al., 2020; Sutton, 2019; Villalobos, 2023).",
+      "start": 1063,
+      "end": 1323,
+      "chunk_sha256": "4c25a2352ec8be5786db3489baf1ed29d7d9d65a0f1360a9c59a9ea958715675",
+      "relation": "has",
+      "subject": "Empirical research",
+      "object": "identified correlations between a model’s training",
+      "hedged": false,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2211-04325-p0043",
+      "quote": "One challenge is that models might lose information about the original human data distribution, such that iteratively training on model outputs results in increasingly homogeneous and unrealistic outputs (Shumailov et al., 2023).",
+      "start": 496,
+      "end": 725,
+      "chunk_sha256": "72d5d1e304d5fac41e123db5814a62e1b1f767edc861541f83fc0804440bdf5c",
+      "relation": "causes",
+      "subject": "training on model outputs",
+      "object": "homogeneous",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.507,
+     "novelty": 0.577
+    },
+    "falsification_test": "Compare settings where Empirical research differs while other inputs are matched. The hypothesis fails if homogeneous does not change with Empirical research, or if fixing identified correlations between a model’s training (read as training on model outputs) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "d7f80de615dd",
+    "text": "estimate may affect SOTA of large language models through data (read as high quality data).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "estimate",
+     "SOTA of large language models"
+    ],
+    "via": [
+     "data (read as high quality data)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2211-04325-p0019",
+     "arxiv-2306-11644-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2211-04325-p0019",
+      "quote": "This estimate includes both data on the indexed web and the deep web, and therefore serves as an upper bound on the size of",
+      "start": 855,
+      "end": 978,
+      "chunk_sha256": "196ad1453e46aaeef202360ee8752d7369474599612c9fafcf531c3136e31c3f",
+      "relation": "has",
+      "subject": "estimate",
+      "object": "data",
+      "hedged": false,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2306-11644-p0004",
+      "quote": "In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.",
+      "start": 1191,
+      "end": 1407,
+      "chunk_sha256": "cc660f0a14dd0d680749702eae26051b543dfe1021068552b11897340bfce2b3",
+      "relation": "increases",
+      "subject": "high quality data",
+      "object": "SOTA of large language models",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.507,
+     "novelty": 0.532
+    },
+    "falsification_test": "Compare settings where estimate differs while other inputs are matched. The hypothesis fails if SOTA of large language models does not change with estimate, or if fixing data (read as high quality data) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "8345f3d87cb2",
+    "text": "architectures and single training run may move together because both depend on compute.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "architectures",
+     "single training run",
+     "compute"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2212-05153-p0007",
+     "arxiv-2402-08797-p0023"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2212-05153-p0007",
+      "quote": "So it could be the case that the good performance of modern computer vision models is partly explained by new Transformer-based architectures, even though such architectures might need more compute to achieve the same level of performance",
+      "start": 843,
+      "end": 1081,
+      "chunk_sha256": "41c5bf81e943f402d6f143350f97971cb44066554f523c7f33060b113c568145",
+      "relation": "constrains",
+      "subject": "compute",
+      "object": "architectures",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2402-08797-p0023",
+      "quote": "Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.",
+      "start": 161,
+      "end": 357,
+      "chunk_sha256": "7e346f2bd74ec7647d0e65a3a852243eccabbaa574bbbb51a63b94d0c0d49cd8",
+      "relation": "constrains",
+      "subject": "far more compute",
+      "object": "single training run",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.487,
+     "novelty": 0.578
+    },
+    "falsification_test": "Track architectures and single training run across periods where compute changes and where it does not. The hypothesis fails if they co-vary just as strongly when compute is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   }
+  ],
+  "survivors": 62,
+  "candidates_generated": 611,
+  "candidates_passed": {
+   "abductive": 230,
+   "deductive": 230,
+   "pre_thinker": 62
+  },
+  "candidates_rejected": {
+   "abductive:incoherent_composition": 25,
+   "abductive:no_explanatory_relation": 115,
+   "abductive:unrelated_bridge": 241,
+   "pre_thinker:circular": 2,
+   "pre_thinker:malformed": 156,
+   "pre_thinker:restates_source": 2,
+   "pre_thinker:single_source": 8
+  },
+  "relation_edges": 550,
+  "scoped_edges": 168,
+  "budget_used": {
+   "rounds": 3,
+   "candidates": 611,
+   "edges": 550,
+   "bytes": 314309,
+   "seconds": 3.723
+  },
+  "incomplete": false,
+  "stop_reason": null,
+  "shortage": null,
+  "snapshot": {
+   "as_of": 1795242899,
+   "chunk_count": 1054
+  }
+ },
+ "reply": "Frontier hypotheses for training data supply. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 611. Passed abductive check: 230; deductive check: 230; pre-thinker validation: 62.\n\n1. Global deduplication upsamples may reduce training increasingly large models through quality data (read as data).\n[arxiv-2406-17557-p0018] Global deduplication upsamples lower-quality data in the last deduplicated crawl, resulting in worse performance of the retained data compared to the removed\n[arxiv-2112-06905-p0008] The abundance of compute and data enables training increasingly large models via unsupervised pre-training.\nFalsification test: Compare settings where Global deduplication upsamples differs while other inputs are matched. The hypothesis fails if training increasingly large models does not fall with Global deduplication upsamples, or if fixing quality data (read as data) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.73, novelty 0.64.\n\n2. GLaM MoE models and central ingredient our model may move together because both depend on less data.\n[arxiv-2112-06905-p0024] We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.\n[arxiv-2306-11644-p0006] As alluded to in the title of the paper, the central ingredient our model relies on textbook-quality training data.\nFalsification test: Track GLaM MoE models and central ingredient our model across periods where less data changes and where it does not. The hypothesis fails if they co-vary just as strongly when less data is held fixed.\nScores: source support 0.80, deductive relevance 0.65, novelty 0.65.\n\n3. GLaM MoE models and NNs may move together because both depend on less data.\n[arxiv-2112-06905-p0024] We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.\n[arxiv-2403-14123-p0011] Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.\nFalsification test: Track GLaM MoE models and NNs across periods where less data changes and where it does not. The hypothesis fails if they co-vary just as strongly when less data is held fixed.\nScores: source support 0.80, deductive relevance 0.65, novelty 0.63.\n\n4. training increasingly large models and central ingredient our model may move together because both depend on data.\n[arxiv-2112-06905-p0008] The abundance of compute and data enables training increasingly large models via unsupervised pre-training.\n[arxiv-2306-11644-p0006] As alluded to in the title of the paper, the central ingredient our model relies on textbook-quality training data.\nFalsification test: Track training increasingly large models and central ingredient our model across periods where data changes and where it does not. The hypothesis fails if they co-vary just as strongly when data is held fixed.\nScores: source support 0.80, deductive relevance 0.65, novelty 0.62.\n\n5. sequence parallelism of the Transformer architecture may increase substantial boost through parallel training (read as training on CodeExercises).\n[arxiv-2211-05102-p0004] While the sequence parallelism of the Transformer architecture enables highly parallel training, efficient deployment of these models is challenging in practice because generative inference proceeds one token at a time and the computation for each token sequentially depends on the previously generated tokens.\n[arxiv-2306-11644-p0023] 5 Data pruning for unbiased performance evaluation In Figure 2.1, we see that training on CodeExercises leads to a substantial boost in the performance of the model on the HumanEval benchmark.\nFalsification test: Compare settings where sequence parallelism of the Transformer architecture differs while other inputs are matched. The hypothesis fails if substantial boost does not rise with sequence parallelism of the Transformer architecture, or if fixing parallel training (read as training on CodeExercises) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.65, novelty 0.60.\n\n6. training increasingly large models and NNs may move together because both depend on data.\n[arxiv-2112-06905-p0008] The abundance of compute and data enables training increasingly large models via unsupervised pre-training.\n[arxiv-2403-14123-p0011] Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.\nFalsification test: Track training increasingly large models and NNs across periods where data changes and where it does not. The hypothesis fails if they co-vary just as strongly when data is held fixed.\nScores: source support 0.80, deductive relevance 0.65, novelty 0.60.\n\n7. central ingredient our model and NNs may move together because both depend on textbook-quality training data.\n[arxiv-2306-11644-p0006] As alluded to in the title of the paper, the central ingredient our model relies on textbook-quality training data.\n[arxiv-2403-14123-p0011] Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.\nFalsification test: Track central ingredient our model and NNs across periods where textbook-quality training data changes and where it does not. The hypothesis fails if they co-vary just as strongly when textbook-quality training data is held fixed.\nScores: source support 0.80, deductive relevance 0.65, novelty 0.58.\n\n8. estimate may affect training increasingly large models through data.\n[arxiv-2211-04325-p0019] This estimate includes both data on the indexed web and the deep web, and therefore serves as an upper bound on the size of\n[arxiv-2112-06905-p0008] The abundance of compute and data enables training increasingly large models via unsupervised pre-training.\nFalsification test: Compare settings where estimate differs while other inputs are matched. The hypothesis fails if training increasingly large models does not change with estimate, or if fixing data removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.63, novelty 0.49.\n\n9. Global deduplication upsamples may affect NNs through quality data (read as training data).\n[arxiv-2406-17557-p0018] Global deduplication upsamples lower-quality data in the last deduplicated crawl, resulting in worse performance of the retained data compared to the removed\n[arxiv-2403-14123-p0011] Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.\nFalsification test: Compare settings where Global deduplication upsamples differs while other inputs are matched. The hypothesis fails if NNs does not change with Global deduplication upsamples, or if fixing quality data (read as training data) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.61, novelty 0.65.\n\n10. Global deduplication upsamples may affect central ingredient our model through quality data (read as textbook-quality training data).\n[arxiv-2406-17557-p0018] Global deduplication upsamples lower-quality data in the last deduplicated crawl, resulting in worse performance of the retained data compared to the removed\n[arxiv-2306-11644-p0006] As alluded to in the title of the paper, the central ingredient our model relies on textbook-quality training data.\nFalsification test: Compare settings where Global deduplication upsamples differs while other inputs are matched. The hypothesis fails if central ingredient our model does not change with Global deduplication upsamples, or if fixing quality data (read as textbook-quality training data) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.61, novelty 0.62.\n\n11. data and splitting the model’s weights may interact in their effect on training increasingly large models.\n[arxiv-2112-06905-p0008] The abundance of compute and data enables training increasingly large models via unsupervised pre-training.\n[arxiv-2303-11341-p0023] Large NNs have too many weights to fit in the high-bandwidth memory of a single ML device, so efficiently training a model requires splitting the model’s weights into weight shards, and placing a shard on each chip [57].\nFalsification test: Vary data and splitting the model’s weights separately and together. The hypothesis fails if the joint change in training increasingly large models equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.61, novelty 0.57.\n\n12. data and tens of thousands of GPUs may interact in their effect on training increasingly large models.\n[arxiv-2112-06905-p0008] The abundance of compute and data enables training increasingly large models via unsupervised pre-training.\n[arxiv-2405-10799-p0021] AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars.\nFalsification test: Vary data and tens of thousands of GPUs separately and together. The hypothesis fails if the joint change in training increasingly large models equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.61, novelty 0.55.\n\n13. data and large investments may interact in their effect on training increasingly large models.\n[arxiv-2112-06905-p0008] The abundance of compute and data enables training increasingly large models via unsupervised pre-training.\n[arxiv-2311-15377-p0002] Training advanced AI models requires large investments in computational resources, or compute.\nFalsification test: Vary data and large investments separately and together. The hypothesis fails if the joint change in training increasingly large models equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.61, novelty 0.49.\n\n14. observation may constrain language understanding tasks through model.\n[arxiv-2211-04325-p0016] This model relies on the observation that much of the internet’s text data is user-generated and stored on platforms such as social media, blogs, and forums.\n[arxiv-2112-06905-p0019] Most language understanding tasks require the model to select one correct answer from multiple options.\nFalsification test: Compare settings where observation differs while other inputs are matched. The hypothesis fails if language understanding tasks does not stay bounded with observation, or if fixing model removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.56.\n\n15. different conclusions and substantial boost may move together because both depend on looking at inference rather than training.\n[arxiv-2311-16863-p0004] In particular, looking at inference rather than training leads to drastically different conclusions when considering the multi-purpose (or “general-purpose”) aspect specifically.\n[arxiv-2306-11644-p0023] 5 Data pruning for unbiased performance evaluation In Figure 2.1, we see that training on CodeExercises leads to a substantial boost in the performance of the model on the HumanEval benchmark.\nFalsification test: Track different conclusions and substantial boost across periods where looking at inference rather than training changes and where it does not. The hypothesis fails if they co-vary just as strongly when looking at inference rather than training is held fixed.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.60.\n\n16. matrix-vector products may constrain single training run through compute (read as far more compute).\n[arxiv-2210-17323-p0023] Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products.\n[arxiv-2402-08797-p0023] Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.\nFalsification test: Compare settings where matrix-vector products differs while other inputs are matched. The hypothesis fails if single training run does not stay bounded with matrix-vector products, or if fixing compute (read as far more compute) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.60.\n\n17. estimate may affect NNs through data (read as training data).\n[arxiv-2211-04325-p0019] This estimate includes both data on the indexed web and the deep web, and therefore serves as an upper bound on the size of\n[arxiv-2403-14123-p0011] Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.\nFalsification test: Compare settings where estimate differs while other inputs are matched. The hypothesis fails if NNs does not change with estimate, or if fixing data (read as training data) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.59.\n\n18. estimate may affect central ingredient our model through data (read as textbook-quality training data).\n[arxiv-2211-04325-p0019] This estimate includes both data on the indexed web and the deep web, and therefore serves as an upper bound on the size of\n[arxiv-2306-11644-p0006] As alluded to in the title of the paper, the central ingredient our model relies on textbook-quality training data.\nFalsification test: Compare settings where estimate differs while other inputs are matched. The hypothesis fails if central ingredient our model does not change with estimate, or if fixing data (read as textbook-quality training data) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.55.\n\n19. far more compute may constrain AI model’s capabilities through single training run (read as final training run).\n[arxiv-2402-08797-p0023] Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.\n[arxiv-2405-21015-p0009] 2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.\nFalsification test: Compare settings where far more compute differs while other inputs are matched. The hypothesis fails if AI model’s capabilities does not stay bounded with far more compute, or if fixing single training run (read as final training run) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.51.\n\n20. sequence parallelism of the Transformer architecture may increase different conclusions through parallel training (read as looking at inference rather than training).\n[arxiv-2211-05102-p0004] While the sequence parallelism of the Transformer architecture enables highly parallel training, efficient deployment of these models is challenging in practice because generative inference proceeds one token at a time and the computation for each token sequentially depends on the previously generated tokens.\n[arxiv-2311-16863-p0004] In particular, looking at inference rather than training leads to drastically different conclusions when considering the multi-purpose (or “general-purpose”) aspect specifically.\nFalsification test: Compare settings where sequence parallelism of the Transformer architecture differs while other inputs are matched. The hypothesis fails if different conclusions does not rise with sequence parallelism of the Transformer architecture, or if fixing parallel training (read as looking at inference rather than training) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.55, novelty 0.60.\n\n21. splitting the model’s weights and tens of thousands of GPUs may jointly constrain training a model, so relieving one may shift the bottleneck to the other.\n[arxiv-2303-11341-p0023] Large NNs have too many weights to fit in the high-bandwidth memory of a single ML device, so efficiently training a model requires splitting the model’s weights into weight shards, and placing a shard on each chip [57].\n[arxiv-2405-10799-p0021] AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars.\nFalsification test: Relieve splitting the model’s weights alone while measuring training a model. The hypothesis fails if training a model keeps improving without tens of thousands of GPUs becoming the binding limit, or if relieving tens of thousands of GPUs alone has no effect.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.66.\n\n22. computing resources and tens of thousands of GPUs may jointly constrain training these large dense models, so relieving one may shift the bottleneck to the other.\n[arxiv-2112-06905-p0003] However, training these large dense models requires significant amounts of computing resources.\n[arxiv-2405-10799-p0021] AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars.\nFalsification test: Relieve computing resources alone while measuring training these large dense models. The hypothesis fails if training these large dense models keeps improving without tens of thousands of GPUs becoming the binding limit, or if relieving tens of thousands of GPUs alone has no effect.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.65.\n\n23. large investments and tens of thousands of GPUs may jointly constrain Training advanced AI models, so relieving one may shift the bottleneck to the other.\n[arxiv-2311-15377-p0002] Training advanced AI models requires large investments in computational resources, or compute.\n[arxiv-2405-10799-p0021] AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars.\nFalsification test: Relieve large investments alone while measuring Training advanced AI models. The hypothesis fails if Training advanced AI models keeps improving without tens of thousands of GPUs becoming the binding limit, or if relieving tens of thousands of GPUs alone has no effect.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.65.\n\n24. large investments and splitting the model’s weights may jointly constrain Training advanced AI models, so relieving one may shift the bottleneck to the other.\n[arxiv-2311-15377-p0002] Training advanced AI models requires large investments in computational resources, or compute.\n[arxiv-2303-11341-p0023] Large NNs have too many weights to fit in the high-bandwidth memory of a single ML device, so efficiently training a model requires splitting the model’s weights into weight shards, and placing a shard on each chip [57].\nFalsification test: Relieve large investments alone while measuring Training advanced AI models. The hypothesis fails if Training advanced AI models keeps improving without splitting the model’s weights becoming the binding limit, or if relieving splitting the model’s weights alone has no effect.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.64.\n\n25. computing resources and splitting the model’s weights may jointly constrain training these large dense models, so relieving one may shift the bottleneck to the other.\n[arxiv-2112-06905-p0003] However, training these large dense models requires significant amounts of computing resources.\n[arxiv-2303-11341-p0023] Large NNs have too many weights to fit in the high-bandwidth memory of a single ML device, so efficiently training a model requires splitting the model’s weights into weight shards, and placing a shard on each chip [57].\nFalsification test: Relieve computing resources alone while measuring training these large dense models. The hypothesis fails if training these large dense models keeps improving without splitting the model’s weights becoming the binding limit, or if relieving splitting the model’s weights alone has no effect.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.64.\n\n26. computing resources and large investments may jointly constrain training these large dense models, so relieving one may shift the bottleneck to the other.\n[arxiv-2112-06905-p0003] However, training these large dense models requires significant amounts of computing resources.\n[arxiv-2311-15377-p0002] Training advanced AI models requires large investments in computational resources, or compute.\nFalsification test: Relieve computing resources alone while measuring training these large dense models. The hypothesis fails if training these large dense models keeps improving without large investments becoming the binding limit, or if relieving large investments alone has no effect.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.62.\n\n27. compute used to train a model and final training run may jointly constrain capabilities, so relieving one may shift the bottleneck to the other.\n[arxiv-2405-10799-p0007] • Difficulty of circumvention: Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.\n[arxiv-2405-10799-p0020] • Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.\n[arxiv-2405-21015-p0009] 2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.\nFalsification test: Relieve compute used to train a model alone while measuring capabilities. The hypothesis fails if capabilities keeps improving without final training run becoming the binding limit, or if relieving final training run alone has no effect.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.61.\n\n28. Empirical research may affect substantial boost through identified correlations between a model’s training (read as training on CodeExercises).\n[arxiv-2405-10799-p0005] Empirical research has identified correlations, known as scaling laws, between a model’s training compute and its training loss, test loss, or validation loss.\n[arxiv-2405-10799-p0017] Empirical research has identified correlations, known as scaling laws, between a model’s training compute and its training loss, test loss, or validation loss (Hernandez et al., 2021; Hoffmann et al., 2022; Kaplan et al., 2020; Sutton, 2019; Villalobos, 2023).\n[arxiv-2306-11644-p0023] 5 Data pruning for unbiased performance evaluation In Figure 2.1, we see that training on CodeExercises leads to a substantial boost in the performance of the model on the HumanEval benchmark.\nFalsification test: Compare settings where Empirical research differs while other inputs are matched. The hypothesis fails if substantial boost does not change with Empirical research, or if fixing identified correlations between a model’s training (read as training on CodeExercises) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.51, novelty 0.60.\n\n29. rapid growth and Training advanced AI models may move together because both depend on increased investments.\n[arxiv-2405-10799-p0016] This rapid growth is largely driven by increased investments in computational resources for training larger models, which have demonstrated improved capabilities (figure from Sastry et al.\n[arxiv-2311-15377-p0002] Training advanced AI models requires large investments in computational resources, or compute.\nFalsification test: Track rapid growth and Training advanced AI models across periods where increased investments changes and where it does not. The hypothesis fails if they co-vary just as strongly when increased investments is held fixed.\nScores: source support 0.80, deductive relevance 0.49, novelty 0.55.\n\n30. analysis may increase solutions of larger problem instances through innovation (read as Algorithmic innovations).\n[arxiv-2007-05558-p0035] Thus, because our analysis accounts for innovation and because it is not misled by overly-optimistic scaling down studies, we believe it provides a better long-term view of the evolution of computing power as higher model performance\n[arxiv-2403-05812-p0005] Algorithmic innovations enable solutions of larger problem instances, expand the scope of tractable problem classes, and reduce data and/or computation required to achieve fixed performance thresholds.\nFalsification test: Compare settings where analysis differs while other inputs are matched. The hypothesis fails if solutions of larger problem instances does not rise with analysis, or if fixing innovation (read as Algorithmic innovations) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.48, novelty 0.55.\n\n31. Global deduplication upsamples may affect GLaM MoE models through quality data (read as less data).\n[arxiv-2406-17557-p0018] Global deduplication upsamples lower-quality data in the last deduplicated crawl, resulting in worse performance of the retained data compared to the removed\n[arxiv-2112-06905-p0024] We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.\nFalsification test: Compare settings where Global deduplication upsamples differs while other inputs are matched. The hypothesis fails if GLaM MoE models does not change with Global deduplication upsamples, or if fixing quality data (read as less data) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.45, novelty 0.67.\n\n32. Deployment and matrix-vector products may interact in their effect on compute.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\n[arxiv-2210-17323-p0023] Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products.\nFalsification test: Vary Deployment and matrix-vector products separately and together. The hypothesis fails if the joint change in compute equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.45, novelty 0.60.\n\n33. available safety evaluations and observation may interact in their effect on models.\n[arxiv-2305-15324-p0049] There is a risk that widely available safety evaluations will lead to models that exhibit only superficially desirable behaviours.\n[arxiv-2211-04325-p0016] This model relies on the observation that much of the internet’s text data is user-generated and stored on platforms such as social media, blogs, and forums.\nFalsification test: Vary available safety evaluations and observation separately and together. The hypothesis fails if the joint change in models equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.45, novelty 0.56.\n\n34. Empirical research may affect different conclusions through identified correlations between a model’s training (read as looking at inference rather than training).\n[arxiv-2405-10799-p0005] Empirical research has identified correlations, known as scaling laws, between a model’s training compute and its training loss, test loss, or validation loss.\n[arxiv-2405-10799-p0017] Empirical research has identified correlations, known as scaling laws, between a model’s training compute and its training loss, test loss, or validation loss (Hernandez et al., 2021; Hoffmann et al., 2022; Kaplan et al., 2020; Sutton, 2019; Villalobos, 2023).\n[arxiv-2311-16863-p0004] In particular, looking at inference rather than training leads to drastically different conclusions when considering the multi-purpose (or “general-purpose”) aspect specifically.\nFalsification test: Compare settings where Empirical research differs while other inputs are matched. The hypothesis fails if different conclusions does not change with Empirical research, or if fixing identified correlations between a model’s training (read as looking at inference rather than training) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.41, novelty 0.64.\n\n35. estimate may affect GLaM MoE models through data (read as less data).\n[arxiv-2211-04325-p0019] This estimate includes both data on the indexed web and the deep web, and therefore serves as an upper bound on the size of\n[arxiv-2112-06905-p0024] We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.\nFalsification test: Compare settings where estimate differs while other inputs are matched. The hypothesis fails if GLaM MoE models does not change with estimate, or if fixing data (read as less data) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.41, novelty 0.60.\n\n36. Global deduplication upsamples may reduce SOTA of large language models through quality data (read as high quality data).\n[arxiv-2406-17557-p0018] Global deduplication upsamples lower-quality data in the last deduplicated crawl, resulting in worse performance of the retained data compared to the removed\n[arxiv-2306-11644-p0004] In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.\nFalsification test: Compare settings where Global deduplication upsamples differs while other inputs are matched. The hypothesis fails if SOTA of large language models does not fall with Global deduplication upsamples, or if fixing quality data (read as high quality data) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.67, novelty 0.58.\n\n37. training increasingly large models and SOTA of large language models may move together because both depend on data.\n[arxiv-2112-06905-p0008] The abundance of compute and data enables training increasingly large models via unsupervised pre-training.\n[arxiv-2306-11644-p0004] In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.\nFalsification test: Track training increasingly large models and SOTA of large language models across periods where data changes and where it does not. The hypothesis fails if they co-vary just as strongly when data is held fixed.\nScores: source support 0.55, deductive relevance 0.65, novelty 0.58.\n\n38. sequence parallelism of the Transformer architecture may increase homogeneous through parallel training (read as training on model outputs).\n[arxiv-2211-05102-p0004] While the sequence parallelism of the Transformer architecture enables highly parallel training, efficient deployment of these models is challenging in practice because generative inference proceeds one token at a time and the computation for each token sequentially depends on the previously generated tokens.\n[arxiv-2211-04325-p0043] One challenge is that models might lose information about the original human data distribution, such that iteratively training on model outputs results in increasingly homogeneous and unrealistic outputs (Shumailov et al., 2023).\nFalsification test: Compare settings where sequence parallelism of the Transformer architecture differs while other inputs are matched. The hypothesis fails if homogeneous does not rise with sequence parallelism of the Transformer architecture, or if fixing parallel training (read as training on model outputs) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.65, novelty 0.56.\n\n39. SOTA of large language models and NNs may move together because both depend on high quality data.\n[arxiv-2306-11644-p0004] In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.\n[arxiv-2403-14123-p0011] Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.\nFalsification test: Track SOTA of large language models and NNs across periods where high quality data changes and where it does not. The hypothesis fails if they co-vary just as strongly when high quality data is held fixed.\nScores: source support 0.55, deductive relevance 0.65, novelty 0.56.\n\n40. substantial boost and homogeneous may move together because both depend on training on CodeExercises.\n[arxiv-2306-11644-p0023] 5 Data pruning for unbiased performance evaluation In Figure 2.1, we see that training on CodeExercises leads to a substantial boost in the performance of the model on the HumanEval benchmark.\n[arxiv-2211-04325-p0043] One challenge is that models might lose information about the original human data distribution, such that iteratively training on model outputs results in increasingly homogeneous and unrealistic outputs (Shumailov et al., 2023).\nFalsification test: Track substantial boost and homogeneous across periods where training on CodeExercises changes and where it does not. The hypothesis fails if they co-vary just as strongly when training on CodeExercises is held fixed.\nScores: source support 0.55, deductive relevance 0.59, novelty 0.63.\n\n41. different conclusions and homogeneous may move together because both depend on looking at inference rather than training.\n[arxiv-2311-16863-p0004] In particular, looking at inference rather than training leads to drastically different conclusions when considering the multi-purpose (or “general-purpose”) aspect specifically.\n[arxiv-2211-04325-p0043] One challenge is that models might lose information about the original human data distribution, such that iteratively training on model outputs results in increasingly homogeneous and unrealistic outputs (Shumailov et al., 2023).\nFalsification test: Track different conclusions and homogeneous across periods where looking at inference rather than training changes and where it does not. The hypothesis fails if they co-vary just as strongly when looking at inference rather than training is held fixed.\nScores: source support 0.55, deductive relevance 0.59, novelty 0.58.\n\n42. environmental cost of LLMs and homogeneous may move together because both depend on smaller models requiring less training.\n[arxiv-2306-11644-p0004] Importantly, smaller models requiring less training can significantly reduce the environmental cost of LLMs [BGMMS21].\n[arxiv-2211-04325-p0043] One challenge is that models might lose information about the original human data distribution, such that iteratively training on model outputs results in increasingly homogeneous and unrealistic outputs (Shumailov et al., 2023).\nFalsification test: Track environmental cost of LLMs and homogeneous across periods where smaller models requiring less training changes and where it does not. The hypothesis fails if they co-vary just as strongly when smaller models requiring less training is held fixed.\nScores: source support 0.55, deductive relevance 0.59, novelty 0.56.\n\n43. SOTA of large language models and GLaM MoE models may move together because both depend on high quality data.\n[arxiv-2306-11644-p0004] In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.\n[arxiv-2112-06905-p0024] We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.\nFalsification test: Track SOTA of large language models and GLaM MoE models across periods where high quality data changes and where it does not. The hypothesis fails if they co-vary just as strongly when high quality data is held fixed.\nScores: source support 0.55, deductive relevance 0.59, novelty 0.53.\n\n44. sequence parallelism of the Transformer architecture may reduce environmental cost of LLMs through parallel training (read as smaller models requiring less training).\n[arxiv-2211-05102-p0004] While the sequence parallelism of the Transformer architecture enables highly parallel training, efficient deployment of these models is challenging in practice because generative inference proceeds one token at a time and the computation for each token sequentially depends on the previously generated tokens.\n[arxiv-2306-11644-p0004] Importantly, smaller models requiring less training can significantly reduce the environmental cost of LLMs [BGMMS21].\nFalsification test: Compare settings where sequence parallelism of the Transformer architecture differs while other inputs are matched. The hypothesis fails if environmental cost of LLMs does not fall with sequence parallelism of the Transformer architecture, or if fixing parallel training (read as smaller models requiring less training) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.58.\n\n45. Gains in capabilities from progress in AI development may be offset by compute used to train a model.\n[arxiv-2405-10799-p0007] • Difficulty of circumvention: Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.\n[arxiv-2405-10799-p0020] • Training compute is relatively robust to circumvention attempts, as reducing the amount of compute used to train a model will generally decrease its capabilities and, consequently, lower its risks.\n[arxiv-2305-15324-p0003] Further progress in AI development could lead to capabilities that pose extreme risks, such as offensive cyber capabilities or strong manipulation skills.\nFalsification test: Measure capabilities where both compute used to train a model and progress in AI development vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.63.\n\n46. observation may constrain productivity of actors building dual use through model.\n[arxiv-2211-04325-p0016] This model relies on the observation that much of the internet’s text data is user-generated and stored on platforms such as social media, blogs, and forums.\n[arxiv-2305-15324-p0019] As an assistant, the model could significantly improve the productivity of actors building dual use AI capabilities.\nFalsification test: Compare settings where observation differs while other inputs are matched. The hypothesis fails if productivity of actors building dual use does not stay bounded with observation, or if fixing model removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.52.\n\n47. high training compute generally indicates and progress in AI development may jointly drive model capabilities, and their effects may compound.\n[arxiv-2405-10799-p0007] While high training compute generally indicates increased model capabilities and potential risks, some high-compute models may pose minimal concerns, whereas certain low-compute models could present significant risks (with the latter partially addressed through complementary non-GPAI regulations).\n[arxiv-2305-15324-p0003] Further progress in AI development could lead to capabilities that pose extreme risks, such as offensive cyber capabilities or strong manipulation skills.\nFalsification test: Vary high training compute generally indicates and progress in AI development separately and together. The hypothesis fails if the joint change in model capabilities equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.51, novelty 0.60.\n\n48. Empirical research may affect homogeneous through identified correlations between a model’s training (read as training on model outputs).\n[arxiv-2405-10799-p0005] Empirical research has identified correlations, known as scaling laws, between a model’s training compute and its training loss, test loss, or validation loss.\n[arxiv-2405-10799-p0017] Empirical research has identified correlations, known as scaling laws, between a model’s training compute and its training loss, test loss, or validation loss (Hernandez et al., 2021; Hoffmann et al., 2022; Kaplan et al., 2020; Sutton, 2019; Villalobos, 2023).\n[arxiv-2211-04325-p0043] One challenge is that models might lose information about the original human data distribution, such that iteratively training on model outputs results in increasingly homogeneous and unrealistic outputs (Shumailov et al., 2023).\nFalsification test: Compare settings where Empirical research differs while other inputs are matched. The hypothesis fails if homogeneous does not change with Empirical research, or if fixing identified correlations between a model’s training (read as training on model outputs) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.51, novelty 0.58.\n\n49. estimate may affect SOTA of large language models through data (read as high quality data).\n[arxiv-2211-04325-p0019] This estimate includes both data on the indexed web and the deep web, and therefore serves as an upper bound on the size of\n[arxiv-2306-11644-p0004] In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.\nFalsification test: Compare settings where estimate differs while other inputs are matched. The hypothesis fails if SOTA of large language models does not change with estimate, or if fixing data (read as high quality data) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.51, novelty 0.53.\n\n50. architectures and single training run may move together because both depend on compute.\n[arxiv-2212-05153-p0007] So it could be the case that the good performance of modern computer vision models is partly explained by new Transformer-based architectures, even though such architectures might need more compute to achieve the same level of performance\n[arxiv-2402-08797-p0023] Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.\nFalsification test: Track architectures and single training run across periods where compute changes and where it does not. The hypothesis fails if they co-vary just as strongly when compute is held fixed.\nScores: source support 0.55, deductive relevance 0.49, novelty 0.58.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}
