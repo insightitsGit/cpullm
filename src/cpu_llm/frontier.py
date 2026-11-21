@@ -1328,7 +1328,7 @@ def run_frontier(topic, rows, *, limits=None, clock=time.monotonic, encode=None,
             deferred.append(item)
     returned = (first + deferred)[:limit]
     receipt['hub_deferred'] = len(deferred)    # entries moved behind more varied ones (none dropped)
-    receipt['deepened'] = _check_leading(returned[:deepen_top], rows, graph, similar, budget)
+    receipt['deepened'] = _check_leading(returned[:deepen_top], rows, graph, encode, budget)
     incomplete = stop_reason is not None
     shortage = None
     if len(returned) < limits.min_results:
@@ -1342,12 +1342,17 @@ def run_frontier(topic, rows, *, limits=None, clock=time.monotonic, encode=None,
     return receipt
 
 
-def _check_leading(items, rows, graph, similar, budget):
-    """Run Deepen on the leading entries over the same graph; mark each with its verdict. Order is unchanged."""
+def _check_leading(items, rows, graph, encode, budget):
+    """Run Deepen on the leading entries over the same graph; mark each with its verdict. Order is unchanged.
+
+    The check needs its own similarity lookup over the whole graph: Frontier's lookup covers only the
+    topic-scoped edges, and contrary evidence usually lies outside that scope.
+    """
     if not items:
         return 0
     from cpu_llm.deepen import _Sentences, run_deepen
 
+    similar, _ = _similarity(encode, list(graph.edges.values()))
     sentences = _Sentences(rows)
     checked = 0
     for item in items:

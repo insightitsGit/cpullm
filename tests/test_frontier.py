@@ -528,3 +528,16 @@ def test_appliance_runs_check_on_leading_entries_by_default():
     assert 'check' not in receipt['hypotheses'][5]
     off = appliance(wide_corpus()).ask('accelerator capacity', frontier=dict(deepen_top=0))['frontier']
     assert off['deepened'] == 0
+
+
+def test_leading_check_sees_contrary_evidence_outside_the_topic_scope():
+    import numpy as np
+    # The contrary sentence shares no word with the topic, so it falls outside Frontier's scoped edges.
+    rows = rows_of('HBM supply constrains memory bandwidth.', 'Memory bandwidth limits inference throughput.',
+                   'Inference throughput drives serving revenue.',
+                   'Wider memory bandwidth reduces inference throughput under thermal limits.', prefix='c')
+    def encode(texts):
+        return np.ones((len(texts), 2))      # every pair passes the cosine check
+    receipt = run_frontier('HBM supply', rows, deepen_top=5, encode=encode)
+    chains = [h for h in receipt['hypotheses'] if h['pattern'] == 'chain' and h.get('check')]
+    assert any(h['check']['verdict'] == 'contested' for h in chains), [h['check'] for h in chains]
