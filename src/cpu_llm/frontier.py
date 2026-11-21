@@ -177,7 +177,7 @@ def _clean_term(tokens, *, keep='tail'):
 _INCREASE = (r'increases?|increased|raises?|raised|drives?|drove|boosts?|boosted|accelerates?|accelerated|'
              r'amplifies|amplified|fuels?|fueled|fuelled|expands?|expanded|improves?|improved|enables?|enabled|'
              r'spurs?|spurred|consumes?|consumed|grows|intensifies|intensified|speeds? up|sped up|maximizes?|'
-             r'doubles?|doubled|triples?|tripled|multiplies')
+             r'doubles|doubled|triples|tripled|multiplies')
 _DECREASE = (r'reduces?|reduced|lowers?|lowered|decreases?|decreased|cuts?|slows?|slowed|hinders?|hindered|'
              r'hampers?|hampered|impedes?|impeded|erodes?|eroded|offsets?|delays?|delayed|'
              r'mitigates?|mitigated|alleviates?|alleviated|saves?|saved|lessens?|shrinks?|minimizes?|minimized|'

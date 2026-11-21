@@ -1,0 +1,2751 @@
+{
+ "prompt": "Frontier: grokking.",
+ "run": 2,
+ "wall_seconds": 4.682,
+ "python_peak_bytes": 35206474,
+ "answer_status": "hypotheses",
+ "routing": {
+  "schema": "flag-routing-contract-v1",
+  "executed_nodes": [],
+  "post_stages": [
+   "frontier_snapshot",
+   "frontier_generate",
+   "frontier_abductive",
+   "frontier_deductive",
+   "frontier_pre_thinker",
+   "frontier_rank"
+  ]
+ },
+ "frontier": {
+  "schema": "frontier-v1",
+  "triggered": true,
+  "topic": "grokking",
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "limits": {
+   "max_rounds": 1000,
+   "max_candidates": 200000,
+   "max_edges": 50000,
+   "max_bytes": 67108864,
+   "max_seconds": 20.0,
+   "batch_size": 256,
+   "max_path_edges": 2,
+   "max_results": 50,
+   "min_results": 10
+  },
+  "topic_terms": [
+   "grokking"
+  ],
+  "focus_terms": [
+   "grokking"
+  ],
+  "chunk_count": 1652,
+  "status": "hypotheses",
+  "hypotheses": [
+   {
+    "id": "b7b4bd373bf0",
+    "text": "Grokking may undermine traditional machine learning theory through intriguing phenomenon (read as phenomenon).",
+    "pattern": "chain",
+    "relation": "undermines",
+    "anchors": [
+     "Grokking",
+     "traditional machine learning theory"
+    ],
+    "via": [
+     "intriguing phenomenon (read as phenomenon)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2506-04434-p0003",
+     "arxiv-2602-02859-p0003",
+     "arxiv-2502-12508-p0025"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2506-04434-p0003",
+      "quote": "Grokking is an intriguing phenomenon where a neural network achieves near-perfect training accuracy quickly, yet the test accuracy lags significantly, often near chance level, before abruptly surging towards high generalization [15].",
+      "start": 0,
+      "end": 233,
+      "chunk_sha256": "27c30b890e5c6d1cedb397084001f98a54092006239657e02d38159eb2fb783f",
+      "relation": "is_a",
+      "subject": "Grokking",
+      "object": "intriguing phenomenon",
+      "hedged": false,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2602-02859-p0003",
+      "quote": "Grokking is an intriguing phenomenon where a neural network achieves near-perfect training accuracy quickly, yet the test accuracy lags significantly, often near chance level, before abruptly surging towards high generalization (Power et al., 2022).",
+      "start": 0,
+      "end": 249,
+      "chunk_sha256": "10a9edb9685d5f6b6d82c5ee9e561eb84da08690297c96a69405cc9835903897",
+      "relation": "is_a",
+      "subject": "Grokking",
+      "object": "intriguing phenomenon",
+      "hedged": false,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2502-12508-p0025",
+      "quote": "This phenomenon starkly contradicts traditional machine learning theory.",
+      "start": 221,
+      "end": 293,
+      "chunk_sha256": "8117771902ee046e74274840c0d7cf9c25c3fb383f49294ff651eb5b0751265d",
+      "relation": "undermines",
+      "subject": "phenomenon",
+      "object": "traditional machine learning theory",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.992,
+     "deductive_relevance": 0.86,
+     "novelty": 0.75
+    },
+    "falsification_test": "Construct a coherent case where Grokking is accepted. The hypothesis fails if traditional machine learning theory still holds in that case, or if the argument does not need intriguing phenomenon (read as phenomenon).",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 3,
+    "rule_verdict": null
+   },
+   {
+    "id": "a293d3d4070d",
+    "text": "learned activations may increase later through accuracy (read as test accuracy).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "learned activations",
+     "later"
+    ],
+    "via": [
+     "accuracy (read as test accuracy)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2503-10065-p0006",
+     "arxiv-2210-01117-p0012"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2503-10065-p0006",
+      "quote": "(1) For regression tasks and tabular data, new learned activations greatly improve accuracy by helping learn complex functions.",
+      "start": 202,
+      "end": 329,
+      "chunk_sha256": "a89952778d8e432f08de72b93b9bf3c5f7697c8c2e394e17a7ce8c65bd381e99",
+      "relation": "increases",
+      "subject": "learned activations",
+      "object": "accuracy",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2210-01117-p0012",
+      "quote": "We find that the network quickly fits the training set, and test accuracy improves much later, as shown in Figure 3d, just as in the stereotypical grokking learning first observed in algorithmic datasets.",
+      "start": 863,
+      "end": 1067,
+      "chunk_sha256": "877a1766583a7d82a2734cc40b3c3f85a4dbd7f4bf9fbb10155df569f76300a9",
+      "relation": "increases",
+      "subject": "test accuracy",
+      "object": "later",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.96,
+     "deductive_relevance": 0.7,
+     "novelty": 0.613
+    },
+    "falsification_test": "Compare settings where learned activations differs while other inputs are matched. The hypothesis fails if later does not rise with learned activations, or if fixing accuracy (read as test accuracy) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null
+   },
+   {
+    "id": "f6d1761ca950",
+    "text": "below how these particular loss landscapes and intrinsic task symmetries may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "below how these particular loss landscapes",
+     "intrinsic task symmetries",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0019",
+     "arxiv-2603-01968-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0019",
+      "quote": "We elaborate below how these particular loss landscapes lead to grokking.",
+      "start": 876,
+      "end": 949,
+      "chunk_sha256": "f9cadc8b57c6f7766f47a922990ab381f6b7418bd25a16998643e0c11c9281e6",
+      "relation": "causes",
+      "subject": "below how these particular loss landscapes",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2603-01968-p0002",
+      "quote": "We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.",
+      "start": 203,
+      "end": 329,
+      "chunk_sha256": "4aafb9b244a700d08c919f79649ff2567b6bdb5303481cba686d23e1b284c238",
+      "relation": "increases",
+      "subject": "intrinsic task symmetries",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.925,
+     "novelty": 0.623
+    },
+    "falsification_test": "Vary below how these particular loss landscapes and intrinsic task symmetries separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "a9529276a850",
+    "text": "intrinsic task symmetries and Larger initializations may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "intrinsic task symmetries",
+     "Larger initializations",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-01968-p0002",
+     "arxiv-2210-01117-p0010"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-01968-p0002",
+      "quote": "We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.",
+      "start": 203,
+      "end": 329,
+      "chunk_sha256": "4aafb9b244a700d08c919f79649ff2567b6bdb5303481cba686d23e1b284c238",
+      "relation": "increases",
+      "subject": "intrinsic task symmetries",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2210-01117-p0010",
+      "quote": "The reduced loss landscape reveals three things: (1) Larger initializations lead to grokking.",
+      "start": 26,
+      "end": 119,
+      "chunk_sha256": "1243dc1b5f4550c9a2f84dcc7ef1ea1ac1ebfd4bd0835e00b12122028e9733ef",
+      "relation": "causes",
+      "subject": "Larger initializations",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.925,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary intrinsic task symmetries and Larger initializations separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "6ff77a4fb8d6",
+    "text": "Gains in grokking from Larger initializations may be offset by weight decay.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "Larger initializations",
+     "weight decay",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0010",
+     "arxiv-2502-01774-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0010",
+      "quote": "The reduced loss landscape reveals three things: (1) Larger initializations lead to grokking.",
+      "start": 26,
+      "end": 119,
+      "chunk_sha256": "1243dc1b5f4550c9a2f84dcc7ef1ea1ac1ebfd4bd0835e00b12122028e9733ef",
+      "relation": "causes",
+      "subject": "Larger initializations",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0016",
+      "quote": "The authors also claim that weight decay cannot explain grokking.",
+      "start": 1461,
+      "end": 1526,
+      "chunk_sha256": "e46483042e639a5b9c1f29d4321ac6a29d20c1f1cffe9e5c30e807d38d93ed17",
+      "relation": "undermines",
+      "subject": "weight decay",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.925,
+     "novelty": 0.586
+    },
+    "falsification_test": "Measure grokking where both Larger initializations and weight decay vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "62f7a6939ff0",
+    "text": "Gains in grokking from below how these particular loss landscapes may be offset by weight decay.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "below how these particular loss landscapes",
+     "weight decay",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0019",
+     "arxiv-2502-01774-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0019",
+      "quote": "We elaborate below how these particular loss landscapes lead to grokking.",
+      "start": 876,
+      "end": 949,
+      "chunk_sha256": "f9cadc8b57c6f7766f47a922990ab381f6b7418bd25a16998643e0c11c9281e6",
+      "relation": "causes",
+      "subject": "below how these particular loss landscapes",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0016",
+      "quote": "The authors also claim that weight decay cannot explain grokking.",
+      "start": 1461,
+      "end": 1526,
+      "chunk_sha256": "e46483042e639a5b9c1f29d4321ac6a29d20c1f1cffe9e5c30e807d38d93ed17",
+      "relation": "undermines",
+      "subject": "weight decay",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.925,
+     "novelty": 0.55
+    },
+    "falsification_test": "Measure grokking where both below how these particular loss landscapes and weight decay vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "d1b7c866a135",
+    "text": "Gains in grokking from intrinsic task symmetries may be offset by weight decay.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "intrinsic task symmetries",
+     "weight decay",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-01968-p0002",
+     "arxiv-2502-01774-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-01968-p0002",
+      "quote": "We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.",
+      "start": 203,
+      "end": 329,
+      "chunk_sha256": "4aafb9b244a700d08c919f79649ff2567b6bdb5303481cba686d23e1b284c238",
+      "relation": "increases",
+      "subject": "intrinsic task symmetries",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0016",
+      "quote": "The authors also claim that weight decay cannot explain grokking.",
+      "start": 1461,
+      "end": 1526,
+      "chunk_sha256": "e46483042e639a5b9c1f29d4321ac6a29d20c1f1cffe9e5c30e807d38d93ed17",
+      "relation": "undermines",
+      "subject": "weight decay",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.925,
+     "novelty": 0.55
+    },
+    "falsification_test": "Measure grokking where both intrinsic task symmetries and weight decay vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "814b730d53f8",
+    "text": "phenomenon may undermine dependence of grokking time through traditional machine learning theory (read as Effective theory).",
+    "pattern": "chain",
+    "relation": "undermines",
+    "anchors": [
+     "phenomenon",
+     "dependence of grokking time"
+    ],
+    "via": [
+     "traditional machine learning theory (read as Effective theory)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2502-12508-p0025",
+     "arxiv-2205-10343-p0021"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2502-12508-p0025",
+      "quote": "This phenomenon starkly contradicts traditional machine learning theory.",
+      "start": 221,
+      "end": 293,
+      "chunk_sha256": "8117771902ee046e74274840c0d7cf9c25c3fb383f49294ff651eb5b0751265d",
+      "relation": "undermines",
+      "subject": "phenomenon",
+      "object": "traditional machine learning theory",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2205-10343-p0021",
+      "quote": "Figure 5: Effective theory explains the dependence of grokking time on data size, for the addition task.",
+      "start": 0,
+      "end": 104,
+      "chunk_sha256": "b2218cd4d49e7b23211128b14c86a48057f6d75ead8ab1c4f41ba5641e702602",
+      "relation": "supports",
+      "subject": "Effective theory",
+      "object": "dependence of grokking time",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.9,
+     "novelty": 0.592
+    },
+    "falsification_test": "Construct a coherent case where phenomenon is accepted. The hypothesis fails if dependence of grokking time still holds in that case, or if the argument does not need traditional machine learning theory (read as Effective theory).",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "7ee3eeb113e3",
+    "text": "learning and grokking may move together because both depend on weight decay.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "learning",
+     "grokking",
+     "weight decay"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2511-01938-p0008",
+     "arxiv-2502-01774-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2511-01938-p0008",
+      "quote": "In the second phase, learning is entirely driven by weight decay.",
+      "start": 906,
+      "end": 971,
+      "chunk_sha256": "30ba744c472d75548f5f12620f28164fc51cb72fb0e4311049c14c98ac95eb2a",
+      "relation": "increases",
+      "subject": "weight decay",
+      "object": "learning",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0016",
+      "quote": "The authors also claim that weight decay cannot explain grokking.",
+      "start": 1461,
+      "end": 1526,
+      "chunk_sha256": "e46483042e639a5b9c1f29d4321ac6a29d20c1f1cffe9e5c30e807d38d93ed17",
+      "relation": "undermines",
+      "subject": "weight decay",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.9,
+     "novelty": 0.562
+    },
+    "falsification_test": "Track learning and grokking across periods where weight decay changes and where it does not. The hypothesis fails if they co-vary just as strongly when weight decay is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "379f7c988972",
+    "text": "training the model for a very and training partition may jointly constrain observing grokking, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "training the model for a very",
+     "training partition",
+     "observing grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-13253-p0005",
+     "arxiv-2610-00620-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-13253-p0005",
+      "quote": "But observing grokking often requires training the model for a very long time, making it difficult to construct a phase diagram of generalization covering all the hyperparameters.",
+      "start": 357,
+      "end": 536,
+      "chunk_sha256": "6e753335d2c5a06d45b6406661538ae81d4b64937e4b4d4bcc66bb22f20aa23c",
+      "relation": "constrains",
+      "subject": "training the model for a very",
+      "object": "observing grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0022",
+      "quote": "A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.",
+      "start": 512,
+      "end": 648,
+      "chunk_sha256": "e71c57eda06f31100ef26e89b29602cc58a792fb840ddc3932ecc254d695fd69",
+      "relation": "constrains",
+      "subject": "training partition",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.86,
+     "novelty": 0.618
+    },
+    "falsification_test": "Relieve training the model for a very alone while measuring observing grokking. The hypothesis fails if observing grokking keeps improving without training partition becoming the binding limit, or if relieving training partition alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "976f07bd1fd5",
+    "text": "Larger initializations and training partition may interact in their effect on grokking.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "Larger initializations",
+     "training partition",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0010",
+     "arxiv-2610-00620-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0010",
+      "quote": "The reduced loss landscape reveals three things: (1) Larger initializations lead to grokking.",
+      "start": 26,
+      "end": 119,
+      "chunk_sha256": "1243dc1b5f4550c9a2f84dcc7ef1ea1ac1ebfd4bd0835e00b12122028e9733ef",
+      "relation": "causes",
+      "subject": "Larger initializations",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0022",
+      "quote": "A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.",
+      "start": 512,
+      "end": 648,
+      "chunk_sha256": "e71c57eda06f31100ef26e89b29602cc58a792fb840ddc3932ecc254d695fd69",
+      "relation": "constrains",
+      "subject": "training partition",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.85,
+     "novelty": 0.636
+    },
+    "falsification_test": "Vary Larger initializations and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "ca192649f824",
+    "text": "intrinsic task symmetries and training partition may interact in their effect on grokking.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "intrinsic task symmetries",
+     "training partition",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-01968-p0002",
+     "arxiv-2610-00620-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-01968-p0002",
+      "quote": "We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.",
+      "start": 203,
+      "end": 329,
+      "chunk_sha256": "4aafb9b244a700d08c919f79649ff2567b6bdb5303481cba686d23e1b284c238",
+      "relation": "increases",
+      "subject": "intrinsic task symmetries",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0022",
+      "quote": "A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.",
+      "start": 512,
+      "end": 648,
+      "chunk_sha256": "e71c57eda06f31100ef26e89b29602cc58a792fb840ddc3932ecc254d695fd69",
+      "relation": "constrains",
+      "subject": "training partition",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.85,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary intrinsic task symmetries and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "dd9d81e7de37",
+    "text": "below how these particular loss landscapes and training partition may interact in their effect on grokking.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "below how these particular loss landscapes",
+     "training partition",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0019",
+     "arxiv-2610-00620-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0019",
+      "quote": "We elaborate below how these particular loss landscapes lead to grokking.",
+      "start": 876,
+      "end": 949,
+      "chunk_sha256": "f9cadc8b57c6f7766f47a922990ab381f6b7418bd25a16998643e0c11c9281e6",
+      "relation": "causes",
+      "subject": "below how these particular loss landscapes",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0022",
+      "quote": "A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.",
+      "start": 512,
+      "end": 648,
+      "chunk_sha256": "e71c57eda06f31100ef26e89b29602cc58a792fb840ddc3932ecc254d695fd69",
+      "relation": "constrains",
+      "subject": "training partition",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.85,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary below how these particular loss landscapes and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "ee41b171c5e6",
+    "text": "training partition and weight decay may interact in their effect on grokking.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "training partition",
+     "weight decay",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2610-00620-p0022",
+     "arxiv-2502-01774-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2610-00620-p0022",
+      "quote": "A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.",
+      "start": 512,
+      "end": 648,
+      "chunk_sha256": "e71c57eda06f31100ef26e89b29602cc58a792fb840ddc3932ecc254d695fd69",
+      "relation": "constrains",
+      "subject": "training partition",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0016",
+      "quote": "The authors also claim that weight decay cannot explain grokking.",
+      "start": 1461,
+      "end": 1526,
+      "chunk_sha256": "e46483042e639a5b9c1f29d4321ac6a29d20c1f1cffe9e5c30e807d38d93ed17",
+      "relation": "undermines",
+      "subject": "weight decay",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.85,
+     "novelty": 0.586
+    },
+    "falsification_test": "Vary training partition and weight decay separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "624ff72c8dad",
+    "text": "below how these particular loss landscapes and data may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "below how these particular loss landscapes",
+     "data",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0019",
+     "arxiv-2306-13253-p0009"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0019",
+      "quote": "We elaborate below how these particular loss landscapes lead to grokking.",
+      "start": 876,
+      "end": 949,
+      "chunk_sha256": "f9cadc8b57c6f7766f47a922990ab381f6b7418bd25a16998643e0c11c9281e6",
+      "relation": "causes",
+      "subject": "below how these particular loss landscapes",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2306-13253-p0009",
+      "quote": "In general, more data leads to faster grokking (i.e.",
+      "start": 965,
+      "end": 1017,
+      "chunk_sha256": "04445a7597880c948af6f569c5554de9a205139187c5999e8321335f5c648317",
+      "relation": "causes",
+      "subject": "data",
+      "object": "faster grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.84,
+     "novelty": 0.628
+    },
+    "falsification_test": "Vary below how these particular loss landscapes and data separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "728d1d7699d0",
+    "text": "data and Larger initializations may jointly drive faster grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "data",
+     "Larger initializations",
+     "faster grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-13253-p0009",
+     "arxiv-2210-01117-p0010"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-13253-p0009",
+      "quote": "In general, more data leads to faster grokking (i.e.",
+      "start": 965,
+      "end": 1017,
+      "chunk_sha256": "04445a7597880c948af6f569c5554de9a205139187c5999e8321335f5c648317",
+      "relation": "causes",
+      "subject": "data",
+      "object": "faster grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2210-01117-p0010",
+      "quote": "The reduced loss landscape reveals three things: (1) Larger initializations lead to grokking.",
+      "start": 26,
+      "end": 119,
+      "chunk_sha256": "1243dc1b5f4550c9a2f84dcc7ef1ea1ac1ebfd4bd0835e00b12122028e9733ef",
+      "relation": "causes",
+      "subject": "Larger initializations",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.84,
+     "novelty": 0.633
+    },
+    "falsification_test": "Vary data and Larger initializations separately and together. The hypothesis fails if the joint change in faster grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "26ba484fca26",
+    "text": "Gains in faster grokking from data may be offset by weight decay.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "data",
+     "weight decay",
+     "faster grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-13253-p0009",
+     "arxiv-2502-01774-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-13253-p0009",
+      "quote": "In general, more data leads to faster grokking (i.e.",
+      "start": 965,
+      "end": 1017,
+      "chunk_sha256": "04445a7597880c948af6f569c5554de9a205139187c5999e8321335f5c648317",
+      "relation": "causes",
+      "subject": "data",
+      "object": "faster grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0016",
+      "quote": "The authors also claim that weight decay cannot explain grokking.",
+      "start": 1461,
+      "end": 1526,
+      "chunk_sha256": "e46483042e639a5b9c1f29d4321ac6a29d20c1f1cffe9e5c30e807d38d93ed17",
+      "relation": "undermines",
+      "subject": "weight decay",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.84,
+     "novelty": 0.586
+    },
+    "falsification_test": "Measure faster grokking where both data and weight decay vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "72fc1111daa6",
+    "text": "data and intrinsic task symmetries may jointly drive faster grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "data",
+     "intrinsic task symmetries",
+     "faster grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-13253-p0009",
+     "arxiv-2603-01968-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-13253-p0009",
+      "quote": "In general, more data leads to faster grokking (i.e.",
+      "start": 965,
+      "end": 1017,
+      "chunk_sha256": "04445a7597880c948af6f569c5554de9a205139187c5999e8321335f5c648317",
+      "relation": "causes",
+      "subject": "data",
+      "object": "faster grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2603-01968-p0002",
+      "quote": "We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.",
+      "start": 203,
+      "end": 329,
+      "chunk_sha256": "4aafb9b244a700d08c919f79649ff2567b6bdb5303481cba686d23e1b284c238",
+      "relation": "increases",
+      "subject": "intrinsic task symmetries",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.84,
+     "novelty": 0.55
+    },
+    "falsification_test": "Vary data and intrinsic task symmetries separately and together. The hypothesis fails if the joint change in faster grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "88f84e624eac",
+    "text": "Larger initializations and training the model for a very may interact in their effect on grokking.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "Larger initializations",
+     "training the model for a very",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0010",
+     "arxiv-2306-13253-p0005"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0010",
+      "quote": "The reduced loss landscape reveals three things: (1) Larger initializations lead to grokking.",
+      "start": 26,
+      "end": 119,
+      "chunk_sha256": "1243dc1b5f4550c9a2f84dcc7ef1ea1ac1ebfd4bd0835e00b12122028e9733ef",
+      "relation": "causes",
+      "subject": "Larger initializations",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2306-13253-p0005",
+      "quote": "But observing grokking often requires training the model for a very long time, making it difficult to construct a phase diagram of generalization covering all the hyperparameters.",
+      "start": 357,
+      "end": 536,
+      "chunk_sha256": "6e753335d2c5a06d45b6406661538ae81d4b64937e4b4d4bcc66bb22f20aa23c",
+      "relation": "constrains",
+      "subject": "training the model for a very",
+      "object": "observing grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.78,
+     "novelty": 0.586
+    },
+    "falsification_test": "Vary Larger initializations and training the model for a very separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "a6db6926ba5a",
+    "text": "data and training partition may interact in their effect on faster grokking.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "data",
+     "training partition",
+     "faster grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-13253-p0009",
+     "arxiv-2610-00620-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-13253-p0009",
+      "quote": "In general, more data leads to faster grokking (i.e.",
+      "start": 965,
+      "end": 1017,
+      "chunk_sha256": "04445a7597880c948af6f569c5554de9a205139187c5999e8321335f5c648317",
+      "relation": "causes",
+      "subject": "data",
+      "object": "faster grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0022",
+      "quote": "A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.",
+      "start": 512,
+      "end": 648,
+      "chunk_sha256": "e71c57eda06f31100ef26e89b29602cc58a792fb840ddc3932ecc254d695fd69",
+      "relation": "constrains",
+      "subject": "training partition",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.78,
+     "novelty": 0.586
+    },
+    "falsification_test": "Vary data and training partition separately and together. The hypothesis fails if the joint change in faster grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "bd5ca22d90eb",
+    "text": "training the model for a very and weight decay may interact in their effect on observing grokking.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "training the model for a very",
+     "weight decay",
+     "observing grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-13253-p0005",
+     "arxiv-2502-01774-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-13253-p0005",
+      "quote": "But observing grokking often requires training the model for a very long time, making it difficult to construct a phase diagram of generalization covering all the hyperparameters.",
+      "start": 357,
+      "end": 536,
+      "chunk_sha256": "6e753335d2c5a06d45b6406661538ae81d4b64937e4b4d4bcc66bb22f20aa23c",
+      "relation": "constrains",
+      "subject": "training the model for a very",
+      "object": "observing grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0016",
+      "quote": "The authors also claim that weight decay cannot explain grokking.",
+      "start": 1461,
+      "end": 1526,
+      "chunk_sha256": "e46483042e639a5b9c1f29d4321ac6a29d20c1f1cffe9e5c30e807d38d93ed17",
+      "relation": "undermines",
+      "subject": "weight decay",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.78,
+     "novelty": 0.55
+    },
+    "falsification_test": "Vary training the model for a very and weight decay separately and together. The hypothesis fails if the joint change in observing grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "e467f5b9e09b",
+    "text": "below how these particular loss landscapes and training the model for a very may interact in their effect on grokking.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "below how these particular loss landscapes",
+     "training the model for a very",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0019",
+     "arxiv-2306-13253-p0005"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0019",
+      "quote": "We elaborate below how these particular loss landscapes lead to grokking.",
+      "start": 876,
+      "end": 949,
+      "chunk_sha256": "f9cadc8b57c6f7766f47a922990ab381f6b7418bd25a16998643e0c11c9281e6",
+      "relation": "causes",
+      "subject": "below how these particular loss landscapes",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2306-13253-p0005",
+      "quote": "But observing grokking often requires training the model for a very long time, making it difficult to construct a phase diagram of generalization covering all the hyperparameters.",
+      "start": 357,
+      "end": 536,
+      "chunk_sha256": "6e753335d2c5a06d45b6406661538ae81d4b64937e4b4d4bcc66bb22f20aa23c",
+      "relation": "constrains",
+      "subject": "training the model for a very",
+      "object": "observing grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.78,
+     "novelty": 0.55
+    },
+    "falsification_test": "Vary below how these particular loss landscapes and training the model for a very separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "5117195d5735",
+    "text": "intrinsic task symmetries and training the model for a very may interact in their effect on grokking.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "intrinsic task symmetries",
+     "training the model for a very",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-01968-p0002",
+     "arxiv-2306-13253-p0005"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-01968-p0002",
+      "quote": "We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.",
+      "start": 203,
+      "end": 329,
+      "chunk_sha256": "4aafb9b244a700d08c919f79649ff2567b6bdb5303481cba686d23e1b284c238",
+      "relation": "increases",
+      "subject": "intrinsic task symmetries",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2306-13253-p0005",
+      "quote": "But observing grokking often requires training the model for a very long time, making it difficult to construct a phase diagram of generalization covering all the hyperparameters.",
+      "start": 357,
+      "end": 536,
+      "chunk_sha256": "6e753335d2c5a06d45b6406661538ae81d4b64937e4b4d4bcc66bb22f20aa23c",
+      "relation": "constrains",
+      "subject": "training the model for a very",
+      "object": "observing grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.78,
+     "novelty": 0.488
+    },
+    "falsification_test": "Vary intrinsic task symmetries and training the model for a very separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "5389759d39ec",
+    "text": "MAT and models suddenly generalize after may jointly constrain memorization, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "MAT",
+     "models suddenly generalize after",
+     "memorization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2412-07684-p0022",
+     "arxiv-2408-08944-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2412-07684-p0022",
+      "quote": "These results show that MAT effectively reduced memorization, while leading to improved generalization.",
+      "start": 478,
+      "end": 581,
+      "chunk_sha256": "f86884d9701a6c31a936ea35c6d3ff53023329d50207acb102261601e6010ab4",
+      "relation": "decreases",
+      "subject": "MAT",
+      "object": "memorization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2408-08944-p0002",
+      "quote": "This paper studies emergent phenomena in neural networks by focusing on grokking where models suddenly generalize after delayed memorization.",
+      "start": 0,
+      "end": 141,
+      "chunk_sha256": "22626ae5d99949381a4eecc4f1f27164f580ac452874b6e95f7fbfcbc170aef9",
+      "relation": "decreases",
+      "subject": "models suddenly generalize after",
+      "object": "memorization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.75,
+     "novelty": 0.668
+    },
+    "falsification_test": "Relieve MAT alone while measuring memorization. The hypothesis fails if memorization keeps improving without models suddenly generalize after becoming the binding limit, or if relieving models suddenly generalize after alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "e5b6eeb856e4",
+    "text": "test accuracy and validation accuracy may jointly drive later, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "test accuracy",
+     "validation accuracy",
+     "later"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0012",
+     "arxiv-2610-00620-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0012",
+      "quote": "We find that the network quickly fits the training set, and test accuracy improves much later, as shown in Figure 3d, just as in the stereotypical grokking learning first observed in algorithmic datasets.",
+      "start": 863,
+      "end": 1067,
+      "chunk_sha256": "877a1766583a7d82a2734cc40b3c3f85a4dbd7f4bf9fbb10155df569f76300a9",
+      "relation": "increases",
+      "subject": "test accuracy",
+      "object": "later",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0016",
+      "quote": "• Grokking: validation accuracy increases much later than training accuracy.",
+      "start": 636,
+      "end": 712,
+      "chunk_sha256": "8663ceeca07a76426d020c8734aba7e3e4d7b9fba91b2c3f8ddcf85cb0fb785e",
+      "relation": "increases",
+      "subject": "validation accuracy",
+      "object": "later",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.725,
+     "novelty": 0.613
+    },
+    "falsification_test": "Vary test accuracy and validation accuracy separately and together. The hypothesis fails if the joint change in later equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "14e06a0a8cf4",
+    "text": "Gains in memorization from suggesting may be offset by models suddenly generalize after.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "models suddenly generalize after",
+     "suggesting",
+     "memorization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2408-08944-p0002",
+     "arxiv-2412-07684-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2408-08944-p0002",
+      "quote": "This paper studies emergent phenomena in neural networks by focusing on grokking where models suddenly generalize after delayed memorization.",
+      "start": 0,
+      "end": 141,
+      "chunk_sha256": "22626ae5d99949381a4eecc4f1f27164f580ac452874b6e95f7fbfcbc170aef9",
+      "relation": "decreases",
+      "subject": "models suddenly generalize after",
+      "object": "memorization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2412-07684-p0022",
+      "quote": "Models trained with ERM exhibit higher self-influence scores for minority subpopulations, suggesting increased memorization in these groups.",
+      "start": 810,
+      "end": 950,
+      "chunk_sha256": "f86884d9701a6c31a936ea35c6d3ff53023329d50207acb102261601e6010ab4",
+      "relation": "increases",
+      "subject": "suggesting",
+      "object": "memorization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.725,
+     "novelty": 0.564
+    },
+    "falsification_test": "Measure memorization where both models suddenly generalize after and suggesting vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "fe3dc3a11a75",
+    "text": "including may reduce different representations through feature learning (read as conventional learning).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "including",
+     "different representations"
+    ],
+    "via": [
+     "feature learning (read as conventional learning)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2408-08944-p0006",
+     "arxiv-2502-01739-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2408-08944-p0006",
+      "quote": "Cause of Grokking Several studies attribute the cause of grokking to properties related to the difficulty of representation learning the generalizing sub-network, including delayed feature learning (Kumar et al., 2023), sparsity (Merrill et al., 2023), and compression (Liu et al.).",
+      "start": 0,
+      "end": 282,
+      "chunk_sha256": "3f0810b7de5deea451ca326aa6b41dff3d0cb7b3dce4df8c707c570b01751156",
+      "relation": "decreases",
+      "subject": "including",
+      "object": "feature learning",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2502-01739-p0004",
+      "quote": "This raises two immediate questions: do grokking and conventional learning lead to different representations, and are there differences in compression between grokking and",
+      "start": 1231,
+      "end": 1402,
+      "chunk_sha256": "35187dfddf7444856b9c090f1ad90d5bea0a617808a6f2252037d00478219c76",
+      "relation": "causes",
+      "subject": "conventional learning",
+      "object": "different representations",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.68,
+     "novelty": 0.578
+    },
+    "falsification_test": "Compare settings where including differs while other inputs are matched. The hypothesis fails if different representations does not fall with including, or if fixing feature learning (read as conventional learning) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "f4f9e160f062",
+    "text": "weight decay may increase different representations through learning (read as conventional learning).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "weight decay",
+     "different representations"
+    ],
+    "via": [
+     "learning (read as conventional learning)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2511-01938-p0008",
+     "arxiv-2502-01739-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2511-01938-p0008",
+      "quote": "In the second phase, learning is entirely driven by weight decay.",
+      "start": 906,
+      "end": 971,
+      "chunk_sha256": "30ba744c472d75548f5f12620f28164fc51cb72fb0e4311049c14c98ac95eb2a",
+      "relation": "increases",
+      "subject": "weight decay",
+      "object": "learning",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2502-01739-p0004",
+      "quote": "This raises two immediate questions: do grokking and conventional learning lead to different representations, and are there differences in compression between grokking and",
+      "start": 1231,
+      "end": 1402,
+      "chunk_sha256": "35187dfddf7444856b9c090f1ad90d5bea0a617808a6f2252037d00478219c76",
+      "relation": "causes",
+      "subject": "conventional learning",
+      "object": "different representations",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.68,
+     "novelty": 0.528
+    },
+    "falsification_test": "Compare settings where weight decay differs while other inputs are matched. The hypothesis fails if different representations does not rise with weight decay, or if fixing learning (read as conventional learning) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "0dc77c828317",
+    "text": "Gains in feature learning from weight decay may be offset by including.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "including",
+     "weight decay",
+     "feature learning"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2408-08944-p0006",
+     "arxiv-2511-01938-p0008"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2408-08944-p0006",
+      "quote": "Cause of Grokking Several studies attribute the cause of grokking to properties related to the difficulty of representation learning the generalizing sub-network, including delayed feature learning (Kumar et al., 2023), sparsity (Merrill et al., 2023), and compression (Liu et al.).",
+      "start": 0,
+      "end": 282,
+      "chunk_sha256": "3f0810b7de5deea451ca326aa6b41dff3d0cb7b3dce4df8c707c570b01751156",
+      "relation": "decreases",
+      "subject": "including",
+      "object": "feature learning",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2511-01938-p0008",
+      "quote": "In the second phase, learning is entirely driven by weight decay.",
+      "start": 906,
+      "end": 971,
+      "chunk_sha256": "30ba744c472d75548f5f12620f28164fc51cb72fb0e4311049c14c98ac95eb2a",
+      "relation": "increases",
+      "subject": "weight decay",
+      "object": "learning",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.64,
+     "novelty": 0.586
+    },
+    "falsification_test": "Measure feature learning where both including and weight decay vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "ee91abbf4263",
+    "text": "later and only long may move together because both depend on test accuracy.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "later",
+     "only long",
+     "test accuracy"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0012",
+     "arxiv-2610-00620-p0008"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0012",
+      "quote": "We find that the network quickly fits the training set, and test accuracy improves much later, as shown in Figure 3d, just as in the stereotypical grokking learning first observed in algorithmic datasets.",
+      "start": 863,
+      "end": 1067,
+      "chunk_sha256": "877a1766583a7d82a2734cc40b3c3f85a4dbd7f4bf9fbb10155df569f76300a9",
+      "relation": "increases",
+      "subject": "test accuracy",
+      "object": "later",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0008",
+      "quote": "Validation accuracy increases only long after the model has overfit the training partition.",
+      "start": 572,
+      "end": 663,
+      "chunk_sha256": "b19446570cd8eef1f97ba658bc3e0cb49a828c8b04c3d56a57f824406f5da707",
+      "relation": "increases",
+      "subject": "Validation accuracy",
+      "object": "only long",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.62,
+     "novelty": 0.613
+    },
+    "falsification_test": "Track later and only long across periods where test accuracy changes and where it does not. The hypothesis fails if they co-vary just as strongly when test accuracy is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "b39b03b5fb22",
+    "text": "geometry-prompting strategies and Larger initializations may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "geometry-prompting strategies",
+     "Larger initializations",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-01968-p0008",
+     "arxiv-2210-01117-p0010"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-01968-p0008",
+      "quote": "• Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.",
+      "start": 0,
+      "end": 234,
+      "chunk_sha256": "bfe4013b766c9cf464688b1de75b8af68324363ad9e3b34c44b3acb1844e27dc",
+      "relation": "increases",
+      "subject": "geometry-prompting strategies",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2210-01117-p0010",
+      "quote": "The reduced loss landscape reveals three things: (1) Larger initializations lead to grokking.",
+      "start": 26,
+      "end": 119,
+      "chunk_sha256": "1243dc1b5f4550c9a2f84dcc7ef1ea1ac1ebfd4bd0835e00b12122028e9733ef",
+      "relation": "causes",
+      "subject": "Larger initializations",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.925,
+     "novelty": 0.683
+    },
+    "falsification_test": "Vary geometry-prompting strategies and Larger initializations separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "52da05132903",
+    "text": "below how these particular loss landscapes and develop some initial intuition on what may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "below how these particular loss landscapes",
+     "develop some initial intuition on what",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0019",
+     "arxiv-2601-19791-p0019"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0019",
+      "quote": "We elaborate below how these particular loss landscapes lead to grokking.",
+      "start": 876,
+      "end": 949,
+      "chunk_sha256": "f9cadc8b57c6f7766f47a922990ab381f6b7418bd25a16998643e0c11c9281e6",
+      "relation": "causes",
+      "subject": "below how these particular loss landscapes",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2601-19791-p0019",
+      "quote": "To develop some initial intuition on what causes grokking, we state the aforementioned three stages of grokking in terms of the convergence rates of the training/generalization squared losses, in contrast to the format of our Theorem 4.2 which appears",
+      "start": 155,
+      "end": 406,
+      "chunk_sha256": "58215d387733cb85161252e0c178705bdd2259f3582f4d85e9ce257b9dd5a41a",
+      "relation": "causes",
+      "subject": "develop some initial intuition on what",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "knowledge_graph"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.925,
+     "novelty": 0.668
+    },
+    "falsification_test": "Vary below how these particular loss landscapes and develop some initial intuition on what separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "6b918d7155c7",
+    "text": "develop some initial intuition on what and Larger initializations may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "develop some initial intuition on what",
+     "Larger initializations",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-19791-p0019",
+     "arxiv-2210-01117-p0010"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-19791-p0019",
+      "quote": "To develop some initial intuition on what causes grokking, we state the aforementioned three stages of grokking in terms of the convergence rates of the training/generalization squared losses, in contrast to the format of our Theorem 4.2 which appears",
+      "start": 155,
+      "end": 406,
+      "chunk_sha256": "58215d387733cb85161252e0c178705bdd2259f3582f4d85e9ce257b9dd5a41a",
+      "relation": "causes",
+      "subject": "develop some initial intuition on what",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2210-01117-p0010",
+      "quote": "The reduced loss landscape reveals three things: (1) Larger initializations lead to grokking.",
+      "start": 26,
+      "end": 119,
+      "chunk_sha256": "1243dc1b5f4550c9a2f84dcc7ef1ea1ac1ebfd4bd0835e00b12122028e9733ef",
+      "relation": "causes",
+      "subject": "Larger initializations",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.925,
+     "novelty": 0.65
+    },
+    "falsification_test": "Vary develop some initial intuition on what and Larger initializations separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "cead80c15185",
+    "text": "develop some initial intuition on what and geometry-prompting strategies may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "develop some initial intuition on what",
+     "geometry-prompting strategies",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-19791-p0019",
+     "arxiv-2603-01968-p0008"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-19791-p0019",
+      "quote": "To develop some initial intuition on what causes grokking, we state the aforementioned three stages of grokking in terms of the convergence rates of the training/generalization squared losses, in contrast to the format of our Theorem 4.2 which appears",
+      "start": 155,
+      "end": 406,
+      "chunk_sha256": "58215d387733cb85161252e0c178705bdd2259f3582f4d85e9ce257b9dd5a41a",
+      "relation": "causes",
+      "subject": "develop some initial intuition on what",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2603-01968-p0008",
+      "quote": "• Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.",
+      "start": 0,
+      "end": 234,
+      "chunk_sha256": "bfe4013b766c9cf464688b1de75b8af68324363ad9e3b34c44b3acb1844e27dc",
+      "relation": "increases",
+      "subject": "geometry-prompting strategies",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.925,
+     "novelty": 0.65
+    },
+    "falsification_test": "Vary develop some initial intuition on what and geometry-prompting strategies separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "d2f824e7b368",
+    "text": "below how these particular loss landscapes and geometry-prompting strategies may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "below how these particular loss landscapes",
+     "geometry-prompting strategies",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0019",
+     "arxiv-2603-01968-p0008"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0019",
+      "quote": "We elaborate below how these particular loss landscapes lead to grokking.",
+      "start": 876,
+      "end": 949,
+      "chunk_sha256": "f9cadc8b57c6f7766f47a922990ab381f6b7418bd25a16998643e0c11c9281e6",
+      "relation": "causes",
+      "subject": "below how these particular loss landscapes",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2603-01968-p0008",
+      "quote": "• Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.",
+      "start": 0,
+      "end": 234,
+      "chunk_sha256": "bfe4013b766c9cf464688b1de75b8af68324363ad9e3b34c44b3acb1844e27dc",
+      "relation": "increases",
+      "subject": "geometry-prompting strategies",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.925,
+     "novelty": 0.65
+    },
+    "falsification_test": "Vary below how these particular loss landscapes and geometry-prompting strategies separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "84ea011d5fb3",
+    "text": "forward by elucidating how distribution shifts and intrinsic task symmetries may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "forward by elucidating how distribution shifts",
+     "intrinsic task symmetries",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2502-01774-p0007",
+     "arxiv-2603-01968-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2502-01774-p0007",
+      "quote": "While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.",
+      "start": 257,
+      "end": 438,
+      "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+      "relation": "causes",
+      "subject": "forward by elucidating how distribution shifts",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2603-01968-p0002",
+      "quote": "We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.",
+      "start": 203,
+      "end": 329,
+      "chunk_sha256": "4aafb9b244a700d08c919f79649ff2567b6bdb5303481cba686d23e1b284c238",
+      "relation": "increases",
+      "subject": "intrinsic task symmetries",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.925,
+     "novelty": 0.642
+    },
+    "falsification_test": "Vary forward by elucidating how distribution shifts and intrinsic task symmetries separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "b18db60cd581",
+    "text": "develop some initial intuition on what and forward by elucidating how distribution shifts may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "develop some initial intuition on what",
+     "forward by elucidating how distribution shifts",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-19791-p0019",
+     "arxiv-2502-01774-p0007"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-19791-p0019",
+      "quote": "To develop some initial intuition on what causes grokking, we state the aforementioned three stages of grokking in terms of the convergence rates of the training/generalization squared losses, in contrast to the format of our Theorem 4.2 which appears",
+      "start": 155,
+      "end": 406,
+      "chunk_sha256": "58215d387733cb85161252e0c178705bdd2259f3582f4d85e9ce257b9dd5a41a",
+      "relation": "causes",
+      "subject": "develop some initial intuition on what",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0007",
+      "quote": "While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.",
+      "start": 257,
+      "end": 438,
+      "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+      "relation": "causes",
+      "subject": "forward by elucidating how distribution shifts",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.925,
+     "novelty": 0.642
+    },
+    "falsification_test": "Vary develop some initial intuition on what and forward by elucidating how distribution shifts separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "c9a0f6f22b62",
+    "text": "below how these particular loss landscapes and forward by elucidating how distribution shifts may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "below how these particular loss landscapes",
+     "forward by elucidating how distribution shifts",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0019",
+     "arxiv-2502-01774-p0007"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0019",
+      "quote": "We elaborate below how these particular loss landscapes lead to grokking.",
+      "start": 876,
+      "end": 949,
+      "chunk_sha256": "f9cadc8b57c6f7766f47a922990ab381f6b7418bd25a16998643e0c11c9281e6",
+      "relation": "causes",
+      "subject": "below how these particular loss landscapes",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0007",
+      "quote": "While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.",
+      "start": 257,
+      "end": 438,
+      "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+      "relation": "causes",
+      "subject": "forward by elucidating how distribution shifts",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.925,
+     "novelty": 0.642
+    },
+    "falsification_test": "Vary below how these particular loss landscapes and forward by elucidating how distribution shifts separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "ee0bf2ecaf36",
+    "text": "Gains in grokking from geometry-prompting strategies may be offset by weight decay.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "geometry-prompting strategies",
+     "weight decay",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-01968-p0008",
+     "arxiv-2502-01774-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-01968-p0008",
+      "quote": "• Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.",
+      "start": 0,
+      "end": 234,
+      "chunk_sha256": "bfe4013b766c9cf464688b1de75b8af68324363ad9e3b34c44b3acb1844e27dc",
+      "relation": "increases",
+      "subject": "geometry-prompting strategies",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0016",
+      "quote": "The authors also claim that weight decay cannot explain grokking.",
+      "start": 1461,
+      "end": 1526,
+      "chunk_sha256": "e46483042e639a5b9c1f29d4321ac6a29d20c1f1cffe9e5c30e807d38d93ed17",
+      "relation": "undermines",
+      "subject": "weight decay",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.925,
+     "novelty": 0.636
+    },
+    "falsification_test": "Measure grokking where both geometry-prompting strategies and weight decay vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "2715ec4bf3c7",
+    "text": "develop some initial intuition on what and intrinsic task symmetries may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "develop some initial intuition on what",
+     "intrinsic task symmetries",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-19791-p0019",
+     "arxiv-2603-01968-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-19791-p0019",
+      "quote": "To develop some initial intuition on what causes grokking, we state the aforementioned three stages of grokking in terms of the convergence rates of the training/generalization squared losses, in contrast to the format of our Theorem 4.2 which appears",
+      "start": 155,
+      "end": 406,
+      "chunk_sha256": "58215d387733cb85161252e0c178705bdd2259f3582f4d85e9ce257b9dd5a41a",
+      "relation": "causes",
+      "subject": "develop some initial intuition on what",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2603-01968-p0002",
+      "quote": "We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.",
+      "start": 203,
+      "end": 329,
+      "chunk_sha256": "4aafb9b244a700d08c919f79649ff2567b6bdb5303481cba686d23e1b284c238",
+      "relation": "increases",
+      "subject": "intrinsic task symmetries",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.925,
+     "novelty": 0.623
+    },
+    "falsification_test": "Vary develop some initial intuition on what and intrinsic task symmetries separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "6403cb720c6a",
+    "text": "forward by elucidating how distribution shifts and geometry-prompting strategies may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "forward by elucidating how distribution shifts",
+     "geometry-prompting strategies",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2502-01774-p0007",
+     "arxiv-2603-01968-p0008"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2502-01774-p0007",
+      "quote": "While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.",
+      "start": 257,
+      "end": 438,
+      "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+      "relation": "causes",
+      "subject": "forward by elucidating how distribution shifts",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2603-01968-p0008",
+      "quote": "• Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.",
+      "start": 0,
+      "end": 234,
+      "chunk_sha256": "bfe4013b766c9cf464688b1de75b8af68324363ad9e3b34c44b3acb1844e27dc",
+      "relation": "increases",
+      "subject": "geometry-prompting strategies",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.925,
+     "novelty": 0.623
+    },
+    "falsification_test": "Vary forward by elucidating how distribution shifts and geometry-prompting strategies separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "fa63b5dd3877",
+    "text": "forward by elucidating how distribution shifts and Larger initializations may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "forward by elucidating how distribution shifts",
+     "Larger initializations",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2502-01774-p0007",
+     "arxiv-2210-01117-p0010"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2502-01774-p0007",
+      "quote": "While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.",
+      "start": 257,
+      "end": 438,
+      "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+      "relation": "causes",
+      "subject": "forward by elucidating how distribution shifts",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2210-01117-p0010",
+      "quote": "The reduced loss landscape reveals three things: (1) Larger initializations lead to grokking.",
+      "start": 26,
+      "end": 119,
+      "chunk_sha256": "1243dc1b5f4550c9a2f84dcc7ef1ea1ac1ebfd4bd0835e00b12122028e9733ef",
+      "relation": "causes",
+      "subject": "Larger initializations",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.925,
+     "novelty": 0.623
+    },
+    "falsification_test": "Vary forward by elucidating how distribution shifts and Larger initializations separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "6bb894b0515f",
+    "text": "Gains in grokking from develop some initial intuition on what may be offset by weight decay.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "develop some initial intuition on what",
+     "weight decay",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-19791-p0019",
+     "arxiv-2502-01774-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-19791-p0019",
+      "quote": "To develop some initial intuition on what causes grokking, we state the aforementioned three stages of grokking in terms of the convergence rates of the training/generalization squared losses, in contrast to the format of our Theorem 4.2 which appears",
+      "start": 155,
+      "end": 406,
+      "chunk_sha256": "58215d387733cb85161252e0c178705bdd2259f3582f4d85e9ce257b9dd5a41a",
+      "relation": "causes",
+      "subject": "develop some initial intuition on what",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0016",
+      "quote": "The authors also claim that weight decay cannot explain grokking.",
+      "start": 1461,
+      "end": 1526,
+      "chunk_sha256": "e46483042e639a5b9c1f29d4321ac6a29d20c1f1cffe9e5c30e807d38d93ed17",
+      "relation": "undermines",
+      "subject": "weight decay",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.925,
+     "novelty": 0.6
+    },
+    "falsification_test": "Measure grokking where both develop some initial intuition on what and weight decay vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "857daf46f30b",
+    "text": "geometry-prompting strategies and training partition may interact in their effect on grokking.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "geometry-prompting strategies",
+     "training partition",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-01968-p0008",
+     "arxiv-2610-00620-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-01968-p0008",
+      "quote": "• Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.",
+      "start": 0,
+      "end": 234,
+      "chunk_sha256": "bfe4013b766c9cf464688b1de75b8af68324363ad9e3b34c44b3acb1844e27dc",
+      "relation": "increases",
+      "subject": "geometry-prompting strategies",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0022",
+      "quote": "A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.",
+      "start": 512,
+      "end": 648,
+      "chunk_sha256": "e71c57eda06f31100ef26e89b29602cc58a792fb840ddc3932ecc254d695fd69",
+      "relation": "constrains",
+      "subject": "training partition",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.85,
+     "novelty": 0.636
+    },
+    "falsification_test": "Vary geometry-prompting strategies and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "581cd1667ad5",
+    "text": "forward by elucidating how distribution shifts and training partition may interact in their effect on grokking.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "forward by elucidating how distribution shifts",
+     "training partition",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2502-01774-p0007",
+     "arxiv-2610-00620-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2502-01774-p0007",
+      "quote": "While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.",
+      "start": 257,
+      "end": 438,
+      "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+      "relation": "causes",
+      "subject": "forward by elucidating how distribution shifts",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0022",
+      "quote": "A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.",
+      "start": 512,
+      "end": 648,
+      "chunk_sha256": "e71c57eda06f31100ef26e89b29602cc58a792fb840ddc3932ecc254d695fd69",
+      "relation": "constrains",
+      "subject": "training partition",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.85,
+     "novelty": 0.572
+    },
+    "falsification_test": "Vary forward by elucidating how distribution shifts and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "3821f6f09af9",
+    "text": "develop some initial intuition on what and training partition may interact in their effect on grokking.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "develop some initial intuition on what",
+     "training partition",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-19791-p0019",
+     "arxiv-2610-00620-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-19791-p0019",
+      "quote": "To develop some initial intuition on what causes grokking, we state the aforementioned three stages of grokking in terms of the convergence rates of the training/generalization squared losses, in contrast to the format of our Theorem 4.2 which appears",
+      "start": 155,
+      "end": 406,
+      "chunk_sha256": "58215d387733cb85161252e0c178705bdd2259f3582f4d85e9ce257b9dd5a41a",
+      "relation": "causes",
+      "subject": "develop some initial intuition on what",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0022",
+      "quote": "A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.",
+      "start": 512,
+      "end": 648,
+      "chunk_sha256": "e71c57eda06f31100ef26e89b29602cc58a792fb840ddc3932ecc254d695fd69",
+      "relation": "constrains",
+      "subject": "training partition",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.85,
+     "novelty": 0.538
+    },
+    "falsification_test": "Vary develop some initial intuition on what and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "7b3a90b1f7cc",
+    "text": "data and geometry-prompting strategies may jointly drive faster grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "data",
+     "geometry-prompting strategies",
+     "faster grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-13253-p0009",
+     "arxiv-2603-01968-p0008"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-13253-p0009",
+      "quote": "In general, more data leads to faster grokking (i.e.",
+      "start": 965,
+      "end": 1017,
+      "chunk_sha256": "04445a7597880c948af6f569c5554de9a205139187c5999e8321335f5c648317",
+      "relation": "causes",
+      "subject": "data",
+      "object": "faster grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2603-01968-p0008",
+      "quote": "• Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.",
+      "start": 0,
+      "end": 234,
+      "chunk_sha256": "bfe4013b766c9cf464688b1de75b8af68324363ad9e3b34c44b3acb1844e27dc",
+      "relation": "increases",
+      "subject": "geometry-prompting strategies",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.84,
+     "novelty": 0.683
+    },
+    "falsification_test": "Vary data and geometry-prompting strategies separately and together. The hypothesis fails if the joint change in faster grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "1a6f7369a97c",
+    "text": "data and develop some initial intuition on what may jointly drive faster grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "data",
+     "develop some initial intuition on what",
+     "faster grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-13253-p0009",
+     "arxiv-2601-19791-p0019"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-13253-p0009",
+      "quote": "In general, more data leads to faster grokking (i.e.",
+      "start": 965,
+      "end": 1017,
+      "chunk_sha256": "04445a7597880c948af6f569c5554de9a205139187c5999e8321335f5c648317",
+      "relation": "causes",
+      "subject": "data",
+      "object": "faster grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2601-19791-p0019",
+      "quote": "To develop some initial intuition on what causes grokking, we state the aforementioned three stages of grokking in terms of the convergence rates of the training/generalization squared losses, in contrast to the format of our Theorem 4.2 which appears",
+      "start": 155,
+      "end": 406,
+      "chunk_sha256": "58215d387733cb85161252e0c178705bdd2259f3582f4d85e9ce257b9dd5a41a",
+      "relation": "causes",
+      "subject": "develop some initial intuition on what",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "knowledge_graph"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.84,
+     "novelty": 0.65
+    },
+    "falsification_test": "Vary data and develop some initial intuition on what separately and together. The hypothesis fails if the joint change in faster grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "217c3938d841",
+    "text": "data and forward by elucidating how distribution shifts may jointly drive faster grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "data",
+     "forward by elucidating how distribution shifts",
+     "faster grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-13253-p0009",
+     "arxiv-2502-01774-p0007"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-13253-p0009",
+      "quote": "In general, more data leads to faster grokking (i.e.",
+      "start": 965,
+      "end": 1017,
+      "chunk_sha256": "04445a7597880c948af6f569c5554de9a205139187c5999e8321335f5c648317",
+      "relation": "causes",
+      "subject": "data",
+      "object": "faster grokking",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0007",
+      "quote": "While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.",
+      "start": 257,
+      "end": 438,
+      "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+      "relation": "causes",
+      "subject": "forward by elucidating how distribution shifts",
+      "object": "grokking",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.84,
+     "novelty": 0.623
+    },
+    "falsification_test": "Vary data and forward by elucidating how distribution shifts separately and together. The hypothesis fails if the joint change in faster grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "c4214b398738",
+    "text": "learned activations may reduce benign overfitting through phenomenon.",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "learned activations",
+     "benign overfitting"
+    ],
+    "via": [
+     "phenomenon"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2503-10065-p0006",
+     "arxiv-2502-12508-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2503-10065-p0006",
+      "quote": "(4) For grokking tasks, new learned activations can eliminate the phenomenon, supporting the explanation as a mismatch between data and architectures.",
+      "start": 603,
+      "end": 753,
+      "chunk_sha256": "a89952778d8e432f08de72b93b9bf3c5f7697c8c2e394e17a7ce8c65bd381e99",
+      "relation": "decreases",
+      "subject": "learned activations",
+      "object": "phenomenon",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2502-12508-p0003",
+      "quote": "This phenomenon, known as benign overfitting (Bartlett et al., 2020), has altered our traditional understanding of statistical learning and garnered significant attention from both the statistical and machine learning communities (Belkin et al., 2018; 2019; 2020; Neyshabur et al., 2018; Hastie et al., 2020).",
+      "start": 1148,
+      "end": 1457,
+      "chunk_sha256": "2f5dd7a8dab4f5196592a44ad7dccdac582372221a0b0e1b9dc3146280f214cf",
+      "relation": "alias_of",
+      "subject": "phenomenon",
+      "object": "benign overfitting",
+      "hedged": false,
+      "origin": "knowledge_graph"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.8,
+     "novelty": 0.586
+    },
+    "falsification_test": "Compare settings where learned activations differs while other inputs are matched. The hypothesis fails if benign overfitting does not fall with learned activations, or if fixing phenomenon removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   }
+  ],
+  "survivors": 58,
+  "candidates_generated": 258,
+  "candidates_passed": {
+   "abductive": 105,
+   "deductive": 105,
+   "pre_thinker": 61
+  },
+  "candidates_rejected": {
+   "abductive:incoherent_composition": 66,
+   "abductive:no_explanatory_relation": 83,
+   "abductive:unrelated_bridge": 4,
+   "pre_thinker:circular": 2,
+   "pre_thinker:malformed": 31,
+   "pre_thinker:restates_source": 1,
+   "pre_thinker:single_source": 10
+  },
+  "relation_edges": 636,
+  "scoped_edges": 76,
+  "budget_used": {
+   "rounds": 2,
+   "candidates": 258,
+   "edges": 636,
+   "bytes": 342488,
+   "seconds": 4.576
+  },
+  "incomplete": false,
+  "stop_reason": null,
+  "shortage": null,
+  "snapshot": {
+   "as_of": 1795250161,
+   "chunk_count": 1652
+  }
+ },
+ "reply": "Frontier hypotheses for grokking. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 258. Passed abductive check: 105; deductive check: 105; pre-thinker validation: 61.\n\n1. Grokking may undermine traditional machine learning theory through intriguing phenomenon (read as phenomenon).\n[arxiv-2506-04434-p0003] Grokking is an intriguing phenomenon where a neural network achieves near-perfect training accuracy quickly, yet the test accuracy lags significantly, often near chance level, before abruptly surging towards high generalization [15].\n[arxiv-2602-02859-p0003] Grokking is an intriguing phenomenon where a neural network achieves near-perfect training accuracy quickly, yet the test accuracy lags significantly, often near chance level, before abruptly surging towards high generalization (Power et al., 2022).\n[arxiv-2502-12508-p0025] This phenomenon starkly contradicts traditional machine learning theory.\nFalsification test: Construct a coherent case where Grokking is accepted. The hypothesis fails if traditional machine learning theory still holds in that case, or if the argument does not need intriguing phenomenon (read as phenomenon).\nScores: source support 0.99, deductive relevance 0.86, novelty 0.75.\n\n2. learned activations may increase later through accuracy (read as test accuracy).\n[arxiv-2503-10065-p0006] (1) For regression tasks and tabular data, new learned activations greatly improve accuracy by helping learn complex functions.\n[arxiv-2210-01117-p0012] We find that the network quickly fits the training set, and test accuracy improves much later, as shown in Figure 3d, just as in the stereotypical grokking learning first observed in algorithmic datasets.\nFalsification test: Compare settings where learned activations differs while other inputs are matched. The hypothesis fails if later does not rise with learned activations, or if fixing accuracy (read as test accuracy) removes no part of the effect.\nScores: source support 0.96, deductive relevance 0.70, novelty 0.61.\n\n3. below how these particular loss landscapes and intrinsic task symmetries may jointly drive grokking, and their effects may compound.\n[arxiv-2210-01117-p0019] We elaborate below how these particular loss landscapes lead to grokking.\n[arxiv-2603-01968-p0002] We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.\nFalsification test: Vary below how these particular loss landscapes and intrinsic task symmetries separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.93, novelty 0.62.\n\n4. intrinsic task symmetries and Larger initializations may jointly drive grokking, and their effects may compound.\n[arxiv-2603-01968-p0002] We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.\n[arxiv-2210-01117-p0010] The reduced loss landscape reveals three things: (1) Larger initializations lead to grokking.\nFalsification test: Vary intrinsic task symmetries and Larger initializations separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.93, novelty 0.60.\n\n5. Gains in grokking from Larger initializations may be offset by weight decay.\n[arxiv-2210-01117-p0010] The reduced loss landscape reveals three things: (1) Larger initializations lead to grokking.\n[arxiv-2502-01774-p0016] The authors also claim that weight decay cannot explain grokking.\nFalsification test: Measure grokking where both Larger initializations and weight decay vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.93, novelty 0.59.\n\n6. Gains in grokking from below how these particular loss landscapes may be offset by weight decay.\n[arxiv-2210-01117-p0019] We elaborate below how these particular loss landscapes lead to grokking.\n[arxiv-2502-01774-p0016] The authors also claim that weight decay cannot explain grokking.\nFalsification test: Measure grokking where both below how these particular loss landscapes and weight decay vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.93, novelty 0.55.\n\n7. Gains in grokking from intrinsic task symmetries may be offset by weight decay.\n[arxiv-2603-01968-p0002] We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.\n[arxiv-2502-01774-p0016] The authors also claim that weight decay cannot explain grokking.\nFalsification test: Measure grokking where both intrinsic task symmetries and weight decay vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.93, novelty 0.55.\n\n8. phenomenon may undermine dependence of grokking time through traditional machine learning theory (read as Effective theory).\n[arxiv-2502-12508-p0025] This phenomenon starkly contradicts traditional machine learning theory.\n[arxiv-2205-10343-p0021] Figure 5: Effective theory explains the dependence of grokking time on data size, for the addition task.\nFalsification test: Construct a coherent case where phenomenon is accepted. The hypothesis fails if dependence of grokking time still holds in that case, or if the argument does not need traditional machine learning theory (read as Effective theory).\nScores: source support 0.80, deductive relevance 0.90, novelty 0.59.\n\n9. learning and grokking may move together because both depend on weight decay.\n[arxiv-2511-01938-p0008] In the second phase, learning is entirely driven by weight decay.\n[arxiv-2502-01774-p0016] The authors also claim that weight decay cannot explain grokking.\nFalsification test: Track learning and grokking across periods where weight decay changes and where it does not. The hypothesis fails if they co-vary just as strongly when weight decay is held fixed.\nScores: source support 0.80, deductive relevance 0.90, novelty 0.56.\n\n10. training the model for a very and training partition may jointly constrain observing grokking, so relieving one may shift the bottleneck to the other.\n[arxiv-2306-13253-p0005] But observing grokking often requires training the model for a very long time, making it difficult to construct a phase diagram of generalization covering all the hyperparameters.\n[arxiv-2610-00620-p0022] A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.\nFalsification test: Relieve training the model for a very alone while measuring observing grokking. The hypothesis fails if observing grokking keeps improving without training partition becoming the binding limit, or if relieving training partition alone has no effect.\nScores: source support 0.80, deductive relevance 0.86, novelty 0.62.\n\n11. Larger initializations and training partition may interact in their effect on grokking.\n[arxiv-2210-01117-p0010] The reduced loss landscape reveals three things: (1) Larger initializations lead to grokking.\n[arxiv-2610-00620-p0022] A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.\nFalsification test: Vary Larger initializations and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.85, novelty 0.64.\n\n12. intrinsic task symmetries and training partition may interact in their effect on grokking.\n[arxiv-2603-01968-p0002] We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.\n[arxiv-2610-00620-p0022] A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.\nFalsification test: Vary intrinsic task symmetries and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.85, novelty 0.60.\n\n13. below how these particular loss landscapes and training partition may interact in their effect on grokking.\n[arxiv-2210-01117-p0019] We elaborate below how these particular loss landscapes lead to grokking.\n[arxiv-2610-00620-p0022] A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.\nFalsification test: Vary below how these particular loss landscapes and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.85, novelty 0.60.\n\n14. training partition and weight decay may interact in their effect on grokking.\n[arxiv-2610-00620-p0022] A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.\n[arxiv-2502-01774-p0016] The authors also claim that weight decay cannot explain grokking.\nFalsification test: Vary training partition and weight decay separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.85, novelty 0.59.\n\n15. below how these particular loss landscapes and data may jointly drive grokking, and their effects may compound.\n[arxiv-2210-01117-p0019] We elaborate below how these particular loss landscapes lead to grokking.\n[arxiv-2306-13253-p0009] In general, more data leads to faster grokking (i.e.\nFalsification test: Vary below how these particular loss landscapes and data separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.84, novelty 0.63.\n\n16. data and Larger initializations may jointly drive faster grokking, and their effects may compound.\n[arxiv-2306-13253-p0009] In general, more data leads to faster grokking (i.e.\n[arxiv-2210-01117-p0010] The reduced loss landscape reveals three things: (1) Larger initializations lead to grokking.\nFalsification test: Vary data and Larger initializations separately and together. The hypothesis fails if the joint change in faster grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.84, novelty 0.63.\n\n17. Gains in faster grokking from data may be offset by weight decay.\n[arxiv-2306-13253-p0009] In general, more data leads to faster grokking (i.e.\n[arxiv-2502-01774-p0016] The authors also claim that weight decay cannot explain grokking.\nFalsification test: Measure faster grokking where both data and weight decay vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.84, novelty 0.59.\n\n18. data and intrinsic task symmetries may jointly drive faster grokking, and their effects may compound.\n[arxiv-2306-13253-p0009] In general, more data leads to faster grokking (i.e.\n[arxiv-2603-01968-p0002] We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.\nFalsification test: Vary data and intrinsic task symmetries separately and together. The hypothesis fails if the joint change in faster grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.84, novelty 0.55.\n\n19. Larger initializations and training the model for a very may interact in their effect on grokking.\n[arxiv-2210-01117-p0010] The reduced loss landscape reveals three things: (1) Larger initializations lead to grokking.\n[arxiv-2306-13253-p0005] But observing grokking often requires training the model for a very long time, making it difficult to construct a phase diagram of generalization covering all the hyperparameters.\nFalsification test: Vary Larger initializations and training the model for a very separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.78, novelty 0.59.\n\n20. data and training partition may interact in their effect on faster grokking.\n[arxiv-2306-13253-p0009] In general, more data leads to faster grokking (i.e.\n[arxiv-2610-00620-p0022] A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.\nFalsification test: Vary data and training partition separately and together. The hypothesis fails if the joint change in faster grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.78, novelty 0.59.\n\n21. training the model for a very and weight decay may interact in their effect on observing grokking.\n[arxiv-2306-13253-p0005] But observing grokking often requires training the model for a very long time, making it difficult to construct a phase diagram of generalization covering all the hyperparameters.\n[arxiv-2502-01774-p0016] The authors also claim that weight decay cannot explain grokking.\nFalsification test: Vary training the model for a very and weight decay separately and together. The hypothesis fails if the joint change in observing grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.78, novelty 0.55.\n\n22. below how these particular loss landscapes and training the model for a very may interact in their effect on grokking.\n[arxiv-2210-01117-p0019] We elaborate below how these particular loss landscapes lead to grokking.\n[arxiv-2306-13253-p0005] But observing grokking often requires training the model for a very long time, making it difficult to construct a phase diagram of generalization covering all the hyperparameters.\nFalsification test: Vary below how these particular loss landscapes and training the model for a very separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.78, novelty 0.55.\n\n23. intrinsic task symmetries and training the model for a very may interact in their effect on grokking.\n[arxiv-2603-01968-p0002] We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.\n[arxiv-2306-13253-p0005] But observing grokking often requires training the model for a very long time, making it difficult to construct a phase diagram of generalization covering all the hyperparameters.\nFalsification test: Vary intrinsic task symmetries and training the model for a very separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.78, novelty 0.49.\n\n24. MAT and models suddenly generalize after may jointly constrain memorization, so relieving one may shift the bottleneck to the other.\n[arxiv-2412-07684-p0022] These results show that MAT effectively reduced memorization, while leading to improved generalization.\n[arxiv-2408-08944-p0002] This paper studies emergent phenomena in neural networks by focusing on grokking where models suddenly generalize after delayed memorization.\nFalsification test: Relieve MAT alone while measuring memorization. The hypothesis fails if memorization keeps improving without models suddenly generalize after becoming the binding limit, or if relieving models suddenly generalize after alone has no effect.\nScores: source support 0.80, deductive relevance 0.75, novelty 0.67.\n\n25. test accuracy and validation accuracy may jointly drive later, and their effects may compound.\n[arxiv-2210-01117-p0012] We find that the network quickly fits the training set, and test accuracy improves much later, as shown in Figure 3d, just as in the stereotypical grokking learning first observed in algorithmic datasets.\n[arxiv-2610-00620-p0016] • Grokking: validation accuracy increases much later than training accuracy.\nFalsification test: Vary test accuracy and validation accuracy separately and together. The hypothesis fails if the joint change in later equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.72, novelty 0.61.\n\n26. Gains in memorization from suggesting may be offset by models suddenly generalize after.\n[arxiv-2408-08944-p0002] This paper studies emergent phenomena in neural networks by focusing on grokking where models suddenly generalize after delayed memorization.\n[arxiv-2412-07684-p0022] Models trained with ERM exhibit higher self-influence scores for minority subpopulations, suggesting increased memorization in these groups.\nFalsification test: Measure memorization where both models suddenly generalize after and suggesting vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.72, novelty 0.56.\n\n27. including may reduce different representations through feature learning (read as conventional learning).\n[arxiv-2408-08944-p0006] Cause of Grokking Several studies attribute the cause of grokking to properties related to the difficulty of representation learning the generalizing sub-network, including delayed feature learning (Kumar et al., 2023), sparsity (Merrill et al., 2023), and compression (Liu et al.).\n[arxiv-2502-01739-p0004] This raises two immediate questions: do grokking and conventional learning lead to different representations, and are there differences in compression between grokking and\nFalsification test: Compare settings where including differs while other inputs are matched. The hypothesis fails if different representations does not fall with including, or if fixing feature learning (read as conventional learning) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.68, novelty 0.58.\n\n28. weight decay may increase different representations through learning (read as conventional learning).\n[arxiv-2511-01938-p0008] In the second phase, learning is entirely driven by weight decay.\n[arxiv-2502-01739-p0004] This raises two immediate questions: do grokking and conventional learning lead to different representations, and are there differences in compression between grokking and\nFalsification test: Compare settings where weight decay differs while other inputs are matched. The hypothesis fails if different representations does not rise with weight decay, or if fixing learning (read as conventional learning) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.68, novelty 0.53.\n\n29. Gains in feature learning from weight decay may be offset by including.\n[arxiv-2408-08944-p0006] Cause of Grokking Several studies attribute the cause of grokking to properties related to the difficulty of representation learning the generalizing sub-network, including delayed feature learning (Kumar et al., 2023), sparsity (Merrill et al., 2023), and compression (Liu et al.).\n[arxiv-2511-01938-p0008] In the second phase, learning is entirely driven by weight decay.\nFalsification test: Measure feature learning where both including and weight decay vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.64, novelty 0.59.\n\n30. later and only long may move together because both depend on test accuracy.\n[arxiv-2210-01117-p0012] We find that the network quickly fits the training set, and test accuracy improves much later, as shown in Figure 3d, just as in the stereotypical grokking learning first observed in algorithmic datasets.\n[arxiv-2610-00620-p0008] Validation accuracy increases only long after the model has overfit the training partition.\nFalsification test: Track later and only long across periods where test accuracy changes and where it does not. The hypothesis fails if they co-vary just as strongly when test accuracy is held fixed.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.61.\n\n31. geometry-prompting strategies and Larger initializations may jointly drive grokking, and their effects may compound.\n[arxiv-2603-01968-p0008] • Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.\n[arxiv-2210-01117-p0010] The reduced loss landscape reveals three things: (1) Larger initializations lead to grokking.\nFalsification test: Vary geometry-prompting strategies and Larger initializations separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.93, novelty 0.68.\n\n32. below how these particular loss landscapes and develop some initial intuition on what may jointly drive grokking, and their effects may compound.\n[arxiv-2210-01117-p0019] We elaborate below how these particular loss landscapes lead to grokking.\n[arxiv-2601-19791-p0019] To develop some initial intuition on what causes grokking, we state the aforementioned three stages of grokking in terms of the convergence rates of the training/generalization squared losses, in contrast to the format of our Theorem 4.2 which appears\nFalsification test: Vary below how these particular loss landscapes and develop some initial intuition on what separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.93, novelty 0.67.\n\n33. develop some initial intuition on what and Larger initializations may jointly drive grokking, and their effects may compound.\n[arxiv-2601-19791-p0019] To develop some initial intuition on what causes grokking, we state the aforementioned three stages of grokking in terms of the convergence rates of the training/generalization squared losses, in contrast to the format of our Theorem 4.2 which appears\n[arxiv-2210-01117-p0010] The reduced loss landscape reveals three things: (1) Larger initializations lead to grokking.\nFalsification test: Vary develop some initial intuition on what and Larger initializations separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.93, novelty 0.65.\n\n34. develop some initial intuition on what and geometry-prompting strategies may jointly drive grokking, and their effects may compound.\n[arxiv-2601-19791-p0019] To develop some initial intuition on what causes grokking, we state the aforementioned three stages of grokking in terms of the convergence rates of the training/generalization squared losses, in contrast to the format of our Theorem 4.2 which appears\n[arxiv-2603-01968-p0008] • Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.\nFalsification test: Vary develop some initial intuition on what and geometry-prompting strategies separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.93, novelty 0.65.\n\n35. below how these particular loss landscapes and geometry-prompting strategies may jointly drive grokking, and their effects may compound.\n[arxiv-2210-01117-p0019] We elaborate below how these particular loss landscapes lead to grokking.\n[arxiv-2603-01968-p0008] • Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.\nFalsification test: Vary below how these particular loss landscapes and geometry-prompting strategies separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.93, novelty 0.65.\n\n36. forward by elucidating how distribution shifts and intrinsic task symmetries may jointly drive grokking, and their effects may compound.\n[arxiv-2502-01774-p0007] While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.\n[arxiv-2603-01968-p0002] We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.\nFalsification test: Vary forward by elucidating how distribution shifts and intrinsic task symmetries separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.93, novelty 0.64.\n\n37. develop some initial intuition on what and forward by elucidating how distribution shifts may jointly drive grokking, and their effects may compound.\n[arxiv-2601-19791-p0019] To develop some initial intuition on what causes grokking, we state the aforementioned three stages of grokking in terms of the convergence rates of the training/generalization squared losses, in contrast to the format of our Theorem 4.2 which appears\n[arxiv-2502-01774-p0007] While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.\nFalsification test: Vary develop some initial intuition on what and forward by elucidating how distribution shifts separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.93, novelty 0.64.\n\n38. below how these particular loss landscapes and forward by elucidating how distribution shifts may jointly drive grokking, and their effects may compound.\n[arxiv-2210-01117-p0019] We elaborate below how these particular loss landscapes lead to grokking.\n[arxiv-2502-01774-p0007] While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.\nFalsification test: Vary below how these particular loss landscapes and forward by elucidating how distribution shifts separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.93, novelty 0.64.\n\n39. Gains in grokking from geometry-prompting strategies may be offset by weight decay.\n[arxiv-2603-01968-p0008] • Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.\n[arxiv-2502-01774-p0016] The authors also claim that weight decay cannot explain grokking.\nFalsification test: Measure grokking where both geometry-prompting strategies and weight decay vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.55, deductive relevance 0.93, novelty 0.64.\n\n40. develop some initial intuition on what and intrinsic task symmetries may jointly drive grokking, and their effects may compound.\n[arxiv-2601-19791-p0019] To develop some initial intuition on what causes grokking, we state the aforementioned three stages of grokking in terms of the convergence rates of the training/generalization squared losses, in contrast to the format of our Theorem 4.2 which appears\n[arxiv-2603-01968-p0002] We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.\nFalsification test: Vary develop some initial intuition on what and intrinsic task symmetries separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.93, novelty 0.62.\n\n41. forward by elucidating how distribution shifts and geometry-prompting strategies may jointly drive grokking, and their effects may compound.\n[arxiv-2502-01774-p0007] While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.\n[arxiv-2603-01968-p0008] • Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.\nFalsification test: Vary forward by elucidating how distribution shifts and geometry-prompting strategies separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.93, novelty 0.62.\n\n42. forward by elucidating how distribution shifts and Larger initializations may jointly drive grokking, and their effects may compound.\n[arxiv-2502-01774-p0007] While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.\n[arxiv-2210-01117-p0010] The reduced loss landscape reveals three things: (1) Larger initializations lead to grokking.\nFalsification test: Vary forward by elucidating how distribution shifts and Larger initializations separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.93, novelty 0.62.\n\n43. Gains in grokking from develop some initial intuition on what may be offset by weight decay.\n[arxiv-2601-19791-p0019] To develop some initial intuition on what causes grokking, we state the aforementioned three stages of grokking in terms of the convergence rates of the training/generalization squared losses, in contrast to the format of our Theorem 4.2 which appears\n[arxiv-2502-01774-p0016] The authors also claim that weight decay cannot explain grokking.\nFalsification test: Measure grokking where both develop some initial intuition on what and weight decay vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.55, deductive relevance 0.93, novelty 0.60.\n\n44. geometry-prompting strategies and training partition may interact in their effect on grokking.\n[arxiv-2603-01968-p0008] • Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.\n[arxiv-2610-00620-p0022] A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.\nFalsification test: Vary geometry-prompting strategies and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.85, novelty 0.64.\n\n45. forward by elucidating how distribution shifts and training partition may interact in their effect on grokking.\n[arxiv-2502-01774-p0007] While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.\n[arxiv-2610-00620-p0022] A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.\nFalsification test: Vary forward by elucidating how distribution shifts and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.85, novelty 0.57.\n\n46. develop some initial intuition on what and training partition may interact in their effect on grokking.\n[arxiv-2601-19791-p0019] To develop some initial intuition on what causes grokking, we state the aforementioned three stages of grokking in terms of the convergence rates of the training/generalization squared losses, in contrast to the format of our Theorem 4.2 which appears\n[arxiv-2610-00620-p0022] A more precise statement is that grokking requires the training partition to carry sufficient effective information to recover the task.\nFalsification test: Vary develop some initial intuition on what and training partition separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.85, novelty 0.54.\n\n47. data and geometry-prompting strategies may jointly drive faster grokking, and their effects may compound.\n[arxiv-2306-13253-p0009] In general, more data leads to faster grokking (i.e.\n[arxiv-2603-01968-p0008] • Accelerating Grokking via Symmetry Alignment: Leveraging these insights, we show that symmetry- and geometry-prompting strategies can accelerate grokking, providing evidence for a causal role of symmetry alignment in generalization.\nFalsification test: Vary data and geometry-prompting strategies separately and together. The hypothesis fails if the joint change in faster grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.84, novelty 0.68.\n\n48. data and develop some initial intuition on what may jointly drive faster grokking, and their effects may compound.\n[arxiv-2306-13253-p0009] In general, more data leads to faster grokking (i.e.\n[arxiv-2601-19791-p0019] To develop some initial intuition on what causes grokking, we state the aforementioned three stages of grokking in terms of the convergence rates of the training/generalization squared losses, in contrast to the format of our Theorem 4.2 which appears\nFalsification test: Vary data and develop some initial intuition on what separately and together. The hypothesis fails if the joint change in faster grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.84, novelty 0.65.\n\n49. data and forward by elucidating how distribution shifts may jointly drive faster grokking, and their effects may compound.\n[arxiv-2306-13253-p0009] In general, more data leads to faster grokking (i.e.\n[arxiv-2502-01774-p0007] While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.\nFalsification test: Vary data and forward by elucidating how distribution shifts separately and together. The hypothesis fails if the joint change in faster grokking equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.84, novelty 0.62.\n\n50. learned activations may reduce benign overfitting through phenomenon.\n[arxiv-2503-10065-p0006] (4) For grokking tasks, new learned activations can eliminate the phenomenon, supporting the explanation as a mismatch between data and architectures.\n[arxiv-2502-12508-p0003] This phenomenon, known as benign overfitting (Bartlett et al., 2020), has altered our traditional understanding of statistical learning and garnered significant attention from both the statistical and machine learning communities (Belkin et al., 2018; 2019; 2020; Neyshabur et al., 2018; Hastie et al., 2020).\nFalsification test: Compare settings where learned activations differs while other inputs are matched. The hypothesis fails if benign overfitting does not fall with learned activations, or if fixing phenomenon removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.80, novelty 0.59.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

@@ -1,0 +1,2782 @@
+{
+ "prompt": "Frontier: implicit bias of gradient descent.",
+ "run": 3,
+ "wall_seconds": 5.07,
+ "python_peak_bytes": 36399064,
+ "answer_status": "hypotheses",
+ "routing": {
+  "schema": "flag-routing-contract-v1",
+  "executed_nodes": [],
+  "post_stages": [
+   "frontier_snapshot",
+   "frontier_generate",
+   "frontier_abductive",
+   "frontier_deductive",
+   "frontier_pre_thinker",
+   "frontier_rank"
+  ]
+ },
+ "frontier": {
+  "schema": "frontier-v1",
+  "triggered": true,
+  "topic": "implicit bias of gradient descent",
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "limits": {
+   "max_rounds": 1000,
+   "max_candidates": 200000,
+   "max_edges": 50000,
+   "max_bytes": 67108864,
+   "max_seconds": 20.0,
+   "batch_size": 256,
+   "max_path_edges": 2,
+   "max_results": 50,
+   "min_results": 10
+  },
+  "topic_terms": [
+   "implicit",
+   "bia",
+   "gradient",
+   "descent"
+  ],
+  "focus_terms": [
+   "implicit",
+   "bia",
+   "gradient",
+   "descent"
+  ],
+  "chunk_count": 1652,
+  "status": "hypotheses",
+  "hypotheses": [
+   {
+    "id": "132d0c5173f1",
+    "text": "gradient descent initialized at zero and Noisy-SGD may jointly drive minimum norm interpolating solution, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "gradient descent initialized at zero",
+     "Noisy-SGD",
+     "minimum norm interpolating solution"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2410-16201-p0013",
+     "arxiv-2402-08344-p0029"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2410-16201-p0013",
+      "quote": "in the ridgeless case), the implicit bias of (stochastic) gradient descent initialized at zero leads to the minimum norm interpolating solution θ(LN) W = 1√ D (Φ)⊤ 1 D · ΦΦ⊤−1 y.",
+      "start": 43,
+      "end": 221,
+      "chunk_sha256": "29247ac49a1ce9f8da4a61a2ad9b1a1aca7f449c4ab8ca4e8d6cb799043c848a",
+      "relation": "causes",
+      "subject": "gradient descent initialized at zero",
+      "object": "minimum norm interpolating solution",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2402-08344-p0029",
+      "quote": "However, in Figure 3, we show that Noisy-SGD still leads to sparser solutions than SGD.",
+      "start": 210,
+      "end": 297,
+      "chunk_sha256": "b8030cf144c5d74fd3807c602329df96772ccd8f2d926b1146e3a183e001a5a1",
+      "relation": "causes",
+      "subject": "Noisy-SGD",
+      "object": "sparser solutions",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.74,
+     "novelty": 0.542
+    },
+    "falsification_test": "Vary gradient descent initialized at zero and Noisy-SGD separately and together. The hypothesis fails if the joint change in minimum norm interpolating solution equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "e60e5b33a9d7",
+    "text": "gradient descent initialized at zero and SGD may jointly drive minimum norm interpolating solution, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "gradient descent initialized at zero",
+     "SGD",
+     "minimum norm interpolating solution"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2410-16201-p0013",
+     "arxiv-2402-08344-p0014"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2410-16201-p0013",
+      "quote": "in the ridgeless case), the implicit bias of (stochastic) gradient descent initialized at zero leads to the minimum norm interpolating solution θ(LN) W = 1√ D (Φ)⊤ 1 D · ΦΦ⊤−1 y.",
+      "start": 43,
+      "end": 221,
+      "chunk_sha256": "29247ac49a1ce9f8da4a61a2ad9b1a1aca7f449c4ab8ca4e8d6cb799043c848a",
+      "relation": "causes",
+      "subject": "gradient descent initialized at zero",
+      "object": "minimum norm interpolating solution",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2402-08344-p0014",
+      "quote": "Thus, SGD leads to sparser solutions than GD, which is a proof of the implicit bias of SGD for DLNs.",
+      "start": 0,
+      "end": 100,
+      "chunk_sha256": "8ec8baf1d0641e0db43f5001490e7de249114ce8cfd56aa8bf3e38964dbe9454",
+      "relation": "causes",
+      "subject": "SGD",
+      "object": "sparser solutions",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.74,
+     "novelty": 0.542
+    },
+    "falsification_test": "Vary gradient descent initialized at zero and SGD separately and together. The hypothesis fails if the joint change in minimum norm interpolating solution equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "6502a7704336",
+    "text": "circular structure of the embedding layer and implicit bias of SGD may jointly drive network, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "circular structure of the embedding layer",
+     "implicit bias of SGD",
+     "network"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2511-01938-p0003",
+     "arxiv-2407-03848-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2511-01938-p0003",
+      "quote": "The circular structure of the embedding layer enables the network to perform a symmetric algorithm that generalizes perfectly to unseen data.",
+      "start": 1425,
+      "end": 1566,
+      "chunk_sha256": "78793fa8332d61d2a2fca67621d9ebde6d953f1f912c1e3a876d6ca6fca960b2",
+      "relation": "increases",
+      "subject": "circular structure of the embedding layer",
+      "object": "network",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0006",
+      "quote": "In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,",
+      "start": 184,
+      "end": 348,
+      "chunk_sha256": "4a8e743f61ed0a159a79c1f8230406e469459ca4dd1c1ad106aa74f86092da96",
+      "relation": "causes",
+      "subject": "implicit bias of SGD",
+      "object": "networks",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.675,
+     "novelty": 0.642
+    },
+    "falsification_test": "Vary circular structure of the embedding layer and implicit bias of SGD separately and together. The hypothesis fails if the joint change in network equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "3a6b79a62b14",
+    "text": "gradient descent initialized at zero may affect phase transition occurs through minimum norm interpolating solution (read as gradient flow solution).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "gradient descent initialized at zero",
+     "phase transition occurs"
+    ],
+    "via": [
+     "minimum norm interpolating solution (read as gradient flow solution)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2410-16201-p0013",
+     "arxiv-2505-21423-p0017"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2410-16201-p0013",
+      "quote": "in the ridgeless case), the implicit bias of (stochastic) gradient descent initialized at zero leads to the minimum norm interpolating solution θ(LN) W = 1√ D (Φ)⊤ 1 D · ΦΦ⊤−1 y.",
+      "start": 43,
+      "end": 221,
+      "chunk_sha256": "29247ac49a1ce9f8da4a61a2ad9b1a1aca7f449c4ab8ca4e8d6cb799043c848a",
+      "relation": "causes",
+      "subject": "gradient descent initialized at zero",
+      "object": "minimum norm interpolating solution",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2505-21423-p0017",
+      "quote": "For GD trained until loss ε the critical learning rate at which this phase transition occurs depends on the gradient flow solution and is approximately given by ηc := 2/sε GF.",
+      "start": 591,
+      "end": 766,
+      "chunk_sha256": "1baf27c4cbbeb067b698fa3266289eac0cad072e42038685506026561c05dc2a",
+      "relation": "constrains",
+      "subject": "gradient flow solution",
+      "object": "phase transition occurs",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.68,
+     "novelty": 0.583
+    },
+    "falsification_test": "Compare settings where gradient descent initialized at zero differs while other inputs are matched. The hypothesis fails if phase transition occurs does not change with gradient descent initialized at zero, or if fixing minimum norm interpolating solution (read as gradient flow solution) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "d5544f8d75d1",
+    "text": "following observation and particular structure of the Gram matrix may jointly constrain analysis, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "following observation",
+     "particular structure of the Gram matrix",
+     "analysis"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1810-02054-p0002",
+     "arxiv-1811-03804-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1810-02054-p0002",
+      "quote": "Our analysis relies on the following observation: over-parameterization and random initialization jointly restrict every weight vector to be close to its initialization for all iterations, which allows us to exploit a strong convexity-like property to show that gradient descent converges at a global linear rate to the global optimum.",
+      "start": 625,
+      "end": 960,
+      "chunk_sha256": "758b0392951fe84f3281846efd9032557e440df3d6ab940e59bb341871d6f429",
+      "relation": "constrains",
+      "subject": "following observation",
+      "object": "analysis",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-1811-03804-p0002",
+      "quote": "Our analysis relies on the particular structure of the Gram matrix induced by the neural network architecture.",
+      "start": 292,
+      "end": 402,
+      "chunk_sha256": "0ff2c678e777737058a746665105bb193fad59c620debd3c822f55cab8f426e9",
+      "relation": "constrains",
+      "subject": "particular structure of the Gram matrix",
+      "object": "analysis",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.6,
+     "novelty": 0.658
+    },
+    "falsification_test": "Relieve following observation alone while measuring analysis. The hypothesis fails if analysis keeps improving without particular structure of the Gram matrix becoming the binding limit, or if relieving particular structure of the Gram matrix alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "dcfbde5cda8f",
+    "text": "loss and training objective may jointly constrain non-monotonically, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "loss",
+     "training objective",
+     "non-monotonically"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2505-21423-p0006",
+     "arxiv-2103-00065-p0018"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2505-21423-p0006",
+      "quote": "In this phase, the loss decreases non-monotonically and faster than when using adaptive learning rates that stay in the stable regime ηk < 2/SL(θk).",
+      "start": 153,
+      "end": 301,
+      "chunk_sha256": "c5ff643c8c0510151823ac557c12427cff59862bf7b81c1df31a6dde567cdfd3",
+      "relation": "decreases",
+      "subject": "loss",
+      "object": "non-monotonically",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2103-00065-p0018",
+      "quote": "(2018) observed that full-batch gradient descent eventually enters a regime (the Edge of Stability) where the training objective decreases non-monotonically, and the iterates bounce back and forth between “valley walls”; Jastrz ̨ebski et al.",
+      "start": 12,
+      "end": 253,
+      "chunk_sha256": "96bd946247e2e21b65ade05098900e84fa2216b7651f312d266dc1cde587fc8d",
+      "relation": "decreases",
+      "subject": "training objective",
+      "object": "non-monotonically",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.6,
+     "novelty": 0.65
+    },
+    "falsification_test": "Relieve loss alone while measuring non-monotonically. The hypothesis fails if non-monotonically keeps improving without training objective becoming the binding limit, or if relieving training objective alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "47a9c2f2a078",
+    "text": "implicit bias of SGD may affect degree of sharpening through networks.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "implicit bias of SGD",
+     "degree of sharpening"
+    ],
+    "via": [
+     "networks"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-03848-p0006",
+     "arxiv-2103-00065-p0012"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-03848-p0006",
+      "quote": "In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,",
+      "start": 184,
+      "end": 348,
+      "chunk_sha256": "4a8e743f61ed0a159a79c1f8230406e469459ca4dd1c1ad106aa74f86092da96",
+      "relation": "causes",
+      "subject": "implicit bias of SGD",
+      "object": "networks",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2103-00065-p0012",
+      "quote": "While the degree of sharpening depends on both the network and the task, our experiments in §4 demonstrate that progressive sharpening occurs to a dramatic degree for standard architectures on the standard dataset CIFAR-10.",
+      "start": 2771,
+      "end": 2994,
+      "chunk_sha256": "0b2f8c5e798d123aec0284910f0190fe079c4b4e803b95877780320c3227c1ea",
+      "relation": "constrains",
+      "subject": "network",
+      "object": "degree of sharpening",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.6,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where implicit bias of SGD differs while other inputs are matched. The hypothesis fails if degree of sharpening does not change with implicit bias of SGD, or if fixing networks removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "1c70f89cff08",
+    "text": "implicit bias of SGD and simple features may interact in their effect on networks.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "implicit bias of SGD",
+     "simple features",
+     "networks"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-03848-p0006",
+     "arxiv-2311-02622-p0018"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-03848-p0006",
+      "quote": "In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,",
+      "start": 184,
+      "end": 348,
+      "chunk_sha256": "4a8e743f61ed0a159a79c1f8230406e469459ca4dd1c1ad106aa74f86092da96",
+      "relation": "causes",
+      "subject": "implicit bias of SGD",
+      "object": "networks",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2311-02622-p0018",
+      "quote": "HIERARCHICAL SIMPLICITY BIAS OF NEURAL NETWORKS ues illustrate that networks predominantly depend on simple features and largely ignore complex features.",
+      "start": 0,
+      "end": 153,
+      "chunk_sha256": "efc86c55aadda4faf867a0a8e794846241c10abb4eb7b92f5b35cc323d82b0e6",
+      "relation": "constrains",
+      "subject": "simple features",
+      "object": "networks",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.6,
+     "novelty": 0.55
+    },
+    "falsification_test": "Vary implicit bias of SGD and simple features separately and together. The hypothesis fails if the joint change in networks equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "fa17a0908dd6",
+    "text": "simple features may constrain degree of sharpening through networks.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "simple features",
+     "degree of sharpening"
+    ],
+    "via": [
+     "networks"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2311-02622-p0018",
+     "arxiv-2103-00065-p0012"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2311-02622-p0018",
+      "quote": "HIERARCHICAL SIMPLICITY BIAS OF NEURAL NETWORKS ues illustrate that networks predominantly depend on simple features and largely ignore complex features.",
+      "start": 0,
+      "end": 153,
+      "chunk_sha256": "efc86c55aadda4faf867a0a8e794846241c10abb4eb7b92f5b35cc323d82b0e6",
+      "relation": "constrains",
+      "subject": "simple features",
+      "object": "networks",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2103-00065-p0012",
+      "quote": "While the degree of sharpening depends on both the network and the task, our experiments in §4 demonstrate that progressive sharpening occurs to a dramatic degree for standard architectures on the standard dataset CIFAR-10.",
+      "start": 2771,
+      "end": 2994,
+      "chunk_sha256": "0b2f8c5e798d123aec0284910f0190fe079c4b4e803b95877780320c3227c1ea",
+      "relation": "constrains",
+      "subject": "network",
+      "object": "degree of sharpening",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.575,
+     "novelty": 0.636
+    },
+    "falsification_test": "Compare settings where simple features differs while other inputs are matched. The hypothesis fails if degree of sharpening does not stay bounded with simple features, or if fixing networks removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT"
+   },
+   {
+    "id": "15d8a515ac4b",
+    "text": "why deep networks generalize well and gap between weak double descent peaks may stand or fall together because both rest on intrinsic simplicity bias helps.",
+    "pattern": "divergent",
+    "relation": "common_ground",
+    "anchors": [
+     "why deep networks generalize well",
+     "gap between weak double descent peaks",
+     "intrinsic simplicity bias helps"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1805-08522-p0002",
+     "arxiv-2312-03951-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1805-08522-p0002",
+      "quote": "As the target functions in many real problems are expected to be highly structured, this intrinsic simplicity bias helps explain why deep networks generalize well on real world problems.",
+      "start": 882,
+      "end": 1068,
+      "chunk_sha256": "a6c01e14cc377398f1170e8de4fc9ac1e0dcf0b0d14043881813ee8d917e8cbe",
+      "relation": "supports",
+      "subject": "intrinsic simplicity bias helps",
+      "object": "why deep networks generalize well",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2312-03951-p0003",
+      "quote": "Additionally, our results help explain the gap between weak double descent peaks in practice and strong peaks observable in carefully designed setups.",
+      "start": 1614,
+      "end": 1764,
+      "chunk_sha256": "b3082103f8bef6c7776b143a6e39760963f10fa11bf789d6473e1e72a8c2b0bb",
+      "relation": "supports",
+      "subject": "results help",
+      "object": "gap between weak double descent peaks",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.57,
+     "novelty": 0.628
+    },
+    "falsification_test": "Find a position that keeps why deep networks generalize well and rejects gap between weak double descent peaks, or the reverse, without giving up intrinsic simplicity bias helps. The hypothesis fails if such a position is coherent.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "b351d920fac6",
+    "text": "considerations may support held view through experiments.",
+    "pattern": "chain",
+    "relation": "supports",
+    "anchors": [
+     "considerations",
+     "held view"
+    ],
+    "via": [
+     "experiments"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2610-16161-p0005",
+     "arxiv-1609-04836-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2610-16161-p0005",
+      "quote": "These considerations motivate our experiments.",
+      "start": 897,
+      "end": 943,
+      "chunk_sha256": "7e3a32125ba9b8e97ca8b1341836b7cab015facceefb300c3941206a55683d8f",
+      "relation": "supports",
+      "subject": "considerations",
+      "object": "experiments",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-1609-04836-p0002",
+      "quote": "In contrast, small-batch methods consistently converge to flat minimizers, and our experiments support a commonly held view that this is due to the inherent noise in the gradient estimation.",
+      "start": 744,
+      "end": 934,
+      "chunk_sha256": "ef7ccebc28948a765a064c2776c526c6b129aa18db9f9fa2ce344402ed924e2e",
+      "relation": "supports",
+      "subject": "experiments",
+      "object": "held view",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.575,
+     "novelty": 0.517
+    },
+    "falsification_test": "Construct a coherent case where considerations is accepted. The hypothesis fails if held view still fails in that case, or if the argument does not need experiments.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "aa1c5cc0742b",
+    "text": "SGD may affect phase transition occurs through sparser solutions (read as gradient flow solution).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "SGD",
+     "phase transition occurs"
+    ],
+    "via": [
+     "sparser solutions (read as gradient flow solution)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-08344-p0014",
+     "arxiv-2505-21423-p0017"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-08344-p0014",
+      "quote": "Thus, SGD leads to sparser solutions than GD, which is a proof of the implicit bias of SGD for DLNs.",
+      "start": 0,
+      "end": 100,
+      "chunk_sha256": "8ec8baf1d0641e0db43f5001490e7de249114ce8cfd56aa8bf3e38964dbe9454",
+      "relation": "causes",
+      "subject": "SGD",
+      "object": "sparser solutions",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2505-21423-p0017",
+      "quote": "For GD trained until loss ε the critical learning rate at which this phase transition occurs depends on the gradient flow solution and is approximately given by ηc := 2/sε GF.",
+      "start": 591,
+      "end": 766,
+      "chunk_sha256": "1baf27c4cbbeb067b698fa3266289eac0cad072e42038685506026561c05dc2a",
+      "relation": "constrains",
+      "subject": "gradient flow solution",
+      "object": "phase transition occurs",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.555,
+     "novelty": 0.527
+    },
+    "falsification_test": "Compare settings where SGD differs while other inputs are matched. The hypothesis fails if phase transition occurs does not change with SGD, or if fixing sparser solutions (read as gradient flow solution) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "fac31f47df9a",
+    "text": "flatter minima and sparser solutions may move together because both depend on SGD.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "flatter minima",
+     "sparser solutions",
+     "SGD"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1805-08522-p0004",
+     "arxiv-2402-08344-p0014"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1805-08522-p0004",
+      "quote": "(2018) for a similar correlation over a much smaller range, but with evidence that SGD leads to slightly flatter minima than simple GD does).",
+      "start": 4604,
+      "end": 4745,
+      "chunk_sha256": "17504e29aaee731c7fde33018e81e87bdef20178faf9107036a796f15d99b441",
+      "relation": "causes",
+      "subject": "SGD",
+      "object": "flatter minima",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2402-08344-p0014",
+      "quote": "Thus, SGD leads to sparser solutions than GD, which is a proof of the implicit bias of SGD for DLNs.",
+      "start": 0,
+      "end": 100,
+      "chunk_sha256": "8ec8baf1d0641e0db43f5001490e7de249114ce8cfd56aa8bf3e38964dbe9454",
+      "relation": "causes",
+      "subject": "SGD",
+      "object": "sparser solutions",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.55,
+     "novelty": 0.683
+    },
+    "falsification_test": "Track flatter minima and sparser solutions across periods where SGD changes and where it does not. The hypothesis fails if they co-vary just as strongly when SGD is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "7513a2a6ea75",
+    "text": "Understanding learning in this overparameterized regime and how simplicity bias governs feature selection may move together because both depend on theory.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "Understanding learning in this overparameterized regime",
+     "how simplicity bias governs feature selection",
+     "theory"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2109-02355-p0002",
+     "arxiv-2603-25839-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2109-02355-p0002",
+      "quote": "Understanding learning in this overparameterized regime required new theory and foundational empirical studies, even for the simplest case of the linear model.",
+      "start": 899,
+      "end": 1058,
+      "chunk_sha256": "773b8fe4726eee9f7fc5d2bc7a5fad46a1496e06f06bb22b8ee2564ca510a423",
+      "relation": "constrains",
+      "subject": "theory",
+      "object": "Understanding learning in this overparameterized regime",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2603-25839-p0003",
+      "quote": "Our theory explains how simplicity bias governs feature selection in neural networks through a fundamental trade-off between model complexity (the cost of describing the hypothesis) and predictive power (the cost of describing the data).",
+      "start": 320,
+      "end": 557,
+      "chunk_sha256": "0d290c4610332ede016755d57ef1beed5e16b1b0e5e28e50b6c4515d7c1a7f0e",
+      "relation": "supports",
+      "subject": "theory",
+      "object": "how simplicity bias governs feature selection",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.525,
+     "novelty": 0.636
+    },
+    "falsification_test": "Track Understanding learning in this overparameterized regime and how simplicity bias governs feature selection across periods where theory changes and where it does not. The hypothesis fails if they co-vary just as strongly when theory is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "acb9e16b0559",
+    "text": "implicit bias of SGD and simple features xs for prediction may interact in their effect on networks.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "implicit bias of SGD",
+     "simple features xs for prediction",
+     "networks"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-03848-p0006",
+     "arxiv-2311-02622-p0007"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-03848-p0006",
+      "quote": "In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,",
+      "start": 184,
+      "end": 348,
+      "chunk_sha256": "4a8e743f61ed0a159a79c1f8230406e469459ca4dd1c1ad106aa74f86092da96",
+      "relation": "causes",
+      "subject": "implicit bias of SGD",
+      "object": "networks",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2311-02622-p0007",
+      "quote": "Due to simplicity bias, the network only depends on the simple features xs for prediction.",
+      "start": 147,
+      "end": 237,
+      "chunk_sha256": "c70a5585bf393eaa8bcda11d31eac4d482c4f642219231117b049becbda2a264",
+      "relation": "constrains",
+      "subject": "simple features xs for prediction",
+      "object": "network only",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.53,
+     "novelty": 0.572
+    },
+    "falsification_test": "Vary implicit bias of SGD and simple features xs for prediction separately and together. The hypothesis fails if the joint change in networks equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "0b4804ff2f27",
+    "text": "why DNNs generalize and gap between weak double descent peaks may stand or fall together because both rest on result from PAC-Bayes theory to help.",
+    "pattern": "divergent",
+    "relation": "common_ground",
+    "anchors": [
+     "why DNNs generalize",
+     "gap between weak double descent peaks",
+     "result from PAC-Bayes theory to help"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1805-08522-p0005",
+     "arxiv-2312-03951-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1805-08522-p0005",
+      "quote": "This bias allows us to apply a classical result from PAC-Bayes theory to help explain why DNNs generalize so well.",
+      "start": 568,
+      "end": 682,
+      "chunk_sha256": "1c6feaa9c6f0c8b29fd27adbc55d17dfbcf13b93e820f1cfe140c15df957640a",
+      "relation": "supports",
+      "subject": "result from PAC-Bayes theory to help",
+      "object": "why DNNs generalize",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2312-03951-p0003",
+      "quote": "Additionally, our results help explain the gap between weak double descent peaks in practice and strong peaks observable in carefully designed setups.",
+      "start": 1614,
+      "end": 1764,
+      "chunk_sha256": "b3082103f8bef6c7776b143a6e39760963f10fa11bf789d6473e1e72a8c2b0bb",
+      "relation": "supports",
+      "subject": "results help",
+      "object": "gap between weak double descent peaks",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.52,
+     "novelty": 0.631
+    },
+    "falsification_test": "Find a position that keeps why DNNs generalize and rejects gap between weak double descent peaks, or the reverse, without giving up result from PAC-Bayes theory to help. The hypothesis fails if such a position is coherent.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "8cc51a15d75f",
+    "text": "F-Principle may affect networks through implicit bias (read as implicit bias of SGD).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "F-Principle",
+     "networks"
+    ],
+    "via": [
+     "implicit bias (read as implicit bias of SGD)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1901-06523-p0002",
+     "arxiv-2407-03848-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1901-06523-p0002",
+      "quote": "The F-Principle implies an implicit bias that DNNs tend to fit training data by a low-frequency function.",
+      "start": 687,
+      "end": 792,
+      "chunk_sha256": "2f7051ea504b1dc0b6fd271de43eeaf38a9f32108de4cc117b24caa28e3d93ac",
+      "relation": "supports",
+      "subject": "F-Principle",
+      "object": "implicit bias",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0006",
+      "quote": "In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,",
+      "start": 184,
+      "end": 348,
+      "chunk_sha256": "4a8e743f61ed0a159a79c1f8230406e469459ca4dd1c1ad106aa74f86092da96",
+      "relation": "causes",
+      "subject": "implicit bias of SGD",
+      "object": "networks",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.49,
+     "novelty": 0.5
+    },
+    "falsification_test": "Compare settings where F-Principle differs while other inputs are matched. The hypothesis fails if networks does not change with F-Principle, or if fixing implicit bias (read as implicit bias of SGD) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "456904c164b6",
+    "text": "noise above a certain threshold and understanding the whole trajectory of learning may jointly constrain P3 Epochwise double descent, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "noise above a certain threshold",
+     "understanding the whole trajectory of learning",
+     "P3 Epochwise double descent"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2108-12006-p0016",
+     "arxiv-2407-09845-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2108-12006-p0016",
+      "quote": "P3 Epochwise double descent requires noise above a certain threshold to occur.",
+      "start": 72,
+      "end": 150,
+      "chunk_sha256": "dbf1d20eae39d5b4fa9e520969cbade82efdab4589a936f48810df6297323027",
+      "relation": "constrains",
+      "subject": "noise above a certain threshold",
+      "object": "P3 Epochwise double descent",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2407-09845-p0004",
+      "quote": "Meanwhile, epoch-wise double descent requires understanding the whole trajectory of learning.",
+      "start": 732,
+      "end": 825,
+      "chunk_sha256": "61a60ac66480286f24d49471eb73c280d7a43e5cd7311877b0f6105748747c79",
+      "relation": "constrains",
+      "subject": "understanding the whole trajectory of learning",
+      "object": "epoch-wise double descent",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.485,
+     "novelty": 0.644
+    },
+    "falsification_test": "Relieve noise above a certain threshold alone while measuring P3 Epochwise double descent. The hypothesis fails if P3 Epochwise double descent keeps improving without understanding the whole trajectory of learning becoming the binding limit, or if relieving understanding the whole trajectory of learning alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "48a8204e5b23",
+    "text": "simple features xs for prediction may constrain degree of sharpening through network only (read as network).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "simple features xs for prediction",
+     "degree of sharpening"
+    ],
+    "via": [
+     "network only (read as network)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2311-02622-p0007",
+     "arxiv-2103-00065-p0012"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2311-02622-p0007",
+      "quote": "Due to simplicity bias, the network only depends on the simple features xs for prediction.",
+      "start": 147,
+      "end": 237,
+      "chunk_sha256": "c70a5585bf393eaa8bcda11d31eac4d482c4f642219231117b049becbda2a264",
+      "relation": "constrains",
+      "subject": "simple features xs for prediction",
+      "object": "network only",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2103-00065-p0012",
+      "quote": "While the degree of sharpening depends on both the network and the task, our experiments in §4 demonstrate that progressive sharpening occurs to a dramatic degree for standard architectures on the standard dataset CIFAR-10.",
+      "start": 2771,
+      "end": 2994,
+      "chunk_sha256": "0b2f8c5e798d123aec0284910f0190fe079c4b4e803b95877780320c3227c1ea",
+      "relation": "constrains",
+      "subject": "network",
+      "object": "degree of sharpening",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.475,
+     "novelty": 0.628
+    },
+    "falsification_test": "Compare settings where simple features xs for prediction differs while other inputs are matched. The hypothesis fails if degree of sharpening does not stay bounded with simple features xs for prediction, or if fixing network only (read as network) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT"
+   },
+   {
+    "id": "f797c02b6ee3",
+    "text": "circular structure of the embedding layer and simple features may interact in their effect on network.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "circular structure of the embedding layer",
+     "simple features",
+     "network"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2511-01938-p0003",
+     "arxiv-2311-02622-p0018"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2511-01938-p0003",
+      "quote": "The circular structure of the embedding layer enables the network to perform a symmetric algorithm that generalizes perfectly to unseen data.",
+      "start": 1425,
+      "end": 1566,
+      "chunk_sha256": "78793fa8332d61d2a2fca67621d9ebde6d953f1f912c1e3a876d6ca6fca960b2",
+      "relation": "increases",
+      "subject": "circular structure of the embedding layer",
+      "object": "network",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2311-02622-p0018",
+      "quote": "HIERARCHICAL SIMPLICITY BIAS OF NEURAL NETWORKS ues illustrate that networks predominantly depend on simple features and largely ignore complex features.",
+      "start": 0,
+      "end": 153,
+      "chunk_sha256": "efc86c55aadda4faf867a0a8e794846241c10abb4eb7b92f5b35cc323d82b0e6",
+      "relation": "constrains",
+      "subject": "simple features",
+      "object": "networks",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.425,
+     "novelty": 0.572
+    },
+    "falsification_test": "Vary circular structure of the embedding layer and simple features separately and together. The hypothesis fails if the joint change in network equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "1b1bbe20e911",
+    "text": "property of Adam and reveals how ResMem algorithm may jointly drive superior generalization, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "property of Adam",
+     "reveals how ResMem algorithm",
+     "superior generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2505-24022-p0003",
+     "arxiv-2302-01576-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2505-24022-p0003",
+      "quote": "Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.",
+      "start": 1099,
+      "end": 1428,
+      "chunk_sha256": "4b39f810d9ba864b87735252bb1cc245208264c582fc6343ac00fefb2d0a2d9c",
+      "relation": "causes",
+      "subject": "property of Adam",
+      "object": "superior generalization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2302-01576-p0016",
+      "quote": "3.3 A decomposition of the prediction error We now introduce a decomposition of the prediction risk that reveals how ResMem algorithm boosts generalization.",
+      "start": 290,
+      "end": 446,
+      "chunk_sha256": "d17c6e22d4f712a50f1500957846a096e469a8043d5329c3932fcc145fd01f45",
+      "relation": "increases",
+      "subject": "reveals how ResMem algorithm",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.415,
+     "novelty": 0.668
+    },
+    "falsification_test": "Vary property of Adam and reveals how ResMem algorithm separately and together. The hypothesis fails if the joint change in superior generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "f95c81d7c756",
+    "text": "property of Adam and Riemannian Flatness may jointly drive superior generalization, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "property of Adam",
+     "Riemannian Flatness",
+     "superior generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2505-24022-p0003",
+     "arxiv-2606-20469-p0031"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2505-24022-p0003",
+      "quote": "Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.",
+      "start": 1099,
+      "end": 1428,
+      "chunk_sha256": "4b39f810d9ba864b87735252bb1cc245208264c582fc6343ac00fefb2d0a2d9c",
+      "relation": "causes",
+      "subject": "property of Adam",
+      "object": "superior generalization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2606-20469-p0031",
+      "quote": "4.5 Corollary 2: Generalization Bound via PAC-Bayes Corollary 2 (Riemannian Flatness Implies Generalization).",
+      "start": 586,
+      "end": 695,
+      "chunk_sha256": "d0024af841e4588bcb5e1e8d470feaf0f626e7e7f85862edfec7d57a1bea866b",
+      "relation": "supports",
+      "subject": "Riemannian Flatness",
+      "object": "Generalization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.415,
+     "novelty": 0.65
+    },
+    "falsification_test": "Vary property of Adam and Riemannian Flatness separately and together. The hypothesis fails if the joint change in superior generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "996224ab3a93",
+    "text": "property of Adam and structured representation of input embeddings may jointly drive superior generalization, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "property of Adam",
+     "structured representation of input embeddings",
+     "superior generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2505-24022-p0003",
+     "arxiv-2205-10343-p0012"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2505-24022-p0003",
+      "quote": "Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.",
+      "start": 1099,
+      "end": 1428,
+      "chunk_sha256": "4b39f810d9ba864b87735252bb1cc245208264c582fc6343ac00fefb2d0a2d9c",
+      "relation": "causes",
+      "subject": "property of Adam",
+      "object": "superior generalization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2205-10343-p0012",
+      "quote": "In Figure 3, we see that the predicted ˆAcc aligns well with the true accuracy Acc, establishing good evidence that structured representation of input embeddings leads to generalization.",
+      "start": 170,
+      "end": 356,
+      "chunk_sha256": "547f96597612ffd85fa78cb5ac8d9be686b18963acf20a19db65cac9516de105",
+      "relation": "causes",
+      "subject": "structured representation of input embeddings",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.415,
+     "novelty": 0.642
+    },
+    "falsification_test": "Vary property of Adam and structured representation of input embeddings separately and together. The hypothesis fails if the joint change in superior generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "b460c206050b",
+    "text": "Intrinsic Task Symmetry and property of Adam may jointly drive Generalization, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "Intrinsic Task Symmetry",
+     "property of Adam",
+     "Generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-01968-p0001",
+     "arxiv-2603-01968-p0006",
+     "arxiv-2603-01968-p0007",
+     "arxiv-2505-24022-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-01968-p0001",
+      "quote": "# Intrinsic Task Symmetry Drives Generalization in Algorithmic Tasks",
+      "start": 0,
+      "end": 68,
+      "chunk_sha256": "40fb7bb3cedfdefd6102a79547462577beed5c704b1c6b6cc1b89de4865ab8dc",
+      "relation": "increases",
+      "subject": "Intrinsic Task Symmetry",
+      "object": "Generalization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2603-01968-p0006",
+      "quote": "• Intrinsic Task Symmetry Drives Generalization: We establish intrinsic task symmetries as the primary driver of generalization in algorithmic tasks, and empirically investigate this mechanism across three domains: algebraic (modular arithmetic), structural (graph metric completion), and relational (comparison).",
+      "start": 0,
+      "end": 313,
+      "chunk_sha256": "f3849df777deca7511b0edad73e314943e98d7074803a1634e540ebf457997cd",
+      "relation": "increases",
+      "subject": "Intrinsic Task Symmetry",
+      "object": "Generalization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2603-01968-p0007",
+      "quote": "Intrinsic Task Symmetry Drives Generalization in Algorithmic Tasks Figure 1.",
+      "start": 0,
+      "end": 76,
+      "chunk_sha256": "4cacb7f79f2092ab756fd7f64929e43d50b2a9cd76e15cdbea8fc83375ab1d3d",
+      "relation": "increases",
+      "subject": "Intrinsic Task Symmetry",
+      "object": "Generalization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2505-24022-p0003",
+      "quote": "Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.",
+      "start": 1099,
+      "end": 1428,
+      "chunk_sha256": "4b39f810d9ba864b87735252bb1cc245208264c582fc6343ac00fefb2d0a2d9c",
+      "relation": "causes",
+      "subject": "property of Adam",
+      "object": "superior generalization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.415,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary Intrinsic Task Symmetry and property of Adam separately and together. The hypothesis fails if the joint change in Generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "edace36ee353",
+    "text": "better understand how individual data samples and property of Adam may jointly drive generalization, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "better understand how individual data samples",
+     "property of Adam",
+     "generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2610-16161-p0026",
+     "arxiv-2505-24022-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2610-16161-p0026",
+      "quote": "4 Contributions of Individual Samples 4.1 Sample Contributions to the Eigenspectrum To better understand how individual data samples contribute to generalization and the structure of the Fisher information, we examine the participation ratios associated with individual samples in the eigenspectrum of the (layerwise) Fisher.",
+      "start": 0,
+      "end": 325,
+      "chunk_sha256": "bb3eb539fd8fac2f7ea7b73cd710c0f0f87907985566f3d33556df9fafdc9f75",
+      "relation": "causes",
+      "subject": "better understand how individual data samples",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2505-24022-p0003",
+      "quote": "Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.",
+      "start": 1099,
+      "end": 1428,
+      "chunk_sha256": "4b39f810d9ba864b87735252bb1cc245208264c582fc6343ac00fefb2d0a2d9c",
+      "relation": "causes",
+      "subject": "property of Adam",
+      "object": "superior generalization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.415,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary better understand how individual data samples and property of Adam separately and together. The hypothesis fails if the joint change in generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "f3321506fdea",
+    "text": "Noisy-SGD may affect phase transition occurs through sparser solutions (read as gradient flow solution).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "Noisy-SGD",
+     "phase transition occurs"
+    ],
+    "via": [
+     "sparser solutions (read as gradient flow solution)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-08344-p0029",
+     "arxiv-2505-21423-p0017"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-08344-p0029",
+      "quote": "However, in Figure 3, we show that Noisy-SGD still leads to sparser solutions than SGD.",
+      "start": 210,
+      "end": 297,
+      "chunk_sha256": "b8030cf144c5d74fd3807c602329df96772ccd8f2d926b1146e3a183e001a5a1",
+      "relation": "causes",
+      "subject": "Noisy-SGD",
+      "object": "sparser solutions",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2505-21423-p0017",
+      "quote": "For GD trained until loss ε the critical learning rate at which this phase transition occurs depends on the gradient flow solution and is approximately given by ηc := 2/sε GF.",
+      "start": 591,
+      "end": 766,
+      "chunk_sha256": "1baf27c4cbbeb067b698fa3266289eac0cad072e42038685506026561c05dc2a",
+      "relation": "constrains",
+      "subject": "gradient flow solution",
+      "object": "phase transition occurs",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.405,
+     "novelty": 0.577
+    },
+    "falsification_test": "Compare settings where Noisy-SGD differs while other inputs are matched. The hypothesis fails if phase transition occurs does not change with Noisy-SGD, or if fixing sparser solutions (read as gradient flow solution) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "bc9b61316745",
+    "text": "Gains in superior generalization from property of Adam may be offset by Q3.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "property of Adam",
+     "Q3",
+     "superior generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2505-24022-p0003",
+     "arxiv-2205-10343-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2505-24022-p0003",
+      "quote": "Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.",
+      "start": 1099,
+      "end": 1428,
+      "chunk_sha256": "4b39f810d9ba864b87735252bb1cc245208264c582fc6343ac00fefb2d0a2d9c",
+      "relation": "causes",
+      "subject": "property of Adam",
+      "object": "superior generalization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2205-10343-p0004",
+      "quote": "Q3 Delayed generalization: Under what conditions does delayed generalization occur?",
+      "start": 835,
+      "end": 918,
+      "chunk_sha256": "230510a79f3131c5d0c853fdc09f8ef51d39cd3904c0542f962198e99bf7f1c5",
+      "relation": "decreases",
+      "subject": "Q3",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.415,
+     "novelty": 0.564
+    },
+    "falsification_test": "Measure superior generalization where both property of Adam and Q3 vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "0e2a3cb85865",
+    "text": "circular structure of the embedding layer and simple features xs for prediction may interact in their effect on network.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "circular structure of the embedding layer",
+     "simple features xs for prediction",
+     "network"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2511-01938-p0003",
+     "arxiv-2311-02622-p0007"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2511-01938-p0003",
+      "quote": "The circular structure of the embedding layer enables the network to perform a symmetric algorithm that generalizes perfectly to unseen data.",
+      "start": 1425,
+      "end": 1566,
+      "chunk_sha256": "78793fa8332d61d2a2fca67621d9ebde6d953f1f912c1e3a876d6ca6fca960b2",
+      "relation": "increases",
+      "subject": "circular structure of the embedding layer",
+      "object": "network",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2311-02622-p0007",
+      "quote": "Due to simplicity bias, the network only depends on the simple features xs for prediction.",
+      "start": 147,
+      "end": 237,
+      "chunk_sha256": "c70a5585bf393eaa8bcda11d31eac4d482c4f642219231117b049becbda2a264",
+      "relation": "constrains",
+      "subject": "simple features xs for prediction",
+      "object": "network only",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.355,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary circular structure of the embedding layer and simple features xs for prediction separately and together. The hypothesis fails if the joint change in network equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "bd2a7113099b",
+    "text": "property of Adam may affect mentioned above through superior generalization (read as generalization).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "property of Adam",
+     "mentioned above"
+    ],
+    "via": [
+     "superior generalization (read as generalization)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2505-24022-p0003",
+     "arxiv-2105-14368-p0025"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2505-24022-p0003",
+      "quote": "Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.",
+      "start": 1099,
+      "end": 1428,
+      "chunk_sha256": "4b39f810d9ba864b87735252bb1cc245208264c582fc6343ac00fefb2d0a2d9c",
+      "relation": "causes",
+      "subject": "property of Adam",
+      "object": "superior generalization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2105-14368-p0025",
+      "quote": "3.4 What you see is not what you get It is important to note that the generalization bounds mentioned above, even the data-dependent bounds such as Eq.",
+      "start": 0,
+      "end": 151,
+      "chunk_sha256": "676976a8e8213c22858f79d43044fd305f8efd70ea81fb1fd91738d2f2ba59a9",
+      "relation": "constrains",
+      "subject": "generalization",
+      "object": "mentioned above",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.355,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where property of Adam differs while other inputs are matched. The hypothesis fails if mentioned above does not change with property of Adam, or if fixing superior generalization (read as generalization) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "f99cfacae90c",
+    "text": "good match between the complexity preferred and property of Adam may interact in their effect on good generalization.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "good match between the complexity preferred",
+     "property of Adam",
+     "good generalization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2403-02241-p0019",
+     "arxiv-2505-24022-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2403-02241-p0019",
+      "quote": "The NRS proposes that good generalization requires a good match between the complexity preferred by the architecture and the target function.",
+      "start": 0,
+      "end": 141,
+      "chunk_sha256": "b7c659dcd2e62790085b492b1dff91ac9711b7ab01e9fd7ccc94447c263255b9",
+      "relation": "constrains",
+      "subject": "good match between the complexity preferred",
+      "object": "good generalization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2505-24022-p0003",
+      "quote": "Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.",
+      "start": 1099,
+      "end": 1428,
+      "chunk_sha256": "4b39f810d9ba864b87735252bb1cc245208264c582fc6343ac00fefb2d0a2d9c",
+      "relation": "causes",
+      "subject": "property of Adam",
+      "object": "superior generalization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.355,
+     "novelty": 0.572
+    },
+    "falsification_test": "Vary good match between the complexity preferred and property of Adam separately and together. The hypothesis fails if the joint change in good generalization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "365d88ddf19e",
+    "text": "Adam may affect networks through richer features (read as simple features).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "Adam",
+     "networks"
+    ],
+    "via": [
+     "richer features (read as simple features)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2505-24022-p0006",
+     "arxiv-2311-02622-p0018"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2505-24022-p0006",
+      "quote": "• We conduct extensive experiments on various datasets and show that Adam leads to richer features that are more robust compared to simpler features learned via SGD, allowing Adam to achieve higher test accuracy both in distribution and under certain distribution shifts.",
+      "start": 2853,
+      "end": 3124,
+      "chunk_sha256": "be04e4cdb8701f7996bd92d8e112477b70d43338f42cdde3975de2ae3e36f944",
+      "relation": "causes",
+      "subject": "Adam",
+      "object": "richer features",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2311-02622-p0018",
+      "quote": "HIERARCHICAL SIMPLICITY BIAS OF NEURAL NETWORKS ues illustrate that networks predominantly depend on simple features and largely ignore complex features.",
+      "start": 0,
+      "end": 153,
+      "chunk_sha256": "efc86c55aadda4faf867a0a8e794846241c10abb4eb7b92f5b35cc323d82b0e6",
+      "relation": "constrains",
+      "subject": "simple features",
+      "object": "networks",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.355,
+     "novelty": 0.562
+    },
+    "falsification_test": "Compare settings where Adam differs while other inputs are matched. The hypothesis fails if networks does not change with Adam, or if fixing richer features (read as simple features) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "8f8714701967",
+    "text": "theory and training with Adam may interact in their effect on Understanding learning in this overparameterized regime.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "theory",
+     "training with Adam",
+     "Understanding learning in this overparameterized regime"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2109-02355-p0002",
+     "arxiv-2505-24022-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2109-02355-p0002",
+      "quote": "Understanding learning in this overparameterized regime required new theory and foundational empirical studies, even for the simplest case of the linear model.",
+      "start": 899,
+      "end": 1058,
+      "chunk_sha256": "773b8fe4726eee9f7fc5d2bc7a5fad46a1496e06f06bb22b8ee2564ca510a423",
+      "relation": "constrains",
+      "subject": "theory",
+      "object": "Understanding learning in this overparameterized regime",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2505-24022-p0006",
+      "quote": "Theoretically, we show that two-layer ReLU NNs trained on a Gaussian mixture data setting (see Fig. 1) with SGD exhibit simplicity bias while training with Adam leads to richer feature learning.",
+      "start": 1361,
+      "end": 1555,
+      "chunk_sha256": "be04e4cdb8701f7996bd92d8e112477b70d43338f42cdde3975de2ae3e36f944",
+      "relation": "causes",
+      "subject": "training with Adam",
+      "object": "richer feature learning",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.355,
+     "novelty": 0.522
+    },
+    "falsification_test": "Vary theory and training with Adam separately and together. The hypothesis fails if the joint change in Understanding learning in this overparameterized regime equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "939f0ba16c89",
+    "text": "ReLU architectures may affect superior generalization through unique property of maintaining their simplicity (read as property of Adam).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "ReLU architectures",
+     "superior generalization"
+    ],
+    "via": [
+     "unique property of maintaining their simplicity (read as property of Adam)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2403-02241-p0014",
+     "arxiv-2505-24022-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2403-02241-p0014",
+      "quote": "ReLU architectures have the unique property of maintaining their simplicity bias regardless of weight magnitude.",
+      "start": 209,
+      "end": 321,
+      "chunk_sha256": "be5c6cecebf2359bd75f4fafb956b0ab249f0b02c39f204da317fab414c2d397",
+      "relation": "has",
+      "subject": "ReLU architectures",
+      "object": "unique property of maintaining their simplicity",
+      "hedged": false,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2505-24022-p0003",
+      "quote": "Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.",
+      "start": 1099,
+      "end": 1428,
+      "chunk_sha256": "4b39f810d9ba864b87735252bb1cc245208264c582fc6343ac00fefb2d0a2d9c",
+      "relation": "causes",
+      "subject": "property of Adam",
+      "object": "superior generalization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.315,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where ReLU architectures differs while other inputs are matched. The hypothesis fails if superior generalization does not change with ReLU architectures, or if fixing unique property of maintaining their simplicity (read as property of Adam) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "50cc0b815545",
+    "text": "ReLU networks may affect superior generalization through unique property of maintaining their simplicity (read as property of Adam).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "ReLU networks",
+     "superior generalization"
+    ],
+    "via": [
+     "unique property of maintaining their simplicity (read as property of Adam)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2403-02241-p0006",
+     "arxiv-2505-24022-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2403-02241-p0006",
+      "quote": "ReLU networks also have the unique property of maintaining their simplicity bias for any depth and weight magnitudes.",
+      "start": 684,
+      "end": 801,
+      "chunk_sha256": "4f2208c142a3d7983b7a4451ab54755af7e7cda501a167b9797291a48b7d4aef",
+      "relation": "has",
+      "subject": "ReLU networks",
+      "object": "unique property of maintaining their simplicity",
+      "hedged": false,
+      "origin": "knowledge_graph"
+     },
+     {
+      "document_id": "arxiv-2505-24022-p0003",
+      "quote": "Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.",
+      "start": 1099,
+      "end": 1428,
+      "chunk_sha256": "4b39f810d9ba864b87735252bb1cc245208264c582fc6343ac00fefb2d0a2d9c",
+      "relation": "causes",
+      "subject": "property of Adam",
+      "object": "superior generalization",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.315,
+     "novelty": 0.55
+    },
+    "falsification_test": "Compare settings where ReLU networks differs while other inputs are matched. The hypothesis fails if superior generalization does not change with ReLU networks, or if fixing unique property of maintaining their simplicity (read as property of Adam) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "a597951d1a07",
+    "text": "full-batch GD and gradient descent may jointly constrain training loss, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "full-batch GD",
+     "gradient descent",
+     "training loss"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2505-21423-p0004",
+     "arxiv-2502-12508-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2505-21423-p0004",
+      "quote": "At the same time, it was observed for standard architectures that full-batch GD can minimize the training loss even with learning rates that are larger than what classical optimization theory would require (Jastrzebski et al., 2019; Cohen et al., 2021).",
+      "start": 807,
+      "end": 1060,
+      "chunk_sha256": "610a9706207c408e788c7c9f3e223bd9733d30135de2244b8f28eaf164653d77",
+      "relation": "decreases",
+      "subject": "full-batch GD",
+      "object": "training loss",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2502-12508-p0016",
+      "quote": "The assumptions 5 and 7 on η and σ2 k are to ensure that gradient descent can effectively minimize the training loss.",
+      "start": 439,
+      "end": 556,
+      "chunk_sha256": "d21ac8d28e0489dc35c6537f73b0a333df053f3635d9372fe6fd2ba13c9d32e6",
+      "relation": "decreases",
+      "subject": "gradient descent",
+      "object": "training loss",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.7,
+     "novelty": 0.633
+    },
+    "falsification_test": "Relieve full-batch GD alone while measuring training loss. The hypothesis fails if training loss keeps improving without gradient descent becoming the binding limit, or if relieving gradient descent alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "a87aecb9eeb4",
+    "text": "gradient descent and Memorization may jointly constrain training loss, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "gradient descent",
+     "Memorization",
+     "training loss"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2502-12508-p0016",
+     "arxiv-2412-07684-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2502-12508-p0016",
+      "quote": "The assumptions 5 and 7 on η and σ2 k are to ensure that gradient descent can effectively minimize the training loss.",
+      "start": 439,
+      "end": 556,
+      "chunk_sha256": "d21ac8d28e0489dc35c6537f73b0a333df053f3635d9372fe6fd2ba13c9d32e6",
+      "relation": "decreases",
+      "subject": "gradient descent",
+      "object": "training loss",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2412-07684-p0002",
+      "quote": "Memorization can reduce training loss to zero, leaving no incentive to learn robust, generalizable patterns.",
+      "start": 453,
+      "end": 561,
+      "chunk_sha256": "602730a5c6bd980203f0f8568f555d9a70852b0a12d3b9bcca45376ec0de46c9",
+      "relation": "decreases",
+      "subject": "Memorization",
+      "object": "training loss",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.7,
+     "novelty": 0.618
+    },
+    "falsification_test": "Relieve gradient descent alone while measuring training loss. The hypothesis fails if training loss keeps improving without Memorization becoming the binding limit, or if relieving Memorization alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "794b73a2bd85",
+    "text": "gradient descent and overparameterization may jointly constrain weight norm, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "gradient descent",
+     "overparameterization",
+     "weight norm"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2511-01938-p0002",
+     "arxiv-2108-12006-p0005"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2511-01938-p0002",
+      "quote": "In this paper, we argue that post-memorization learning can be understood through the lens of constrained optimization: gradient descent effectively minimizes the weight norm on the zero-loss manifold.",
+      "start": 335,
+      "end": 536,
+      "chunk_sha256": "6a6f7fe0ee8101382721a04509f058ed3ff58588e3bc5371733703b74b7f98c0",
+      "relation": "decreases",
+      "subject": "gradient descent",
+      "object": "weight norm",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2108-12006-p0005",
+      "quote": "The peak in generalization error as the model transitions from underparameterized to overparameterized was rediscovered and phrased in the language of the bias-variance tradeoff in [5], which also named the phenomenon ’double descent.’ While the connection to earlier work is unclear [15, 16], this work invokes the small norm bias of many common training procedures to show that the norm of the solution decreases as the amount of overparameterization increases, which is empirically associated with improvements in generalization performance [17].",
+      "start": 1174,
+      "end": 1723,
+      "chunk_sha256": "105a1206d2974ea95bc026086ef37095da482cac463ed830b25b7dc662c256cc",
+      "relation": "decreases",
+      "subject": "overparameterization",
+      "object": "norm of the solution",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.685,
+     "novelty": 0.618
+    },
+    "falsification_test": "Relieve gradient descent alone while measuring weight norm. The hypothesis fails if weight norm keeps improving without overparameterization becoming the binding limit, or if relieving overparameterization alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "10f7437c3167",
+    "text": "ReLU activations suggests may constrain networks through strong simplicity bias (read as implicit bias of SGD).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "ReLU activations suggests",
+     "networks"
+    ],
+    "via": [
+     "strong simplicity bias (read as implicit bias of SGD)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2403-02241-p0018",
+     "arxiv-2407-03848-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2403-02241-p0018",
+      "quote": "Importance of ReLU activations The fact that a strong simplicity bias depends on ReLU activations suggests that their historical importance in the development of deep learning goes beyond the common narrative about vanishing gradients [42].",
+      "start": 197,
+      "end": 437,
+      "chunk_sha256": "9558edaaab8349ab8cfa02d97f8479dc084cb360294e4ee4d3f98019b908a9e7",
+      "relation": "constrains",
+      "subject": "ReLU activations suggests",
+      "object": "strong simplicity bias",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0006",
+      "quote": "In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,",
+      "start": 184,
+      "end": 348,
+      "chunk_sha256": "4a8e743f61ed0a159a79c1f8230406e469459ca4dd1c1ad106aa74f86092da96",
+      "relation": "causes",
+      "subject": "implicit bias of SGD",
+      "object": "networks",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.665,
+     "novelty": 0.55
+    },
+    "falsification_test": "Compare settings where ReLU activations suggests differs while other inputs are matched. The hypothesis fails if networks does not stay bounded with ReLU activations suggests, or if fixing strong simplicity bias (read as implicit bias of SGD) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT"
+   },
+   {
+    "id": "14d72b9b59b0",
+    "text": "training loss and weight norm may move together because both depend on gradient descent.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "training loss",
+     "weight norm",
+     "gradient descent"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2502-12508-p0016",
+     "arxiv-2511-01938-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2502-12508-p0016",
+      "quote": "The assumptions 5 and 7 on η and σ2 k are to ensure that gradient descent can effectively minimize the training loss.",
+      "start": 439,
+      "end": 556,
+      "chunk_sha256": "d21ac8d28e0489dc35c6537f73b0a333df053f3635d9372fe6fd2ba13c9d32e6",
+      "relation": "decreases",
+      "subject": "gradient descent",
+      "object": "training loss",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2511-01938-p0002",
+      "quote": "In this paper, we argue that post-memorization learning can be understood through the lens of constrained optimization: gradient descent effectively minimizes the weight norm on the zero-loss manifold.",
+      "start": 335,
+      "end": 536,
+      "chunk_sha256": "6a6f7fe0ee8101382721a04509f058ed3ff58588e3bc5371733703b74b7f98c0",
+      "relation": "decreases",
+      "subject": "gradient descent",
+      "object": "weight norm",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.65,
+     "novelty": 0.6
+    },
+    "falsification_test": "Track training loss and weight norm across periods where gradient descent changes and where it does not. The hypothesis fails if they co-vary just as strongly when gradient descent is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "eb3d79aa255a",
+    "text": "sharpness and weight norm may move together because both depend on gradient descent.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "sharpness",
+     "weight norm",
+     "gradient descent"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2103-00065-p0011",
+     "arxiv-2511-01938-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2103-00065-p0011",
+      "quote": "By “overwhelming tendency,” we mean that gradient descent can occasionally decrease the sharpness (especially at the beginning of training), but these brief decreases always seem be followed by a return to continual increase.",
+      "start": 417,
+      "end": 642,
+      "chunk_sha256": "5d8ef236a27915e660074ad18c062ea916fdad466a54b2987994a3752cccc03a",
+      "relation": "decreases",
+      "subject": "gradient descent",
+      "object": "sharpness",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2511-01938-p0002",
+      "quote": "In this paper, we argue that post-memorization learning can be understood through the lens of constrained optimization: gradient descent effectively minimizes the weight norm on the zero-loss manifold.",
+      "start": 335,
+      "end": 536,
+      "chunk_sha256": "6a6f7fe0ee8101382721a04509f058ed3ff58588e3bc5371733703b74b7f98c0",
+      "relation": "decreases",
+      "subject": "gradient descent",
+      "object": "weight norm",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.65,
+     "novelty": 0.578
+    },
+    "falsification_test": "Track sharpness and weight norm across periods where gradient descent changes and where it does not. The hypothesis fails if they co-vary just as strongly when gradient descent is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "dd07cf11a405",
+    "text": "sharpness and training loss may move together because both depend on gradient descent.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "sharpness",
+     "training loss",
+     "gradient descent"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2103-00065-p0011",
+     "arxiv-2502-12508-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2103-00065-p0011",
+      "quote": "By “overwhelming tendency,” we mean that gradient descent can occasionally decrease the sharpness (especially at the beginning of training), but these brief decreases always seem be followed by a return to continual increase.",
+      "start": 417,
+      "end": 642,
+      "chunk_sha256": "5d8ef236a27915e660074ad18c062ea916fdad466a54b2987994a3752cccc03a",
+      "relation": "decreases",
+      "subject": "gradient descent",
+      "object": "sharpness",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2502-12508-p0016",
+      "quote": "The assumptions 5 and 7 on η and σ2 k are to ensure that gradient descent can effectively minimize the training loss.",
+      "start": 439,
+      "end": 556,
+      "chunk_sha256": "d21ac8d28e0489dc35c6537f73b0a333df053f3635d9372fe6fd2ba13c9d32e6",
+      "relation": "decreases",
+      "subject": "gradient descent",
+      "object": "training loss",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.65,
+     "novelty": 0.528
+    },
+    "falsification_test": "Track sharpness and training loss across periods where gradient descent changes and where it does not. The hypothesis fails if they co-vary just as strongly when gradient descent is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "a36820655978",
+    "text": "F-Principle and ReLU activations suggests may interact in their effect on implicit bias.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "F-Principle",
+     "ReLU activations suggests",
+     "implicit bias"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1901-06523-p0002",
+     "arxiv-2403-02241-p0018"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1901-06523-p0002",
+      "quote": "The F-Principle implies an implicit bias that DNNs tend to fit training data by a low-frequency function.",
+      "start": 687,
+      "end": 792,
+      "chunk_sha256": "2f7051ea504b1dc0b6fd271de43eeaf38a9f32108de4cc117b24caa28e3d93ac",
+      "relation": "supports",
+      "subject": "F-Principle",
+      "object": "implicit bias",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2403-02241-p0018",
+      "quote": "Importance of ReLU activations The fact that a strong simplicity bias depends on ReLU activations suggests that their historical importance in the development of deep learning goes beyond the common narrative about vanishing gradients [42].",
+      "start": 197,
+      "end": 437,
+      "chunk_sha256": "9558edaaab8349ab8cfa02d97f8479dc084cb360294e4ee4d3f98019b908a9e7",
+      "relation": "constrains",
+      "subject": "ReLU activations suggests",
+      "object": "strong simplicity bias",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.605,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary F-Principle and ReLU activations suggests separately and together. The hypothesis fails if the joint change in implicit bias equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "2d15f49e8c3d",
+    "text": "having a balance of noise may constrain networks through bias in the random logistic map (read as implicit bias of SGD).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "having a balance of noise",
+     "networks"
+    ],
+    "via": [
+     "bias in the random logistic map (read as implicit bias of SGD)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2401-00593-p0016",
+     "arxiv-2407-03848-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2401-00593-p0016",
+      "quote": "From this reasoning, we can conclude that to observe simplicity bias in the random logistic map requires having a balance of noise that is not too large as to overly randomize the trajectories, and not too small as to allow the trajectories to converge to a fixed point with only",
+      "start": 1462,
+      "end": 1741,
+      "chunk_sha256": "81bf677dcf72e4baf55eb316393d79e4fc7c235374f85761da20bf3d9299eed9",
+      "relation": "constrains",
+      "subject": "having a balance of noise",
+      "object": "bias in the random logistic map",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0006",
+      "quote": "In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,",
+      "start": 184,
+      "end": 348,
+      "chunk_sha256": "4a8e743f61ed0a159a79c1f8230406e469459ca4dd1c1ad106aa74f86092da96",
+      "relation": "causes",
+      "subject": "implicit bias of SGD",
+      "object": "networks",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.59,
+     "novelty": 0.581
+    },
+    "falsification_test": "Compare settings where having a balance of noise differs while other inputs are matched. The hypothesis fails if networks does not stay bounded with having a balance of noise, or if fixing bias in the random logistic map (read as implicit bias of SGD) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT"
+   },
+   {
+    "id": "c702b866adfc",
+    "text": "having a balance of noise and ReLU activations suggests may jointly constrain bias in the random logistic map, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "having a balance of noise",
+     "ReLU activations suggests",
+     "bias in the random logistic map"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2401-00593-p0016",
+     "arxiv-2403-02241-p0018"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2401-00593-p0016",
+      "quote": "From this reasoning, we can conclude that to observe simplicity bias in the random logistic map requires having a balance of noise that is not too large as to overly randomize the trajectories, and not too small as to allow the trajectories to converge to a fixed point with only",
+      "start": 1462,
+      "end": 1741,
+      "chunk_sha256": "81bf677dcf72e4baf55eb316393d79e4fc7c235374f85761da20bf3d9299eed9",
+      "relation": "constrains",
+      "subject": "having a balance of noise",
+      "object": "bias in the random logistic map",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2403-02241-p0018",
+      "quote": "Importance of ReLU activations The fact that a strong simplicity bias depends on ReLU activations suggests that their historical importance in the development of deep learning goes beyond the common narrative about vanishing gradients [42].",
+      "start": 197,
+      "end": 437,
+      "chunk_sha256": "9558edaaab8349ab8cfa02d97f8479dc084cb360294e4ee4d3f98019b908a9e7",
+      "relation": "constrains",
+      "subject": "ReLU activations suggests",
+      "object": "strong simplicity bias",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.56,
+     "novelty": 0.631
+    },
+    "falsification_test": "Relieve having a balance of noise alone while measuring bias in the random logistic map. The hypothesis fails if bias in the random logistic map keeps improving without ReLU activations suggests becoming the binding limit, or if relieving ReLU activations suggests alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "9b210f6de34f",
+    "text": "norm of the solution and optimization may move together because both depend on overparameterization.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "norm of the solution",
+     "optimization",
+     "overparameterization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2108-12006-p0005",
+     "arxiv-2306-13253-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2108-12006-p0005",
+      "quote": "The peak in generalization error as the model transitions from underparameterized to overparameterized was rediscovered and phrased in the language of the bias-variance tradeoff in [5], which also named the phenomenon ’double descent.’ While the connection to earlier work is unclear [15, 16], this work invokes the small norm bias of many common training procedures to show that the norm of the solution decreases as the amount of overparameterization increases, which is empirically associated with improvements in generalization performance [17].",
+      "start": 1174,
+      "end": 1723,
+      "chunk_sha256": "105a1206d2974ea95bc026086ef37095da482cac463ed830b25b7dc662c256cc",
+      "relation": "decreases",
+      "subject": "overparameterization",
+      "object": "norm of the solution",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2306-13253-p0003",
+      "quote": "neural networks are highly overparameterized (Allen-Zhu et al., 2019; Zhang et al., 2017), and in some cases, it is observed that overparameterization empirically improves optimization and generalization, which seems to contradict traditional learning theory.",
+      "start": 698,
+      "end": 957,
+      "chunk_sha256": "226ab4223500bd7e46b8191b05a60853f9b9dad8f7f87d2ffd8a546d5d1aa62d",
+      "relation": "increases",
+      "subject": "overparameterization",
+      "object": "optimization",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.55,
+     "novelty": 0.613
+    },
+    "falsification_test": "Track norm of the solution and optimization across periods where overparameterization changes and where it does not. The hypothesis fails if they co-vary just as strongly when overparameterization is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "8799ffa03922",
+    "text": "F-Principle and having a balance of noise may interact in their effect on implicit bias.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "F-Principle",
+     "having a balance of noise",
+     "implicit bias"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1901-06523-p0002",
+     "arxiv-2401-00593-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1901-06523-p0002",
+      "quote": "The F-Principle implies an implicit bias that DNNs tend to fit training data by a low-frequency function.",
+      "start": 687,
+      "end": 792,
+      "chunk_sha256": "2f7051ea504b1dc0b6fd271de43eeaf38a9f32108de4cc117b24caa28e3d93ac",
+      "relation": "supports",
+      "subject": "F-Principle",
+      "object": "implicit bias",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2401-00593-p0016",
+      "quote": "From this reasoning, we can conclude that to observe simplicity bias in the random logistic map requires having a balance of noise that is not too large as to overly randomize the trajectories, and not too small as to allow the trajectories to converge to a fixed point with only",
+      "start": 1462,
+      "end": 1741,
+      "chunk_sha256": "81bf677dcf72e4baf55eb316393d79e4fc7c235374f85761da20bf3d9299eed9",
+      "relation": "constrains",
+      "subject": "having a balance of noise",
+      "object": "bias in the random logistic map",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.53,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary F-Principle and having a balance of noise separately and together. The hypothesis fails if the joint change in implicit bias equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "332045f2802f",
+    "text": "understanding the whole trajectory of learning may affect weight norm through epoch-wise double descent (read as gradient descent).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "understanding the whole trajectory of learning",
+     "weight norm"
+    ],
+    "via": [
+     "epoch-wise double descent (read as gradient descent)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-09845-p0004",
+     "arxiv-2511-01938-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-09845-p0004",
+      "quote": "Meanwhile, epoch-wise double descent requires understanding the whole trajectory of learning.",
+      "start": 732,
+      "end": 825,
+      "chunk_sha256": "61a60ac66480286f24d49471eb73c280d7a43e5cd7311877b0f6105748747c79",
+      "relation": "constrains",
+      "subject": "understanding the whole trajectory of learning",
+      "object": "epoch-wise double descent",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2511-01938-p0002",
+      "quote": "In this paper, we argue that post-memorization learning can be understood through the lens of constrained optimization: gradient descent effectively minimizes the weight norm on the zero-loss manifold.",
+      "start": 335,
+      "end": 536,
+      "chunk_sha256": "6a6f7fe0ee8101382721a04509f058ed3ff58588e3bc5371733703b74b7f98c0",
+      "relation": "decreases",
+      "subject": "gradient descent",
+      "object": "weight norm",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.53,
+     "novelty": 0.581
+    },
+    "falsification_test": "Compare settings where understanding the whole trajectory of learning differs while other inputs are matched. The hypothesis fails if weight norm does not change with understanding the whole trajectory of learning, or if fixing epoch-wise double descent (read as gradient descent) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "373dfe477d48",
+    "text": "understanding the whole trajectory of learning may affect training loss through epoch-wise double descent (read as gradient descent).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "understanding the whole trajectory of learning",
+     "training loss"
+    ],
+    "via": [
+     "epoch-wise double descent (read as gradient descent)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-09845-p0004",
+     "arxiv-2502-12508-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-09845-p0004",
+      "quote": "Meanwhile, epoch-wise double descent requires understanding the whole trajectory of learning.",
+      "start": 732,
+      "end": 825,
+      "chunk_sha256": "61a60ac66480286f24d49471eb73c280d7a43e5cd7311877b0f6105748747c79",
+      "relation": "constrains",
+      "subject": "understanding the whole trajectory of learning",
+      "object": "epoch-wise double descent",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2502-12508-p0016",
+      "quote": "The assumptions 5 and 7 on η and σ2 k are to ensure that gradient descent can effectively minimize the training loss.",
+      "start": 439,
+      "end": 556,
+      "chunk_sha256": "d21ac8d28e0489dc35c6537f73b0a333df053f3635d9372fe6fd2ba13c9d32e6",
+      "relation": "decreases",
+      "subject": "gradient descent",
+      "object": "training loss",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.53,
+     "novelty": 0.581
+    },
+    "falsification_test": "Compare settings where understanding the whole trajectory of learning differs while other inputs are matched. The hypothesis fails if training loss does not change with understanding the whole trajectory of learning, or if fixing epoch-wise double descent (read as gradient descent) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "8f4b3ca2dc0c",
+    "text": "noise above a certain threshold may affect weight norm through P3 Epochwise double descent (read as gradient descent).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "noise above a certain threshold",
+     "weight norm"
+    ],
+    "via": [
+     "P3 Epochwise double descent (read as gradient descent)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2108-12006-p0016",
+     "arxiv-2511-01938-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2108-12006-p0016",
+      "quote": "P3 Epochwise double descent requires noise above a certain threshold to occur.",
+      "start": 72,
+      "end": 150,
+      "chunk_sha256": "dbf1d20eae39d5b4fa9e520969cbade82efdab4589a936f48810df6297323027",
+      "relation": "constrains",
+      "subject": "noise above a certain threshold",
+      "object": "P3 Epochwise double descent",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2511-01938-p0002",
+      "quote": "In this paper, we argue that post-memorization learning can be understood through the lens of constrained optimization: gradient descent effectively minimizes the weight norm on the zero-loss manifold.",
+      "start": 335,
+      "end": 536,
+      "chunk_sha256": "6a6f7fe0ee8101382721a04509f058ed3ff58588e3bc5371733703b74b7f98c0",
+      "relation": "decreases",
+      "subject": "gradient descent",
+      "object": "weight norm",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.53,
+     "novelty": 0.581
+    },
+    "falsification_test": "Compare settings where noise above a certain threshold differs while other inputs are matched. The hypothesis fails if weight norm does not change with noise above a certain threshold, or if fixing P3 Epochwise double descent (read as gradient descent) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "de3fcdb410a6",
+    "text": "noise above a certain threshold may affect training loss through P3 Epochwise double descent (read as gradient descent).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "noise above a certain threshold",
+     "training loss"
+    ],
+    "via": [
+     "P3 Epochwise double descent (read as gradient descent)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2108-12006-p0016",
+     "arxiv-2502-12508-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2108-12006-p0016",
+      "quote": "P3 Epochwise double descent requires noise above a certain threshold to occur.",
+      "start": 72,
+      "end": 150,
+      "chunk_sha256": "dbf1d20eae39d5b4fa9e520969cbade82efdab4589a936f48810df6297323027",
+      "relation": "constrains",
+      "subject": "noise above a certain threshold",
+      "object": "P3 Epochwise double descent",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2502-12508-p0016",
+      "quote": "The assumptions 5 and 7 on η and σ2 k are to ensure that gradient descent can effectively minimize the training loss.",
+      "start": 439,
+      "end": 556,
+      "chunk_sha256": "d21ac8d28e0489dc35c6537f73b0a333df053f3635d9372fe6fd2ba13c9d32e6",
+      "relation": "decreases",
+      "subject": "gradient descent",
+      "object": "training loss",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.53,
+     "novelty": 0.581
+    },
+    "falsification_test": "Compare settings where noise above a certain threshold differs while other inputs are matched. The hypothesis fails if training loss does not change with noise above a certain threshold, or if fixing P3 Epochwise double descent (read as gradient descent) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   }
+  ],
+  "survivors": 56,
+  "candidates_generated": 236,
+  "candidates_passed": {
+   "abductive": 148,
+   "deductive": 148,
+   "pre_thinker": 56
+  },
+  "candidates_rejected": {
+   "abductive:incoherent_composition": 33,
+   "abductive:no_explanatory_relation": 52,
+   "abductive:unrelated_bridge": 3,
+   "pre_thinker:circular": 5,
+   "pre_thinker:malformed": 69,
+   "pre_thinker:restates_source": 4,
+   "pre_thinker:single_source": 14
+  },
+  "relation_edges": 636,
+  "scoped_edges": 139,
+  "budget_used": {
+   "rounds": 1,
+   "candidates": 236,
+   "edges": 636,
+   "bytes": 346278,
+   "seconds": 4.97
+  },
+  "incomplete": false,
+  "stop_reason": null,
+  "shortage": null,
+  "snapshot": {
+   "as_of": 1795250182,
+   "chunk_count": 1652
+  }
+ },
+ "reply": "Frontier hypotheses for implicit bias of gradient descent. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 236. Passed abductive check: 148; deductive check: 148; pre-thinker validation: 56.\n\n1. gradient descent initialized at zero and Noisy-SGD may jointly drive minimum norm interpolating solution, and their effects may compound.\n[arxiv-2410-16201-p0013] in the ridgeless case), the implicit bias of (stochastic) gradient descent initialized at zero leads to the minimum norm interpolating solution θ(LN) W = 1√ D (Φ)⊤ 1 D · ΦΦ⊤−1 y.\n[arxiv-2402-08344-p0029] However, in Figure 3, we show that Noisy-SGD still leads to sparser solutions than SGD.\nFalsification test: Vary gradient descent initialized at zero and Noisy-SGD separately and together. The hypothesis fails if the joint change in minimum norm interpolating solution equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.74, novelty 0.54.\n\n2. gradient descent initialized at zero and SGD may jointly drive minimum norm interpolating solution, and their effects may compound.\n[arxiv-2410-16201-p0013] in the ridgeless case), the implicit bias of (stochastic) gradient descent initialized at zero leads to the minimum norm interpolating solution θ(LN) W = 1√ D (Φ)⊤ 1 D · ΦΦ⊤−1 y.\n[arxiv-2402-08344-p0014] Thus, SGD leads to sparser solutions than GD, which is a proof of the implicit bias of SGD for DLNs.\nFalsification test: Vary gradient descent initialized at zero and SGD separately and together. The hypothesis fails if the joint change in minimum norm interpolating solution equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.74, novelty 0.54.\n\n3. circular structure of the embedding layer and implicit bias of SGD may jointly drive network, and their effects may compound.\n[arxiv-2511-01938-p0003] The circular structure of the embedding layer enables the network to perform a symmetric algorithm that generalizes perfectly to unseen data.\n[arxiv-2407-03848-p0006] In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,\nFalsification test: Vary circular structure of the embedding layer and implicit bias of SGD separately and together. The hypothesis fails if the joint change in network equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.68, novelty 0.64.\n\n4. gradient descent initialized at zero may affect phase transition occurs through minimum norm interpolating solution (read as gradient flow solution).\n[arxiv-2410-16201-p0013] in the ridgeless case), the implicit bias of (stochastic) gradient descent initialized at zero leads to the minimum norm interpolating solution θ(LN) W = 1√ D (Φ)⊤ 1 D · ΦΦ⊤−1 y.\n[arxiv-2505-21423-p0017] For GD trained until loss ε the critical learning rate at which this phase transition occurs depends on the gradient flow solution and is approximately given by ηc := 2/sε GF.\nFalsification test: Compare settings where gradient descent initialized at zero differs while other inputs are matched. The hypothesis fails if phase transition occurs does not change with gradient descent initialized at zero, or if fixing minimum norm interpolating solution (read as gradient flow solution) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.68, novelty 0.58.\n\n5. following observation and particular structure of the Gram matrix may jointly constrain analysis, so relieving one may shift the bottleneck to the other.\n[arxiv-1810-02054-p0002] Our analysis relies on the following observation: over-parameterization and random initialization jointly restrict every weight vector to be close to its initialization for all iterations, which allows us to exploit a strong convexity-like property to show that gradient descent converges at a global linear rate to the global optimum.\n[arxiv-1811-03804-p0002] Our analysis relies on the particular structure of the Gram matrix induced by the neural network architecture.\nFalsification test: Relieve following observation alone while measuring analysis. The hypothesis fails if analysis keeps improving without particular structure of the Gram matrix becoming the binding limit, or if relieving particular structure of the Gram matrix alone has no effect.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.66.\n\n6. loss and training objective may jointly constrain non-monotonically, so relieving one may shift the bottleneck to the other.\n[arxiv-2505-21423-p0006] In this phase, the loss decreases non-monotonically and faster than when using adaptive learning rates that stay in the stable regime ηk < 2/SL(θk).\n[arxiv-2103-00065-p0018] (2018) observed that full-batch gradient descent eventually enters a regime (the Edge of Stability) where the training objective decreases non-monotonically, and the iterates bounce back and forth between “valley walls”; Jastrz ̨ebski et al.\nFalsification test: Relieve loss alone while measuring non-monotonically. The hypothesis fails if non-monotonically keeps improving without training objective becoming the binding limit, or if relieving training objective alone has no effect.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.65.\n\n7. implicit bias of SGD may affect degree of sharpening through networks.\n[arxiv-2407-03848-p0006] In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,\n[arxiv-2103-00065-p0012] While the degree of sharpening depends on both the network and the task, our experiments in §4 demonstrate that progressive sharpening occurs to a dramatic degree for standard architectures on the standard dataset CIFAR-10.\nFalsification test: Compare settings where implicit bias of SGD differs while other inputs are matched. The hypothesis fails if degree of sharpening does not change with implicit bias of SGD, or if fixing networks removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.60.\n\n8. implicit bias of SGD and simple features may interact in their effect on networks.\n[arxiv-2407-03848-p0006] In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,\n[arxiv-2311-02622-p0018] HIERARCHICAL SIMPLICITY BIAS OF NEURAL NETWORKS ues illustrate that networks predominantly depend on simple features and largely ignore complex features.\nFalsification test: Vary implicit bias of SGD and simple features separately and together. The hypothesis fails if the joint change in networks equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.55.\n\n9. simple features may constrain degree of sharpening through networks.\n[arxiv-2311-02622-p0018] HIERARCHICAL SIMPLICITY BIAS OF NEURAL NETWORKS ues illustrate that networks predominantly depend on simple features and largely ignore complex features.\n[arxiv-2103-00065-p0012] While the degree of sharpening depends on both the network and the task, our experiments in §4 demonstrate that progressive sharpening occurs to a dramatic degree for standard architectures on the standard dataset CIFAR-10.\nFalsification test: Compare settings where simple features differs while other inputs are matched. The hypothesis fails if degree of sharpening does not stay bounded with simple features, or if fixing networks removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.64.\n\n10. why deep networks generalize well and gap between weak double descent peaks may stand or fall together because both rest on intrinsic simplicity bias helps.\n[arxiv-1805-08522-p0002] As the target functions in many real problems are expected to be highly structured, this intrinsic simplicity bias helps explain why deep networks generalize well on real world problems.\n[arxiv-2312-03951-p0003] Additionally, our results help explain the gap between weak double descent peaks in practice and strong peaks observable in carefully designed setups.\nFalsification test: Find a position that keeps why deep networks generalize well and rejects gap between weak double descent peaks, or the reverse, without giving up intrinsic simplicity bias helps. The hypothesis fails if such a position is coherent.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.63.\n\n11. considerations may support held view through experiments.\n[arxiv-2610-16161-p0005] These considerations motivate our experiments.\n[arxiv-1609-04836-p0002] In contrast, small-batch methods consistently converge to flat minimizers, and our experiments support a commonly held view that this is due to the inherent noise in the gradient estimation.\nFalsification test: Construct a coherent case where considerations is accepted. The hypothesis fails if held view still fails in that case, or if the argument does not need experiments.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.52.\n\n12. SGD may affect phase transition occurs through sparser solutions (read as gradient flow solution).\n[arxiv-2402-08344-p0014] Thus, SGD leads to sparser solutions than GD, which is a proof of the implicit bias of SGD for DLNs.\n[arxiv-2505-21423-p0017] For GD trained until loss ε the critical learning rate at which this phase transition occurs depends on the gradient flow solution and is approximately given by ηc := 2/sε GF.\nFalsification test: Compare settings where SGD differs while other inputs are matched. The hypothesis fails if phase transition occurs does not change with SGD, or if fixing sparser solutions (read as gradient flow solution) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.56, novelty 0.53.\n\n13. flatter minima and sparser solutions may move together because both depend on SGD.\n[arxiv-1805-08522-p0004] (2018) for a similar correlation over a much smaller range, but with evidence that SGD leads to slightly flatter minima than simple GD does).\n[arxiv-2402-08344-p0014] Thus, SGD leads to sparser solutions than GD, which is a proof of the implicit bias of SGD for DLNs.\nFalsification test: Track flatter minima and sparser solutions across periods where SGD changes and where it does not. The hypothesis fails if they co-vary just as strongly when SGD is held fixed.\nScores: source support 0.80, deductive relevance 0.55, novelty 0.68.\n\n14. Understanding learning in this overparameterized regime and how simplicity bias governs feature selection may move together because both depend on theory.\n[arxiv-2109-02355-p0002] Understanding learning in this overparameterized regime required new theory and foundational empirical studies, even for the simplest case of the linear model.\n[arxiv-2603-25839-p0003] Our theory explains how simplicity bias governs feature selection in neural networks through a fundamental trade-off between model complexity (the cost of describing the hypothesis) and predictive power (the cost of describing the data).\nFalsification test: Track Understanding learning in this overparameterized regime and how simplicity bias governs feature selection across periods where theory changes and where it does not. The hypothesis fails if they co-vary just as strongly when theory is held fixed.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.64.\n\n15. implicit bias of SGD and simple features xs for prediction may interact in their effect on networks.\n[arxiv-2407-03848-p0006] In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,\n[arxiv-2311-02622-p0007] Due to simplicity bias, the network only depends on the simple features xs for prediction.\nFalsification test: Vary implicit bias of SGD and simple features xs for prediction separately and together. The hypothesis fails if the joint change in networks equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.57.\n\n16. why DNNs generalize and gap between weak double descent peaks may stand or fall together because both rest on result from PAC-Bayes theory to help.\n[arxiv-1805-08522-p0005] This bias allows us to apply a classical result from PAC-Bayes theory to help explain why DNNs generalize so well.\n[arxiv-2312-03951-p0003] Additionally, our results help explain the gap between weak double descent peaks in practice and strong peaks observable in carefully designed setups.\nFalsification test: Find a position that keeps why DNNs generalize and rejects gap between weak double descent peaks, or the reverse, without giving up result from PAC-Bayes theory to help. The hypothesis fails if such a position is coherent.\nScores: source support 0.80, deductive relevance 0.52, novelty 0.63.\n\n17. F-Principle may affect networks through implicit bias (read as implicit bias of SGD).\n[arxiv-1901-06523-p0002] The F-Principle implies an implicit bias that DNNs tend to fit training data by a low-frequency function.\n[arxiv-2407-03848-p0006] In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,\nFalsification test: Compare settings where F-Principle differs while other inputs are matched. The hypothesis fails if networks does not change with F-Principle, or if fixing implicit bias (read as implicit bias of SGD) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.49, novelty 0.50.\n\n18. noise above a certain threshold and understanding the whole trajectory of learning may jointly constrain P3 Epochwise double descent, so relieving one may shift the bottleneck to the other.\n[arxiv-2108-12006-p0016] P3 Epochwise double descent requires noise above a certain threshold to occur.\n[arxiv-2407-09845-p0004] Meanwhile, epoch-wise double descent requires understanding the whole trajectory of learning.\nFalsification test: Relieve noise above a certain threshold alone while measuring P3 Epochwise double descent. The hypothesis fails if P3 Epochwise double descent keeps improving without understanding the whole trajectory of learning becoming the binding limit, or if relieving understanding the whole trajectory of learning alone has no effect.\nScores: source support 0.80, deductive relevance 0.48, novelty 0.64.\n\n19. simple features xs for prediction may constrain degree of sharpening through network only (read as network).\n[arxiv-2311-02622-p0007] Due to simplicity bias, the network only depends on the simple features xs for prediction.\n[arxiv-2103-00065-p0012] While the degree of sharpening depends on both the network and the task, our experiments in §4 demonstrate that progressive sharpening occurs to a dramatic degree for standard architectures on the standard dataset CIFAR-10.\nFalsification test: Compare settings where simple features xs for prediction differs while other inputs are matched. The hypothesis fails if degree of sharpening does not stay bounded with simple features xs for prediction, or if fixing network only (read as network) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.47, novelty 0.63.\n\n20. circular structure of the embedding layer and simple features may interact in their effect on network.\n[arxiv-2511-01938-p0003] The circular structure of the embedding layer enables the network to perform a symmetric algorithm that generalizes perfectly to unseen data.\n[arxiv-2311-02622-p0018] HIERARCHICAL SIMPLICITY BIAS OF NEURAL NETWORKS ues illustrate that networks predominantly depend on simple features and largely ignore complex features.\nFalsification test: Vary circular structure of the embedding layer and simple features separately and together. The hypothesis fails if the joint change in network equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.42, novelty 0.57.\n\n21. property of Adam and reveals how ResMem algorithm may jointly drive superior generalization, and their effects may compound.\n[arxiv-2505-24022-p0003] Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.\n[arxiv-2302-01576-p0016] 3.3 A decomposition of the prediction error We now introduce a decomposition of the prediction risk that reveals how ResMem algorithm boosts generalization.\nFalsification test: Vary property of Adam and reveals how ResMem algorithm separately and together. The hypothesis fails if the joint change in superior generalization equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.41, novelty 0.67.\n\n22. property of Adam and Riemannian Flatness may jointly drive superior generalization, and their effects may compound.\n[arxiv-2505-24022-p0003] Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.\n[arxiv-2606-20469-p0031] 4.5 Corollary 2: Generalization Bound via PAC-Bayes Corollary 2 (Riemannian Flatness Implies Generalization).\nFalsification test: Vary property of Adam and Riemannian Flatness separately and together. The hypothesis fails if the joint change in superior generalization equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.41, novelty 0.65.\n\n23. property of Adam and structured representation of input embeddings may jointly drive superior generalization, and their effects may compound.\n[arxiv-2505-24022-p0003] Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.\n[arxiv-2205-10343-p0012] In Figure 3, we see that the predicted ˆAcc aligns well with the true accuracy Acc, establishing good evidence that structured representation of input embeddings leads to generalization.\nFalsification test: Vary property of Adam and structured representation of input embeddings separately and together. The hypothesis fails if the joint change in superior generalization equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.41, novelty 0.64.\n\n24. Intrinsic Task Symmetry and property of Adam may jointly drive Generalization, and their effects may compound.\n[arxiv-2603-01968-p0001] # Intrinsic Task Symmetry Drives Generalization in Algorithmic Tasks\n[arxiv-2603-01968-p0006] • Intrinsic Task Symmetry Drives Generalization: We establish intrinsic task symmetries as the primary driver of generalization in algorithmic tasks, and empirically investigate this mechanism across three domains: algebraic (modular arithmetic), structural (graph metric completion), and relational (comparison).\n[arxiv-2603-01968-p0007] Intrinsic Task Symmetry Drives Generalization in Algorithmic Tasks Figure 1.\n[arxiv-2505-24022-p0003] Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.\nFalsification test: Vary Intrinsic Task Symmetry and property of Adam separately and together. The hypothesis fails if the joint change in Generalization equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.41, novelty 0.60.\n\n25. better understand how individual data samples and property of Adam may jointly drive generalization, and their effects may compound.\n[arxiv-2610-16161-p0026] 4 Contributions of Individual Samples 4.1 Sample Contributions to the Eigenspectrum To better understand how individual data samples contribute to generalization and the structure of the Fisher information, we examine the participation ratios associated with individual samples in the eigenspectrum of the (layerwise) Fisher.\n[arxiv-2505-24022-p0003] Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.\nFalsification test: Vary better understand how individual data samples and property of Adam separately and together. The hypothesis fails if the joint change in generalization equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.41, novelty 0.60.\n\n26. Noisy-SGD may affect phase transition occurs through sparser solutions (read as gradient flow solution).\n[arxiv-2402-08344-p0029] However, in Figure 3, we show that Noisy-SGD still leads to sparser solutions than SGD.\n[arxiv-2505-21423-p0017] For GD trained until loss ε the critical learning rate at which this phase transition occurs depends on the gradient flow solution and is approximately given by ηc := 2/sε GF.\nFalsification test: Compare settings where Noisy-SGD differs while other inputs are matched. The hypothesis fails if phase transition occurs does not change with Noisy-SGD, or if fixing sparser solutions (read as gradient flow solution) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.41, novelty 0.58.\n\n27. Gains in superior generalization from property of Adam may be offset by Q3.\n[arxiv-2505-24022-p0003] Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.\n[arxiv-2205-10343-p0004] Q3 Delayed generalization: Under what conditions does delayed generalization occur?\nFalsification test: Measure superior generalization where both property of Adam and Q3 vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.41, novelty 0.56.\n\n28. circular structure of the embedding layer and simple features xs for prediction may interact in their effect on network.\n[arxiv-2511-01938-p0003] The circular structure of the embedding layer enables the network to perform a symmetric algorithm that generalizes perfectly to unseen data.\n[arxiv-2311-02622-p0007] Due to simplicity bias, the network only depends on the simple features xs for prediction.\nFalsification test: Vary circular structure of the embedding layer and simple features xs for prediction separately and together. The hypothesis fails if the joint change in network equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.35, novelty 0.60.\n\n29. property of Adam may affect mentioned above through superior generalization (read as generalization).\n[arxiv-2505-24022-p0003] Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.\n[arxiv-2105-14368-p0025] 3.4 What you see is not what you get It is important to note that the generalization bounds mentioned above, even the data-dependent bounds such as Eq.\nFalsification test: Compare settings where property of Adam differs while other inputs are matched. The hypothesis fails if mentioned above does not change with property of Adam, or if fixing superior generalization (read as generalization) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.35, novelty 0.60.\n\n30. good match between the complexity preferred and property of Adam may interact in their effect on good generalization.\n[arxiv-2403-02241-p0019] The NRS proposes that good generalization requires a good match between the complexity preferred by the architecture and the target function.\n[arxiv-2505-24022-p0003] Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.\nFalsification test: Vary good match between the complexity preferred and property of Adam separately and together. The hypothesis fails if the joint change in good generalization equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.35, novelty 0.57.\n\n31. Adam may affect networks through richer features (read as simple features).\n[arxiv-2505-24022-p0006] • We conduct extensive experiments on various datasets and show that Adam leads to richer features that are more robust compared to simpler features learned via SGD, allowing Adam to achieve higher test accuracy both in distribution and under certain distribution shifts.\n[arxiv-2311-02622-p0018] HIERARCHICAL SIMPLICITY BIAS OF NEURAL NETWORKS ues illustrate that networks predominantly depend on simple features and largely ignore complex features.\nFalsification test: Compare settings where Adam differs while other inputs are matched. The hypothesis fails if networks does not change with Adam, or if fixing richer features (read as simple features) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.35, novelty 0.56.\n\n32. theory and training with Adam may interact in their effect on Understanding learning in this overparameterized regime.\n[arxiv-2109-02355-p0002] Understanding learning in this overparameterized regime required new theory and foundational empirical studies, even for the simplest case of the linear model.\n[arxiv-2505-24022-p0006] Theoretically, we show that two-layer ReLU NNs trained on a Gaussian mixture data setting (see Fig. 1) with SGD exhibit simplicity bias while training with Adam leads to richer feature learning.\nFalsification test: Vary theory and training with Adam separately and together. The hypothesis fails if the joint change in Understanding learning in this overparameterized regime equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.35, novelty 0.52.\n\n33. ReLU architectures may affect superior generalization through unique property of maintaining their simplicity (read as property of Adam).\n[arxiv-2403-02241-p0014] ReLU architectures have the unique property of maintaining their simplicity bias regardless of weight magnitude.\n[arxiv-2505-24022-p0003] Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.\nFalsification test: Compare settings where ReLU architectures differs while other inputs are matched. The hypothesis fails if superior generalization does not change with ReLU architectures, or if fixing unique property of maintaining their simplicity (read as property of Adam) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.32, novelty 0.60.\n\n34. ReLU networks may affect superior generalization through unique property of maintaining their simplicity (read as property of Adam).\n[arxiv-2403-02241-p0006] ReLU networks also have the unique property of maintaining their simplicity bias for any depth and weight magnitudes.\n[arxiv-2505-24022-p0003] Next, to corroborate our theoretical findings, we present extensive empirical results showing that this property of Adam leads to superior generalization across various datasets with spurious correlations where NNs trained with SGD are known to show simplicity bias and do not generalize well under certain distributional shifts.\nFalsification test: Compare settings where ReLU networks differs while other inputs are matched. The hypothesis fails if superior generalization does not change with ReLU networks, or if fixing unique property of maintaining their simplicity (read as property of Adam) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.32, novelty 0.55.\n\n35. full-batch GD and gradient descent may jointly constrain training loss, so relieving one may shift the bottleneck to the other.\n[arxiv-2505-21423-p0004] At the same time, it was observed for standard architectures that full-batch GD can minimize the training loss even with learning rates that are larger than what classical optimization theory would require (Jastrzebski et al., 2019; Cohen et al., 2021).\n[arxiv-2502-12508-p0016] The assumptions 5 and 7 on η and σ2 k are to ensure that gradient descent can effectively minimize the training loss.\nFalsification test: Relieve full-batch GD alone while measuring training loss. The hypothesis fails if training loss keeps improving without gradient descent becoming the binding limit, or if relieving gradient descent alone has no effect.\nScores: source support 0.55, deductive relevance 0.70, novelty 0.63.\n\n36. gradient descent and Memorization may jointly constrain training loss, so relieving one may shift the bottleneck to the other.\n[arxiv-2502-12508-p0016] The assumptions 5 and 7 on η and σ2 k are to ensure that gradient descent can effectively minimize the training loss.\n[arxiv-2412-07684-p0002] Memorization can reduce training loss to zero, leaving no incentive to learn robust, generalizable patterns.\nFalsification test: Relieve gradient descent alone while measuring training loss. The hypothesis fails if training loss keeps improving without Memorization becoming the binding limit, or if relieving Memorization alone has no effect.\nScores: source support 0.55, deductive relevance 0.70, novelty 0.62.\n\n37. gradient descent and overparameterization may jointly constrain weight norm, so relieving one may shift the bottleneck to the other.\n[arxiv-2511-01938-p0002] In this paper, we argue that post-memorization learning can be understood through the lens of constrained optimization: gradient descent effectively minimizes the weight norm on the zero-loss manifold.\n[arxiv-2108-12006-p0005] The peak in generalization error as the model transitions from underparameterized to overparameterized was rediscovered and phrased in the language of the bias-variance tradeoff in [5], which also named the phenomenon ’double descent.’ While the connection to earlier work is unclear [15, 16], this work invokes the small norm bias of many common training procedures to show that the norm of the solution decreases as the amount of overparameterization increases, which is empirically associated with improvements in generalization performance [17].\nFalsification test: Relieve gradient descent alone while measuring weight norm. The hypothesis fails if weight norm keeps improving without overparameterization becoming the binding limit, or if relieving overparameterization alone has no effect.\nScores: source support 0.55, deductive relevance 0.69, novelty 0.62.\n\n38. ReLU activations suggests may constrain networks through strong simplicity bias (read as implicit bias of SGD).\n[arxiv-2403-02241-p0018] Importance of ReLU activations The fact that a strong simplicity bias depends on ReLU activations suggests that their historical importance in the development of deep learning goes beyond the common narrative about vanishing gradients [42].\n[arxiv-2407-03848-p0006] In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,\nFalsification test: Compare settings where ReLU activations suggests differs while other inputs are matched. The hypothesis fails if networks does not stay bounded with ReLU activations suggests, or if fixing strong simplicity bias (read as implicit bias of SGD) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.67, novelty 0.55.\n\n39. training loss and weight norm may move together because both depend on gradient descent.\n[arxiv-2502-12508-p0016] The assumptions 5 and 7 on η and σ2 k are to ensure that gradient descent can effectively minimize the training loss.\n[arxiv-2511-01938-p0002] In this paper, we argue that post-memorization learning can be understood through the lens of constrained optimization: gradient descent effectively minimizes the weight norm on the zero-loss manifold.\nFalsification test: Track training loss and weight norm across periods where gradient descent changes and where it does not. The hypothesis fails if they co-vary just as strongly when gradient descent is held fixed.\nScores: source support 0.55, deductive relevance 0.65, novelty 0.60.\n\n40. sharpness and weight norm may move together because both depend on gradient descent.\n[arxiv-2103-00065-p0011] By “overwhelming tendency,” we mean that gradient descent can occasionally decrease the sharpness (especially at the beginning of training), but these brief decreases always seem be followed by a return to continual increase.\n[arxiv-2511-01938-p0002] In this paper, we argue that post-memorization learning can be understood through the lens of constrained optimization: gradient descent effectively minimizes the weight norm on the zero-loss manifold.\nFalsification test: Track sharpness and weight norm across periods where gradient descent changes and where it does not. The hypothesis fails if they co-vary just as strongly when gradient descent is held fixed.\nScores: source support 0.55, deductive relevance 0.65, novelty 0.58.\n\n41. sharpness and training loss may move together because both depend on gradient descent.\n[arxiv-2103-00065-p0011] By “overwhelming tendency,” we mean that gradient descent can occasionally decrease the sharpness (especially at the beginning of training), but these brief decreases always seem be followed by a return to continual increase.\n[arxiv-2502-12508-p0016] The assumptions 5 and 7 on η and σ2 k are to ensure that gradient descent can effectively minimize the training loss.\nFalsification test: Track sharpness and training loss across periods where gradient descent changes and where it does not. The hypothesis fails if they co-vary just as strongly when gradient descent is held fixed.\nScores: source support 0.55, deductive relevance 0.65, novelty 0.53.\n\n42. F-Principle and ReLU activations suggests may interact in their effect on implicit bias.\n[arxiv-1901-06523-p0002] The F-Principle implies an implicit bias that DNNs tend to fit training data by a low-frequency function.\n[arxiv-2403-02241-p0018] Importance of ReLU activations The fact that a strong simplicity bias depends on ReLU activations suggests that their historical importance in the development of deep learning goes beyond the common narrative about vanishing gradients [42].\nFalsification test: Vary F-Principle and ReLU activations suggests separately and together. The hypothesis fails if the joint change in implicit bias equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.60, novelty 0.60.\n\n43. having a balance of noise may constrain networks through bias in the random logistic map (read as implicit bias of SGD).\n[arxiv-2401-00593-p0016] From this reasoning, we can conclude that to observe simplicity bias in the random logistic map requires having a balance of noise that is not too large as to overly randomize the trajectories, and not too small as to allow the trajectories to converge to a fixed point with only\n[arxiv-2407-03848-p0006] In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,\nFalsification test: Compare settings where having a balance of noise differs while other inputs are matched. The hypothesis fails if networks does not stay bounded with having a balance of noise, or if fixing bias in the random logistic map (read as implicit bias of SGD) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.59, novelty 0.58.\n\n44. having a balance of noise and ReLU activations suggests may jointly constrain bias in the random logistic map, so relieving one may shift the bottleneck to the other.\n[arxiv-2401-00593-p0016] From this reasoning, we can conclude that to observe simplicity bias in the random logistic map requires having a balance of noise that is not too large as to overly randomize the trajectories, and not too small as to allow the trajectories to converge to a fixed point with only\n[arxiv-2403-02241-p0018] Importance of ReLU activations The fact that a strong simplicity bias depends on ReLU activations suggests that their historical importance in the development of deep learning goes beyond the common narrative about vanishing gradients [42].\nFalsification test: Relieve having a balance of noise alone while measuring bias in the random logistic map. The hypothesis fails if bias in the random logistic map keeps improving without ReLU activations suggests becoming the binding limit, or if relieving ReLU activations suggests alone has no effect.\nScores: source support 0.55, deductive relevance 0.56, novelty 0.63.\n\n45. norm of the solution and optimization may move together because both depend on overparameterization.\n[arxiv-2108-12006-p0005] The peak in generalization error as the model transitions from underparameterized to overparameterized was rediscovered and phrased in the language of the bias-variance tradeoff in [5], which also named the phenomenon ’double descent.’ While the connection to earlier work is unclear [15, 16], this work invokes the small norm bias of many common training procedures to show that the norm of the solution decreases as the amount of overparameterization increases, which is empirically associated with improvements in generalization performance [17].\n[arxiv-2306-13253-p0003] neural networks are highly overparameterized (Allen-Zhu et al., 2019; Zhang et al., 2017), and in some cases, it is observed that overparameterization empirically improves optimization and generalization, which seems to contradict traditional learning theory.\nFalsification test: Track norm of the solution and optimization across periods where overparameterization changes and where it does not. The hypothesis fails if they co-vary just as strongly when overparameterization is held fixed.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.61.\n\n46. F-Principle and having a balance of noise may interact in their effect on implicit bias.\n[arxiv-1901-06523-p0002] The F-Principle implies an implicit bias that DNNs tend to fit training data by a low-frequency function.\n[arxiv-2401-00593-p0016] From this reasoning, we can conclude that to observe simplicity bias in the random logistic map requires having a balance of noise that is not too large as to overly randomize the trajectories, and not too small as to allow the trajectories to converge to a fixed point with only\nFalsification test: Vary F-Principle and having a balance of noise separately and together. The hypothesis fails if the joint change in implicit bias equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.60.\n\n47. understanding the whole trajectory of learning may affect weight norm through epoch-wise double descent (read as gradient descent).\n[arxiv-2407-09845-p0004] Meanwhile, epoch-wise double descent requires understanding the whole trajectory of learning.\n[arxiv-2511-01938-p0002] In this paper, we argue that post-memorization learning can be understood through the lens of constrained optimization: gradient descent effectively minimizes the weight norm on the zero-loss manifold.\nFalsification test: Compare settings where understanding the whole trajectory of learning differs while other inputs are matched. The hypothesis fails if weight norm does not change with understanding the whole trajectory of learning, or if fixing epoch-wise double descent (read as gradient descent) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.58.\n\n48. understanding the whole trajectory of learning may affect training loss through epoch-wise double descent (read as gradient descent).\n[arxiv-2407-09845-p0004] Meanwhile, epoch-wise double descent requires understanding the whole trajectory of learning.\n[arxiv-2502-12508-p0016] The assumptions 5 and 7 on η and σ2 k are to ensure that gradient descent can effectively minimize the training loss.\nFalsification test: Compare settings where understanding the whole trajectory of learning differs while other inputs are matched. The hypothesis fails if training loss does not change with understanding the whole trajectory of learning, or if fixing epoch-wise double descent (read as gradient descent) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.58.\n\n49. noise above a certain threshold may affect weight norm through P3 Epochwise double descent (read as gradient descent).\n[arxiv-2108-12006-p0016] P3 Epochwise double descent requires noise above a certain threshold to occur.\n[arxiv-2511-01938-p0002] In this paper, we argue that post-memorization learning can be understood through the lens of constrained optimization: gradient descent effectively minimizes the weight norm on the zero-loss manifold.\nFalsification test: Compare settings where noise above a certain threshold differs while other inputs are matched. The hypothesis fails if weight norm does not change with noise above a certain threshold, or if fixing P3 Epochwise double descent (read as gradient descent) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.58.\n\n50. noise above a certain threshold may affect training loss through P3 Epochwise double descent (read as gradient descent).\n[arxiv-2108-12006-p0016] P3 Epochwise double descent requires noise above a certain threshold to occur.\n[arxiv-2502-12508-p0016] The assumptions 5 and 7 on η and σ2 k are to ensure that gradient descent can effectively minimize the training loss.\nFalsification test: Compare settings where noise above a certain threshold differs while other inputs are matched. The hypothesis fails if training loss does not change with noise above a certain threshold, or if fixing P3 Epochwise double descent (read as gradient descent) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.58.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

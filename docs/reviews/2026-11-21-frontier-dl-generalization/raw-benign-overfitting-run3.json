@@ -1,0 +1,458 @@
+{
+ "prompt": "Frontier: benign overfitting.",
+ "run": 3,
+ "wall_seconds": 4.867,
+ "python_peak_bytes": 35077925,
+ "answer_status": "shortage",
+ "routing": {
+  "schema": "flag-routing-contract-v1",
+  "executed_nodes": [],
+  "post_stages": [
+   "frontier_snapshot",
+   "frontier_generate",
+   "frontier_abductive",
+   "frontier_deductive",
+   "frontier_pre_thinker",
+   "frontier_rank"
+  ]
+ },
+ "frontier": {
+  "schema": "frontier-v1",
+  "triggered": true,
+  "topic": "benign overfitting",
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "limits": {
+   "max_rounds": 1000,
+   "max_candidates": 200000,
+   "max_edges": 50000,
+   "max_bytes": 67108864,
+   "max_seconds": 20.0,
+   "batch_size": 256,
+   "max_path_edges": 2,
+   "max_results": 50,
+   "min_results": 10
+  },
+  "topic_terms": [
+   "benign",
+   "overfitting"
+  ],
+  "focus_terms": [
+   "benign",
+   "overfitting"
+  ],
+  "chunk_count": 1652,
+  "status": "shortage",
+  "hypotheses": [
+   {
+    "id": "48544edccfb4",
+    "text": "Over-parameterization and Roads may jointly drive interpolation, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "Over-parameterization",
+     "Roads",
+     "interpolation"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2105-14368-p0002",
+     "arxiv-2106-10865-p0001"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2105-14368-p0002",
+      "quote": "Over-parameterization enables interpolation and provides flexibility to select a right interpolating",
+      "start": 561,
+      "end": 661,
+      "chunk_sha256": "b1afa239a30416ae074529c0f6929878c39f155c1c08208925b6f350a631781d",
+      "relation": "increases",
+      "subject": "Over-parameterization",
+      "object": "interpolation",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2106-10865-p0001",
+      "quote": "# Benign Overfitting in Multiclass Classification: All Roads Lead to Interpolation",
+      "start": 0,
+      "end": 82,
+      "chunk_sha256": "8e50b1a6bfe9e1b3559d17582db6921c227dc67b63fd11574bc84b15eae281b2",
+      "relation": "causes",
+      "subject": "Roads",
+      "object": "Interpolation",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.725,
+     "novelty": 0.707
+    },
+    "falsification_test": "Vary Over-parameterization and Roads separately and together. The hypothesis fails if the joint change in interpolation equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "199cb61ed2f8",
+    "text": "Learned activations and three-block transformer first may jointly drive performance, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "Learned activations",
+     "three-block transformer first",
+     "performance"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2503-10065-p0018",
+     "arxiv-2610-16161-p0025"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2503-10065-p0018",
+      "quote": "Learned activations improve performance by helping networks represent more complex functions.",
+      "start": 2431,
+      "end": 2524,
+      "chunk_sha256": "ecafe5d9ad34462706f57ef00c4e42032ec1e930fdb91d4c0bef71176e77c7b3",
+      "relation": "increases",
+      "subject": "Learned activations",
+      "object": "performance",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2610-16161-p0025",
+      "quote": "The three-block transformer first improves performance on held-out tasks, before overfitting to training tasks.",
+      "start": 152,
+      "end": 263,
+      "chunk_sha256": "e8fe5a8ffd929babb503205168db0afec7b14738036e9cae1d96b8c7dcc65ef2",
+      "relation": "increases",
+      "subject": "three-block transformer first",
+      "object": "performance",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.575,
+     "novelty": 0.65
+    },
+    "falsification_test": "Vary Learned activations and three-block transformer first separately and together. The hypothesis fails if the joint change in performance equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "c4214b398738",
+    "text": "learned activations may reduce benign overfitting through phenomenon.",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "learned activations",
+     "benign overfitting"
+    ],
+    "via": [
+     "phenomenon"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2503-10065-p0006",
+     "arxiv-2502-12508-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2503-10065-p0006",
+      "quote": "(4) For grokking tasks, new learned activations can eliminate the phenomenon, supporting the explanation as a mismatch between data and architectures.",
+      "start": 603,
+      "end": 753,
+      "chunk_sha256": "a89952778d8e432f08de72b93b9bf3c5f7697c8c2e394e17a7ce8c65bd381e99",
+      "relation": "decreases",
+      "subject": "learned activations",
+      "object": "phenomenon",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2502-12508-p0003",
+      "quote": "This phenomenon, known as benign overfitting (Bartlett et al., 2020), has altered our traditional understanding of statistical learning and garnered significant attention from both the statistical and machine learning communities (Belkin et al., 2018; 2019; 2020; Neyshabur et al., 2018; Hastie et al., 2020).",
+      "start": 1148,
+      "end": 1457,
+      "chunk_sha256": "2f5dd7a8dab4f5196592a44ad7dccdac582372221a0b0e1b9dc3146280f214cf",
+      "relation": "alias_of",
+      "subject": "phenomenon",
+      "object": "benign overfitting",
+      "hedged": false,
+      "origin": "knowledge_graph"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 1.0,
+     "novelty": 0.586
+    },
+    "falsification_test": "Compare settings where learned activations differs while other inputs are matched. The hypothesis fails if benign overfitting does not fall with learned activations, or if fixing phenomenon removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "25e5c0bea139",
+    "text": "high-dimensional setting and overparametrization may interact in their effect on benign overfitting.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "high-dimensional setting",
+     "overparametrization",
+     "benign overfitting"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2305-14077-p0003",
+     "arxiv-2103-09177-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2305-14077-p0003",
+      "quote": "While benign overfitting in fixed dimension has been established for some learning methods, current literature suggests that for regression with typical kernel methods and wide neural networks, benign overfitting requires a high-dimensional setting where the dimension grows with the sample size.",
+      "start": 249,
+      "end": 545,
+      "chunk_sha256": "13f978986448febb56219c9fbd68f1894d888fb4045706e2a41a204c5f735e32",
+      "relation": "constrains",
+      "subject": "high-dimensional setting",
+      "object": "benign overfitting",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2103-09177-p0002",
+      "quote": "We conjecture that specific principles underlie these phenomena: that overparametrization allows gradient methods to find interpolating solutions, that these methods implicitly impose regularization, and that overparametrization leads to benign overfitting, that is, accurate predictions despite overfitting training data.",
+      "start": 392,
+      "end": 714,
+      "chunk_sha256": "345c023eabf9c000b82b22b50a69557996995634dd0d1e514876884d37c3b2bd",
+      "relation": "causes",
+      "subject": "overparametrization",
+      "object": "benign overfitting",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.85,
+     "novelty": 0.514
+    },
+    "falsification_test": "Vary high-dimensional setting and overparametrization separately and together. The hypothesis fails if the joint change in benign overfitting equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "6fc3497bc101",
+    "text": "overparametrization and overparametrized models may jointly drive benign overfitting, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "overparametrization",
+     "overparametrized models",
+     "benign overfitting"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2103-09177-p0002",
+     "arxiv-1805-08522-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2103-09177-p0002",
+      "quote": "We conjecture that specific principles underlie these phenomena: that overparametrization allows gradient methods to find interpolating solutions, that these methods implicitly impose regularization, and that overparametrization leads to benign overfitting, that is, accurate predictions despite overfitting training data.",
+      "start": 392,
+      "end": 714,
+      "chunk_sha256": "345c023eabf9c000b82b22b50a69557996995634dd0d1e514876884d37c3b2bd",
+      "relation": "causes",
+      "subject": "overparametrization",
+      "object": "benign overfitting",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-1805-08522-p0004",
+      "quote": "Classical learning theory suggests that overparametrized models lead to overfitting, and so poorer generalization performance.",
+      "start": 132,
+      "end": 258,
+      "chunk_sha256": "17504e29aaee731c7fde33018e81e87bdef20178faf9107036a796f15d99b441",
+      "relation": "causes",
+      "subject": "overparametrized models",
+      "object": "overfitting",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.84,
+     "novelty": 0.633
+    },
+    "falsification_test": "Vary overparametrization and overparametrized models separately and together. The hypothesis fails if the joint change in benign overfitting equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "4ed617c7b167",
+    "text": "high-dimensional setting and overparametrized models may interact in their effect on benign overfitting.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "high-dimensional setting",
+     "overparametrized models",
+     "benign overfitting"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2305-14077-p0003",
+     "arxiv-1805-08522-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2305-14077-p0003",
+      "quote": "While benign overfitting in fixed dimension has been established for some learning methods, current literature suggests that for regression with typical kernel methods and wide neural networks, benign overfitting requires a high-dimensional setting where the dimension grows with the sample size.",
+      "start": 249,
+      "end": 545,
+      "chunk_sha256": "13f978986448febb56219c9fbd68f1894d888fb4045706e2a41a204c5f735e32",
+      "relation": "constrains",
+      "subject": "high-dimensional setting",
+      "object": "benign overfitting",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-1805-08522-p0004",
+      "quote": "Classical learning theory suggests that overparametrized models lead to overfitting, and so poorer generalization performance.",
+      "start": 132,
+      "end": 258,
+      "chunk_sha256": "17504e29aaee731c7fde33018e81e87bdef20178faf9107036a796f15d99b441",
+      "relation": "causes",
+      "subject": "overparametrized models",
+      "object": "overfitting",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.78,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary high-dimensional setting and overparametrized models separately and together. The hypothesis fails if the joint change in benign overfitting equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   },
+   {
+    "id": "a104f2584900",
+    "text": "neural networks could also help us and three-block transformer first may jointly drive performance, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "neural networks could also help us",
+     "three-block transformer first",
+     "performance"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2511-01938-p0003",
+     "arxiv-2610-16161-p0025"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2511-01938-p0003",
+      "quote": "Moreover, understanding the learning dynamics of neural networks could also help us improve their performance and efficiency: it is easier to design better learning algorithms when we understand the limitations of the existing ones.",
+      "start": 278,
+      "end": 510,
+      "chunk_sha256": "78793fa8332d61d2a2fca67621d9ebde6d953f1f912c1e3a876d6ca6fca960b2",
+      "relation": "increases",
+      "subject": "neural networks could also help us",
+      "object": "performance",
+      "hedged": true,
+      "origin": "frontier_lexicon"
+     },
+     {
+      "document_id": "arxiv-2610-16161-p0025",
+      "quote": "The three-block transformer first improves performance on held-out tasks, before overfitting to training tasks.",
+      "start": 152,
+      "end": 263,
+      "chunk_sha256": "e8fe5a8ffd929babb503205168db0afec7b14738036e9cae1d96b8c7dcc65ef2",
+      "relation": "increases",
+      "subject": "three-block transformer first",
+      "object": "performance",
+      "hedged": false,
+      "origin": "frontier_lexicon"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.575,
+     "novelty": 0.642
+    },
+    "falsification_test": "Vary neural networks could also help us and three-block transformer first separately and together. The hypothesis fails if the joint change in performance equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null
+   }
+  ],
+  "survivors": 7,
+  "candidates_generated": 41,
+  "candidates_passed": {
+   "abductive": 24,
+   "deductive": 24,
+   "pre_thinker": 7
+  },
+  "candidates_rejected": {
+   "abductive:incoherent_composition": 4,
+   "abductive:no_explanatory_relation": 13,
+   "pre_thinker:circular": 1,
+   "pre_thinker:malformed": 13,
+   "pre_thinker:single_source": 3
+  },
+  "relation_edges": 636,
+  "scoped_edges": 35,
+  "budget_used": {
+   "rounds": 1,
+   "candidates": 41,
+   "edges": 636,
+   "bytes": 302257,
+   "seconds": 4.766
+  },
+  "incomplete": false,
+  "stop_reason": null,
+  "shortage": {
+   "returned": 7,
+   "target_min": 10,
+   "reason": "Fewer candidates survived the filters than the target; the list is not padded."
+  },
+  "snapshot": {
+   "as_of": 1795250152,
+   "chunk_count": 1652
+  }
+ },
+ "reply": "Frontier hypotheses for benign overfitting. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 41. Passed abductive check: 24; deductive check: 24; pre-thinker validation: 7.\n\n1. Over-parameterization and Roads may jointly drive interpolation, and their effects may compound.\n[arxiv-2105-14368-p0002] Over-parameterization enables interpolation and provides flexibility to select a right interpolating\n[arxiv-2106-10865-p0001] # Benign Overfitting in Multiclass Classification: All Roads Lead to Interpolation\nFalsification test: Vary Over-parameterization and Roads separately and together. The hypothesis fails if the joint change in interpolation equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.72, novelty 0.71.\n\n2. Learned activations and three-block transformer first may jointly drive performance, and their effects may compound.\n[arxiv-2503-10065-p0018] Learned activations improve performance by helping networks represent more complex functions.\n[arxiv-2610-16161-p0025] The three-block transformer first improves performance on held-out tasks, before overfitting to training tasks.\nFalsification test: Vary Learned activations and three-block transformer first separately and together. The hypothesis fails if the joint change in performance equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.65.\n\n3. learned activations may reduce benign overfitting through phenomenon.\n[arxiv-2503-10065-p0006] (4) For grokking tasks, new learned activations can eliminate the phenomenon, supporting the explanation as a mismatch between data and architectures.\n[arxiv-2502-12508-p0003] This phenomenon, known as benign overfitting (Bartlett et al., 2020), has altered our traditional understanding of statistical learning and garnered significant attention from both the statistical and machine learning communities (Belkin et al., 2018; 2019; 2020; Neyshabur et al., 2018; Hastie et al., 2020).\nFalsification test: Compare settings where learned activations differs while other inputs are matched. The hypothesis fails if benign overfitting does not fall with learned activations, or if fixing phenomenon removes no part of the effect.\nScores: source support 0.55, deductive relevance 1.00, novelty 0.59.\n\n4. high-dimensional setting and overparametrization may interact in their effect on benign overfitting.\n[arxiv-2305-14077-p0003] While benign overfitting in fixed dimension has been established for some learning methods, current literature suggests that for regression with typical kernel methods and wide neural networks, benign overfitting requires a high-dimensional setting where the dimension grows with the sample size.\n[arxiv-2103-09177-p0002] We conjecture that specific principles underlie these phenomena: that overparametrization allows gradient methods to find interpolating solutions, that these methods implicitly impose regularization, and that overparametrization leads to benign overfitting, that is, accurate predictions despite overfitting training data.\nFalsification test: Vary high-dimensional setting and overparametrization separately and together. The hypothesis fails if the joint change in benign overfitting equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.85, novelty 0.51.\n\n5. overparametrization and overparametrized models may jointly drive benign overfitting, and their effects may compound.\n[arxiv-2103-09177-p0002] We conjecture that specific principles underlie these phenomena: that overparametrization allows gradient methods to find interpolating solutions, that these methods implicitly impose regularization, and that overparametrization leads to benign overfitting, that is, accurate predictions despite overfitting training data.\n[arxiv-1805-08522-p0004] Classical learning theory suggests that overparametrized models lead to overfitting, and so poorer generalization performance.\nFalsification test: Vary overparametrization and overparametrized models separately and together. The hypothesis fails if the joint change in benign overfitting equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.84, novelty 0.63.\n\n6. high-dimensional setting and overparametrized models may interact in their effect on benign overfitting.\n[arxiv-2305-14077-p0003] While benign overfitting in fixed dimension has been established for some learning methods, current literature suggests that for regression with typical kernel methods and wide neural networks, benign overfitting requires a high-dimensional setting where the dimension grows with the sample size.\n[arxiv-1805-08522-p0004] Classical learning theory suggests that overparametrized models lead to overfitting, and so poorer generalization performance.\nFalsification test: Vary high-dimensional setting and overparametrized models separately and together. The hypothesis fails if the joint change in benign overfitting equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.78, novelty 0.60.\n\n7. neural networks could also help us and three-block transformer first may jointly drive performance, and their effects may compound.\n[arxiv-2511-01938-p0003] Moreover, understanding the learning dynamics of neural networks could also help us improve their performance and efficiency: it is easier to design better learning algorithms when we understand the limitations of the existing ones.\n[arxiv-2610-16161-p0025] The three-block transformer first improves performance on held-out tasks, before overfitting to training tasks.\nFalsification test: Vary neural networks could also help us and three-block transformer first separately and together. The hypothesis fails if the joint change in performance equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.64.\n\nOnly 7 hypotheses survived the filters (target at least 10). The list is not padded.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

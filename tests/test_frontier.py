@@ -408,3 +408,9 @@ def test_argument_relations_compose_by_sign():
     assert any('Integrated information theory may support intrinsic nature view through panpsychism' in t for t in texts)
     assert 'combination problem may undermine intrinsic nature view through panpsychism.' in texts
     assert any('may be cancelled by combination problem' in t for t in texts)
+
+
+def test_double_descent_is_a_term_not_a_cue():
+    assert list(lexical_relations('Model-wise double descent occurs near the interpolation threshold.')) == []
+    [(_, kind, obj, _, _)] = list(lexical_relations('Compute demand doubles every year.'))
+    assert kind == 'increases'
