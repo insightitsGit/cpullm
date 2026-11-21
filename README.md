@@ -55,6 +55,8 @@ Question + authorized knowledge base
        +-- Invention ---> Propose hypotheses, or cite stored sentences
        +-- Nammade -----> Compare authorized passages and quote excerpts
        +-- Abductive ---> Unverified hypotheses and shared-constant checks
+  |
+  +-- Frontier ---------> 10 to 50 ranked, cited hypotheses across the whole KB
 ```
 
 ## Verification contract compared with generative RAG
@@ -469,6 +471,7 @@ See the [architecture](docs/current-design.md) and [prompt-to-node mapping](docs
 - `Infer whether Kestrel requires a radio.` explicitly requests registered deduction over the authorized snapshot. Supported ordinary questions can attach an inference receipt from retrieved evidence; their normal answer is preserved. Strict ordinary questions keep their quotation route.
 - `Temporal: sources: dates-p0000, dates-p0001`, `Induction: sources: trial-p0000, trial-p0001`, and `Abduction: sources: research-p0000, research-p0001, research-p0002` select structured analyses. The referenced chunks must already contain the documented JSON records. These source-only additions are described in the [inference guide](inference-guide.md).
 - `List chunks for notes.pdf.` opens scoped inventory. `Delete chunk notes-p0001.` opens a preview. The deletion API handles confirmation.
+- `Frontier: AI energy bottlenecks.`, `app.ask(topic, frontier=True)` or `"frontier": true` over HTTP runs the Frontier node: ranked, cited `UNVERIFIED_HYPOTHESIS` entries built from relations across the whole authorized knowledge base. See [Frontier](#frontier-ranked-hypotheses-across-a-knowledge-base-unreleased).
 
 Inspect `routing.executed_nodes` for graph execution and `routing.post_stages`
 where available for work outside the graph. See the
@@ -699,6 +702,79 @@ Its brackets describe transitions between sampled points. See the
 [constraint evaluator spec](docs/invention-constraint-evaluator-spec.md) for the
 full scan inputs, reported limits, and interpretation.
 
+## Frontier: ranked hypotheses across a knowledge base (unreleased)
+
+Frontier proposes possibilities that no single source states. It reads one
+authorized snapshot and collects the relations its sources state, such as
+"A limits B", "B drives C" or "X undermines Y". It then tries every combination
+of those relations around a topic, within budgets, and keeps a candidate only if
+it passes three checks:
+
+1. **Abductive.** The relations combine into a coherent explanation.
+2. **Deductive.** Every premise is an exact source span, nothing in the sources
+   negates the premises or the conclusion, and the registered rule engine does
+   not contradict it.
+3. **Pre-thinker.** The candidate is not malformed, circular, drawn from one
+   source, or a restatement of one source sentence.
+
+Survivors are ranked by source support, then deductive relevance, then
+novelty. All three scores are shown.
+
+```python
+reply = app.ask("Frontier: grokking.")                    # prompt form
+reply = app.ask("grokking", frontier=True)                # Python flag
+reply = app.ask("grokking", frontier={"topic": "grokking",
+                                       "limits": {"max_path_edges": 3, "max_seconds": 60}})
+receipt = reply["frontier"]
+receipt["status"]                 # hypotheses, shortage, insufficient_evidence, ...
+receipt["candidates_generated"], receipt["candidates_passed"]   # per filter
+receipt["incomplete"], receipt["budget_used"]
+for item in receipt["hypotheses"]:
+    item["text"], item["scores"], item["citations"], item["falsification_test"]
+```
+
+Over HTTP, send `{"message": "grokking", "frontier": true}` to `/v1/ask`.
+
+- **Output.** Between 10 and 50 entries, with 50 as the hard cap. If fewer survive,
+  `status` is `shortage` and the list is not padded. Each entry carries its
+  hypothesis text, cited source IDs and exact quotes, the three scores, its
+  assumptions and a falsification test.
+- **Contract.** Every entry is an `UNVERIFIED_HYPOTHESIS` with
+  `promotion: blocked`. Nothing is written to the index. The standard invention
+  note is appended. Strict evidence mode disables Frontier.
+- **Budgets.** Round, candidate, edge, memory and time limits apply. The defaults
+  are 1,000 rounds of 256 candidates, 200,000 candidates and 60 s. A stopped run
+  sets `incomplete: true` and says so in the reply.
+- **Reading the sources.**
+  - With spaCy and an English model installed (the `prompt_nlp` extra plus
+    `en_core_web_lg` or `en_core_web_sm`), relations come from a dependency
+    parse. Otherwise a regex reader is used. `FRONTIER_PARSER` selects a model or
+    `regex`.
+  - When the appliance has an encoder, a link between two different terms with
+    the same head noun must pass a cosine check.
+  - At most three of the leading entries may share one term.
+- **Who judges.** Frontier generates, filters and ranks. A person decides whether
+  a hypothesis is true or worth pursuing, using the cited passages and the
+  falsification test.
+
+Example from the deep-learning generalization evaluation (106 arXiv papers).
+The two cited papers each state one premise; neither states the conclusion:
+
+> Additional noise may reduce generalization error for diagonal linear networks
+> through implicit bias. Scores: source support 0.80, deductive relevance 0.75,
+> novelty 0.53. Sources: arXiv 2402.08344, 2505.21423.
+
+Evaluations so far are in
+[docs/reviews/2026-11-21-frontier](docs/reviews/2026-11-21-frontier/report.md)
+(AI bottlenecks, with held-out findings),
+[deep-learning generalization](docs/reviews/2026-11-21-frontier-dl-generalization/report.md),
+[consciousness](docs/reviews/2026-11-21-frontier-consciousness/report.md) and the
+[before/after comparison](docs/reviews/2026-11-21-frontier-v2/report.md).
+
+On these corpora, a minority of entries are strong research leads and many are
+weak. Treat the list as candidates to screen, not as findings. Design and
+decisions: [Frontier design](docs/frontier-node-design.md).
+
 ## Quickstart and reproduction
 
 Python 3.11+ is required. Release checks used Windows/Python 3.12.10.
@@ -875,6 +951,9 @@ for the intended application.
   Saving that article did not run a physics audit.
 - [Abductive bridge node](docs/abductive-bridge-node.md). It compiles one
   unverified relation from Nammade comparisons, or it abstains.
+- [Frontier node design](docs/frontier-node-design.md) and the
+  [Frontier evaluation reports](docs/reviews/2026-11-21-frontier-v2/report.md).
+  It returns ranked, cited, unverified hypotheses across a knowledge base.
 
 - [1.11.1 release notes](docs/releases/1.11.1.md) and [build validation](docs/releases/1.11.1-build-validation.md).
 - [Whitepaper](https://www.insightits.com/research-tools/cpu-llm/whitepaper) and [1.11.1 PDF](https://www.insightits.com/assets/whitepapers/cpu-llm-1.11.1-whitepaper.pdf).
