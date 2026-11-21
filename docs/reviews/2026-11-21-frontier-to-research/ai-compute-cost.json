@@ -1,0 +1,713 @@
+{
+ "prompt": "Frontier: AI compute cost.",
+ "namespace": "ai_bottlenecks_frontier",
+ "frontier_seconds": 44.61,
+ "frontier_status": "hypotheses",
+ "frontier_returned": 50,
+ "chained": [
+  {
+   "rank": 1,
+   "frontier_hypothesis": {
+    "id": "d78881919879",
+    "text": "compute may constrain AI model capabilities through single training run (read as final training run).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "compute",
+     "AI model capabilities"
+    ],
+    "via": [
+     "single training run (read as final training run)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-08797-p0023",
+     "arxiv-2405-21015-p0009"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-08797-p0023",
+      "quote": "Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.",
+      "start": 161,
+      "end": 357,
+      "chunk_sha256": "7e346f2bd74ec7647d0e65a3a852243eccabbaa574bbbb51a63b94d0c0d49cd8",
+      "relation": "constrains",
+      "subject": "compute",
+      "object": "single training run",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2405-21015-p0009",
+      "quote": "2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.",
+      "start": 421,
+      "end": 612,
+      "chunk_sha256": "5fe1a7ed7f611503d52f84a850d3abbabf1f1466503c0868015dcb0da68892a7",
+      "relation": "constrains",
+      "subject": "final training run",
+      "object": "AI model capabilities",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.908,
+     "novelty": 0.477
+    },
+    "falsification_test": "Compare settings where compute differs while other inputs are matched. The hypothesis fails if AI model capabilities does not stay bounded with compute, or if fixing single training run (read as final training run) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "single training run"
+   },
+   "seed": "Investigate compute, single training run and AI model capabilities.",
+   "research_seconds": 1.19,
+   "research": {
+    "answer_status": "research_question",
+    "stages": [
+     "taxonomy_invention",
+     "research_hypotheses",
+     "nammade_equilibrium",
+     "abductive_bridge",
+     "inference"
+    ],
+    "research_methods": {
+     "innovation": {
+      "outcome": "research_question"
+     },
+     "hypothesis_generation": {
+      "option_count": 3
+     },
+     "nammade": {
+      "outcome": "nammade"
+     },
+     "abductive_bridge": {
+      "status": "NO_GAP",
+      "promotion": "blocked"
+     },
+     "inference": {
+      "outcome": "no_applicable_rule",
+      "proof_count": 0
+     }
+    },
+    "research_question": null,
+    "proposals": [],
+    "source_context": [
+     {
+      "document_id": "arxiv-2001-08361-p0002",
+      "quote": "These relationships allow us to determine the optimal allocation of a fixed compute budget."
+     },
+     {
+      "document_id": "arxiv-2007-00072-p0002",
+      "quote": "Training one is a very compute-intensive task, often taking days or weeks, and significant attention has been given to optimizing transformers."
+     },
+     {
+      "document_id": "arxiv-2007-05558-p0004",
+      "quote": "Our analysis differs from previous ones in that we are (i) more precise in the models we compare than are many high-level historical analyses, which allows us to better understand how performance changes as computing scales up, and (ii) better able to account for innovation in the field than estimates where researchers have tested scaling by varying the compute used in training their own models."
+     },
+     {
+      "document_id": "arxiv-2007-05558-p0027",
+      "quote": "also observe a correlation between compute and performance, but there has not been enough variation in computing power for us to reliably estimate the slope."
+     }
+    ],
+    "hypothesis_options": [
+     {
+      "document_id": "arxiv-2405-10799-p0007",
+      "prediction": "While high training compute generally indicates increased model capabilities and potential risks, some high-compute models may pose minimal concerns, whereas certain low-compute models could present significant risks (with the latter partially addressed through complementary non-GPAI regulations).",
+      "span_hash": "1d19bdb14ebd5b64ba2a30f348aa4774e8d2e1a3230f0d031ffdbf1afc15e6dc",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2405-10799-p0007",
+      "prediction": "However, compute thresholds alone should generally not determine which mitigation measures are ultimately required, given that compute is only a crude proxy for model capabilities and an even cruder proxy for risks of large-scale societal harm.",
+      "span_hash": "77c5a0ea8b81c8e3daac6686e24781c62cd40b80ea6b8e5a217d7165b288a0bc",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2405-10799-p0016",
+      "prediction": "While post-training enhancements can significantly increase a model’s capabilities, this should not be considered directly when designing a compute threshold, but only indirectly as discussed in Section 6.1.",
+      "span_hash": "4da1a5849a765117b91f189bb1f382352593766c0b4c7c57ae46a8ae0b574f71",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     }
+    ],
+    "nammade_comparisons": 32,
+    "abductive_bridge": {
+     "status": "NO_GAP",
+     "candidate": null,
+     "abstention_reason": "The diagnostic comparisons do not show incompatible bounds.",
+     "contradiction_source_ids": []
+    },
+    "research_inference": "no_applicable_rule",
+    "reply": "Three research methods ran in parallel on the same authorized sources.\n\n### Innovation\nLooks for new proposals grounded in relationships across source passages.\nResearch question: For compute, single training run and AI model capabilities, can a candidate explanation reproduce the outcome described in the sources while satisfying their stated constraints?\nIdentify a model that predicts the outcome and an independently measured observable. Find the empirical bounds and check which model parameters can satisfy both.\nSource context:\n[arxiv-2001-08361-p0002] These relationships allow us to determine the optimal allocation of a fixed compute budget.\n[arxiv-2007-00072-p0002] Training one is a very compute-intensive task, often taking days or weeks, and significant attention has been given to optimizing transformers.\n[arxiv-2007-05558-p0004] Our analysis differs from previous ones in that we are (i) more precise in the models we compare than are many high-level historical analyses, which allows us to better understand how performance changes as computing scales up, and (ii) better able to account for innovation in the field than estimates where researchers have tested scaling by varying the compute used in training their own models.\n[arxiv-2007-05558-p0027] also observe a correlation between compute and performance, but there has not been enough variation in computing power for us to reliably estimate the slope.\n\n### Hypothesis generation\nSurfaces source predictions or combines cited premises into a proposed test.\nEach item below is a separate option.\nH1. (Source prediction) While high training compute generally indicates increased model capabilities and potential risks, some high-compute models may pose minimal concerns, whereas certain low-compute models could present significant risks (with the latter partially addressed through complementary non-GPAI regulations).\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH2. (Source prediction) However, compute thresholds alone should generally not determine which mitigation measures are ultimately required, given that compute is only a crude proxy for model capabilities and an even cruder proxy for risks of large-scale societal harm.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH3. (Source prediction) While post-training enhancements can significantly increase a model’s capabilities, this should not be considered directly when designing a compute threshold, but only indirectly as discussed in Section 6.1.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\n\n### Nammade comparison\nCompares passages under the Nammade model and records displacement, residuals, and density.\nComparisons returned — 32.\nRelevant source excerpts\n\n[arxiv-2402-08797-p0022] In the development phase, AI systems are designed, trained, and enhanced. Design involves determining the general characteristics of an AI model (e.g., how many layers the neural network will have), the dataset that will be used, and how to train the model (e.g., how many times to “look at” each data point). Training is a process that involves learning from vast amounts of data, often sourced from the internet (e.g., public domain websites or images). Other “enhancements” like fine-tuning and reinforcement learning from human feedback are also effective at increasing the usefulness and capabilities of an AI system. Enhancement typically requires much less compute than pre-training. A trained model can then be distributed and deployed for various applications, marking the beginning of the deployment phase. In this phase, the model performs “inferences” by processing inputs and making predictions (e.g., about which word would come next in a sentence, or what the answer to a question is). The inference compute needed for deployment is essentially a product of the architecture and parameter size of the model and the number of instances of the model being deployed. Although there are many methods to make inference more efficient,16 it is reasonable to say that, all things being equal, larger and more performant AI systems require higher compute budgets for a single inference. Often, trained models are deployed as part of a larger AI system, which includes non-machine-learning components (like user interfaces and\n\n[arxiv-2403-14123-p0006] Training FLOPs Scaling for SOTA Models (b) Fig. 2: (a) The evolution of the number of parameters of state-of-the-art (SOTA) models over the years, along with the AI accelerator memory capacity (green dots). The number of parameters in large Transformer models has been exponentially increasing with a factor of 410× every two years, while the single GPU memory has only been scaled at a rate of 2× every 2 years. The growth rate for the Transformer models is calculated by only considering the non-recommendation system models (red circles), and the GPU memory is plotted by dividing the corresponding memory size by 6 as an approximate upper bound for the largest model that can be trained with the corresponding capacity. (b) The amount of compute, measured in Peta FLOPs, needed to train SOTA models, for different computer vision (CV), natural language processing (NLP), and Speech models, along with the different scaling of Transformer models (750×/2yrs).2 grade AI hardware has changed since 1998 when Yann Lecun trained the famous Lenet-5 model on MNIST data [22]. We can see that the peak compute of the hardware has increased by 60,000× over the past 20 years, as opposed to a 100× increase for DRAM or a 30× increase for interconnect bandwidth. This entails different levels of memory data transfer. For example, data transfer between compute logic and on-chip memory, or between compute logic and DRAM memory, or across different processors on different sockets. In all these cases, the capacity and the speed of data transfer has been significantly lagging behind hardware compute capabilities. Even though compute / floating-point operations (FLOPs)3 needed to train these recent models has increased by a factor of 750×/2yrs in the 2018-2022 time frame (see Figure 2), compute is not necessarily the bottleneck, especially for model serving. First, the LLM sizes have scaled at a rate of 410×/2yrs in that time frame, exceeding memory available on single chip. However, distributing the work over multiple processes can also face the memory wall problem: 3Please note that we use FLOPs with lowercase s to denote the number of floating point operations needed to perform a task, and FLOPS with capital S to denote the rate at which a given hardware can perform floating point\n\n[arxiv-2007-05558-p0034] The Computational Limits of Deep Learning First, our analysis has more specificity in its comparison set because we examine performance within particular deep learning benchmarks rather than across domains. This contrasts, for example, with [35, 48, 61] that aggregate analysis across different deep learning benchmarks and domains, and therefore do not distinguish between increases in computational burden within particular tasks (e.g. image classification on ImageNet) and the application of deep learning to more computationally-intensive sub-fields (e.g. playing Go). In contrast with those papers, we are able to measure the growth in computational burden that has been needed to get better performance on particular benchmarks. Second, our analysis tracks the evolution of performance in each field differently than within model studies where authors examine trade-offs by implementing many different model configurations [62, 63, 64, 67, 66, 65]. The weakness of these experimental studies is that the ‘space’ of potential models they explore is limited to what the authors implement themselves — for example [65] only considers particular network architectures and [62] only studies language models that use the Adam optimizer. Therefore these experimental approaches necessarily miss innovations that those authors did not consider or that take deep learning in new directions. These exclusions hinder the ability of those scaling studies to capture progress over time, whereas our across models approach is able to capture the innovations that are missed by these experimental studies. In general, one would expect that our analysis would show faster performance gains from increased computing power than other studies because while both capture the improvements from scaling within models, our also accounts for innovation over time that could further improve on this performance. In practice, however, this is not what we see. While some studies do show slower model scaling than we show for the field, others show faster scaling. We hypothesize that this inconsistency arises because of differences in measurement approaches, depending on whether scaling is determined by how performance scales with additional computation versus how it scales with less. These approaches sound like they might be symmetric, but they are not. Put simply, the ‘scaling up’ approach measures improvements to the state of the art, whereas the ‘scaling down’ approach measures performance deterioration. To see this, we consider each in turn. The scaling up approach measures how performance changes as computing power increases. A scaling up approach naturally emerges from observational analyses, like ours, where both performance and computational power are increasing over time. Observing this same estimate (i.e. slope) has a less clear implication when scaling down a state-of-the-art model to see how it performs with less computation. In this latter case, a steep slope (“good scaling”) simply means that smaller models are farther from the frontier of what is possible. A simple example illustrates how misleading this can be: imagine a state-of-the-art model that, if it used one flop less for training, became useless (i.e. would have an error rate = 100%). Such a hypothetical system would have an enormous change in performance from a small change in computing, so it would seem to scale enormously well. But, in reality, the system simply breaks when it uses less computation. A less extreme example of this seems to be the case with ResNet scaling[63], which nominally shows dramatically better scaling than the field as a whole (i.e., to get a performance improvement requires compute to only grows to the power of 5.6, whereas for the field it grows by 12.2). In practice, however, these models are not competitive for state-of-the-art performance (as shown in Figure 4) and the rapid scaling just seems to indicate that their relative performance deteriorates more quickly as less computation is used. The example of NasNets provides an alternative way to understand why we hypothesize that models will not scale up. The class of NasNet models reports to have vastly better scaling than the field as a whole. If one projects this reported scaling, it would indicate that a (hypothetical) NasNet using the same amount of computation as one of the largest vision models (XCiT-L24) should achieve an error rate of 6.85%, handily beating the actual state of the art by more than 2%. That we do not see NasNets easily beating state-of-the-art models is strongly suggestive that they do not in fact scale up this well. The problem of misinterpreting rapidly deteriorating performance as an indication of good scaling is not limited to deep learning. Similar issues arise in studies of parallelism and lead to perverse conclusions including a parallel algorithm that ‘scales well’ being run on 128 cores and being outperformed by a serial algorithm running on a single core [71]. To avoid having deep learning studies fall prey to this same defect, it is important to analyze how models scale up and to compare such performance across models so that deteriorating performance is not misinterpreted as a virtue. With this conceptual framework, we can consider how our results compare to other scaling studies. Our results notionally agree with the power law growths found by the experimental studies of [62] and [72], and the rapid growth (appearing to be approximately exponential) indicated by the plots in [65]. But we can also be more quantitative, comparing our\n\nNammade equilibrium scan. Channel labels compare the query with stored spans. They do not verify a physical law.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+   }
+  },
+  {
+   "rank": 2,
+   "frontier_hypothesis": {
+    "id": "6002af1d5e82",
+    "text": "matrix vector products may constrain AI applications through compute.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "matrix vector products",
+     "AI applications"
+    ],
+    "via": [
+     "compute"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-17323-p0023",
+     "arxiv-2402-08797-p0019"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-17323-p0023",
+      "quote": "Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products.",
+      "start": 1438,
+      "end": 1570,
+      "chunk_sha256": "3a4b6b83e44488b6e9a404f0ab9294c350d52d2fd7ef516c9dd3da5d360183b6",
+      "relation": "constrains",
+      "subject": "matrix vector products",
+      "object": "compute",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2402-08797-p0019",
+      "quote": "However, it is important to note that not all AI applications require vast amounts of compute; specialized AI systems have displayed impressive abilities in some domains, even by using much less compute",
+      "start": 458,
+      "end": 660,
+      "chunk_sha256": "b06c40ca3922bb7438b38cc73ee7d591a089c739716a0d05d637c873f3058114",
+      "relation": "constrains",
+      "subject": "compute",
+      "object": "AI applications",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.833,
+     "novelty": 0.663
+    },
+    "falsification_test": "Compare settings where matrix vector products differs while other inputs are matched. The hypothesis fails if AI applications does not stay bounded with matrix vector products, or if fixing compute removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "compute"
+   },
+   "seed": "Investigate matrix vector products, compute and AI applications.",
+   "research_seconds": 1.11,
+   "research": {
+    "answer_status": "research_question",
+    "stages": [
+     "taxonomy_invention",
+     "research_hypotheses",
+     "nammade_equilibrium",
+     "abductive_bridge",
+     "inference"
+    ],
+    "research_methods": {
+     "innovation": {
+      "outcome": "research_question"
+     },
+     "hypothesis_generation": {
+      "option_count": 3
+     },
+     "nammade": {
+      "outcome": "nammade"
+     },
+     "abductive_bridge": {
+      "status": "NO_GAP",
+      "promotion": "blocked"
+     },
+     "inference": {
+      "outcome": "no_applicable_rule",
+      "proof_count": 0
+     }
+    },
+    "research_question": null,
+    "proposals": [],
+    "source_context": [
+     {
+      "document_id": "arxiv-1704-04760-p0002",
+      "quote": "The TPU's deterministic execution model is a better match to the 99th-percentile response-time requirement of our NN applications than are the time-varying optimizations of CPUs and GPUs (caches, out-of-order execution, multithreading, multiprocessing, prefetching, ...) that help average throughput more than guaranteed latency."
+     },
+     {
+      "document_id": "arxiv-2001-08361-p0002",
+      "quote": "These relationships allow us to determine the optimal allocation of a fixed compute budget."
+     },
+     {
+      "document_id": "arxiv-2007-00072-p0002",
+      "quote": "Training one is a very compute-intensive task, often taking days or weeks, and significant attention has been given to optimizing transformers."
+     },
+     {
+      "document_id": "arxiv-2007-05558-p0004",
+      "quote": "Our analysis differs from previous ones in that we are (i) more precise in the models we compare than are many high-level historical analyses, which allows us to better understand how performance changes as computing scales up, and (ii) better able to account for innovation in the field than estimates where researchers have tested scaling by varying the compute used in training their own models."
+     }
+    ],
+    "hypothesis_options": [
+     {
+      "document_id": "arxiv-2212-05153-p0008",
+      "prediction": "This favorable scaling behavior might manifest both in forms of overall compute efficiency, but also in the form of relying heavily on optimized matrix multiplications and other parallelizable pieces in new models, as parallelizing the same amount of training compute becomes an important source of",
+      "span_hash": "9ecc6b755fd76e7c44e2344a9ff4d69aa2a7860a9e11932d9895b0bfdf58d9e0",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2010-15581-p0010",
+      "prediction": "Every researcher used the same hardware because they expected that the available compute would continue to increase at a predictable rate.",
+      "span_hash": "b9448b27ea3c1bd48d676c2a13442b16fabff2f2c24cc85d557de6d4ef5ea858",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2010-15581-p0015",
+      "prediction": "Research Equipment and the De-Democratization of Knowledge Production After discussing how modern AI is particularly dependent on human capital, compute, and data, we rely on economics of science literature to build a simple model to predict the potential consequences of the rise of deep learning on organizational participation.",
+      "span_hash": "c7e7ab0fea5eba4cfad651268cae009eaec0715695b01c26b309bacf34b88748",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     }
+    ],
+    "nammade_comparisons": 32,
+    "abductive_bridge": {
+     "status": "NO_GAP",
+     "candidate": null,
+     "abstention_reason": "The diagnostic comparisons do not show incompatible bounds.",
+     "contradiction_source_ids": []
+    },
+    "research_inference": "no_applicable_rule",
+    "reply": "Three research methods ran in parallel on the same authorized sources.\n\n### Innovation\nLooks for new proposals grounded in relationships across source passages.\nResearch question: For matrix vector products, compute and AI applications, can a candidate explanation reproduce the outcome described in the sources while satisfying their stated constraints?\nIdentify a model that predicts the outcome and an independently measured observable. Find the empirical bounds and check which model parameters can satisfy both.\nSource context:\n[arxiv-1704-04760-p0002] The TPU's deterministic execution model is a better match to the 99th-percentile response-time requirement of our NN applications than are the time-varying optimizations of CPUs and GPUs (caches, out-of-order execution, multithreading, multiprocessing, prefetching, ...) that help average throughput more than guaranteed latency.\n[arxiv-2001-08361-p0002] These relationships allow us to determine the optimal allocation of a fixed compute budget.\n[arxiv-2007-00072-p0002] Training one is a very compute-intensive task, often taking days or weeks, and significant attention has been given to optimizing transformers.\n[arxiv-2007-05558-p0004] Our analysis differs from previous ones in that we are (i) more precise in the models we compare than are many high-level historical analyses, which allows us to better understand how performance changes as computing scales up, and (ii) better able to account for innovation in the field than estimates where researchers have tested scaling by varying the compute used in training their own models.\n\n### Hypothesis generation\nSurfaces source predictions or combines cited premises into a proposed test.\nEach item below is a separate option.\nH1. (Source prediction) This favorable scaling behavior might manifest both in forms of overall compute efficiency, but also in the form of relying heavily on optimized matrix multiplications and other parallelizable pieces in new models, as parallelizing the same amount of training compute becomes an important source of\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH2. (Source prediction) Every researcher used the same hardware because they expected that the available compute would continue to increase at a predictable rate.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH3. (Source prediction) Research Equipment and the De-Democratization of Knowledge Production After discussing how modern AI is particularly dependent on human capital, compute, and data, we rely on economics of science literature to build a simple model to predict the potential consequences of the rise of deep learning on organizational participation.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\n\n### Nammade comparison\nCompares passages under the Nammade model and records displacement, residuals, and density.\nComparisons returned — 32.\nRelevant source excerpts\n\n[arxiv-2210-17323-p0023] Table 5: Results summary for OPT-175B and BLOOM-176B. “g1024” and “g128” denote results with groupings of size 1024 and 128, respectively. Practical Speedups. Finally, we study practical applications. As an interesting use-case, we focus on the OPT-175B model: quantized to 3 bits, this model takes approximately 63GB of memory, including the embeddings and the output layer, which are kept in full FP16 precision. Additionally, storing the complete history of keys and values for all layers, a common optimization for generation tasks, consumes another ≈ 9GB for the maximum of 2048 tokens. Hence, we can actually fit the entire quantized model into a single 80GB A100 GPU, which can be executed by dynamically dequantizing layers as they are required during inference (the model would not fully fit using 4 bits). For reference, standard FP16 execution requires 5x80GB GPUs, and the state-of-the-art 8bit LLM.int8() quantizer (Dettmers et al., 2022) requires 3 such GPUs. Next, we consider language generation, one of the most appealing applications of these models, with the goal of latency reduction. Unlike LLM.int8(), which reduces memory costs but has the same runtime as the FP16 baseline, we show that our quantized models can achieve significant speedups for this application. For language generation, the model processes and outputs one token at-a-time, which for OPT-175B can easily take a few 100s of milliseconds per token. Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products. Unlike matrix-matrix products, these are primarily limited by memory bandwidth. We address this problem by developing a quantized-matrix full-precision-vector product kernel which performs a matrix vector product by dynamically dequantizing weights when needed. Most notably, this does not require any activation quantization. While dequantization consumes extra compute, the kernel has to access a lot less memory, leading to significant speedups, as shown in Table 6. We note that almost all of the speedup is due to our kernels, as communication costs are negligible in our standard HuggingFace-accelerate-like setting (see Appendix A.2.2 for details). GPU FP16 3bit Speedup GPU reduction\n\n[arxiv-2210-17323-p0018] This provides an order of magnitude speedup for very large models in practice, making it a critical component of our algorithm. Step 3: Cholesky Reformulation. The final technical issue we have to address is given by numerical inaccuracies, which can become a major problem at the scale of existing models, especially when combined with the block updates discussed in the previous step. Specifically, it can occur that the matrix H−1 F becomes indefinite, which we notice can cause the algorithm to aggressively update the remaining weights in incorrect directions, resulting in an arbitrarily-bad quantization of the corresponding layer. In practice, we observed that the probability of this happening increases with model size: concretely, it almost certainly occurs for at least a few layers on models that are larger than a few billion parameters. The main issue appears to be the repeated applications of Equation (5), which accumulate various numerical errors, especially through the additional matrix inversion. For smaller models, applying dampening, that is adding a small constant λ (we always choose 1% of the average diagonal value) to the diagonal elements of H appears to be sufficient to avoid numerical issues. However, larger models require a more robust and general approach. To address this, we begin by noting that the only information required from H−1 Fq , where Fq denotes the set of unquantized weights when quantizing weight q, is row q, or more precisely, the elements in this row starting with the diagonal. The consequence is that we could precompute all of these rows using a more numerically-stable method without any significant increase in memory consumption. Indeed, the row removal via (3) for our symmetric H−1 essentially corresponds to taking a Cholesky decomposition, except for the minor difference that the latter divides row q by ([H−1 Fq ]qq )1/2. Hence, we can leverage state-of-the-art Cholesky kernels to compute all information we will need from H−1 upfront. In combination with mild dampening, the resulting method is robust enough to execute on huge models without issues. As a bonus, using a well-optimized Cholesky kernel also yields further speedup. We detail all small changes necessary for the Cholesky version of the algorithm next. The Full Algorithm. Finally, we present the full pseudocode for GPTQ in Algorithm 1, including the optimizations discussed above. Algorithm 1 Quantize W given inverse Hessian H−1 = (2XX⊤ + λI)−1 and blocksize B. Q ← 0drow×dcol // quantized output E ← 0drow×B // block quantization errors H−1 ← Cholesky(H−1)⊤ // Hessian inverse information\n\n[arxiv-2311-15377-p0037] Large compute investors may sustain their performance advantage as access expands. This is because the same efficiency increase that lets a smaller investor access the previous state-of-the-art (SOTA) often increases the current SOTA as well (Figure 6, t = 3). Assuming it is possible to derive additional value from increased performance, large investors will maintain an advantage. We explore this topic in more detail in the following section. 4.2. Implications for Competitive Advantage Our model suggests several implications for the competitive advantage of different actors in the AI market. 4.2.1. IMPLICATIONS OF CAPABILITY DIFFUSION With each efficiency increase, a broader range of actors can train AI models to a given performance, resulting in a wider variety of products. However, our model suggests that the impact on competition may often be limited because large compute investors benefit from the performance effect and retain an absolute advantage. Hence, smaller companies may face pressure to specialize, pursuing applications in areas with reduced competition\n\nNammade equilibrium scan. Channel labels compare the query with stored spans. They do not verify a physical law.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+   }
+  },
+  {
+   "rank": 3,
+   "frontier_hypothesis": {
+    "id": "45e94bb19ad3",
+    "text": "investment may constrain AI applications through increased compute (read as compute).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "investment",
+     "AI applications"
+    ],
+    "via": [
+     "increased compute (read as compute)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2010-15581-p0014",
+     "arxiv-2402-08797-p0019"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2010-15581-p0014",
+      "quote": "However, this increased compute requires significant investment in relevant technologies such as GPUs or compute cloud.",
+      "start": 321,
+      "end": 440,
+      "chunk_sha256": "bec6cd824e0df8af2c6796c09b761f154b76342ffd3b32f2e52b0f89b2c7a88a",
+      "relation": "constrains",
+      "subject": "investment",
+      "object": "increased compute",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2402-08797-p0019",
+      "quote": "However, it is important to note that not all AI applications require vast amounts of compute; specialized AI systems have displayed impressive abilities in some domains, even by using much less compute",
+      "start": 458,
+      "end": 660,
+      "chunk_sha256": "b06c40ca3922bb7438b38cc73ee7d591a089c739716a0d05d637c873f3058114",
+      "relation": "constrains",
+      "subject": "compute",
+      "object": "AI applications",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.808,
+     "novelty": 0.613
+    },
+    "falsification_test": "Compare settings where investment differs while other inputs are matched. The hypothesis fails if AI applications does not stay bounded with investment, or if fixing increased compute (read as compute) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "increased compute"
+   },
+   "seed": "Investigate investment, increased compute and AI applications.",
+   "research_seconds": 1.02,
+   "research": {
+    "answer_status": "research_question",
+    "stages": [
+     "taxonomy_invention",
+     "research_hypotheses",
+     "nammade_equilibrium",
+     "abductive_bridge",
+     "inference"
+    ],
+    "research_methods": {
+     "innovation": {
+      "outcome": "research_question"
+     },
+     "hypothesis_generation": {
+      "option_count": 3
+     },
+     "nammade": {
+      "outcome": "nammade"
+     },
+     "abductive_bridge": {
+      "status": "NO_GAP",
+      "promotion": "blocked"
+     },
+     "inference": {
+      "outcome": "no_applicable_rule",
+      "proof_count": 0
+     }
+    },
+    "research_question": null,
+    "proposals": [],
+    "source_context": [
+     {
+      "document_id": "arxiv-1704-04760-p0002",
+      "quote": "The TPU's deterministic execution model is a better match to the 99th-percentile response-time requirement of our NN applications than are the time-varying optimizations of CPUs and GPUs (caches, out-of-order execution, multithreading, multiprocessing, prefetching, ...) that help average throughput more than guaranteed latency."
+     },
+     {
+      "document_id": "arxiv-2007-05558-p0014",
+      "quote": "Despite this large increase, deep learning models in 2009 remained “too slow for large-scale applications, forcing researchers to focus on smaller-scale models or to use fewer training examples.”[20] The turning point seems to have been when deep learning was ported to GPUs, initially yielding a 5 − 15× speed-up [20] which by 2012 had grown to more than 35× [21], and which led to the important victory of Alexnet at the 2012 Imagenet competition [22].6 But image classification was just the first of these benchmarks to fall."
+     },
+     {
+      "document_id": "arxiv-2007-05558-p0016",
+      "quote": "The Computational Limits of Deep Learning Figure 2: Computing power used in: (a) the largest deep learning models in different year (across all applications) [35] as compared with the growth in hardware performance from improving processors[36], as analyzed by [18] and [37],8(b) image classification models tested on the ImageNet benchmark with computation normalized to the 2012"
+     },
+     {
+      "document_id": "arxiv-2007-05558-p0027",
+      "quote": "The Computational Limits of Deep Learning Figure 3: Performance improvement in various deep learning applications as a function of the hardware burden of training that model (in flops)."
+     }
+    ],
+    "hypothesis_options": [
+     {
+      "document_id": "arxiv-2010-15581-p0017",
+      "prediction": "In sum, other things being equal, increased importance of compute, data and AI talent would lower the KP for non-elite universities.",
+      "span_hash": "9b3035980a257b94bf5532a7de3bc2880489d0ee0de14abae57aabfabf6e2aa0",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2311-15377-p0055",
+      "prediction": "Yet, if current data scaling continues with these increased compute training budgets, it could exhaust high-quality language data by 2026 (Villalobos et al., 2022).",
+      "span_hash": "50634db0202dc1dcec238fdf0d4d98053864808572d0f7d2b558c93a01ab3f20",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2402-08797-p0024",
+      "prediction": "“AI governance” refers to the study or practice of local and global governance systems— including norms, policies, laws, processes, and institutions—that govern or should govern AI research, development, deployment, and use (Hua and Belfield 2021).18 As AI systems gain increased capability across a wide range of domains, they have the potential for incredibly beneficial applications in health care, energy, entertainment, and many other business and public services (Abramoff et al.",
+      "span_hash": "d94d16264baf28e20e2fd9da10a0f5eaa3d7ad021d9c2ff0778005b9057319db",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     }
+    ],
+    "nammade_comparisons": 32,
+    "abductive_bridge": {
+     "status": "NO_GAP",
+     "candidate": null,
+     "abstention_reason": "The diagnostic comparisons do not show incompatible bounds.",
+     "contradiction_source_ids": []
+    },
+    "research_inference": "no_applicable_rule",
+    "reply": "Three research methods ran in parallel on the same authorized sources.\n\n### Innovation\nLooks for new proposals grounded in relationships across source passages.\nResearch question: For investment, increased compute and AI applications, can a candidate explanation reproduce the outcome described in the sources while satisfying their stated constraints?\nIdentify a model that predicts the outcome and an independently measured observable. Find the empirical bounds and check which model parameters can satisfy both.\nSource context:\n[arxiv-1704-04760-p0002] The TPU's deterministic execution model is a better match to the 99th-percentile response-time requirement of our NN applications than are the time-varying optimizations of CPUs and GPUs (caches, out-of-order execution, multithreading, multiprocessing, prefetching, ...) that help average throughput more than guaranteed latency.\n[arxiv-2007-05558-p0014] Despite this large increase, deep learning models in 2009 remained “too slow for large-scale applications, forcing researchers to focus on smaller-scale models or to use fewer training examples.”[20] The turning point seems to have been when deep learning was ported to GPUs, initially yielding a 5 − 15× speed-up [20] which by 2012 had grown to more than 35× [21], and which led to the important victory of Alexnet at the 2012 Imagenet competition [22].6 But image classification was just the first of these benchmarks to fall.\n[arxiv-2007-05558-p0016] The Computational Limits of Deep Learning Figure 2: Computing power used in: (a) the largest deep learning models in different year (across all applications) [35] as compared with the growth in hardware performance from improving processors[36], as analyzed by [18] and [37],8(b) image classification models tested on the ImageNet benchmark with computation normalized to the 2012\n[arxiv-2007-05558-p0027] The Computational Limits of Deep Learning Figure 3: Performance improvement in various deep learning applications as a function of the hardware burden of training that model (in flops).\n\n### Hypothesis generation\nSurfaces source predictions or combines cited premises into a proposed test.\nEach item below is a separate option.\nH1. (Source prediction) In sum, other things being equal, increased importance of compute, data and AI talent would lower the KP for non-elite universities.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH2. (Source prediction) Yet, if current data scaling continues with these increased compute training budgets, it could exhaust high-quality language data by 2026 (Villalobos et al., 2022).\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH3. (Source prediction) “AI governance” refers to the study or practice of local and global governance systems— including norms, policies, laws, processes, and institutions—that govern or should govern AI research, development, deployment, and use (Hua and Belfield 2021).18 As AI systems gain increased capability across a wide range of domains, they have the potential for incredibly beneficial applications in health care, energy, entertainment, and many other business and public services (Abramoff et al.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\n\n### Nammade comparison\nCompares passages under the Nammade model and records displacement, residuals, and density.\nComparisons returned — 32.\nRelevant source excerpts\n\n[arxiv-2010-15581-p0014] Second, large firms have access to compute and unique proprietary large datasets, which are important ingredients for modern AI research (Gupta et al., 2015; Strubell, Ganesh, & McCallum, 2019). Specifically, compute played a major role in deep learning’s superior performance (Thompson, Greenewald, Lee, & Manso, 2020). However, this increased compute requires significant investment in relevant technologies such as GPUs or compute cloud. For instance, DeepMind’s AlphaGo Zero, which was self-trained and able to outperform the previous record-holder AlphaGo, was trained at a cost estimated at 35 million. For comparison, the world's largest robotics lab at Carnegie Mellon University has an annual budget of 90 million (Schackner, 2019). Furthermore, recent innovations in designing chips and cloud computing have made it possible for large firms to get ahead in the competition. For example, firms such as Amazon, Apple, Google, and Tesla have been designing specialized chips. In sum, AI research has moved into the post-Moore computing era, where general purpose chips do not improve with time; this situation benefits only a smaller group of organizations that can design specialized chips and write specific software for the hardware\n\n[arxiv-2109-05472-p0027] internal consumption. However, AI-based decisions are becoming more ubiquitous. For instance, a self-driving car or a surveillance camera may be making many forward passes per second. For NLP, the trends are similar but the best models are growing much faster, as we see in Fig. 14, while the regular models may even decrease. Here, the interpretation in terms of how many decisions are made in a second is also hard to determine. For instance, a language model interfaced by a human does not require more than the basic 128-token windows per second. However, many applications of language models can process data without interacting with humans at a much higher speed. Discussion and Future Work In this work we have combined the analysis of several elements about AI, compute and energy consumption that allow us to have a different and more comprehensive perspective about the energy impact of AI. The most distinctive element of our analysis is that we focus on inference cost, which is usually lower than the training cost when both are reported in research papers, but because of multiplicative factors, it is much higher overall. Many DNN models are trained once and applied millions of times (forward passes). Our findings are very different from the unbridled exponential growth that is usually reported when just looking at the number of parameters of new deep learning models [Hestness et al., 2017, Kaplan et al., 2020, Henighan et al., 2020]. The gap gets closer when we analyse those models that settle, i.e., those models whose implementation become very popular one or two years after the breakthrough algorithm was introduced. These general-use models can achieve systematic growth in performance at an almost constant energy consumption. The main conclusion is that even if the energy used by AI were kept constant, the improvement in performance could be sustained with algorithmic improvements and fast increase in the number of parameters. This conclusion has an important limitation. It assumes a constant multiplicative factor. As more and more devices use AI (locally or remotely) the energy consumption can escalate just by means of increased penetration, in the same way that cars have become more efficient in the past two decades but there are many more cars in the world today. We hope this paper contributes to the increasing debate about AI and energy consumption by analysing the inference costs. As these are dominated by multiplicative factors, this should encourage not only AI researchers but economists and social scientists to participate in this analysis. Future studies would be enriched by socio-economic indicators about the use of AI (the degree of penetration), the cost of energy and devices as well as the carbon footprint per Joule [EEA, 2021]. Similarly, comparing energy consumption by AI and trends in human salaries could help determine where automation [Tolan et al., 2021] becomes cost effective in economic terms.\n\n[arxiv-2311-15377-p0007] • Performance ceilings dampen the performance effect, reducing leaders’ advantage. Many AI applications have a ceiling on technical performance or real-world usefulness. For instance, handwritten digit classifiers have achieved above 99% accuracy since the early 2000s, so further progress is insignificant. As leaders approach the ceiling, performance only marginally increases with improved compute efficiency, allowing smaller actors to catch up. • Winner-takes-all effects may allow leaders to entrench their lead even as they lose their performance advantage. By initially developing the best-performing models, large compute investors may accrue a number of advantages unrelated to performance, such as network effects and economies of scale. • In zero-sum competition, a relative performance advantage may grant outsized benefits. If AI models directly compete, the developer of the leading model may reap disproportionate benefits even if their absolute performance advantage is small. Such disproportionate rewards may apply to AI models used in trading, law, or entertainment. Implications for Dangerous Capabilities (Section 4.4) • Dangerous capabilities first appear in models trained by large compute investors Future AI models could show dangerous capabilities, such as exploiting cybersecurity vulnerabilities, bioweapon design, or evading human control. Since these capabilities likely require high levels of performance, large compute investors most likely encounter them first. • Dangerous capabilities proliferate over time. As efficiency improvements increase the performance available with a given compute investment, more actors become able to train and develop models with potentially dangerous capabilities, complicating coordination and therefore increasing the chance of\n\nNammade equilibrium scan. Channel labels compare the query with stored spans. They do not verify a physical law.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+   }
+  },
+  {
+   "rank": 4,
+   "frontier_hypothesis": {
+    "id": "5ed4c187dc71",
+    "text": "compute and intra - chip may jointly constrain AI applications, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "compute",
+     "intra - chip",
+     "AI applications"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-08797-p0019",
+     "arxiv-2403-14123-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-08797-p0019",
+      "quote": "However, it is important to note that not all AI applications require vast amounts of compute; specialized AI systems have displayed impressive abilities in some domains, even by using much less compute",
+      "start": 458,
+      "end": 660,
+      "chunk_sha256": "b06c40ca3922bb7438b38cc73ee7d591a089c739716a0d05d637c873f3058114",
+      "relation": "constrains",
+      "subject": "compute",
+      "object": "AI applications",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2403-14123-p0003",
+      "quote": "In fact, several AI applications are becoming bottlenecked by intra/inter-chip and communication across/to AI accelerators, rather than compute.",
+      "start": 117,
+      "end": 261,
+      "chunk_sha256": "ac062e19cc3540344e049a2ab4a2f1811bd8260938dc6fa2cfd2dc3cf2cdbc83",
+      "relation": "constrains",
+      "subject": "intra - chip",
+      "object": "AI applications",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.783,
+     "novelty": 0.668
+    },
+    "falsification_test": "Relieve compute alone while measuring AI applications. The hypothesis fails if AI applications keeps improving without intra - chip becoming the binding limit, or if relieving intra - chip alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "ai application"
+   },
+   "seed": "Investigate compute, intra - chip and AI applications.",
+   "research_seconds": 0.89,
+   "research": {
+    "answer_status": "research_question",
+    "stages": [
+     "taxonomy_invention",
+     "research_hypotheses",
+     "nammade_equilibrium",
+     "abductive_bridge",
+     "inference"
+    ],
+    "research_methods": {
+     "innovation": {
+      "outcome": "research_question"
+     },
+     "hypothesis_generation": {
+      "option_count": 3
+     },
+     "nammade": {
+      "outcome": "nammade"
+     },
+     "abductive_bridge": {
+      "status": "NO_GAP",
+      "promotion": "blocked"
+     },
+     "inference": {
+      "outcome": "no_applicable_rule",
+      "proof_count": 0
+     }
+    },
+    "research_question": null,
+    "proposals": [],
+    "source_context": [
+     {
+      "document_id": "arxiv-1704-04760-p0002",
+      "quote": "The TPU's deterministic execution model is a better match to the 99th-percentile response-time requirement of our NN applications than are the time-varying optimizations of CPUs and GPUs (caches, out-of-order execution, multithreading, multiprocessing, prefetching, ...) that help average throughput more than guaranteed latency."
+     },
+     {
+      "document_id": "arxiv-2001-08361-p0002",
+      "quote": "These relationships allow us to determine the optimal allocation of a fixed compute budget."
+     },
+     {
+      "document_id": "arxiv-2007-00072-p0002",
+      "quote": "Training one is a very compute-intensive task, often taking days or weeks, and significant attention has been given to optimizing transformers."
+     },
+     {
+      "document_id": "arxiv-2007-05558-p0004",
+      "quote": "Our analysis differs from previous ones in that we are (i) more precise in the models we compare than are many high-level historical analyses, which allows us to better understand how performance changes as computing scales up, and (ii) better able to account for innovation in the field than estimates where researchers have tested scaling by varying the compute used in training their own models."
+     }
+    ],
+    "hypothesis_options": [
+     {
+      "document_id": "arxiv-2010-15581-p0010",
+      "prediction": "Every researcher used the same hardware because they expected that the available compute would continue to increase at a predictable rate.",
+      "span_hash": "b9448b27ea3c1bd48d676c2a13442b16fabff2f2c24cc85d557de6d4ef5ea858",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2010-15581-p0015",
+      "prediction": "Research Equipment and the De-Democratization of Knowledge Production After discussing how modern AI is particularly dependent on human capital, compute, and data, we rely on economics of science literature to build a simple model to predict the potential consequences of the rise of deep learning on organizational participation.",
+      "span_hash": "c7e7ab0fea5eba4cfad651268cae009eaec0715695b01c26b309bacf34b88748",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2010-15581-p0017",
+      "prediction": "In sum, other things being equal, increased importance of compute, data and AI talent would lower the KP for non-elite universities.",
+      "span_hash": "9b3035980a257b94bf5532a7de3bc2880489d0ee0de14abae57aabfabf6e2aa0",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     }
+    ],
+    "nammade_comparisons": 32,
+    "abductive_bridge": {
+     "status": "NO_GAP",
+     "candidate": null,
+     "abstention_reason": "The diagnostic comparisons do not show incompatible bounds.",
+     "contradiction_source_ids": []
+    },
+    "research_inference": "no_applicable_rule",
+    "reply": "Three research methods ran in parallel on the same authorized sources.\n\n### Innovation\nLooks for new proposals grounded in relationships across source passages.\nResearch question: For compute, intra - chip and AI applications, can a candidate explanation reproduce the outcome described in the sources while satisfying their stated constraints?\nIdentify a model that predicts the outcome and an independently measured observable. Find the empirical bounds and check which model parameters can satisfy both.\nSource context:\n[arxiv-1704-04760-p0002] The TPU's deterministic execution model is a better match to the 99th-percentile response-time requirement of our NN applications than are the time-varying optimizations of CPUs and GPUs (caches, out-of-order execution, multithreading, multiprocessing, prefetching, ...) that help average throughput more than guaranteed latency.\n[arxiv-2001-08361-p0002] These relationships allow us to determine the optimal allocation of a fixed compute budget.\n[arxiv-2007-00072-p0002] Training one is a very compute-intensive task, often taking days or weeks, and significant attention has been given to optimizing transformers.\n[arxiv-2007-05558-p0004] Our analysis differs from previous ones in that we are (i) more precise in the models we compare than are many high-level historical analyses, which allows us to better understand how performance changes as computing scales up, and (ii) better able to account for innovation in the field than estimates where researchers have tested scaling by varying the compute used in training their own models.\n\n### Hypothesis generation\nSurfaces source predictions or combines cited premises into a proposed test.\nEach item below is a separate option.\nH1. (Source prediction) Every researcher used the same hardware because they expected that the available compute would continue to increase at a predictable rate.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH2. (Source prediction) Research Equipment and the De-Democratization of Knowledge Production After discussing how modern AI is particularly dependent on human capital, compute, and data, we rely on economics of science literature to build a simple model to predict the potential consequences of the rise of deep learning on organizational participation.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH3. (Source prediction) In sum, other things being equal, increased importance of compute, data and AI talent would lower the KP for non-elite universities.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\n\n### Nammade comparison\nCompares passages under the Nammade model and records displacement, residuals, and density.\nComparisons returned — 32.\nRelevant source excerpts\n\n[arxiv-2211-05102-p0009] Scaling up model sizes can unlock new capabilities and applications but has fundamental tradeoffs in terms of inference cost. We measure the inference cost in terms of the following metrics: latency, throughput, and model FLOPS utilization. The latency is the total time for an inference and can be broken down into the time to process the input tokens present at the start of the inference (which we call “prefill”) and the time to autoregressively generate output tokens (which we term “decode”). The decode latency can also be measured “per step”, i.e. divided by the number of tokens in each sequence. The throughput of prefill or decode is the number of tokens processed or generated per second. Memory costs. We store tensors such as weights and the KV cache in on-device high-bandwidth memory (HBM). While there are other tensors that pass through the HBM, their memory footprint is much smaller, so we focus on just these two largest groups of tensors. These tensors need to be transferred from HBM to the compute cores of the chip once per forward pass (prefill or decode step) of the model. This takes a certain amount of time, which we call the “memory time.” At small batch sizes and sequence lengths, the time to load weights dominates. At larger batch sizes and sequence lengths (e.g. 2048+ tokens with batch size 512+), the time to load the KV cache dominates. If all chips were running at peak FLOPS, these matmuls would take a certain amount of time, which we call the “compute time.” The matmuls in the attention mechanism typically add a much smaller number of FLOPs per token for large models and can often be excluded. 2.1 Expected tradeoffs and challenges Both the weight loading part of the memory time and the non-attention compute time are proportional to the model size and inversely proportional to the number of chips. However, for a given partitioning layout, the time needed for chip-to-chip communication decreases less quickly (or not at all) with the number of chips used, so it becomes an increasingly important bottleneck as the chip count grows. We consider some scenarios where these tradeoffs become\n\n[arxiv-2402-08797-p0034] Over the past several years, some countries have imposed export controls on semiconductors and semiconductor manufacturing equipment, to slow the technological advancement of their geopolitical adversaries (and especially their military capabilities) by denying them access to the most advanced forms of compute (Fedasiuk, Elmgren, and Lu 2022). For example, the October 7, 2022, U.S. chip export restrictions (US BIS 2022b) prohibited the sale of the chips most relevant to AI to Chinese organizations, and enforced stringent controls on advanced semiconductor manufacturing equipment and software essential for creating cutting-edge chips to impede China’s ability to independently produce competitive (AI) chips (Gregory C. Allen 2022). The U.S. updated these restrictions on October 17, 2023 (US BIS 2023). The scope of this “small yard, high fence” approach (The White House 2022) is particularly focused on the AI chips used in data centers and excludes consumer devices, such as gaming chips. By focusing on these specific characteristics, U.S. export restrictions intend to regulate AI data center compute to prevent misuse by foreign actors while avoiding unnecessarily impeding other uses of computing hardware (such as gaming).22 However, the increasing power of consumer chips could enable them to be used for purposes that the controls aimed to prevent.23 Restricting compute access for specific actors might be a key method for utilizing compute to avert harm and encourage adherence to certain norms. However, this approach comes with drawbacks, such as exacerbating geopolitical tensions and intensifying economic incentives for domestic compute producers, curbing potentially advantageous applications in the affected regions, and centralizing power among nations and organizations with compute access. In Section 4, we examine these drawbacks of broad technology denial and advocate for further research into more 22For example, the rule includes exceptions to the export controls for consumer-grade chips (US BIS\n\n[arxiv-2403-14123-p0003] The amount of compute needed to train Large Language Models (LLMs) has recently been growing at a rate of 750×/2yrs. In fact, several AI applications are becoming bottlenecked by intra/inter-chip and communication across/to AI accelerators, rather than compute. This is not a new phenomena, and several works in the past observed and warned about this issue. One of the earliest observations of this dates back to 1990 when Ousterhout concluded the following after analyzing the factors impacting operating system’s performance [30]: “The first hardware-related issue is memory bandwidth: the benchmarks suggest that it is not keeping up with CPU speed ... If memory bandwidth does not improve dramatically in future machines, some classes of applications may be limited by memory performance.” Later in 1995, William Wulf and Sally Mckee further echoed this prediction and coined the term “memory wall”. Their argument for this followed a simple but elegant reasoning. The time to complete an operation is dependent on how fast we can perform the arithmetic as well as how fast we can feed data to the arithmetic units of hardware.1 In the simplest case, the data is either available in the cache, 1Just for reference a better way to analyze this is through arithmetic intensity proposed by Sammuel Williams [41] which will be discussed in\n\nNammade equilibrium scan. Channel labels compare the query with stored spans. They do not verify a physical law.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+   }
+  },
+  {
+   "rank": 5,
+   "frontier_hypothesis": {
+    "id": "79e813343dd7",
+    "text": "dequantization may increase concerns through extra compute (read as compute).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "dequantization",
+     "concerns"
+    ],
+    "via": [
+     "extra compute (read as compute)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-17323-p0023",
+     "arxiv-2010-15581-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-17323-p0023",
+      "quote": "While dequantization consumes extra compute, the kernel has to access a lot less memory, leading to significant speedups, as shown in Table 6.",
+      "start": 1898,
+      "end": 2040,
+      "chunk_sha256": "3a4b6b83e44488b6e9a404f0ab9294c350d52d2fd7ef516c9dd3da5d360183b6",
+      "relation": "increases",
+      "subject": "dequantization",
+      "object": "extra compute",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2010-15581-p0002",
+      "quote": "This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.",
+      "start": 1490,
+      "end": 1675,
+      "chunk_sha256": "eb59bd8ec0c227f41014aa123718e117df4fbceba7ae9f219dccf86b93ab24dc",
+      "relation": "increases",
+      "subject": "compute",
+      "object": "concerns",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.742,
+     "novelty": 0.636
+    },
+    "falsification_test": "Compare settings where dequantization differs while other inputs are matched. The hypothesis fails if concerns does not rise with dequantization, or if fixing extra compute (read as compute) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "extra compute"
+   },
+   "seed": "Investigate dequantization, extra compute and concerns.",
+   "research_seconds": 0.87,
+   "research": {
+    "answer_status": "research_question",
+    "stages": [
+     "taxonomy_invention",
+     "research_hypotheses",
+     "nammade_equilibrium",
+     "abductive_bridge",
+     "inference"
+    ],
+    "research_methods": {
+     "innovation": {
+      "outcome": "research_question"
+     },
+     "hypothesis_generation": {
+      "option_count": 3
+     },
+     "nammade": {
+      "outcome": "nammade"
+     },
+     "abductive_bridge": {
+      "status": "NO_GAP",
+      "promotion": "blocked"
+     },
+     "inference": {
+      "outcome": "no_applicable_rule",
+      "proof_count": 0
+     }
+    },
+    "research_question": null,
+    "proposals": [],
+    "source_context": [
+     {
+      "document_id": "arxiv-2010-15581-p0002",
+      "quote": "This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI."
+     },
+     {
+      "document_id": "arxiv-2010-15581-p0004",
+      "quote": "A large body of work raises significant concerns about biases and fairness in AI-enabled technologies and its underlying algorithms and datasets (Bolukbasi, Chang, Zou, Saligrama, & Kalai, 2016; Buolamwini & Gebru, 2018; Delmestri & Greenwood, 2016; Righetti, Madhavan, & Chatila, 2019)."
+     },
+     {
+      "document_id": "arxiv-2010-15581-p0006",
+      "quote": "However, anecdotal evidence of uneven access to compute has increased concerns within the AI community (Amodei & Hernandez, 2018; Riedl, 2020)."
+     },
+     {
+      "document_id": "arxiv-2112-06905-p0024",
+      "quote": "However, such opportunities also serve to highlight the importance of the many ethical challenges (Leidner & Plachouras, 2017; Bender et al., 2021; Bommasani et al., 2021) including representation bias (Blodgett et al., 2020), proper selection and handling of training data (Rogers, 2021) and its documentation (Bender & Friedman, 2018), privacy (Abadi et al., 2016b; Carlini et al., 2020), and environmental concerns (Strubell et al., 2019; Patterson et al., 2021)."
+     }
+    ],
+    "hypothesis_options": [
+     {
+      "document_id": "arxiv-2405-10799-p0007",
+      "prediction": "While high training compute generally indicates increased model capabilities and potential risks, some high-compute models may pose minimal concerns, whereas certain low-compute models could present significant risks (with the latter partially addressed through complementary non-GPAI regulations).",
+      "span_hash": "1d19bdb14ebd5b64ba2a30f348aa4774e8d2e1a3230f0d031ffdbf1afc15e6dc",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2010-15581-p0010",
+      "prediction": "Every researcher used the same hardware because they expected that the available compute would continue to increase at a predictable rate.",
+      "span_hash": "b9448b27ea3c1bd48d676c2a13442b16fabff2f2c24cc85d557de6d4ef5ea858",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2010-15581-p0015",
+      "prediction": "Research Equipment and the De-Democratization of Knowledge Production After discussing how modern AI is particularly dependent on human capital, compute, and data, we rely on economics of science literature to build a simple model to predict the potential consequences of the rise of deep learning on organizational participation.",
+      "span_hash": "c7e7ab0fea5eba4cfad651268cae009eaec0715695b01c26b309bacf34b88748",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     }
+    ],
+    "nammade_comparisons": 32,
+    "abductive_bridge": {
+     "status": "NO_GAP",
+     "candidate": null,
+     "abstention_reason": "The diagnostic comparisons do not show incompatible bounds.",
+     "contradiction_source_ids": []
+    },
+    "research_inference": "no_applicable_rule",
+    "reply": "Three research methods ran in parallel on the same authorized sources.\n\n### Innovation\nLooks for new proposals grounded in relationships across source passages.\nResearch question: For dequantization, extra compute and concerns, can a candidate explanation reproduce the outcome described in the sources while satisfying their stated constraints?\nIdentify a model that predicts the outcome and an independently measured observable. Find the empirical bounds and check which model parameters can satisfy both.\nSource context:\n[arxiv-2010-15581-p0002] This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.\n[arxiv-2010-15581-p0004] A large body of work raises significant concerns about biases and fairness in AI-enabled technologies and its underlying algorithms and datasets (Bolukbasi, Chang, Zou, Saligrama, & Kalai, 2016; Buolamwini & Gebru, 2018; Delmestri & Greenwood, 2016; Righetti, Madhavan, & Chatila, 2019).\n[arxiv-2010-15581-p0006] However, anecdotal evidence of uneven access to compute has increased concerns within the AI community (Amodei & Hernandez, 2018; Riedl, 2020).\n[arxiv-2112-06905-p0024] However, such opportunities also serve to highlight the importance of the many ethical challenges (Leidner & Plachouras, 2017; Bender et al., 2021; Bommasani et al., 2021) including representation bias (Blodgett et al., 2020), proper selection and handling of training data (Rogers, 2021) and its documentation (Bender & Friedman, 2018), privacy (Abadi et al., 2016b; Carlini et al., 2020), and environmental concerns (Strubell et al., 2019; Patterson et al., 2021).\n\n### Hypothesis generation\nSurfaces source predictions or combines cited premises into a proposed test.\nEach item below is a separate option.\nH1. (Source prediction) While high training compute generally indicates increased model capabilities and potential risks, some high-compute models may pose minimal concerns, whereas certain low-compute models could present significant risks (with the latter partially addressed through complementary non-GPAI regulations).\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH2. (Source prediction) Every researcher used the same hardware because they expected that the available compute would continue to increase at a predictable rate.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH3. (Source prediction) Research Equipment and the De-Democratization of Knowledge Production After discussing how modern AI is particularly dependent on human capital, compute, and data, we rely on economics of science literature to build a simple model to predict the potential consequences of the rise of deep learning on organizational participation.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\n\n### Nammade comparison\nCompares passages under the Nammade model and records displacement, residuals, and density.\nComparisons returned — 32.\nRelevant source excerpts\n\n[arxiv-2210-17323-p0023] Table 5: Results summary for OPT-175B and BLOOM-176B. “g1024” and “g128” denote results with groupings of size 1024 and 128, respectively. Practical Speedups. Finally, we study practical applications. As an interesting use-case, we focus on the OPT-175B model: quantized to 3 bits, this model takes approximately 63GB of memory, including the embeddings and the output layer, which are kept in full FP16 precision. Additionally, storing the complete history of keys and values for all layers, a common optimization for generation tasks, consumes another ≈ 9GB for the maximum of 2048 tokens. Hence, we can actually fit the entire quantized model into a single 80GB A100 GPU, which can be executed by dynamically dequantizing layers as they are required during inference (the model would not fully fit using 4 bits). For reference, standard FP16 execution requires 5x80GB GPUs, and the state-of-the-art 8bit LLM.int8() quantizer (Dettmers et al., 2022) requires 3 such GPUs. Next, we consider language generation, one of the most appealing applications of these models, with the goal of latency reduction. Unlike LLM.int8(), which reduces memory costs but has the same runtime as the FP16 baseline, we show that our quantized models can achieve significant speedups for this application. For language generation, the model processes and outputs one token at-a-time, which for OPT-175B can easily take a few 100s of milliseconds per token. Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products. Unlike matrix-matrix products, these are primarily limited by memory bandwidth. We address this problem by developing a quantized-matrix full-precision-vector product kernel which performs a matrix vector product by dynamically dequantizing weights when needed. Most notably, this does not require any activation quantization. While dequantization consumes extra compute, the kernel has to access a lot less memory, leading to significant speedups, as shown in Table 6. We note that almost all of the speedup is due to our kernels, as communication costs are negligible in our standard HuggingFace-accelerate-like setting (see Appendix A.2.2 for details). GPU FP16 3bit Speedup GPU reduction\n\n[arxiv-2010-15581-p0002] Increasingly, modern Artificial Intelligence (AI) research has become more computationally intensive. However, a growing concern is that due to unequal access to computing power, only certain firms and elite universities have advantages in modern AI research. Using a novel dataset of 171,394 papers from 57 prestigious computer science conferences, we document that firms, in particular, large technology firms and elite universities have increased participation in major AI conferences since deep learning’s unanticipated rise in 2012. The effect is concentrated among elite universities, which are ranked 1-50 in the QS World University Rankings. Further, we find two strategies through which firms increased their presence in AI research: first, they have increased firm-only publications; and second, firms are collaborating primarily with elite universities. Consequently, this increased presence of firms and elite universities in AI research has crowded out mid-tier (QS ranked 201-300) and lowertier (QS ranked 301-500) universities. To provide causal evidence that deep learning’s unanticipated rise resulted in this divergence, we leverage the generalized synthetic control method, a data-driven counterfactual estimator. Using machine learning based text analysis methods, we provide additional evidence that the divergence between these two groups—large firms and non-elite universities—is driven by access to computing power or compute, which we term as the “compute divide”. This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI. These results suggest that a lack of access to specialized equipment such as compute can dedemocratize knowledge production.\n\n[arxiv-2010-15581-p0006] remarkable success across many different fields, such as object recognition, machine translation, text generation, and other areas (Shoham et al., 2019), has been primarily driven by \"deep learning\" (LeCun, Bengio, & Hinton, 2015). Deep learning is an improved version of neural networks, a decades-old algorithm that crudely mimics the human brain. The remarkable success of modern AI has been possible, in part, due to the availability of enormous computing power and large datasets (Gupta, Agrawal, Gopalakrishnan, & Narayanan, 2015; Thompson & Spanuth, 2018). However, anecdotal evidence of uneven access to compute has increased concerns within the AI community (Amodei & Hernandez, 2018; Riedl, 2020). For instance, the New York Times speculated: “[...] pioneering artificial intelligence research will be a field of haves and have-nots. And the haves will be mainly a few big tech companies like Google, Microsoft, Amazon and Facebook, which each spend billions a year building out their data centers” (Lohr, 2019). While recent evidence (Frank et al., 2019) also indicates increased concentration within AI research, until now, there has not been any systematic study on large organizations, in particular, large firms' dominance in modern AI. This study examines these concerns systematically to test whether a systemic divergence exists between different groups in AI research. Specifically, we ask (i) Are we observing an increased concentration of AI research among a few actors since deep learning’s rise? (ii) Who are the key contributors to “modern AI” research? (iii) What are the implications for organizations that have been previously active in AI research? To answer these questions, we construct a novel and extensive dataset of 171,394 papers from 57 leading computer science academic venues, both AI (e.g., Computer Vision, Machine Learning & Data mining, and Natural Language Processing) and non-AI conferences (e.g., Human-Computer Interaction, Software Engineering, Mobile Computing). These conferences are largely similar in terms of selectivity, prestige, and impact, hence shape the broader computer science research (Freyne, Coyle, Smyth, & Cunningham, 2010). To measure the causal effect of deep learning’s unanticipated rise on organizational participation in AI research, we exploit the ImageNet contest’s 2012 edition as a shock. The scientific community did not anticipate the widespread use and impact of Graphics Processor Units (GPUs) for deep learning research. However, the winners of the ImageNet 2012’s contest demonstrated that GPU-trained deep learning models produce superior results, which led to the sudden popularity of this method. The unanticipated rise of deep learning provides an exogenous event that is correlated with increased compute due to increased GPU use, but not with research organizations' research behavior.\n\nNammade equilibrium scan. Channel labels compare the query with stored spans. They do not verify a physical law.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+   }
+  }
+ ]
+}

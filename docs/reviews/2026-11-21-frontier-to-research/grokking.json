@@ -1,0 +1,738 @@
+{
+ "prompt": "Frontier: grokking.",
+ "namespace": "dl_generalization_frontier",
+ "frontier_seconds": 12.86,
+ "frontier_status": "hypotheses",
+ "frontier_returned": 50,
+ "chained": [
+  {
+   "rank": 1,
+   "frontier_hypothesis": {
+    "id": "b7b4bd373bf0",
+    "text": "Grokking may undermine traditional machine learning theory through Statistical Phenomenon (read as phenomenon).",
+    "pattern": "chain",
+    "relation": "undermines",
+    "anchors": [
+     "Grokking",
+     "traditional machine learning theory"
+    ],
+    "via": [
+     "Statistical Phenomenon (read as phenomenon)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2502-01774-p0001",
+     "arxiv-2502-01774-p0013",
+     "arxiv-2502-12508-p0025"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2502-01774-p0001",
+      "quote": "# Grokking Explained: A Statistical Phenomenon",
+      "start": 0,
+      "end": 46,
+      "chunk_sha256": "4276ffeae62e7872c1ad54d7e8eebd5545b7e29224b4ab03cd3af0a101a07622",
+      "relation": "supports",
+      "subject": "Grokking",
+      "object": "Statistical Phenomenon",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0013",
+      "quote": "Grokking Explained: — A Statistical Phenomenon (a) The equidistant subclass dataset, where each class consists of subclasses that are all equidistant from one another.",
+      "start": 0,
+      "end": 167,
+      "chunk_sha256": "d8bac21eed00c186b91cd5a8eab207fb74d1a1e78ca2145aadbfaedaf4a08ba6",
+      "relation": "supports",
+      "subject": "Grokking",
+      "object": "Statistical Phenomenon",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-12508-p0025",
+      "quote": "This phenomenon starkly contradicts traditional machine learning theory.",
+      "start": 221,
+      "end": 293,
+      "chunk_sha256": "8117771902ee046e74274840c0d7cf9c25c3fb383f49294ff651eb5b0751265d",
+      "relation": "undermines",
+      "subject": "phenomenon",
+      "object": "traditional machine learning theory",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.975,
+     "novelty": 0.6
+    },
+    "falsification_test": "Construct a coherent case where Grokking is accepted. The hypothesis fails if traditional machine learning theory still holds in that case, or if the argument does not need Statistical Phenomenon (read as phenomenon).",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "statistical phenomenon"
+   },
+   "seed": "Investigate Grokking, Statistical Phenomenon and traditional machine learning theory.",
+   "research_seconds": 1.59,
+   "research": {
+    "answer_status": "research_question",
+    "stages": [
+     "taxonomy_invention",
+     "research_hypotheses",
+     "nammade_equilibrium",
+     "abductive_bridge",
+     "inference"
+    ],
+    "research_methods": {
+     "innovation": {
+      "outcome": "research_question"
+     },
+     "hypothesis_generation": {
+      "option_count": 3
+     },
+     "nammade": {
+      "outcome": "nammade"
+     },
+     "abductive_bridge": {
+      "status": "NO_GAP",
+      "promotion": "blocked"
+     },
+     "inference": {
+      "outcome": "no_applicable_rule",
+      "proof_count": 0
+     }
+    },
+    "research_question": null,
+    "proposals": [],
+    "source_context": [
+     {
+      "document_id": "arxiv-2201-02177-p0001",
+      "quote": "# Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets"
+     },
+     {
+      "document_id": "arxiv-2201-02177-p0002",
+      "quote": "In some situations we show that neural networks learn through a process of \"grokking\" a pattern in the data, improving generalization performance from random chance level to perfect generalization, and that this improvement in generalization can happen well past the point of overfitting."
+     },
+     {
+      "document_id": "arxiv-2205-10343-p0001",
+      "quote": "# Towards Understanding Grokking: An Effective Theory of Representation Learning"
+     },
+     {
+      "document_id": "arxiv-2205-10343-p0003",
+      "quote": "We aim to understand grokking, a phenomenon where models generalize long after overfitting their training set."
+     }
+    ],
+    "hypothesis_options": [
+     {
+      "document_id": "arxiv-2110-12231-p0006",
+      "prediction": "More recent results from statistical learning theory characterize the shape of learning curves depending on the properties of the hypothesis class [Bousquet et al., 2021].",
+      "span_hash": "1753e503768e369b95f43d4ac560967deb44aa783deb67b82efbb6223a3e4c69",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2303-15464-p0009",
+      "prediction": "Table 1: Mathematical notation and their brief description Basic learning theory deals with the predictor function f ∈ F, where F is called the hypothesis class and f is the machine learning model such as multi-layer perceptron, perhaps indexed by some continuous parameters w, say fw.",
+      "span_hash": "292e04ea04c0634b3456d28e8b038bcd8cadaeb019c92d91d0be1f45f04a3fdb",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0008",
+      "prediction": "Traditional learning theory with complexity measures, e.g., the VC dimension (Vapnik & Chervonenkis, 1971), suggests that for generalization, models should not be able to fit any possible training data (Shalev-Shwartz & Ben-David, 2014).",
+      "span_hash": "dcd0871914b0ea029a9ba96ce9d926d79efbb29234a0f3d6e0fb8689fb445299",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     }
+    ],
+    "nammade_comparisons": 32,
+    "abductive_bridge": {
+     "status": "NO_GAP",
+     "candidate": null,
+     "abstention_reason": "The diagnostic comparisons do not show incompatible bounds.",
+     "contradiction_source_ids": []
+    },
+    "research_inference": "no_applicable_rule",
+    "reply": "Three research methods ran in parallel on the same authorized sources.\n\n### Innovation\nLooks for new proposals grounded in relationships across source passages.\nResearch question: For Grokking, Statistical Phenomenon and traditional machine learning theory, can a candidate explanation reproduce the outcome described in the sources while satisfying their stated constraints?\nIdentify a model that predicts the outcome and an independently measured observable. Find the empirical bounds and check which model parameters can satisfy both.\nSource context:\n[arxiv-2201-02177-p0001] # Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets\n[arxiv-2201-02177-p0002] In some situations we show that neural networks learn through a process of \"grokking\" a pattern in the data, improving generalization performance from random chance level to perfect generalization, and that this improvement in generalization can happen well past the point of overfitting.\n[arxiv-2205-10343-p0001] # Towards Understanding Grokking: An Effective Theory of Representation Learning\n[arxiv-2205-10343-p0003] We aim to understand grokking, a phenomenon where models generalize long after overfitting their training set.\n\n### Hypothesis generation\nSurfaces source predictions or combines cited premises into a proposed test.\nEach item below is a separate option.\nH1. (Source prediction) More recent results from statistical learning theory characterize the shape of learning curves depending on the properties of the hypothesis class [Bousquet et al., 2021].\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH2. (Source prediction) Table 1: Mathematical notation and their brief description Basic learning theory deals with the predictor function f ∈ F, where F is called the hypothesis class and f is the machine learning model such as multi-layer perceptron, perhaps indexed by some continuous parameters w, say fw.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH3. (Source prediction) Traditional learning theory with complexity measures, e.g., the VC dimension (Vapnik & Chervonenkis, 1971), suggests that for generalization, models should not be able to fit any possible training data (Shalev-Shwartz & Ben-David, 2014).\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\n\n### Nammade comparison\nCompares passages under the Nammade model and records displacement, residuals, and density.\nComparisons returned — 32.\nRelevant source excerpts\n\n[arxiv-2502-12508-p0003] In recent years, the phenomenon of benign overfitting (Bartlett et al., 2020) has provided new insights into the over-parameterization of deep neural networks. Traditionally, it was believed that overfitting is more likely when there are more model parameters than training samples, which typically leads to a decrease in the model’s generalization ability on new data. However, modern deep neural networks, despite having numerous parameters, can generalize well, fitting well on training data while maintaining low test error levels. This seemingly contradictory phenomenon has spurred researchers to explore how these models can avoid the pitfalls of overfitting. Despite the fact that deep learning models often have more parameters than training samples 1Zhongtai Securities Institute for Financial Studies, Shandong University 2School of Artificial Intelligence, Beijing Normal University 3Gaoling School of Artificial Intelligence, Renmin University of China. Correspondence to: Jian Li <jli@bnu.edu.cn>. and overfit the training data, they can still make accurate predictions on new test data (Zhang et al., 2017; Neyshabur et al., 2018) . This phenomenon, known as benign overfitting (Bartlett et al., 2020), has altered our traditional understanding of statistical learning and garnered significant attention from both the statistical and machine learning communities (Belkin et al., 2018; 2019; 2020; Neyshabur et al., 2018; Hastie et al., 2020). This finding has prompted researchers to delve into the potential mechanisms by which these models avoid overfitting. Our contributions. In this work, we study the training dynamics, convergence, and generalization for a two-layer transformer with labeled-flipping noise. Our contributions are summarized as bellow: • We develop the generalization theory of a two-layer transformer, a linear layer behind the attention layer. Under different SNR conditions, we analyze the generalization dynamics benign overfitting and harmful\n\n[arxiv-2109-02355-p0002] The last decade of progress in machine learning (ML), especially the deep learning era, has raised a number of scientific questions that challenge the longstanding dogma of the field. One of the most important riddles was the good empirical generalization of overparameterized models. Overparameterized models are highly complex with respect to the size of the training dataset, which enables them to perfectly fit (i.e., interpolate) even noisy training data. Such interpolation of noisy data is traditionally associated with detrimental overfitting, and yet a wide range of interpolating models -- from simple linear models to deep neural networks -- have been observed to generalize remarkably well on fresh test data. Indeed, the discovery of the double descent phenomenon has revealed that highly overparameterized models can improve over the best underparameterized model in test performance. Understanding learning in this overparameterized regime required new theory and foundational empirical studies, even for the simplest case of the linear model. The underpinnings of this understanding have been laid in foundational analyses of overparameterized linear regression and related statistical learning tasks, mostly published between 2018 and 2022, which resulted in precise analytic characterizations of double descent. This paper provides an overview of the theory of overparameterized ML (henceforth abbreviated as TOPML) by focusing on explaining the most foundational findings through a statistical signal processing perspective. We emphasize the unique aspects that define the TOPML research area as a subfield of modern ML theory and outline interesting open frontiers that remain.\n\n[arxiv-2205-10343-p0004] Perhaps the central challenge of a scientific understanding of deep learning lies in accounting for neural network generalization. Power et al. [1] recently added a new puzzle to the task of understanding generalization with their discovery of grokking. Grokking refers to the surprising phenomenon of delayed generalization where neural networks, on certain learning problems, generalize long after overfitting their training set. It is a rare albeit striking phenomenon that violates common machine learning intuitions, raising three key puzzles: Q1 The origin of generalization: When trained on the algorithmic datasets where grokking occurs, how do models generalize at all? Q2 The critical training size: Why does the training time needed to “grok” (generalize) diverge as the training set size decreases toward a critical point? Q3 Delayed generalization: Under what conditions does delayed generalization occur? We provide evidence that representation learning is central to answering each of these questions. Our answers can be summarized as follows: A1 Generalization can be attributed to learning a good representation of the input embeddings, i.e., a representation that has the appropriate structure for the task and which can be predicted from the theory in Section 3. See Figures 1 and 2. A2 The critical training set size corresponds to the least amount of training data that can determine such a representation (which, in some cases, is unique up to linear transformations). 36th Conference on Neural Information Processing Systems (NeurIPS 2022).\n\nNammade equilibrium scan. Channel labels compare the query with stored spans. They do not verify a physical law.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+   }
+  },
+  {
+   "rank": 2,
+   "frontier_hypothesis": {
+    "id": "814b730d53f8",
+    "text": "phenomenon may undermine dependence of grokking time through traditional machine learning theory (read as Effective theory).",
+    "pattern": "chain",
+    "relation": "undermines",
+    "anchors": [
+     "phenomenon",
+     "dependence of grokking time"
+    ],
+    "via": [
+     "traditional machine learning theory (read as Effective theory)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2502-12508-p0025",
+     "arxiv-2205-10343-p0021"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2502-12508-p0025",
+      "quote": "This phenomenon starkly contradicts traditional machine learning theory.",
+      "start": 221,
+      "end": 293,
+      "chunk_sha256": "8117771902ee046e74274840c0d7cf9c25c3fb383f49294ff651eb5b0751265d",
+      "relation": "undermines",
+      "subject": "phenomenon",
+      "object": "traditional machine learning theory",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2205-10343-p0021",
+      "quote": "Figure 5: Effective theory explains the dependence of grokking time on data size, for the addition task.",
+      "start": 0,
+      "end": 104,
+      "chunk_sha256": "b2218cd4d49e7b23211128b14c86a48057f6d75ead8ab1c4f41ba5641e702602",
+      "relation": "supports",
+      "subject": "Effective theory",
+      "object": "dependence of grokking time",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.975,
+     "novelty": 0.592
+    },
+    "falsification_test": "Construct a coherent case where phenomenon is accepted. The hypothesis fails if dependence of grokking time still holds in that case, or if the argument does not need traditional machine learning theory (read as Effective theory).",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "traditional machine learning theory"
+   },
+   "seed": "Investigate phenomenon, traditional machine learning theory and dependence of grokking time.",
+   "research_seconds": 1.36,
+   "research": {
+    "answer_status": "research_question",
+    "stages": [
+     "taxonomy_invention",
+     "research_hypotheses",
+     "nammade_equilibrium",
+     "abductive_bridge",
+     "inference"
+    ],
+    "research_methods": {
+     "innovation": {
+      "outcome": "research_question"
+     },
+     "hypothesis_generation": {
+      "option_count": 3
+     },
+     "nammade": {
+      "outcome": "nammade"
+     },
+     "abductive_bridge": {
+      "status": "NO_GAP",
+      "promotion": "blocked"
+     },
+     "inference": {
+      "outcome": "no_applicable_rule",
+      "proof_count": 0
+     }
+    },
+    "research_question": null,
+    "proposals": [],
+    "source_context": [
+     {
+      "document_id": "arxiv-1611-03530-p0002",
+      "quote": "This phenomenon is qualitatively unaffected by explicit regularization, and occurs even if we replace the true images by completely unstructured random noise."
+     },
+     {
+      "document_id": "arxiv-1710-06451-p0002",
+      "quote": "We show that the same phenomenon occurs in small linear models."
+     },
+     {
+      "document_id": "arxiv-1805-08522-p0010",
+      "quote": "In Figure 10, we show that we indeed find this simplicity-bias phenomenon, with all high-probability functions having low Lempel-Ziv (LZ) complexity (defined in Appendix F.1)."
+     },
+     {
+      "document_id": "arxiv-1810-02054-p0002",
+      "quote": "This paper demystifies this surprising phenomenon for two-layer fully connected ReLU activated neural networks."
+     }
+    ],
+    "hypothesis_options": [
+     {
+      "document_id": "arxiv-2303-15464-p0009",
+      "prediction": "Table 1: Mathematical notation and their brief description Basic learning theory deals with the predictor function f ∈ F, where F is called the hypothesis class and f is the machine learning model such as multi-layer perceptron, perhaps indexed by some continuous parameters w, say fw.",
+      "span_hash": "292e04ea04c0634b3456d28e8b038bcd8cadaeb019c92d91d0be1f45f04a3fdb",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0008",
+      "prediction": "Traditional learning theory with complexity measures, e.g., the VC dimension (Vapnik & Chervonenkis, 1971), suggests that for generalization, models should not be able to fit any possible training data (Shalev-Shwartz & Ben-David, 2014).",
+      "span_hash": "dcd0871914b0ea029a9ba96ce9d926d79efbb29234a0f3d6e0fb8689fb445299",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2412-09810-p0007",
+      "prediction": "Traditional complexity measures in machine learning such as Rademacher complexity (Bartlett and Mendelson, 2003) or VC dimension (Vapnik and Chervonenkis, 1971) are defined relative to specific hypothesis classes, but we seek a universal measure that applies to any computational model.",
+      "span_hash": "2201e47c34cd417b252763352b629ed311e98bf06f466002af98c823d6de58e9",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     }
+    ],
+    "nammade_comparisons": 32,
+    "abductive_bridge": {
+     "status": "NO_GAP",
+     "candidate": null,
+     "abstention_reason": "The diagnostic comparisons do not show incompatible bounds.",
+     "contradiction_source_ids": []
+    },
+    "research_inference": "no_applicable_rule",
+    "reply": "Three research methods ran in parallel on the same authorized sources.\n\n### Innovation\nLooks for new proposals grounded in relationships across source passages.\nResearch question: For phenomenon, traditional machine learning theory and dependence of grokking time, can a candidate explanation reproduce the outcome described in the sources while satisfying their stated constraints?\nIdentify a model that predicts the outcome and an independently measured observable. Find the empirical bounds and check which model parameters can satisfy both.\nSource context:\n[arxiv-1611-03530-p0002] This phenomenon is qualitatively unaffected by explicit regularization, and occurs even if we replace the true images by completely unstructured random noise.\n[arxiv-1710-06451-p0002] We show that the same phenomenon occurs in small linear models.\n[arxiv-1805-08522-p0010] In Figure 10, we show that we indeed find this simplicity-bias phenomenon, with all high-probability functions having low Lempel-Ziv (LZ) complexity (defined in Appendix F.1).\n[arxiv-1810-02054-p0002] This paper demystifies this surprising phenomenon for two-layer fully connected ReLU activated neural networks.\n\n### Hypothesis generation\nSurfaces source predictions or combines cited premises into a proposed test.\nEach item below is a separate option.\nH1. (Source prediction) Table 1: Mathematical notation and their brief description Basic learning theory deals with the predictor function f ∈ F, where F is called the hypothesis class and f is the machine learning model such as multi-layer perceptron, perhaps indexed by some continuous parameters w, say fw.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH2. (Source prediction) Traditional learning theory with complexity measures, e.g., the VC dimension (Vapnik & Chervonenkis, 1971), suggests that for generalization, models should not be able to fit any possible training data (Shalev-Shwartz & Ben-David, 2014).\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH3. (Source prediction) Traditional complexity measures in machine learning such as Rademacher complexity (Bartlett and Mendelson, 2003) or VC dimension (Vapnik and Chervonenkis, 1971) are defined relative to specific hypothesis classes, but we seek a universal measure that applies to any computational model.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\n\n### Nammade comparison\nCompares passages under the Nammade model and records displacement, residuals, and density.\nComparisons returned — 32.\nRelevant source excerpts\n\n[arxiv-2205-10343-p0004] Perhaps the central challenge of a scientific understanding of deep learning lies in accounting for neural network generalization. Power et al. [1] recently added a new puzzle to the task of understanding generalization with their discovery of grokking. Grokking refers to the surprising phenomenon of delayed generalization where neural networks, on certain learning problems, generalize long after overfitting their training set. It is a rare albeit striking phenomenon that violates common machine learning intuitions, raising three key puzzles: Q1 The origin of generalization: When trained on the algorithmic datasets where grokking occurs, how do models generalize at all? Q2 The critical training size: Why does the training time needed to “grok” (generalize) diverge as the training set size decreases toward a critical point? Q3 Delayed generalization: Under what conditions does delayed generalization occur? We provide evidence that representation learning is central to answering each of these questions. Our answers can be summarized as follows: A1 Generalization can be attributed to learning a good representation of the input embeddings, i.e., a representation that has the appropriate structure for the task and which can be predicted from the theory in Section 3. See Figures 1 and 2. A2 The critical training set size corresponds to the least amount of training data that can determine such a representation (which, in some cases, is unique up to linear transformations). 36th Conference on Neural Information Processing Systems (NeurIPS 2022).\n\n[arxiv-2205-10343-p0003] We aim to understand grokking, a phenomenon where models generalize long after overfitting their training set. We present both a microscopic analysis anchored by an effective theory and a macroscopic analysis of phase diagrams describing learning performance across hyperparameters. We find that generalization originates from structured representations whose training dynamics and dependence on training set size can be predicted by our effective theory in a toy setting. We observe empirically the presence of four learning phases: comprehension, grokking, memorization, and confusion. We find representation learning to occur only in a “Goldilocks zone” (including comprehension and grokking) between memorization and confusion. We find on transformers the grokking phase stays closer to the memorization phase (compared to the comprehension phase), leading to delayed generalization. The Goldilocks phase is reminiscent of “intelligence from starvation” in Darwinian evolution, where resource limitations drive discovery of more efficient solutions. This study not only provides intuitive explanations of the origin of grokking, but also highlights the usefulness of physics-inspired tools, e.g., effective theories and phase diagrams, for understanding deep learning.\n\n[arxiv-2205-10343-p0020] We verify the above analysis with empirical results. Figure 4 (c)(d) show the trajectories obtained from the effective theory and from neural network training, respectively. The 1D neural representation in Figure 4 (d) are manually normalized to zero mean and unit variance. The two trajectories agree qualitatively, and it takes about 3nh steps for two trajectories to converge to the linear structure. The quantitative differences might be due to the absence of the decoder in the effective theory, which assumes the decoder to take infinitesimal step sizes. Dependence of grokking on data size Note that leff involves averaging over parallelograms in the training set, it is dependent on training data size, so is λ3. In Figure 5 (a), we plot the dependence of λ3 on training data fraction. There are many datasets with the same data size, so λ3 is a probabilistic function of data size. Two insights on grokking can be extracted from this plot: (i) When the data fraction is below some threshold (around 0.4), λ3 is zero with high probability, corresponding to no generalization. This again verifies our critical point in Figure 4. (ii) When data size is above the threshold, λ3 (on average) is an increasing function of data size. This implies that grokking time t∼ 1/λ3 decreases as training data size becomes larger, an important observation from [1]. To verify our effective theory, we compare the grokking steps obtained from real neural network training (defined as steps to RQI > 0.95), and those predicted by our theory tth ∼ 1 λ3 η (η is the embedding learning rate), shown in Figure 5 (b). The theory agrees qualitatively with neural networks, showing the trend of decreasing grokking steps as increasing data size. The quantitative differences might be explained as the gap between our effective loss and actual loss. Limitations of the effective theory While our theory defines an effective loss based on the Euclidean distance between embeddings Ei + Ej and En + Em, one could imagine generalizing the theory to define a broader notion of parallogram given by some other metric on the representation space. For instance, if we have a decoder like in Figure 2 (d) then the distance between distinct representations within the same “pizza slice” is low, meaning that representations arranged not in parallelograms w.r.t. the Euclidean metric may be parallelograms with respect to the metric defined by the decoder. 4 Delayed Generalization: A Phase Diagram So far, we have (1) observed empirically that generalization on algorithmic datasets corresponds with the emergence of well-structured representations, (2) defined a notion of representation quality in a toy setting and shown that it predicts generalization, and (3) developed an effective theory to describe\n\nNammade equilibrium scan. Channel labels compare the query with stored spans. They do not verify a physical law.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+   }
+  },
+  {
+   "rank": 3,
+   "frontier_hypothesis": {
+    "id": "0ae55a415db6",
+    "text": "Low weight decay may increase generalization through emergence phase (read as grokking phase).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "Low weight decay",
+     "generalization"
+    ],
+    "via": [
+     "emergence phase (read as grokking phase)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2408-08944-p0012",
+     "arxiv-2205-10343-p0021"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2408-08944-p0012",
+      "quote": "Low weight decay delays the emergence phase We first study the most common setting of grokking for a model trained with low weight decay of 0.1.",
+      "start": 93,
+      "end": 237,
+      "chunk_sha256": "410b99860d75ac8c0cee75b0076da8882fbcd7bfcf538ebe552b817bd0412c4c",
+      "relation": "decreases",
+      "subject": "Low weight decay",
+      "object": "emergence phase",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2205-10343-p0021",
+      "quote": "The 2D plane is split into four phases: comprehension, grokking, memorization and confusion, defined in Table 1 in Appendix A. Both comprehension and grokking are able to generalize (in the “Goldilocks zone”), although the grokking phase has delayed generalization.",
+      "start": 1742,
+      "end": 2007,
+      "chunk_sha256": "b2218cd4d49e7b23211128b14c86a48057f6d75ead8ab1c4f41ba5641e702602",
+      "relation": "decreases",
+      "subject": "grokking phase",
+      "object": "generalization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.975,
+     "novelty": 0.45
+    },
+    "falsification_test": "Compare settings where Low weight decay differs while other inputs are matched. The hypothesis fails if generalization does not rise with Low weight decay, or if fixing emergence phase (read as grokking phase) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "emergence phase"
+   },
+   "seed": "Investigate Low weight decay, emergence phase and generalization.",
+   "research_seconds": 1.43,
+   "research": {
+    "answer_status": "research_question",
+    "stages": [
+     "taxonomy_invention",
+     "research_hypotheses",
+     "nammade_equilibrium",
+     "abductive_bridge",
+     "inference"
+    ],
+    "research_methods": {
+     "innovation": {
+      "outcome": "research_question"
+     },
+     "hypothesis_generation": {
+      "option_count": 3
+     },
+     "nammade": {
+      "outcome": "nammade"
+     },
+     "abductive_bridge": {
+      "status": "NO_GAP",
+      "promotion": "blocked"
+     },
+     "inference": {
+      "outcome": "no_applicable_rule",
+      "proof_count": 0
+     }
+    },
+    "research_question": null,
+    "proposals": [],
+    "source_context": [
+     {
+      "document_id": "arxiv-1503-02406-p0002",
+      "quote": "Using this representation we can calculate the optimal information theoretic limits of the DNN and obtain finite sample generalization bounds."
+     },
+     {
+      "document_id": "arxiv-1609-04836-p0001",
+      "quote": "# On Large-Batch Training for Deep Learning: Generalization Gap and Sharp Minima"
+     },
+     {
+      "document_id": "arxiv-1609-04836-p0002",
+      "quote": "We investigate the cause for this generalization drop in the large-batch regime and present numerical evidence that supports the view that large-batch methods tend to converge to sharp minimizers of the training and testing functions - and as is well known, sharp minima lead to poorer generalization."
+     },
+     {
+      "document_id": "arxiv-1611-01838-p0002",
+      "quote": "Local extrema with low generalization error have a large proportion of almost-zero eigenvalues in the Hessian with very few positive or negative eigenvalues."
+     }
+    ],
+    "hypothesis_options": [
+     {
+      "document_id": "arxiv-2205-10343-p0020",
+      "prediction": "4 Delayed Generalization: A Phase Diagram So far, we have (1) observed empirically that generalization on algorithmic datasets corresponds with the emergence of well-structured representations, (2) defined a notion of representation quality in a toy setting and shown that it predicts generalization, and (3) developed an effective theory to describe",
+      "span_hash": "bb774798e03ed404a33e41b6ea9f06de58c2d9f5c3ffc7147657f031a0acfa69",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0025",
+      "prediction": "The phase diagrams in Figure 7 should therefore be interpreted as an approximate probe based on sweeping weight decay and learning rate.",
+      "span_hash": "94e8c20f3eb103bb77ff8083369d01bb8527046afb9de0d195984e2c580aff07",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2205-10343-p0018",
+      "prediction": "As shown in Figure 4 (a), our effective theory predicts that the probability that the training set implies a unique linear structure (which would result in perfect generalization) depends on the training data fraction and has a phase transition around rc = 0.4.",
+      "span_hash": "a367dcf20a7d69e4e9dff018ecfae7eccb85018f75e3c730f410ac7a1f762a2c",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     }
+    ],
+    "nammade_comparisons": 32,
+    "abductive_bridge": {
+     "status": "NO_GAP",
+     "candidate": null,
+     "abstention_reason": "The diagnostic comparisons do not show incompatible bounds.",
+     "contradiction_source_ids": []
+    },
+    "research_inference": "no_applicable_rule",
+    "reply": "Three research methods ran in parallel on the same authorized sources.\n\n### Innovation\nLooks for new proposals grounded in relationships across source passages.\nResearch question: For Low weight decay, emergence phase and generalization, can a candidate explanation reproduce the outcome described in the sources while satisfying their stated constraints?\nIdentify a model that predicts the outcome and an independently measured observable. Find the empirical bounds and check which model parameters can satisfy both.\nSource context:\n[arxiv-1503-02406-p0002] Using this representation we can calculate the optimal information theoretic limits of the DNN and obtain finite sample generalization bounds.\n[arxiv-1609-04836-p0001] # On Large-Batch Training for Deep Learning: Generalization Gap and Sharp Minima\n[arxiv-1609-04836-p0002] We investigate the cause for this generalization drop in the large-batch regime and present numerical evidence that supports the view that large-batch methods tend to converge to sharp minimizers of the training and testing functions - and as is well known, sharp minima lead to poorer generalization.\n[arxiv-1611-01838-p0002] Local extrema with low generalization error have a large proportion of almost-zero eigenvalues in the Hessian with very few positive or negative eigenvalues.\n\n### Hypothesis generation\nSurfaces source predictions or combines cited premises into a proposed test.\nEach item below is a separate option.\nH1. (Source prediction) 4 Delayed Generalization: A Phase Diagram So far, we have (1) observed empirically that generalization on algorithmic datasets corresponds with the emergence of well-structured representations, (2) defined a notion of representation quality in a toy setting and shown that it predicts generalization, and (3) developed an effective theory to describe\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH2. (Source prediction) The phase diagrams in Figure 7 should therefore be interpreted as an approximate probe based on sweeping weight decay and learning rate.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH3. (Source prediction) As shown in Figure 4 (a), our effective theory predicts that the probability that the training set implies a unique linear structure (which would result in perfect generalization) depends on the training data fraction and has a phase transition around rc = 0.4.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\n\n### Nammade comparison\nCompares passages under the Nammade model and records displacement, residuals, and density.\nComparisons returned — 32.\nRelevant source excerpts\n\n[arxiv-2408-08944-p0005] • We observe that a low weight decay value results in an additional divergent and delayed emergence phase. We find that weight initialization and increasing weight decay directly leads to an emergent phase and reduces the delayed generalization gap • We present preliminary findings indicating that the subnetworks at the emergent phase may be causally related\n\n[arxiv-2408-08944-p0021] 7. Are the emergent synergistic sub-networks causally related to generalization? This experiment investigates whether sub-networks with high synergy during the emergence phase contribute to delayed generalization in models. We focus on models trained with high weight decay (2.0) and weight initialization (8). First, we identify and extract sub-networks with high synergy during the emergence phase. We then train these subnetworks in isolation, setting all other neurons to zero. We compare the test accuracy of these isolated sub-networks with both the original test accuracy and the accuracy of their inverse sub-networks. For comparison, we also evaluate subnetworks identified during the delayed emergence phase of a model trained with low weight decay (0.1). Role of weight decay From figure 6 left, we find that the synergistic network for low weight decay 0.1 achieves similar performance to the original model but the peak in test accuracy is less sudden indicating the model relies less on emergent interactions. On the other hand, the inverse model In contrast, figure 6 right shows that synergistic sub-network for weight decay 2.0 groks in fewer epochs. We hypothesize this is due to an emergent phase as indicated by a sharper test accuracy peak and higher synergy.\n\n[arxiv-2205-10343-p0021] Figure 5: Effective theory explains the dependence of grokking time on data size, for the addition task. (a) Dependence of λ3 on training data fraction. Above the critical data fraction (around 0.4), as data size becomes larger, λ3 increases hence grokking time t∼ 1/λ3 (predicted by our effective theory) decreases. (b) Comparing grokking steps (defined as RQI > 0.95) predicted by the effective theory with real neural network results. η = 10−3 is the learning rate of the embeddings. the learning dynamics of the representations in the same toy setting. We now study how optimizer hyperparameters affect high-level learning performance. In particular, we develop phase diagrams for how learning performance depends on the representation learning rate, decoder learning rate and the decoder weight decay. These parameters are of interest since they most explicitly regulate a kind of competition between the encoder and decoder, as we elaborate below. 4.1 Phase diagram of a toy model Training details We update the representation and the decoder with different optimizers. For the 1D embeddings, we use the Adam optimizer with learning rate [10−5, 10−2] and zero weight decay. For the decoder, we use an AdamW optimizer with the learning rate in [10−5, 10−2] and the weight decay in [0, 10] (regression) or [0, 20] (classification). For training/validation spliting, we choose 45/10 for non-modular addition (p = 10) and 24/12 for the permutation group S3. We hard-code addition or matrix multiplication (details in Appendix H) in the decoder for the addition group and the permutation group, respectively. For each choice of learning rate and weight decay, we compute the number of steps to reach high (90%) training/validation accuracy. The 2D plane is split into four phases: comprehension, grokking, memorization and confusion, defined in Table 1 in Appendix A. Both comprehension and grokking are able to generalize (in the “Goldilocks zone”), although the grokking phase has delayed generalization. Memorization is also called overfitting, and confusion means failure to even memorize training data. Figure 6 shows the phase diagrams for the addition group and the permutation group. They display\n\nNammade equilibrium scan. Channel labels compare the query with stored spans. They do not verify a physical law.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+   }
+  },
+  {
+   "rank": 4,
+   "frontier_hypothesis": {
+    "id": "16ef4f4984ef",
+    "text": "distribution shifts and Misalignment of Low Loss Regions may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "distribution shifts",
+     "Misalignment of Low Loss Regions",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2502-01774-p0007",
+     "arxiv-2502-01774-p0016",
+     "arxiv-2610-00620-p0001"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2502-01774-p0007",
+      "quote": "While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.",
+      "start": 257,
+      "end": 438,
+      "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+      "relation": "causes",
+      "subject": "distribution shifts",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0016",
+      "quote": "The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.",
+      "start": 859,
+      "end": 977,
+      "chunk_sha256": "e46483042e639a5b9c1f29d4321ac6a29d20c1f1cffe9e5c30e807d38d93ed17",
+      "relation": "causes",
+      "subject": "distribution shifts",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0001",
+      "quote": "# Misalignment of Low-Loss Regions Causes Grokking",
+      "start": 0,
+      "end": 50,
+      "chunk_sha256": "77b4beca6ccf182d0255f8124a528444b513150f00fb59ba311acb211978892f",
+      "relation": "causes",
+      "subject": "Misalignment of Low Loss Regions",
+      "object": "Grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.925,
+     "novelty": 0.714
+    },
+    "falsification_test": "Vary distribution shifts and Misalignment of Low Loss Regions separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   "seed": "Investigate distribution shifts, Misalignment of Low Loss Regions and grokking.",
+   "research_seconds": 1.49,
+   "research": {
+    "answer_status": "research_question",
+    "stages": [
+     "taxonomy_invention",
+     "research_hypotheses",
+     "nammade_equilibrium",
+     "abductive_bridge",
+     "inference"
+    ],
+    "research_methods": {
+     "innovation": {
+      "outcome": "research_question"
+     },
+     "hypothesis_generation": {
+      "option_count": 3
+     },
+     "nammade": {
+      "outcome": "nammade"
+     },
+     "abductive_bridge": {
+      "status": "NO_GAP",
+      "promotion": "blocked"
+     },
+     "inference": {
+      "outcome": "no_applicable_rule",
+      "proof_count": 0
+     }
+    },
+    "research_question": null,
+    "proposals": [],
+    "source_context": [
+     {
+      "document_id": "arxiv-2201-02177-p0001",
+      "quote": "# Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets"
+     },
+     {
+      "document_id": "arxiv-2201-02177-p0002",
+      "quote": "In some situations we show that neural networks learn through a process of \"grokking\" a pattern in the data, improving generalization performance from random chance level to perfect generalization, and that this improvement in generalization can happen well past the point of overfitting."
+     },
+     {
+      "document_id": "arxiv-2205-10343-p0001",
+      "quote": "# Towards Understanding Grokking: An Effective Theory of Representation Learning"
+     },
+     {
+      "document_id": "arxiv-2205-10343-p0003",
+      "quote": "We aim to understand grokking, a phenomenon where models generalize long after overfitting their training set."
+     }
+    ],
+    "hypothesis_options": [
+     {
+      "document_id": "arxiv-2502-01774-p0004",
+      "prediction": "To systematically investigate this hypothesis, we construct two synthetic datasets where distribution shifts between training and testing data can be precisely controlled to reproduce grokking, even in the presence of dense data.",
+      "span_hash": "295ab6b88f16a26ad5d1aad0996581b954f8eb97a3e59bf4d352257dfc8cf388",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0007",
+      "prediction": "While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.",
+      "span_hash": "c3b4200e36df4d3edab236fec4275980fa1499a6526f1b89628badfcc9c818dd",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0016",
+      "prediction": "The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.",
+      "span_hash": "517e2599dacbb88e5b54811ee2dcd123e15b7ebe86f9899760af398e34807631",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     }
+    ],
+    "nammade_comparisons": 32,
+    "abductive_bridge": {
+     "status": "NO_GAP",
+     "candidate": null,
+     "abstention_reason": "The diagnostic comparisons do not show incompatible bounds.",
+     "contradiction_source_ids": []
+    },
+    "research_inference": "no_applicable_rule",
+    "reply": "Three research methods ran in parallel on the same authorized sources.\n\n### Innovation\nLooks for new proposals grounded in relationships across source passages.\nResearch question: For distribution shifts, Misalignment of Low Loss Regions and grokking, can a candidate explanation reproduce the outcome described in the sources while satisfying their stated constraints?\nIdentify a model that predicts the outcome and an independently measured observable. Find the empirical bounds and check which model parameters can satisfy both.\nSource context:\n[arxiv-2201-02177-p0001] # Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets\n[arxiv-2201-02177-p0002] In some situations we show that neural networks learn through a process of \"grokking\" a pattern in the data, improving generalization performance from random chance level to perfect generalization, and that this improvement in generalization can happen well past the point of overfitting.\n[arxiv-2205-10343-p0001] # Towards Understanding Grokking: An Effective Theory of Representation Learning\n[arxiv-2205-10343-p0003] We aim to understand grokking, a phenomenon where models generalize long after overfitting their training set.\n\n### Hypothesis generation\nSurfaces source predictions or combines cited premises into a proposed test.\nEach item below is a separate option.\nH1. (Source prediction) To systematically investigate this hypothesis, we construct two synthetic datasets where distribution shifts between training and testing data can be precisely controlled to reproduce grokking, even in the presence of dense data.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH2. (Source prediction) While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH3. (Source prediction) The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\n\n### Nammade comparison\nCompares passages under the Nammade model and records displacement, residuals, and density.\nComparisons returned — 32.\nRelevant source excerpts\n\n[arxiv-2502-01774-p0002] Grokking, or delayed generalization, is an intriguing learning phenomenon where test set loss decreases sharply only after a model’s training set loss has converged. This challenges conventional understanding of the training dynamics in deep learning networks. In this paper, we formalize and investigate grokking, highlighting that a key factor in its emergence is a distribution shift between training and test data. We introduce two synthetic datasets specifically designed to analyze grokking. One dataset examines the impact of limited sampling, and the other investigates transfer learning’s role in grokking. By inducing distribution shifts through controlled imbalanced sampling of sub-categories, we systematically reproduce the phenomenon, demonstrating that while smallsampling is strongly associated with grokking, it is not its cause. Instead, small-sampling serves as a convenient mechanism for achieving the necessary distribution shift. We also show that when classes form an equivariant map, grokking can be explained by the model’s ability to learn from similar classes or sub-categories. Unlike earlier work suggesting that grokking primarily arises from high regularization and sparse data, we demonstrate that it can also occur with dense data and minimal hyper-parameter tuning. Our findings deepen the understanding of grokking and pave the way for developing better stopping criteria in\n\n[arxiv-2502-01774-p0016] ˇZunkoviˇc & Ilievski (2022) investigate the grokking phenomenon as a phase transition in the context of rule learning. They claim that grokking is a result of the locality of a teacher model and seek to estimate the probability of grokking as being the fraction of sampled attention tensors in a tensor-network map that lead to a linearly separable feature space for a choice of rule. In our work, grokking is formulated purely from a statistical perspective without the need for rule learning. Levi et al. (2023) study the occurrence of grokking within linear models through gradient descent. The paper offers an insight that motivated our work: grokking can happen due to data distribution rather than model complexity. The tools used in (Levi et al., 2023), such as the analysis of training and generalization loss dynamics, could be adapted to our work. The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models. It is generalized in this paper to more complex models. Kumar et al. (2024) proposes that grokking is a transition from lazy to rich training, that is, when a network proceeds from attempting to learn a linear model from the features that are provided to learn more abstract, derived features. The paper focuses on a kernel regression task, although it reports results on how to try and control grokking on MNIST using an MLP and on modular arithmetic using a one-layer transformer. The authors also claim that weight decay cannot explain grokking. While Kumar et al. (2024) places an emphasis on specific model learning, we show that grokking is generally model-independent through our experiments using an MLP and a two-layer transformer (see Appendix A). Distribution shift: A distribution shift, as discussed in Qui ̃nonero-Candela et al. (2022), refers to a significant change in the statistical properties of a dataset which can lead to poor performance of machine learning models. In this context, a distribution shift typically occurs when the properties of the data used for training differ significantly from the properties of the data encountered during deployment. This discrepancy can result from various factors, such as changes in the data source, user behavior or environment\n\n[arxiv-2502-01774-p0019] Figure 2: Grokking example: assume that the training set performance has converged (TR, orange curve). There is an inflection point α0 where the model’s test set performance (TE , blue curve) escapes a low performing region. The interval between α0 and α1 is the transition phase during which the test set performance transitions to a region much closer to that of the training set performance. By ∆S , we denote the difference between the upper limit of the low performing region σS and the lower limit of the high performing region σE . ∆S is used to indicate how much grokking happened in this training process. By ∆T , we denote the difference between the limit value of TR and σE . ∆T can be used to indicate how much room for improvement there is in the learning process. The interval S is the support interval. The longer this interval is without the value of TE dropping below σE , the more stable the grokking phenomenon. set performance gradually improves and aligns with the performance on the training set. Definition 3.1 (Grokking). Let ∆T denote an interval with lower bound σE containing the limit value of a converging training set performance curve at time α0. Let σS ≪ σE denote an upper bound on the test set performance measured up to time point α0. We say that grokking took place if at time point α1 ¿ α0, the test set performance is within ∆T and remains within ∆T for an interval S ≫ (α1 − α0). When training a model, we typically observe training loss and evaluation (test set) loss. Understanding the relationship between these two metrics is essential for interpreting model behavior. If the training loss approaches zero, it suggests that the model has memorized the training data rather than learned to generalize from it. In such cases, one might expect performance on unseen data, represented by the evaluation loss, to degrade due to over-fitting. However, if the evaluation loss decreases sharply at a later time, even after the training loss has approached zero, this indicates a capability to generalize, rather than memorization, given a very weak training signal that needs to be understood. Our hypothesis is that grokking is a statistical phenomenon derived from a distribution shift between test data and training data, which can be reproduced systematically and which is amplified, not defined, by high regularization and use of specific parametrization and initialization values. Distribution shifts inducing grokking: The phenomenon of grokking, induced by distribution shifts, can be attributed to several key factors. Firstly, even a faint, i.e. close to zero, training signal may interact with related data within a class or across nearby classes to provide an incentive for models to maintain decision boundaries. Additionally, regularization serves as a tool to guide models toward simpler solutions with a sparse weight matrix influencing but not determining the occurrence of grokking. Research by (Power et al., 2022) demonstrated grokking in models that do not rely on an internal latent space to represent data, suggesting that while the specific model architecture may be relevant, it is the underlying data distribution and the compounding of learning that will determine late generalization. In order to confirm or reject our hypothesis, we created two synthetic datasets that allow for controlling the assumed underlying conditions for grokking, as described next. 4. New Synthetic Datasets for Grokking The two synthetic datasets introduced in this paper enable the induction of grokking with minimal tuning of model parameters, avoiding an extensive search of the parameter space. These datasets enable the creation of a shift between training and test set distributions, allowing for user control over how much information each subclass carries, as detailed below. The datasets are available in the supplementary material accompanying the paper. The primary goal of the datasets is to be linearly separable when considering all sample dimensions d, while also being non-trivial to solve even with the addition of noise or extreme down-sampling. Data can be created with an arbitrary number of dimensions d. The datasets are defined by projecting classes onto this d-dimensional space using multivariate normal distributions, ensuring control over both class definitions and their distances in the d-dimensional\n\nNammade equilibrium scan. Channel labels compare the query with stored spans. They do not verify a physical law.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+   }
+  },
+  {
+   "rank": 5,
+   "frontier_hypothesis": {
+    "id": "b4db33b66ddd",
+    "text": "Larger datasets and Misalignment of Low Loss Regions may jointly drive grokking, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "Larger datasets",
+     "Misalignment of Low Loss Regions",
+     "grokking"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-01117-p0010",
+     "arxiv-2610-00620-p0001"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-01117-p0010",
+      "quote": "(2) Larger datasets lead to de-grokking.",
+      "start": 536,
+      "end": 576,
+      "chunk_sha256": "1243dc1b5f4550c9a2f84dcc7ef1ea1ac1ebfd4bd0835e00b12122028e9733ef",
+      "relation": "causes",
+      "subject": "Larger datasets",
+      "object": "grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-00620-p0001",
+      "quote": "# Misalignment of Low-Loss Regions Causes Grokking",
+      "start": 0,
+      "end": 50,
+      "chunk_sha256": "77b4beca6ccf182d0255f8124a528444b513150f00fb59ba311acb211978892f",
+      "relation": "causes",
+      "subject": "Misalignment of Low Loss Regions",
+      "object": "Grokking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.925,
+     "novelty": 0.714
+    },
+    "falsification_test": "Vary Larger datasets and Misalignment of Low Loss Regions separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "grokking"
+   },
+   "seed": "Investigate Larger datasets, Misalignment of Low Loss Regions and grokking.",
+   "research_seconds": 1.68,
+   "research": {
+    "answer_status": "research_question",
+    "stages": [
+     "taxonomy_invention",
+     "research_hypotheses",
+     "nammade_equilibrium",
+     "abductive_bridge",
+     "inference"
+    ],
+    "research_methods": {
+     "innovation": {
+      "outcome": "research_question"
+     },
+     "hypothesis_generation": {
+      "option_count": 3
+     },
+     "nammade": {
+      "outcome": "nammade"
+     },
+     "abductive_bridge": {
+      "status": "NO_GAP",
+      "promotion": "blocked"
+     },
+     "inference": {
+      "outcome": "no_applicable_rule",
+      "proof_count": 0
+     }
+    },
+    "research_question": null,
+    "proposals": [],
+    "source_context": [
+     {
+      "document_id": "arxiv-2201-02177-p0001",
+      "quote": "# Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets"
+     },
+     {
+      "document_id": "arxiv-2201-02177-p0002",
+      "quote": "In some situations we show that neural networks learn through a process of \"grokking\" a pattern in the data, improving generalization performance from random chance level to perfect generalization, and that this improvement in generalization can happen well past the point of overfitting."
+     },
+     {
+      "document_id": "arxiv-2205-10343-p0001",
+      "quote": "# Towards Understanding Grokking: An Effective Theory of Representation Learning"
+     },
+     {
+      "document_id": "arxiv-2205-10343-p0003",
+      "quote": "We aim to understand grokking, a phenomenon where models generalize long after overfitting their training set."
+     }
+    ],
+    "hypothesis_options": [
+     {
+      "document_id": "arxiv-2306-13253-p0018",
+      "prediction": "We present in the following the loss landscape of grokking, a discussion on how they are linked to our hypothesis.",
+      "span_hash": "8d0a5261e4dd531abaf54025b9198b20b41f511dc2a5488e6a4ce539a55115b0",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0004",
+      "prediction": "(2023) suggests the idea of the volume hypothesis for generalization: well-generalizing basins of the loss occupy a significantly larger volume in the weight space of neural networks than basins that do not generalize well.",
+      "span_hash": "ff9a188e78aceba12a0618b2d6266deef246a1f9d386215317539f8b038b807e",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2408-08944-p0003",
+      "prediction": "To understand and predict emergent phase transitions, one approach is to identify hidden progress measures – metrics causally related to the loss (Barak et al., 2023) - to predict and understand grokking.",
+      "span_hash": "617f8b36ad6045a78d179a987d47b53f52036d69440346442b6b6f6a4c578493",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     }
+    ],
+    "nammade_comparisons": 32,
+    "abductive_bridge": {
+     "status": "NO_GAP",
+     "candidate": null,
+     "abstention_reason": "The diagnostic comparisons do not show incompatible bounds.",
+     "contradiction_source_ids": []
+    },
+    "research_inference": "no_applicable_rule",
+    "reply": "Three research methods ran in parallel on the same authorized sources.\n\n### Innovation\nLooks for new proposals grounded in relationships across source passages.\nResearch question: For Larger datasets, Misalignment of Low Loss Regions and grokking, can a candidate explanation reproduce the outcome described in the sources while satisfying their stated constraints?\nIdentify a model that predicts the outcome and an independently measured observable. Find the empirical bounds and check which model parameters can satisfy both.\nSource context:\n[arxiv-2201-02177-p0001] # Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets\n[arxiv-2201-02177-p0002] In some situations we show that neural networks learn through a process of \"grokking\" a pattern in the data, improving generalization performance from random chance level to perfect generalization, and that this improvement in generalization can happen well past the point of overfitting.\n[arxiv-2205-10343-p0001] # Towards Understanding Grokking: An Effective Theory of Representation Learning\n[arxiv-2205-10343-p0003] We aim to understand grokking, a phenomenon where models generalize long after overfitting their training set.\n\n### Hypothesis generation\nSurfaces source predictions or combines cited premises into a proposed test.\nEach item below is a separate option.\nH1. (Source prediction) We present in the following the loss landscape of grokking, a discussion on how they are linked to our hypothesis.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH2. (Source prediction) (2023) suggests the idea of the volume hypothesis for generalization: well-generalizing basins of the loss occupy a significantly larger volume in the weight space of neural networks than basins that do not generalize well.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH3. (Source prediction) To understand and predict emergent phase transitions, one approach is to identify hidden progress measures – metrics causally related to the loss (Barak et al., 2023) - to predict and understand grokking.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\n\n### Nammade comparison\nCompares passages under the Nammade model and records displacement, residuals, and density.\nComparisons returned — 32.\nRelevant source excerpts\n\n[arxiv-2205-10343-p0020] We verify the above analysis with empirical results. Figure 4 (c)(d) show the trajectories obtained from the effective theory and from neural network training, respectively. The 1D neural representation in Figure 4 (d) are manually normalized to zero mean and unit variance. The two trajectories agree qualitatively, and it takes about 3nh steps for two trajectories to converge to the linear structure. The quantitative differences might be due to the absence of the decoder in the effective theory, which assumes the decoder to take infinitesimal step sizes. Dependence of grokking on data size Note that leff involves averaging over parallelograms in the training set, it is dependent on training data size, so is λ3. In Figure 5 (a), we plot the dependence of λ3 on training data fraction. There are many datasets with the same data size, so λ3 is a probabilistic function of data size. Two insights on grokking can be extracted from this plot: (i) When the data fraction is below some threshold (around 0.4), λ3 is zero with high probability, corresponding to no generalization. This again verifies our critical point in Figure 4. (ii) When data size is above the threshold, λ3 (on average) is an increasing function of data size. This implies that grokking time t∼ 1/λ3 decreases as training data size becomes larger, an important observation from [1]. To verify our effective theory, we compare the grokking steps obtained from real neural network training (defined as steps to RQI > 0.95), and those predicted by our theory tth ∼ 1 λ3 η (η is the embedding learning rate), shown in Figure 5 (b). The theory agrees qualitatively with neural networks, showing the trend of decreasing grokking steps as increasing data size. The quantitative differences might be explained as the gap between our effective loss and actual loss. Limitations of the effective theory While our theory defines an effective loss based on the Euclidean distance between embeddings Ei + Ej and En + Em, one could imagine generalizing the theory to define a broader notion of parallogram given by some other metric on the representation space. For instance, if we have a decoder like in Figure 2 (d) then the distance between distinct representations within the same “pizza slice” is low, meaning that representations arranged not in parallelograms w.r.t. the Euclidean metric may be parallelograms with respect to the metric defined by the decoder. 4 Delayed Generalization: A Phase Diagram So far, we have (1) observed empirically that generalization on algorithmic datasets corresponds with the emergence of well-structured representations, (2) defined a notion of representation quality in a toy setting and shown that it predicts generalization, and (3) developed an effective theory to describe\n\n[arxiv-2210-01117-p0006] Published as a conference paper at ICLR 2023 It is well known in statistics that generalization error has a \"U\" shape against model capacity, which is usually attributed to the bias-variance trade-off. Although this common wisdom was challenged by the observation of double descent (Nakkiran et al., 2021), the \"U\" curve can be recovered from a double descent simply by changing the x-axis from the number of model parameters N to the 2-norm of model parameters w ≡||w||2 (Ng and Ma, 2022). Although the LU mechanism may remind readers of related phenomena (Schoenholz et al., 2016; Yang and Schoenholz, 2017; Nakkiran et al., 2021), their setups are not exactly the same as ours. More importantly, our focus and contribution is to understand grokking, a brand new generalization puzzle. Grokking dynamics We identify the \"LU mechanism\" as the cause of grokking. If the weight norm is initialized to be large (e.g., the black square in the w>wc region), the model first quickly moves to a nearby overfitting solution by minimizing the training loss. Without any regularization, the model will stay where it is, because the gradient of the training loss is almost zero along the valley of overfitting solutions, so generalization does not happen. Fortunately, there are usually explicit and/or implicit regularizations that can drive the weight vector towards the Goldilocks zone w ≈ wc. When the regularization magnitude is non-zero but small, the radial motion can be (arbitrarily) slow. If weight decay is the only source of regularization, and training loss is negligible after overfitting, then weight decay γ causes w(t) ≈ exp(−γt)w0, when w0 >wc, so it takes time t≈ ln(w0/wc)/γ ∝γ−1 to generalize. A small γ results in a huge generalization delay (i.e., grokking). The dependence on regularization magnitudes is illustrated in Figure 1b: no generalization at all happens for γ = 0, small γ leads to slow generalization (grokking), and large γ leads to faster generalization 3. The above analysis only applies to large initializations w>wc. Small initializations w<wc can always generalize fast 4, regardless of regularization. Why isn’t grokking commonly observed? The standard initialization schemes typically initialize w no larger than wc. However, if we increase initialization scales (explicitly or implicitly), grokking can appear. In Section 3 and 4, we find that explicitly increasing initialization weight norm can induce grokking. In Section 5, we argue for algorithmic datasets because (shown in Figure 6d) wc(bad representation) >wc(good representation), (2) i.e., a proper initialization for a bad representation is effectively too large for a good representation, leading to grokking. Take the addition (base p) for example: with the good (linear) representation or a bad (random) representation, the decoder needs to learn to classify O(p) or O(p2) examples,\n\n[arxiv-2210-01117-p0010] shown in Figure 3 (a)(b). The reduced loss landscape reveals three things: (1) Larger initializations lead to grokking. Point A in Figure 3 corresponds to the standard initialization (α = 1), which has low training and test errors, hence no grokking. When increasing the weight norm from A to B, training error is seen to remain low while test error rises. To generalize, implicit or explicit regularization such as weight decay then brings the weight norm down, leading to delayed generalization (grokking) if regularization is small. (2) Larger datasets lead to de-grokking. Comparing B and C in Figure 3, C is seen to have larger training size than B and lower test error. Larger data size N makes the Goldilocks zone broader, reducing or eliminating grokking even for large weight initializations. (3) Critical data size can be defined. As reported in (Power et al., 2022; Liu et al., 2022), we see that there exists a critical training set size below which generalization is impossible. The effective theory analysis in (Liu et al., 2022) only applies to algorithmic datasets, but not to other datasets with unknown optimal representations. The loss landscape analysis presented is this work can apply to all supervised-learning tasks. As shown in Figure 3 (b), the contours of constant test error are thumb-like, and the tip of the thumb determines the minimum amount of data required for generalization.\n\nNammade equilibrium scan. Channel labels compare the query with stored spans. They do not verify a physical law.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+   }
+  }
+ ]
+}

@@ -1,0 +1,711 @@
+{
+ "prompt": "Frontier: implicit bias of gradient descent.",
+ "namespace": "dl_generalization_frontier",
+ "frontier_seconds": 12.13,
+ "frontier_status": "hypotheses",
+ "frontier_returned": 50,
+ "chained": [
+  {
+   "rank": 1,
+   "frontier_hypothesis": {
+    "id": "fe9cfcc140b8",
+    "text": "implicit bias and P3 Epochwise double descent may move together because both depend on additional noise.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "implicit bias",
+     "P3 Epochwise double descent",
+     "additional noise"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-08344-p0002",
+     "arxiv-2108-12006-p0016"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-08344-p0002",
+      "quote": "We theoretically analyse the solutions obtained with continuous versions of Noisy- SGD for the Linear Least Square and Diagonal Linear Network settings, and reveal that the implicit bias is indeed amplified by the additional noise.",
+      "start": 784,
+      "end": 1015,
+      "chunk_sha256": "de2226491aa51e8dcd5f1cfac6d82da72b3174efa8281bd1b9682bfbcd1a4c4b",
+      "relation": "increases",
+      "subject": "additional noise",
+      "object": "implicit bias",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2108-12006-p0016",
+      "quote": "P3 Epochwise double descent requires noise above a certain threshold to occur.",
+      "start": 72,
+      "end": 150,
+      "chunk_sha256": "dbf1d20eae39d5b4fa9e520969cbade82efdab4589a936f48810df6297323027",
+      "relation": "constrains",
+      "subject": "noise",
+      "object": "P3 Epochwise double descent",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.755,
+     "novelty": 0.642
+    },
+    "falsification_test": "Track implicit bias and P3 Epochwise double descent across periods where additional noise changes and where it does not. The hypothesis fails if they co-vary just as strongly when additional noise is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "additional noise"
+   },
+   "seed": "Investigate implicit bias, P3 Epochwise double descent and additional noise.",
+   "research_seconds": 1.4,
+   "research": {
+    "answer_status": "research_question",
+    "stages": [
+     "taxonomy_invention",
+     "research_hypotheses",
+     "nammade_equilibrium",
+     "abductive_bridge",
+     "inference"
+    ],
+    "research_methods": {
+     "innovation": {
+      "outcome": "research_question"
+     },
+     "hypothesis_generation": {
+      "option_count": 3
+     },
+     "nammade": {
+      "outcome": "nammade"
+     },
+     "abductive_bridge": {
+      "status": "NO_GAP",
+      "promotion": "blocked"
+     },
+     "inference": {
+      "outcome": "no_applicable_rule",
+      "proof_count": 0
+     }
+    },
+    "research_question": null,
+    "proposals": [],
+    "source_context": [
+     {
+      "document_id": "arxiv-1710-10345-p0001",
+      "quote": "# The Implicit Bias of Gradient Descent on Separable Data"
+     },
+     {
+      "document_id": "arxiv-1901-06523-p0002",
+      "quote": "The F-Principle implies an implicit bias that DNNs tend to fit training data by a low-frequency function."
+     },
+     {
+      "document_id": "arxiv-1902-04742-p0002",
+      "quote": "Guided by our observations, we then present examples of overparameterized linear classifiers and neural networks trained by gradient descent (GD) where uniform convergence provably cannot \"explain generalization\" -- even if we take into account the implicit bias of GD {\\em to the fullest extent possible}."
+     },
+     {
+      "document_id": "arxiv-1905-13655-p0002",
+      "quote": "Efforts to understand the generalization mystery in deep learning have led to the belief that gradient-based optimization induces a form of implicit regularization, a bias towards models of low \"complexity.\" We study the implicit regularization of gradient descent over deep linear neural networks for matrix completion and sensing, a model referred to as deep matrix factorization."
+     }
+    ],
+    "hypothesis_options": [
+     {
+      "document_id": "arxiv-2108-12006-p0004",
+      "prediction": "On a practical level, our findings give insight into when simple heuristics may be used to determine when to stop training, and we provide a means of removing the epochwise double descent should it occur.",
+      "span_hash": "a2841d418a38bb8a2541de954f1bc53301141876802a01ecb3258f79a5399f96",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2108-12006-p0006",
+      "prediction": "Exploring the EMC hypothesis, [21] finds that in the case of linear regression, epochwise double descent occurs as a consequence of the gradient descent training dynamics when differently scaled features are learned at different times.",
+      "span_hash": "2628df0c9b89523ba239250e6882a1ce3f5cd252498e8d658be93351678f0eff",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2108-12006-p0017",
+      "prediction": "Our linear model also predicts that networks which are above a certain size will also not exhibit epochwise double descent.",
+      "span_hash": "4682f78f7eb65c9886fca38a75d1d0d51353040edce315c9365cd11656c789e5",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     }
+    ],
+    "nammade_comparisons": 32,
+    "abductive_bridge": {
+     "status": "NO_GAP",
+     "candidate": null,
+     "abstention_reason": "The diagnostic comparisons do not show incompatible bounds.",
+     "contradiction_source_ids": []
+    },
+    "research_inference": "no_applicable_rule",
+    "reply": "Three research methods ran in parallel on the same authorized sources.\n\n### Innovation\nLooks for new proposals grounded in relationships across source passages.\nResearch question: For implicit bias, P3 Epochwise double descent and additional noise, can a candidate explanation reproduce the outcome described in the sources while satisfying their stated constraints?\nIdentify a model that predicts the outcome and an independently measured observable. Find the empirical bounds and check which model parameters can satisfy both.\nSource context:\n[arxiv-1710-10345-p0001] # The Implicit Bias of Gradient Descent on Separable Data\n[arxiv-1901-06523-p0002] The F-Principle implies an implicit bias that DNNs tend to fit training data by a low-frequency function.\n[arxiv-1902-04742-p0002] Guided by our observations, we then present examples of overparameterized linear classifiers and neural networks trained by gradient descent (GD) where uniform convergence provably cannot \"explain generalization\" -- even if we take into account the implicit bias of GD {\\em to the fullest extent possible}.\n[arxiv-1905-13655-p0002] Efforts to understand the generalization mystery in deep learning have led to the belief that gradient-based optimization induces a form of implicit regularization, a bias towards models of low \"complexity.\" We study the implicit regularization of gradient descent over deep linear neural networks for matrix completion and sensing, a model referred to as deep matrix factorization.\n\n### Hypothesis generation\nSurfaces source predictions or combines cited premises into a proposed test.\nEach item below is a separate option.\nH1. (Source prediction) On a practical level, our findings give insight into when simple heuristics may be used to determine when to stop training, and we provide a means of removing the epochwise double descent should it occur.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH2. (Source prediction) Exploring the EMC hypothesis, [21] finds that in the case of linear regression, epochwise double descent occurs as a consequence of the gradient descent training dynamics when differently scaled features are learned at different times.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH3. (Source prediction) Our linear model also predicts that networks which are above a certain size will also not exhibit epochwise double descent.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\n\n### Nammade comparison\nCompares passages under the Nammade model and records displacement, residuals, and density.\nComparisons returned — 32.\nRelevant source excerpts\n\n[arxiv-2402-08344-p0002] Training Deep Neural Networks (DNNs) with small batches using Stochastic Gradient Descent (SGD) yields superior test performance compared to larger batches. The specific noise structure inherent to SGD is known to be responsible for this implicit bias. DP- SGD, used to ensure differential privacy (DP) in DNNs’ training, adds Gaussian noise to the clipped gradients. Surprisingly, largebatch training still results in a significant decrease in performance, which poses an important challenge because strong DP guarantees necessitate the use of massive batches. We first show that the phenomenon extends to Noisy-SGD (DP-SGD without clipping), suggesting that the stochasticity (and not the clipping) is the cause of this implicit bias, even with additional isotropic Gaussian noise. We theoretically analyse the solutions obtained with continuous versions of Noisy- SGD for the Linear Least Square and Diagonal Linear Network settings, and reveal that the implicit bias is indeed amplified by the additional noise. Thus, the performance issues of large-batch DP-SGD training are rooted in the same underlying principles as SGD, offering hope for potential improvements in large batch training strategies.\n\n[arxiv-2402-08344-p0005] Implicit Bias in Noisy-SGD: With Applications to Differentially Private Training as at a fixed number of steps budget (i.e., number of updates) (Keskar et al., 2016; Smith et al., 2020; Masters and Luschi, 2018). Consequently, not only does SGD offer significant computational resource savings, but its inherent stochastic nature introduces randomness into the algorithm which facilitates faster convergence and enhance generalization performance, by allowing the iterates to escape from unfavorable local minima. On simpler, overparameterized model architectures, the distinctive noise structure of SGD is recognized as a factor responsible for yielding superior solutions compared to Gradient Descent, which is referred to as its “implicit bias” (HaoChen et al., 2020). DNNs possess the ability to grasp the general statistical patterns and trends within their training data distribution —such as grammar rules for language models— but also to memorize specific and precise details about individual data points, including sensitive information like credit card numbers (Carlini et al., 2019, 2021). This capability raises concerns regarding privacy, as accessing a trained model may lead to the exposure of training data, potentially jeopardizing privacy. One possible solution to address this issue is Differential Privacy (DP) (Dwork et al., 2006), which theoretically controls the amount of information learned from each individual training sample. Differentially Private Stochastic Gradient Descent (DP-SGD) (Abadi et al., 2016) offers a robust framework by providing strict DP guarantees for DNNs. The gradient of each training sample is clipped and Gaussian noise is subsequently introduced to the sum before the update. Efforts to enhance the trade-off between privacy and utility in DP-SGD training have been associated with the use of exceedingly large batches (Yu et al., 2021; De et al., 2022; Yu et al., 2023). A recent observation by Sander et al. (2023) has introduced an intriguing challenge: under the same Gaussian noise, small batches perform considerably better than large batches, akin to the behavior of regular SGD. It represents a bottleneck because large-batch training is essential for achieving robust privacy guarantees. DP-SGD distinguishes itself from SGD by two factors: (1) the application of per-sample gradient clipping and (2) the addition of isotropic Gaussian noise to the sum per batch. We first observe a persistent manifestation of the implicit bias associated with DP-SGD observed by Sander et al. (2023) when we remove the gradient clipping component, as depicted in Figure 1. Therefore, the implicit bias of SGD does persist even with Gaussian noise with greater magnitude than the gradients (see Figure 2). However, the implicit bias in SGD is conventionally understood to stem from its inherent noise geometry (HaoChen et al., 2020). In this context, we theoretically investigate the impact of changing the noise structure of SGD on its implicit bias, in the Linear Least Square and Diagonal Linear network (DLN) settings. Our precise contributions are the following: 1. We show that the performance drop observed for large batch training in DP-SGD persists without clipping when training a DNN on ImageNet 2. For Linear Least Squares, we show how Noisy- SGD alters the limiting distributions: the different implicit bias compared to SGD can be controlled by the amount of additional noise 3. For DLNs, we observe that Noisy-SGD can even exhibit an enhanced implicit bias in comparison to SGD. Using continuous modelings, we theoretically demonstrate that a favorable implicit bias indeed exists: It leads to the same solution as SGD, albeit with a distinct effective initialization. It proves that the gradient’s noise geometry is robust to Gaussian perturbations. Our work also suggests that enhancing the performance of large batch training with DP-SGD, which is crucial for achieving robust privacy-utility trade-off, can be accomplished by adopting strategies and techniques developed for managing large batches in non-private settings. 2 Background and Related Work\n\n[arxiv-2106-09524-p0002] Understanding the implicit bias of training algorithms is of crucial importance in order to explain the success of overparametrised neural networks. In this paper, we study the dynamics of stochastic gradient descent over diagonal linear networks through its continuous time version, namely stochastic gradient flow. We explicitly characterise the solution chosen by the stochastic flow and prove that it always enjoys better generalisation properties than that of gradient flow. Quite surprisingly, we show that the convergence speed of the training loss controls the magnitude of the biasing effect: the slower the convergence, the better the bias. To fully complete our analysis, we provide convergence guarantees for the dynamics. We also give experimental results which support our theoretical claims. Our findings highlight the fact that structured noise can induce better generalisation and they help explain the greater performances of stochastic gradient descent over gradient descent observed in practice.\n\nNammade equilibrium scan. Channel labels compare the query with stored spans. They do not verify a physical law.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+   }
+  },
+  {
+   "rank": 2,
+   "frontier_hypothesis": {
+    "id": "5b8f68456d78",
+    "text": "additional noise may reduce generalization error for diagonal linear networks through implicit bias.",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "additional noise",
+     "generalization error for diagonal linear networks"
+    ],
+    "via": [
+     "implicit bias"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-08344-p0002",
+     "arxiv-2505-21423-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-08344-p0002",
+      "quote": "We theoretically analyse the solutions obtained with continuous versions of Noisy- SGD for the Linear Least Square and Diagonal Linear Network settings, and reveal that the implicit bias is indeed amplified by the additional noise.",
+      "start": 784,
+      "end": 1015,
+      "chunk_sha256": "de2226491aa51e8dcd5f1cfac6d82da72b3174efa8281bd1b9682bfbcd1a4c4b",
+      "relation": "increases",
+      "subject": "additional noise",
+      "object": "implicit bias",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2505-21423-p0002",
+      "quote": "We furthermore prove that neither implicit bias alone minimizes the generalization error for diagonal linear networks trained on a simple regression task.",
+      "start": 547,
+      "end": 701,
+      "chunk_sha256": "7ec31a3b2ccf1d3d74267c9bab8a9f241683b66e461c2a162ae6b2a6f4e89912",
+      "relation": "decreases",
+      "subject": "implicit bias",
+      "object": "generalization error for diagonal linear networks",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.75,
+     "novelty": 0.532
+    },
+    "falsification_test": "Compare settings where additional noise differs while other inputs are matched. The hypothesis fails if generalization error for diagonal linear networks does not fall with additional noise, or if fixing implicit bias removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "implicit bia"
+   },
+   "seed": "Investigate additional noise, implicit bias and generalization error for diagonal linear networks.",
+   "research_seconds": 1.41,
+   "research": {
+    "answer_status": "research_question",
+    "stages": [
+     "taxonomy_invention",
+     "research_hypotheses",
+     "nammade_equilibrium",
+     "abductive_bridge",
+     "inference"
+    ],
+    "research_methods": {
+     "innovation": {
+      "outcome": "research_question"
+     },
+     "hypothesis_generation": {
+      "option_count": 3
+     },
+     "nammade": {
+      "outcome": "nammade"
+     },
+     "abductive_bridge": {
+      "status": "NO_GAP",
+      "promotion": "blocked"
+     },
+     "inference": {
+      "outcome": "no_applicable_rule",
+      "proof_count": 0
+     }
+    },
+    "research_question": null,
+    "proposals": [],
+    "source_context": [
+     {
+      "document_id": "arxiv-1710-10345-p0001",
+      "quote": "# The Implicit Bias of Gradient Descent on Separable Data"
+     },
+     {
+      "document_id": "arxiv-1901-06523-p0002",
+      "quote": "The F-Principle implies an implicit bias that DNNs tend to fit training data by a low-frequency function."
+     },
+     {
+      "document_id": "arxiv-1902-04742-p0002",
+      "quote": "Guided by our observations, we then present examples of overparameterized linear classifiers and neural networks trained by gradient descent (GD) where uniform convergence provably cannot \"explain generalization\" -- even if we take into account the implicit bias of GD {\\em to the fullest extent possible}."
+     },
+     {
+      "document_id": "arxiv-1905-13655-p0002",
+      "quote": "Efforts to understand the generalization mystery in deep learning have led to the belief that gradient-based optimization induces a form of implicit regularization, a bias towards models of low \"complexity.\" We study the implicit regularization of gradient descent over deep linear neural networks for matrix completion and sensing, a model referred to as deep matrix factorization."
+     }
+    ],
+    "hypothesis_options": [
+     {
+      "document_id": "arxiv-2305-05448-p0005",
+      "prediction": "This gap between implicit bias theory (which requires small initialization) and practice (where initialization is often not small but normalized) indicates that the algorithm which has so far been the main focus of study for implicit bias – (stochastic) gradient descent, or (S)GD – might be too simplistic compared to the algorithms used in practice to train neural networks.",
+      "span_hash": "efd6c051931788ab91462fc4c7abd48bb4b61fdb821cbfa231e4efaa7ef9808c",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2305-05448-p0006",
+      "prediction": "The impact of WN on implicit bias in the linear regression setting hints that WN might be a fundamental algorithmic aspect of the implicit bias observed in practice.",
+      "span_hash": "c10059e0b32ba00237253131a856184e341f81ca1ced56bf15946b36627e23fd",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2407-09845-p0026",
+      "prediction": "Depending on the initialisation, the test MSE might include additional constant error, covering error corresponding to inactive diagonal elements, i.e., zi(t) for which i /∈ SA.",
+      "span_hash": "919a090ea2c33bcde39ed5f21af73eb8246eeec0b5ef1e610934284d274f4c76",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     }
+    ],
+    "nammade_comparisons": 32,
+    "abductive_bridge": {
+     "status": "NO_GAP",
+     "candidate": null,
+     "abstention_reason": "The diagnostic comparisons do not show incompatible bounds.",
+     "contradiction_source_ids": []
+    },
+    "research_inference": "no_applicable_rule",
+    "reply": "Three research methods ran in parallel on the same authorized sources.\n\n### Innovation\nLooks for new proposals grounded in relationships across source passages.\nResearch question: For additional noise, implicit bias and generalization error for diagonal linear networks, can a candidate explanation reproduce the outcome described in the sources while satisfying their stated constraints?\nIdentify a model that predicts the outcome and an independently measured observable. Find the empirical bounds and check which model parameters can satisfy both.\nSource context:\n[arxiv-1710-10345-p0001] # The Implicit Bias of Gradient Descent on Separable Data\n[arxiv-1901-06523-p0002] The F-Principle implies an implicit bias that DNNs tend to fit training data by a low-frequency function.\n[arxiv-1902-04742-p0002] Guided by our observations, we then present examples of overparameterized linear classifiers and neural networks trained by gradient descent (GD) where uniform convergence provably cannot \"explain generalization\" -- even if we take into account the implicit bias of GD {\\em to the fullest extent possible}.\n[arxiv-1905-13655-p0002] Efforts to understand the generalization mystery in deep learning have led to the belief that gradient-based optimization induces a form of implicit regularization, a bias towards models of low \"complexity.\" We study the implicit regularization of gradient descent over deep linear neural networks for matrix completion and sensing, a model referred to as deep matrix factorization.\n\n### Hypothesis generation\nSurfaces source predictions or combines cited premises into a proposed test.\nEach item below is a separate option.\nH1. (Source prediction) This gap between implicit bias theory (which requires small initialization) and practice (where initialization is often not small but normalized) indicates that the algorithm which has so far been the main focus of study for implicit bias – (stochastic) gradient descent, or (S)GD – might be too simplistic compared to the algorithms used in practice to train neural networks.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH2. (Source prediction) The impact of WN on implicit bias in the linear regression setting hints that WN might be a fundamental algorithmic aspect of the implicit bias observed in practice.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH3. (Source prediction) Depending on the initialisation, the test MSE might include additional constant error, covering error corresponding to inactive diagonal elements, i.e., zi(t) for which i /∈ SA.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\n\n### Nammade comparison\nCompares passages under the Nammade model and records displacement, residuals, and density.\nComparisons returned — 32.\nRelevant source excerpts\n\n[arxiv-2402-08344-p0002] Training Deep Neural Networks (DNNs) with small batches using Stochastic Gradient Descent (SGD) yields superior test performance compared to larger batches. The specific noise structure inherent to SGD is known to be responsible for this implicit bias. DP- SGD, used to ensure differential privacy (DP) in DNNs’ training, adds Gaussian noise to the clipped gradients. Surprisingly, largebatch training still results in a significant decrease in performance, which poses an important challenge because strong DP guarantees necessitate the use of massive batches. We first show that the phenomenon extends to Noisy-SGD (DP-SGD without clipping), suggesting that the stochasticity (and not the clipping) is the cause of this implicit bias, even with additional isotropic Gaussian noise. We theoretically analyse the solutions obtained with continuous versions of Noisy- SGD for the Linear Least Square and Diagonal Linear Network settings, and reveal that the implicit bias is indeed amplified by the additional noise. Thus, the performance issues of large-batch DP-SGD training are rooted in the same underlying principles as SGD, offering hope for potential improvements in large batch training strategies.\n\n[arxiv-2402-08344-p0005] Implicit Bias in Noisy-SGD: With Applications to Differentially Private Training as at a fixed number of steps budget (i.e., number of updates) (Keskar et al., 2016; Smith et al., 2020; Masters and Luschi, 2018). Consequently, not only does SGD offer significant computational resource savings, but its inherent stochastic nature introduces randomness into the algorithm which facilitates faster convergence and enhance generalization performance, by allowing the iterates to escape from unfavorable local minima. On simpler, overparameterized model architectures, the distinctive noise structure of SGD is recognized as a factor responsible for yielding superior solutions compared to Gradient Descent, which is referred to as its “implicit bias” (HaoChen et al., 2020). DNNs possess the ability to grasp the general statistical patterns and trends within their training data distribution —such as grammar rules for language models— but also to memorize specific and precise details about individual data points, including sensitive information like credit card numbers (Carlini et al., 2019, 2021). This capability raises concerns regarding privacy, as accessing a trained model may lead to the exposure of training data, potentially jeopardizing privacy. One possible solution to address this issue is Differential Privacy (DP) (Dwork et al., 2006), which theoretically controls the amount of information learned from each individual training sample. Differentially Private Stochastic Gradient Descent (DP-SGD) (Abadi et al., 2016) offers a robust framework by providing strict DP guarantees for DNNs. The gradient of each training sample is clipped and Gaussian noise is subsequently introduced to the sum before the update. Efforts to enhance the trade-off between privacy and utility in DP-SGD training have been associated with the use of exceedingly large batches (Yu et al., 2021; De et al., 2022; Yu et al., 2023). A recent observation by Sander et al. (2023) has introduced an intriguing challenge: under the same Gaussian noise, small batches perform considerably better than large batches, akin to the behavior of regular SGD. It represents a bottleneck because large-batch training is essential for achieving robust privacy guarantees. DP-SGD distinguishes itself from SGD by two factors: (1) the application of per-sample gradient clipping and (2) the addition of isotropic Gaussian noise to the sum per batch. We first observe a persistent manifestation of the implicit bias associated with DP-SGD observed by Sander et al. (2023) when we remove the gradient clipping component, as depicted in Figure 1. Therefore, the implicit bias of SGD does persist even with Gaussian noise with greater magnitude than the gradients (see Figure 2). However, the implicit bias in SGD is conventionally understood to stem from its inherent noise geometry (HaoChen et al., 2020). In this context, we theoretically investigate the impact of changing the noise structure of SGD on its implicit bias, in the Linear Least Square and Diagonal Linear network (DLN) settings. Our precise contributions are the following: 1. We show that the performance drop observed for large batch training in DP-SGD persists without clipping when training a DNN on ImageNet 2. For Linear Least Squares, we show how Noisy- SGD alters the limiting distributions: the different implicit bias compared to SGD can be controlled by the amount of additional noise 3. For DLNs, we observe that Noisy-SGD can even exhibit an enhanced implicit bias in comparison to SGD. Using continuous modelings, we theoretically demonstrate that a favorable implicit bias indeed exists: It leads to the same solution as SGD, albeit with a distinct effective initialization. It proves that the gradient’s noise geometry is robust to Gaussian perturbations. Our work also suggests that enhancing the performance of large batch training with DP-SGD, which is crucial for achieving robust privacy-utility trade-off, can be accomplished by adopting strategies and techniques developed for managing large batches in non-private settings. 2 Background and Related Work\n\n[arxiv-2505-21423-p0002] The remarkable generalization properties of overparameterized networks are often attributed to implicit biases, such as norm minimization at small learning rates and low sharpness in the Edge-of- Stability regime. In this work, we argue that a comprehensive understanding of the generalization performance of gradient descent requires analyzing the interaction between these various forms of implicit regularization. We empirically demonstrate that the learning rate interpolates between low parameter norm and low sharpness of the trained model. We furthermore prove that neither implicit bias alone minimizes the generalization error for diagonal linear networks trained on a simple regression task. These findings demonstrate that focusing on a single implicit bias is insufficient to explain good generalization, and they motivate a broader view of implicit regularization that captures the dynamic trade-off between norm and sharpness induced by non-negligible learning\n\nNammade equilibrium scan. Channel labels compare the query with stored spans. They do not verify a physical law.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+   }
+  },
+  {
+   "rank": 3,
+   "frontier_hypothesis": {
+    "id": "b53061270498",
+    "text": "common components may constrain networks through simplicity bias (read as implicit bias of SGD).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "common components",
+     "networks"
+    ],
+    "via": [
+     "simplicity bias (read as implicit bias of SGD)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2403-02241-p0006",
+     "arxiv-2407-03848-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2403-02241-p0006",
+      "quote": "• We show that the simplicity bias is not universal but depends on common components (ReLUs, residual connections, layer normalizations).",
+      "start": 546,
+      "end": 683,
+      "chunk_sha256": "4f2208c142a3d7983b7a4451ab54755af7e7cda501a167b9797291a48b7d4aef",
+      "relation": "constrains",
+      "subject": "common components",
+      "object": "simplicity bias",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-03848-p0006",
+      "quote": "In contrast, increasing width, even for randomly sampled networks, does not harm generalization, and the implicit bias of SGD leads to networks with higher margins,",
+      "start": 184,
+      "end": 348,
+      "chunk_sha256": "4a8e743f61ed0a159a79c1f8230406e469459ca4dd1c1ad106aa74f86092da96",
+      "relation": "causes",
+      "subject": "implicit bias of SGD",
+      "object": "networks",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.654,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where common components differs while other inputs are matched. The hypothesis fails if networks does not stay bounded with common components, or if fixing simplicity bias (read as implicit bias of SGD) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "simplicity bia"
+   },
+   "seed": "Investigate common components, simplicity bias and networks.",
+   "research_seconds": 1.56,
+   "research": {
+    "answer_status": "research_question",
+    "stages": [
+     "taxonomy_invention",
+     "research_hypotheses",
+     "nammade_equilibrium",
+     "abductive_bridge",
+     "inference"
+    ],
+    "research_methods": {
+     "innovation": {
+      "outcome": "research_question"
+     },
+     "hypothesis_generation": {
+      "option_count": 3
+     },
+     "nammade": {
+      "outcome": "nammade"
+     },
+     "abductive_bridge": {
+      "status": "NO_GAP",
+      "promotion": "blocked"
+     },
+     "inference": {
+      "outcome": "no_applicable_rule",
+      "proof_count": 0
+     }
+    },
+    "research_question": null,
+    "proposals": [],
+    "source_context": [
+     {
+      "document_id": "arxiv-1503-02406-p0002",
+      "quote": "Deep Neural Networks (DNNs) are analyzed via the theoretical framework of the information bottleneck (IB) principle."
+     },
+     {
+      "document_id": "arxiv-1611-01838-p0002",
+      "quote": "This paper proposes a new optimization algorithm called Entropy-SGD for training deep neural networks that is motivated by the local geometry of the energy landscape."
+     },
+     {
+      "document_id": "arxiv-1611-03530-p0002",
+      "quote": "Despite their massive size, successful deep artificial neural networks can exhibit a remarkably small difference between training and test performance."
+     },
+     {
+      "document_id": "arxiv-1703-00810-p0001",
+      "quote": "# Opening the Black Box of Deep Neural Networks via Information"
+     }
+    ],
+    "hypothesis_options": [
+     {
+      "document_id": "arxiv-2405-17299-p0005",
+      "prediction": "Simplicity Bias of Two-Layer Networks beyond Linearly Separable Data Our theoretical findings additionally lead to a hypothesis with potential practical implications: networks trained to a very small loss may be prone to stronger simplicity bias and, hence, may be harder to finetune to new tasks.",
+      "span_hash": "d36b3d0b250cd72ceb892cee18f0062b6d705a67839f0f18d95c2f15efa6fbbb",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2503-10065-p0004",
+      "prediction": "Despite wide belief that the simplicity bias could be due to SGD [7, 40, 60, 92], work on untrained networks showed that it can be explained with architectures alone [15, 31, 64, 99].",
+      "span_hash": "f6398b1bc06140067ad6562d3555092561c751fe6bb8520fa2db022e8d6e0275",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2603-25839-p0003",
+      "prediction": "Our theory explains how simplicity bias governs feature selection in neural networks through a fundamental trade-off between model complexity (the cost of describing the hypothesis) and predictive power (the cost of describing the data).",
+      "span_hash": "f73318dae04a31dafb5a8217f148c08cd39bd26efbaabd9b1f197c0765a6aca0",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     }
+    ],
+    "nammade_comparisons": 32,
+    "abductive_bridge": {
+     "status": "NO_GAP",
+     "candidate": null,
+     "abstention_reason": "The diagnostic comparisons do not show incompatible bounds.",
+     "contradiction_source_ids": []
+    },
+    "research_inference": "no_applicable_rule",
+    "reply": "Three research methods ran in parallel on the same authorized sources.\n\n### Innovation\nLooks for new proposals grounded in relationships across source passages.\nResearch question: For common components, simplicity bias and networks, can a candidate explanation reproduce the outcome described in the sources while satisfying their stated constraints?\nIdentify a model that predicts the outcome and an independently measured observable. Find the empirical bounds and check which model parameters can satisfy both.\nSource context:\n[arxiv-1503-02406-p0002] Deep Neural Networks (DNNs) are analyzed via the theoretical framework of the information bottleneck (IB) principle.\n[arxiv-1611-01838-p0002] This paper proposes a new optimization algorithm called Entropy-SGD for training deep neural networks that is motivated by the local geometry of the energy landscape.\n[arxiv-1611-03530-p0002] Despite their massive size, successful deep artificial neural networks can exhibit a remarkably small difference between training and test performance.\n[arxiv-1703-00810-p0001] # Opening the Black Box of Deep Neural Networks via Information\n\n### Hypothesis generation\nSurfaces source predictions or combines cited premises into a proposed test.\nEach item below is a separate option.\nH1. (Source prediction) Simplicity Bias of Two-Layer Networks beyond Linearly Separable Data Our theoretical findings additionally lead to a hypothesis with potential practical implications: networks trained to a very small loss may be prone to stronger simplicity bias and, hence, may be harder to finetune to new tasks.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH2. (Source prediction) Despite wide belief that the simplicity bias could be due to SGD [7, 40, 60, 92], work on untrained networks showed that it can be explained with architectures alone [15, 31, 64, 99].\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH3. (Source prediction) Our theory explains how simplicity bias governs feature selection in neural networks through a fundamental trade-off between model complexity (the cost of describing the hypothesis) and predictive power (the cost of describing the data).\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\n\n### Nammade comparison\nCompares passages under the Nammade model and records displacement, residuals, and density.\nComparisons returned — 32.\nRelevant source excerpts\n\n[arxiv-2403-02241-p0002] Our understanding of the generalization capabilities of neural networks (NNs) is still incomplete. Prevailing explanations are based on implicit biases of gradient descent (GD) but they cannot account for the capabilities of models from gradient-free methods [9] nor the simplicity bias recently observed in untrained networks [29]. This paper seeks other sources of generalization in NNs. Findings. To understand the inductive biases provided by architectures independently from GD, we examine untrained, random-weight networks. Even simple MLPs show strong inductive biases: uniform sampling in weight space yields a very biased distribution of functions in terms of complexity. But unlike common wisdom, NNs do not have an inherent “simplicity bias”. This property depends on components such as ReLUs, residual connections, and layer normalizations. Alternative architectures can be built with a bias for any level of complexity. Transformers also inherit all these properties from their building blocks. Implications. We provide a fresh explanation for the success of deep learning independent from gradient-based training. It points at promising avenues for controlling the solutions implemented by trained models.\n\n[arxiv-2403-02241-p0006] • We verify the NRS with three notions of complexity that rely on frequencies in Fourier decompositions, order in polynomial decompositions, and compressibility of the input-output mapping (Section 3). • We visualize the input-output mappings of 2D networks (Figure 3). They show intuitively the diversity of inductive biases across architectures that a scalar “complexity” cannot fully describe. Therefore, matching the complexity of an architecture with the target function is beneficial for generalization but hardly sufficient (Section 4.1). • We show that the simplicity bias is not universal but depends on common components (ReLUs, residual connections, layer normalizations). ReLU networks also have the unique property of maintaining their simplicity bias for any depth and weight magnitudes. It suggests that the historical importance of ReLUs in the development of deep learning goes beyond the common narrative about\n\n[arxiv-1805-08522-p0011] Figure 1: (a) Probability versus rank of each of the functions (ranked by probability) from a sample of 1010 (blue) or 107 (others) parameters. The labels are different parameter distributions. (b) Probability versus Lempel-Ziv complexity. Probabilities are estimated from a sample of 108 parameters. Points with a frequency of 10−8 are removed for clarity because these suffer from finite-size effects (see Appendix G). The red line is the simplicity bias bound of Eq.(1) (d) Generalization error increases with the Lempel-Ziv complexity of different target functions, when training the network with advSGD – see Appendix A. in their ability to recognize regularity. Which complexity measures best capture real-world regularity remains an open question. There are many reasons to believe that real-world functions are simple or have some structure (Lin et al. (2017); Schmidhuber (1997)) and will therefore have low descriptional complexity. Putting this together with the above results means we expect a DNN that exhibits simplicity bias to generalize well for real-world datasets and functions. On the other hand, as can also be seen in Figure 1c, our network does not generalize well for complex (random) functions. By simple counting arguments, the number of high complexity functions is exponentially larger than the number of low complexity functions. Nevertheless, such functions may be less common in real-world applications. Although here we have only shown that high-probability functions have low complexity for a relatively small DNN, the generality of the AIT arguments from Dingle et al. (2018) suggests that an exponential probability-complexity bias should hold for larger neural networks as well. To test this for larger networks, we restricted the input to a random sample of 1000 images from CIFAR10, and then sampled networks parameters for a 4 layer CNN, to sample labelings of these inputs. We then computed the probability of these networks, together with the critical sample ratio (a complexity measured defined in Appendix F.1) of the network on these inputs. As can be seen in Figure 2a they correlate remarkably well, suggesting that simplicity bias is also found for more realistic DNNs. We next turn to a complementary approach from learning theory to explore the link between bias\n\nNammade equilibrium scan. Channel labels compare the query with stored spans. They do not verify a physical law.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+   }
+  },
+  {
+   "rank": 4,
+   "frontier_hypothesis": {
+    "id": "c8fafcaf548d",
+    "text": "better conditioning and training may jointly drive faster convergence for gradient descent optimization, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "better conditioning",
+     "training",
+     "faster convergence for gradient descent optimization"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2312-03951-p0008",
+     "arxiv-2112-08798-p0017"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2312-03951-p0008",
+      "quote": "Poor Conditioning Reduces Double Descent It is well-known from optimization theory that better conditioning leads to faster convergence for gradient descent optimization [42].",
+      "start": 1012,
+      "end": 1187,
+      "chunk_sha256": "33e810c1fbb906ba9a1b3f5c59c7eb2c3a48ca7beab977adf1524ba84f138279",
+      "relation": "causes",
+      "subject": "better conditioning",
+      "object": "faster convergence for gradient descent optimization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2112-08798-p0017",
+      "quote": "Figure 6(a) that training on the easy subset enables a fast convergence on the corresponding training accuracy, but a marginal improvement on that of the difficult subset.",
+      "start": 574,
+      "end": 745,
+      "chunk_sha256": "2b0e99c924884a08412389860ca080fb212d7fcbd3f3e9f4fbcfd7abb5878c00",
+      "relation": "increases",
+      "subject": "training",
+      "object": "fast convergence",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.654,
+     "novelty": 0.508
+    },
+    "falsification_test": "Vary better conditioning and training separately and together. The hypothesis fails if the joint change in faster convergence for gradient descent optimization equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "faster convergence for gradient descent optimization"
+   },
+   "seed": "Investigate better conditioning, training and faster convergence for gradient descent optimization.",
+   "research_seconds": 1.39,
+   "research": {
+    "answer_status": "research_question",
+    "stages": [
+     "taxonomy_invention",
+     "research_hypotheses",
+     "nammade_equilibrium",
+     "abductive_bridge",
+     "inference"
+    ],
+    "research_methods": {
+     "innovation": {
+      "outcome": "research_question"
+     },
+     "hypothesis_generation": {
+      "option_count": 3
+     },
+     "nammade": {
+      "outcome": "nammade"
+     },
+     "abductive_bridge": {
+      "status": "NO_GAP",
+      "promotion": "blocked"
+     },
+     "inference": {
+      "outcome": "no_applicable_rule",
+      "proof_count": 0
+     }
+    },
+    "research_question": null,
+    "proposals": [],
+    "source_context": [
+     {
+      "document_id": "arxiv-1609-04836-p0001",
+      "quote": "# On Large-Batch Training for Deep Learning: Generalization Gap and Sharp Minima"
+     },
+     {
+      "document_id": "arxiv-1609-04836-p0002",
+      "quote": "These methods operate in a small-batch regime wherein a fraction of the training data, say 32-512 data points, is sampled to compute an approximation to the gradient."
+     },
+     {
+      "document_id": "arxiv-1611-01838-p0002",
+      "quote": "This paper proposes a new optimization algorithm called Entropy-SGD for training deep neural networks that is motivated by the local geometry of the energy landscape."
+     },
+     {
+      "document_id": "arxiv-1611-03530-p0002",
+      "quote": "Despite their massive size, successful deep artificial neural networks can exhibit a remarkably small difference between training and test performance."
+     }
+    ],
+    "hypothesis_options": [
+     {
+      "document_id": "arxiv-2103-00065-p0006",
+      "prediction": "Thus, at least for standard networks on CIFAR- 10, the Edge of Stability regime should be viewed as the “rule,” not the “exception.” As we describe in §5, the Edge of Stability regime is inconsistent with several pieces of conventional wisdom in optimization theory: convergence analyses based on L-smoothness or monotone descent, quadratic Taylor approximations as a model for local progress, and certain heuristics for step size selection.",
+      "span_hash": "8f31024d4febd51cde68349a7b55ff22f2804daff17386ec4ac8281503be8269",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2103-00065-p0010",
+      "prediction": "Therefore, at any point x0 in parameter space where the sharpness exceeds 2/η, gradient descent with step size η would diverge if run on the quadratic Taylor approximation to the training objective around x0.",
+      "span_hash": "8702581be9650f111001db1509648bf1e7580128f3a54f2bd5c68a445fff24a1",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2103-00065-p0012",
+      "prediction": "Recall from §2 that in any region where the sharpness exceeds 2/η, gradient descent with step size η would be unstable if run on the quadratic Taylor approximation to the training objective — the gradient descent iterates would oscillate with exponentially increasing magnitude along the leading Hessian eigenvector.",
+      "span_hash": "5248a7d4708035cd0542b37ad1dec2a4ffd53b246761498ccfb438b522cc197b",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     }
+    ],
+    "nammade_comparisons": 32,
+    "abductive_bridge": {
+     "status": "NO_GAP",
+     "candidate": null,
+     "abstention_reason": "The diagnostic comparisons do not show incompatible bounds.",
+     "contradiction_source_ids": []
+    },
+    "research_inference": "no_applicable_rule",
+    "reply": "Three research methods ran in parallel on the same authorized sources.\n\n### Innovation\nLooks for new proposals grounded in relationships across source passages.\nResearch question: For better conditioning, training and faster convergence for gradient descent optimization, can a candidate explanation reproduce the outcome described in the sources while satisfying their stated constraints?\nIdentify a model that predicts the outcome and an independently measured observable. Find the empirical bounds and check which model parameters can satisfy both.\nSource context:\n[arxiv-1609-04836-p0001] # On Large-Batch Training for Deep Learning: Generalization Gap and Sharp Minima\n[arxiv-1609-04836-p0002] These methods operate in a small-batch regime wherein a fraction of the training data, say 32-512 data points, is sampled to compute an approximation to the gradient.\n[arxiv-1611-01838-p0002] This paper proposes a new optimization algorithm called Entropy-SGD for training deep neural networks that is motivated by the local geometry of the energy landscape.\n[arxiv-1611-03530-p0002] Despite their massive size, successful deep artificial neural networks can exhibit a remarkably small difference between training and test performance.\n\n### Hypothesis generation\nSurfaces source predictions or combines cited premises into a proposed test.\nEach item below is a separate option.\nH1. (Source prediction) Thus, at least for standard networks on CIFAR- 10, the Edge of Stability regime should be viewed as the “rule,” not the “exception.” As we describe in §5, the Edge of Stability regime is inconsistent with several pieces of conventional wisdom in optimization theory: convergence analyses based on L-smoothness or monotone descent, quadratic Taylor approximations as a model for local progress, and certain heuristics for step size selection.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH2. (Source prediction) Therefore, at any point x0 in parameter space where the sharpness exceeds 2/η, gradient descent with step size η would diverge if run on the quadratic Taylor approximation to the training objective around x0.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH3. (Source prediction) Recall from §2 that in any region where the sharpness exceeds 2/η, gradient descent with step size η would be unstable if run on the quadratic Taylor approximation to the training objective — the gradient descent iterates would oscillate with exponentially increasing magnitude along the leading Hessian eigenvector.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\n\n### Nammade comparison\nCompares passages under the Nammade model and records displacement, residuals, and density.\nComparisons returned — 32.\nRelevant source excerpts\n\n[arxiv-2312-03951-p0008] We present empirical evidence on random feature models trained on MNIST [33] and include additional results for both random feature models and two-layer neural networks on Fashion-MNIST [56] and CIFAR-10 [31] in Appendix C. Full experimental details are given in Appendix A. We also emphasize that we choose a setup that avoids known factors that could mitigate the double descent phenomenon as much as possible. Specifically, we do not use early stopping, which is known to remove the double descent phenomenon [3, 40, 57]. On the contrary, in the default setup, we train all models for a sufficient number of epochs (1000) so that most models converge in the first 1/10 of the epochs. To further exclude the possibility of stopping too early, even in this scenario (which is not likely), we extend it to 10,000 epochs in Section 6. We also do not use any norm-based weight penalty to restrict the parameter space [41] or add dropout layers during training. See Appendix A for a detailed experimental setup. 4. Poor Conditioning Reduces Double Descent It is well-known from optimization theory that better conditioning leads to faster convergence for gradient descent optimization [42]. We observe that the height of the double descent peak negatively correlates with the condition number of the random feature matrices. In Figure 1, we see that, at P = N , the peak in condition number is always present, regardless of the peak in double descent. However, the height of the condition number matters because the setting with a lower condition number (lighter color in row 1) corresponds to a more prominent double descent peak (lighter color in row 2). Here, the poor conditioning of the optimization problem makes it more difficult for the model around P/N = 1 and the optimization algorithm to converge to a sufficiently low-loss minimum, as illustrated in the third row in Figure 1. Previous studies also have shown the condition number peaks at the peak of the double descent (which occurs at P = N ) [7, 23, 32, 46, 49]. We observe this to be the case in Figure 1, confirming the findings of these previous studies. We see that the double descent peaks disappear when the feature matrix is 1) unnormalized, or when the random matrix/features have a smaller scale due to the 2) scaling of the features (e.g., scaling the feature matrix by a small constant) or 3) the initialization of the random matrix (e.g.,\n\n[arxiv-2306-13253-p0003] Despite the recent growth of theoretical studies and empirical successes of neural networks (Graves et al., 2013; He et al., 2015; Krizhevsky et al., 2012; Silver et al., 2016), understanding why such networks find generalizable solutions in over-parameterized regimes, where the number of learnable parameters is much larger than the number of training samples, remains an open question. Indeed, one of the major challenges of deep learning is that, in practice, 1Mila, Montréal, Quebec, Canada 2Université de Montréal, Montréal, Quebec, Canada 3Meta AI Research 4CHU Sainte- Justine Research Center, Montréal, Quebec, Canada. Correspondence to: Pascal Tikeng Notsawo <pascal.tikeng@mila.quebec>. neural networks are highly overparameterized (Allen-Zhu et al., 2019; Zhang et al., 2017), and in some cases, it is observed that overparameterization empirically improves optimization and generalization, which seems to contradict traditional learning theory. For example, Livni et al. (2014) observed that in synthetic data generated from a target network, the learned network converges faster when it has more parameters than the target network. Arora et al. (2018) also found that, in practice, trained overparameterized networks can often be compressed into simpler networks with far fewer parameters, without affecting their generalizability. Nakkiran et al. (2020) experiment a double-descent phenomenon where, as the model size increases, performance first gets worse and then gets better. Recently, Power et al. (2022) have shown through a phenomenon they named grokking that long after severe overfitting, validation accuracy sometimes suddenly begins to increase from chance level to perfect generalization, and that the amount of optimization required for this generalization increases rapidly as the size of the data set decreases. The grokking phenomenon opens the way to new studies concerning the structure of the minimum found by Stochastic Gradient Descent (SGD), and how networks behave in the neighbourhood of SGD training convergence. Indeed, neural activity is often characterized by an exploratory early phase of rapid learning with a rapid and sometimes abrupt decrease in the loss function (Nakkiran et al., 2020; Feng & Tu, 2021). This phase is followed by a second phase, often called the diffusion phase (Shwartz-Ziv & Tishby, 2017), when the learning error reaches its minimum value and the global loss decreases again, but much more slowly and gradually. This second phase, often chaotic (Herrmann et al., 2022; Cohen et al., 2021; Thilak et al., 2022), is characteristic of the structure of the minimum found by the optimization algorithm (Goodfellow & Vinyals, 2015; Im et al., 2016; Smith & Topin, 2017; Keskar et al., 2017; Li et al., 2018; Jastrz ̨ebski et al., 2018; Feng & Tu, 2021). Optimization hyper-parameters and initialization strongly affect training dynamics during the above phases, the convergence to a specific region in parameter space, and the geometries and generalization properties of solutions found by SGD (Keskar et al., 2017; Jastrz ̨ebski et al., 2018). For example, Keskar et al. (2017) empirically showed that a larger batch\n\n[arxiv-2505-24022-p0004] Adaptive optimization algorithms, particularly Adam [1], have become ubiquitous in training deep neural networks (NNs) due to their faster convergence rates and better performance, particularly on large language models (LLMs), as compared to (stochastic) gradient descent (SGD) [2]. Despite its widespread use, the theoretical understanding of how Adam works and when/why it outperforms\n\nNammade equilibrium scan. Channel labels compare the query with stored spans. They do not verify a physical law.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+   }
+  },
+  {
+   "rank": 5,
+   "frontier_hypothesis": {
+    "id": "7d9918121cc2",
+    "text": "implicit bias and parameters may move together because both depend on additional noise.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "implicit bias",
+     "parameters",
+     "additional noise"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-08344-p0002",
+     "arxiv-1710-06451-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-08344-p0002",
+      "quote": "We theoretically analyse the solutions obtained with continuous versions of Noisy- SGD for the Linear Least Square and Diagonal Linear Network settings, and reveal that the implicit bias is indeed amplified by the additional noise.",
+      "start": 784,
+      "end": 1015,
+      "chunk_sha256": "de2226491aa51e8dcd5f1cfac6d82da72b3174efa8281bd1b9682bfbcd1a4c4b",
+      "relation": "increases",
+      "subject": "additional noise",
+      "object": "implicit bias",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1710-06451-p0002",
+      "quote": "We propose that the noise introduced by small mini-batches drives the parameters towards minima whose evidence is large.",
+      "start": 719,
+      "end": 839,
+      "chunk_sha256": "22d1138313b37ab3dc86e70d0c8131855d09a89e08a990fbf37eb79118632508",
+      "relation": "increases",
+      "subject": "noise",
+      "object": "parameters",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.63,
+     "novelty": 0.578
+    },
+    "falsification_test": "Track implicit bias and parameters across periods where additional noise changes and where it does not. The hypothesis fails if they co-vary just as strongly when additional noise is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "additional noise"
+   },
+   "seed": "Investigate implicit bias, parameters and additional noise.",
+   "research_seconds": 1.4,
+   "research": {
+    "answer_status": "research_question",
+    "stages": [
+     "taxonomy_invention",
+     "research_hypotheses",
+     "nammade_equilibrium",
+     "abductive_bridge",
+     "inference"
+    ],
+    "research_methods": {
+     "innovation": {
+      "outcome": "research_question"
+     },
+     "hypothesis_generation": {
+      "option_count": 3
+     },
+     "nammade": {
+      "outcome": "nammade"
+     },
+     "abductive_bridge": {
+      "status": "NO_GAP",
+      "promotion": "blocked"
+     },
+     "inference": {
+      "outcome": "no_applicable_rule",
+      "proof_count": 0
+     }
+    },
+    "research_question": null,
+    "proposals": [],
+    "source_context": [
+     {
+      "document_id": "arxiv-1611-03530-p0002",
+      "quote": "We corroborate these experimental findings with a theoretical construction showing that simple depth two neural networks already have perfect finite sample expressivity as soon as the number of parameters exceeds the number of data points as it usually does in practice."
+     },
+     {
+      "document_id": "arxiv-1703-04933-p0002",
+      "quote": "Furthermore, if we allow to reparametrize a function, the geometry of its parameters can change drastically without affecting its generalization properties."
+     },
+     {
+      "document_id": "arxiv-1703-11008-p0001",
+      "quote": "# Computing Nonvacuous Generalization Bounds for Deep (Stochastic) Neural Networks with Many More Parameters than Training Data"
+     },
+     {
+      "document_id": "arxiv-1703-11008-p0002",
+      "quote": "One of the defining properties of deep learning is that models are chosen to have many more parameters than available training data."
+     }
+    ],
+    "hypothesis_options": [
+     {
+      "document_id": "arxiv-2305-05448-p0005",
+      "prediction": "This gap between implicit bias theory (which requires small initialization) and practice (where initialization is often not small but normalized) indicates that the algorithm which has so far been the main focus of study for implicit bias – (stochastic) gradient descent, or (S)GD – might be too simplistic compared to the algorithms used in practice to train neural networks.",
+      "span_hash": "efd6c051931788ab91462fc4c7abd48bb4b61fdb821cbfa231e4efaa7ef9808c",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2305-05448-p0006",
+      "prediction": "The impact of WN on implicit bias in the linear regression setting hints that WN might be a fundamental algorithmic aspect of the implicit bias observed in practice.",
+      "span_hash": "c10059e0b32ba00237253131a856184e341f81ca1ced56bf15946b36627e23fd",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     },
+     {
+      "document_id": "arxiv-2401-00593-p0018",
+      "prediction": "Without the additive noise, the trajectory would have converged to 1 − 1/μ = 0.67 and shown no simplicity bias.",
+      "span_hash": "770a9e5d005b23f3606d324060176c8ed793845c5df6f1beb616fae0bdc2867d",
+      "qualification": "hypothesis",
+      "test": "Define a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions."
+     }
+    ],
+    "nammade_comparisons": 32,
+    "abductive_bridge": {
+     "status": "NO_GAP",
+     "candidate": null,
+     "abstention_reason": "The diagnostic comparisons do not show incompatible bounds.",
+     "contradiction_source_ids": []
+    },
+    "research_inference": "no_applicable_rule",
+    "reply": "Three research methods ran in parallel on the same authorized sources.\n\n### Innovation\nLooks for new proposals grounded in relationships across source passages.\nResearch question: For implicit bias, parameters and additional noise, can a candidate explanation reproduce the outcome described in the sources while satisfying their stated constraints?\nIdentify a model that predicts the outcome and an independently measured observable. Find the empirical bounds and check which model parameters can satisfy both.\nSource context:\n[arxiv-1611-03530-p0002] We corroborate these experimental findings with a theoretical construction showing that simple depth two neural networks already have perfect finite sample expressivity as soon as the number of parameters exceeds the number of data points as it usually does in practice.\n[arxiv-1703-04933-p0002] Furthermore, if we allow to reparametrize a function, the geometry of its parameters can change drastically without affecting its generalization properties.\n[arxiv-1703-11008-p0001] # Computing Nonvacuous Generalization Bounds for Deep (Stochastic) Neural Networks with Many More Parameters than Training Data\n[arxiv-1703-11008-p0002] One of the defining properties of deep learning is that models are chosen to have many more parameters than available training data.\n\n### Hypothesis generation\nSurfaces source predictions or combines cited premises into a proposed test.\nEach item below is a separate option.\nH1. (Source prediction) This gap between implicit bias theory (which requires small initialization) and practice (where initialization is often not small but normalized) indicates that the algorithm which has so far been the main focus of study for implicit bias – (stochastic) gradient descent, or (S)GD – might be too simplistic compared to the algorithms used in practice to train neural networks.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH2. (Source prediction) The impact of WN on implicit bias in the linear regression setting hints that WN might be a fundamental algorithmic aspect of the implicit bias observed in practice.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\nH3. (Source prediction) Without the additive noise, the trajectory would have converged to 1 − 1/μ = 0.67 and shown no simplicity bias.\nDefine a measurable outcome for this prediction and compare it with an independent observation and a baseline under the same conditions.\n\n### Nammade comparison\nCompares passages under the Nammade model and records displacement, residuals, and density.\nComparisons returned — 32.\nRelevant source excerpts\n\n[arxiv-2402-08344-p0002] Training Deep Neural Networks (DNNs) with small batches using Stochastic Gradient Descent (SGD) yields superior test performance compared to larger batches. The specific noise structure inherent to SGD is known to be responsible for this implicit bias. DP- SGD, used to ensure differential privacy (DP) in DNNs’ training, adds Gaussian noise to the clipped gradients. Surprisingly, largebatch training still results in a significant decrease in performance, which poses an important challenge because strong DP guarantees necessitate the use of massive batches. We first show that the phenomenon extends to Noisy-SGD (DP-SGD without clipping), suggesting that the stochasticity (and not the clipping) is the cause of this implicit bias, even with additional isotropic Gaussian noise. We theoretically analyse the solutions obtained with continuous versions of Noisy- SGD for the Linear Least Square and Diagonal Linear Network settings, and reveal that the implicit bias is indeed amplified by the additional noise. Thus, the performance issues of large-batch DP-SGD training are rooted in the same underlying principles as SGD, offering hope for potential improvements in large batch training strategies.\n\n[arxiv-2402-08344-p0005] Implicit Bias in Noisy-SGD: With Applications to Differentially Private Training as at a fixed number of steps budget (i.e., number of updates) (Keskar et al., 2016; Smith et al., 2020; Masters and Luschi, 2018). Consequently, not only does SGD offer significant computational resource savings, but its inherent stochastic nature introduces randomness into the algorithm which facilitates faster convergence and enhance generalization performance, by allowing the iterates to escape from unfavorable local minima. On simpler, overparameterized model architectures, the distinctive noise structure of SGD is recognized as a factor responsible for yielding superior solutions compared to Gradient Descent, which is referred to as its “implicit bias” (HaoChen et al., 2020). DNNs possess the ability to grasp the general statistical patterns and trends within their training data distribution —such as grammar rules for language models— but also to memorize specific and precise details about individual data points, including sensitive information like credit card numbers (Carlini et al., 2019, 2021). This capability raises concerns regarding privacy, as accessing a trained model may lead to the exposure of training data, potentially jeopardizing privacy. One possible solution to address this issue is Differential Privacy (DP) (Dwork et al., 2006), which theoretically controls the amount of information learned from each individual training sample. Differentially Private Stochastic Gradient Descent (DP-SGD) (Abadi et al., 2016) offers a robust framework by providing strict DP guarantees for DNNs. The gradient of each training sample is clipped and Gaussian noise is subsequently introduced to the sum before the update. Efforts to enhance the trade-off between privacy and utility in DP-SGD training have been associated with the use of exceedingly large batches (Yu et al., 2021; De et al., 2022; Yu et al., 2023). A recent observation by Sander et al. (2023) has introduced an intriguing challenge: under the same Gaussian noise, small batches perform considerably better than large batches, akin to the behavior of regular SGD. It represents a bottleneck because large-batch training is essential for achieving robust privacy guarantees. DP-SGD distinguishes itself from SGD by two factors: (1) the application of per-sample gradient clipping and (2) the addition of isotropic Gaussian noise to the sum per batch. We first observe a persistent manifestation of the implicit bias associated with DP-SGD observed by Sander et al. (2023) when we remove the gradient clipping component, as depicted in Figure 1. Therefore, the implicit bias of SGD does persist even with Gaussian noise with greater magnitude than the gradients (see Figure 2). However, the implicit bias in SGD is conventionally understood to stem from its inherent noise geometry (HaoChen et al., 2020). In this context, we theoretically investigate the impact of changing the noise structure of SGD on its implicit bias, in the Linear Least Square and Diagonal Linear network (DLN) settings. Our precise contributions are the following: 1. We show that the performance drop observed for large batch training in DP-SGD persists without clipping when training a DNN on ImageNet 2. For Linear Least Squares, we show how Noisy- SGD alters the limiting distributions: the different implicit bias compared to SGD can be controlled by the amount of additional noise 3. For DLNs, we observe that Noisy-SGD can even exhibit an enhanced implicit bias in comparison to SGD. Using continuous modelings, we theoretically demonstrate that a favorable implicit bias indeed exists: It leads to the same solution as SGD, albeit with a distinct effective initialization. It proves that the gradient’s noise geometry is robust to Gaussian perturbations. Our work also suggests that enhancing the performance of large batch training with DP-SGD, which is crucial for achieving robust privacy-utility trade-off, can be accomplished by adopting strategies and techniques developed for managing large batches in non-private settings. 2 Background and Related Work\n\n[arxiv-2402-08344-p0008] li(θ) represents the individual loss function computed for the sample xi. The privacy analysis of DP-SGD hinges on the combination of multiple steps. A notably robust analytical framework to account for (ε, δ) is founded on R ́enyi differential privacy (Mironov, 2017). The theoretical analysis of the convergence properties of DP-SGD has been studied for the convex, strongly convex, and nonconvex settings (Bassily et al., 2014; Wang et al., 2017; Feldman et al., 2018). Necessity of Large batches for DP-SGD When it comes to training machine learning models with DP- SGD, there is necessarily a privacy-performance tradeoff. However, it can be improved by employing very large batch sizes (Anil et al., 2021; Li et al., 2021; De et al., 2022; Yu et al., 2023). One practical underlying reason is that the magnitude of the effective noise introduced into the average clipped gradient is determined by σ/B (cf. Equation (2)). To mitigate this noise, there are two potential approaches: reducing σ or increasing B. While decreasing σ might initially appear appealing, R ́enyi differential privacy accounting techniques suggest that as σ decreases too much, the privacy parameter ε experiences an exponential increase (Dwork and Rothblum, 2016; Bun and Steinke, 2016; Mironov et al., 2019; Sander et al., 2023). Therefore, increasing the batch size emerges as a critical strategy in DP-SGD training, as it is the most effective means of reducing the effective noise and accelerating the convergence process. While it is true that employing a larger batch size in DP-SGD results in reduced effective noise, it is important to note that DP training can experience a substantial drop in performance when using larger batch sizes. As demonstrated by Sander et al. (2023), when training an image classifier with DP-SGD on the ImageNet dataset, keeping the number of steps S fixed and maintaining a constant effective noise level of σ/B, the model’s performance exhibited a notable decrease when they increased the batch size (refer to Figure 1). 2.2 Implicit Bias of SGD This section introduces the implicit bias of SGD through the use of Stochastic Differential Equations, and is largely based on Pillaud-Vivien and Pesm (2022). Let X ∈ Rnxd and Y ∈ Rn be the training features and labels, matrices that represent (xi, yi)1≤i≤n, the set of input-label training pairs. Let θ ∈ Rd the model’s parameters and ̄X := X/√n the normalized\n\nNammade equilibrium scan. Channel labels compare the query with stored spans. They do not verify a physical law.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+   }
+  }
+ ]
+}
