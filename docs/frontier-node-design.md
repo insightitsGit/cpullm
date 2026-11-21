@@ -99,3 +99,31 @@ Implemented in `src/cpu_llm/frontier.py`; tests in `tests/test_frontier.py`; eva
 - **Route.** Frontier is its own pre-graph route, not a fourth Research method. Adding it to Research would
   change that route's output and cost; the handoff asks not to change existing nodes without approval.
 - **Benchmark.** Built: 64 arXiv papers, nine held-out findings. Results in the review report.
+
+## Improvements after the first evaluations (2026-11-21)
+
+- **Dependency parsing.**
+  - With spaCy installed (the optional `prompt_nlp` extra) and an English model available, relations come from
+    the dependency parse rather than regular expressions:
+    - subject, verb and object from `nsubj`/`csubj`, `dobj` and particle verbs;
+    - passive voice through the `agent`;
+    - conjoined subjects and objects;
+    - negation from `neg`;
+    - noun phrases built from modifiers plus one *of*/*for* complement.
+  - It also reads identity claims ("is a form of", "consists in", "is identical to", "is nothing but") and
+    skips questions.
+  - Only sentences with a relation cue are parsed.
+  - The model is chosen as `en_core_web_lg` first, then `en_core_web_sm`. `FRONTIER_PARSER` names a model, or
+    `regex` forces the original reader, which stays as the fallback.
+  - The receipt records the parser in `parser`.
+- **Encoder bridge check.**
+  - When the appliance has an encoder, the node encodes every term that could join another term by head noun.
+  - A bridge between two different terms is accepted only at cosine ≥ 0.6, and its certainty becomes that cosine
+    (capped at 0.95) instead of a flat 0.8.
+  - The receipt records `bridge_check` (`encoder` or `head_noun`) and `encoded_terms`.
+- **Hub spread.**
+  - At most three of the returned entries may share a bridge or hub term while other candidates remain; further
+    entries for that term are moved behind them.
+  - This only re-orders the list: no entry is dropped and nothing is padded. `hub_deferred` counts the moved
+    entries.
+- **Term hygiene.** Terms that start with a question word or subordinator, and bare symbols, are rejected.

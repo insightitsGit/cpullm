@@ -235,14 +235,18 @@ _BAD_START = frozenset('of for to in on at by with from and or but as than into 
                        'have has had been be is are was were do does did can will provide'.split())
 _PARTICIPLE = frozenset('been led come garnered obtained become shown made seen grown achieved demonstrated '
                         'enabled attracted received gained'.split())
+_WH_START = frozenset('what whose which who whom how why where when although though while whereas because '
+                      'since unless'.split())
 _CLAUSE = frozenset('have has had been is are was were be'.split())
 
 
 def usable_term(term):
     """A term must be a noun phrase: no leading preposition or verb, no pronoun-only phrase."""
     tokens = [t.casefold() for t in _tokens(term)]
-    if not tokens or tokens[0] in _BAD_START or tokens[0] in _PRONOUN:
+    if not tokens or tokens[0] in _BAD_START or tokens[0] in _PRONOUN or tokens[0] in _WH_START:
         return False
+    if re.search(r'[^\x00-\x7f\u2019]', term) and len(tokens) == 1:
+        return False                                  # a bare symbol such as a Greek variable
     return not _CLAUSE.intersection(tokens[1:])
 
 
@@ -322,6 +326,184 @@ _UP = frozenset('increases increase rises rise grows grow climbs climb'.split())
 _COVARY = re.compile(r'(?P<a>[\w\s\'’-]{3,80}?)\s+(?P<da>increases|rises|grows|climbs|decreases|falls|declines|drops)\s+'
                      r'as\s+(?P<b>[\w\s\'’-]{3,80}?)\s+(?P<db>increases|rises|grows|climbs|decreases|falls|declines|drops)\b',
                      re.I)
+
+
+# --------------------------------------------------------------------------- dependency parser
+
+# Lemma -> (kind, reverse, preposition). ``reverse`` swaps subject and object so that every edge reads
+# cause -> effect; a preposition names the particle verb's object ("depends on X").
+_VERB_LEMMAS = {
+    **{v: ('constrains', False, None) for v in
+       'limit constrain restrict cap bottleneck throttle gate determine govern'.split()},
+    **{v: ('increases', False, None) for v in
+       ('increase raise drive boost accelerate amplify fuel expand improve enable spur consume intensify '
+        'maximize double triple multiply').split()},
+    **{v: ('decreases', False, None) for v in
+       ('reduce lower decrease cut slow hinder hamper impede erode offset delay mitigate alleviate save lessen '
+        'shrink minimize eliminate').split()},
+    **{v: ('causes', False, None) for v in 'cause produce emit'.split()},
+    **{v: ('supports', False, None) for v in
+       'entail imply presuppose support motivate explain vindicate ground'.split()},
+    **{v: ('undermines', False, None) for v in 'undermine challenge refute contradict threaten'.split()},
+    **{v: ('constrains', True, None) for v in 'require need'.split()},
+    'depend': ('constrains', True, 'on'), 'rely': ('constrains', True, 'on'),
+    'lead': ('causes', False, 'to'), 'result': ('causes', False, 'in'), 'contribute': ('causes', False, 'to'),
+    'account': ('causes', False, 'for'), 'conflict': ('undermines', False, 'with'),
+    'scale': ('increases', True, 'with'), 'grow': ('increases', True, 'with'),
+}
+_PASSIVE_LEMMAS = {v: kind for v, (kind, reverse, prep) in _VERB_LEMMAS.items() if prep is None and not reverse}
+_PASSIVE_LEMMAS.update(dominate='constrains')
+_PARSE_CUE = re.compile(
+    r'\b(?:' + '|'.join(sorted({v[:5] if len(v) > 5 else v for v in _VERB_LEMMAS}, key=len, reverse=True)) + r')'
+    r'|\bincompatible with\b|\brules? out\b|\bruled out\b'
+    r'|\b(?:is|are) (?:an? |the )?(?:form|kind|type|species|version|consequence|product) of\b'
+    r'|\bconsists? in\b|\b(?:is|are) identical (?:to|with)\b|\b(?:is|are) nothing (?:but|over and above)\b',
+    re.I)
+_NP_DEPS = frozenset({'compound', 'amod', 'nmod', 'poss', 'det', 'nummod', 'quantmod', 'npadvmod'})
+_PARSER = None
+_PARSER_NAME = 'regex'
+
+
+def parser():
+    """The spaCy pipeline used for dependency relations, or None for the regex fallback.
+
+    ``FRONTIER_PARSER`` names a model, or ``regex`` forces the fallback. The default prefers
+    ``en_core_web_lg`` and then ``en_core_web_sm`` (the optional ``prompt_nlp`` dependency).
+    """
+    global _PARSER, _PARSER_NAME
+    import os
+    wanted = os.environ.get('FRONTIER_PARSER', 'auto')
+    if wanted == 'regex':
+        return None
+    if _PARSER is not None and wanted in ('auto', _PARSER_NAME):
+        return _PARSER
+    import warnings
+    try:
+        import spacy
+    except ImportError:
+        return None
+    for name in ([wanted] if wanted != 'auto' else ['en_core_web_lg', 'en_core_web_sm']):
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter('ignore')
+                _PARSER = spacy.load(name, disable=['ner'])
+            _PARSER_NAME = name
+            return _PARSER
+        except (OSError, ImportError):
+            continue
+    return None
+
+
+def parser_name():
+    return _PARSER_NAME if parser() is not None else 'regex'
+
+
+def _phrase(token):
+    """A noun phrase around ``token``: its modifiers and at most one ``of``/``for`` complement."""
+    left = []
+
+    def gather(node):
+        for child in node.lefts:
+            if child.dep_ in _NP_DEPS:
+                left.append(child)
+                gather(child)
+    gather(token)
+    phrase = [t.text for t in sorted([*left, token], key=lambda t: t.i)]
+    for child in token.rights:
+        if child.dep_ == 'prep' and child.lower_ in {'of', 'for'}:
+            objects = [c for c in child.children if c.dep_ == 'pobj']
+            if objects:
+                phrase += [child.text, *_phrase(objects[0]).split()]
+            break
+    return _clean_term(phrase, keep='head')
+
+
+def _conjoined(token):
+    return [token, *[t for t in token.conjuncts if t.pos_ in {'NOUN', 'PROPN'}]]
+
+
+def _prep_objects(node, prepositions):
+    return [g for c in node.children if c.dep_ == 'prep' and c.lower_ in prepositions
+            for g in c.children if g.dep_ == 'pobj']
+
+
+def parsed_relations(doc):
+    """Yield (subject, kind, object, negative, hedged) from one parsed sentence."""
+    text = doc.text
+    if text.rstrip().endswith('?') or len(text) > 1000:
+        return
+    hedged = bool(_HEDGE.search(text))
+    for token in doc:
+        if token.pos_ not in {'VERB', 'AUX'}:
+            continue
+        children = list(token.children)
+        if any(c.dep_ == 'mark' and c.lower_ in {'if', 'unless', 'whether'} for c in children):
+            continue
+        negative = any(c.dep_ == 'neg' for c in children)
+        lemma = token.lemma_.casefold()
+        passive_subject = next((c for c in children if c.dep_ in {'nsubjpass', 'nsubj:pass'}), None)
+        if passive_subject is not None:
+            if lemma in _PASSIVE_LEMMAS:
+                for cause in _prep_objects(next((c for c in children if c.dep_ == 'agent'), token), {'by'}) or [
+                        g for c in children if c.dep_ == 'agent' for g in c.children if g.dep_ == 'pobj']:
+                    for effect in _conjoined(passive_subject):
+                        for source in _conjoined(cause):
+                            a, b = _phrase(source), _phrase(effect)
+                            if a and b and usable_term(a) and usable_term(b):
+                                yield a, _PASSIVE_LEMMAS[lemma], b, negative, hedged
+            continue
+        subject = next((c for c in children if c.dep_ == 'nsubj'), None)
+        if subject is None and token.dep_ == 'conj' and token.head.pos_ in {'VERB', 'AUX'}:
+            subject = next((c for c in token.head.children if c.dep_ == 'nsubj'), None)
+        clause = next((c for c in children if c.dep_ == 'csubj'), None) if subject is None else None
+        if subject is None and clause is None:
+            continue
+        objects, kind, reverse = [], None, False
+        if lemma in _VERB_LEMMAS:
+            kind, reverse, preposition = _VERB_LEMMAS[lemma]
+            objects = ([c for c in children if c.dep_ in {'dobj', 'obj'}] if preposition is None
+                       else _prep_objects(token, {preposition}))
+            if lemma == 'rule' and not any(c.dep_ == 'prt' and c.lower_ == 'out' for c in children):
+                kind = None
+        elif lemma == 'rule' and any(c.dep_ == 'prt' and c.lower_ == 'out' for c in children):
+            kind, objects = 'undermines', [c for c in children if c.dep_ in {'dobj', 'obj'}]
+        elif lemma == 'consist':
+            kind, objects = 'alias_of', _prep_objects(token, {'in'})
+        elif lemma == 'be':
+            attribute = next((c for c in children if c.dep_ in {'attr', 'acomp'}), None)
+            if attribute is not None:
+                word = attribute.lower_
+                if word in {'form', 'kind', 'type', 'species', 'version', 'consequence', 'product'}:
+                    kind, objects = 'is_a', _prep_objects(attribute, {'of'})
+                elif word == 'nothing':
+                    kind, objects = 'alias_of', _prep_objects(attribute, {'but'})
+                elif word == 'incompatible':
+                    kind, objects = 'undermines', _prep_objects(attribute, {'with'})
+                elif word == 'identical':
+                    kind, objects = 'alias_of', _prep_objects(attribute, {'to', 'with'})
+        if kind is None or not objects:
+            continue
+        subjects = ([_clean_term([t.text for t in clause.subtree][:_MAX_TERM_WORDS], keep='head')]
+                    if clause is not None else [_phrase(t) for t in _conjoined(subject)])
+        for a_phrase in subjects:
+            for right in (o for obj in objects for o in _conjoined(obj)):
+                a, b = a_phrase, _phrase(right)
+                if reverse:
+                    a, b = b, a
+                if a and b and usable_term(a) and usable_term(b):
+                    yield a, kind, b, negative, hedged
+
+
+def sentence_relations(sentences):
+    """Relations per sentence: the dependency parser where available, otherwise the regex reader."""
+    nlp = parser()
+    if nlp is None:
+        return [list(lexical_relations(s)) for s in sentences]
+    results = [[] for _ in sentences]
+    wanted = [i for i, s in enumerate(sentences) if _PARSE_CUE.search(s) and not _CONDITIONAL.search(s)]
+    for index, doc in zip(wanted, nlp.pipe([sentences[i] for i in wanted], batch_size=128)):
+        results[index] = list(dict.fromkeys(parsed_relations(doc)))
+    return results
 
 
 # --------------------------------------------------------------------------- relation graph
@@ -416,16 +598,17 @@ def build_graph(rows, budget):
 
     graph = RelationGraph()
     graph.chunk_count = len(rows)
+    graph.origin = 'dependency_parse' if parser() is not None else 'frontier_lexicon'
     try:
         for row in rows:
             budget.check()
             chunk = row['chunk_text']
             chunk_hash = hashlib.sha256(chunk.encode()).hexdigest()
             seen = set()
-            for sentence in _sentences(chunk):
+            sentences = _sentences(chunk)
+            for sentence, relations in zip(sentences, sentence_relations(sentences)):
                 stems = set(_content(_tokens(sentence)))
                 index = len(graph.sentences)
-                relations = list(lexical_relations(sentence))
                 graph.sentences.append((row['document_id'], stems, bool(relations)))
                 for stem in stems:
                     graph.postings.setdefault(stem, set()).add(index)
@@ -436,10 +619,11 @@ def build_graph(rows, budget):
                         graph.negatives.add((term_key(subject), term_key(obj)))
                         continue
                     graph.add(subject, kind, obj, row, sentence, chunk_hash, hedged=hedged,
-                              origin='frontier_lexicon', budget=budget)
+                              origin=graph.origin, budget=budget)
             graph.document_frequency.update(seen)
-            # Reuse the shared typed-fact extractor for causal and taxonomy edges.
-            for fact in extract_facts(row['document_id'], chunk):
+            # Reuse the shared typed-fact extractor for causal and taxonomy edges. Its patterns are regular
+            # expressions; with the dependency parser active, the parser reads these forms itself.
+            for fact in (extract_facts(row['document_id'], chunk) if graph.origin == 'frontier_lexicon' else ()):
                 if fact.relation not in {'causes', 'is_a', 'alias_of', 'has'} or len(fact.sentence) > 1000:
                     continue
                 subject = _clean_term(_tokens(fact.subject))
@@ -601,15 +785,38 @@ def compose(left, right):
     return 'affects', 0.7
 
 
-def abductive_check(candidate):
-    """The candidate must form a coherent explanatory relation between its anchors."""
+BRIDGE_SIMILARITY = 0.6     # cosine a head-noun bridge needs when an encoder is available
+
+
+@dataclass(frozen=True)
+class _Term:
+    key: str
+    surface: str
+
+
+def _bridge(left, right, similar):
+    """Certainty of joining two terms: 1.0 if equal; else the encoder cosine (0.8 without an encoder)."""
+    base = related(left.key, right.key)
+    if base is None or base == 1.0 or similar is None:
+        return base
+    score = similar(left.surface, right.surface)
+    return None if score is None or score < BRIDGE_SIMILARITY else round(min(score, 0.95), 3)
+
+
+def abductive_check(candidate, similar=None):
+    """The candidate must form a coherent explanatory relation between its anchors.
+
+    With ``similar(a, b)`` (encoder cosine), a bridge between two different terms that share a head noun
+    must also be close in meaning.
+    """
     edges = candidate.edges
     if not any(edge.kind in _CAUSAL for edge in edges):
         return None, 'no_explanatory_relation'
     if candidate.pattern == 'chain':
         kind, certainty, via = edges[0].kind, 1.0, []
         for previous, edge in zip(edges, edges[1:]):
-            bridge = related(previous.object_key, edge.subject_key)
+            bridge = _bridge(_Term(previous.object_key, previous.object), _Term(edge.subject_key, edge.subject),
+                             similar)
             if bridge is None:
                 return None, 'unrelated_bridge'
             certainty *= bridge
@@ -625,12 +832,14 @@ def abductive_check(candidate):
         return dict(relation=kind, certainty=certainty,
                     anchors=(edges[0].subject, edges[-1].object),
                     keys=(edges[0].subject_key, edges[-1].object_key),
-                    via=via, same_quantity=any('(read as' in item for item in via)), None
+                    via=via, same_quantity=any('(read as' in item for item in via),
+                    hub=edges[0].object_key), None
     first, second = edges
     if first.kind not in _CAUSAL or second.kind not in _CAUSAL:
         return None, 'no_explanatory_relation'
-    shared = (related(first.object_key, second.object_key) if candidate.pattern == 'convergent'
-              else related(first.subject_key, second.subject_key))
+    shared = (_bridge(_Term(first.object_key, first.object), _Term(second.object_key, second.object), similar)
+              if candidate.pattern == 'convergent' else
+              _bridge(_Term(first.subject_key, first.subject), _Term(second.subject_key, second.subject), similar))
     if shared is None:
         return None, 'unrelated_bridge'
     if candidate.pattern == 'convergent':
@@ -943,8 +1152,41 @@ def _identity(candidate, reading):
 
 # --------------------------------------------------------------------------- run
 
-def run_frontier(topic, rows, *, limits=None, clock=time.monotonic):
-    """Pure core: no database, no writes. Returns the ``frontier`` receipt."""
+HUB_CAP = 3      # at most this many returned hypotheses may share one bridge or hub term
+
+
+def _similarity(encode, edges):
+    """Encode every term that could join another term by head noun; return a cosine lookup."""
+    if encode is None:
+        return None, 0
+    import numpy as np
+    by_head = {}
+    for edge in edges:
+        for key, surface in ((edge.subject_key, edge.subject), (edge.object_key, edge.object)):
+            by_head.setdefault(term_head(key), {}).setdefault(key, surface)
+    surfaces = sorted({surface for group in by_head.values() if len(group) > 1 for surface in group.values()})
+    if not surfaces:
+        return (lambda a, b: None), 0
+    try:
+        vectors = np.asarray(encode(surfaces), dtype=float).reshape(len(surfaces), -1)
+    except (ValueError, RuntimeError, OSError):
+        return None, 0
+    norms = np.linalg.norm(vectors, axis=1)
+    norms[norms == 0] = 1.0
+    unit = {surface: vectors[i] / norms[i] for i, surface in enumerate(surfaces)}
+
+    def similar(a, b):
+        if a not in unit or b not in unit:
+            return None
+        return float(unit[a] @ unit[b])
+    return similar, len(surfaces)
+
+
+def run_frontier(topic, rows, *, limits=None, clock=time.monotonic, encode=None):
+    """Pure core: no database, no writes. Returns the ``frontier`` receipt.
+
+    ``encode(texts)`` (optional) returns one vector per text and is used to check head-noun bridges.
+    """
     limits = limits or FrontierLimits()
     budget = Budget(limits, clock=clock)
     budget.counters = dict(rounds=0, candidates=0, edges=0, bytes=0)
@@ -971,6 +1213,9 @@ def run_frontier(topic, rows, *, limits=None, clock=time.monotonic):
         receipt['focus_terms'] = focus
         receipt['focus_fallback'] = True
     context = DeductiveContext(rows, graph, focus)
+    similar, encoded = _similarity(encode, edges)
+    receipt.update(parser=parser_name(), bridge_check='encoder' if similar is not None else 'head_noun',
+                   encoded_terms=encoded)
     generated = 0
     if graph.complete:
         try:
@@ -978,7 +1223,7 @@ def run_frontier(topic, rows, *, limits=None, clock=time.monotonic):
                 generated += len(batch)
                 for candidate in batch:
                     budget.check()
-                    reading, reason = abductive_check(candidate)
+                    reading, reason = abductive_check(candidate, similar)
                     if reading is None:
                         rejected['abductive:' + reason] += 1
                         continue
@@ -1022,9 +1267,19 @@ def run_frontier(topic, rows, *, limits=None, clock=time.monotonic):
             assumptions=('Assumes each cited relation holds in the same setting and that effects carry across '
                          'the shared term.' + (' It also assumes that terms with the same head noun name the same '
                                                'quantity.' if reading.get('same_quantity') else '')),
-            supporting_paths=len(entry['paths']), rule_verdict=reading.get('rule_verdict')))
+            supporting_paths=len(entry['paths']), rule_verdict=reading.get('rule_verdict'),
+            hub=reading.get('hub') or reading['keys'][-1]))
     hypotheses.sort(key=rank_key)
-    returned = hypotheses[:min(limits.max_results, HARD_CAP)]
+    # Diversity: up to HUB_CAP entries per bridge or hub term first, then the rest in rank order, so one
+    # well-connected term cannot fill the list while alternatives exist. Nothing is dropped for lack of them.
+    limit = min(limits.max_results, HARD_CAP)
+    per_hub, first, deferred = Counter(), [], []
+    for item in hypotheses:
+        (first if per_hub[item['hub']] < HUB_CAP else deferred).append(item)
+        per_hub[item['hub']] += 1
+    returned = (first + deferred)[:limit]
+    receipt['hub_deferred'] = sum(1 for item in deferred if item not in returned) + sum(
+        1 for item in returned if item in deferred)
     incomplete = stop_reason is not None
     shortage = None
     if len(returned) < limits.min_results:
@@ -1102,7 +1357,9 @@ def execute_frontier(app, message, topic, *, options=None, caller=None, as_of=No
     except (ValueError, RuntimeError, psycopg.Error):
         return result('partial', 'The Frontier source snapshot was unavailable or exceeded its limit.',
                       dict(base, status='partial', incomplete=True, stop_reason='snapshot_unavailable'))
-    receipt = run_frontier(topic, rows, limits=options['limits'])
+    pipeline = getattr(app.index, 'pipeline', None)
+    receipt = run_frontier(topic, rows, limits=options['limits'],
+                           encode=getattr(pipeline, 'encode_texts', None))
     receipt['snapshot'] = dict(as_of=when, chunk_count=len(rows))
     if receipt['status'] == 'insufficient_evidence' and not receipt['hypotheses']:
         text = format_reply(receipt) + '\nNo candidate survived the filters.'

@@ -21,6 +21,13 @@ _NAMES = ['wafer', 'lithography', 'packaging', 'substrate', 'cooling', 'transfor
 _OUTPUTS = ['training', 'inference', 'serving', 'research', 'deployment', 'evaluation', 'robotics', 'search']
 
 
+@pytest.fixture(autouse=True)
+def regex_parser(monkeypatch, request):
+    """Unit tests pin the regex reader; the dependency-parser tests opt out."""
+    if 'dependency_parser' not in request.node.name:
+        monkeypatch.setenv('FRONTIER_PARSER', 'regex')
+
+
 def rows_of(*texts, prefix='doc'):
     return [dict(document_id=f'{prefix}{i}-p0001', chunk_text=text) for i, text in enumerate(texts, 1)]
 
@@ -414,3 +421,56 @@ def test_double_descent_is_a_term_not_a_cue():
     assert list(lexical_relations('Model-wise double descent occurs near the interpolation threshold.')) == []
     [(_, kind, obj, _, _)] = list(lexical_relations('Compute demand doubles every year.'))
     assert kind == 'increases'
+
+
+
+def test_hub_terms_are_spread_but_never_cause_a_shortage():
+    receipt = run_frontier('accelerator capacity', wide_corpus())
+    assert len(receipt['hypotheses']) == HARD_CAP      # one hub only: the cap re-orders, it does not drop
+    two_hubs = wide_corpus() + rows_of(*[f'Grid {name} limits cooling capacity.' for name in _NAMES[:4]],
+                                       'Cooling capacity drives rack density.', prefix='grid')
+    hubs = [h['hub'] for h in run_frontier('capacity', two_hubs)['hypotheses'][:6]]
+    assert len(set(hubs)) >= 2
+
+
+def test_encoder_rejects_head_noun_bridges_that_mean_different_things():
+    rows = rows_of('Chip supply limits training capacity.', 'Grid capacity drives data center growth.')
+    plain = run_frontier('capacity', rows)
+    assert plain['bridge_check'] == 'head_noun' and plain['candidates_passed']['abductive'] >= 1
+    import numpy as np
+    def encode(texts):
+        return np.array([[1.0, 0.0] if 'training' in t else [0.0, 1.0] for t in texts])
+    checked = run_frontier('capacity', rows, encode=encode)
+    assert checked['bridge_check'] == 'encoder' and checked['encoded_terms'] >= 2
+    assert checked['candidates_rejected'].get('abductive:unrelated_bridge', 0) >= 1
+    assert checked['candidates_passed']['abductive'] < plain['candidates_passed']['abductive']
+
+
+def _spacy_model():
+    from cpu_llm.frontier import parser
+    import os
+    os.environ.pop('FRONTIER_PARSER', None)
+    return parser()
+
+
+def test_dependency_parser_reads_clean_noun_phrases():
+    nlp = _spacy_model()
+    if nlp is None:
+        pytest.skip('no spaCy English model installed')
+    from cpu_llm.frontier import parsed_relations
+    cases = {
+        'Memory bandwidth, rather than compute, increasingly limits the throughput of large language models.':
+            ('Memory bandwidth', 'constrains', 'throughput of large language models'),
+        'Training large models requires vast amounts of electricity.':
+            ('electricity', 'constrains', 'Training large models'),
+        'Data center growth is constrained by grid interconnection queues.':
+            ('grid interconnection queues', 'constrains', 'Data center growth'),
+        'Integrated information theory entails a form of panpsychism.':
+            ('Integrated information theory', 'supports', 'form of panpsychism'),
+    }
+    for sentence, (subject, kind, obj) in cases.items():
+        found = {(a, k, b) for a, k, b, _, _ in parsed_relations(nlp(sentence))}
+        assert any(k == kind and subject in a and obj.split()[-1] in b for a, k, b in found), (sentence, found)
+    assert list(parsed_relations(nlp('Does memory bandwidth limit inference?'))) == []
+    [(_, _, _, negative, _)] = list(parsed_relations(nlp('Export controls do not reduce domestic supply.')))
+    assert negative
