@@ -20,14 +20,29 @@ def specialist_plan(message: str, *, invent: bool = False, nammade: bool = False
     from cpu_llm.nammade import nammade_seed
     from cpu_llm.nammade.execute import research_scan_seed
 
-    seeds = dict(nammade=nammade_seed(message, forced=nammade),
+    from cpu_llm.deepen import deepen_seed
+    from cpu_llm.frontier import frontier_seed
+    from cpu_llm.hypothesis_routes import natural_deepen_target, natural_frontier_topic
+
+    deepen_target = deepen_seed(message)
+    if deepen_target is None and not (invent or nammade):
+        deepen_target = natural_deepen_target(message)
+    if isinstance(deepen_target, tuple):
+        deepen_target = f'follow_up:{deepen_target[1]}'
+    frontier_topic = frontier_seed(message)
+    if frontier_topic is None and deepen_target is None and not (invent or nammade):
+        frontier_topic = natural_frontier_topic(message)
+    # Frontier and Deepen natural forms apply only when no other specialist claims the prompt, so the
+    # existing routes keep every prompt they had.
+    seeds = dict(deepen=deepen_target, frontier=frontier_topic,
+                 nammade=nammade_seed(message, forced=nammade),
                  crossdomin=cross_domain_seed(message),
                  invention=invention_seed(message, forced=invent),
                  research=research_scan_seed(message))
     candidates = [key for key, value in seeds.items() if value is not None]
     return dict(seeds=seeds, candidates=candidates,
                 primary_candidate=candidates[0] if candidates else None,
-                precedence=['nammade', 'crossdomin', 'invention', 'research'])
+                precedence=['deepen', 'frontier', 'nammade', 'crossdomin', 'invention', 'research'])
 
 
 def inference_prompt(message: str) -> str:

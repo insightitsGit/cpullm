@@ -130,6 +130,36 @@ pre-graph route over one authorized snapshot. It runs `deepen_snapshot`, `deepen
 and a test plan. The hypothesis stays unverified and is never written to the index; strict evidence disables the
 route. See [the Deepen node](deepen-node.md).
 
+### Natural-language routes to Frontier and Deepen
+
+`classifier.specialist_plan` reports `frontier` and `deepen` alongside the other specialists, with precedence
+`deepen`, `frontier`, `nammade`, `crossdomin`, `invention`, `research`. The routing rules are in
+`cpu_llm.hypothesis_routes`:
+
+- The **explicit forms** `Frontier: <topic>.` and `Deepen: <hypothesis>.` always route.
+- The **natural forms** route only when no other specialist claims the prompt, so every existing trigger keeps
+  its route ("Generate new hypotheses about X" stays invention; "Investigate X" stays research).
+- A polite shell ("Could you please …") and the prompt-ingestion inquiry shell ("I'd like to know …",
+  "I was wondering …") are removed before matching.
+
+Frontier, natural forms:
+- "Explore the open questions (frontier, unknowns, hypothesis space) of X"
+- "What unexplored (untested, hidden, overlooked) connections (mechanisms, hypotheses …) exist around X?"
+- "Find (list, suggest, surface) untested (non-obvious, novel) hypotheses (ideas, links …) about X"
+- "What don't we know about X?" / "What does the literature not know about X?"
+- "What might be true about X that no paper states?"
+- "Frontier hypotheses about X"
+
+Deepen, natural forms. The rest of the prompt must parse as a hypothesis in a Frontier form:
+- "Check (test, examine, evaluate, probe, vet) this hypothesis: …"
+- "Is it plausible (true, likely) that …?"
+- "How well supported is the hypothesis that …?"
+
+Session follow-up: after a Frontier answer in the same `session_id`, "Deepen idea 3", "Check hypothesis #2" or
+"Examine number 5" deepens that entry. Without a session, or with a number outside the list, the reply asks for
+clarification. Ordinary questions such as "What is the frontier of AI?" or "What do we know about X?" keep the
+normal answer path.
+
 ## Explicit rule inference
 
 The repository source includes an experimental InferenceNode for registered

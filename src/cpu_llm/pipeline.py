@@ -676,8 +676,20 @@ class Appliance:
         from cpu_llm.deepen import deepen_seed, execute_deepen, finish_deepen_response
         if deepen is not None and type(deepen) is not bool and not isinstance(deepen, (dict, str)):
             raise ValueError('deepen must be a boolean, a hypothesis text, or a Frontier hypothesis object')
+        from cpu_llm.hypothesis_routes import (natural_deepen_target, natural_frontier_topic, recall_frontier,
+                                               remember_frontier)
+        from cpu_llm.invention import invention_session
+        hypothesis_key = invention_session(self, caller, session_id, as_of)
         deepen_target = (deepen if isinstance(deepen, (dict, str)) else
                          deepen_seed(content, forced=True) if deepen is True else deepen_seed(content))
+        if deepen_target is None and deepen is None and frontier in (None, False):
+            deepen_target = natural_deepen_target(content)
+        if isinstance(deepen_target, tuple):
+            # "Deepen idea 3" after a Frontier answer in the same session.
+            from cpu_llm.deepen import clarification
+            deepen_target, reason = recall_frontier(self, hypothesis_key, deepen_target[1])
+            if deepen_target is None:
+                return finish_deepen_response(clarification(self, raw_message, reason))
         if deepen_target is not None:
             if frontier not in (None, False) or any((invent, nammade, imagine, math, finance)) or cycle_search is not None \
                     or inference is not None or any(value is not None for value in (
@@ -690,6 +702,8 @@ class Appliance:
         from cpu_llm.frontier import execute_frontier, finish_frontier_response, frontier_seed, validate_frontier_option
         frontier_options = validate_frontier_option(frontier)
         frontier_topic = frontier_seed(content, forced=frontier_options is not None)
+        if frontier_topic is None and frontier is None:
+            frontier_topic = natural_frontier_topic(content)
         if frontier_topic is not None:
             if frontier_options is not None and frontier_options['topic']:
                 frontier_topic = frontier_options['topic']
@@ -702,6 +716,7 @@ class Appliance:
             result = execute_frontier(self, raw_message, topic, options=frontier_options, caller=caller,
                                       as_of=as_of, strict=enabled)
             result['response_plan'] = classify_response_request(content)
+            remember_frontier(self, hypothesis_key, result)
             return finish_frontier_response(result)
         # Only explicit requests may fetch a full inference snapshot. Ordinary
         # questions can receive a receipt from their already retrieved evidence.

@@ -326,6 +326,15 @@ def execute_deepen(app, message, hypothesis, *, caller=None, as_of=None, strict=
     return response
 
 
+def clarification(app, message, text):
+    """A Deepen clarification turn (for example a numbered follow-up with no Frontier answer to refer to)."""
+    return dict(message=message, tenant_id=app.tenant_id, status='needs_clarification',
+                answer_status='needs_clarification', answer=None, audit_passed=False, answer_evidence=[],
+                reply=dict(text=text, body=text), needs_clarification=True,
+                judgment=dict(outcome='needs_clarification', complete=False),
+                routing=dict(schema='flag-routing-contract-v1', executed_nodes=[], post_stages=['deepen_snapshot']))
+
+
 def finish_deepen_response(result):
     """Render the selected layout, then append the standard invention note once."""
     import html

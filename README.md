@@ -475,6 +475,7 @@ See the [architecture](docs/current-design.md) and [prompt-to-node mapping](docs
 - `List chunks for notes.pdf.` opens scoped inventory. `Delete chunk notes-p0001.` opens a preview. The deletion API handles confirmation.
 - `Frontier: AI energy bottlenecks.`, `app.ask(topic, frontier=True)` or `"frontier": true` over HTTP runs the Frontier node: ranked, cited `UNVERIFIED_HYPOTHESIS` entries built from relations across the whole authorized knowledge base. See [Frontier](#frontier-ranked-hypotheses-across-a-knowledge-base-unreleased).
 - `Deepen: <hypothesis>.` or `app.ask(message, deepen=frontier_hypothesis)` examines one hypothesis link by link: supporting and contrary evidence, predictions, existing setups, confounders and a test plan. See [Deepen](#deepen-examine-one-hypothesis-unreleased).
+- Natural wording also routes to these two nodes when no other specialist claims the prompt. "What unexplored connections exist around grokking?" or "What don't we know about AI energy bottlenecks?" runs Frontier. "Check this hypothesis: A may constrain C through B." runs Deepen. After a Frontier answer in the same session, "Deepen idea 3" examines that entry. See the [natural-route list](docs/prompt-flag-map.md#natural-language-routes-to-frontier-and-deepen).
 
 Inspect `routing.executed_nodes` for graph execution and `routing.post_stages`
 where available for work outside the graph. See the
