@@ -1,8 +1,8 @@
 {
  "prompt": "Frontier: training data supply.",
  "run": 3,
- "wall_seconds": 2.131,
- "python_peak_bytes": 27625848,
+ "wall_seconds": 2.06,
+ "python_peak_bytes": 27548475,
  "answer_status": "hypotheses",
  "routing": {
   "schema": "flag-routing-contract-v1",
@@ -48,8 +48,8 @@
   "chunk_count": 1054,
   "parser": "en_core_web_lg",
   "bridge_check": "encoder",
-  "encoded_terms": 107,
-  "hub_deferred": 15,
+  "encoded_terms": 103,
+  "hub_deferred": 26,
   "status": "hypotheses",
   "hypotheses": [
    {
@@ -105,61 +105,6 @@
     "supporting_paths": 1,
     "rule_verdict": null,
     "hub": "less data"
-   },
-   {
-    "id": "c10ffe69663b",
-    "text": "no sign may increase penetration through AI.",
-    "pattern": "chain",
-    "relation": "increases",
-    "anchors": [
-     "no sign",
-     "penetration"
-    ],
-    "via": [
-     "AI"
-    ],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2206-05229-p0005",
-     "arxiv-2109-05472-p0002"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2206-05229-p0005",
-      "quote": "While it is not yet known what proportion of data center use is for training artificial intelligence (AI) models, it is undeniable that AI and its sub-fields have grown dramatically in recent years, with no sign of slowing down [39, 43].",
-      "start": 713,
-      "end": 950,
-      "chunk_sha256": "5d75971cd5c665fec47b17fe9443a53fde938e7cc52b0a2b2d0e033f7e5b7442",
-      "relation": "increases",
-      "subject": "no sign",
-      "object": "AI",
-      "hedged": false,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2109-05472-p0002",
-      "quote": "The only caveat is, yet again, the multiplicative factor, as future AI increases penetration and becomes more pervasive.",
-      "start": 672,
-      "end": 792,
-      "chunk_sha256": "36670c69313fcedfd76b73bdd18c8aef2ba5faee30f5e73463896f8a8214c7b9",
-      "relation": "increases",
-      "subject": "AI",
-      "object": "penetration",
-      "hedged": false,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.8,
-     "deductive_relevance": 0.7,
-     "novelty": 0.55
-    },
-    "falsification_test": "Compare settings where no sign differs while other inputs are matched. The hypothesis fails if penetration does not rise with no sign, or if fixing AI removes no part of the effect.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
-    "supporting_paths": 1,
-    "rule_verdict": null,
-    "hub": "ai"
    },
    {
     "id": "563d9d876079",
@@ -269,61 +214,6 @@
     "supporting_paths": 1,
     "rule_verdict": null,
     "hub": "efficiency"
-   },
-   {
-    "id": "34d7a7070f98",
-    "text": "no sign may increase harm through AI.",
-    "pattern": "chain",
-    "relation": "increases",
-    "anchors": [
-     "no sign",
-     "harm"
-    ],
-    "via": [
-     "AI"
-    ],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2206-05229-p0005",
-     "arxiv-2402-08797-p0024"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2206-05229-p0005",
-      "quote": "While it is not yet known what proportion of data center use is for training artificial intelligence (AI) models, it is undeniable that AI and its sub-fields have grown dramatically in recent years, with no sign of slowing down [39, 43].",
-      "start": 713,
-      "end": 950,
-      "chunk_sha256": "5d75971cd5c665fec47b17fe9443a53fde938e7cc52b0a2b2d0e033f7e5b7442",
-      "relation": "increases",
-      "subject": "no sign",
-      "object": "AI",
-      "hedged": false,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2402-08797-p0024",
-      "quote": "2023), and the potential for AI to deliberately cause harm due to misalignment (Ngo, L. Chan, and Mindermann 2023).",
-      "start": 1246,
-      "end": 1361,
-      "chunk_sha256": "f782526d27fead8cf2ecda181c9d1384448580ff7635622de668fa75cacd370d",
-      "relation": "causes",
-      "subject": "AI",
-      "object": "harm",
-      "hedged": false,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.8,
-     "deductive_relevance": 0.675,
-     "novelty": 0.65
-    },
-    "falsification_test": "Compare settings where no sign differs while other inputs are matched. The hypothesis fails if harm does not rise with no sign, or if fixing AI removes no part of the effect.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
-    "supporting_paths": 1,
-    "rule_verdict": null,
-    "hub": "ai"
    },
    {
     "id": "55943eed7e3c",
@@ -761,60 +651,6 @@
     "supporting_paths": 1,
     "rule_verdict": "INSUFFICIENT_SUPPORT",
     "hub": "training"
-   },
-   {
-    "id": "4b855af440cd",
-    "text": "single training run and concerns may move together because both depend on compute.",
-    "pattern": "divergent",
-    "relation": "common_driver",
-    "anchors": [
-     "single training run",
-     "concerns",
-     "compute"
-    ],
-    "via": [],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2402-08797-p0023",
-     "arxiv-2010-15581-p0002"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2402-08797-p0023",
-      "quote": "Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.",
-      "start": 161,
-      "end": 357,
-      "chunk_sha256": "7e346f2bd74ec7647d0e65a3a852243eccabbaa574bbbb51a63b94d0c0d49cd8",
-      "relation": "constrains",
-      "subject": "compute",
-      "object": "single training run",
-      "hedged": false,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2010-15581-p0002",
-      "quote": "This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.",
-      "start": 1490,
-      "end": 1675,
-      "chunk_sha256": "eb59bd8ec0c227f41014aa123718e117df4fbceba7ae9f219dccf86b93ab24dc",
-      "relation": "increases",
-      "subject": "compute",
-      "object": "concerns",
-      "hedged": false,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.8,
-     "deductive_relevance": 0.567,
-     "novelty": 0.628
-    },
-    "falsification_test": "Track single training run and concerns across periods where compute changes and where it does not. The hypothesis fails if they co-vary just as strongly when compute is held fixed.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
-    "supporting_paths": 1,
-    "rule_verdict": null,
-    "hub": "compute"
    },
    {
     "id": "2a7e6f492509",
@@ -1527,116 +1363,6 @@
     "hub": "data"
    },
    {
-    "id": "d098ebc8b56b",
-    "text": "Oct world hardware may affect advantages of zeropoint quantization through analysis.",
-    "pattern": "chain",
-    "relation": "affects",
-    "anchors": [
-     "Oct world hardware",
-     "advantages of zeropoint quantization"
-    ],
-    "via": [
-     "analysis"
-    ],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2310-03003-p0004",
-     "arxiv-2208-07339-p0020"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2310-03003-p0004",
-      "quote": "We also hope that our experiments, analysis, and data on realarXiv:2310.03003v1 [cs.CL] 4 Oct 2023 world hardware will spur further analysis, benchmarking, and more open dissemination of the systematic performance characteristics for a wider range of large models—especially under different kinds of hardware, data, and optimization",
-      "start": 3682,
-      "end": 4014,
-      "chunk_sha256": "f72d800c2413216430fb90a6292a491c997ecb6ab7f0505f94923eebe5d2cdb0",
-      "relation": "increases",
-      "subject": "Oct world hardware",
-      "object": "analysis",
-      "hedged": false,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2208-07339-p0020",
-      "quote": "Our analysis explains the advantages of zeropoint quantization and why they disappear with the use of mixed-precision decomposition and the quantization performance of small vs. large models.",
-      "start": 1822,
-      "end": 2013,
-      "chunk_sha256": "002cc52ca24b12d6990d5e7dca1db2aac8751361b3af5337be7b1fde8b4a5062",
-      "relation": "supports",
-      "subject": "analysis",
-      "object": "advantages of zeropoint quantization",
-      "hedged": false,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.8,
-     "deductive_relevance": 0.4,
-     "novelty": 0.628
-    },
-    "falsification_test": "Compare settings where Oct world hardware differs while other inputs are matched. The hypothesis fails if advantages of zeropoint quantization does not change with Oct world hardware, or if fixing analysis removes no part of the effect.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
-    "supporting_paths": 1,
-    "rule_verdict": null,
-    "hub": "analysis"
-   },
-   {
-    "id": "e685f6e66958",
-    "text": "Oct world hardware may affect stylized picture through analysis.",
-    "pattern": "chain",
-    "relation": "affects",
-    "anchors": [
-     "Oct world hardware",
-     "stylized picture"
-    ],
-    "via": [
-     "analysis"
-    ],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2310-03003-p0004",
-     "arxiv-2403-05812-p0028"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2310-03003-p0004",
-      "quote": "We also hope that our experiments, analysis, and data on realarXiv:2310.03003v1 [cs.CL] 4 Oct 2023 world hardware will spur further analysis, benchmarking, and more open dissemination of the systematic performance characteristics for a wider range of large models—especially under different kinds of hardware, data, and optimization",
-      "start": 3682,
-      "end": 4014,
-      "chunk_sha256": "f72d800c2413216430fb90a6292a491c997ecb6ab7f0505f94923eebe5d2cdb0",
-      "relation": "increases",
-      "subject": "Oct world hardware",
-      "object": "analysis",
-      "hedged": false,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2403-05812-p0028",
-      "quote": "This analysis weakly supports the stylized picture above that compute scaling has been more important for explaining performance improvements than",
-      "start": 2168,
-      "end": 2314,
-      "chunk_sha256": "425d62388469b04ea8eb67a16340e0e29ee7283676a1a17e0cbbdaa61bc30122",
-      "relation": "supports",
-      "subject": "analysis",
-      "object": "stylized picture",
-      "hedged": false,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.8,
-     "deductive_relevance": 0.4,
-     "novelty": 0.6
-    },
-    "falsification_test": "Compare settings where Oct world hardware differs while other inputs are matched. The hypothesis fails if stylized picture does not change with Oct world hardware, or if fixing analysis removes no part of the effect.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
-    "supporting_paths": 1,
-    "rule_verdict": null,
-    "hub": "analysis"
-   },
-   {
     "id": "ec5481a5b055",
     "text": "powerful models and NNs may move together because both depend on filtered web data.",
     "pattern": "divergent",
@@ -1689,60 +1415,6 @@
     "supporting_paths": 1,
     "rule_verdict": null,
     "hub": "filtered web data"
-   },
-   {
-    "id": "2c308910f224",
-    "text": "SOTA of large language models and NNs may move together because both depend on high quality data.",
-    "pattern": "divergent",
-    "relation": "common_driver",
-    "anchors": [
-     "SOTA of large language models",
-     "NNs",
-     "high quality data"
-    ],
-    "via": [],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2306-11644-p0004",
-     "arxiv-2403-14123-p0011"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2306-11644-p0004",
-      "quote": "In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.",
-      "start": 1191,
-      "end": 1407,
-      "chunk_sha256": "cc660f0a14dd0d680749702eae26051b543dfe1021068552b11897340bfce2b3",
-      "relation": "increases",
-      "subject": "high quality data",
-      "object": "SOTA of large language models",
-      "hedged": true,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2403-14123-p0011",
-      "quote": "Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.",
-      "start": 2131,
-      "end": 2258,
-      "chunk_sha256": "6cb3cc4e4e00360378cb8a4971f1597037d4898535bbe2ac335a66a460a4f807",
-      "relation": "constrains",
-      "subject": "training data",
-      "object": "NNs",
-      "hedged": false,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.55,
-     "deductive_relevance": 0.713,
-     "novelty": 0.558
-    },
-    "falsification_test": "Track SOTA of large language models and NNs across periods where high quality data changes and where it does not. The hypothesis fails if they co-vary just as strongly when high quality data is held fixed.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
-    "supporting_paths": 1,
-    "rule_verdict": null,
-    "hub": "high quality data"
    },
    {
     "id": "4d29fb2d72ac",
@@ -1851,116 +1523,6 @@
     "supporting_paths": 1,
     "rule_verdict": null,
     "hub": "high quality data"
-   },
-   {
-    "id": "829875565eaf",
-    "text": "training compute thresholds may constrain access through GPAI regulation (read as future regulations).",
-    "pattern": "chain",
-    "relation": "constrains",
-    "anchors": [
-     "training compute thresholds",
-     "access"
-    ],
-    "via": [
-     "GPAI regulation (read as future regulations)"
-    ],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2405-10799-p0012",
-     "arxiv-2307-04699-p0028"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2405-10799-p0012",
-      "quote": "GPAI regulation worldwide increasingly relies on training compute thresholds.",
-      "start": 1193,
-      "end": 1270,
-      "chunk_sha256": "05db599dac35df8d5f923a42532258c289391267f0e33879ccf3933fbfa35ef4",
-      "relation": "constrains",
-      "subject": "training compute thresholds",
-      "object": "GPAI regulation",
-      "hedged": false,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2307-04699-p0028",
-      "quote": "(It is possible that future regulations will limit access to powerful AI technologies in jurisdictions with inadequate AI governance.) Implementation support would help reduce obstacles to countries meeting international standards and therefore enable greater access to advanced AI.",
-      "start": 1199,
-      "end": 1481,
-      "chunk_sha256": "0d2b03a8c7e2493b56200fcdbdc7ee2c3b1aef0da1252b88b0fdb84ee2b3bf5e",
-      "relation": "constrains",
-      "subject": "future regulations",
-      "object": "access",
-      "hedged": true,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.55,
-     "deductive_relevance": 0.642,
-     "novelty": 0.55
-    },
-    "falsification_test": "Compare settings where training compute thresholds differs while other inputs are matched. The hypothesis fails if access does not stay bounded with training compute thresholds, or if fixing GPAI regulation (read as future regulations) removes no part of the effect.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
-    "supporting_paths": 1,
-    "rule_verdict": "INSUFFICIENT_SUPPORT",
-    "hub": "gpai regulation"
-   },
-   {
-    "id": "8f35694809f2",
-    "text": "Inconsistent national regulations may reduce compute through deployment.",
-    "pattern": "chain",
-    "relation": "decreases",
-    "anchors": [
-     "Inconsistent national regulations",
-     "compute"
-    ],
-    "via": [
-     "deployment"
-    ],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2307-04699-p0013",
-     "arxiv-2207-02852-p0027"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2307-04699-p0013",
-      "quote": "Inconsistent national regulations could also slow the development and deployment of AI, as developers of powerful AI technology may be unwilling to export to countries with inconsistent or unsuitable technology governance.7 International efforts to set safety norms and standards could help coordinate governance in a way that supports innovation and serves a broad set of interests.",
-      "start": 126,
-      "end": 509,
-      "chunk_sha256": "c0c3c6566f1703e30506d9cb97dcff35c2351af856725774eefd8d508bf088f4",
-      "relation": "decreases",
-      "subject": "Inconsistent national regulations",
-      "object": "deployment",
-      "hedged": true,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2207-02852-p0027",
-      "quote": "Deployment usually consumes much more compute than training: Patterson et al.",
-      "start": 0,
-      "end": 77,
-      "chunk_sha256": "9107029560ef93765df69daea72ae8c728cdc19cad7e27abc45cb0f2e7946dbf",
-      "relation": "increases",
-      "subject": "Deployment",
-      "object": "compute",
-      "hedged": false,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.55,
-     "deductive_relevance": 0.6,
-     "novelty": 0.564
-    },
-    "falsification_test": "Compare settings where Inconsistent national regulations differs while other inputs are matched. The hypothesis fails if compute does not fall with Inconsistent national regulations, or if fixing deployment removes no part of the effect.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
-    "supporting_paths": 1,
-    "rule_verdict": null,
-    "hub": "deployment"
    },
    {
     "id": "ecc4de871aca",
@@ -2183,114 +1745,6 @@
     "hub": "model"
    },
    {
-    "id": "9e430b4b204c",
-    "text": "powerful models and GLaM MoE models may move together because both depend on filtered web data.",
-    "pattern": "divergent",
-    "relation": "common_driver",
-    "anchors": [
-     "powerful models",
-     "GLaM MoE models",
-     "filtered web data"
-    ],
-    "via": [],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2306-01116-p0002",
-     "arxiv-2112-06905-p0024"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2306-01116-p0002",
-      "quote": "At variance with previous beliefs, we show that properly filtered and deduplicated web data alone can lead to powerful models; even significantly outperforming models from the state-of-the-art trained on The Pile.",
-      "start": 489,
-      "end": 702,
-      "chunk_sha256": "a52459b23cbaa47dc83ce7a8a80f739800263eb0eab95a5ee24cae6e8983f7e6",
-      "relation": "causes",
-      "subject": "filtered web data",
-      "object": "powerful models",
-      "hedged": true,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2112-06905-p0024",
-      "quote": "We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.",
-      "start": 302,
-      "end": 464,
-      "chunk_sha256": "2acddc685a89695f573c19171095f2f7d8a2e18e38c9f7554009b8573ef60cce",
-      "relation": "constrains",
-      "subject": "less data",
-      "object": "GLaM MoE models",
-      "hedged": false,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.55,
-     "deductive_relevance": 0.547,
-     "novelty": 0.623
-    },
-    "falsification_test": "Track powerful models and GLaM MoE models across periods where filtered web data changes and where it does not. The hypothesis fails if they co-vary just as strongly when filtered web data is held fixed.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
-    "supporting_paths": 1,
-    "rule_verdict": null,
-    "hub": "filtered web data"
-   },
-   {
-    "id": "1ab38388a5a8",
-    "text": "governance functions and no sign may interact in their effect on AI.",
-    "pattern": "convergent",
-    "relation": "jointly_affect",
-    "anchors": [
-     "governance functions",
-     "no sign",
-     "AI"
-    ],
-    "via": [],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2307-04699-p0011",
-     "arxiv-2206-05229-p0005"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2307-04699-p0011",
-      "quote": "Because of characteristics like its high barriers to development/utilization and the possibility of cross-border use, it is possible that harnessing AI’s potential for global benefit and managing its risks could require governance functions at the international level.",
-      "start": 2387,
-      "end": 2655,
-      "chunk_sha256": "9eaba6131c5c69588ecac4cb3a3e4dbc8ca03bb6363486bbdb16930599ccb0be",
-      "relation": "constrains",
-      "subject": "governance functions",
-      "object": "AI",
-      "hedged": true,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2206-05229-p0005",
-      "quote": "While it is not yet known what proportion of data center use is for training artificial intelligence (AI) models, it is undeniable that AI and its sub-fields have grown dramatically in recent years, with no sign of slowing down [39, 43].",
-      "start": 713,
-      "end": 950,
-      "chunk_sha256": "5d75971cd5c665fec47b17fe9443a53fde938e7cc52b0a2b2d0e033f7e5b7442",
-      "relation": "increases",
-      "subject": "no sign",
-      "object": "AI",
-      "hedged": false,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.55,
-     "deductive_relevance": 0.55,
-     "novelty": 0.6
-    },
-    "falsification_test": "Vary governance functions and no sign separately and together. The hypothesis fails if the joint change in AI equals the sum of the separate changes.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
-    "supporting_paths": 1,
-    "rule_verdict": null,
-    "hub": "ai"
-   },
-   {
     "id": "5304e32ab638",
     "text": "performance and progress may move together because both depend on Compute efficiency improvements.",
     "pattern": "divergent",
@@ -2454,61 +1908,6 @@
     "hub": "substantial performance improvement"
    },
    {
-    "id": "6e31611c6529",
-    "text": "analysis may increase large gains through innovation (read as Rapid innovation).",
-    "pattern": "chain",
-    "relation": "increases",
-    "anchors": [
-     "analysis",
-     "large gains"
-    ],
-    "via": [
-     "innovation (read as Rapid innovation)"
-    ],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2007-05558-p0035",
-     "arxiv-2405-21015-p0022"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2007-05558-p0035",
-      "quote": "Thus, because our analysis accounts for innovation and because it is not misled by overly-optimistic scaling down studies, we believe it provides a better long-term view of the evolution of computing power as higher model performance",
-      "start": 993,
-      "end": 1226,
-      "chunk_sha256": "97535f63edfb9bc832bb3bfa14f3e76ecafe0a23433a953ad03b3a60cce973b6",
-      "relation": "causes",
-      "subject": "analysis",
-      "object": "innovation",
-      "hedged": false,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2405-21015-p0022",
-      "quote": "Rapid innovation could also lead to large gains in hardware and software efficiency that are difficult to predict from historical data.",
-      "start": 615,
-      "end": 750,
-      "chunk_sha256": "18c504aecd9d5879a7f347782a0ceba55e11b4f53e8c476d0f0f5e17d21ba1d9",
-      "relation": "causes",
-      "subject": "Rapid innovation",
-      "object": "large gains",
-      "hedged": true,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.55,
-     "deductive_relevance": 0.551,
-     "novelty": 0.55
-    },
-    "falsification_test": "Compare settings where analysis differs while other inputs are matched. The hypothesis fails if large gains does not rise with analysis, or if fixing innovation (read as Rapid innovation) removes no part of the effect.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
-    "supporting_paths": 1,
-    "rule_verdict": null,
-    "hub": "innovation"
-   },
-   {
     "id": "7e9ef82ddf98",
     "text": "polynomial models may affect SOTA of large language models through data (read as high quality data).",
     "pattern": "chain",
@@ -2618,115 +2017,6 @@
     "hub": "bottleneck"
    },
    {
-    "id": "5185190ae4fe",
-    "text": "training compute thresholds may affect deployment through GPAI regulation (read as Inconsistent national regulations).",
-    "pattern": "chain",
-    "relation": "affects",
-    "anchors": [
-     "training compute thresholds",
-     "deployment"
-    ],
-    "via": [
-     "GPAI regulation (read as Inconsistent national regulations)"
-    ],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2405-10799-p0012",
-     "arxiv-2307-04699-p0013"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2405-10799-p0012",
-      "quote": "GPAI regulation worldwide increasingly relies on training compute thresholds.",
-      "start": 1193,
-      "end": 1270,
-      "chunk_sha256": "05db599dac35df8d5f923a42532258c289391267f0e33879ccf3933fbfa35ef4",
-      "relation": "constrains",
-      "subject": "training compute thresholds",
-      "object": "GPAI regulation",
-      "hedged": false,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2307-04699-p0013",
-      "quote": "Inconsistent national regulations could also slow the development and deployment of AI, as developers of powerful AI technology may be unwilling to export to countries with inconsistent or unsuitable technology governance.7 International efforts to set safety norms and standards could help coordinate governance in a way that supports innovation and serves a broad set of interests.",
-      "start": 126,
-      "end": 509,
-      "chunk_sha256": "c0c3c6566f1703e30506d9cb97dcff35c2351af856725774eefd8d508bf088f4",
-      "relation": "decreases",
-      "subject": "Inconsistent national regulations",
-      "object": "deployment",
-      "hedged": true,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.55,
-     "deductive_relevance": 0.499,
-     "novelty": 0.573
-    },
-    "falsification_test": "Compare settings where training compute thresholds differs while other inputs are matched. The hypothesis fails if deployment does not change with training compute thresholds, or if fixing GPAI regulation (read as Inconsistent national regulations) removes no part of the effect.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
-    "supporting_paths": 1,
-    "rule_verdict": null,
-    "hub": "gpai regulation"
-   },
-   {
-    "id": "71063b6ec89b",
-    "text": "final training run and progress may interact in their effect on AI model capabilities.",
-    "pattern": "convergent",
-    "relation": "jointly_affect",
-    "anchors": [
-     "final training run",
-     "progress",
-     "AI model capabilities"
-    ],
-    "via": [],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2405-21015-p0009",
-     "arxiv-2305-15324-p0003"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2405-21015-p0009",
-      "quote": "2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.",
-      "start": 421,
-      "end": 612,
-      "chunk_sha256": "5fe1a7ed7f611503d52f84a850d3abbabf1f1466503c0868015dcb0da68892a7",
-      "relation": "constrains",
-      "subject": "final training run",
-      "object": "AI model capabilities",
-      "hedged": false,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2305-15324-p0003",
-      "quote": "Further progress in AI development could lead to capabilities that pose extreme risks, such as offensive cyber capabilities or strong manipulation skills.",
-      "start": 427,
-      "end": 581,
-      "chunk_sha256": "6cf5cec40898300fc6942b4c210b9018655a77ed44718212d130e5c0e03fffe3",
-      "relation": "causes",
-      "subject": "progress",
-      "object": "capabilities",
-      "hedged": true,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.55,
-     "deductive_relevance": 0.499,
-     "novelty": 0.517
-    },
-    "falsification_test": "Vary final training run and progress separately and together. The hypothesis fails if the joint change in AI model capabilities equals the sum of the separate changes.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
-    "supporting_paths": 1,
-    "rule_verdict": null,
-    "hub": "ai model capability"
-   },
-   {
     "id": "3f35ab762916",
     "text": "solutions of larger problem instances and large gains may move together because both depend on Algorithmic innovations.",
     "pattern": "divergent",
@@ -2779,38 +2069,746 @@
     "supporting_paths": 1,
     "rule_verdict": null,
     "hub": "algorithmic innovation"
+   },
+   {
+    "id": "a37afde23e5c",
+    "text": "scope of tractable problem classes and large gains may move together because both depend on Algorithmic innovations.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "scope of tractable problem classes",
+     "large gains",
+     "Algorithmic innovations"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2403-05812-p0005",
+     "arxiv-2405-21015-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2403-05812-p0005",
+      "quote": "Algorithmic innovations enable solutions of larger problem instances, expand the scope of tractable problem classes, and reduce data and/or computation required to achieve fixed performance thresholds.",
+      "start": 0,
+      "end": 201,
+      "chunk_sha256": "2a4f5239e0376f795cab72867d20bd061e3dbd68ef5859526e6fc9dd637cdc71",
+      "relation": "increases",
+      "subject": "Algorithmic innovations",
+      "object": "scope of tractable problem classes",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2405-21015-p0022",
+      "quote": "Rapid innovation could also lead to large gains in hardware and software efficiency that are difficult to predict from historical data.",
+      "start": 615,
+      "end": 750,
+      "chunk_sha256": "18c504aecd9d5879a7f347782a0ceba55e11b4f53e8c476d0f0f5e17d21ba1d9",
+      "relation": "causes",
+      "subject": "Rapid innovation",
+      "object": "large gains",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.48,
+     "novelty": 0.6
+    },
+    "falsification_test": "Track scope of tractable problem classes and large gains across periods where Algorithmic innovations changes and where it does not. The hypothesis fails if they co-vary just as strongly when Algorithmic innovations is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "algorithmic innovation"
+   },
+   {
+    "id": "ea33bf8e8bff",
+    "text": "random noise may affect talent scarcity through gap.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "random noise",
+     "talent scarcity"
+    ],
+    "via": [
+     "gap"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2207-02852-p0017",
+     "arxiv-2010-15581-p0013"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2207-02852-p0017",
+      "quote": "The same statistical analysis of the previous section, when performed only on systems in the Other domain, shows that the gap can be explained by random noise, whereas for systems in the Language domains the gap is very unlikely: The probability of observing this gap conditional on our model being correct is 0.23 for systems in the Other domain and 0.02 for those in the Language domain6.",
+      "start": 201,
+      "end": 591,
+      "chunk_sha256": "87b7fc7ee5a8901e537437e2ca1cf7ca3bdf4ddb200d06d81ea34880a90f5346",
+      "relation": "supports",
+      "subject": "random noise",
+      "object": "gap",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2010-15581-p0013",
+      "quote": "The gap between the limited supply and the increased demand for AI talent has produced a talent scarcity in the field (Metz, 2018).",
+      "start": 0,
+      "end": 131,
+      "chunk_sha256": "4340cb48e343a3b45bc5070cbd543f06e3c4af3063ebff21b6e0e39efb005fdb",
+      "relation": "causes",
+      "subject": "gap",
+      "object": "talent scarcity",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.4,
+     "novelty": 0.636
+    },
+    "falsification_test": "Compare settings where random noise differs while other inputs are matched. The hypothesis fails if talent scarcity does not change with random noise, or if fixing gap removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "gap"
+   },
+   {
+    "id": "4b855af440cd",
+    "text": "single training run and concerns may move together because both depend on compute.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "single training run",
+     "concerns",
+     "compute"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-08797-p0023",
+     "arxiv-2010-15581-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-08797-p0023",
+      "quote": "Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.",
+      "start": 161,
+      "end": 357,
+      "chunk_sha256": "7e346f2bd74ec7647d0e65a3a852243eccabbaa574bbbb51a63b94d0c0d49cd8",
+      "relation": "constrains",
+      "subject": "compute",
+      "object": "single training run",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2010-15581-p0002",
+      "quote": "This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.",
+      "start": 1490,
+      "end": 1675,
+      "chunk_sha256": "eb59bd8ec0c227f41014aa123718e117df4fbceba7ae9f219dccf86b93ab24dc",
+      "relation": "increases",
+      "subject": "compute",
+      "object": "concerns",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.567,
+     "novelty": 0.628
+    },
+    "falsification_test": "Track single training run and concerns across periods where compute changes and where it does not. The hypothesis fails if they co-vary just as strongly when compute is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "compute"
+   },
+   {
+    "id": "d1c5ecbdca42",
+    "text": "large investments and sequence parallelism of Transformer architecture may interact in their effect on Training.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "large investments",
+     "sequence parallelism of Transformer architecture",
+     "Training"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2311-15377-p0002",
+     "arxiv-2211-05102-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2311-15377-p0002",
+      "quote": "Training advanced AI models requires large investments in computational resources, or compute.",
+      "start": 0,
+      "end": 94,
+      "chunk_sha256": "3a3053a30341058103af1a5f5cc17051786ae7acd2c171e5484ea523fcce6d16",
+      "relation": "constrains",
+      "subject": "large investments",
+      "object": "Training",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2211-05102-p0004",
+      "quote": "While the sequence parallelism of the Transformer architecture enables highly parallel training, efficient deployment of these models is challenging in practice because generative inference proceeds one token at a time and the computation for each token sequentially depends on the previously generated tokens.",
+      "start": 407,
+      "end": 717,
+      "chunk_sha256": "f418a88115769a5649b370a09400622b6c309e609ed675fbb2795fc0ca1f1d00",
+      "relation": "increases",
+      "subject": "sequence parallelism of Transformer architecture",
+      "object": "parallel training",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.499,
+     "novelty": 0.572
+    },
+    "falsification_test": "Vary large investments and sequence parallelism of Transformer architecture separately and together. The hypothesis fails if the joint change in Training equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "training"
+   },
+   {
+    "id": "3552cbf46ff0",
+    "text": "Deployment and matrix vector products may interact in their effect on compute.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "Deployment",
+     "matrix vector products",
+     "compute"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2207-02852-p0027",
+     "arxiv-2210-17323-p0023"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2207-02852-p0027",
+      "quote": "Deployment usually consumes much more compute than training: Patterson et al.",
+      "start": 0,
+      "end": 77,
+      "chunk_sha256": "9107029560ef93765df69daea72ae8c728cdc19cad7e27abc45cb0f2e7946dbf",
+      "relation": "increases",
+      "subject": "Deployment",
+      "object": "compute",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2210-17323-p0023",
+      "quote": "Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products.",
+      "start": 1438,
+      "end": 1570,
+      "chunk_sha256": "3a4b6b83e44488b6e9a404f0ab9294c350d52d2fd7ef516c9dd3da5d360183b6",
+      "relation": "constrains",
+      "subject": "matrix vector products",
+      "object": "compute",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.45,
+     "novelty": 0.707
+    },
+    "falsification_test": "Vary Deployment and matrix vector products separately and together. The hypothesis fails if the joint change in compute equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "compute"
+   },
+   {
+    "id": "e54b5646f74d",
+    "text": "Deployment may affect AI applications through compute.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "Deployment",
+     "AI applications"
+    ],
+    "via": [
+     "compute"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2207-02852-p0027",
+     "arxiv-2402-08797-p0019"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2207-02852-p0027",
+      "quote": "Deployment usually consumes much more compute than training: Patterson et al.",
+      "start": 0,
+      "end": 77,
+      "chunk_sha256": "9107029560ef93765df69daea72ae8c728cdc19cad7e27abc45cb0f2e7946dbf",
+      "relation": "increases",
+      "subject": "Deployment",
+      "object": "compute",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2402-08797-p0019",
+      "quote": "However, it is important to note that not all AI applications require vast amounts of compute; specialized AI systems have displayed impressive abilities in some domains, even by using much less compute",
+      "start": 458,
+      "end": 660,
+      "chunk_sha256": "b06c40ca3922bb7438b38cc73ee7d591a089c739716a0d05d637c873f3058114",
+      "relation": "constrains",
+      "subject": "compute",
+      "object": "AI applications",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.45,
+     "novelty": 0.5
+    },
+    "falsification_test": "Compare settings where Deployment differs while other inputs are matched. The hypothesis fails if AI applications does not change with Deployment, or if fixing compute removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "compute"
+   },
+   {
+    "id": "6a2469426d77",
+    "text": "DNNs and Patterson et al may interact in their effect on efficiency.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "DNNs",
+     "Patterson et al",
+     "efficiency"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2109-05472-p0024",
+     "arxiv-2112-06905-p0023"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2109-05472-p0024",
+      "quote": "Forecasting and Multiplicative Effect In our analysis we see that DNNs as well as hardware are improving their efficiency and do not show symptoms of standstill.",
+      "start": 85,
+      "end": 246,
+      "chunk_sha256": "c5c6ac481068642b83865c22d664b110b2524ec3da0ab7f970f496315a4bd027",
+      "relation": "increases",
+      "subject": "DNNs",
+      "object": "efficiency",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2112-06905-p0023",
+      "quote": "Efficiency of GLaM Existing large dense language models usually require tremendous amounts of computation resources for training and serving (Patterson et al., 2021).",
+      "start": 590,
+      "end": 756,
+      "chunk_sha256": "a074aa3e3ff20a74eaa792ed1290c69f3da7cc11b14ef486c0e3c686d072958e",
+      "relation": "constrains",
+      "subject": "Patterson et al",
+      "object": "Efficiency of GLaM",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.432,
+     "novelty": 0.55
+    },
+    "falsification_test": "Vary DNNs and Patterson et al separately and together. The hypothesis fails if the joint change in efficiency equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "efficiency"
+   },
+   {
+    "id": "de84bc04edf1",
+    "text": "hardware and Patterson et al may interact in their effect on efficiency.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "hardware",
+     "Patterson et al",
+     "efficiency"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2109-05472-p0024",
+     "arxiv-2112-06905-p0023"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2109-05472-p0024",
+      "quote": "Forecasting and Multiplicative Effect In our analysis we see that DNNs as well as hardware are improving their efficiency and do not show symptoms of standstill.",
+      "start": 85,
+      "end": 246,
+      "chunk_sha256": "c5c6ac481068642b83865c22d664b110b2524ec3da0ab7f970f496315a4bd027",
+      "relation": "increases",
+      "subject": "hardware",
+      "object": "efficiency",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2112-06905-p0023",
+      "quote": "Efficiency of GLaM Existing large dense language models usually require tremendous amounts of computation resources for training and serving (Patterson et al., 2021).",
+      "start": 590,
+      "end": 756,
+      "chunk_sha256": "a074aa3e3ff20a74eaa792ed1290c69f3da7cc11b14ef486c0e3c686d072958e",
+      "relation": "constrains",
+      "subject": "Patterson et al",
+      "object": "Efficiency of GLaM",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.432,
+     "novelty": 0.55
+    },
+    "falsification_test": "Vary hardware and Patterson et al separately and together. The hypothesis fails if the joint change in efficiency equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "efficiency"
+   },
+   {
+    "id": "d098ebc8b56b",
+    "text": "Oct world hardware may affect advantages of zeropoint quantization through analysis.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "Oct world hardware",
+     "advantages of zeropoint quantization"
+    ],
+    "via": [
+     "analysis"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2310-03003-p0004",
+     "arxiv-2208-07339-p0020"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2310-03003-p0004",
+      "quote": "We also hope that our experiments, analysis, and data on realarXiv:2310.03003v1 [cs.CL] 4 Oct 2023 world hardware will spur further analysis, benchmarking, and more open dissemination of the systematic performance characteristics for a wider range of large models—especially under different kinds of hardware, data, and optimization",
+      "start": 3682,
+      "end": 4014,
+      "chunk_sha256": "f72d800c2413216430fb90a6292a491c997ecb6ab7f0505f94923eebe5d2cdb0",
+      "relation": "increases",
+      "subject": "Oct world hardware",
+      "object": "analysis",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2208-07339-p0020",
+      "quote": "Our analysis explains the advantages of zeropoint quantization and why they disappear with the use of mixed-precision decomposition and the quantization performance of small vs. large models.",
+      "start": 1822,
+      "end": 2013,
+      "chunk_sha256": "002cc52ca24b12d6990d5e7dca1db2aac8751361b3af5337be7b1fde8b4a5062",
+      "relation": "supports",
+      "subject": "analysis",
+      "object": "advantages of zeropoint quantization",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.4,
+     "novelty": 0.628
+    },
+    "falsification_test": "Compare settings where Oct world hardware differs while other inputs are matched. The hypothesis fails if advantages of zeropoint quantization does not change with Oct world hardware, or if fixing analysis removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "analysis"
+   },
+   {
+    "id": "e685f6e66958",
+    "text": "Oct world hardware may affect stylized picture through analysis.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "Oct world hardware",
+     "stylized picture"
+    ],
+    "via": [
+     "analysis"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2310-03003-p0004",
+     "arxiv-2403-05812-p0028"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2310-03003-p0004",
+      "quote": "We also hope that our experiments, analysis, and data on realarXiv:2310.03003v1 [cs.CL] 4 Oct 2023 world hardware will spur further analysis, benchmarking, and more open dissemination of the systematic performance characteristics for a wider range of large models—especially under different kinds of hardware, data, and optimization",
+      "start": 3682,
+      "end": 4014,
+      "chunk_sha256": "f72d800c2413216430fb90a6292a491c997ecb6ab7f0505f94923eebe5d2cdb0",
+      "relation": "increases",
+      "subject": "Oct world hardware",
+      "object": "analysis",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2403-05812-p0028",
+      "quote": "This analysis weakly supports the stylized picture above that compute scaling has been more important for explaining performance improvements than",
+      "start": 2168,
+      "end": 2314,
+      "chunk_sha256": "425d62388469b04ea8eb67a16340e0e29ee7283676a1a17e0cbbdaa61bc30122",
+      "relation": "supports",
+      "subject": "analysis",
+      "object": "stylized picture",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.4,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where Oct world hardware differs while other inputs are matched. The hypothesis fails if stylized picture does not change with Oct world hardware, or if fixing analysis removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "analysis"
+   },
+   {
+    "id": "2c308910f224",
+    "text": "SOTA of large language models and NNs may move together because both depend on high quality data.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "SOTA of large language models",
+     "NNs",
+     "high quality data"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2306-11644-p0004",
+     "arxiv-2403-14123-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2306-11644-p0004",
+      "quote": "In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.",
+      "start": 1191,
+      "end": 1407,
+      "chunk_sha256": "cc660f0a14dd0d680749702eae26051b543dfe1021068552b11897340bfce2b3",
+      "relation": "increases",
+      "subject": "high quality data",
+      "object": "SOTA of large language models",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2403-14123-p0011",
+      "quote": "Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.",
+      "start": 2131,
+      "end": 2258,
+      "chunk_sha256": "6cb3cc4e4e00360378cb8a4971f1597037d4898535bbe2ac335a66a460a4f807",
+      "relation": "constrains",
+      "subject": "training data",
+      "object": "NNs",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.713,
+     "novelty": 0.558
+    },
+    "falsification_test": "Track SOTA of large language models and NNs across periods where high quality data changes and where it does not. The hypothesis fails if they co-vary just as strongly when high quality data is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "high quality data"
+   },
+   {
+    "id": "f04b6f22a1bc",
+    "text": "future regulations may constrain Training large AI models and delivering through access.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "future regulations",
+     "Training large AI models and delivering"
+    ],
+    "via": [
+     "access"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2307-04699-p0028",
+     "arxiv-2402-08797-p0031"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2307-04699-p0028",
+      "quote": "(It is possible that future regulations will limit access to powerful AI technologies in jurisdictions with inadequate AI governance.) Implementation support would help reduce obstacles to countries meeting international standards and therefore enable greater access to advanced AI.",
+      "start": 1199,
+      "end": 1481,
+      "chunk_sha256": "0d2b03a8c7e2493b56200fcdbdc7ee2c3b1aef0da1252b88b0fdb84ee2b3bf5e",
+      "relation": "constrains",
+      "subject": "future regulations",
+      "object": "access",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2402-08797-p0031",
+      "quote": "Training large AI models and delivering access to them at scale requires access to large amounts of compute.",
+      "start": 395,
+      "end": 503,
+      "chunk_sha256": "bc80b8825ef2cd2f04c8b9d70c1f4bb9d9dbc98afcf344daeedaeb85f1908a3d",
+      "relation": "constrains",
+      "subject": "access",
+      "object": "Training large AI models and delivering",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.667,
+     "novelty": 0.55
+    },
+    "falsification_test": "Compare settings where future regulations differs while other inputs are matched. The hypothesis fails if Training large AI models and delivering does not stay bounded with future regulations, or if fixing access removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "access"
+   },
+   {
+    "id": "829875565eaf",
+    "text": "training compute thresholds may constrain access through GPAI regulation (read as future regulations).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "training compute thresholds",
+     "access"
+    ],
+    "via": [
+     "GPAI regulation (read as future regulations)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-10799-p0012",
+     "arxiv-2307-04699-p0028"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-10799-p0012",
+      "quote": "GPAI regulation worldwide increasingly relies on training compute thresholds.",
+      "start": 1193,
+      "end": 1270,
+      "chunk_sha256": "05db599dac35df8d5f923a42532258c289391267f0e33879ccf3933fbfa35ef4",
+      "relation": "constrains",
+      "subject": "training compute thresholds",
+      "object": "GPAI regulation",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2307-04699-p0028",
+      "quote": "(It is possible that future regulations will limit access to powerful AI technologies in jurisdictions with inadequate AI governance.) Implementation support would help reduce obstacles to countries meeting international standards and therefore enable greater access to advanced AI.",
+      "start": 1199,
+      "end": 1481,
+      "chunk_sha256": "0d2b03a8c7e2493b56200fcdbdc7ee2c3b1aef0da1252b88b0fdb84ee2b3bf5e",
+      "relation": "constrains",
+      "subject": "future regulations",
+      "object": "access",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.642,
+     "novelty": 0.55
+    },
+    "falsification_test": "Compare settings where training compute thresholds differs while other inputs are matched. The hypothesis fails if access does not stay bounded with training compute thresholds, or if fixing GPAI regulation (read as future regulations) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "gpai regulation"
    }
   ],
-  "survivors": 68,
-  "candidates_generated": 487,
+  "survivors": 65,
+  "candidates_generated": 473,
   "candidates_passed": {
-   "abductive": 271,
-   "deductive": 271,
-   "pre_thinker": 68
+   "abductive": 257,
+   "deductive": 257,
+   "pre_thinker": 65
   },
   "candidates_rejected": {
    "abductive:unrelated_bridge": 216,
    "pre_thinker:circular": 5,
-   "pre_thinker:malformed": 176,
+   "pre_thinker:malformed": 169,
    "pre_thinker:restates_source": 7,
-   "pre_thinker:single_source": 15
+   "pre_thinker:single_source": 11
   },
-  "relation_edges": 528,
-  "scoped_edges": 173,
+  "relation_edges": 522,
+  "scoped_edges": 165,
   "budget_used": {
    "rounds": 2,
-   "candidates": 487,
-   "edges": 528,
-   "bytes": 311809,
-   "seconds": 2.045
+   "candidates": 473,
+   "edges": 522,
+   "bytes": 306080,
+   "seconds": 1.974
   },
   "incomplete": false,
   "stop_reason": null,
   "shortage": null,
   "snapshot": {
-   "as_of": 1795253335,
+   "as_of": 1795253658,
    "chunk_count": 1054
   }
  },
- "reply": "Frontier hypotheses for training data supply. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 487. Passed abductive check: 271; deductive check: 271; pre-thinker validation: 68.\n\n1. GLaM MoE models and NNs may move together because both depend on less data.\n[arxiv-2112-06905-p0024] We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.\n[arxiv-2403-14123-p0011] Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.\nFalsification test: Track GLaM MoE models and NNs across periods where less data changes and where it does not. The hypothesis fails if they co-vary just as strongly when less data is held fixed.\nScores: source support 0.80, deductive relevance 0.71, novelty 0.63.\n\n2. no sign may increase penetration through AI.\n[arxiv-2206-05229-p0005] While it is not yet known what proportion of data center use is for training artificial intelligence (AI) models, it is undeniable that AI and its sub-fields have grown dramatically in recent years, with no sign of slowing down [39, 43].\n[arxiv-2109-05472-p0002] The only caveat is, yet again, the multiplicative factor, as future AI increases penetration and becomes more pervasive.\nFalsification test: Compare settings where no sign differs while other inputs are matched. The hypothesis fails if penetration does not rise with no sign, or if fixing AI removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.70, novelty 0.55.\n\n3. large investments may constrain substantial boost through Training.\n[arxiv-2311-15377-p0002] Training advanced AI models requires large investments in computational resources, or compute.\n[arxiv-2306-11644-p0023] 5 Data pruning for unbiased performance evaluation In Figure 2.1, we see that training on CodeExercises leads to a substantial boost in the performance of the model on the HumanEval benchmark.\nFalsification test: Compare settings where large investments differs while other inputs are matched. The hypothesis fails if substantial boost does not stay bounded with large investments, or if fixing Training removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.69, novelty 0.64.\n\n4. optimal configuration of data parallelism and Patterson et al may jointly constrain efficiency, so relieving one may shift the bottleneck to the other.\n[arxiv-2309-14393-p0013] This efficiency is largely determined by the optimal configuration of data, tensor, pipeline, and expert parallelism, along with the number of devices used for the task.\n[arxiv-2112-06905-p0023] Efficiency of GLaM Existing large dense language models usually require tremendous amounts of computation resources for training and serving (Patterson et al., 2021).\nFalsification test: Relieve optimal configuration of data parallelism alone while measuring efficiency. The hypothesis fails if efficiency keeps improving without Patterson et al becoming the binding limit, or if relieving Patterson et al alone has no effect.\nScores: source support 0.80, deductive relevance 0.69, novelty 0.64.\n\n5. no sign may increase harm through AI.\n[arxiv-2206-05229-p0005] While it is not yet known what proportion of data center use is for training artificial intelligence (AI) models, it is undeniable that AI and its sub-fields have grown dramatically in recent years, with no sign of slowing down [39, 43].\n[arxiv-2402-08797-p0024] 2023), and the potential for AI to deliberately cause harm due to misalignment (Ngo, L. Chan, and Mindermann 2023).\nFalsification test: Compare settings where no sign differs while other inputs are matched. The hypothesis fails if harm does not rise with no sign, or if fixing AI removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.68, novelty 0.65.\n\n6. different conclusions and substantial boost may move together because both depend on training.\n[arxiv-2311-16863-p0004] In particular, looking at inference rather than training leads to drastically different conclusions when considering the multi-purpose (or “general-purpose”) aspect specifically.\n[arxiv-2306-11644-p0023] 5 Data pruning for unbiased performance evaluation In Figure 2.1, we see that training on CodeExercises leads to a substantial boost in the performance of the model on the HumanEval benchmark.\nFalsification test: Track different conclusions and substantial boost across periods where training changes and where it does not. The hypothesis fails if they co-vary just as strongly when training is held fixed.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.68.\n\n7. matrix vector products may constrain single training run through compute.\n[arxiv-2210-17323-p0023] Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products.\n[arxiv-2402-08797-p0023] Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.\nFalsification test: Compare settings where matrix vector products differs while other inputs are matched. The hypothesis fails if single training run does not stay bounded with matrix vector products, or if fixing compute removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.63.\n\n8. compute may constrain AI model capabilities through single training run (read as final training run).\n[arxiv-2402-08797-p0023] Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.\n[arxiv-2405-21015-p0009] 2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.\nFalsification test: Compare settings where compute differs while other inputs are matched. The hypothesis fails if AI model capabilities does not stay bounded with compute, or if fixing single training run (read as final training run) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.64, novelty 0.48.\n\n9. polynomial models may affect NNs through data (read as training data).\n[arxiv-2007-05558-p0028] As with the network operations analysis, we find that polynomial models best explain the data, but that exponential models are also plausible.\n[arxiv-2403-14123-p0011] Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.\nFalsification test: Compare settings where polynomial models differs while other inputs are matched. The hypothesis fails if NNs does not change with polynomial models, or if fixing data (read as training data) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.66.\n\n10. Deployment may increase concerns through compute.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\n[arxiv-2010-15581-p0002] This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.\nFalsification test: Compare settings where Deployment differs while other inputs are matched. The hypothesis fails if concerns does not rise with Deployment, or if fixing compute removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.50.\n\n11. computing resources and tens of thousands of GPUs may jointly constrain training these large dense models, so relieving one may shift the bottleneck to the other.\n[arxiv-2112-06905-p0003] However, training these large dense models requires significant amounts of computing resources.\n[arxiv-2405-10799-p0021] AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars.\nFalsification test: Relieve computing resources alone while measuring training these large dense models. The hypothesis fails if training these large dense models keeps improving without tens of thousands of GPUs becoming the binding limit, or if relieving tens of thousands of GPUs alone has no effect.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.65.\n\n12. final training run and human assisted evaluations may jointly constrain AI model capabilities, so relieving one may shift the bottleneck to the other.\n[arxiv-2405-21015-p0009] 2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.\n[arxiv-2305-15324-p0035] However, some capabilities and behaviours will need human-assisted evaluations, i.e.\nFalsification test: Relieve final training run alone while measuring AI model capabilities. The hypothesis fails if AI model capabilities keeps improving without human assisted evaluations becoming the binding limit, or if relieving human assisted evaluations alone has no effect.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.65.\n\n13. large investments may constrain different conclusions through Training.\n[arxiv-2311-15377-p0002] Training advanced AI models requires large investments in computational resources, or compute.\n[arxiv-2311-16863-p0004] In particular, looking at inference rather than training leads to drastically different conclusions when considering the multi-purpose (or “general-purpose”) aspect specifically.\nFalsification test: Compare settings where large investments differs while other inputs are matched. The hypothesis fails if different conclusions does not stay bounded with large investments, or if fixing Training removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.64.\n\n14. single training run and concerns may move together because both depend on compute.\n[arxiv-2402-08797-p0023] Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.\n[arxiv-2010-15581-p0002] This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.\nFalsification test: Track single training run and concerns across periods where compute changes and where it does not. The hypothesis fails if they co-vary just as strongly when compute is held fixed.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.63.\n\n15. generated tokens may constrain performance through computation for token (read as available computation).\n[arxiv-2211-05102-p0004] While the sequence parallelism of the Transformer architecture enables highly parallel training, efficient deployment of these models is challenging in practice because generative inference proceeds one token at a time and the computation for each token sequentially depends on the previously generated tokens.\n[arxiv-2007-05558-p0007] Even at the creation of the first neural networks by Frank Rosenblatt, performance was limited by the available computation.\nFalsification test: Compare settings where generated tokens differs while other inputs are matched. The hypothesis fails if performance does not stay bounded with generated tokens, or if fixing computation for token (read as available computation) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.61.\n\n16. Large compute investors may increase rapid growth through compute investment (read as increased investments).\n[arxiv-2311-15377-p0010] Large compute investors have historically increased their compute investment significantly faster than others, widening the investment gap to smaller actors.\n[arxiv-2405-10799-p0016] This rapid growth is largely driven by increased investments in computational resources for training larger models, which have demonstrated improved capabilities (figure from Sastry et al.\nFalsification test: Compare settings where Large compute investors differs while other inputs are matched. The hypothesis fails if rapid growth does not rise with Large compute investors, or if fixing compute investment (read as increased investments) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.60.\n\n17. Training large AI models and delivering and divergence may move together because both depend on access.\n[arxiv-2402-08797-p0031] Training large AI models and delivering access to them at scale requires access to large amounts of compute.\n[arxiv-2010-15581-p0002] Using machine learning based text analysis methods, we provide additional evidence that the divergence between these two groups—large firms and non-elite universities—is driven by access to computing power or compute, which we term as the “compute divide”.\nFalsification test: Track Training large AI models and delivering and divergence across periods where access changes and where it does not. The hypothesis fails if they co-vary just as strongly when access is held fixed.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.58.\n\n18. Oct world hardware may increase innovation through analysis.\n[arxiv-2310-03003-p0004] We also hope that our experiments, analysis, and data on realarXiv:2310.03003v1 [cs.CL] 4 Oct 2023 world hardware will spur further analysis, benchmarking, and more open dissemination of the systematic performance characteristics for a wider range of large models—especially under different kinds of hardware, data, and optimization\n[arxiv-2007-05558-p0035] Thus, because our analysis accounts for innovation and because it is not misled by overly-optimistic scaling down studies, we believe it provides a better long-term view of the evolution of computing power as higher model performance\nFalsification test: Compare settings where Oct world hardware differs while other inputs are matched. The hypothesis fails if innovation does not rise with Oct world hardware, or if fixing analysis removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.56.\n\n19. final training run may constrain LLMs through AI model capabilities (read as capabilities).\n[arxiv-2405-21015-p0009] 2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.\n[arxiv-2403-05812-p0003] These capabilities have enabled LLMs to support a range of commercial and scientific applications (Kaddour et al.\nFalsification test: Compare settings where final training run differs while other inputs are matched. The hypothesis fails if LLMs does not stay bounded with final training run, or if fixing AI model capabilities (read as capabilities) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.50.\n\n20. Training large AI models and delivering and certain groups ability may move together because both depend on access.\n[arxiv-2402-08797-p0031] Training large AI models and delivering access to them at scale requires access to large amounts of compute.\n[arxiv-2307-04699-p0012] Inadequate access to internet services, computing power, or availability of machine learning training/expertise will also hinder certain groups’ ability to benefit fully from AI advances.\nFalsification test: Track Training large AI models and delivering and certain groups ability across periods where access changes and where it does not. The hypothesis fails if they co-vary just as strongly when access is held fixed.\nScores: source support 0.80, deductive relevance 0.55, novelty 0.62.\n\n21. analysis may increase scope of tractable problem classes through innovation (read as Algorithmic innovations).\n[arxiv-2007-05558-p0035] Thus, because our analysis accounts for innovation and because it is not misled by overly-optimistic scaling down studies, we believe it provides a better long-term view of the evolution of computing power as higher model performance\n[arxiv-2403-05812-p0005] Algorithmic innovations enable solutions of larger problem instances, expand the scope of tractable problem classes, and reduce data and/or computation required to achieve fixed performance thresholds.\nFalsification test: Compare settings where analysis differs while other inputs are matched. The hypothesis fails if scope of tractable problem classes does not rise with analysis, or if fixing innovation (read as Algorithmic innovations) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.55, novelty 0.55.\n\n22. analysis may increase solutions of larger problem instances through innovation (read as Algorithmic innovations).\n[arxiv-2007-05558-p0035] Thus, because our analysis accounts for innovation and because it is not misled by overly-optimistic scaling down studies, we believe it provides a better long-term view of the evolution of computing power as higher model performance\n[arxiv-2403-05812-p0005] Algorithmic innovations enable solutions of larger problem instances, expand the scope of tractable problem classes, and reduce data and/or computation required to achieve fixed performance thresholds.\nFalsification test: Compare settings where analysis differs while other inputs are matched. The hypothesis fails if solutions of larger problem instances does not rise with analysis, or if fixing innovation (read as Algorithmic innovations) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.55, novelty 0.55.\n\n23. DNNs and optimal configuration of data parallelism may interact in their effect on efficiency.\n[arxiv-2109-05472-p0024] Forecasting and Multiplicative Effect In our analysis we see that DNNs as well as hardware are improving their efficiency and do not show symptoms of standstill.\n[arxiv-2309-14393-p0013] This efficiency is largely determined by the optimal configuration of data, tensor, pipeline, and expert parallelism, along with the number of devices used for the task.\nFalsification test: Vary DNNs and optimal configuration of data parallelism separately and together. The hypothesis fails if the joint change in efficiency equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.52, novelty 0.54.\n\n24. hardware and optimal configuration of data parallelism may interact in their effect on efficiency.\n[arxiv-2109-05472-p0024] Forecasting and Multiplicative Effect In our analysis we see that DNNs as well as hardware are improving their efficiency and do not show symptoms of standstill.\n[arxiv-2309-14393-p0013] This efficiency is largely determined by the optimal configuration of data, tensor, pipeline, and expert parallelism, along with the number of devices used for the task.\nFalsification test: Vary hardware and optimal configuration of data parallelism separately and together. The hypothesis fails if the joint change in efficiency equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.52, novelty 0.49.\n\n25. divergence and certain groups ability may move together because both depend on access.\n[arxiv-2010-15581-p0002] Using machine learning based text analysis methods, we provide additional evidence that the divergence between these two groups—large firms and non-elite universities—is driven by access to computing power or compute, which we term as the “compute divide”.\n[arxiv-2307-04699-p0012] Inadequate access to internet services, computing power, or availability of machine learning training/expertise will also hinder certain groups’ ability to benefit fully from AI advances.\nFalsification test: Track divergence and certain groups ability across periods where access changes and where it does not. The hypothesis fails if they co-vary just as strongly when access is held fixed.\nScores: source support 0.80, deductive relevance 0.48, novelty 0.68.\n\n26. Deployment may affect Efficiency of GLaM through Patterson et al.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\n[arxiv-2112-06905-p0023] Efficiency of GLaM Existing large dense language models usually require tremendous amounts of computation resources for training and serving (Patterson et al., 2021).\nFalsification test: Compare settings where Deployment differs while other inputs are matched. The hypothesis fails if Efficiency of GLaM does not change with Deployment, or if fixing Patterson et al removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.45, novelty 0.60.\n\n27. polynomial models may affect GLaM MoE models through data (read as less data).\n[arxiv-2007-05558-p0028] As with the network operations analysis, we find that polynomial models best explain the data, but that exponential models are also plausible.\n[arxiv-2112-06905-p0024] We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.\nFalsification test: Compare settings where polynomial models differs while other inputs are matched. The hypothesis fails if GLaM MoE models does not change with polynomial models, or if fixing data (read as less data) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.45, novelty 0.60.\n\n28. Oct world hardware may affect advantages of zeropoint quantization through analysis.\n[arxiv-2310-03003-p0004] We also hope that our experiments, analysis, and data on realarXiv:2310.03003v1 [cs.CL] 4 Oct 2023 world hardware will spur further analysis, benchmarking, and more open dissemination of the systematic performance characteristics for a wider range of large models—especially under different kinds of hardware, data, and optimization\n[arxiv-2208-07339-p0020] Our analysis explains the advantages of zeropoint quantization and why they disappear with the use of mixed-precision decomposition and the quantization performance of small vs. large models.\nFalsification test: Compare settings where Oct world hardware differs while other inputs are matched. The hypothesis fails if advantages of zeropoint quantization does not change with Oct world hardware, or if fixing analysis removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.40, novelty 0.63.\n\n29. Oct world hardware may affect stylized picture through analysis.\n[arxiv-2310-03003-p0004] We also hope that our experiments, analysis, and data on realarXiv:2310.03003v1 [cs.CL] 4 Oct 2023 world hardware will spur further analysis, benchmarking, and more open dissemination of the systematic performance characteristics for a wider range of large models—especially under different kinds of hardware, data, and optimization\n[arxiv-2403-05812-p0028] This analysis weakly supports the stylized picture above that compute scaling has been more important for explaining performance improvements than\nFalsification test: Compare settings where Oct world hardware differs while other inputs are matched. The hypothesis fails if stylized picture does not change with Oct world hardware, or if fixing analysis removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.40, novelty 0.60.\n\n30. powerful models and NNs may move together because both depend on filtered web data.\n[arxiv-2306-01116-p0002] At variance with previous beliefs, we show that properly filtered and deduplicated web data alone can lead to powerful models; even significantly outperforming models from the state-of-the-art trained on The Pile.\n[arxiv-2403-14123-p0011] Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.\nFalsification test: Track powerful models and NNs across periods where filtered web data changes and where it does not. The hypothesis fails if they co-vary just as strongly when filtered web data is held fixed.\nScores: source support 0.55, deductive relevance 0.71, novelty 0.60.\n\n31. SOTA of large language models and NNs may move together because both depend on high quality data.\n[arxiv-2306-11644-p0004] In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.\n[arxiv-2403-14123-p0011] Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.\nFalsification test: Track SOTA of large language models and NNs across periods where high quality data changes and where it does not. The hypothesis fails if they co-vary just as strongly when high quality data is held fixed.\nScores: source support 0.55, deductive relevance 0.71, novelty 0.56.\n\n32. powerful models and SOTA of large language models may move together because both depend on filtered web data.\n[arxiv-2306-01116-p0002] At variance with previous beliefs, we show that properly filtered and deduplicated web data alone can lead to powerful models; even significantly outperforming models from the state-of-the-art trained on The Pile.\n[arxiv-2306-11644-p0004] In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.\nFalsification test: Track powerful models and SOTA of large language models across periods where filtered web data changes and where it does not. The hypothesis fails if they co-vary just as strongly when filtered web data is held fixed.\nScores: source support 0.55, deductive relevance 0.65, novelty 0.64.\n\n33. SOTA of large language models and GLaM MoE models may move together because both depend on high quality data.\n[arxiv-2306-11644-p0004] In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.\n[arxiv-2112-06905-p0024] We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.\nFalsification test: Track SOTA of large language models and GLaM MoE models across periods where high quality data changes and where it does not. The hypothesis fails if they co-vary just as strongly when high quality data is held fixed.\nScores: source support 0.55, deductive relevance 0.65, novelty 0.53.\n\n34. training compute thresholds may constrain access through GPAI regulation (read as future regulations).\n[arxiv-2405-10799-p0012] GPAI regulation worldwide increasingly relies on training compute thresholds.\n[arxiv-2307-04699-p0028] (It is possible that future regulations will limit access to powerful AI technologies in jurisdictions with inadequate AI governance.) Implementation support would help reduce obstacles to countries meeting international standards and therefore enable greater access to advanced AI.\nFalsification test: Compare settings where training compute thresholds differs while other inputs are matched. The hypothesis fails if access does not stay bounded with training compute thresholds, or if fixing GPAI regulation (read as future regulations) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.64, novelty 0.55.\n\n35. Inconsistent national regulations may reduce compute through deployment.\n[arxiv-2307-04699-p0013] Inconsistent national regulations could also slow the development and deployment of AI, as developers of powerful AI technology may be unwilling to export to countries with inconsistent or unsuitable technology governance.7 International efforts to set safety norms and standards could help coordinate governance in a way that supports innovation and serves a broad set of interests.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\nFalsification test: Compare settings where Inconsistent national regulations differs while other inputs are matched. The hypothesis fails if compute does not fall with Inconsistent national regulations, or if fixing deployment removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.60, novelty 0.56.\n\n36. Inconsistent national regulations may reduce Patterson et al through deployment.\n[arxiv-2307-04699-p0013] Inconsistent national regulations could also slow the development and deployment of AI, as developers of powerful AI technology may be unwilling to export to countries with inconsistent or unsuitable technology governance.7 International efforts to set safety norms and standards could help coordinate governance in a way that supports innovation and serves a broad set of interests.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\nFalsification test: Compare settings where Inconsistent national regulations differs while other inputs are matched. The hypothesis fails if Patterson et al does not fall with Inconsistent national regulations, or if fixing deployment removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.60, novelty 0.56.\n\n37. players15 may increase harm through models.\n[arxiv-2207-02852-p0028] However, a significant number of models below the gap were produced by top research laboratories, and some models above the gap have been produced by other players15.\n[arxiv-2311-15377-p0012] For instance, governments could mandate capability evaluation and risk assessment procedures for training large models, monitor large-scale deployments, and quickly intervene when models cause harm.\nFalsification test: Compare settings where players15 differs while other inputs are matched. The hypothesis fails if harm does not rise with players15, or if fixing models removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.65.\n\n38. top research laboratories may increase harm through models.\n[arxiv-2207-02852-p0028] However, a significant number of models below the gap were produced by top research laboratories, and some models above the gap have been produced by other players15.\n[arxiv-2311-15377-p0012] For instance, governments could mandate capability evaluation and risk assessment procedures for training large models, monitor large-scale deployments, and quickly intervene when models cause harm.\nFalsification test: Compare settings where top research laboratories differs while other inputs are matched. The hypothesis fails if harm does not rise with top research laboratories, or if fixing models removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.56.\n\n39. available safety evaluations may increase harm through models.\n[arxiv-2305-15324-p0049] There is a risk that widely available safety evaluations will lead to models that exhibit only superficially desirable behaviours.\n[arxiv-2311-15377-p0012] For instance, governments could mandate capability evaluation and risk assessment procedures for training large models, monitor large-scale deployments, and quickly intervene when models cause harm.\nFalsification test: Compare settings where available safety evaluations differs while other inputs are matched. The hypothesis fails if harm does not rise with available safety evaluations, or if fixing models removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.51.\n\n40. powerful models and GLaM MoE models may move together because both depend on filtered web data.\n[arxiv-2306-01116-p0002] At variance with previous beliefs, we show that properly filtered and deduplicated web data alone can lead to powerful models; even significantly outperforming models from the state-of-the-art trained on The Pile.\n[arxiv-2112-06905-p0024] We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.\nFalsification test: Track powerful models and GLaM MoE models across periods where filtered web data changes and where it does not. The hypothesis fails if they co-vary just as strongly when filtered web data is held fixed.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.62.\n\n41. governance functions and no sign may interact in their effect on AI.\n[arxiv-2307-04699-p0011] Because of characteristics like its high barriers to development/utilization and the possibility of cross-border use, it is possible that harnessing AI’s potential for global benefit and managing its risks could require governance functions at the international level.\n[arxiv-2206-05229-p0005] While it is not yet known what proportion of data center use is for training artificial intelligence (AI) models, it is undeniable that AI and its sub-fields have grown dramatically in recent years, with no sign of slowing down [39, 43].\nFalsification test: Vary governance functions and no sign separately and together. The hypothesis fails if the joint change in AI equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.60.\n\n42. performance and progress may move together because both depend on Compute efficiency improvements.\n[arxiv-2311-15377-p0005] Compute efficiency improvements that expand access to smaller actors simultaneously increase the performance available to large compute investors.\n[arxiv-2211-04325-p0002] We argue that synthetic data generation, transfer learning from datarich domains, and data efficiency improvements might support further progress.\nFalsification test: Track performance and progress across periods where Compute efficiency improvements changes and where it does not. The hypothesis fails if they co-vary just as strongly when Compute efficiency improvements is held fixed.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.58.\n\n43. progress and performance may move together because both depend on data efficiency improvements.\n[arxiv-2211-04325-p0002] We argue that synthetic data generation, transfer learning from datarich domains, and data efficiency improvements might support further progress.\n[arxiv-2311-15377-p0007] As efficiency improvements increase the performance available with a given compute investment, more actors become able to train and develop models with potentially dangerous capabilities, complicating coordination and therefore increasing the chance of\nFalsification test: Track progress and performance across periods where data efficiency improvements changes and where it does not. The hypothesis fails if they co-vary just as strongly when data efficiency improvements is held fixed.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.58.\n\n44. observed neural scaling laws may affect progress through substantial performance improvements (read as data efficiency improvements).\n[arxiv-2206-14486-p0002] Widely observed neural scaling laws, in which error falls off as a power of the training set size, model size, or both, have driven substantial performance improvements in deep learning.\n[arxiv-2211-04325-p0002] We argue that synthetic data generation, transfer learning from datarich domains, and data efficiency improvements might support further progress.\nFalsification test: Compare settings where observed neural scaling laws differs while other inputs are matched. The hypothesis fails if progress does not change with observed neural scaling laws, or if fixing substantial performance improvements (read as data efficiency improvements) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.58.\n\n45. analysis may increase large gains through innovation (read as Rapid innovation).\n[arxiv-2007-05558-p0035] Thus, because our analysis accounts for innovation and because it is not misled by overly-optimistic scaling down studies, we believe it provides a better long-term view of the evolution of computing power as higher model performance\n[arxiv-2405-21015-p0022] Rapid innovation could also lead to large gains in hardware and software efficiency that are difficult to predict from historical data.\nFalsification test: Compare settings where analysis differs while other inputs are matched. The hypothesis fails if large gains does not rise with analysis, or if fixing innovation (read as Rapid innovation) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.55.\n\n46. polynomial models may affect SOTA of large language models through data (read as high quality data).\n[arxiv-2007-05558-p0028] As with the network operations analysis, we find that polynomial models best explain the data, but that exponential models are also plausible.\n[arxiv-2306-11644-p0004] In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.\nFalsification test: Compare settings where polynomial models differs while other inputs are matched. The hypothesis fails if SOTA of large language models does not change with polynomial models, or if fixing data (read as high quality data) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.53.\n\n47. Hardware limitations and Regulatory hurdles may jointly drive bottlenecks, and their effects may compound.\n[arxiv-2207-02852-p0032] In addition, we can generate some predictions from our hypotheses on the parameter gap: • Hardware limitations might cause discontinuities or bottlenecks in scaling by limiting model size rather than compute.\n[arxiv-2405-21015-p0019] Regulatory and logistical hurdles to secure power supplies may cause bottlenecks in the coming years, but we leave that topic to future work.\nFalsification test: Vary Hardware limitations and Regulatory hurdles separately and together. The hypothesis fails if the joint change in bottlenecks equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.68.\n\n48. training compute thresholds may affect deployment through GPAI regulation (read as Inconsistent national regulations).\n[arxiv-2405-10799-p0012] GPAI regulation worldwide increasingly relies on training compute thresholds.\n[arxiv-2307-04699-p0013] Inconsistent national regulations could also slow the development and deployment of AI, as developers of powerful AI technology may be unwilling to export to countries with inconsistent or unsuitable technology governance.7 International efforts to set safety norms and standards could help coordinate governance in a way that supports innovation and serves a broad set of interests.\nFalsification test: Compare settings where training compute thresholds differs while other inputs are matched. The hypothesis fails if deployment does not change with training compute thresholds, or if fixing GPAI regulation (read as Inconsistent national regulations) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.50, novelty 0.57.\n\n49. final training run and progress may interact in their effect on AI model capabilities.\n[arxiv-2405-21015-p0009] 2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.\n[arxiv-2305-15324-p0003] Further progress in AI development could lead to capabilities that pose extreme risks, such as offensive cyber capabilities or strong manipulation skills.\nFalsification test: Vary final training run and progress separately and together. The hypothesis fails if the joint change in AI model capabilities equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.50, novelty 0.52.\n\n50. solutions of larger problem instances and large gains may move together because both depend on Algorithmic innovations.\n[arxiv-2403-05812-p0005] Algorithmic innovations enable solutions of larger problem instances, expand the scope of tractable problem classes, and reduce data and/or computation required to achieve fixed performance thresholds.\n[arxiv-2405-21015-p0022] Rapid innovation could also lead to large gains in hardware and software efficiency that are difficult to predict from historical data.\nFalsification test: Track solutions of larger problem instances and large gains across periods where Algorithmic innovations changes and where it does not. The hypothesis fails if they co-vary just as strongly when Algorithmic innovations is held fixed.\nScores: source support 0.55, deductive relevance 0.48, novelty 0.60.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+ "reply": "Frontier hypotheses for training data supply. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 473. Passed abductive check: 257; deductive check: 257; pre-thinker validation: 65.\n\n1. GLaM MoE models and NNs may move together because both depend on less data.\n[arxiv-2112-06905-p0024] We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.\n[arxiv-2403-14123-p0011] Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.\nFalsification test: Track GLaM MoE models and NNs across periods where less data changes and where it does not. The hypothesis fails if they co-vary just as strongly when less data is held fixed.\nScores: source support 0.80, deductive relevance 0.71, novelty 0.63.\n\n2. large investments may constrain substantial boost through Training.\n[arxiv-2311-15377-p0002] Training advanced AI models requires large investments in computational resources, or compute.\n[arxiv-2306-11644-p0023] 5 Data pruning for unbiased performance evaluation In Figure 2.1, we see that training on CodeExercises leads to a substantial boost in the performance of the model on the HumanEval benchmark.\nFalsification test: Compare settings where large investments differs while other inputs are matched. The hypothesis fails if substantial boost does not stay bounded with large investments, or if fixing Training removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.69, novelty 0.64.\n\n3. optimal configuration of data parallelism and Patterson et al may jointly constrain efficiency, so relieving one may shift the bottleneck to the other.\n[arxiv-2309-14393-p0013] This efficiency is largely determined by the optimal configuration of data, tensor, pipeline, and expert parallelism, along with the number of devices used for the task.\n[arxiv-2112-06905-p0023] Efficiency of GLaM Existing large dense language models usually require tremendous amounts of computation resources for training and serving (Patterson et al., 2021).\nFalsification test: Relieve optimal configuration of data parallelism alone while measuring efficiency. The hypothesis fails if efficiency keeps improving without Patterson et al becoming the binding limit, or if relieving Patterson et al alone has no effect.\nScores: source support 0.80, deductive relevance 0.69, novelty 0.64.\n\n4. different conclusions and substantial boost may move together because both depend on training.\n[arxiv-2311-16863-p0004] In particular, looking at inference rather than training leads to drastically different conclusions when considering the multi-purpose (or “general-purpose”) aspect specifically.\n[arxiv-2306-11644-p0023] 5 Data pruning for unbiased performance evaluation In Figure 2.1, we see that training on CodeExercises leads to a substantial boost in the performance of the model on the HumanEval benchmark.\nFalsification test: Track different conclusions and substantial boost across periods where training changes and where it does not. The hypothesis fails if they co-vary just as strongly when training is held fixed.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.68.\n\n5. matrix vector products may constrain single training run through compute.\n[arxiv-2210-17323-p0023] Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products.\n[arxiv-2402-08797-p0023] Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.\nFalsification test: Compare settings where matrix vector products differs while other inputs are matched. The hypothesis fails if single training run does not stay bounded with matrix vector products, or if fixing compute removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.63.\n\n6. compute may constrain AI model capabilities through single training run (read as final training run).\n[arxiv-2402-08797-p0023] Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.\n[arxiv-2405-21015-p0009] 2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.\nFalsification test: Compare settings where compute differs while other inputs are matched. The hypothesis fails if AI model capabilities does not stay bounded with compute, or if fixing single training run (read as final training run) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.64, novelty 0.48.\n\n7. polynomial models may affect NNs through data (read as training data).\n[arxiv-2007-05558-p0028] As with the network operations analysis, we find that polynomial models best explain the data, but that exponential models are also plausible.\n[arxiv-2403-14123-p0011] Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.\nFalsification test: Compare settings where polynomial models differs while other inputs are matched. The hypothesis fails if NNs does not change with polynomial models, or if fixing data (read as training data) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.66.\n\n8. Deployment may increase concerns through compute.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\n[arxiv-2010-15581-p0002] This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.\nFalsification test: Compare settings where Deployment differs while other inputs are matched. The hypothesis fails if concerns does not rise with Deployment, or if fixing compute removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.50.\n\n9. computing resources and tens of thousands of GPUs may jointly constrain training these large dense models, so relieving one may shift the bottleneck to the other.\n[arxiv-2112-06905-p0003] However, training these large dense models requires significant amounts of computing resources.\n[arxiv-2405-10799-p0021] AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars.\nFalsification test: Relieve computing resources alone while measuring training these large dense models. The hypothesis fails if training these large dense models keeps improving without tens of thousands of GPUs becoming the binding limit, or if relieving tens of thousands of GPUs alone has no effect.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.65.\n\n10. final training run and human assisted evaluations may jointly constrain AI model capabilities, so relieving one may shift the bottleneck to the other.\n[arxiv-2405-21015-p0009] 2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.\n[arxiv-2305-15324-p0035] However, some capabilities and behaviours will need human-assisted evaluations, i.e.\nFalsification test: Relieve final training run alone while measuring AI model capabilities. The hypothesis fails if AI model capabilities keeps improving without human assisted evaluations becoming the binding limit, or if relieving human assisted evaluations alone has no effect.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.65.\n\n11. large investments may constrain different conclusions through Training.\n[arxiv-2311-15377-p0002] Training advanced AI models requires large investments in computational resources, or compute.\n[arxiv-2311-16863-p0004] In particular, looking at inference rather than training leads to drastically different conclusions when considering the multi-purpose (or “general-purpose”) aspect specifically.\nFalsification test: Compare settings where large investments differs while other inputs are matched. The hypothesis fails if different conclusions does not stay bounded with large investments, or if fixing Training removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.64.\n\n12. generated tokens may constrain performance through computation for token (read as available computation).\n[arxiv-2211-05102-p0004] While the sequence parallelism of the Transformer architecture enables highly parallel training, efficient deployment of these models is challenging in practice because generative inference proceeds one token at a time and the computation for each token sequentially depends on the previously generated tokens.\n[arxiv-2007-05558-p0007] Even at the creation of the first neural networks by Frank Rosenblatt, performance was limited by the available computation.\nFalsification test: Compare settings where generated tokens differs while other inputs are matched. The hypothesis fails if performance does not stay bounded with generated tokens, or if fixing computation for token (read as available computation) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.61.\n\n13. Large compute investors may increase rapid growth through compute investment (read as increased investments).\n[arxiv-2311-15377-p0010] Large compute investors have historically increased their compute investment significantly faster than others, widening the investment gap to smaller actors.\n[arxiv-2405-10799-p0016] This rapid growth is largely driven by increased investments in computational resources for training larger models, which have demonstrated improved capabilities (figure from Sastry et al.\nFalsification test: Compare settings where Large compute investors differs while other inputs are matched. The hypothesis fails if rapid growth does not rise with Large compute investors, or if fixing compute investment (read as increased investments) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.60.\n\n14. Training large AI models and delivering and divergence may move together because both depend on access.\n[arxiv-2402-08797-p0031] Training large AI models and delivering access to them at scale requires access to large amounts of compute.\n[arxiv-2010-15581-p0002] Using machine learning based text analysis methods, we provide additional evidence that the divergence between these two groups—large firms and non-elite universities—is driven by access to computing power or compute, which we term as the “compute divide”.\nFalsification test: Track Training large AI models and delivering and divergence across periods where access changes and where it does not. The hypothesis fails if they co-vary just as strongly when access is held fixed.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.58.\n\n15. Oct world hardware may increase innovation through analysis.\n[arxiv-2310-03003-p0004] We also hope that our experiments, analysis, and data on realarXiv:2310.03003v1 [cs.CL] 4 Oct 2023 world hardware will spur further analysis, benchmarking, and more open dissemination of the systematic performance characteristics for a wider range of large models—especially under different kinds of hardware, data, and optimization\n[arxiv-2007-05558-p0035] Thus, because our analysis accounts for innovation and because it is not misled by overly-optimistic scaling down studies, we believe it provides a better long-term view of the evolution of computing power as higher model performance\nFalsification test: Compare settings where Oct world hardware differs while other inputs are matched. The hypothesis fails if innovation does not rise with Oct world hardware, or if fixing analysis removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.56.\n\n16. final training run may constrain LLMs through AI model capabilities (read as capabilities).\n[arxiv-2405-21015-p0009] 2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.\n[arxiv-2403-05812-p0003] These capabilities have enabled LLMs to support a range of commercial and scientific applications (Kaddour et al.\nFalsification test: Compare settings where final training run differs while other inputs are matched. The hypothesis fails if LLMs does not stay bounded with final training run, or if fixing AI model capabilities (read as capabilities) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.50.\n\n17. Training large AI models and delivering and certain groups ability may move together because both depend on access.\n[arxiv-2402-08797-p0031] Training large AI models and delivering access to them at scale requires access to large amounts of compute.\n[arxiv-2307-04699-p0012] Inadequate access to internet services, computing power, or availability of machine learning training/expertise will also hinder certain groups’ ability to benefit fully from AI advances.\nFalsification test: Track Training large AI models and delivering and certain groups ability across periods where access changes and where it does not. The hypothesis fails if they co-vary just as strongly when access is held fixed.\nScores: source support 0.80, deductive relevance 0.55, novelty 0.62.\n\n18. analysis may increase scope of tractable problem classes through innovation (read as Algorithmic innovations).\n[arxiv-2007-05558-p0035] Thus, because our analysis accounts for innovation and because it is not misled by overly-optimistic scaling down studies, we believe it provides a better long-term view of the evolution of computing power as higher model performance\n[arxiv-2403-05812-p0005] Algorithmic innovations enable solutions of larger problem instances, expand the scope of tractable problem classes, and reduce data and/or computation required to achieve fixed performance thresholds.\nFalsification test: Compare settings where analysis differs while other inputs are matched. The hypothesis fails if scope of tractable problem classes does not rise with analysis, or if fixing innovation (read as Algorithmic innovations) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.55, novelty 0.55.\n\n19. analysis may increase solutions of larger problem instances through innovation (read as Algorithmic innovations).\n[arxiv-2007-05558-p0035] Thus, because our analysis accounts for innovation and because it is not misled by overly-optimistic scaling down studies, we believe it provides a better long-term view of the evolution of computing power as higher model performance\n[arxiv-2403-05812-p0005] Algorithmic innovations enable solutions of larger problem instances, expand the scope of tractable problem classes, and reduce data and/or computation required to achieve fixed performance thresholds.\nFalsification test: Compare settings where analysis differs while other inputs are matched. The hypothesis fails if solutions of larger problem instances does not rise with analysis, or if fixing innovation (read as Algorithmic innovations) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.55, novelty 0.55.\n\n20. DNNs and optimal configuration of data parallelism may interact in their effect on efficiency.\n[arxiv-2109-05472-p0024] Forecasting and Multiplicative Effect In our analysis we see that DNNs as well as hardware are improving their efficiency and do not show symptoms of standstill.\n[arxiv-2309-14393-p0013] This efficiency is largely determined by the optimal configuration of data, tensor, pipeline, and expert parallelism, along with the number of devices used for the task.\nFalsification test: Vary DNNs and optimal configuration of data parallelism separately and together. The hypothesis fails if the joint change in efficiency equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.52, novelty 0.54.\n\n21. hardware and optimal configuration of data parallelism may interact in their effect on efficiency.\n[arxiv-2109-05472-p0024] Forecasting and Multiplicative Effect In our analysis we see that DNNs as well as hardware are improving their efficiency and do not show symptoms of standstill.\n[arxiv-2309-14393-p0013] This efficiency is largely determined by the optimal configuration of data, tensor, pipeline, and expert parallelism, along with the number of devices used for the task.\nFalsification test: Vary hardware and optimal configuration of data parallelism separately and together. The hypothesis fails if the joint change in efficiency equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.52, novelty 0.49.\n\n22. divergence and certain groups ability may move together because both depend on access.\n[arxiv-2010-15581-p0002] Using machine learning based text analysis methods, we provide additional evidence that the divergence between these two groups—large firms and non-elite universities—is driven by access to computing power or compute, which we term as the “compute divide”.\n[arxiv-2307-04699-p0012] Inadequate access to internet services, computing power, or availability of machine learning training/expertise will also hinder certain groups’ ability to benefit fully from AI advances.\nFalsification test: Track divergence and certain groups ability across periods where access changes and where it does not. The hypothesis fails if they co-vary just as strongly when access is held fixed.\nScores: source support 0.80, deductive relevance 0.48, novelty 0.68.\n\n23. Deployment may affect Efficiency of GLaM through Patterson et al.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\n[arxiv-2112-06905-p0023] Efficiency of GLaM Existing large dense language models usually require tremendous amounts of computation resources for training and serving (Patterson et al., 2021).\nFalsification test: Compare settings where Deployment differs while other inputs are matched. The hypothesis fails if Efficiency of GLaM does not change with Deployment, or if fixing Patterson et al removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.45, novelty 0.60.\n\n24. polynomial models may affect GLaM MoE models through data (read as less data).\n[arxiv-2007-05558-p0028] As with the network operations analysis, we find that polynomial models best explain the data, but that exponential models are also plausible.\n[arxiv-2112-06905-p0024] We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.\nFalsification test: Compare settings where polynomial models differs while other inputs are matched. The hypothesis fails if GLaM MoE models does not change with polynomial models, or if fixing data (read as less data) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.45, novelty 0.60.\n\n25. powerful models and NNs may move together because both depend on filtered web data.\n[arxiv-2306-01116-p0002] At variance with previous beliefs, we show that properly filtered and deduplicated web data alone can lead to powerful models; even significantly outperforming models from the state-of-the-art trained on The Pile.\n[arxiv-2403-14123-p0011] Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.\nFalsification test: Track powerful models and NNs across periods where filtered web data changes and where it does not. The hypothesis fails if they co-vary just as strongly when filtered web data is held fixed.\nScores: source support 0.55, deductive relevance 0.71, novelty 0.60.\n\n26. powerful models and SOTA of large language models may move together because both depend on filtered web data.\n[arxiv-2306-01116-p0002] At variance with previous beliefs, we show that properly filtered and deduplicated web data alone can lead to powerful models; even significantly outperforming models from the state-of-the-art trained on The Pile.\n[arxiv-2306-11644-p0004] In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.\nFalsification test: Track powerful models and SOTA of large language models across periods where filtered web data changes and where it does not. The hypothesis fails if they co-vary just as strongly when filtered web data is held fixed.\nScores: source support 0.55, deductive relevance 0.65, novelty 0.64.\n\n27. SOTA of large language models and GLaM MoE models may move together because both depend on high quality data.\n[arxiv-2306-11644-p0004] In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.\n[arxiv-2112-06905-p0024] We first observe that GLaM MoE models require significantly less data than dense models of comparable FLOPs to achieve similar zero, one, and fewshot performance.\nFalsification test: Track SOTA of large language models and GLaM MoE models across periods where high quality data changes and where it does not. The hypothesis fails if they co-vary just as strongly when high quality data is held fixed.\nScores: source support 0.55, deductive relevance 0.65, novelty 0.53.\n\n28. Inconsistent national regulations may reduce Patterson et al through deployment.\n[arxiv-2307-04699-p0013] Inconsistent national regulations could also slow the development and deployment of AI, as developers of powerful AI technology may be unwilling to export to countries with inconsistent or unsuitable technology governance.7 International efforts to set safety norms and standards could help coordinate governance in a way that supports innovation and serves a broad set of interests.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\nFalsification test: Compare settings where Inconsistent national regulations differs while other inputs are matched. The hypothesis fails if Patterson et al does not fall with Inconsistent national regulations, or if fixing deployment removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.60, novelty 0.56.\n\n29. players15 may increase harm through models.\n[arxiv-2207-02852-p0028] However, a significant number of models below the gap were produced by top research laboratories, and some models above the gap have been produced by other players15.\n[arxiv-2311-15377-p0012] For instance, governments could mandate capability evaluation and risk assessment procedures for training large models, monitor large-scale deployments, and quickly intervene when models cause harm.\nFalsification test: Compare settings where players15 differs while other inputs are matched. The hypothesis fails if harm does not rise with players15, or if fixing models removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.65.\n\n30. top research laboratories may increase harm through models.\n[arxiv-2207-02852-p0028] However, a significant number of models below the gap were produced by top research laboratories, and some models above the gap have been produced by other players15.\n[arxiv-2311-15377-p0012] For instance, governments could mandate capability evaluation and risk assessment procedures for training large models, monitor large-scale deployments, and quickly intervene when models cause harm.\nFalsification test: Compare settings where top research laboratories differs while other inputs are matched. The hypothesis fails if harm does not rise with top research laboratories, or if fixing models removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.56.\n\n31. available safety evaluations may increase harm through models.\n[arxiv-2305-15324-p0049] There is a risk that widely available safety evaluations will lead to models that exhibit only superficially desirable behaviours.\n[arxiv-2311-15377-p0012] For instance, governments could mandate capability evaluation and risk assessment procedures for training large models, monitor large-scale deployments, and quickly intervene when models cause harm.\nFalsification test: Compare settings where available safety evaluations differs while other inputs are matched. The hypothesis fails if harm does not rise with available safety evaluations, or if fixing models removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.51.\n\n32. performance and progress may move together because both depend on Compute efficiency improvements.\n[arxiv-2311-15377-p0005] Compute efficiency improvements that expand access to smaller actors simultaneously increase the performance available to large compute investors.\n[arxiv-2211-04325-p0002] We argue that synthetic data generation, transfer learning from datarich domains, and data efficiency improvements might support further progress.\nFalsification test: Track performance and progress across periods where Compute efficiency improvements changes and where it does not. The hypothesis fails if they co-vary just as strongly when Compute efficiency improvements is held fixed.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.58.\n\n33. progress and performance may move together because both depend on data efficiency improvements.\n[arxiv-2211-04325-p0002] We argue that synthetic data generation, transfer learning from datarich domains, and data efficiency improvements might support further progress.\n[arxiv-2311-15377-p0007] As efficiency improvements increase the performance available with a given compute investment, more actors become able to train and develop models with potentially dangerous capabilities, complicating coordination and therefore increasing the chance of\nFalsification test: Track progress and performance across periods where data efficiency improvements changes and where it does not. The hypothesis fails if they co-vary just as strongly when data efficiency improvements is held fixed.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.58.\n\n34. observed neural scaling laws may affect progress through substantial performance improvements (read as data efficiency improvements).\n[arxiv-2206-14486-p0002] Widely observed neural scaling laws, in which error falls off as a power of the training set size, model size, or both, have driven substantial performance improvements in deep learning.\n[arxiv-2211-04325-p0002] We argue that synthetic data generation, transfer learning from datarich domains, and data efficiency improvements might support further progress.\nFalsification test: Compare settings where observed neural scaling laws differs while other inputs are matched. The hypothesis fails if progress does not change with observed neural scaling laws, or if fixing substantial performance improvements (read as data efficiency improvements) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.58.\n\n35. polynomial models may affect SOTA of large language models through data (read as high quality data).\n[arxiv-2007-05558-p0028] As with the network operations analysis, we find that polynomial models best explain the data, but that exponential models are also plausible.\n[arxiv-2306-11644-p0004] In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.\nFalsification test: Compare settings where polynomial models differs while other inputs are matched. The hypothesis fails if SOTA of large language models does not change with polynomial models, or if fixing data (read as high quality data) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.53.\n\n36. Hardware limitations and Regulatory hurdles may jointly drive bottlenecks, and their effects may compound.\n[arxiv-2207-02852-p0032] In addition, we can generate some predictions from our hypotheses on the parameter gap: • Hardware limitations might cause discontinuities or bottlenecks in scaling by limiting model size rather than compute.\n[arxiv-2405-21015-p0019] Regulatory and logistical hurdles to secure power supplies may cause bottlenecks in the coming years, but we leave that topic to future work.\nFalsification test: Vary Hardware limitations and Regulatory hurdles separately and together. The hypothesis fails if the joint change in bottlenecks equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.68.\n\n37. solutions of larger problem instances and large gains may move together because both depend on Algorithmic innovations.\n[arxiv-2403-05812-p0005] Algorithmic innovations enable solutions of larger problem instances, expand the scope of tractable problem classes, and reduce data and/or computation required to achieve fixed performance thresholds.\n[arxiv-2405-21015-p0022] Rapid innovation could also lead to large gains in hardware and software efficiency that are difficult to predict from historical data.\nFalsification test: Track solutions of larger problem instances and large gains across periods where Algorithmic innovations changes and where it does not. The hypothesis fails if they co-vary just as strongly when Algorithmic innovations is held fixed.\nScores: source support 0.55, deductive relevance 0.48, novelty 0.60.\n\n38. scope of tractable problem classes and large gains may move together because both depend on Algorithmic innovations.\n[arxiv-2403-05812-p0005] Algorithmic innovations enable solutions of larger problem instances, expand the scope of tractable problem classes, and reduce data and/or computation required to achieve fixed performance thresholds.\n[arxiv-2405-21015-p0022] Rapid innovation could also lead to large gains in hardware and software efficiency that are difficult to predict from historical data.\nFalsification test: Track scope of tractable problem classes and large gains across periods where Algorithmic innovations changes and where it does not. The hypothesis fails if they co-vary just as strongly when Algorithmic innovations is held fixed.\nScores: source support 0.55, deductive relevance 0.48, novelty 0.60.\n\n39. random noise may affect talent scarcity through gap.\n[arxiv-2207-02852-p0017] The same statistical analysis of the previous section, when performed only on systems in the Other domain, shows that the gap can be explained by random noise, whereas for systems in the Language domains the gap is very unlikely: The probability of observing this gap conditional on our model being correct is 0.23 for systems in the Other domain and 0.02 for those in the Language domain6.\n[arxiv-2010-15581-p0013] The gap between the limited supply and the increased demand for AI talent has produced a talent scarcity in the field (Metz, 2018).\nFalsification test: Compare settings where random noise differs while other inputs are matched. The hypothesis fails if talent scarcity does not change with random noise, or if fixing gap removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.40, novelty 0.64.\n\n40. single training run and concerns may move together because both depend on compute.\n[arxiv-2402-08797-p0023] Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.\n[arxiv-2010-15581-p0002] This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.\nFalsification test: Track single training run and concerns across periods where compute changes and where it does not. The hypothesis fails if they co-vary just as strongly when compute is held fixed.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.63.\n\n41. large investments and sequence parallelism of Transformer architecture may interact in their effect on Training.\n[arxiv-2311-15377-p0002] Training advanced AI models requires large investments in computational resources, or compute.\n[arxiv-2211-05102-p0004] While the sequence parallelism of the Transformer architecture enables highly parallel training, efficient deployment of these models is challenging in practice because generative inference proceeds one token at a time and the computation for each token sequentially depends on the previously generated tokens.\nFalsification test: Vary large investments and sequence parallelism of Transformer architecture separately and together. The hypothesis fails if the joint change in Training equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.50, novelty 0.57.\n\n42. Deployment and matrix vector products may interact in their effect on compute.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\n[arxiv-2210-17323-p0023] Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products.\nFalsification test: Vary Deployment and matrix vector products separately and together. The hypothesis fails if the joint change in compute equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.45, novelty 0.71.\n\n43. Deployment may affect AI applications through compute.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\n[arxiv-2402-08797-p0019] However, it is important to note that not all AI applications require vast amounts of compute; specialized AI systems have displayed impressive abilities in some domains, even by using much less compute\nFalsification test: Compare settings where Deployment differs while other inputs are matched. The hypothesis fails if AI applications does not change with Deployment, or if fixing compute removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.45, novelty 0.50.\n\n44. DNNs and Patterson et al may interact in their effect on efficiency.\n[arxiv-2109-05472-p0024] Forecasting and Multiplicative Effect In our analysis we see that DNNs as well as hardware are improving their efficiency and do not show symptoms of standstill.\n[arxiv-2112-06905-p0023] Efficiency of GLaM Existing large dense language models usually require tremendous amounts of computation resources for training and serving (Patterson et al., 2021).\nFalsification test: Vary DNNs and Patterson et al separately and together. The hypothesis fails if the joint change in efficiency equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.43, novelty 0.55.\n\n45. hardware and Patterson et al may interact in their effect on efficiency.\n[arxiv-2109-05472-p0024] Forecasting and Multiplicative Effect In our analysis we see that DNNs as well as hardware are improving their efficiency and do not show symptoms of standstill.\n[arxiv-2112-06905-p0023] Efficiency of GLaM Existing large dense language models usually require tremendous amounts of computation resources for training and serving (Patterson et al., 2021).\nFalsification test: Vary hardware and Patterson et al separately and together. The hypothesis fails if the joint change in efficiency equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.43, novelty 0.55.\n\n46. Oct world hardware may affect advantages of zeropoint quantization through analysis.\n[arxiv-2310-03003-p0004] We also hope that our experiments, analysis, and data on realarXiv:2310.03003v1 [cs.CL] 4 Oct 2023 world hardware will spur further analysis, benchmarking, and more open dissemination of the systematic performance characteristics for a wider range of large models—especially under different kinds of hardware, data, and optimization\n[arxiv-2208-07339-p0020] Our analysis explains the advantages of zeropoint quantization and why they disappear with the use of mixed-precision decomposition and the quantization performance of small vs. large models.\nFalsification test: Compare settings where Oct world hardware differs while other inputs are matched. The hypothesis fails if advantages of zeropoint quantization does not change with Oct world hardware, or if fixing analysis removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.40, novelty 0.63.\n\n47. Oct world hardware may affect stylized picture through analysis.\n[arxiv-2310-03003-p0004] We also hope that our experiments, analysis, and data on realarXiv:2310.03003v1 [cs.CL] 4 Oct 2023 world hardware will spur further analysis, benchmarking, and more open dissemination of the systematic performance characteristics for a wider range of large models—especially under different kinds of hardware, data, and optimization\n[arxiv-2403-05812-p0028] This analysis weakly supports the stylized picture above that compute scaling has been more important for explaining performance improvements than\nFalsification test: Compare settings where Oct world hardware differs while other inputs are matched. The hypothesis fails if stylized picture does not change with Oct world hardware, or if fixing analysis removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.40, novelty 0.60.\n\n48. SOTA of large language models and NNs may move together because both depend on high quality data.\n[arxiv-2306-11644-p0004] In this work we go beyond the initial foray of Eldan and Li to show that high quality data can even improve the SOTA of large language models (LLMs), while dramatically reducing the dataset size and training compute.\n[arxiv-2403-14123-p0011] Current NNs require a huge amount of training data and hundreds of thousands of iterations to learn, which is very inefficient.\nFalsification test: Track SOTA of large language models and NNs across periods where high quality data changes and where it does not. The hypothesis fails if they co-vary just as strongly when high quality data is held fixed.\nScores: source support 0.55, deductive relevance 0.71, novelty 0.56.\n\n49. future regulations may constrain Training large AI models and delivering through access.\n[arxiv-2307-04699-p0028] (It is possible that future regulations will limit access to powerful AI technologies in jurisdictions with inadequate AI governance.) Implementation support would help reduce obstacles to countries meeting international standards and therefore enable greater access to advanced AI.\n[arxiv-2402-08797-p0031] Training large AI models and delivering access to them at scale requires access to large amounts of compute.\nFalsification test: Compare settings where future regulations differs while other inputs are matched. The hypothesis fails if Training large AI models and delivering does not stay bounded with future regulations, or if fixing access removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.67, novelty 0.55.\n\n50. training compute thresholds may constrain access through GPAI regulation (read as future regulations).\n[arxiv-2405-10799-p0012] GPAI regulation worldwide increasingly relies on training compute thresholds.\n[arxiv-2307-04699-p0028] (It is possible that future regulations will limit access to powerful AI technologies in jurisdictions with inadequate AI governance.) Implementation support would help reduce obstacles to countries meeting international standards and therefore enable greater access to advanced AI.\nFalsification test: Compare settings where training compute thresholds differs while other inputs are matched. The hypothesis fails if access does not stay bounded with training compute thresholds, or if fixing GPAI regulation (read as future regulations) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.64, novelty 0.55.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
 }

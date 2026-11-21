@@ -1,8 +1,8 @@
 {
  "prompt": "Frontier: AI energy bottlenecks.",
  "run": 3,
- "wall_seconds": 1.926,
- "python_peak_bytes": 27283153,
+ "wall_seconds": 1.911,
+ "python_peak_bytes": 27276692,
  "answer_status": "hypotheses",
  "routing": {
   "schema": "flag-routing-contract-v1",
@@ -49,7 +49,7 @@
   "parser": "en_core_web_lg",
   "bridge_check": "encoder",
   "encoded_terms": 75,
-  "hub_deferred": 19,
+  "hub_deferred": 26,
   "status": "hypotheses",
   "hypotheses": [
    {
@@ -106,116 +106,6 @@
     "supporting_paths": 1,
     "rule_verdict": "INSUFFICIENT_SUPPORT",
     "hub": "compute"
-   },
-   {
-    "id": "c10ffe69663b",
-    "text": "no sign may increase penetration through AI.",
-    "pattern": "chain",
-    "relation": "increases",
-    "anchors": [
-     "no sign",
-     "penetration"
-    ],
-    "via": [
-     "AI"
-    ],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2206-05229-p0005",
-     "arxiv-2109-05472-p0002"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2206-05229-p0005",
-      "quote": "While it is not yet known what proportion of data center use is for training artificial intelligence (AI) models, it is undeniable that AI and its sub-fields have grown dramatically in recent years, with no sign of slowing down [39, 43].",
-      "start": 713,
-      "end": 950,
-      "chunk_sha256": "5d75971cd5c665fec47b17fe9443a53fde938e7cc52b0a2b2d0e033f7e5b7442",
-      "relation": "increases",
-      "subject": "no sign",
-      "object": "AI",
-      "hedged": false,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2109-05472-p0002",
-      "quote": "The only caveat is, yet again, the multiplicative factor, as future AI increases penetration and becomes more pervasive.",
-      "start": 672,
-      "end": 792,
-      "chunk_sha256": "36670c69313fcedfd76b73bdd18c8aef2ba5faee30f5e73463896f8a8214c7b9",
-      "relation": "increases",
-      "subject": "AI",
-      "object": "penetration",
-      "hedged": false,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.8,
-     "deductive_relevance": 0.667,
-     "novelty": 0.55
-    },
-    "falsification_test": "Compare settings where no sign differs while other inputs are matched. The hypothesis fails if penetration does not rise with no sign, or if fixing AI removes no part of the effect.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
-    "supporting_paths": 1,
-    "rule_verdict": null,
-    "hub": "ai"
-   },
-   {
-    "id": "34d7a7070f98",
-    "text": "no sign may increase harm through AI.",
-    "pattern": "chain",
-    "relation": "increases",
-    "anchors": [
-     "no sign",
-     "harm"
-    ],
-    "via": [
-     "AI"
-    ],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2206-05229-p0005",
-     "arxiv-2402-08797-p0024"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2206-05229-p0005",
-      "quote": "While it is not yet known what proportion of data center use is for training artificial intelligence (AI) models, it is undeniable that AI and its sub-fields have grown dramatically in recent years, with no sign of slowing down [39, 43].",
-      "start": 713,
-      "end": 950,
-      "chunk_sha256": "5d75971cd5c665fec47b17fe9443a53fde938e7cc52b0a2b2d0e033f7e5b7442",
-      "relation": "increases",
-      "subject": "no sign",
-      "object": "AI",
-      "hedged": false,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2402-08797-p0024",
-      "quote": "2023), and the potential for AI to deliberately cause harm due to misalignment (Ngo, L. Chan, and Mindermann 2023).",
-      "start": 1246,
-      "end": 1361,
-      "chunk_sha256": "f782526d27fead8cf2ecda181c9d1384448580ff7635622de668fa75cacd370d",
-      "relation": "causes",
-      "subject": "AI",
-      "object": "harm",
-      "hedged": false,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.8,
-     "deductive_relevance": 0.642,
-     "novelty": 0.65
-    },
-    "falsification_test": "Compare settings where no sign differs while other inputs are matched. The hypothesis fails if harm does not rise with no sign, or if fixing AI removes no part of the effect.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
-    "supporting_paths": 1,
-    "rule_verdict": null,
-    "hub": "ai"
    },
    {
     "id": "45e94bb19ad3",
@@ -382,116 +272,6 @@
     "hub": "ai application"
    },
    {
-    "id": "434ead7ad3ca",
-    "text": "matrix vector products may constrain single training run through compute.",
-    "pattern": "chain",
-    "relation": "constrains",
-    "anchors": [
-     "matrix vector products",
-     "single training run"
-    ],
-    "via": [
-     "compute"
-    ],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2210-17323-p0023",
-     "arxiv-2402-08797-p0023"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2210-17323-p0023",
-      "quote": "Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products.",
-      "start": 1438,
-      "end": 1570,
-      "chunk_sha256": "3a4b6b83e44488b6e9a404f0ab9294c350d52d2fd7ef516c9dd3da5d360183b6",
-      "relation": "constrains",
-      "subject": "matrix vector products",
-      "object": "compute",
-      "hedged": false,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2402-08797-p0023",
-      "quote": "Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.",
-      "start": 161,
-      "end": 357,
-      "chunk_sha256": "7e346f2bd74ec7647d0e65a3a852243eccabbaa574bbbb51a63b94d0c0d49cd8",
-      "relation": "constrains",
-      "subject": "compute",
-      "object": "single training run",
-      "hedged": false,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.8,
-     "deductive_relevance": 0.6,
-     "novelty": 0.628
-    },
-    "falsification_test": "Compare settings where matrix vector products differs while other inputs are matched. The hypothesis fails if single training run does not stay bounded with matrix vector products, or if fixing compute removes no part of the effect.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
-    "supporting_paths": 1,
-    "rule_verdict": "INSUFFICIENT_SUPPORT",
-    "hub": "compute"
-   },
-   {
-    "id": "6e06ec032509",
-    "text": "Deployment may increase concerns through compute.",
-    "pattern": "chain",
-    "relation": "increases",
-    "anchors": [
-     "Deployment",
-     "concerns"
-    ],
-    "via": [
-     "compute"
-    ],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2207-02852-p0027",
-     "arxiv-2010-15581-p0002"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2207-02852-p0027",
-      "quote": "Deployment usually consumes much more compute than training: Patterson et al.",
-      "start": 0,
-      "end": 77,
-      "chunk_sha256": "9107029560ef93765df69daea72ae8c728cdc19cad7e27abc45cb0f2e7946dbf",
-      "relation": "increases",
-      "subject": "Deployment",
-      "object": "compute",
-      "hedged": false,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2010-15581-p0002",
-      "quote": "This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.",
-      "start": 1490,
-      "end": 1675,
-      "chunk_sha256": "eb59bd8ec0c227f41014aa123718e117df4fbceba7ae9f219dccf86b93ab24dc",
-      "relation": "increases",
-      "subject": "compute",
-      "object": "concerns",
-      "hedged": false,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.8,
-     "deductive_relevance": 0.6,
-     "novelty": 0.5
-    },
-    "falsification_test": "Compare settings where Deployment differs while other inputs are matched. The hypothesis fails if concerns does not rise with Deployment, or if fixing compute removes no part of the effect.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
-    "supporting_paths": 1,
-    "rule_verdict": null,
-    "hub": "compute"
-   },
-   {
     "id": "cd88d71372c9",
     "text": "final training run and human assisted evaluations may jointly constrain AI model capabilities, so relieving one may shift the bottleneck to the other.",
     "pattern": "convergent",
@@ -598,60 +378,6 @@
     "supporting_paths": 1,
     "rule_verdict": null,
     "hub": "ai"
-   },
-   {
-    "id": "1ddeeff43482",
-    "text": "AI applications and splitting may move together because both depend on communication.",
-    "pattern": "divergent",
-    "relation": "common_driver",
-    "anchors": [
-     "AI applications",
-     "splitting",
-     "communication"
-    ],
-    "via": [],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2403-14123-p0003",
-     "arxiv-2207-02852-p0024"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2403-14123-p0003",
-      "quote": "In fact, several AI applications are becoming bottlenecked by intra/inter-chip and communication across/to AI accelerators, rather than compute.",
-      "start": 117,
-      "end": 261,
-      "chunk_sha256": "ac062e19cc3540344e049a2ab4a2f1811bd8260938dc6fa2cfd2dc3cf2cdbc83",
-      "relation": "constrains",
-      "subject": "communication",
-      "object": "AI applications",
-      "hedged": false,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2207-02852-p0024",
-      "quote": "However, the second option requires significant code refactoring and engineering expertise, since this splitting requires significant communication between nodes, which are usually connected by a slower network than within-node GPUs.",
-      "start": 279,
-      "end": 512,
-      "chunk_sha256": "0380e53993bd838792151ec39897c6479b6d72890a4dda83b5b63a644486e294",
-      "relation": "constrains",
-      "subject": "communication",
-      "object": "splitting",
-      "hedged": false,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.8,
-     "deductive_relevance": 0.567,
-     "novelty": 0.613
-    },
-    "falsification_test": "Track AI applications and splitting across periods where communication changes and where it does not. The hypothesis fails if they co-vary just as strongly when communication is held fixed.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
-    "supporting_paths": 1,
-    "rule_verdict": null,
-    "hub": "communication"
    },
    {
     "id": "33f64fcdf261",
@@ -1035,60 +761,6 @@
     "hub": "possibility"
    },
    {
-    "id": "38b157e9c34b",
-    "text": "compute and Machine Learning ML workloads may jointly drive concerns, and their effects may compound.",
-    "pattern": "convergent",
-    "relation": "jointly_drive",
-    "anchors": [
-     "compute",
-     "Machine Learning ML workloads",
-     "concerns"
-    ],
-    "via": [],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2010-15581-p0002",
-     "arxiv-2204-05149-p0002"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2010-15581-p0002",
-      "quote": "This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.",
-      "start": 1490,
-      "end": 1675,
-      "chunk_sha256": "eb59bd8ec0c227f41014aa123718e117df4fbceba7ae9f219dccf86b93ab24dc",
-      "relation": "increases",
-      "subject": "compute",
-      "object": "concerns",
-      "hedged": false,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2204-05149-p0002",
-      "quote": "Machine Learning (ML) workloads have rapidly grown in importance, but raised concerns about their carbon footprint.",
-      "start": 0,
-      "end": 115,
-      "chunk_sha256": "1f379bfe7d845bfe7ca7933cf1c5594c92ed91b49b9df663bacb883819f90ce9",
-      "relation": "increases",
-      "subject": "Machine Learning ML workloads",
-      "object": "concerns",
-      "hedged": false,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.8,
-     "deductive_relevance": 0.525,
-     "novelty": 0.6
-    },
-    "falsification_test": "Vary compute and Machine Learning ML workloads separately and together. The hypothesis fails if the joint change in concerns equals the sum of the separate changes.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
-    "supporting_paths": 1,
-    "rule_verdict": null,
-    "hub": "concern"
-   },
-   {
     "id": "4c24a515928e",
     "text": "AI companies may affect increased compute through investments.",
     "pattern": "chain",
@@ -1362,61 +1034,6 @@
     "hub": "access"
    },
    {
-    "id": "8f35694809f2",
-    "text": "Inconsistent national regulations may reduce compute through deployment.",
-    "pattern": "chain",
-    "relation": "decreases",
-    "anchors": [
-     "Inconsistent national regulations",
-     "compute"
-    ],
-    "via": [
-     "deployment"
-    ],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2307-04699-p0013",
-     "arxiv-2207-02852-p0027"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2307-04699-p0013",
-      "quote": "Inconsistent national regulations could also slow the development and deployment of AI, as developers of powerful AI technology may be unwilling to export to countries with inconsistent or unsuitable technology governance.7 International efforts to set safety norms and standards could help coordinate governance in a way that supports innovation and serves a broad set of interests.",
-      "start": 126,
-      "end": 509,
-      "chunk_sha256": "c0c3c6566f1703e30506d9cb97dcff35c2351af856725774eefd8d508bf088f4",
-      "relation": "decreases",
-      "subject": "Inconsistent national regulations",
-      "object": "deployment",
-      "hedged": true,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2207-02852-p0027",
-      "quote": "Deployment usually consumes much more compute than training: Patterson et al.",
-      "start": 0,
-      "end": 77,
-      "chunk_sha256": "9107029560ef93765df69daea72ae8c728cdc19cad7e27abc45cb0f2e7946dbf",
-      "relation": "increases",
-      "subject": "Deployment",
-      "object": "compute",
-      "hedged": false,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.55,
-     "deductive_relevance": 0.6,
-     "novelty": 0.564
-    },
-    "falsification_test": "Compare settings where Inconsistent national regulations differs while other inputs are matched. The hypothesis fails if compute does not fall with Inconsistent national regulations, or if fixing deployment removes no part of the effect.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
-    "supporting_paths": 1,
-    "rule_verdict": null,
-    "hub": "deployment"
-   },
-   {
     "id": "ecc4de871aca",
     "text": "Inconsistent national regulations may reduce Patterson et al through deployment.",
     "pattern": "chain",
@@ -1579,6 +1196,116 @@
     "supporting_paths": 1,
     "rule_verdict": null,
     "hub": "bottleneck"
+   },
+   {
+    "id": "3b9c8e7f575b",
+    "text": "governance functions may constrain penetration through AI.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "governance functions",
+     "penetration"
+    ],
+    "via": [
+     "AI"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2307-04699-p0011",
+     "arxiv-2109-05472-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2307-04699-p0011",
+      "quote": "Because of characteristics like its high barriers to development/utilization and the possibility of cross-border use, it is possible that harnessing AI’s potential for global benefit and managing its risks could require governance functions at the international level.",
+      "start": 2387,
+      "end": 2655,
+      "chunk_sha256": "9eaba6131c5c69588ecac4cb3a3e4dbc8ca03bb6363486bbdb16930599ccb0be",
+      "relation": "constrains",
+      "subject": "governance functions",
+      "object": "AI",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2109-05472-p0002",
+      "quote": "The only caveat is, yet again, the multiplicative factor, as future AI increases penetration and becomes more pervasive.",
+      "start": 672,
+      "end": 792,
+      "chunk_sha256": "36670c69313fcedfd76b73bdd18c8aef2ba5faee30f5e73463896f8a8214c7b9",
+      "relation": "increases",
+      "subject": "AI",
+      "object": "penetration",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.592,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where governance functions differs while other inputs are matched. The hypothesis fails if penetration does not stay bounded with governance functions, or if fixing AI removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "ai"
+   },
+   {
+    "id": "663cc977fbc1",
+    "text": "governance functions may constrain harm through AI.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "governance functions",
+     "harm"
+    ],
+    "via": [
+     "AI"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2307-04699-p0011",
+     "arxiv-2402-08797-p0024"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2307-04699-p0011",
+      "quote": "Because of characteristics like its high barriers to development/utilization and the possibility of cross-border use, it is possible that harnessing AI’s potential for global benefit and managing its risks could require governance functions at the international level.",
+      "start": 2387,
+      "end": 2655,
+      "chunk_sha256": "9eaba6131c5c69588ecac4cb3a3e4dbc8ca03bb6363486bbdb16930599ccb0be",
+      "relation": "constrains",
+      "subject": "governance functions",
+      "object": "AI",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2402-08797-p0024",
+      "quote": "2023), and the potential for AI to deliberately cause harm due to misalignment (Ngo, L. Chan, and Mindermann 2023).",
+      "start": 1246,
+      "end": 1361,
+      "chunk_sha256": "f782526d27fead8cf2ecda181c9d1384448580ff7635622de668fa75cacd370d",
+      "relation": "causes",
+      "subject": "AI",
+      "object": "harm",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.592,
+     "novelty": 0.55
+    },
+    "falsification_test": "Compare settings where governance functions differs while other inputs are matched. The hypothesis fails if harm does not stay bounded with governance functions, or if fixing AI removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "ai"
    },
    {
     "id": "094cb88e852c",
@@ -2236,61 +1963,6 @@
     "hub": "question"
    },
    {
-    "id": "cdcf0d697e13",
-    "text": "compute may constrain productivity of actors through models.",
-    "pattern": "chain",
-    "relation": "constrains",
-    "anchors": [
-     "compute",
-     "productivity of actors"
-    ],
-    "via": [
-     "models"
-    ],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2109-05472-p0015",
-     "arxiv-2305-15324-p0019"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2109-05472-p0015",
-      "quote": "However not all models released in the latest years need so much compute.",
-      "start": 226,
-      "end": 299,
-      "chunk_sha256": "b36547af4e4a9d15223202720a082b89992afed4365f1224711681682140cfd3",
-      "relation": "constrains",
-      "subject": "compute",
-      "object": "models",
-      "hedged": false,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2305-15324-p0019",
-      "quote": "As an assistant, the model could significantly improve the productivity of actors building dual use AI capabilities.",
-      "start": 219,
-      "end": 335,
-      "chunk_sha256": "26338cc44cd5b0461d5e550096877da3c28af4b3324b290cb8edfc54660fefaa",
-      "relation": "increases",
-      "subject": "model",
-      "object": "productivity of actors",
-      "hedged": true,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.55,
-     "deductive_relevance": 0.525,
-     "novelty": 0.6
-    },
-    "falsification_test": "Compare settings where compute differs while other inputs are matched. The hypothesis fails if productivity of actors does not stay bounded with compute, or if fixing models removes no part of the effect.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
-    "supporting_paths": 1,
-    "rule_verdict": "INSUFFICIENT_SUPPORT",
-    "hub": "model"
-   },
-   {
     "id": "f45b988356b9",
     "text": "AI firms may affect better understanding the feasibility of transfer through research.",
     "pattern": "chain",
@@ -2401,61 +2073,6 @@
     "hub": "internal deployment of capable general purpose"
    },
    {
-    "id": "495d7a22929c",
-    "text": "pre - deployment evaluation for dangerous may constrain compute through internal deployments of capable general purpose (read as Deployment).",
-    "pattern": "chain",
-    "relation": "constrains",
-    "anchors": [
-     "pre - deployment evaluation for dangerous",
-     "compute"
-    ],
-    "via": [
-     "internal deployments of capable general purpose (read as Deployment)"
-    ],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2305-15324-p0026",
-     "arxiv-2207-02852-p0027"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2305-15324-p0026",
-      "quote": "Model evaluation for extreme risks Finally, even internal deployments of highly capable general-purpose models, notably as coding assistants for AI researchers and engineers, could require pre-deployment evaluation for dangerous capabilities (e.g.",
-      "start": 0,
-      "end": 247,
-      "chunk_sha256": "42213e2304785744c0008bf328b9fbaa787d492d92b1caa2ac06fdf1453aa5de",
-      "relation": "constrains",
-      "subject": "pre - deployment evaluation for dangerous",
-      "object": "internal deployments of capable general purpose",
-      "hedged": true,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2207-02852-p0027",
-      "quote": "Deployment usually consumes much more compute than training: Patterson et al.",
-      "start": 0,
-      "end": 77,
-      "chunk_sha256": "9107029560ef93765df69daea72ae8c728cdc19cad7e27abc45cb0f2e7946dbf",
-      "relation": "increases",
-      "subject": "Deployment",
-      "object": "compute",
-      "hedged": false,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.55,
-     "deductive_relevance": 0.504,
-     "novelty": 0.642
-    },
-    "falsification_test": "Compare settings where pre - deployment evaluation for dangerous differs while other inputs are matched. The hypothesis fails if compute does not stay bounded with pre - deployment evaluation for dangerous, or if fixing internal deployments of capable general purpose (read as Deployment) removes no part of the effect.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
-    "supporting_paths": 1,
-    "rule_verdict": "INSUFFICIENT_SUPPORT",
-    "hub": "internal deployment of capable general purpose"
-   },
-   {
     "id": "4caa630f360b",
     "text": "concentration of AI development and groups may interact in their effect on range of perspectives.",
     "pattern": "convergent",
@@ -2508,60 +2125,6 @@
     "supporting_paths": 1,
     "rule_verdict": null,
     "hub": "range of perspective"
-   },
-   {
-    "id": "71063b6ec89b",
-    "text": "final training run and progress may interact in their effect on AI model capabilities.",
-    "pattern": "convergent",
-    "relation": "jointly_affect",
-    "anchors": [
-     "final training run",
-     "progress",
-     "AI model capabilities"
-    ],
-    "via": [],
-    "claim_status": "UNVERIFIED_HYPOTHESIS",
-    "promotion": "blocked",
-    "source_ids": [
-     "arxiv-2405-21015-p0009",
-     "arxiv-2305-15324-p0003"
-    ],
-    "citations": [
-     {
-      "document_id": "arxiv-2405-21015-p0009",
-      "quote": "2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.",
-      "start": 421,
-      "end": 612,
-      "chunk_sha256": "5fe1a7ed7f611503d52f84a850d3abbabf1f1466503c0868015dcb0da68892a7",
-      "relation": "constrains",
-      "subject": "final training run",
-      "object": "AI model capabilities",
-      "hedged": false,
-      "origin": "dependency_parse"
-     },
-     {
-      "document_id": "arxiv-2305-15324-p0003",
-      "quote": "Further progress in AI development could lead to capabilities that pose extreme risks, such as offensive cyber capabilities or strong manipulation skills.",
-      "start": 427,
-      "end": 581,
-      "chunk_sha256": "6cf5cec40898300fc6942b4c210b9018655a77ed44718212d130e5c0e03fffe3",
-      "relation": "causes",
-      "subject": "progress",
-      "object": "capabilities",
-      "hedged": true,
-      "origin": "dependency_parse"
-     }
-    ],
-    "scores": {
-     "source_support": 0.55,
-     "deductive_relevance": 0.499,
-     "novelty": 0.517
-    },
-    "falsification_test": "Vary final training run and progress separately and together. The hypothesis fails if the joint change in AI model capabilities equals the sum of the separate changes.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
-    "supporting_paths": 1,
-    "rule_verdict": null,
-    "hub": "ai model capability"
    },
    {
     "id": "c538d72ebda8",
@@ -2728,91 +2291,526 @@
     "hub": "progress"
    },
    {
-    "id": "85dc0d1a2c91",
-    "text": "data efficiency improvements may affect possibility through progress (read as recent progress).",
+    "id": "434ead7ad3ca",
+    "text": "matrix vector products may constrain single training run through compute.",
     "pattern": "chain",
-    "relation": "affects",
+    "relation": "constrains",
     "anchors": [
-     "data efficiency improvements",
-     "possibility"
+     "matrix vector products",
+     "single training run"
     ],
     "via": [
-     "progress (read as recent progress)"
+     "compute"
     ],
     "claim_status": "UNVERIFIED_HYPOTHESIS",
     "promotion": "blocked",
     "source_ids": [
-     "arxiv-2211-04325-p0002",
+     "arxiv-2210-17323-p0023",
      "arxiv-2402-08797-p0023"
     ],
     "citations": [
      {
-      "document_id": "arxiv-2211-04325-p0002",
-      "quote": "We argue that synthetic data generation, transfer learning from datarich domains, and data efficiency improvements might support further progress.",
-      "start": 123,
-      "end": 269,
-      "chunk_sha256": "945ad4322d3b0f0a7e84e90944d967e48befe8465a0eea07f17b2e4cf5c03494",
-      "relation": "supports",
-      "subject": "data efficiency improvements",
-      "object": "progress",
-      "hedged": true,
+      "document_id": "arxiv-2210-17323-p0023",
+      "quote": "Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products.",
+      "start": 1438,
+      "end": 1570,
+      "chunk_sha256": "3a4b6b83e44488b6e9a404f0ab9294c350d52d2fd7ef516c9dd3da5d360183b6",
+      "relation": "constrains",
+      "subject": "matrix vector products",
+      "object": "compute",
+      "hedged": false,
       "origin": "dependency_parse"
      },
      {
       "document_id": "arxiv-2402-08797-p0023",
-      "quote": "However, recent progress in AI has raised the possibility of using lower-precision representations of numbers (and “integer” representations), which increases the processing speed of each operation.",
-      "start": 784,
-      "end": 982,
+      "quote": "Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.",
+      "start": 161,
+      "end": 357,
       "chunk_sha256": "7e346f2bd74ec7647d0e65a3a852243eccabbaa574bbbb51a63b94d0c0d49cd8",
-      "relation": "increases",
-      "subject": "recent progress",
-      "object": "possibility",
+      "relation": "constrains",
+      "subject": "compute",
+      "object": "single training run",
       "hedged": false,
       "origin": "dependency_parse"
      }
     ],
     "scores": {
-     "source_support": 0.55,
-     "deductive_relevance": 0.385,
+     "source_support": 0.8,
+     "deductive_relevance": 0.6,
      "novelty": 0.628
     },
-    "falsification_test": "Compare settings where data efficiency improvements differs while other inputs are matched. The hypothesis fails if possibility does not change with data efficiency improvements, or if fixing progress (read as recent progress) removes no part of the effect.",
-    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "falsification_test": "Compare settings where matrix vector products differs while other inputs are matched. The hypothesis fails if single training run does not stay bounded with matrix vector products, or if fixing compute removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "compute"
+   },
+   {
+    "id": "6e06ec032509",
+    "text": "Deployment may increase concerns through compute.",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "Deployment",
+     "concerns"
+    ],
+    "via": [
+     "compute"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2207-02852-p0027",
+     "arxiv-2010-15581-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2207-02852-p0027",
+      "quote": "Deployment usually consumes much more compute than training: Patterson et al.",
+      "start": 0,
+      "end": 77,
+      "chunk_sha256": "9107029560ef93765df69daea72ae8c728cdc19cad7e27abc45cb0f2e7946dbf",
+      "relation": "increases",
+      "subject": "Deployment",
+      "object": "compute",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2010-15581-p0002",
+      "quote": "This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.",
+      "start": 1490,
+      "end": 1675,
+      "chunk_sha256": "eb59bd8ec0c227f41014aa123718e117df4fbceba7ae9f219dccf86b93ab24dc",
+      "relation": "increases",
+      "subject": "compute",
+      "object": "concerns",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.6,
+     "novelty": 0.5
+    },
+    "falsification_test": "Compare settings where Deployment differs while other inputs are matched. The hypothesis fails if concerns does not rise with Deployment, or if fixing compute removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
     "supporting_paths": 1,
     "rule_verdict": null,
-    "hub": "progress"
+    "hub": "compute"
+   },
+   {
+    "id": "1ddeeff43482",
+    "text": "AI applications and splitting may move together because both depend on communication.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "AI applications",
+     "splitting",
+     "communication"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2403-14123-p0003",
+     "arxiv-2207-02852-p0024"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2403-14123-p0003",
+      "quote": "In fact, several AI applications are becoming bottlenecked by intra/inter-chip and communication across/to AI accelerators, rather than compute.",
+      "start": 117,
+      "end": 261,
+      "chunk_sha256": "ac062e19cc3540344e049a2ab4a2f1811bd8260938dc6fa2cfd2dc3cf2cdbc83",
+      "relation": "constrains",
+      "subject": "communication",
+      "object": "AI applications",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2207-02852-p0024",
+      "quote": "However, the second option requires significant code refactoring and engineering expertise, since this splitting requires significant communication between nodes, which are usually connected by a slower network than within-node GPUs.",
+      "start": 279,
+      "end": 512,
+      "chunk_sha256": "0380e53993bd838792151ec39897c6479b6d72890a4dda83b5b63a644486e294",
+      "relation": "constrains",
+      "subject": "communication",
+      "object": "splitting",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.567,
+     "novelty": 0.613
+    },
+    "falsification_test": "Track AI applications and splitting across periods where communication changes and where it does not. The hypothesis fails if they co-vary just as strongly when communication is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "communication"
+   },
+   {
+    "id": "aa4b7b375c4b",
+    "text": "AI applications and models may move together because both depend on compute.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "AI applications",
+     "models",
+     "compute"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-08797-p0019",
+     "arxiv-2109-05472-p0015"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-08797-p0019",
+      "quote": "However, it is important to note that not all AI applications require vast amounts of compute; specialized AI systems have displayed impressive abilities in some domains, even by using much less compute",
+      "start": 458,
+      "end": 660,
+      "chunk_sha256": "b06c40ca3922bb7438b38cc73ee7d591a089c739716a0d05d637c873f3058114",
+      "relation": "constrains",
+      "subject": "compute",
+      "object": "AI applications",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2109-05472-p0015",
+      "quote": "However not all models released in the latest years need so much compute.",
+      "start": 226,
+      "end": 299,
+      "chunk_sha256": "b36547af4e4a9d15223202720a082b89992afed4365f1224711681682140cfd3",
+      "relation": "constrains",
+      "subject": "compute",
+      "object": "models",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.567,
+     "novelty": 0.613
+    },
+    "falsification_test": "Track AI applications and models across periods where compute changes and where it does not. The hypothesis fails if they co-vary just as strongly when compute is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "compute"
+   },
+   {
+    "id": "b4f1c4aeee8a",
+    "text": "AI applications and concerns may move together because both depend on compute.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "AI applications",
+     "concerns",
+     "compute"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-08797-p0019",
+     "arxiv-2010-15581-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-08797-p0019",
+      "quote": "However, it is important to note that not all AI applications require vast amounts of compute; specialized AI systems have displayed impressive abilities in some domains, even by using much less compute",
+      "start": 458,
+      "end": 660,
+      "chunk_sha256": "b06c40ca3922bb7438b38cc73ee7d591a089c739716a0d05d637c873f3058114",
+      "relation": "constrains",
+      "subject": "compute",
+      "object": "AI applications",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2010-15581-p0002",
+      "quote": "This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.",
+      "start": 1490,
+      "end": 1675,
+      "chunk_sha256": "eb59bd8ec0c227f41014aa123718e117df4fbceba7ae9f219dccf86b93ab24dc",
+      "relation": "increases",
+      "subject": "compute",
+      "object": "concerns",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.567,
+     "novelty": 0.613
+    },
+    "falsification_test": "Track AI applications and concerns across periods where compute changes and where it does not. The hypothesis fails if they co-vary just as strongly when compute is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "compute"
+   },
+   {
+    "id": "a63edb499dab",
+    "text": "matrix vector products may constrain concerns through compute.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "matrix vector products",
+     "concerns"
+    ],
+    "via": [
+     "compute"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2210-17323-p0023",
+     "arxiv-2010-15581-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2210-17323-p0023",
+      "quote": "Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products.",
+      "start": 1438,
+      "end": 1570,
+      "chunk_sha256": "3a4b6b83e44488b6e9a404f0ab9294c350d52d2fd7ef516c9dd3da5d360183b6",
+      "relation": "constrains",
+      "subject": "matrix vector products",
+      "object": "compute",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2010-15581-p0002",
+      "quote": "This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.",
+      "start": 1490,
+      "end": 1675,
+      "chunk_sha256": "eb59bd8ec0c227f41014aa123718e117df4fbceba7ae9f219dccf86b93ab24dc",
+      "relation": "increases",
+      "subject": "compute",
+      "object": "concerns",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.525,
+     "novelty": 0.707
+    },
+    "falsification_test": "Compare settings where matrix vector products differs while other inputs are matched. The hypothesis fails if concerns does not stay bounded with matrix vector products, or if fixing compute removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "compute"
+   },
+   {
+    "id": "38b157e9c34b",
+    "text": "compute and Machine Learning ML workloads may jointly drive concerns, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "compute",
+     "Machine Learning ML workloads",
+     "concerns"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2010-15581-p0002",
+     "arxiv-2204-05149-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2010-15581-p0002",
+      "quote": "This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.",
+      "start": 1490,
+      "end": 1675,
+      "chunk_sha256": "eb59bd8ec0c227f41014aa123718e117df4fbceba7ae9f219dccf86b93ab24dc",
+      "relation": "increases",
+      "subject": "compute",
+      "object": "concerns",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2204-05149-p0002",
+      "quote": "Machine Learning (ML) workloads have rapidly grown in importance, but raised concerns about their carbon footprint.",
+      "start": 0,
+      "end": 115,
+      "chunk_sha256": "1f379bfe7d845bfe7ca7933cf1c5594c92ed91b49b9df663bacb883819f90ce9",
+      "relation": "increases",
+      "subject": "Machine Learning ML workloads",
+      "object": "concerns",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.525,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary compute and Machine Learning ML workloads separately and together. The hypothesis fails if the joint change in concerns equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "concern"
+   },
+   {
+    "id": "e54b5646f74d",
+    "text": "Deployment may affect AI applications through compute.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "Deployment",
+     "AI applications"
+    ],
+    "via": [
+     "compute"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2207-02852-p0027",
+     "arxiv-2402-08797-p0019"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2207-02852-p0027",
+      "quote": "Deployment usually consumes much more compute than training: Patterson et al.",
+      "start": 0,
+      "end": 77,
+      "chunk_sha256": "9107029560ef93765df69daea72ae8c728cdc19cad7e27abc45cb0f2e7946dbf",
+      "relation": "increases",
+      "subject": "Deployment",
+      "object": "compute",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2402-08797-p0019",
+      "quote": "However, it is important to note that not all AI applications require vast amounts of compute; specialized AI systems have displayed impressive abilities in some domains, even by using much less compute",
+      "start": 458,
+      "end": 660,
+      "chunk_sha256": "b06c40ca3922bb7438b38cc73ee7d591a089c739716a0d05d637c873f3058114",
+      "relation": "constrains",
+      "subject": "compute",
+      "object": "AI applications",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.517,
+     "novelty": 0.5
+    },
+    "falsification_test": "Compare settings where Deployment differs while other inputs are matched. The hypothesis fails if AI applications does not change with Deployment, or if fixing compute removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "compute"
+   },
+   {
+    "id": "4b855af440cd",
+    "text": "single training run and concerns may move together because both depend on compute.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "single training run",
+     "concerns",
+     "compute"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-08797-p0023",
+     "arxiv-2010-15581-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-08797-p0023",
+      "quote": "Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.",
+      "start": 161,
+      "end": 357,
+      "chunk_sha256": "7e346f2bd74ec7647d0e65a3a852243eccabbaa574bbbb51a63b94d0c0d49cd8",
+      "relation": "constrains",
+      "subject": "compute",
+      "object": "single training run",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2010-15581-p0002",
+      "quote": "This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.",
+      "start": 1490,
+      "end": 1675,
+      "chunk_sha256": "eb59bd8ec0c227f41014aa123718e117df4fbceba7ae9f219dccf86b93ab24dc",
+      "relation": "increases",
+      "subject": "compute",
+      "object": "concerns",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.5,
+     "novelty": 0.628
+    },
+    "falsification_test": "Track single training run and concerns across periods where compute changes and where it does not. The hypothesis fails if they co-vary just as strongly when compute is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "compute"
    }
   ],
-  "survivors": 70,
-  "candidates_generated": 228,
+  "survivors": 67,
+  "candidates_generated": 222,
   "candidates_passed": {
-   "abductive": 185,
-   "deductive": 185,
-   "pre_thinker": 70
+   "abductive": 179,
+   "deductive": 179,
+   "pre_thinker": 67
   },
   "candidates_rejected": {
    "abductive:unrelated_bridge": 43,
    "pre_thinker:circular": 6,
    "pre_thinker:malformed": 50,
    "pre_thinker:restates_source": 5,
-   "pre_thinker:single_source": 54
+   "pre_thinker:single_source": 51
   },
-  "relation_edges": 528,
-  "scoped_edges": 137,
+  "relation_edges": 522,
+  "scoped_edges": 134,
   "budget_used": {
    "rounds": 1,
-   "candidates": 228,
-   "edges": 528,
-   "bytes": 313737,
-   "seconds": 1.837
+   "candidates": 222,
+   "edges": 522,
+   "bytes": 308008,
+   "seconds": 1.827
   },
   "incomplete": false,
   "stop_reason": null,
   "shortage": null,
   "snapshot": {
-   "as_of": 1795253324,
+   "as_of": 1795253646,
    "chunk_count": 1054
   }
  },
- "reply": "Frontier hypotheses for AI energy bottlenecks. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 228. Passed abductive check: 185; deductive check: 185; pre-thinker validation: 70.\n\n1. matrix vector products may constrain AI applications through compute.\n[arxiv-2210-17323-p0023] Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products.\n[arxiv-2402-08797-p0019] However, it is important to note that not all AI applications require vast amounts of compute; specialized AI systems have displayed impressive abilities in some domains, even by using much less compute\nFalsification test: Compare settings where matrix vector products differs while other inputs are matched. The hypothesis fails if AI applications does not stay bounded with matrix vector products, or if fixing compute removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.66.\n\n2. no sign may increase penetration through AI.\n[arxiv-2206-05229-p0005] While it is not yet known what proportion of data center use is for training artificial intelligence (AI) models, it is undeniable that AI and its sub-fields have grown dramatically in recent years, with no sign of slowing down [39, 43].\n[arxiv-2109-05472-p0002] The only caveat is, yet again, the multiplicative factor, as future AI increases penetration and becomes more pervasive.\nFalsification test: Compare settings where no sign differs while other inputs are matched. The hypothesis fails if penetration does not rise with no sign, or if fixing AI removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.55.\n\n3. no sign may increase harm through AI.\n[arxiv-2206-05229-p0005] While it is not yet known what proportion of data center use is for training artificial intelligence (AI) models, it is undeniable that AI and its sub-fields have grown dramatically in recent years, with no sign of slowing down [39, 43].\n[arxiv-2402-08797-p0024] 2023), and the potential for AI to deliberately cause harm due to misalignment (Ngo, L. Chan, and Mindermann 2023).\nFalsification test: Compare settings where no sign differs while other inputs are matched. The hypothesis fails if harm does not rise with no sign, or if fixing AI removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.64, novelty 0.65.\n\n4. investment may constrain AI applications through increased compute (read as compute).\n[arxiv-2010-15581-p0014] However, this increased compute requires significant investment in relevant technologies such as GPUs or compute cloud.\n[arxiv-2402-08797-p0019] However, it is important to note that not all AI applications require vast amounts of compute; specialized AI systems have displayed impressive abilities in some domains, even by using much less compute\nFalsification test: Compare settings where investment differs while other inputs are matched. The hypothesis fails if AI applications does not stay bounded with investment, or if fixing increased compute (read as compute) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.64, novelty 0.61.\n\n5. compute may constrain AI model capabilities through single training run (read as final training run).\n[arxiv-2402-08797-p0023] Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.\n[arxiv-2405-21015-p0009] 2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.\nFalsification test: Compare settings where compute differs while other inputs are matched. The hypothesis fails if AI model capabilities does not stay bounded with compute, or if fixing single training run (read as final training run) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.64, novelty 0.48.\n\n6. compute and intra - chip may jointly constrain AI applications, so relieving one may shift the bottleneck to the other.\n[arxiv-2402-08797-p0019] However, it is important to note that not all AI applications require vast amounts of compute; specialized AI systems have displayed impressive abilities in some domains, even by using much less compute\n[arxiv-2403-14123-p0003] In fact, several AI applications are becoming bottlenecked by intra/inter-chip and communication across/to AI accelerators, rather than compute.\nFalsification test: Relieve compute alone while measuring AI applications. The hypothesis fails if AI applications keeps improving without intra - chip becoming the binding limit, or if relieving intra - chip alone has no effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.67.\n\n7. matrix vector products may constrain single training run through compute.\n[arxiv-2210-17323-p0023] Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products.\n[arxiv-2402-08797-p0023] Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.\nFalsification test: Compare settings where matrix vector products differs while other inputs are matched. The hypothesis fails if single training run does not stay bounded with matrix vector products, or if fixing compute removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.63.\n\n8. Deployment may increase concerns through compute.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\n[arxiv-2010-15581-p0002] This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.\nFalsification test: Compare settings where Deployment differs while other inputs are matched. The hypothesis fails if concerns does not rise with Deployment, or if fixing compute removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.50.\n\n9. final training run and human assisted evaluations may jointly constrain AI model capabilities, so relieving one may shift the bottleneck to the other.\n[arxiv-2405-21015-p0009] 2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.\n[arxiv-2305-15324-p0035] However, some capabilities and behaviours will need human-assisted evaluations, i.e.\nFalsification test: Relieve final training run alone while measuring AI model capabilities. The hypothesis fails if AI model capabilities keeps improving without human assisted evaluations becoming the binding limit, or if relieving human assisted evaluations alone has no effect.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.65.\n\n10. harm and penetration may move together because both depend on AI.\n[arxiv-2402-08797-p0024] 2023), and the potential for AI to deliberately cause harm due to misalignment (Ngo, L. Chan, and Mindermann 2023).\n[arxiv-2109-05472-p0002] The only caveat is, yet again, the multiplicative factor, as future AI increases penetration and becomes more pervasive.\nFalsification test: Track harm and penetration across periods where AI changes and where it does not. The hypothesis fails if they co-vary just as strongly when AI is held fixed.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.71.\n\n11. AI applications and splitting may move together because both depend on communication.\n[arxiv-2403-14123-p0003] In fact, several AI applications are becoming bottlenecked by intra/inter-chip and communication across/to AI accelerators, rather than compute.\n[arxiv-2207-02852-p0024] However, the second option requires significant code refactoring and engineering expertise, since this splitting requires significant communication between nodes, which are usually connected by a slower network than within-node GPUs.\nFalsification test: Track AI applications and splitting across periods where communication changes and where it does not. The hypothesis fails if they co-vary just as strongly when communication is held fixed.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.61.\n\n12. Training large AI models and delivering and divergence may move together because both depend on access.\n[arxiv-2402-08797-p0031] Training large AI models and delivering access to them at scale requires access to large amounts of compute.\n[arxiv-2010-15581-p0002] Using machine learning based text analysis methods, we provide additional evidence that the divergence between these two groups—large firms and non-elite universities—is driven by access to computing power or compute, which we term as the “compute divide”.\nFalsification test: Track Training large AI models and delivering and divergence across periods where access changes and where it does not. The hypothesis fails if they co-vary just as strongly when access is held fixed.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.58.\n\n13. investment may constrain single training run through increased compute (read as compute).\n[arxiv-2010-15581-p0014] However, this increased compute requires significant investment in relevant technologies such as GPUs or compute cloud.\n[arxiv-2402-08797-p0023] Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.\nFalsification test: Compare settings where investment differs while other inputs are matched. The hypothesis fails if single training run does not stay bounded with investment, or if fixing increased compute (read as compute) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.58.\n\n14. Training large AI models and delivering and certain groups ability may move together because both depend on access.\n[arxiv-2402-08797-p0031] Training large AI models and delivering access to them at scale requires access to large amounts of compute.\n[arxiv-2307-04699-p0012] Inadequate access to internet services, computing power, or availability of machine learning training/expertise will also hinder certain groups’ ability to benefit fully from AI advances.\nFalsification test: Track Training large AI models and delivering and certain groups ability across periods where access changes and where it does not. The hypothesis fails if they co-vary just as strongly when access is held fixed.\nScores: source support 0.80, deductive relevance 0.55, novelty 0.62.\n\n15. anecdotal evidence of uneven access and Machine Learning ML workloads may jointly drive concerns, and their effects may compound.\n[arxiv-2010-15581-p0006] However, anecdotal evidence of uneven access to compute has increased concerns within the AI community (Amodei & Hernandez, 2018; Riedl, 2020).\n[arxiv-2204-05149-p0002] Machine Learning (ML) workloads have rapidly grown in importance, but raised concerns about their carbon footprint.\nFalsification test: Vary anecdotal evidence of uneven access and Machine Learning ML workloads separately and together. The hypothesis fails if the joint change in concerns equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.66.\n\n16. large investments may constrain substantial boost through Training.\n[arxiv-2311-15377-p0002] Training advanced AI models requires large investments in computational resources, or compute.\n[arxiv-2306-11644-p0023] 5 Data pruning for unbiased performance evaluation In Figure 2.1, we see that training on CodeExercises leads to a substantial boost in the performance of the model on the HumanEval benchmark.\nFalsification test: Compare settings where large investments differs while other inputs are matched. The hypothesis fails if substantial boost does not stay bounded with large investments, or if fixing Training removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.64.\n\n17. large investments may constrain different conclusions through Training.\n[arxiv-2311-15377-p0002] Training advanced AI models requires large investments in computational resources, or compute.\n[arxiv-2311-16863-p0004] In particular, looking at inference rather than training leads to drastically different conclusions when considering the multi-purpose (or “general-purpose”) aspect specifically.\nFalsification test: Compare settings where large investments differs while other inputs are matched. The hypothesis fails if different conclusions does not stay bounded with large investments, or if fixing Training removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.64.\n\n18. diverse representation and recent progress may jointly drive possibility, and their effects may compound.\n[arxiv-2010-15581-p0004] A diverse representation among researchers increases the possibility that different domain expertise and diverse perspectives and experiences will contribute to mitigating biases in proposed models and\n[arxiv-2402-08797-p0023] However, recent progress in AI has raised the possibility of using lower-precision representations of numbers (and “integer” representations), which increases the processing speed of each operation.\nFalsification test: Vary diverse representation and recent progress separately and together. The hypothesis fails if the joint change in possibility equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.63.\n\n19. compute and Machine Learning ML workloads may jointly drive concerns, and their effects may compound.\n[arxiv-2010-15581-p0002] This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.\n[arxiv-2204-05149-p0002] Machine Learning (ML) workloads have rapidly grown in importance, but raised concerns about their carbon footprint.\nFalsification test: Vary compute and Machine Learning ML workloads separately and together. The hypothesis fails if the joint change in concerns equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.60.\n\n20. AI companies may affect increased compute through investments.\n[arxiv-2311-15377-p0052] However, in reality, AI companies have massively increased their investments, which rose thirtyfold between 2013 and 2021 (Roser, 2023).\n[arxiv-2010-15581-p0014] However, this increased compute requires significant investment in relevant technologies such as GPUs or compute cloud.\nFalsification test: Compare settings where AI companies differs while other inputs are matched. The hypothesis fails if increased compute does not change with AI companies, or if fixing investments removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.52, novelty 0.51.\n\n21. Deployment and general performance may jointly drive Patterson et al, and their effects may compound.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\n[arxiv-2402-08797-p0005] This increased computing power (“compute”) has been a key enabler of the current wave of AI, including large language models and “generative AI,” for which general performance predictably improves as more compute is applied (Wei et al.\nFalsification test: Vary Deployment and general performance separately and together. The hypothesis fails if the joint change in Patterson et al equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.50, novelty 0.68.\n\n22. increasing the batch size may affect image classification through energy (read as less energy).\n[arxiv-2310-03003-p0017] However, this disappears under max generation length 1024 where increasing the batch size increases the energy per token.\n[arxiv-2311-16863-p0014] Text-based tasks are, all things considered, more energy-efficient than image-based tasks, with image classification requiring less energy (median of 0.0068 kWh for 1,000 inferences) than image generation (1.35 kWh) and, conversely, text generation (0.042 KwH) requiring more than text classification (0.0023 kWh).\nFalsification test: Compare settings where increasing the batch size differs while other inputs are matched. The hypothesis fails if image classification does not change with increasing the batch size, or if fixing energy (read as less energy) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.50, novelty 0.63.\n\n23. final training run may constrain LLMs through AI model capabilities (read as capabilities).\n[arxiv-2405-21015-p0009] 2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.\n[arxiv-2403-05812-p0003] These capabilities have enabled LLMs to support a range of commercial and scientific applications (Kaddour et al.\nFalsification test: Compare settings where final training run differs while other inputs are matched. The hypothesis fails if LLMs does not stay bounded with final training run, or if fixing AI model capabilities (read as capabilities) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.50, novelty 0.50.\n\n24. divergence and certain groups ability may move together because both depend on access.\n[arxiv-2010-15581-p0002] Using machine learning based text analysis methods, we provide additional evidence that the divergence between these two groups—large firms and non-elite universities—is driven by access to computing power or compute, which we term as the “compute divide”.\n[arxiv-2307-04699-p0012] Inadequate access to internet services, computing power, or availability of machine learning training/expertise will also hinder certain groups’ ability to benefit fully from AI advances.\nFalsification test: Track divergence and certain groups ability across periods where access changes and where it does not. The hypothesis fails if they co-vary just as strongly when access is held fixed.\nScores: source support 0.80, deductive relevance 0.48, novelty 0.68.\n\n25. Inconsistent national regulations may reduce compute through deployment.\n[arxiv-2307-04699-p0013] Inconsistent national regulations could also slow the development and deployment of AI, as developers of powerful AI technology may be unwilling to export to countries with inconsistent or unsuitable technology governance.7 International efforts to set safety norms and standards could help coordinate governance in a way that supports innovation and serves a broad set of interests.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\nFalsification test: Compare settings where Inconsistent national regulations differs while other inputs are matched. The hypothesis fails if compute does not fall with Inconsistent national regulations, or if fixing deployment removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.60, novelty 0.56.\n\n26. Inconsistent national regulations may reduce Patterson et al through deployment.\n[arxiv-2307-04699-p0013] Inconsistent national regulations could also slow the development and deployment of AI, as developers of powerful AI technology may be unwilling to export to countries with inconsistent or unsuitable technology governance.7 International efforts to set safety norms and standards could help coordinate governance in a way that supports innovation and serves a broad set of interests.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\nFalsification test: Compare settings where Inconsistent national regulations differs while other inputs are matched. The hypothesis fails if Patterson et al does not fall with Inconsistent national regulations, or if fixing deployment removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.60, novelty 0.56.\n\n27. being able to control model behaviour may increase growth through barrier.\n[arxiv-2112-06905-p0024] Ethics and Unintended Biases Large language models’ zero-and few-shot inference is an exciting capability: being able to control model behaviour intuitively with natural language and small datasets significantly lowers the barrier to prototyping and the development of new applications; it has the potential to help democratise using AI by dramatically decreasing the need for specialist knowledge.\n[arxiv-2402-08797-p0039] More prosaically, barriers to trade in compute and AI could slow growth in one of the most promising economic sectors, which has historically benefited enormously from low barriers to entry, competition, and trade (Feng 2022; Thierer 2014).\nFalsification test: Compare settings where being able to control model behaviour differs while other inputs are matched. The hypothesis fails if growth does not rise with being able to control model behaviour, or if fixing barrier removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.60, novelty 0.54.\n\n28. Hardware limitations and Regulatory hurdles may jointly drive bottlenecks, and their effects may compound.\n[arxiv-2207-02852-p0032] In addition, we can generate some predictions from our hypotheses on the parameter gap: • Hardware limitations might cause discontinuities or bottlenecks in scaling by limiting model size rather than compute.\n[arxiv-2405-21015-p0019] Regulatory and logistical hurdles to secure power supplies may cause bottlenecks in the coming years, but we leave that topic to future work.\nFalsification test: Vary Hardware limitations and Regulatory hurdles separately and together. The hypothesis fails if the joint change in bottlenecks equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.59, novelty 0.68.\n\n29. proportion of original run time may increase concerns through AI workload (read as Machine Learning ML workloads).\n[arxiv-2206-05229-p0032] This analysis is designed to highlight a use case where an AI workload can be increased in duration by some proportion of the original run time.\n[arxiv-2204-05149-p0002] Machine Learning (ML) workloads have rapidly grown in importance, but raised concerns about their carbon footprint.\nFalsification test: Compare settings where proportion of original run time differs while other inputs are matched. The hypothesis fails if concerns does not rise with proportion of original run time, or if fixing AI workload (read as Machine Learning ML workloads) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.62.\n\n30. rapid international action may constrain democratization through rapid nature of frontier AI progress (read as compute intensive nature of modern AI).\n[arxiv-2307-04699-p0030] Speed and comprehensiveness in standard setting: One challenge for a Governance Organization is that standard setting (especially in an international and multistakeholder context) tends to be a slow process, while the rapid and unpredictable nature of frontier AI progress may require more rapid international action.\n[arxiv-2010-15581-p0007] Using a simple model of scientific knowledge production, we predict and then find support for the hypothesis that the compute-intensive nature of modern AI has resulted in de-democratization (Stephan, 2012).\nFalsification test: Compare settings where rapid international action differs while other inputs are matched. The hypothesis fails if democratization does not stay bounded with rapid international action, or if fixing rapid nature of frontier AI progress (read as compute intensive nature of modern AI) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.60.\n\n31. failure may reduce paradigm shift through innovation.\n[arxiv-2307-04699-p0004] A failure to coordinate or harmonize regulation may also slow innovation.\n[arxiv-2405-10799-p0025] However, innovation in AI might gradually lead to a paradigm shift away from deep learning, or the pre-training phase might become less crucial for determining the final capabilities of AI models.\nFalsification test: Compare settings where failure differs while other inputs are matched. The hypothesis fails if paradigm shift does not fall with failure, or if fixing innovation removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.60.\n\n32. players15 may increase productivity of actors through models.\n[arxiv-2207-02852-p0028] However, a significant number of models below the gap were produced by top research laboratories, and some models above the gap have been produced by other players15.\n[arxiv-2305-15324-p0019] As an assistant, the model could significantly improve the productivity of actors building dual use AI capabilities.\nFalsification test: Compare settings where players15 differs while other inputs are matched. The hypothesis fails if productivity of actors does not rise with players15, or if fixing models removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.60.\n\n33. analysis may increase paradigm shift through innovation.\n[arxiv-2007-05558-p0035] Thus, because our analysis accounts for innovation and because it is not misled by overly-optimistic scaling down studies, we believe it provides a better long-term view of the evolution of computing power as higher model performance\n[arxiv-2405-10799-p0025] However, innovation in AI might gradually lead to a paradigm shift away from deep learning, or the pre-training phase might become less crucial for determining the final capabilities of AI models.\nFalsification test: Compare settings where analysis differs while other inputs are matched. The hypothesis fails if paradigm shift does not rise with analysis, or if fixing innovation removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.60.\n\n34. top research laboratories may increase productivity of actors through models.\n[arxiv-2207-02852-p0028] However, a significant number of models below the gap were produced by top research laboratories, and some models above the gap have been produced by other players15.\n[arxiv-2305-15324-p0019] As an assistant, the model could significantly improve the productivity of actors building dual use AI capabilities.\nFalsification test: Compare settings where top research laboratories differs while other inputs are matched. The hypothesis fails if productivity of actors does not rise with top research laboratories, or if fixing models removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.60.\n\n35. progress may increase LLMs through capabilities.\n[arxiv-2305-15324-p0003] Further progress in AI development could lead to capabilities that pose extreme risks, such as offensive cyber capabilities or strong manipulation skills.\n[arxiv-2403-05812-p0003] These capabilities have enabled LLMs to support a range of commercial and scientific applications (Kaddour et al.\nFalsification test: Compare settings where progress differs while other inputs are matched. The hypothesis fails if LLMs does not rise with progress, or if fixing capabilities removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.55.\n\n36. Gains in development of AI from models may be offset by Inconsistent national regulations.\n[arxiv-2307-04699-p0013] Inconsistent national regulations could also slow the development and deployment of AI, as developers of powerful AI technology may be unwilling to export to countries with inconsistent or unsuitable technology governance.7 International efforts to set safety norms and standards could help coordinate governance in a way that supports innovation and serves a broad set of interests.\n[arxiv-2406-17557-p0036] We hope that our released datasets, code, and models help further improve public knowledge and development of performant LLM pretraining datasets.\nFalsification test: Measure development of AI where both Inconsistent national regulations and models vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.54.\n\n37. democratization and Frontier AI Collaborative ability may move together because both depend on compute intensive nature of modern AI.\n[arxiv-2010-15581-p0007] Using a simple model of scientific knowledge production, we predict and then find support for the hypothesis that the compute-intensive nature of modern AI has resulted in de-democratization (Stephan, 2012).\n[arxiv-2307-04699-p0010] The potentially dual-use nature of general purpose AI technologies might hamper a Frontier AI Collaborative’s ability to distribute beneficial systems widely, and the significant obstacles to underserved societies making use of AI systems raises questions about its effectiveness as a means of promoting sustainable development.\nFalsification test: Track democratization and Frontier AI Collaborative ability across periods where compute intensive nature of modern AI changes and where it does not. The hypothesis fails if they co-vary just as strongly when compute intensive nature of modern AI is held fixed.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.66.\n\n38. concentration of powerful technology and difficulties of international coordination may jointly drive questions, and their effects may compound.\n[arxiv-2405-21015-p0023] The concentration of such a powerful technology among a few key players raises questions about responsible development and deployment.\n[arxiv-2307-04699-p0010] The rapid rate of AI progress will make it difficult for an Advanced AI Governance Organization to set standards that keep up with and are appropriately scoped for the risk landscape, and the many difficulties of international coordination raise questions about how participation in an Organization regime can be incentivized.\nFalsification test: Vary concentration of powerful technology and difficulties of international coordination separately and together. The hypothesis fails if the joint change in questions equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.67.\n\n39. lack of observations and obstacles may jointly drive questions, and their effects may compound.\n[arxiv-2403-05812-p0028] Nevertheless, the lack of such observations still raises questions about the reliability of extrapolating these trends between long multi-year periods.\n[arxiv-2307-04699-p0010] The potentially dual-use nature of general purpose AI technologies might hamper a Frontier AI Collaborative’s ability to distribute beneficial systems widely, and the significant obstacles to underserved societies making use of AI systems raises questions about its effectiveness as a means of promoting sustainable development.\nFalsification test: Vary lack of observations and obstacles separately and together. The hypothesis fails if the joint change in questions equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.66.\n\n40. difficulties of international coordination and lack of observations may jointly drive questions, and their effects may compound.\n[arxiv-2307-04699-p0010] The rapid rate of AI progress will make it difficult for an Advanced AI Governance Organization to set standards that keep up with and are appropriately scoped for the risk landscape, and the many difficulties of international coordination raise questions about how participation in an Organization regime can be incentivized.\n[arxiv-2403-05812-p0028] Nevertheless, the lack of such observations still raises questions about the reliability of extrapolating these trends between long multi-year periods.\nFalsification test: Vary difficulties of international coordination and lack of observations separately and together. The hypothesis fails if the joint change in questions equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.65.\n\n41. compute may constrain productivity of actors through models.\n[arxiv-2109-05472-p0015] However not all models released in the latest years need so much compute.\n[arxiv-2305-15324-p0019] As an assistant, the model could significantly improve the productivity of actors building dual use AI capabilities.\nFalsification test: Compare settings where compute differs while other inputs are matched. The hypothesis fails if productivity of actors does not stay bounded with compute, or if fixing models removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.60.\n\n42. AI firms may affect better understanding the feasibility of transfer through research.\n[arxiv-2010-15581-p0009] Scholars argue that AI firms are less diverse than academia (West et al., 2019) and produce research that is less reproducible than academic research (Gundersen & Kjensmo, 2018).\n[arxiv-2211-04325-p0044] In general, better understanding the feasibility of transfer learning would require further research, such as scaling laws for transfer learning (Hernandez et al., 2021).\nFalsification test: Compare settings where AI firms differs while other inputs are matched. The hypothesis fails if better understanding the feasibility of transfer does not change with AI firms, or if fixing research removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.52, novelty 0.57.\n\n43. pre - deployment evaluation for dangerous may constrain Patterson et al through internal deployments of capable general purpose (read as Deployment).\n[arxiv-2305-15324-p0026] Model evaluation for extreme risks Finally, even internal deployments of highly capable general-purpose models, notably as coding assistants for AI researchers and engineers, could require pre-deployment evaluation for dangerous capabilities (e.g.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\nFalsification test: Compare settings where pre - deployment evaluation for dangerous differs while other inputs are matched. The hypothesis fails if Patterson et al does not stay bounded with pre - deployment evaluation for dangerous, or if fixing internal deployments of capable general purpose (read as Deployment) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.50, novelty 0.64.\n\n44. pre - deployment evaluation for dangerous may constrain compute through internal deployments of capable general purpose (read as Deployment).\n[arxiv-2305-15324-p0026] Model evaluation for extreme risks Finally, even internal deployments of highly capable general-purpose models, notably as coding assistants for AI researchers and engineers, could require pre-deployment evaluation for dangerous capabilities (e.g.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\nFalsification test: Compare settings where pre - deployment evaluation for dangerous differs while other inputs are matched. The hypothesis fails if compute does not stay bounded with pre - deployment evaluation for dangerous, or if fixing internal deployments of capable general purpose (read as Deployment) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.50, novelty 0.64.\n\n45. concentration of AI development and groups may interact in their effect on range of perspectives.\n[arxiv-2405-21015-p0021] This concentration of AI development could limit the range of perspectives and approaches considered, especially from academia and broader society.\n[arxiv-2103-06312-p0007] AI ethics lacks benchmarks and consensus: Though a number of groups are producing a range of qualitative or normative outputs in the AI ethics domain, the field generally lacks benchmarks that can be used to measure or assess the relationship between broader societal discussions about technology development and the development of the technology itself.\nFalsification test: Vary concentration of AI development and groups separately and together. The hypothesis fails if the joint change in range of perspectives equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.50, novelty 0.54.\n\n46. final training run and progress may interact in their effect on AI model capabilities.\n[arxiv-2405-21015-p0009] 2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.\n[arxiv-2305-15324-p0003] Further progress in AI development could lead to capabilities that pose extreme risks, such as offensive cyber capabilities or strong manipulation skills.\nFalsification test: Vary final training run and progress separately and together. The hypothesis fails if the joint change in AI model capabilities equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.50, novelty 0.52.\n\n47. capabilities and possibility may move together because both depend on progress.\n[arxiv-2305-15324-p0003] Further progress in AI development could lead to capabilities that pose extreme risks, such as offensive cyber capabilities or strong manipulation skills.\n[arxiv-2402-08797-p0023] However, recent progress in AI has raised the possibility of using lower-precision representations of numbers (and “integer” representations), which increases the processing speed of each operation.\nFalsification test: Track capabilities and possibility across periods where progress changes and where it does not. The hypothesis fails if they co-vary just as strongly when progress is held fixed.\nScores: source support 0.55, deductive relevance 0.48, novelty 0.66.\n\n48. random noise may affect talent scarcity through gap.\n[arxiv-2207-02852-p0017] The same statistical analysis of the previous section, when performed only on systems in the Other domain, shows that the gap can be explained by random noise, whereas for systems in the Language domains the gap is very unlikely: The probability of observing this gap conditional on our model being correct is 0.23 for systems in the Other domain and 0.02 for those in the Language domain6.\n[arxiv-2010-15581-p0013] The gap between the limited supply and the increased demand for AI talent has produced a talent scarcity in the field (Metz, 2018).\nFalsification test: Compare settings where random noise differs while other inputs are matched. The hypothesis fails if talent scarcity does not change with random noise, or if fixing gap removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.40, novelty 0.64.\n\n49. data efficiency improvements may affect capabilities through progress.\n[arxiv-2211-04325-p0002] We argue that synthetic data generation, transfer learning from datarich domains, and data efficiency improvements might support further progress.\n[arxiv-2305-15324-p0003] Further progress in AI development could lead to capabilities that pose extreme risks, such as offensive cyber capabilities or strong manipulation skills.\nFalsification test: Compare settings where data efficiency improvements differs while other inputs are matched. The hypothesis fails if capabilities does not change with data efficiency improvements, or if fixing progress removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.40, novelty 0.51.\n\n50. data efficiency improvements may affect possibility through progress (read as recent progress).\n[arxiv-2211-04325-p0002] We argue that synthetic data generation, transfer learning from datarich domains, and data efficiency improvements might support further progress.\n[arxiv-2402-08797-p0023] However, recent progress in AI has raised the possibility of using lower-precision representations of numbers (and “integer” representations), which increases the processing speed of each operation.\nFalsification test: Compare settings where data efficiency improvements differs while other inputs are matched. The hypothesis fails if possibility does not change with data efficiency improvements, or if fixing progress (read as recent progress) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.39, novelty 0.63.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+ "reply": "Frontier hypotheses for AI energy bottlenecks. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 222. Passed abductive check: 179; deductive check: 179; pre-thinker validation: 67.\n\n1. matrix vector products may constrain AI applications through compute.\n[arxiv-2210-17323-p0023] Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products.\n[arxiv-2402-08797-p0019] However, it is important to note that not all AI applications require vast amounts of compute; specialized AI systems have displayed impressive abilities in some domains, even by using much less compute\nFalsification test: Compare settings where matrix vector products differs while other inputs are matched. The hypothesis fails if AI applications does not stay bounded with matrix vector products, or if fixing compute removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.66.\n\n2. investment may constrain AI applications through increased compute (read as compute).\n[arxiv-2010-15581-p0014] However, this increased compute requires significant investment in relevant technologies such as GPUs or compute cloud.\n[arxiv-2402-08797-p0019] However, it is important to note that not all AI applications require vast amounts of compute; specialized AI systems have displayed impressive abilities in some domains, even by using much less compute\nFalsification test: Compare settings where investment differs while other inputs are matched. The hypothesis fails if AI applications does not stay bounded with investment, or if fixing increased compute (read as compute) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.64, novelty 0.61.\n\n3. compute may constrain AI model capabilities through single training run (read as final training run).\n[arxiv-2402-08797-p0023] Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.\n[arxiv-2405-21015-p0009] 2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.\nFalsification test: Compare settings where compute differs while other inputs are matched. The hypothesis fails if AI model capabilities does not stay bounded with compute, or if fixing single training run (read as final training run) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.64, novelty 0.48.\n\n4. compute and intra - chip may jointly constrain AI applications, so relieving one may shift the bottleneck to the other.\n[arxiv-2402-08797-p0019] However, it is important to note that not all AI applications require vast amounts of compute; specialized AI systems have displayed impressive abilities in some domains, even by using much less compute\n[arxiv-2403-14123-p0003] In fact, several AI applications are becoming bottlenecked by intra/inter-chip and communication across/to AI accelerators, rather than compute.\nFalsification test: Relieve compute alone while measuring AI applications. The hypothesis fails if AI applications keeps improving without intra - chip becoming the binding limit, or if relieving intra - chip alone has no effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.67.\n\n5. final training run and human assisted evaluations may jointly constrain AI model capabilities, so relieving one may shift the bottleneck to the other.\n[arxiv-2405-21015-p0009] 2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.\n[arxiv-2305-15324-p0035] However, some capabilities and behaviours will need human-assisted evaluations, i.e.\nFalsification test: Relieve final training run alone while measuring AI model capabilities. The hypothesis fails if AI model capabilities keeps improving without human assisted evaluations becoming the binding limit, or if relieving human assisted evaluations alone has no effect.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.65.\n\n6. harm and penetration may move together because both depend on AI.\n[arxiv-2402-08797-p0024] 2023), and the potential for AI to deliberately cause harm due to misalignment (Ngo, L. Chan, and Mindermann 2023).\n[arxiv-2109-05472-p0002] The only caveat is, yet again, the multiplicative factor, as future AI increases penetration and becomes more pervasive.\nFalsification test: Track harm and penetration across periods where AI changes and where it does not. The hypothesis fails if they co-vary just as strongly when AI is held fixed.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.71.\n\n7. Training large AI models and delivering and divergence may move together because both depend on access.\n[arxiv-2402-08797-p0031] Training large AI models and delivering access to them at scale requires access to large amounts of compute.\n[arxiv-2010-15581-p0002] Using machine learning based text analysis methods, we provide additional evidence that the divergence between these two groups—large firms and non-elite universities—is driven by access to computing power or compute, which we term as the “compute divide”.\nFalsification test: Track Training large AI models and delivering and divergence across periods where access changes and where it does not. The hypothesis fails if they co-vary just as strongly when access is held fixed.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.58.\n\n8. investment may constrain single training run through increased compute (read as compute).\n[arxiv-2010-15581-p0014] However, this increased compute requires significant investment in relevant technologies such as GPUs or compute cloud.\n[arxiv-2402-08797-p0023] Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.\nFalsification test: Compare settings where investment differs while other inputs are matched. The hypothesis fails if single training run does not stay bounded with investment, or if fixing increased compute (read as compute) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.58.\n\n9. Training large AI models and delivering and certain groups ability may move together because both depend on access.\n[arxiv-2402-08797-p0031] Training large AI models and delivering access to them at scale requires access to large amounts of compute.\n[arxiv-2307-04699-p0012] Inadequate access to internet services, computing power, or availability of machine learning training/expertise will also hinder certain groups’ ability to benefit fully from AI advances.\nFalsification test: Track Training large AI models and delivering and certain groups ability across periods where access changes and where it does not. The hypothesis fails if they co-vary just as strongly when access is held fixed.\nScores: source support 0.80, deductive relevance 0.55, novelty 0.62.\n\n10. anecdotal evidence of uneven access and Machine Learning ML workloads may jointly drive concerns, and their effects may compound.\n[arxiv-2010-15581-p0006] However, anecdotal evidence of uneven access to compute has increased concerns within the AI community (Amodei & Hernandez, 2018; Riedl, 2020).\n[arxiv-2204-05149-p0002] Machine Learning (ML) workloads have rapidly grown in importance, but raised concerns about their carbon footprint.\nFalsification test: Vary anecdotal evidence of uneven access and Machine Learning ML workloads separately and together. The hypothesis fails if the joint change in concerns equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.66.\n\n11. large investments may constrain substantial boost through Training.\n[arxiv-2311-15377-p0002] Training advanced AI models requires large investments in computational resources, or compute.\n[arxiv-2306-11644-p0023] 5 Data pruning for unbiased performance evaluation In Figure 2.1, we see that training on CodeExercises leads to a substantial boost in the performance of the model on the HumanEval benchmark.\nFalsification test: Compare settings where large investments differs while other inputs are matched. The hypothesis fails if substantial boost does not stay bounded with large investments, or if fixing Training removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.64.\n\n12. large investments may constrain different conclusions through Training.\n[arxiv-2311-15377-p0002] Training advanced AI models requires large investments in computational resources, or compute.\n[arxiv-2311-16863-p0004] In particular, looking at inference rather than training leads to drastically different conclusions when considering the multi-purpose (or “general-purpose”) aspect specifically.\nFalsification test: Compare settings where large investments differs while other inputs are matched. The hypothesis fails if different conclusions does not stay bounded with large investments, or if fixing Training removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.64.\n\n13. diverse representation and recent progress may jointly drive possibility, and their effects may compound.\n[arxiv-2010-15581-p0004] A diverse representation among researchers increases the possibility that different domain expertise and diverse perspectives and experiences will contribute to mitigating biases in proposed models and\n[arxiv-2402-08797-p0023] However, recent progress in AI has raised the possibility of using lower-precision representations of numbers (and “integer” representations), which increases the processing speed of each operation.\nFalsification test: Vary diverse representation and recent progress separately and together. The hypothesis fails if the joint change in possibility equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.63.\n\n14. AI companies may affect increased compute through investments.\n[arxiv-2311-15377-p0052] However, in reality, AI companies have massively increased their investments, which rose thirtyfold between 2013 and 2021 (Roser, 2023).\n[arxiv-2010-15581-p0014] However, this increased compute requires significant investment in relevant technologies such as GPUs or compute cloud.\nFalsification test: Compare settings where AI companies differs while other inputs are matched. The hypothesis fails if increased compute does not change with AI companies, or if fixing investments removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.52, novelty 0.51.\n\n15. Deployment and general performance may jointly drive Patterson et al, and their effects may compound.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\n[arxiv-2402-08797-p0005] This increased computing power (“compute”) has been a key enabler of the current wave of AI, including large language models and “generative AI,” for which general performance predictably improves as more compute is applied (Wei et al.\nFalsification test: Vary Deployment and general performance separately and together. The hypothesis fails if the joint change in Patterson et al equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.50, novelty 0.68.\n\n16. increasing the batch size may affect image classification through energy (read as less energy).\n[arxiv-2310-03003-p0017] However, this disappears under max generation length 1024 where increasing the batch size increases the energy per token.\n[arxiv-2311-16863-p0014] Text-based tasks are, all things considered, more energy-efficient than image-based tasks, with image classification requiring less energy (median of 0.0068 kWh for 1,000 inferences) than image generation (1.35 kWh) and, conversely, text generation (0.042 KwH) requiring more than text classification (0.0023 kWh).\nFalsification test: Compare settings where increasing the batch size differs while other inputs are matched. The hypothesis fails if image classification does not change with increasing the batch size, or if fixing energy (read as less energy) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.50, novelty 0.63.\n\n17. final training run may constrain LLMs through AI model capabilities (read as capabilities).\n[arxiv-2405-21015-p0009] 2.5 Total amortized model development cost Although the final training run ultimately determines an AI model’s capabilities and impact, the research and development surrounding it is crucial.\n[arxiv-2403-05812-p0003] These capabilities have enabled LLMs to support a range of commercial and scientific applications (Kaddour et al.\nFalsification test: Compare settings where final training run differs while other inputs are matched. The hypothesis fails if LLMs does not stay bounded with final training run, or if fixing AI model capabilities (read as capabilities) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.50, novelty 0.50.\n\n18. divergence and certain groups ability may move together because both depend on access.\n[arxiv-2010-15581-p0002] Using machine learning based text analysis methods, we provide additional evidence that the divergence between these two groups—large firms and non-elite universities—is driven by access to computing power or compute, which we term as the “compute divide”.\n[arxiv-2307-04699-p0012] Inadequate access to internet services, computing power, or availability of machine learning training/expertise will also hinder certain groups’ ability to benefit fully from AI advances.\nFalsification test: Track divergence and certain groups ability across periods where access changes and where it does not. The hypothesis fails if they co-vary just as strongly when access is held fixed.\nScores: source support 0.80, deductive relevance 0.48, novelty 0.68.\n\n19. Inconsistent national regulations may reduce Patterson et al through deployment.\n[arxiv-2307-04699-p0013] Inconsistent national regulations could also slow the development and deployment of AI, as developers of powerful AI technology may be unwilling to export to countries with inconsistent or unsuitable technology governance.7 International efforts to set safety norms and standards could help coordinate governance in a way that supports innovation and serves a broad set of interests.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\nFalsification test: Compare settings where Inconsistent national regulations differs while other inputs are matched. The hypothesis fails if Patterson et al does not fall with Inconsistent national regulations, or if fixing deployment removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.60, novelty 0.56.\n\n20. being able to control model behaviour may increase growth through barrier.\n[arxiv-2112-06905-p0024] Ethics and Unintended Biases Large language models’ zero-and few-shot inference is an exciting capability: being able to control model behaviour intuitively with natural language and small datasets significantly lowers the barrier to prototyping and the development of new applications; it has the potential to help democratise using AI by dramatically decreasing the need for specialist knowledge.\n[arxiv-2402-08797-p0039] More prosaically, barriers to trade in compute and AI could slow growth in one of the most promising economic sectors, which has historically benefited enormously from low barriers to entry, competition, and trade (Feng 2022; Thierer 2014).\nFalsification test: Compare settings where being able to control model behaviour differs while other inputs are matched. The hypothesis fails if growth does not rise with being able to control model behaviour, or if fixing barrier removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.60, novelty 0.54.\n\n21. Hardware limitations and Regulatory hurdles may jointly drive bottlenecks, and their effects may compound.\n[arxiv-2207-02852-p0032] In addition, we can generate some predictions from our hypotheses on the parameter gap: • Hardware limitations might cause discontinuities or bottlenecks in scaling by limiting model size rather than compute.\n[arxiv-2405-21015-p0019] Regulatory and logistical hurdles to secure power supplies may cause bottlenecks in the coming years, but we leave that topic to future work.\nFalsification test: Vary Hardware limitations and Regulatory hurdles separately and together. The hypothesis fails if the joint change in bottlenecks equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.59, novelty 0.68.\n\n22. governance functions may constrain penetration through AI.\n[arxiv-2307-04699-p0011] Because of characteristics like its high barriers to development/utilization and the possibility of cross-border use, it is possible that harnessing AI’s potential for global benefit and managing its risks could require governance functions at the international level.\n[arxiv-2109-05472-p0002] The only caveat is, yet again, the multiplicative factor, as future AI increases penetration and becomes more pervasive.\nFalsification test: Compare settings where governance functions differs while other inputs are matched. The hypothesis fails if penetration does not stay bounded with governance functions, or if fixing AI removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.59, novelty 0.60.\n\n23. governance functions may constrain harm through AI.\n[arxiv-2307-04699-p0011] Because of characteristics like its high barriers to development/utilization and the possibility of cross-border use, it is possible that harnessing AI’s potential for global benefit and managing its risks could require governance functions at the international level.\n[arxiv-2402-08797-p0024] 2023), and the potential for AI to deliberately cause harm due to misalignment (Ngo, L. Chan, and Mindermann 2023).\nFalsification test: Compare settings where governance functions differs while other inputs are matched. The hypothesis fails if harm does not stay bounded with governance functions, or if fixing AI removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.59, novelty 0.55.\n\n24. proportion of original run time may increase concerns through AI workload (read as Machine Learning ML workloads).\n[arxiv-2206-05229-p0032] This analysis is designed to highlight a use case where an AI workload can be increased in duration by some proportion of the original run time.\n[arxiv-2204-05149-p0002] Machine Learning (ML) workloads have rapidly grown in importance, but raised concerns about their carbon footprint.\nFalsification test: Compare settings where proportion of original run time differs while other inputs are matched. The hypothesis fails if concerns does not rise with proportion of original run time, or if fixing AI workload (read as Machine Learning ML workloads) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.62.\n\n25. rapid international action may constrain democratization through rapid nature of frontier AI progress (read as compute intensive nature of modern AI).\n[arxiv-2307-04699-p0030] Speed and comprehensiveness in standard setting: One challenge for a Governance Organization is that standard setting (especially in an international and multistakeholder context) tends to be a slow process, while the rapid and unpredictable nature of frontier AI progress may require more rapid international action.\n[arxiv-2010-15581-p0007] Using a simple model of scientific knowledge production, we predict and then find support for the hypothesis that the compute-intensive nature of modern AI has resulted in de-democratization (Stephan, 2012).\nFalsification test: Compare settings where rapid international action differs while other inputs are matched. The hypothesis fails if democratization does not stay bounded with rapid international action, or if fixing rapid nature of frontier AI progress (read as compute intensive nature of modern AI) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.60.\n\n26. failure may reduce paradigm shift through innovation.\n[arxiv-2307-04699-p0004] A failure to coordinate or harmonize regulation may also slow innovation.\n[arxiv-2405-10799-p0025] However, innovation in AI might gradually lead to a paradigm shift away from deep learning, or the pre-training phase might become less crucial for determining the final capabilities of AI models.\nFalsification test: Compare settings where failure differs while other inputs are matched. The hypothesis fails if paradigm shift does not fall with failure, or if fixing innovation removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.60.\n\n27. players15 may increase productivity of actors through models.\n[arxiv-2207-02852-p0028] However, a significant number of models below the gap were produced by top research laboratories, and some models above the gap have been produced by other players15.\n[arxiv-2305-15324-p0019] As an assistant, the model could significantly improve the productivity of actors building dual use AI capabilities.\nFalsification test: Compare settings where players15 differs while other inputs are matched. The hypothesis fails if productivity of actors does not rise with players15, or if fixing models removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.60.\n\n28. analysis may increase paradigm shift through innovation.\n[arxiv-2007-05558-p0035] Thus, because our analysis accounts for innovation and because it is not misled by overly-optimistic scaling down studies, we believe it provides a better long-term view of the evolution of computing power as higher model performance\n[arxiv-2405-10799-p0025] However, innovation in AI might gradually lead to a paradigm shift away from deep learning, or the pre-training phase might become less crucial for determining the final capabilities of AI models.\nFalsification test: Compare settings where analysis differs while other inputs are matched. The hypothesis fails if paradigm shift does not rise with analysis, or if fixing innovation removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.60.\n\n29. top research laboratories may increase productivity of actors through models.\n[arxiv-2207-02852-p0028] However, a significant number of models below the gap were produced by top research laboratories, and some models above the gap have been produced by other players15.\n[arxiv-2305-15324-p0019] As an assistant, the model could significantly improve the productivity of actors building dual use AI capabilities.\nFalsification test: Compare settings where top research laboratories differs while other inputs are matched. The hypothesis fails if productivity of actors does not rise with top research laboratories, or if fixing models removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.60.\n\n30. progress may increase LLMs through capabilities.\n[arxiv-2305-15324-p0003] Further progress in AI development could lead to capabilities that pose extreme risks, such as offensive cyber capabilities or strong manipulation skills.\n[arxiv-2403-05812-p0003] These capabilities have enabled LLMs to support a range of commercial and scientific applications (Kaddour et al.\nFalsification test: Compare settings where progress differs while other inputs are matched. The hypothesis fails if LLMs does not rise with progress, or if fixing capabilities removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.55.\n\n31. Gains in development of AI from models may be offset by Inconsistent national regulations.\n[arxiv-2307-04699-p0013] Inconsistent national regulations could also slow the development and deployment of AI, as developers of powerful AI technology may be unwilling to export to countries with inconsistent or unsuitable technology governance.7 International efforts to set safety norms and standards could help coordinate governance in a way that supports innovation and serves a broad set of interests.\n[arxiv-2406-17557-p0036] We hope that our released datasets, code, and models help further improve public knowledge and development of performant LLM pretraining datasets.\nFalsification test: Measure development of AI where both Inconsistent national regulations and models vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.54.\n\n32. democratization and Frontier AI Collaborative ability may move together because both depend on compute intensive nature of modern AI.\n[arxiv-2010-15581-p0007] Using a simple model of scientific knowledge production, we predict and then find support for the hypothesis that the compute-intensive nature of modern AI has resulted in de-democratization (Stephan, 2012).\n[arxiv-2307-04699-p0010] The potentially dual-use nature of general purpose AI technologies might hamper a Frontier AI Collaborative’s ability to distribute beneficial systems widely, and the significant obstacles to underserved societies making use of AI systems raises questions about its effectiveness as a means of promoting sustainable development.\nFalsification test: Track democratization and Frontier AI Collaborative ability across periods where compute intensive nature of modern AI changes and where it does not. The hypothesis fails if they co-vary just as strongly when compute intensive nature of modern AI is held fixed.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.66.\n\n33. concentration of powerful technology and difficulties of international coordination may jointly drive questions, and their effects may compound.\n[arxiv-2405-21015-p0023] The concentration of such a powerful technology among a few key players raises questions about responsible development and deployment.\n[arxiv-2307-04699-p0010] The rapid rate of AI progress will make it difficult for an Advanced AI Governance Organization to set standards that keep up with and are appropriately scoped for the risk landscape, and the many difficulties of international coordination raise questions about how participation in an Organization regime can be incentivized.\nFalsification test: Vary concentration of powerful technology and difficulties of international coordination separately and together. The hypothesis fails if the joint change in questions equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.67.\n\n34. lack of observations and obstacles may jointly drive questions, and their effects may compound.\n[arxiv-2403-05812-p0028] Nevertheless, the lack of such observations still raises questions about the reliability of extrapolating these trends between long multi-year periods.\n[arxiv-2307-04699-p0010] The potentially dual-use nature of general purpose AI technologies might hamper a Frontier AI Collaborative’s ability to distribute beneficial systems widely, and the significant obstacles to underserved societies making use of AI systems raises questions about its effectiveness as a means of promoting sustainable development.\nFalsification test: Vary lack of observations and obstacles separately and together. The hypothesis fails if the joint change in questions equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.66.\n\n35. difficulties of international coordination and lack of observations may jointly drive questions, and their effects may compound.\n[arxiv-2307-04699-p0010] The rapid rate of AI progress will make it difficult for an Advanced AI Governance Organization to set standards that keep up with and are appropriately scoped for the risk landscape, and the many difficulties of international coordination raise questions about how participation in an Organization regime can be incentivized.\n[arxiv-2403-05812-p0028] Nevertheless, the lack of such observations still raises questions about the reliability of extrapolating these trends between long multi-year periods.\nFalsification test: Vary difficulties of international coordination and lack of observations separately and together. The hypothesis fails if the joint change in questions equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.65.\n\n36. AI firms may affect better understanding the feasibility of transfer through research.\n[arxiv-2010-15581-p0009] Scholars argue that AI firms are less diverse than academia (West et al., 2019) and produce research that is less reproducible than academic research (Gundersen & Kjensmo, 2018).\n[arxiv-2211-04325-p0044] In general, better understanding the feasibility of transfer learning would require further research, such as scaling laws for transfer learning (Hernandez et al., 2021).\nFalsification test: Compare settings where AI firms differs while other inputs are matched. The hypothesis fails if better understanding the feasibility of transfer does not change with AI firms, or if fixing research removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.52, novelty 0.57.\n\n37. pre - deployment evaluation for dangerous may constrain Patterson et al through internal deployments of capable general purpose (read as Deployment).\n[arxiv-2305-15324-p0026] Model evaluation for extreme risks Finally, even internal deployments of highly capable general-purpose models, notably as coding assistants for AI researchers and engineers, could require pre-deployment evaluation for dangerous capabilities (e.g.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\nFalsification test: Compare settings where pre - deployment evaluation for dangerous differs while other inputs are matched. The hypothesis fails if Patterson et al does not stay bounded with pre - deployment evaluation for dangerous, or if fixing internal deployments of capable general purpose (read as Deployment) removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.50, novelty 0.64.\n\n38. concentration of AI development and groups may interact in their effect on range of perspectives.\n[arxiv-2405-21015-p0021] This concentration of AI development could limit the range of perspectives and approaches considered, especially from academia and broader society.\n[arxiv-2103-06312-p0007] AI ethics lacks benchmarks and consensus: Though a number of groups are producing a range of qualitative or normative outputs in the AI ethics domain, the field generally lacks benchmarks that can be used to measure or assess the relationship between broader societal discussions about technology development and the development of the technology itself.\nFalsification test: Vary concentration of AI development and groups separately and together. The hypothesis fails if the joint change in range of perspectives equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.50, novelty 0.54.\n\n39. capabilities and possibility may move together because both depend on progress.\n[arxiv-2305-15324-p0003] Further progress in AI development could lead to capabilities that pose extreme risks, such as offensive cyber capabilities or strong manipulation skills.\n[arxiv-2402-08797-p0023] However, recent progress in AI has raised the possibility of using lower-precision representations of numbers (and “integer” representations), which increases the processing speed of each operation.\nFalsification test: Track capabilities and possibility across periods where progress changes and where it does not. The hypothesis fails if they co-vary just as strongly when progress is held fixed.\nScores: source support 0.55, deductive relevance 0.48, novelty 0.66.\n\n40. random noise may affect talent scarcity through gap.\n[arxiv-2207-02852-p0017] The same statistical analysis of the previous section, when performed only on systems in the Other domain, shows that the gap can be explained by random noise, whereas for systems in the Language domains the gap is very unlikely: The probability of observing this gap conditional on our model being correct is 0.23 for systems in the Other domain and 0.02 for those in the Language domain6.\n[arxiv-2010-15581-p0013] The gap between the limited supply and the increased demand for AI talent has produced a talent scarcity in the field (Metz, 2018).\nFalsification test: Compare settings where random noise differs while other inputs are matched. The hypothesis fails if talent scarcity does not change with random noise, or if fixing gap removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.40, novelty 0.64.\n\n41. data efficiency improvements may affect capabilities through progress.\n[arxiv-2211-04325-p0002] We argue that synthetic data generation, transfer learning from datarich domains, and data efficiency improvements might support further progress.\n[arxiv-2305-15324-p0003] Further progress in AI development could lead to capabilities that pose extreme risks, such as offensive cyber capabilities or strong manipulation skills.\nFalsification test: Compare settings where data efficiency improvements differs while other inputs are matched. The hypothesis fails if capabilities does not change with data efficiency improvements, or if fixing progress removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.40, novelty 0.51.\n\n42. matrix vector products may constrain single training run through compute.\n[arxiv-2210-17323-p0023] Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products.\n[arxiv-2402-08797-p0023] Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.\nFalsification test: Compare settings where matrix vector products differs while other inputs are matched. The hypothesis fails if single training run does not stay bounded with matrix vector products, or if fixing compute removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.63.\n\n43. Deployment may increase concerns through compute.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\n[arxiv-2010-15581-p0002] This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.\nFalsification test: Compare settings where Deployment differs while other inputs are matched. The hypothesis fails if concerns does not rise with Deployment, or if fixing compute removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.50.\n\n44. AI applications and splitting may move together because both depend on communication.\n[arxiv-2403-14123-p0003] In fact, several AI applications are becoming bottlenecked by intra/inter-chip and communication across/to AI accelerators, rather than compute.\n[arxiv-2207-02852-p0024] However, the second option requires significant code refactoring and engineering expertise, since this splitting requires significant communication between nodes, which are usually connected by a slower network than within-node GPUs.\nFalsification test: Track AI applications and splitting across periods where communication changes and where it does not. The hypothesis fails if they co-vary just as strongly when communication is held fixed.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.61.\n\n45. AI applications and models may move together because both depend on compute.\n[arxiv-2402-08797-p0019] However, it is important to note that not all AI applications require vast amounts of compute; specialized AI systems have displayed impressive abilities in some domains, even by using much less compute\n[arxiv-2109-05472-p0015] However not all models released in the latest years need so much compute.\nFalsification test: Track AI applications and models across periods where compute changes and where it does not. The hypothesis fails if they co-vary just as strongly when compute is held fixed.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.61.\n\n46. AI applications and concerns may move together because both depend on compute.\n[arxiv-2402-08797-p0019] However, it is important to note that not all AI applications require vast amounts of compute; specialized AI systems have displayed impressive abilities in some domains, even by using much less compute\n[arxiv-2010-15581-p0002] This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.\nFalsification test: Track AI applications and concerns across periods where compute changes and where it does not. The hypothesis fails if they co-vary just as strongly when compute is held fixed.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.61.\n\n47. matrix vector products may constrain concerns through compute.\n[arxiv-2210-17323-p0023] Increasing the speed at which the user receives generated results is challenging, as compute is dominated by matrix-vector products.\n[arxiv-2010-15581-p0002] This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.\nFalsification test: Compare settings where matrix vector products differs while other inputs are matched. The hypothesis fails if concerns does not stay bounded with matrix vector products, or if fixing compute removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.71.\n\n48. compute and Machine Learning ML workloads may jointly drive concerns, and their effects may compound.\n[arxiv-2010-15581-p0002] This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.\n[arxiv-2204-05149-p0002] Machine Learning (ML) workloads have rapidly grown in importance, but raised concerns about their carbon footprint.\nFalsification test: Vary compute and Machine Learning ML workloads separately and together. The hypothesis fails if the joint change in concerns equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.53, novelty 0.60.\n\n49. Deployment may affect AI applications through compute.\n[arxiv-2207-02852-p0027] Deployment usually consumes much more compute than training: Patterson et al.\n[arxiv-2402-08797-p0019] However, it is important to note that not all AI applications require vast amounts of compute; specialized AI systems have displayed impressive abilities in some domains, even by using much less compute\nFalsification test: Compare settings where Deployment differs while other inputs are matched. The hypothesis fails if AI applications does not change with Deployment, or if fixing compute removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.52, novelty 0.50.\n\n50. single training run and concerns may move together because both depend on compute.\n[arxiv-2402-08797-p0023] Due to the immense scale of current model deployment, the majority of all AI compute is now used for inference, even though a single training run requires far more compute than a single inference.\n[arxiv-2010-15581-p0002] This compute divide between large firms and non-elite universities increases concerns around bias and fairness within AI technology, and presents an obstacle towards “democratizing” AI.\nFalsification test: Track single training run and concerns across periods where compute changes and where it does not. The hypothesis fails if they co-vary just as strongly when compute is held fixed.\nScores: source support 0.80, deductive relevance 0.50, novelty 0.63.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
 }
