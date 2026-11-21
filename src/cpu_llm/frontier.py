@@ -563,7 +563,7 @@ class RelationGraph:
 
     def __init__(self):
         self.edges = {}
-        self.negatives = set()                 # (subject_key, object_key)
+        self.negatives = {}                    # (subject_key, relation, object_key) -> exact proofs
         self.signs = {}                        # (subject_key, object_key) -> {kind}
         self.sentences = []                    # (document_id, set of stems, has_cue)
         self.postings = {}                     # stem -> set(sentence index)
@@ -597,6 +597,22 @@ class RelationGraph:
         edge.hedged = edge.hedged and hedged     # one assertive statement is enough
         edge.quantitative = edge.quantitative or _first_bound(sentence) is not None
         self.signs.setdefault((skey, okey), set()).add(kind)
+
+    def add_negative(self, subject, kind, obj, row, sentence, chunk_hash, budget):
+        proof = _proof(row, sentence, chunk_hash)
+        if proof is None:
+            return
+        identity = (term_key(subject), kind, term_key(obj))
+        if not identity[0] or not identity[2]:
+            return
+        proofs = self.negatives.get(identity)
+        if proofs is not None and proof in proofs:
+            return
+        if proofs is None:
+            budget.charge('edges')
+            proofs = self.negatives[identity] = []
+        budget.charge('bytes', 256 + len(sentence))
+        proofs.append(proof)
 
     def term_sentences(self, key):
         stems = [s for s in key.split() if s not in _stop()] or key.split()
@@ -649,7 +665,7 @@ def build_graph(rows, budget):
                 seen |= stems
                 for subject, kind, obj, negative, hedged in relations:
                     if negative:
-                        graph.negatives.add((term_key(subject), term_key(obj)))
+                        graph.add_negative(subject, kind, obj, row, sentence, chunk_hash, budget)
                         continue
                     graph.add(subject, kind, obj, row, sentence, chunk_hash, hedged=hedged,
                               origin=graph.origin, budget=budget)
@@ -953,14 +969,14 @@ def deductive_check(candidate, reading, context):
     for edge in candidate.edges:
         if not all(context.verified(proof) for proof in edge.proofs):
             return None, 'premise_not_verified'
-        if (edge.subject_key, edge.object_key) in graph.negatives:
+        if (edge.subject_key, edge.kind, edge.object_key) in graph.negatives:
             return None, 'premise_contradicted'
         if _opposes(graph.signs.get((edge.subject_key, edge.object_key), ()), edge.kind):
             return None, 'premise_contradicted'
     keys = reading['keys']
     if candidate.pattern == 'chain':
         pair = (keys[0], keys[1])
-        if pair in graph.negatives or _opposes(graph.signs.get(pair, ()), reading['relation']):
+        if (pair[0], reading['relation'], pair[1]) in graph.negatives or _opposes(graph.signs.get(pair, ()), reading['relation']):
             return None, 'conclusion_contradicted'
         if reading['relation'] == 'constrains':
             verdict = context.rule_verdict(reading['anchors'][1], 'requires', reading['anchors'][0])
@@ -970,7 +986,7 @@ def deductive_check(candidate, reading, context):
     else:
         a, b, hub = keys
         pairs = [(a, hub), (b, hub)] if candidate.pattern == 'convergent' else [(hub, a), (hub, b)]
-        if any(pair in graph.negatives for pair in pairs):
+        if any((e.subject_key, e.kind, e.object_key) in graph.negatives for e in candidate.edges):
             return None, 'conclusion_contradicted'
     # Relevance: how certain the composition is, and how closely it fits the topic.
     terms = set(' '.join(keys).split()) | {w for edge in candidate.edges for w in edge.subject_key.split()}
@@ -1199,20 +1215,24 @@ def _identity(candidate, reading):
 HUB_CAP = 3      # at most this many returned hypotheses may share one bridge or hub term
 
 
-def _similarity(encode, edges):
+def _similarity(encode, edges, budget=None):
     """Encode every term that could join another term by head noun; return a cosine lookup."""
+    if budget: budget.check()
     if encode is None:
         return None, 0
     import numpy as np
     by_head = {}
     for edge in edges:
+        if budget: budget.check()
         for key, surface in ((edge.subject_key, edge.subject), (edge.object_key, edge.object)):
             by_head.setdefault(term_head(key), {}).setdefault(key, surface)
     surfaces = sorted({surface for group in by_head.values() if len(group) > 1 for surface in group.values()})
     if not surfaces:
         return (lambda a, b: None), 0
     try:
+        if budget: budget.check()
         vectors = np.asarray(encode(surfaces), dtype=float).reshape(len(surfaces), -1)
+        if budget: budget.check()
     except (ValueError, RuntimeError, OSError):
         return None, 0
     norms = np.linalg.norm(vectors, axis=1)
@@ -1242,7 +1262,9 @@ def run_frontier(topic, rows, *, limits=None, clock=time.monotonic, encode=None,
     stop_reason = graph.stop_reason
     receipt = dict(schema=SCHEMA, triggered=True, topic=topic, claim_status=CLAIM_STATUS, promotion='blocked',
                    index_write=False, potentially_nondeterministic=True, limits=asdict(limits),
-                   topic_terms=stems, focus_terms=focus, chunk_count=len(rows))
+                   topic_terms=stems, focus_terms=focus, chunk_count=len(rows),
+                   candidate_search_complete=graph.complete, deepened=0,
+                   leading_check=dict(requested=0, checked=0, complete=True, stop_reason=None))
     if stems and not present:
         receipt.update(status='insufficient_evidence', hypotheses=[], candidates_generated=0,
                        candidates_passed=passed, candidates_rejected={}, relation_edges=len(graph.edges),
@@ -1257,7 +1279,11 @@ def run_frontier(topic, rows, *, limits=None, clock=time.monotonic, encode=None,
         receipt['focus_terms'] = focus
         receipt['focus_fallback'] = True
     context = DeductiveContext(rows, graph, focus)
-    similar, encoded = _similarity(encode, edges)
+    try:
+        similar, encoded = _similarity(encode, edges, budget)
+    except StopSearch as exc:
+        similar, encoded = None, 0
+        graph.complete, stop_reason = False, str(exc)
     receipt.update(parser=parser_name(), bridge_check='encoder' if similar is not None else 'head_noun',
                    encoded_terms=encoded)
     generated = 0
@@ -1328,7 +1354,12 @@ def run_frontier(topic, rows, *, limits=None, clock=time.monotonic, encode=None,
             deferred.append(item)
     returned = (first + deferred)[:limit]
     receipt['hub_deferred'] = len(deferred)    # entries moved behind more varied ones (none dropped)
-    receipt['deepened'] = _check_leading(returned[:deepen_top], rows, graph, encode, budget)
+    receipt['candidate_search_complete'] = stop_reason is None
+    leading = _check_leading(returned[:deepen_top], rows, graph, encode, budget)
+    receipt['leading_check'] = leading
+    receipt['deepened'] = leading['checked']
+    if not leading['complete'] and stop_reason is None:
+        stop_reason = 'leading_check:' + leading['stop_reason']
     incomplete = stop_reason is not None
     shortage = None
     if len(returned) < limits.min_results:
@@ -1343,30 +1374,29 @@ def run_frontier(topic, rows, *, limits=None, clock=time.monotonic, encode=None,
 
 
 def _check_leading(items, rows, graph, encode, budget):
-    """Run Deepen on the leading entries over the same graph; mark each with its verdict. Order is unchanged.
-
-    The check needs its own similarity lookup over the whole graph: Frontier's lookup covers only the
-    topic-scoped edges, and contrary evidence usually lies outside that scope.
-    """
+    """Check leading entries using the parent's ledger and complete snapshot graph."""
+    result = dict(requested=len(items), checked=0, complete=True, stop_reason=None)
     if not items:
-        return 0
+        return result
     from cpu_llm.deepen import _Sentences, run_deepen
-
-    similar, _ = _similarity(encode, list(graph.edges.values()))
-    sentences = _Sentences(rows)
-    checked = 0
-    for item in items:
-        try:
+    try:
+        budget.check()
+        similar, _ = _similarity(encode, list(graph.edges.values()), budget)
+        sentences = _Sentences(rows, budget)
+        for item in items:
             budget.check()
-        except StopSearch:
-            break
-        receipt = run_deepen(item, rows, graph=graph, similar=similar, sentences=sentences)
-        item['check'] = dict(verdict=receipt['verdict'],
-                             links=[dict(source=l['source'], target=l['target'], status=l['status'],
-                                         counter=[c for c in l['counter'] if 'quote' in c][:2])
-                                    for l in receipt['links']])
-        checked += 1
-    return checked
+            receipt = run_deepen(item, rows, graph=graph, similar=similar, sentences=sentences, budget=budget)
+            item['check'] = dict(verdict=receipt['verdict'], incomplete=receipt['incomplete'],
+                direction_check=receipt['direction_check'],
+                links=[dict(source=l['source'], target=l['target'], status=l['status'],
+                            counter=l['counter'][:2]) for l in receipt['links']])
+            if receipt['incomplete']:
+                result.update(complete=False, stop_reason=receipt['stop_reason'])
+                break
+            result['checked'] += 1
+    except StopSearch as exc:
+        result.update(complete=False, stop_reason=str(exc))
+    return result
 
 
 def _used(budget):
@@ -1399,8 +1429,12 @@ def format_reply(receipt):
         lines.append(f'\nOnly {shortage["returned"]} hypotheses survived the filters (target at least '
                      f'{shortage["target_min"]}). The list is not padded.')
     if receipt['incomplete']:
-        lines.append(f'\nSearch incomplete: {receipt["stop_reason"]}. Results cover only the candidates '
-                     'examined before the budget stopped the run.')
+        if receipt.get('candidate_search_complete'):
+            lines.append(f'\nLeading checks incomplete: {receipt["stop_reason"]}. Candidate enumeration completed; '
+                         'entries without a completed check remain unchecked.')
+        else:
+            lines.append(f'\nSearch incomplete: {receipt["stop_reason"]}. Results cover only the candidates '
+                         'examined before the budget stopped the run.')
     return '\n'.join(lines)
 
 
@@ -1417,7 +1451,8 @@ def execute_frontier(app, message, topic, *, options=None, caller=None, as_of=No
         response = dict(message=message, tenant_id=app.tenant_id, status=status, answer_status=status, answer=None,
                         audit_passed=False, answer_evidence=[], reply=dict(text=text, body=text),
                         needs_clarification=status == 'needs_clarification',
-                        judgment=dict(outcome=status, complete=status == 'hypotheses'),
+                        judgment=dict(outcome=status, complete=status == 'hypotheses'
+                                      and not (receipt or {}).get('incomplete', False)),
                         routing=dict(schema='flag-routing-contract-v1', executed_nodes=[],
                                      post_stages=list(STAGES) if receipt and receipt.get('hypotheses') is not None
                                      else ['frontier_snapshot']))

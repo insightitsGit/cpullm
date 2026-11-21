@@ -1,5 +1,21 @@
 # Current cpu-llm design
 
+## Proposed Reversal Research strategy (2026-11-19)
+
+The [revised Reversal Research design](reversal-research-design.md) and
+[implementation tracker](reversal-research-spec.md) define an opt-in research
+coordinator for candidate expansion, conflict quarantine before elimination,
+conditional clue projection and transparent ranking. It reuses Inference,
+AbductiveBridge, Nammade and existing numerical constraint tools.
+
+This strategy is **not implemented**. Its proposed prompt/API controls are not
+active. It is a logical service outside the current 27-stage core graph;
+ordinary research and strict evidence behavior remain as implemented. The
+[original proposal](reversal-inference-original-spec.md) is preserved alongside
+[its gap review](reversal-inference-design-review.md).
+
+## Implemented services
+
 The [Nammade channel and equilibrium node](nammade-channel-equilibrium-node.md)
 is implemented in `cpu_llm.nammade`. `Nammade: <query>` or `nammade=True` scans
 the caller's authorized spans, quotes them, and reports volumetric labels and

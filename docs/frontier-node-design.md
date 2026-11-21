@@ -146,3 +146,23 @@ Implemented in `src/cpu_llm/frontier.py`; tests in `tests/test_frontier.py`; eva
   - The receipt records `deepened`, the number of entries checked.
   - Set it with `ask(..., frontier={"deepen_top": 3})` or `"frontier": {"deepen_top": 3}` over HTTP.
     `run_frontier(..., deepen_top=0)` is the default for the pure core.
+
+
+## Frontier/Deepen correctness corrections (2026-11-21)
+
+The candidate generator, ranking keys, diversity policy and limits remain
+unchanged. The leading check retains every intermediary, preserves intended
+hypothesis direction, and matches negation to a typed proposition with exact
+source provenance. Checks annotate hypotheses; they do not silently remove or
+re-rank them.
+
+Leading preparation and child scans now share the parent budget. The receipt
+includes `candidate_search_complete` and `leading_check` with requested/checked
+counts, completeness and stop reason. If candidate enumeration completes but the
+leading check expires, candidate results remain available and the response
+explicitly marks the check incomplete; `judgment.complete` is false. Encoding is
+cooperatively checked before and after the call, not forcibly interrupted.
+
+See [the correctness specification](frontier-deepen-correctness-spec.md) and its
+controlled candidate-retention evidence. These changes do not assert that the
+literature-derived hypotheses are scientifically true.

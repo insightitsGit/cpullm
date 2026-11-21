@@ -49,7 +49,7 @@ and proposes cited hypotheses that are clearly labelled unverified.
    unverified.
 2. Keep citations (`answer_evidence`, `frontier.hypotheses[*].citations`, `deepen.links[*].support`).
 3. In Frontier output, skip or flag entries whose `check.verdict` is `contested`. In Deepen, the informative
-   statuses are `contested` and `missing`.
+   statuses are `contested` and `missing`. A verdict of `incomplete` means the check stopped at a budget.
 4. Send one specialist request per call. Combining `frontier`, `deepen`, `invent`, `nammade`, `cycle_search` or
    `inference` raises an error.
 5. Use `session_id` for follow-ups and clarifications.

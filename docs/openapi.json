@@ -579,7 +579,7 @@
             "description": "Positive finite volumetric stiffness used by an explicit Nammade scan. The default is 1."
           },
           "deepen": {
-            "description": "Opt in to the Deepen node for one hypothesis: evidence for and against each link, source predictions, existing setups, confounders and a test plan. Pass the hypothesis text, a hypothesis object from a Frontier receipt, or true to read the message as the hypothesis. Results stay unverified and are never written to the index. Strict evidence disables this path.",
+            "description": "Opt in to the Deepen node for one hypothesis: evidence for and against each link, source predictions, existing setups, confounders and a test plan. Pass the hypothesis text, a hypothesis object from a Frontier receipt, or true to read the message as the hypothesis. Text direction and every intermediary are preserved. Malformed hypothesis objects request clarification. Shared budget expiry produces partial output with an incomplete receipt. Results stay unverified and are never written to the index. Strict evidence disables this path.",
             "oneOf": [{"type": "boolean"}, {"type": "string", "minLength": 1}, {"type": "object"}]
           },
           "frontier": {

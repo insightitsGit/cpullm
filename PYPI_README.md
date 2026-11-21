@@ -331,8 +331,12 @@ reply = app.ask("grokking", frontier={"deepen_top": 3, "limits": {"max_seconds":
     assumptions and a falsification test.
   - Ranking is by support, then relevance, then novelty. Relevance is lowered for terms found almost everywhere, and
     no single term may fill the top of the list.
-- **Automatic check.** The first five entries are checked with Deepen and marked with their verdict. A contested
-  entry is flagged with the contradicting quote. Set `deepen_top` (0–10) to change how many.
+- **Automatic check.**
+  - The first five entries are checked with Deepen and marked with their verdict, and a contested entry is flagged
+    with the contradicting quote. Set `deepen_top` (0–10) to change how many.
+  - The checks share Frontier's request budget. `candidate_search_complete` and `leading_check` distinguish a
+    finished candidate search from an unfinished check; useful candidates stay available, explicitly labelled
+    incomplete.
 - **Budgets.**
   - Rounds, candidates, edges, memory and time, with defaults of 1,000 rounds of 256 candidates, 200,000
     candidates and 60 s.
@@ -354,14 +358,21 @@ session.
 
 ```python
 receipt = app.ask("Deepen this.", deepen=frontier_entry)["deepen"]
-receipt["verdict"]          # all_links_supported, partly_supported, contested, unsupported
+receipt["verdict"]          # all_links_supported, partly_supported, contested, unsupported, incomplete
 receipt["links"]            # each: source, target, status, support, counter
 receipt["predictions"], receipt["setups"], receipt["confounders"]
 receipt["test_plan"]        # design, manipulate, measure, mediator, controls, steps, fails_if
 ```
 
 Each link is `supported`, `contested`, `counter_only`, `weak` or `missing`; a source stating the opposite direction
-or negating the link counts against it. For Frontier's own entries, "supported" is nearly guaranteed, because each
+or negating the link counts against it.
+
+- **Direction.** Text hypotheses keep their requested direction, and Deepen checks the composed effect across every
+  link, including three-edge chains, so two negative links can support a positive end-to-end effect.
+- **Negation.** A negation keeps its relation and citation: "does not reduce" does not negate "increases".
+- **Details.** Inspect `direction_check`, `path_nodes` and `test_plan.mediators`.
+
+[Correctness fixes and regression evidence](https://github.com/insightitsGit/cpullm/blob/main/docs/frontier-deepen-correctness-spec.md). For Frontier's own entries, "supported" is nearly guaranteed, because each
 entry is built from source sentences. The informative signals are `contested` and `missing`. In one evaluation run,
 Frontier proposed that low weight decay increases generalization through the grokking phase; Deepen marked it
 contested, because the cited paper also states that *increasing* weight decay leads to that phase.
@@ -451,7 +462,7 @@ curl -s http://127.0.0.1:8765/v1/ask -H "Authorization: Bearer $CPU_LLM_TOKEN" \
 
 ## Verification
 
-The repository suite for 1.15.0 reports **1,287 passed, 56 skipped, 3 xfailed and 3 failed**. The three failures
+The repository suite for 1.15.0 reports **1,312 passed, 56 skipped, 3 xfailed and 3 failed**. The three failures
 predate this release (`test_cycle_composition` ×2 and `test_request_pipeline_benchmark`). The run used a disposable
 PostgreSQL 16 with pgvector 0.8. The installed wheel was checked in a clean environment.
 [1.15.0 build validation](https://github.com/insightitsGit/cpullm/blob/main/docs/releases/1.15.0-build-validation.md) · [Testing results](https://github.com/insightitsGit/cpullm/blob/main/docs/testing-results.md).
