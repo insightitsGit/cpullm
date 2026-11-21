@@ -591,6 +591,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "topic": {"type": "string", "minLength": 1, "maxLength": 240},
+                  "deepen_top": {"type": "integer", "default": 5, "minimum": 0, "maximum": 10, "description": "Run Deepen on this many leading entries and mark each with its verdict; 0 turns the check off."},
                   "limits": {
                     "type": "object",
                     "additionalProperties": false,

@@ -757,6 +757,12 @@ Over HTTP, send `{"message": "grokking", "frontier": true}` to `/v1/ask`.
   - When the appliance has an encoder, a link between two different terms with
     the same head noun must pass a cosine check.
   - At most three of the leading entries may share one term.
+- **Checking and ranking.**
+  - The first five entries are checked automatically with [Deepen](#deepen-examine-one-hypothesis-unreleased).
+    Each one is marked with its verdict, and contested entries are flagged with the quotes that contradict them.
+  - Set `frontier={"deepen_top": n}` to choose how many are checked (0–10; 0 turns the check off).
+  - Relevance is scaled by how specific the hypothesis's terms are in the corpus, so entries built on terms found
+    everywhere ("training", "brain") rank lower.
 - **Who judges.** Frontier generates, filters and ranks. A person decides whether
   a hypothesis is true or worth pursuing, using the cited passages and the
   falsification test.

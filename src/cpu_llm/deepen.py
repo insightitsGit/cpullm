@@ -213,17 +213,21 @@ def test_plan(pattern, a, b, c, confounders):
                 fails_if=f'{a} and {b} co-vary just as strongly when {c} is held fixed, or {c} moves neither.')
 
 
-def run_deepen(hypothesis, rows, *, limits=None, encode=None):
-    """Pure core: no database, no writes. Returns the ``deepen`` receipt."""
-    pattern, a, b, c = parse_hypothesis(hypothesis)[:4]
-    expected = parse_hypothesis(hypothesis)[4]
+def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, similar=None, sentences=None):
+    """Pure core: no database, no writes. Returns the ``deepen`` receipt.
+
+    Frontier passes its own ``graph``, ``similar`` and ``sentences`` when it checks its leading entries, so the
+    snapshot is read and parsed once.
+    """
+    pattern, a, b, c, expected = parse_hypothesis(hypothesis)
     limits = limits or FrontierLimits()
     budget = Budget(limits)
     budget.counters = dict(rounds=0, candidates=0, edges=0, bytes=0)
-    graph = build_graph(rows, budget)
-    edges = list(graph.edges.values())
-    similar, encoded = _similarity(encode, edges)
-    sentences = _Sentences(rows)
+    encoded = None
+    if graph is None:
+        graph = build_graph(rows, budget)
+        similar, encoded = _similarity(encode, list(graph.edges.values()))
+    sentences = sentences or _Sentences(rows)
     links = []
     for index, (source, target) in enumerate(_links(pattern, a, b, c)):
         kind = expected[index] if index < len(expected) else None
@@ -251,6 +255,7 @@ def run_deepen(hypothesis, rows, *, limits=None, encode=None):
                 verdict=verdict, predictions=predictions, setups=setups, confounders=confounders,
                 test_plan=test_plan(pattern, a, b, c, confounders), relation_edges=len(graph.edges),
                 bridge_check='encoder' if similar is not None else 'head_noun', encoded_terms=encoded,
+                graph_reused=encoded is None,
                 incomplete=not graph.complete, stop_reason=graph.stop_reason,
                 budget_used=dict(budget.counters, seconds=round(budget.clock() - budget.started, 3)))
 

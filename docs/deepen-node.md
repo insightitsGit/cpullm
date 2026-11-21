@@ -30,6 +30,13 @@ Directions are compared by sign. `constrains` counts as capacity-positive (more 
 that A *reduces* B contradicts it. Links reuse Frontier's relation graph and parse cache, its related-term matching,
 and, when the appliance has an encoder, the cosine check on head-noun bridges.
 
+## Automatic use inside Frontier
+
+A Frontier run in the appliance checks its first five entries with Deepen by default (`frontier={"deepen_top": n}`,
+0–10). It passes its own relation graph, bridge check and sentence index to `run_deepen(..., graph=..., similar=...,
+sentences=...)`, so the snapshot is read and parsed once. Each checked entry carries `check.verdict` and per-link
+statuses. Contested entries are flagged in the reply with the contrary quotes.
+
 ## Contract
 
 The hypothesis remains `UNVERIFIED_HYPOTHESIS` with `promotion: blocked`. Nothing is written to the index. The

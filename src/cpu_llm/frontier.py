@@ -79,21 +79,27 @@ class FrontierLimits:
             raise ValueError('min_results cannot exceed max_results')
 
 
+DEEPEN_TOP = 5     # leading entries checked by Deepen in an appliance run (0 turns the check off)
+
+
 def validate_frontier_option(option):
     """Return None (not requested) or a dict with optional topic and limits."""
     if option is None or option is False:
         return None
     if option is True:
-        return dict(topic=None, limits=FrontierLimits())
-    if not isinstance(option, dict) or set(option) - {'topic', 'limits'}:
-        raise ValueError('frontier must be a boolean or an object with optional topic and limits')
+        return dict(topic=None, limits=FrontierLimits(), deepen_top=DEEPEN_TOP)
+    if not isinstance(option, dict) or set(option) - {'topic', 'limits', 'deepen_top'}:
+        raise ValueError('frontier must be a boolean or an object with optional topic, limits and deepen_top')
+    deepen_top = option.get('deepen_top', DEEPEN_TOP)
+    if type(deepen_top) is not int or not 0 <= deepen_top <= 10:
+        raise ValueError('frontier.deepen_top must be an integer from 0 to 10')
     topic = option.get('topic')
     if topic is not None and (not isinstance(topic, str) or not topic.strip() or len(topic) > 240):
         raise ValueError('frontier.topic must be a short subject (1..240 characters)')
     limits = option.get('limits', {})
     if not isinstance(limits, dict) or set(limits) - set(FrontierLimits.__dataclass_fields__):
         raise ValueError('unknown frontier limit')
-    return dict(topic=topic, limits=FrontierLimits(**limits))
+    return dict(topic=topic, limits=FrontierLimits(**limits), deepen_top=deepen_top)
 
 
 def frontier_seed(message, *, forced=False):
@@ -974,8 +980,18 @@ def deductive_check(candidate, reading, context):
     focus = context.focus
     term_fit = len(focus & terms) / len(focus) if focus else 1.0
     quote_fit = len(focus & quotes) / len(focus) if focus else 1.0
-    reading['deductive_relevance'] = round(0.5 * reading['certainty'] + 0.3 * quote_fit + 0.2 * term_fit, 3)
+    base = 0.5 * reading['certainty'] + 0.3 * quote_fit + 0.2 * term_fit
+    # Specificity: terms found in many chunks ("brain", "compute", "training") explain little. Scale the
+    # relevance by the mean specificity of the anchors, 1 - log(1 + chunks with the term) / log(1 + all chunks).
+    reading['specificity'] = round(_specificity(graph, keys), 3)
+    reading['deductive_relevance'] = round(base * (0.6 + 0.4 * reading['specificity']), 3)
     return reading, None
+
+
+def _specificity(graph, keys):
+    total = max(graph.chunk_count, 1)
+    values = [1.0 - math.log1p(len(graph.term_chunks(key))) / math.log1p(total) for key in keys if key]
+    return max(0.0, min(1.0, sum(values) / len(values))) if values else 1.0
 
 
 _VAGUE = frozenset("""associated somewhat such way case thing part lot year month day week time factor value result
@@ -1210,7 +1226,7 @@ def _similarity(encode, edges):
     return similar, len(surfaces)
 
 
-def run_frontier(topic, rows, *, limits=None, clock=time.monotonic, encode=None):
+def run_frontier(topic, rows, *, limits=None, clock=time.monotonic, encode=None, deepen_top=0):
     """Pure core: no database, no writes. Returns the ``frontier`` receipt.
 
     ``encode(texts)`` (optional) returns one vector per text and is used to check head-noun bridges.
@@ -1312,6 +1328,7 @@ def run_frontier(topic, rows, *, limits=None, clock=time.monotonic, encode=None)
             deferred.append(item)
     returned = (first + deferred)[:limit]
     receipt['hub_deferred'] = len(deferred)    # entries moved behind more varied ones (none dropped)
+    receipt['deepened'] = _check_leading(returned[:deepen_top], rows, graph, similar, budget)
     incomplete = stop_reason is not None
     shortage = None
     if len(returned) < limits.min_results:
@@ -1323,6 +1340,28 @@ def run_frontier(topic, rows, *, limits=None, clock=time.monotonic, encode=None)
                    relation_edges=len(graph.edges), scoped_edges=len(edges), budget_used=_used(budget),
                    incomplete=incomplete, stop_reason=stop_reason, shortage=shortage)
     return receipt
+
+
+def _check_leading(items, rows, graph, similar, budget):
+    """Run Deepen on the leading entries over the same graph; mark each with its verdict. Order is unchanged."""
+    if not items:
+        return 0
+    from cpu_llm.deepen import _Sentences, run_deepen
+
+    sentences = _Sentences(rows)
+    checked = 0
+    for item in items:
+        try:
+            budget.check()
+        except StopSearch:
+            break
+        receipt = run_deepen(item, rows, graph=graph, similar=similar, sentences=sentences)
+        item['check'] = dict(verdict=receipt['verdict'],
+                             links=[dict(source=l['source'], target=l['target'], status=l['status'],
+                                         counter=[c for c in l['counter'] if 'quote' in c][:2])
+                                    for l in receipt['links']])
+        checked += 1
+    return checked
 
 
 def _used(budget):
@@ -1341,6 +1380,13 @@ def format_reply(receipt):
         lines.append(f'\n{number}. {item["text"]}')
         lines.extend(f'[{c["document_id"]}] {c["quote"]}' for c in item['citations'])
         lines.append('Falsification test: ' + item['falsification_test'])
+        if item.get('check'):
+            check = item['check']
+            statuses = ', '.join(f'{l["source"]} -> {l["target"]}: {l["status"].replace("_", " ")}'
+                                 for l in check['links'])
+            flag = 'Warning, contested: ' if check['verdict'] == 'contested' else 'Deepen check: '
+            lines.append(f'{flag}{check["verdict"].replace("_", " ")} ({statuses}).')
+            lines.extend(f'  - [{c["document_id"]}] {c["quote"]}' for l in check['links'] for c in l['counter'])
         lines.append(f'Scores: source support {scores["source_support"]:.2f}, deductive relevance '
                      f'{scores["deductive_relevance"]:.2f}, novelty {scores["novelty"]:.2f}.')
     if receipt.get('shortage'):
@@ -1390,7 +1436,7 @@ def execute_frontier(app, message, topic, *, options=None, caller=None, as_of=No
         return result('partial', 'The Frontier source snapshot was unavailable or exceeded its limit.',
                       dict(base, status='partial', incomplete=True, stop_reason='snapshot_unavailable'))
     pipeline = getattr(app.index, 'pipeline', None)
-    receipt = run_frontier(topic, rows, limits=options['limits'],
+    receipt = run_frontier(topic, rows, limits=options['limits'], deepen_top=options.get('deepen_top', DEEPEN_TOP),
                            encode=getattr(pipeline, 'encode_texts', None))
     receipt['snapshot'] = dict(as_of=when, chunk_count=len(rows))
     if receipt['status'] == 'insufficient_evidence' and not receipt['hypotheses']:

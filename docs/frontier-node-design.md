@@ -127,3 +127,22 @@ Implemented in `src/cpu_llm/frontier.py`; tests in `tests/test_frontier.py`; eva
   - This only re-orders the list: no entry is dropped and nothing is padded. `hub_deferred` counts the moved
     entries.
 - **Term hygiene.** Terms that start with a question word or subordinator, and bare symbols, are rejected.
+
+## Ranking specificity and the leading-entry check (2026-11-21)
+
+- **Specificity.**
+  - `deductive_relevance` is now `base × (0.6 + 0.4 × specificity)`, where `base` is the earlier formula
+    (`0.5 × certainty + 0.3 × quote fit + 0.2 × term fit`).
+  - `specificity` is the mean over the hypothesis's anchor terms of `1 − log(1 + chunks containing the term) /
+    log(1 + all chunks)`.
+  - Terms present in most chunks ("brain", "compute", "training") lower an entry's relevance, so specific
+    hypotheses rise. Source support remains the first ranking key.
+- **Leading-entry check.**
+  - An appliance run checks the first `deepen_top` entries with the Deepen node (default 5, 0 turns it off, at most
+    10), reusing the same relation graph, bridge check and sentence index.
+  - Each checked entry gets `check = {verdict, links: [{source, target, status, counter}]}`. The reply marks it, and
+    flags a contested entry with "Warning, contested" and the contrary quotes.
+  - The order is unchanged: the check informs the reader, it does not re-rank.
+  - The receipt records `deepened`, the number of entries checked.
+  - Set it with `ask(..., frontier={"deepen_top": 3})` or `"frontier": {"deepen_top": 3}` over HTTP.
+    `run_frontier(..., deepen_top=0)` is the default for the pure core.

@@ -491,3 +491,40 @@ def test_a_side_term_cannot_fill_the_list():
     receipt = run_frontier('accuracy', rows_of(*texts))
     top = [h for h in receipt['hypotheses'][:10]]
     assert sum('ResMem' in h['text'] for h in top) <= 3
+
+
+def test_generic_terms_lower_relevance():
+    # "training" appears in most chunks; "wafer forecasting" in one. Both chains have the same composition.
+    rows = rows_of('Wafer supply limits accelerator capacity.', 'Accelerator capacity drives training.',
+                   'Training budgets limit progress.', 'Data quality improves training.',
+                   'Training curricula affect evaluation.', 'Accelerator capacity drives wafer forecasting.')
+    receipt = run_frontier('accelerator capacity', rows)
+    by_text = {h['text']: h for h in receipt['hypotheses']}
+    generic = by_text['Wafer supply may constrain training through accelerator capacity.']
+    specific = by_text['Wafer supply may constrain wafer forecasting through accelerator capacity.']
+    assert specific['scores']['deductive_relevance'] > generic['scores']['deductive_relevance']
+
+
+def test_leading_entries_are_checked_and_contested_ones_flagged():
+    rows = small_corpus() + rows_of('Inference throughput reduces serving revenue under heavy load.', prefix='x')
+    plain = run_frontier('inference', small_corpus())
+    assert 'deepened' in plain and plain['deepened'] == 0 and 'check' not in plain['hypotheses'][0]
+    checked = run_frontier('inference', small_corpus(), deepen_top=5)
+    assert checked['deepened'] == len(checked['hypotheses'][:5])
+    assert all(h['check']['verdict'] for h in checked['hypotheses'][:5])
+    from cpu_llm.frontier import format_reply
+    assert 'Deepen check:' in format_reply(checked) or 'Warning, contested:' in format_reply(checked)
+    assert validate_frontier_option(True)['deepen_top'] == 5
+    assert validate_frontier_option(dict(deepen_top=0))['deepen_top'] == 0
+    for bad in (11, -1, 'five', True):
+        with pytest.raises(ValueError):
+            validate_frontier_option(dict(deepen_top=bad))
+
+
+def test_appliance_runs_check_on_leading_entries_by_default():
+    app = appliance(wide_corpus())
+    receipt = app.ask('Frontier: accelerator capacity.')['frontier']
+    assert receipt['deepened'] == 5 and all('check' in h for h in receipt['hypotheses'][:5])
+    assert 'check' not in receipt['hypotheses'][5]
+    off = appliance(wide_corpus()).ask('accelerator capacity', frontier=dict(deepen_top=0))['frontier']
+    assert off['deepened'] == 0
