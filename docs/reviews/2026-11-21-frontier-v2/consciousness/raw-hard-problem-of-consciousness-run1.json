@@ -1,9 +1,9 @@
 {
  "prompt": "Frontier: hard problem of consciousness.",
  "run": 1,
- "wall_seconds": 20.528,
- "python_peak_bytes": 859980267,
- "answer_status": "insufficient_evidence",
+ "wall_seconds": 30.871,
+ "python_peak_bytes": 873053141,
+ "answer_status": "hypotheses",
  "routing": {
   "schema": "flag-routing-contract-v1",
   "executed_nodes": [],
@@ -29,7 +29,7 @@
    "max_candidates": 200000,
    "max_edges": 50000,
    "max_bytes": 67108864,
-   "max_seconds": 20.0,
+   "max_seconds": 60.0,
    "batch_size": 256,
    "max_path_edges": 2,
    "max_results": 50,
@@ -42,44 +42,1836 @@
   ],
   "focus_terms": [
    "hard",
-   "problem",
-   "consciousness"
+   "problem"
   ],
   "chunk_count": 1241,
   "parser": "en_core_web_lg",
   "bridge_check": "encoder",
-  "encoded_terms": 37,
-  "hub_deferred": 0,
-  "status": "insufficient_evidence",
-  "hypotheses": [],
-  "survivors": 0,
-  "candidates_generated": 0,
+  "encoded_terms": 24,
+  "hub_deferred": 18,
+  "status": "hypotheses",
+  "hypotheses": [
+   {
+    "id": "20abf1160862",
+    "text": "consciousness and disparate inputs may move together because both depend on brain.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "consciousness",
+     "disparate inputs",
+     "brain"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2204-07164-p0009",
+     "arxiv-2112-03151-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2204-07164-p0009",
+      "quote": "Please note that although I am using the word ‘function’ here, I am not suggesting that there is a causal relation here (as in, the brain causes consciousness): there is an equivalence.",
+      "start": 307,
+      "end": 492,
+      "chunk_sha256": "d7e5c9053c52d258f5465a019e157c64ecc3af73d1c279bbf6a0b53f1019bc5e",
+      "relation": "causes",
+      "subject": "brain",
+      "object": "consciousness",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2112-03151-p0004",
+      "quote": "As explained by the binding problem, the brain consumes disparate inputs and binds them together into a coherent reality.",
+      "start": 1612,
+      "end": 1733,
+      "chunk_sha256": "2227470f0b7352bcc0759a50fb7aea393907ef5504888e6e57208be2acc4c80c",
+      "relation": "increases",
+      "subject": "brain",
+      "object": "disparate inputs",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.96,
+     "deductive_relevance": 0.55,
+     "novelty": 0.55
+    },
+    "falsification_test": "Track consciousness and disparate inputs across periods where brain changes and where it does not. The hypothesis fails if they co-vary just as strongly when brain is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "brain"
+   },
+   {
+    "id": "73c63ac9ea4c",
+    "text": "conscious experience and disparate inputs may move together because both depend on brain.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "conscious experience",
+     "disparate inputs",
+     "brain"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2506-18935-p0005",
+     "arxiv-2112-03151-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2506-18935-p0005",
+      "quote": "There are many theories in neuroscience which fundamentally explain how the brain causes conscious experience, such as the mathematical models of IntegratedInformationTheory(IIT)[6],GlobalNeuronalWorkspaceTheory(GWT) [5,24], Predictive Processing Theory (PPT) [36,48], Higher-Order Thought Theory (HOT) [4,17,40,44], biological models [27,37,43,49], and quantum models [1,8,16,33].",
+      "start": 0,
+      "end": 381,
+      "chunk_sha256": "447add8c741cc285307b094de50d526e150e67a9ec5a881f11301fd27c54ed44",
+      "relation": "causes",
+      "subject": "brain",
+      "object": "conscious experience",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2112-03151-p0004",
+      "quote": "As explained by the binding problem, the brain consumes disparate inputs and binds them together into a coherent reality.",
+      "start": 1612,
+      "end": 1733,
+      "chunk_sha256": "2227470f0b7352bcc0759a50fb7aea393907ef5504888e6e57208be2acc4c80c",
+      "relation": "increases",
+      "subject": "brain",
+      "object": "disparate inputs",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.91,
+     "deductive_relevance": 0.55,
+     "novelty": 0.578
+    },
+    "falsification_test": "Track conscious experience and disparate inputs across periods where brain changes and where it does not. The hypothesis fails if they co-vary just as strongly when brain is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "brain"
+   },
+   {
+    "id": "4988b71ca363",
+    "text": "session wise variation and existence of intractable hard problem may move together because both depend on models.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "session wise variation",
+     "existence of intractable hard problem",
+     "models"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2510-04084-p0018",
+     "arxiv-2401-13690-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2510-04084-p0018",
+      "quote": "Bayesian surprise showed more consistent positive coefficients than accuracy in both univariate and multivariable models, and models containing Bayesian surprise generally accounted for more session-wise variation in Φmc R than the corresponding accuracy-only models (Supplementary Fig. S1 and Supplementary Table S1).",
+      "start": 566,
+      "end": 884,
+      "chunk_sha256": "9cb73b22507dd1b8f729f86839ea6e09f57c58657307ed4661434c3aeeb8ce5e",
+      "relation": "causes",
+      "subject": "models",
+      "object": "session wise variation",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2401-13690-p0006",
+      "quote": "Indeed, the model presented here directly contradicts the existence of an intractable hard problem.",
+      "start": 548,
+      "end": 647,
+      "chunk_sha256": "5c6ea1c3dbf28848fcc4283540530e5f8c21d8f65754839f0e65a554523ac7e2",
+      "relation": "undermines",
+      "subject": "model",
+      "object": "existence of intractable hard problem",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.9,
+     "novelty": 0.642
+    },
+    "falsification_test": "Track session wise variation and existence of intractable hard problem across periods where models changes and where it does not. The hypothesis fails if they co-vary just as strongly when models is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "model"
+   },
+   {
+    "id": "48a826c476d1",
+    "text": "algorithms may affect existence of intractable hard problem through models.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "algorithms",
+     "existence of intractable hard problem"
+    ],
+    "via": [
+     "models"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1912-13490-p0006",
+     "arxiv-2401-13690-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1912-13490-p0006",
+      "quote": "Interestingly, these models rely on new algorithms (‘transformers’) that have notable links with the manipulation of internal representations.",
+      "start": 2775,
+      "end": 2917,
+      "chunk_sha256": "1fa823ae74c2fd685e9caccfe5753364796727c3219313d15cf176ad0e4a8536",
+      "relation": "constrains",
+      "subject": "algorithms",
+      "object": "models",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2401-13690-p0006",
+      "quote": "Indeed, the model presented here directly contradicts the existence of an intractable hard problem.",
+      "start": 548,
+      "end": 647,
+      "chunk_sha256": "5c6ea1c3dbf28848fcc4283540530e5f8c21d8f65754839f0e65a554523ac7e2",
+      "relation": "undermines",
+      "subject": "model",
+      "object": "existence of intractable hard problem",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.8,
+     "novelty": 0.538
+    },
+    "falsification_test": "Compare settings where algorithms differs while other inputs are matched. The hypothesis fails if existence of intractable hard problem does not change with algorithms, or if fixing models removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "model"
+   },
+   {
+    "id": "64da674e9719",
+    "text": "Chalmers and formulation may jointly drive view, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "Chalmers",
+     "formulation",
+     "view"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2509-16859-p0005",
+     "arxiv-2407-09488-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2509-16859-p0005",
+      "quote": "However, in his 2018 work on the meta-problem of consciousness, Chalmers expanded his view by introducing a new category of \"easy problems\" that are intimately connected to the hard problem.",
+      "start": 355,
+      "end": 545,
+      "chunk_sha256": "6162b90b2eaca330734107b4f90ab6165baae3df658fd3ce4a8a445ab3ee7d4a",
+      "relation": "increases",
+      "subject": "Chalmers",
+      "object": "view",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-09488-p0011",
+      "quote": "Remark: This formulation supports the view that emotion and cognition are not independent modules, but coupled components in a recursive inference loop.",
+      "start": 0,
+      "end": 152,
+      "chunk_sha256": "6baed18a5225aa2e0cb97b82703c08b000c9ea11a627e4ced9540840b4f293d5",
+      "relation": "supports",
+      "subject": "formulation",
+      "object": "view",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.725,
+     "novelty": 0.657
+    },
+    "falsification_test": "Vary Chalmers and formulation separately and together. The hypothesis fails if the joint change in view equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "view"
+   },
+   {
+    "id": "7ea4c0e2429c",
+    "text": "explanation and machines may move together because both depend on principles.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "explanation",
+     "machines",
+     "principles"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1606-07184-p0002",
+     "arxiv-2301-07016-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1606-07184-p0002",
+      "quote": "He argued that subjective experience constitutes a \"hard problem\" in the sense that its explanation will ultimately require new physical laws or principles.",
+      "start": 127,
+      "end": 283,
+      "chunk_sha256": "406ba3b4f870101f9fc97b78b7167fc6a6721d0ef7ec70aecd6af7bb16c9f0e5",
+      "relation": "constrains",
+      "subject": "principles",
+      "object": "explanation",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2301-07016-p0003",
+      "quote": "Deep learning and reinforcement learning(Sutton and Barto 1998) principles enabled machines that learned chess, go and computer games from scratch, achieving superhuman performance(Silver et al.",
+      "start": 186,
+      "end": 380,
+      "chunk_sha256": "cb8af98f54cdead0f1ec81dacb3e1838fa47e55054d2284c6c4fa3f5bfe429b2",
+      "relation": "increases",
+      "subject": "principles",
+      "object": "machines",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.7,
+     "novelty": 0.657
+    },
+    "falsification_test": "Track explanation and machines across periods where principles changes and where it does not. The hypothesis fails if they co-vary just as strongly when principles is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "principle"
+   },
+   {
+    "id": "0290e23a38de",
+    "text": "brain may support effect repertoire through consciousness.",
+    "pattern": "chain",
+    "relation": "supports",
+    "anchors": [
+     "brain",
+     "effect repertoire"
+    ],
+    "via": [
+     "consciousness"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2204-07164-p0004",
+     "arxiv-2510-04084-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2204-07164-p0004",
+      "quote": "Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).",
+      "start": 0,
+      "end": 204,
+      "chunk_sha256": "bbf63c86bd51602f06714c9df1ee5d7c874a790612428872036a06eabbb0ee89",
+      "relation": "supports",
+      "subject": "brain",
+      "object": "consciousness",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2510-04084-p0004",
+      "quote": "IIT, grounded in phenomenology, holds that consciousness is identical to a system’s integrated causal structure—an irreducible cause–effect repertoire quantified by Φ—which specifies how experience exists here and now as an intrinsic property of the system.",
+      "start": 183,
+      "end": 440,
+      "chunk_sha256": "c48d38d9bbfcfd24894e1ca7b376cd59f7471aa018bf9879276dbcb9c93e2065",
+      "relation": "alias_of",
+      "subject": "consciousness",
+      "object": "effect repertoire",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.65,
+     "novelty": 0.6
+    },
+    "falsification_test": "Construct a coherent case where brain is accepted. The hypothesis fails if effect repertoire still fails in that case, or if the argument does not need consciousness.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "consciousness"
+   },
+   {
+    "id": "63c9241e22f7",
+    "text": "unquantifiable and existence of intractable hard problem may move together because both depend on models.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "unquantifiable",
+     "existence of intractable hard problem",
+     "models"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1704-01148-p0002",
+     "arxiv-2401-13690-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1704-01148-p0002",
+      "quote": "Yet despite this limitation, QHT argues that such models can account for the unquantifiable--not by explaining or containing it, but by marking its place, in the form of a signpost.",
+      "start": 546,
+      "end": 727,
+      "chunk_sha256": "221e1c5e9674e5fa954d0ba38100bff6e3e7ab708d479d544b1f31f3a92724c0",
+      "relation": "causes",
+      "subject": "models",
+      "object": "unquantifiable",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2401-13690-p0006",
+      "quote": "Indeed, the model presented here directly contradicts the existence of an intractable hard problem.",
+      "start": 548,
+      "end": 647,
+      "chunk_sha256": "5c6ea1c3dbf28848fcc4283540530e5f8c21d8f65754839f0e65a554523ac7e2",
+      "relation": "undermines",
+      "subject": "model",
+      "object": "existence of intractable hard problem",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.9,
+     "novelty": 0.6
+    },
+    "falsification_test": "Track unquantifiable and existence of intractable hard problem across periods where models changes and where it does not. The hypothesis fails if they co-vary just as strongly when models is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "model"
+   },
+   {
+    "id": "666455c71688",
+    "text": "documented relationships and explanation may move together because both depend on principles.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "documented relationships",
+     "explanation",
+     "principles"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2012-12963-p0002",
+     "arxiv-1606-07184-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2012-12963-p0002",
+      "quote": "We show how these principles can account for documented relationships between appraisal and distance as an inverse distance law, yield a generative model of affective and epistemic drives based on purely subjective parameters, such as the apparent size of objects, and can be generalised to implement Theory of Mind, in a manner that is consistent with simulation theory.",
+      "start": 688,
+      "end": 1059,
+      "chunk_sha256": "50790ef34f5813177ab6f33ca5fa2852a5ebbdb0a005750987f889f471931bf0",
+      "relation": "causes",
+      "subject": "principles",
+      "object": "documented relationships",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1606-07184-p0002",
+      "quote": "He argued that subjective experience constitutes a \"hard problem\" in the sense that its explanation will ultimately require new physical laws or principles.",
+      "start": 127,
+      "end": 283,
+      "chunk_sha256": "406ba3b4f870101f9fc97b78b7167fc6a6721d0ef7ec70aecd6af7bb16c9f0e5",
+      "relation": "constrains",
+      "subject": "principles",
+      "object": "explanation",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.7,
+     "novelty": 0.663
+    },
+    "falsification_test": "Track documented relationships and explanation across periods where principles changes and where it does not. The hypothesis fails if they co-vary just as strongly when principles is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "principle"
+   },
+   {
+    "id": "8588d2b6613d",
+    "text": "explanation and purpose of consciousness may move together because both depend on principles.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "explanation",
+     "purpose of consciousness",
+     "principles"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1606-07184-p0002",
+     "arxiv-2309-15566-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1606-07184-p0002",
+      "quote": "He argued that subjective experience constitutes a \"hard problem\" in the sense that its explanation will ultimately require new physical laws or principles.",
+      "start": 127,
+      "end": 283,
+      "chunk_sha256": "406ba3b4f870101f9fc97b78b7167fc6a6721d0ef7ec70aecd6af7bb16c9f0e5",
+      "relation": "constrains",
+      "subject": "principles",
+      "object": "explanation",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2309-15566-p0003",
+      "quote": "In doing so, the principle should explain the purpose of consciousness and how it can be produced by non-conscious (physical) components.",
+      "start": 3438,
+      "end": 3575,
+      "chunk_sha256": "fc95c83c49e1f101b0721d390fc6427fd75b6283a0bbf2da2dcfe47257bd46de",
+      "relation": "supports",
+      "subject": "principle",
+      "object": "purpose of consciousness",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.7,
+     "novelty": 0.613
+    },
+    "falsification_test": "Track explanation and purpose of consciousness across periods where principles changes and where it does not. The hypothesis fails if they co-vary just as strongly when principles is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "principle"
+   },
+   {
+    "id": "f4e0f42b3f04",
+    "text": "time divergence and World models may jointly support problems, each covering what the other leaves open.",
+    "pattern": "convergent",
+    "relation": "jointly_support",
+    "anchors": [
+     "time divergence",
+     "World models",
+     "problems"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2309-15566-p0008",
+     "arxiv-1912-13490-p0017"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2309-15566-p0008",
+      "quote": "Penrose speculated that the problems posed by Libet’s experiments might be explained by time divergence implicit in the spacetime superposition of mass prior to",
+      "start": 261,
+      "end": 421,
+      "chunk_sha256": "884f8fb0940db5514c1c326f50a06b41b1045b6c2e877e21ce08d22305872a2f",
+      "relation": "supports",
+      "subject": "time divergence",
+      "object": "problems",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1912-13490-p0017",
+      "quote": "World models support planning and problem solving as they allow the agent to internally simulate the dynamic transitions of the environment, from a starting state to final goals.",
+      "start": 1282,
+      "end": 1460,
+      "chunk_sha256": "490c861a2c41121be1e6b71aa2db3c51efb71cef23684046489470fabc8a2dc0",
+      "relation": "supports",
+      "subject": "World models",
+      "object": "problem",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.675,
+     "novelty": 0.65
+    },
+    "falsification_test": "Assess problems against time divergence alone, World models alone, and both together. The hypothesis fails if the combined case adds nothing to the stronger single case.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "problem"
+   },
+   {
+    "id": "6ecea3aceef2",
+    "text": "insentient brain and subject may interact in their effect on conscious experiences.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "insentient brain",
+     "subject",
+     "conscious experiences"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2504-18550-p0002",
+     "arxiv-2204-07164-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2504-18550-p0002",
+      "quote": "Functional theories of consciousness, based on emergence of conscious experiences from the execution of a particular function by an insentient brain, face the hard problem of consciousness of explaining why the insentient brain should produce any conscious experiences at all.",
+      "start": 0,
+      "end": 276,
+      "chunk_sha256": "83a19cef383cace7c547a88aa9fe7e731562345624dc53b3ff091b471824afb8",
+      "relation": "causes",
+      "subject": "insentient brain",
+      "object": "conscious experiences",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2204-07164-p0006",
+      "quote": "However, this feeling of ownership of experience and the idea that conscious experiences are by definition accompanied by a feeling of ‘ownership’, or even need a subject that experiences them, may be an illusion.",
+      "start": 589,
+      "end": 802,
+      "chunk_sha256": "4bfd90009f888243e9c2bcb96f2ef98c705c55e3de2f1f19ce08cf10a3f6ce4d",
+      "relation": "constrains",
+      "subject": "subject",
+      "object": "conscious experiences",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.65,
+     "novelty": 0.564
+    },
+    "falsification_test": "Vary insentient brain and subject separately and together. The hypothesis fails if the joint change in conscious experiences equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "conscious experience"
+   },
+   {
+    "id": "182123e40b71",
+    "text": "immediate input may constrain outputs through Systems.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "immediate input",
+     "outputs"
+    ],
+    "via": [
+     "Systems"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-04269-p0013",
+     "arxiv-2606-05528-p0018"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-04269-p0013",
+      "quote": "Systems lacking recursive architecture must rely on immediate input, requiring high data density to find patterns.",
+      "start": 2271,
+      "end": 2385,
+      "chunk_sha256": "aaf2a466bddaab79e8f506e64bab5e11f03680f8dfec7810ef2951d7b8c3169b",
+      "relation": "constrains",
+      "subject": "immediate input",
+      "object": "Systems",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2606-05528-p0018",
+      "quote": "The critical lesson is the gaming problem in acute form: a system designed to maximize perceived emotional authenticity produces outputs that appear consciousness-relevant while lacking the architectural substrates that would make those indicators genuine— underscoring our requirement for architectural evidence",
+      "start": 1030,
+      "end": 1342,
+      "chunk_sha256": "15bb4de64e9ae49fd6e5d44eb71b624275df87124418db0e1685ab9d82a9281c",
+      "relation": "causes",
+      "subject": "system",
+      "object": "outputs",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.575,
+     "novelty": 0.55
+    },
+    "falsification_test": "Compare settings where immediate input differs while other inputs are matched. The hypothesis fails if outputs does not stay bounded with immediate input, or if fixing Systems removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "system"
+   },
+   {
+    "id": "61f68bdc5d93",
+    "text": "outputs and cause may move together because both depend on system.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "outputs",
+     "cause",
+     "system"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2606-05528-p0018",
+     "arxiv-2212-14537-p0027"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2606-05528-p0018",
+      "quote": "The critical lesson is the gaming problem in acute form: a system designed to maximize perceived emotional authenticity produces outputs that appear consciousness-relevant while lacking the architectural substrates that would make those indicators genuine— underscoring our requirement for architectural evidence",
+      "start": 1030,
+      "end": 1342,
+      "chunk_sha256": "15bb4de64e9ae49fd6e5d44eb71b624275df87124418db0e1685ab9d82a9281c",
+      "relation": "causes",
+      "subject": "system",
+      "object": "outputs",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2212-14537-p0027",
+      "quote": "(D) Same system as in (B), but unit D has been changed so that it’s input-output function is identical to that of unit A. The system is deterministic (one non-zero entry in each row) but degenerate (more than one non-zero entry in each column), and has reduced cause and effect intrinsic",
+      "start": 1515,
+      "end": 1802,
+      "chunk_sha256": "721e3f62ea3ceb6a98900a4539b38c036a533697b18520e421f3aeaaa4185a9d",
+      "relation": "decreases",
+      "subject": "system",
+      "object": "cause",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.55,
+     "novelty": 0.657
+    },
+    "falsification_test": "Track outputs and cause across periods where system changes and where it does not. The hypothesis fails if they co-vary just as strongly when system is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "system"
+   },
+   {
+    "id": "4b6ced5f31c7",
+    "text": "outputs and minimal narrative self may move together because both depend on system.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "outputs",
+     "minimal narrative self",
+     "system"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2606-05528-p0018",
+     "arxiv-2510-01864-p0021"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2606-05528-p0018",
+      "quote": "The critical lesson is the gaming problem in acute form: a system designed to maximize perceived emotional authenticity produces outputs that appear consciousness-relevant while lacking the architectural substrates that would make those indicators genuine— underscoring our requirement for architectural evidence",
+      "start": 1030,
+      "end": 1342,
+      "chunk_sha256": "15bb4de64e9ae49fd6e5d44eb71b624275df87124418db0e1685ab9d82a9281c",
+      "relation": "causes",
+      "subject": "system",
+      "object": "outputs",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2510-01864-p0021",
+      "quote": "These systems likely support a minimal narrative self: not introspective, but capable of operating over structured internal representations (Ginsburg and Jablonka, 2019).",
+      "start": 268,
+      "end": 438,
+      "chunk_sha256": "7957a99703f351d02177d6cf24373b853db15e73dd19886df70fee1ef784dcb3",
+      "relation": "supports",
+      "subject": "systems",
+      "object": "minimal narrative self",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.55,
+     "novelty": 0.628
+    },
+    "falsification_test": "Track outputs and minimal narrative self across periods where system changes and where it does not. The hypothesis fails if they co-vary just as strongly when system is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "system"
+   },
+   {
+    "id": "938d9b5c057d",
+    "text": "brain may support in- through consciousness.",
+    "pattern": "chain",
+    "relation": "supports",
+    "anchors": [
+     "brain",
+     "in-"
+    ],
+    "via": [
+     "consciousness"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2204-07164-p0004",
+     "arxiv-2606-00226-p0012"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2204-07164-p0004",
+      "quote": "Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).",
+      "start": 0,
+      "end": 204,
+      "chunk_sha256": "bbf63c86bd51602f06714c9df1ee5d7c874a790612428872036a06eabbb0ee89",
+      "relation": "supports",
+      "subject": "brain",
+      "object": "consciousness",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2606-00226-p0012",
+      "quote": "The proposal is that consciousness is identical to in-",
+      "start": 203,
+      "end": 257,
+      "chunk_sha256": "07b03d6268eb210bd0b70c650295d0ee5a31b45c9fd361eb42446b0af62295e9",
+      "relation": "alias_of",
+      "subject": "consciousness",
+      "object": "in-",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.65,
+     "novelty": 0.55
+    },
+    "falsification_test": "Construct a coherent case where brain is accepted. The hypothesis fails if in- still fails in that case, or if the argument does not need consciousness.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "consciousness"
+   },
+   {
+    "id": "be5d97848bc5",
+    "text": "brain may support system integrated causal structure through consciousness.",
+    "pattern": "chain",
+    "relation": "supports",
+    "anchors": [
+     "brain",
+     "system integrated causal structure"
+    ],
+    "via": [
+     "consciousness"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2204-07164-p0004",
+     "arxiv-2510-04084-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2204-07164-p0004",
+      "quote": "Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).",
+      "start": 0,
+      "end": 204,
+      "chunk_sha256": "bbf63c86bd51602f06714c9df1ee5d7c874a790612428872036a06eabbb0ee89",
+      "relation": "supports",
+      "subject": "brain",
+      "object": "consciousness",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2510-04084-p0004",
+      "quote": "IIT, grounded in phenomenology, holds that consciousness is identical to a system’s integrated causal structure—an irreducible cause–effect repertoire quantified by Φ—which specifies how experience exists here and now as an intrinsic property of the system.",
+      "start": 183,
+      "end": 440,
+      "chunk_sha256": "c48d38d9bbfcfd24894e1ca7b376cd59f7471aa018bf9879276dbcb9c93e2065",
+      "relation": "alias_of",
+      "subject": "consciousness",
+      "object": "system integrated causal structure",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.65,
+     "novelty": 0.488
+    },
+    "falsification_test": "Construct a coherent case where brain is accepted. The hypothesis fails if system integrated causal structure still fails in that case, or if the argument does not need consciousness.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "consciousness"
+   },
+   {
+    "id": "b9cfedc1fb23",
+    "text": "brain and compositional learning of causal structures may jointly support consciousness, each covering what the other leaves open.",
+    "pattern": "convergent",
+    "relation": "jointly_support",
+    "anchors": [
+     "brain",
+     "compositional learning of causal structures",
+     "consciousness"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2204-07164-p0004",
+     "arxiv-2301-07016-p0001"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2204-07164-p0004",
+      "quote": "Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).",
+      "start": 0,
+      "end": 204,
+      "chunk_sha256": "bbf63c86bd51602f06714c9df1ee5d7c874a790612428872036a06eabbb0ee89",
+      "relation": "supports",
+      "subject": "brain",
+      "object": "consciousness",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2301-07016-p0001",
+      "quote": "# Consciousness is entailed by compositional learning of new causal structures in deep predictive processing systems",
+      "start": 0,
+      "end": 116,
+      "chunk_sha256": "7484195948e01623fac3d66b5cae250548cbc6758c1bba107082b7ecfda39866",
+      "relation": "supports",
+      "subject": "compositional learning of causal structures",
+      "object": "Consciousness",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.575,
+     "novelty": 0.623
+    },
+    "falsification_test": "Assess consciousness against brain alone, compositional learning of causal structures alone, and both together. The hypothesis fails if the combined case adds nothing to the stronger single case.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "consciousness"
+   },
+   {
+    "id": "c8d5e236e341",
+    "text": "brain and wave may jointly drive consciousness, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "brain",
+     "wave",
+     "consciousness"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2204-07164-p0004",
+     "arxiv-2405-12071-p0010"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2204-07164-p0004",
+      "quote": "Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).",
+      "start": 0,
+      "end": 204,
+      "chunk_sha256": "bbf63c86bd51602f06714c9df1ee5d7c874a790612428872036a06eabbb0ee89",
+      "relation": "supports",
+      "subject": "brain",
+      "object": "consciousness",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2405-12071-p0010",
+      "quote": "In this theory, consciousness is caused by the wave, and is not caused by neural firing.",
+      "start": 294,
+      "end": 382,
+      "chunk_sha256": "433f4ced49967409064299943be067ba4b7ffd9118bed4542b5bf7c8849f7908",
+      "relation": "causes",
+      "subject": "wave",
+      "object": "consciousness",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.575,
+     "novelty": 0.607
+    },
+    "falsification_test": "Vary brain and wave separately and together. The hypothesis fails if the joint change in consciousness equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "consciousness"
+   },
+   {
+    "id": "1e1187c6efb7",
+    "text": "brain and compositional learning process may jointly support consciousness, each covering what the other leaves open.",
+    "pattern": "convergent",
+    "relation": "jointly_support",
+    "anchors": [
+     "brain",
+     "compositional learning process",
+     "consciousness"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2204-07164-p0004",
+     "arxiv-2301-07016-p0008"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2204-07164-p0004",
+      "quote": "Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).",
+      "start": 0,
+      "end": 204,
+      "chunk_sha256": "bbf63c86bd51602f06714c9df1ee5d7c874a790612428872036a06eabbb0ee89",
+      "relation": "supports",
+      "subject": "brain",
+      "object": "consciousness",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2301-07016-p0008",
+      "quote": "This work’s central thesis is that consciousness is entailed by this compositional learning process, and the unpredicted inferences bound into the new shallow-tree hierarchical causal structures constitute access consciousness contents at any given moment in time.",
+      "start": 3417,
+      "end": 3681,
+      "chunk_sha256": "de9e2dbaf46a14a1fe88f84b9ca7788740fe582ce442a77afcd277d9181ab34a",
+      "relation": "supports",
+      "subject": "compositional learning process",
+      "object": "consciousness",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.575,
+     "novelty": 0.6
+    },
+    "falsification_test": "Assess consciousness against brain alone, compositional learning process alone, and both together. The hypothesis fails if the combined case adds nothing to the stronger single case.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "consciousness"
+   },
+   {
+    "id": "76b8da521f60",
+    "text": "disparate inputs and conscious sensations may move together because both depend on brain.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "disparate inputs",
+     "conscious sensations",
+     "brain"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2112-03151-p0004",
+     "arxiv-2204-07164-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2112-03151-p0004",
+      "quote": "As explained by the binding problem, the brain consumes disparate inputs and binds them together into a coherent reality.",
+      "start": 1612,
+      "end": 1733,
+      "chunk_sha256": "2227470f0b7352bcc0759a50fb7aea393907ef5504888e6e57208be2acc4c80c",
+      "relation": "increases",
+      "subject": "brain",
+      "object": "disparate inputs",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2204-07164-p0003",
+      "quote": "This renewed surge in consciousness research has led to at least 14 candidate models on how the brain produces or supports conscious sensations (Signorelli, Szczotka & Prentner, 2021).",
+      "start": 499,
+      "end": 683,
+      "chunk_sha256": "ad0e73b6ed9f57205c751f5e274bc4b1228c9ca6378905b617e341dd97f1922e",
+      "relation": "supports",
+      "subject": "brain",
+      "object": "conscious sensations",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.55,
+     "novelty": 0.628
+    },
+    "falsification_test": "Track disparate inputs and conscious sensations across periods where brain changes and where it does not. The hypothesis fails if they co-vary just as strongly when brain is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "brain"
+   },
+   {
+    "id": "179edb6c0ea7",
+    "text": "certain capacities and consciousness may move together because both depend on brain.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "certain capacities",
+     "consciousness",
+     "brain"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2606-00226-p0009",
+     "arxiv-2204-07164-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2606-00226-p0009",
+      "quote": "However, they are tractable in principle: they ask for a mechanistic and functional account of how the brain produces certain capacities, and that is exactly the kind of question science is built to answer from a third-person perspective.",
+      "start": 668,
+      "end": 906,
+      "chunk_sha256": "204380acb227181429ce8bce45a8c084b2f9c7a71687b19119c3e531a777d7a6",
+      "relation": "causes",
+      "subject": "brain",
+      "object": "certain capacities",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2204-07164-p0004",
+      "quote": "Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).",
+      "start": 0,
+      "end": 204,
+      "chunk_sha256": "bbf63c86bd51602f06714c9df1ee5d7c874a790612428872036a06eabbb0ee89",
+      "relation": "supports",
+      "subject": "brain",
+      "object": "consciousness",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.55,
+     "novelty": 0.613
+    },
+    "falsification_test": "Track certain capacities and consciousness across periods where brain changes and where it does not. The hypothesis fails if they co-vary just as strongly when brain is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "brain"
+   },
+   {
+    "id": "97098a5f8353",
+    "text": "certain capacities and disparate inputs may move together because both depend on brain.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "certain capacities",
+     "disparate inputs",
+     "brain"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2606-00226-p0009",
+     "arxiv-2112-03151-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2606-00226-p0009",
+      "quote": "However, they are tractable in principle: they ask for a mechanistic and functional account of how the brain produces certain capacities, and that is exactly the kind of question science is built to answer from a third-person perspective.",
+      "start": 668,
+      "end": 906,
+      "chunk_sha256": "204380acb227181429ce8bce45a8c084b2f9c7a71687b19119c3e531a777d7a6",
+      "relation": "causes",
+      "subject": "brain",
+      "object": "certain capacities",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2112-03151-p0004",
+      "quote": "As explained by the binding problem, the brain consumes disparate inputs and binds them together into a coherent reality.",
+      "start": 1612,
+      "end": 1733,
+      "chunk_sha256": "2227470f0b7352bcc0759a50fb7aea393907ef5504888e6e57208be2acc4c80c",
+      "relation": "increases",
+      "subject": "brain",
+      "object": "disparate inputs",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.55,
+     "novelty": 0.578
+    },
+    "falsification_test": "Track certain capacities and disparate inputs across periods where brain changes and where it does not. The hypothesis fails if they co-vary just as strongly when brain is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "brain"
+   },
+   {
+    "id": "3dcb0b571ba7",
+    "text": "certain capacities and conscious experiences may move together because both depend on brain.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "certain capacities",
+     "conscious experiences",
+     "brain"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2606-00226-p0009",
+     "arxiv-2504-18550-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2606-00226-p0009",
+      "quote": "However, they are tractable in principle: they ask for a mechanistic and functional account of how the brain produces certain capacities, and that is exactly the kind of question science is built to answer from a third-person perspective.",
+      "start": 668,
+      "end": 906,
+      "chunk_sha256": "204380acb227181429ce8bce45a8c084b2f9c7a71687b19119c3e531a777d7a6",
+      "relation": "causes",
+      "subject": "brain",
+      "object": "certain capacities",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2504-18550-p0002",
+      "quote": "Functional theories of consciousness, based on emergence of conscious experiences from the execution of a particular function by an insentient brain, face the hard problem of consciousness of explaining why the insentient brain should produce any conscious experiences at all.",
+      "start": 0,
+      "end": 276,
+      "chunk_sha256": "83a19cef383cace7c547a88aa9fe7e731562345624dc53b3ff091b471824afb8",
+      "relation": "causes",
+      "subject": "insentient brain",
+      "object": "conscious experiences",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.68,
+     "novelty": 0.633
+    },
+    "falsification_test": "Track certain capacities and conscious experiences across periods where brain changes and where it does not. The hypothesis fails if they co-vary just as strongly when brain is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "brain"
+   },
+   {
+    "id": "908cca77e576",
+    "text": "conscious sensations and conscious experiences may move together because both depend on brain.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "conscious sensations",
+     "conscious experiences",
+     "brain"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2204-07164-p0003",
+     "arxiv-2504-18550-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2204-07164-p0003",
+      "quote": "This renewed surge in consciousness research has led to at least 14 candidate models on how the brain produces or supports conscious sensations (Signorelli, Szczotka & Prentner, 2021).",
+      "start": 499,
+      "end": 683,
+      "chunk_sha256": "ad0e73b6ed9f57205c751f5e274bc4b1228c9ca6378905b617e341dd97f1922e",
+      "relation": "supports",
+      "subject": "brain",
+      "object": "conscious sensations",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2504-18550-p0002",
+      "quote": "Functional theories of consciousness, based on emergence of conscious experiences from the execution of a particular function by an insentient brain, face the hard problem of consciousness of explaining why the insentient brain should produce any conscious experiences at all.",
+      "start": 0,
+      "end": 276,
+      "chunk_sha256": "83a19cef383cace7c547a88aa9fe7e731562345624dc53b3ff091b471824afb8",
+      "relation": "causes",
+      "subject": "insentient brain",
+      "object": "conscious experiences",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.68,
+     "novelty": 0.613
+    },
+    "falsification_test": "Track conscious sensations and conscious experiences across periods where brain changes and where it does not. The hypothesis fails if they co-vary just as strongly when brain is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "brain"
+   },
+   {
+    "id": "318deb2e2d15",
+    "text": "alternative artificial architectures and brain may jointly support consciousness, each covering what the other leaves open.",
+    "pattern": "convergent",
+    "relation": "jointly_support",
+    "anchors": [
+     "alternative artificial architectures",
+     "brain",
+     "consciousness"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2509-07001-p0007",
+     "arxiv-2204-07164-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2509-07001-p0007",
+      "quote": "As such, he argues that current digital AI systems cannot genuinely be conscious, while leaving open the possibility that alternative artificial architectures based on continuous-time dynamics may eventually support consciousness.",
+      "start": 896,
+      "end": 1126,
+      "chunk_sha256": "1a6f7d6f1687cf69a0eaba7b2456736d15a783f3d6d4deca697ebdd8bdf51eb3",
+      "relation": "supports",
+      "subject": "alternative artificial architectures",
+      "object": "consciousness",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2204-07164-p0004",
+      "quote": "Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).",
+      "start": 0,
+      "end": 204,
+      "chunk_sha256": "bbf63c86bd51602f06714c9df1ee5d7c874a790612428872036a06eabbb0ee89",
+      "relation": "supports",
+      "subject": "brain",
+      "object": "consciousness",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.575,
+     "novelty": 0.5
+    },
+    "falsification_test": "Assess consciousness against alternative artificial architectures alone, brain alone, and both together. The hypothesis fails if the combined case adds nothing to the stronger single case.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "consciousness"
+   },
+   {
+    "id": "bc850df72c39",
+    "text": "outputs and real artificial consciousness may move together because both depend on system.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "outputs",
+     "real artificial consciousness",
+     "system"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2606-05528-p0018",
+     "arxiv-2509-07001-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2606-05528-p0018",
+      "quote": "The critical lesson is the gaming problem in acute form: a system designed to maximize perceived emotional authenticity produces outputs that appear consciousness-relevant while lacking the architectural substrates that would make those indicators genuine— underscoring our requirement for architectural evidence",
+      "start": 1030,
+      "end": 1342,
+      "chunk_sha256": "15bb4de64e9ae49fd6e5d44eb71b624275df87124418db0e1685ab9d82a9281c",
+      "relation": "causes",
+      "subject": "system",
+      "object": "outputs",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2509-07001-p0006",
+      "quote": "Rather, it suggests that real artificial consciousness would require systems that are, in some relevant sense, life-like or biologically organized, rather than merely systems that simulate intelligent behaviour through conventional digital computation.",
+      "start": 2092,
+      "end": 2344,
+      "chunk_sha256": "f492422792826b1a7f53427330ffe2a11c89e2e9c6266257184283a7b835ad5a",
+      "relation": "constrains",
+      "subject": "systems",
+      "object": "real artificial consciousness",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.55,
+     "novelty": 0.628
+    },
+    "falsification_test": "Track outputs and real artificial consciousness across periods where system changes and where it does not. The hypothesis fails if they co-vary just as strongly when system is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "system"
+   },
+   {
+    "id": "5fdcca92e2fd",
+    "text": "attention model and outputs may move together because both depend on system.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "attention model",
+     "outputs",
+     "system"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2409-16036-p0006",
+     "arxiv-2606-05528-p0018"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2409-16036-p0006",
+      "quote": "Attention Schema Theory (AST): Michael Graziano7 has proposed that consciousness arises when a system produces an attention model.",
+      "start": 3,
+      "end": 133,
+      "chunk_sha256": "6eabe1712e656ffd5f70067b34b2826c988074b6d69cfa4a8d1ee15620dff135",
+      "relation": "causes",
+      "subject": "system",
+      "object": "attention model",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2606-05528-p0018",
+      "quote": "The critical lesson is the gaming problem in acute form: a system designed to maximize perceived emotional authenticity produces outputs that appear consciousness-relevant while lacking the architectural substrates that would make those indicators genuine— underscoring our requirement for architectural evidence",
+      "start": 1030,
+      "end": 1342,
+      "chunk_sha256": "15bb4de64e9ae49fd6e5d44eb71b624275df87124418db0e1685ab9d82a9281c",
+      "relation": "causes",
+      "subject": "system",
+      "object": "outputs",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.55,
+     "novelty": 0.613
+    },
+    "falsification_test": "Track attention model and outputs across periods where system changes and where it does not. The hypothesis fails if they co-vary just as strongly when system is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "system"
+   },
+   {
+    "id": "733917a4b956",
+    "text": "outputs and probability of state may move together because both depend on system.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "outputs",
+     "probability of state",
+     "system"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2606-05528-p0018",
+     "arxiv-2212-14537-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2606-05528-p0018",
+      "quote": "The critical lesson is the gaming problem in acute form: a system designed to maximize perceived emotional authenticity produces outputs that appear consciousness-relevant while lacking the architectural substrates that would make those indicators genuine— underscoring our requirement for architectural evidence",
+      "start": 1030,
+      "end": 1342,
+      "chunk_sha256": "15bb4de64e9ae49fd6e5d44eb71b624275df87124418db0e1685ab9d82a9281c",
+      "relation": "causes",
+      "subject": "system",
+      "object": "outputs",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2212-14537-p0011",
+      "quote": "Note that for both the cause and effect intrinsic information, the informativeness term uses the effect repertoire to capture how the system increases the probability of a state; however, for iie it is the probability of the effect state given the current state of the system, while for iic is the probability of the current state of the system given the cause state.",
+      "start": 226,
+      "end": 593,
+      "chunk_sha256": "25e853faaa3b3502e69593f116b21a5e39e1f1e12d9a37d91e5281664cd7ba8a",
+      "relation": "increases",
+      "subject": "system",
+      "object": "probability of state",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.55,
+     "novelty": 0.613
+    },
+    "falsification_test": "Track outputs and probability of state across periods where system changes and where it does not. The hypothesis fails if they co-vary just as strongly when system is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "system"
+   },
+   {
+    "id": "f4e0f92bb306",
+    "text": "outputs and effect may move together because both depend on system.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "outputs",
+     "effect",
+     "system"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2606-05528-p0018",
+     "arxiv-2212-14537-p0027"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2606-05528-p0018",
+      "quote": "The critical lesson is the gaming problem in acute form: a system designed to maximize perceived emotional authenticity produces outputs that appear consciousness-relevant while lacking the architectural substrates that would make those indicators genuine— underscoring our requirement for architectural evidence",
+      "start": 1030,
+      "end": 1342,
+      "chunk_sha256": "15bb4de64e9ae49fd6e5d44eb71b624275df87124418db0e1685ab9d82a9281c",
+      "relation": "causes",
+      "subject": "system",
+      "object": "outputs",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2212-14537-p0027",
+      "quote": "(D) Same system as in (B), but unit D has been changed so that it’s input-output function is identical to that of unit A. The system is deterministic (one non-zero entry in each row) but degenerate (more than one non-zero entry in each column), and has reduced cause and effect intrinsic",
+      "start": 1515,
+      "end": 1802,
+      "chunk_sha256": "721e3f62ea3ceb6a98900a4539b38c036a533697b18520e421f3aeaaa4185a9d",
+      "relation": "decreases",
+      "subject": "system",
+      "object": "effect",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.55,
+     "novelty": 0.607
+    },
+    "falsification_test": "Track outputs and effect across periods where system changes and where it does not. The hypothesis fails if they co-vary just as strongly when system is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "system"
+   },
+   {
+    "id": "12e0c7f4556f",
+    "text": "higher degree of adaptive intelligent behavior and outputs may move together because both depend on system.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "higher degree of adaptive intelligent behavior",
+     "outputs",
+     "system"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1402-5332-p0002",
+     "arxiv-2606-05528-p0018"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1402-5332-p0002",
+      "quote": "With a larger number of traverses, a system can be relatively small and yet, produce a higher degree of adaptive/intelligent behavior than a system with a lower number of traverses.",
+      "start": 946,
+      "end": 1127,
+      "chunk_sha256": "87d47b4edec9d0dd2df1b0befb38bff820ba357890665eee30945905615d21e4",
+      "relation": "causes",
+      "subject": "system",
+      "object": "higher degree of adaptive intelligent behavior",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2606-05528-p0018",
+      "quote": "The critical lesson is the gaming problem in acute form: a system designed to maximize perceived emotional authenticity produces outputs that appear consciousness-relevant while lacking the architectural substrates that would make those indicators genuine— underscoring our requirement for architectural evidence",
+      "start": 1030,
+      "end": 1342,
+      "chunk_sha256": "15bb4de64e9ae49fd6e5d44eb71b624275df87124418db0e1685ab9d82a9281c",
+      "relation": "causes",
+      "subject": "system",
+      "object": "outputs",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.55,
+     "novelty": 0.577
+    },
+    "falsification_test": "Track higher degree of adaptive intelligent behavior and outputs across periods where system changes and where it does not. The hypothesis fails if they co-vary just as strongly when system is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "system"
+   },
+   {
+    "id": "5fd68421f726",
+    "text": "brain and subjective sense of time may interact in their effect on consciousness.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "brain",
+     "subjective sense of time",
+     "consciousness"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2204-07164-p0004",
+     "arxiv-2606-04011-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2204-07164-p0004",
+      "quote": "Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).",
+      "start": 0,
+      "end": 204,
+      "chunk_sha256": "bbf63c86bd51602f06714c9df1ee5d7c874a790612428872036a06eabbb0ee89",
+      "relation": "supports",
+      "subject": "brain",
+      "object": "consciousness",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2606-04011-p0002",
+      "quote": "Time may require conscious beings to have a meaning, while consciousness may require the subjective sense of time to have a meaning.",
+      "start": 1229,
+      "end": 1361,
+      "chunk_sha256": "ffc2dafcb8e18e1e6d29bcb32db4a5e2c64492f5dc0002782e827fccc96e72e2",
+      "relation": "constrains",
+      "subject": "subjective sense of time",
+      "object": "consciousness",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.5,
+     "novelty": 0.514
+    },
+    "falsification_test": "Vary brain and subjective sense of time separately and together. The hypothesis fails if the joint change in consciousness equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "consciousness"
+   },
+   {
+    "id": "e2a35348ac49",
+    "text": "brain may affect informational entropy of possible future outcomes through consciousness.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "brain",
+     "informational entropy of possible future outcomes"
+    ],
+    "via": [
+     "consciousness"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2204-07164-p0004",
+     "arxiv-2606-04011-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2204-07164-p0004",
+      "quote": "Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).",
+      "start": 0,
+      "end": 204,
+      "chunk_sha256": "bbf63c86bd51602f06714c9df1ee5d7c874a790612428872036a06eabbb0ee89",
+      "relation": "supports",
+      "subject": "brain",
+      "object": "consciousness",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2606-04011-p0002",
+      "quote": "From an ideometrics-based perspective, consciousness may reduce the informational entropy of many randomly possible future outcomes through ideometric processes.",
+      "start": 0,
+      "end": 161,
+      "chunk_sha256": "ffc2dafcb8e18e1e6d29bcb32db4a5e2c64492f5dc0002782e827fccc96e72e2",
+      "relation": "decreases",
+      "subject": "consciousness",
+      "object": "informational entropy of possible future outcomes",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.45,
+     "novelty": 0.461
+    },
+    "falsification_test": "Compare settings where brain differs while other inputs are matched. The hypothesis fails if informational entropy of possible future outcomes does not change with brain, or if fixing consciousness removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "consciousness"
+   }
+  ],
+  "survivors": 33,
+  "candidates_generated": 105,
   "candidates_passed": {
-   "abductive": 0,
-   "deductive": 0,
-   "pre_thinker": 0
+   "abductive": 61,
+   "deductive": 61,
+   "pre_thinker": 35
   },
-  "candidates_rejected": {},
-  "relation_edges": 256,
-  "scoped_edges": 83,
+  "candidates_rejected": {
+   "abductive:incoherent_composition": 3,
+   "abductive:no_explanatory_relation": 1,
+   "abductive:unrelated_bridge": 40,
+   "pre_thinker:circular": 7,
+   "pre_thinker:malformed": 1,
+   "pre_thinker:restates_source": 10,
+   "pre_thinker:single_source": 8
+  },
+  "relation_edges": 437,
+  "scoped_edges": 67,
   "budget_used": {
-   "rounds": 0,
-   "candidates": 0,
-   "edges": 256,
-   "bytes": 122449,
-   "seconds": 20.281
+   "rounds": 1,
+   "candidates": 105,
+   "edges": 437,
+   "bytes": 242332,
+   "seconds": 30.574
   },
-  "incomplete": true,
-  "stop_reason": "deadline",
-  "shortage": {
-   "returned": 0,
-   "target_min": 10,
-   "reason": "Fewer candidates survived the filters than the target; the list is not padded."
-  },
+  "incomplete": false,
+  "stop_reason": null,
+  "shortage": null,
   "snapshot": {
-   "as_of": 1795252950,
+   "as_of": 1795253773,
    "chunk_count": 1241
   }
  },
- "reply": "Frontier hypotheses for hard problem of consciousness. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 0. Passed abductive check: 0; deductive check: 0; pre-thinker validation: 0.\n\nOnly 0 hypotheses survived the filters (target at least 10). The list is not padded.\n\nSearch incomplete: deadline. Results cover only the candidates examined before the budget stopped the run.\nNo candidate survived the filters.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+ "reply": "Frontier hypotheses for hard problem of consciousness. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 105. Passed abductive check: 61; deductive check: 61; pre-thinker validation: 35.\n\n1. consciousness and disparate inputs may move together because both depend on brain.\n[arxiv-2204-07164-p0009] Please note that although I am using the word ‘function’ here, I am not suggesting that there is a causal relation here (as in, the brain causes consciousness): there is an equivalence.\n[arxiv-2112-03151-p0004] As explained by the binding problem, the brain consumes disparate inputs and binds them together into a coherent reality.\nFalsification test: Track consciousness and disparate inputs across periods where brain changes and where it does not. The hypothesis fails if they co-vary just as strongly when brain is held fixed.\nScores: source support 0.96, deductive relevance 0.55, novelty 0.55.\n\n2. conscious experience and disparate inputs may move together because both depend on brain.\n[arxiv-2506-18935-p0005] There are many theories in neuroscience which fundamentally explain how the brain causes conscious experience, such as the mathematical models of IntegratedInformationTheory(IIT)[6],GlobalNeuronalWorkspaceTheory(GWT) [5,24], Predictive Processing Theory (PPT) [36,48], Higher-Order Thought Theory (HOT) [4,17,40,44], biological models [27,37,43,49], and quantum models [1,8,16,33].\n[arxiv-2112-03151-p0004] As explained by the binding problem, the brain consumes disparate inputs and binds them together into a coherent reality.\nFalsification test: Track conscious experience and disparate inputs across periods where brain changes and where it does not. The hypothesis fails if they co-vary just as strongly when brain is held fixed.\nScores: source support 0.91, deductive relevance 0.55, novelty 0.58.\n\n3. session wise variation and existence of intractable hard problem may move together because both depend on models.\n[arxiv-2510-04084-p0018] Bayesian surprise showed more consistent positive coefficients than accuracy in both univariate and multivariable models, and models containing Bayesian surprise generally accounted for more session-wise variation in Φmc R than the corresponding accuracy-only models (Supplementary Fig. S1 and Supplementary Table S1).\n[arxiv-2401-13690-p0006] Indeed, the model presented here directly contradicts the existence of an intractable hard problem.\nFalsification test: Track session wise variation and existence of intractable hard problem across periods where models changes and where it does not. The hypothesis fails if they co-vary just as strongly when models is held fixed.\nScores: source support 0.80, deductive relevance 0.90, novelty 0.64.\n\n4. algorithms may affect existence of intractable hard problem through models.\n[arxiv-1912-13490-p0006] Interestingly, these models rely on new algorithms (‘transformers’) that have notable links with the manipulation of internal representations.\n[arxiv-2401-13690-p0006] Indeed, the model presented here directly contradicts the existence of an intractable hard problem.\nFalsification test: Compare settings where algorithms differs while other inputs are matched. The hypothesis fails if existence of intractable hard problem does not change with algorithms, or if fixing models removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.80, novelty 0.54.\n\n5. Chalmers and formulation may jointly drive view, and their effects may compound.\n[arxiv-2509-16859-p0005] However, in his 2018 work on the meta-problem of consciousness, Chalmers expanded his view by introducing a new category of \"easy problems\" that are intimately connected to the hard problem.\n[arxiv-2407-09488-p0011] Remark: This formulation supports the view that emotion and cognition are not independent modules, but coupled components in a recursive inference loop.\nFalsification test: Vary Chalmers and formulation separately and together. The hypothesis fails if the joint change in view equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.72, novelty 0.66.\n\n6. explanation and machines may move together because both depend on principles.\n[arxiv-1606-07184-p0002] He argued that subjective experience constitutes a \"hard problem\" in the sense that its explanation will ultimately require new physical laws or principles.\n[arxiv-2301-07016-p0003] Deep learning and reinforcement learning(Sutton and Barto 1998) principles enabled machines that learned chess, go and computer games from scratch, achieving superhuman performance(Silver et al.\nFalsification test: Track explanation and machines across periods where principles changes and where it does not. The hypothesis fails if they co-vary just as strongly when principles is held fixed.\nScores: source support 0.80, deductive relevance 0.70, novelty 0.66.\n\n7. brain may support effect repertoire through consciousness.\n[arxiv-2204-07164-p0004] Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).\n[arxiv-2510-04084-p0004] IIT, grounded in phenomenology, holds that consciousness is identical to a system’s integrated causal structure—an irreducible cause–effect repertoire quantified by Φ—which specifies how experience exists here and now as an intrinsic property of the system.\nFalsification test: Construct a coherent case where brain is accepted. The hypothesis fails if effect repertoire still fails in that case, or if the argument does not need consciousness.\nScores: source support 0.80, deductive relevance 0.65, novelty 0.60.\n\n8. unquantifiable and existence of intractable hard problem may move together because both depend on models.\n[arxiv-1704-01148-p0002] Yet despite this limitation, QHT argues that such models can account for the unquantifiable--not by explaining or containing it, but by marking its place, in the form of a signpost.\n[arxiv-2401-13690-p0006] Indeed, the model presented here directly contradicts the existence of an intractable hard problem.\nFalsification test: Track unquantifiable and existence of intractable hard problem across periods where models changes and where it does not. The hypothesis fails if they co-vary just as strongly when models is held fixed.\nScores: source support 0.55, deductive relevance 0.90, novelty 0.60.\n\n9. documented relationships and explanation may move together because both depend on principles.\n[arxiv-2012-12963-p0002] We show how these principles can account for documented relationships between appraisal and distance as an inverse distance law, yield a generative model of affective and epistemic drives based on purely subjective parameters, such as the apparent size of objects, and can be generalised to implement Theory of Mind, in a manner that is consistent with simulation theory.\n[arxiv-1606-07184-p0002] He argued that subjective experience constitutes a \"hard problem\" in the sense that its explanation will ultimately require new physical laws or principles.\nFalsification test: Track documented relationships and explanation across periods where principles changes and where it does not. The hypothesis fails if they co-vary just as strongly when principles is held fixed.\nScores: source support 0.55, deductive relevance 0.70, novelty 0.66.\n\n10. explanation and purpose of consciousness may move together because both depend on principles.\n[arxiv-1606-07184-p0002] He argued that subjective experience constitutes a \"hard problem\" in the sense that its explanation will ultimately require new physical laws or principles.\n[arxiv-2309-15566-p0003] In doing so, the principle should explain the purpose of consciousness and how it can be produced by non-conscious (physical) components.\nFalsification test: Track explanation and purpose of consciousness across periods where principles changes and where it does not. The hypothesis fails if they co-vary just as strongly when principles is held fixed.\nScores: source support 0.55, deductive relevance 0.70, novelty 0.61.\n\n11. time divergence and World models may jointly support problems, each covering what the other leaves open.\n[arxiv-2309-15566-p0008] Penrose speculated that the problems posed by Libet’s experiments might be explained by time divergence implicit in the spacetime superposition of mass prior to\n[arxiv-1912-13490-p0017] World models support planning and problem solving as they allow the agent to internally simulate the dynamic transitions of the environment, from a starting state to final goals.\nFalsification test: Assess problems against time divergence alone, World models alone, and both together. The hypothesis fails if the combined case adds nothing to the stronger single case.\nScores: source support 0.55, deductive relevance 0.68, novelty 0.65.\n\n12. insentient brain and subject may interact in their effect on conscious experiences.\n[arxiv-2504-18550-p0002] Functional theories of consciousness, based on emergence of conscious experiences from the execution of a particular function by an insentient brain, face the hard problem of consciousness of explaining why the insentient brain should produce any conscious experiences at all.\n[arxiv-2204-07164-p0006] However, this feeling of ownership of experience and the idea that conscious experiences are by definition accompanied by a feeling of ‘ownership’, or even need a subject that experiences them, may be an illusion.\nFalsification test: Vary insentient brain and subject separately and together. The hypothesis fails if the joint change in conscious experiences equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.65, novelty 0.56.\n\n13. immediate input may constrain outputs through Systems.\n[arxiv-2601-04269-p0013] Systems lacking recursive architecture must rely on immediate input, requiring high data density to find patterns.\n[arxiv-2606-05528-p0018] The critical lesson is the gaming problem in acute form: a system designed to maximize perceived emotional authenticity produces outputs that appear consciousness-relevant while lacking the architectural substrates that would make those indicators genuine— underscoring our requirement for architectural evidence\nFalsification test: Compare settings where immediate input differs while other inputs are matched. The hypothesis fails if outputs does not stay bounded with immediate input, or if fixing Systems removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.55.\n\n14. outputs and cause may move together because both depend on system.\n[arxiv-2606-05528-p0018] The critical lesson is the gaming problem in acute form: a system designed to maximize perceived emotional authenticity produces outputs that appear consciousness-relevant while lacking the architectural substrates that would make those indicators genuine— underscoring our requirement for architectural evidence\n[arxiv-2212-14537-p0027] (D) Same system as in (B), but unit D has been changed so that it’s input-output function is identical to that of unit A. The system is deterministic (one non-zero entry in each row) but degenerate (more than one non-zero entry in each column), and has reduced cause and effect intrinsic\nFalsification test: Track outputs and cause across periods where system changes and where it does not. The hypothesis fails if they co-vary just as strongly when system is held fixed.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.66.\n\n15. outputs and minimal narrative self may move together because both depend on system.\n[arxiv-2606-05528-p0018] The critical lesson is the gaming problem in acute form: a system designed to maximize perceived emotional authenticity produces outputs that appear consciousness-relevant while lacking the architectural substrates that would make those indicators genuine— underscoring our requirement for architectural evidence\n[arxiv-2510-01864-p0021] These systems likely support a minimal narrative self: not introspective, but capable of operating over structured internal representations (Ginsburg and Jablonka, 2019).\nFalsification test: Track outputs and minimal narrative self across periods where system changes and where it does not. The hypothesis fails if they co-vary just as strongly when system is held fixed.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.63.\n\n16. brain may support in- through consciousness.\n[arxiv-2204-07164-p0004] Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).\n[arxiv-2606-00226-p0012] The proposal is that consciousness is identical to in-\nFalsification test: Construct a coherent case where brain is accepted. The hypothesis fails if in- still fails in that case, or if the argument does not need consciousness.\nScores: source support 0.80, deductive relevance 0.65, novelty 0.55.\n\n17. brain may support system integrated causal structure through consciousness.\n[arxiv-2204-07164-p0004] Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).\n[arxiv-2510-04084-p0004] IIT, grounded in phenomenology, holds that consciousness is identical to a system’s integrated causal structure—an irreducible cause–effect repertoire quantified by Φ—which specifies how experience exists here and now as an intrinsic property of the system.\nFalsification test: Construct a coherent case where brain is accepted. The hypothesis fails if system integrated causal structure still fails in that case, or if the argument does not need consciousness.\nScores: source support 0.80, deductive relevance 0.65, novelty 0.49.\n\n18. brain and compositional learning of causal structures may jointly support consciousness, each covering what the other leaves open.\n[arxiv-2204-07164-p0004] Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).\n[arxiv-2301-07016-p0001] # Consciousness is entailed by compositional learning of new causal structures in deep predictive processing systems\nFalsification test: Assess consciousness against brain alone, compositional learning of causal structures alone, and both together. The hypothesis fails if the combined case adds nothing to the stronger single case.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.62.\n\n19. brain and wave may jointly drive consciousness, and their effects may compound.\n[arxiv-2204-07164-p0004] Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).\n[arxiv-2405-12071-p0010] In this theory, consciousness is caused by the wave, and is not caused by neural firing.\nFalsification test: Vary brain and wave separately and together. The hypothesis fails if the joint change in consciousness equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.61.\n\n20. brain and compositional learning process may jointly support consciousness, each covering what the other leaves open.\n[arxiv-2204-07164-p0004] Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).\n[arxiv-2301-07016-p0008] This work’s central thesis is that consciousness is entailed by this compositional learning process, and the unpredicted inferences bound into the new shallow-tree hierarchical causal structures constitute access consciousness contents at any given moment in time.\nFalsification test: Assess consciousness against brain alone, compositional learning process alone, and both together. The hypothesis fails if the combined case adds nothing to the stronger single case.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.60.\n\n21. disparate inputs and conscious sensations may move together because both depend on brain.\n[arxiv-2112-03151-p0004] As explained by the binding problem, the brain consumes disparate inputs and binds them together into a coherent reality.\n[arxiv-2204-07164-p0003] This renewed surge in consciousness research has led to at least 14 candidate models on how the brain produces or supports conscious sensations (Signorelli, Szczotka & Prentner, 2021).\nFalsification test: Track disparate inputs and conscious sensations across periods where brain changes and where it does not. The hypothesis fails if they co-vary just as strongly when brain is held fixed.\nScores: source support 0.80, deductive relevance 0.55, novelty 0.63.\n\n22. certain capacities and consciousness may move together because both depend on brain.\n[arxiv-2606-00226-p0009] However, they are tractable in principle: they ask for a mechanistic and functional account of how the brain produces certain capacities, and that is exactly the kind of question science is built to answer from a third-person perspective.\n[arxiv-2204-07164-p0004] Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).\nFalsification test: Track certain capacities and consciousness across periods where brain changes and where it does not. The hypothesis fails if they co-vary just as strongly when brain is held fixed.\nScores: source support 0.80, deductive relevance 0.55, novelty 0.61.\n\n23. certain capacities and disparate inputs may move together because both depend on brain.\n[arxiv-2606-00226-p0009] However, they are tractable in principle: they ask for a mechanistic and functional account of how the brain produces certain capacities, and that is exactly the kind of question science is built to answer from a third-person perspective.\n[arxiv-2112-03151-p0004] As explained by the binding problem, the brain consumes disparate inputs and binds them together into a coherent reality.\nFalsification test: Track certain capacities and disparate inputs across periods where brain changes and where it does not. The hypothesis fails if they co-vary just as strongly when brain is held fixed.\nScores: source support 0.80, deductive relevance 0.55, novelty 0.58.\n\n24. certain capacities and conscious experiences may move together because both depend on brain.\n[arxiv-2606-00226-p0009] However, they are tractable in principle: they ask for a mechanistic and functional account of how the brain produces certain capacities, and that is exactly the kind of question science is built to answer from a third-person perspective.\n[arxiv-2504-18550-p0002] Functional theories of consciousness, based on emergence of conscious experiences from the execution of a particular function by an insentient brain, face the hard problem of consciousness of explaining why the insentient brain should produce any conscious experiences at all.\nFalsification test: Track certain capacities and conscious experiences across periods where brain changes and where it does not. The hypothesis fails if they co-vary just as strongly when brain is held fixed.\nScores: source support 0.55, deductive relevance 0.68, novelty 0.63.\n\n25. conscious sensations and conscious experiences may move together because both depend on brain.\n[arxiv-2204-07164-p0003] This renewed surge in consciousness research has led to at least 14 candidate models on how the brain produces or supports conscious sensations (Signorelli, Szczotka & Prentner, 2021).\n[arxiv-2504-18550-p0002] Functional theories of consciousness, based on emergence of conscious experiences from the execution of a particular function by an insentient brain, face the hard problem of consciousness of explaining why the insentient brain should produce any conscious experiences at all.\nFalsification test: Track conscious sensations and conscious experiences across periods where brain changes and where it does not. The hypothesis fails if they co-vary just as strongly when brain is held fixed.\nScores: source support 0.55, deductive relevance 0.68, novelty 0.61.\n\n26. alternative artificial architectures and brain may jointly support consciousness, each covering what the other leaves open.\n[arxiv-2509-07001-p0007] As such, he argues that current digital AI systems cannot genuinely be conscious, while leaving open the possibility that alternative artificial architectures based on continuous-time dynamics may eventually support consciousness.\n[arxiv-2204-07164-p0004] Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).\nFalsification test: Assess consciousness against alternative artificial architectures alone, brain alone, and both together. The hypothesis fails if the combined case adds nothing to the stronger single case.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.50.\n\n27. outputs and real artificial consciousness may move together because both depend on system.\n[arxiv-2606-05528-p0018] The critical lesson is the gaming problem in acute form: a system designed to maximize perceived emotional authenticity produces outputs that appear consciousness-relevant while lacking the architectural substrates that would make those indicators genuine— underscoring our requirement for architectural evidence\n[arxiv-2509-07001-p0006] Rather, it suggests that real artificial consciousness would require systems that are, in some relevant sense, life-like or biologically organized, rather than merely systems that simulate intelligent behaviour through conventional digital computation.\nFalsification test: Track outputs and real artificial consciousness across periods where system changes and where it does not. The hypothesis fails if they co-vary just as strongly when system is held fixed.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.63.\n\n28. attention model and outputs may move together because both depend on system.\n[arxiv-2409-16036-p0006] Attention Schema Theory (AST): Michael Graziano7 has proposed that consciousness arises when a system produces an attention model.\n[arxiv-2606-05528-p0018] The critical lesson is the gaming problem in acute form: a system designed to maximize perceived emotional authenticity produces outputs that appear consciousness-relevant while lacking the architectural substrates that would make those indicators genuine— underscoring our requirement for architectural evidence\nFalsification test: Track attention model and outputs across periods where system changes and where it does not. The hypothesis fails if they co-vary just as strongly when system is held fixed.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.61.\n\n29. outputs and probability of state may move together because both depend on system.\n[arxiv-2606-05528-p0018] The critical lesson is the gaming problem in acute form: a system designed to maximize perceived emotional authenticity produces outputs that appear consciousness-relevant while lacking the architectural substrates that would make those indicators genuine— underscoring our requirement for architectural evidence\n[arxiv-2212-14537-p0011] Note that for both the cause and effect intrinsic information, the informativeness term uses the effect repertoire to capture how the system increases the probability of a state; however, for iie it is the probability of the effect state given the current state of the system, while for iic is the probability of the current state of the system given the cause state.\nFalsification test: Track outputs and probability of state across periods where system changes and where it does not. The hypothesis fails if they co-vary just as strongly when system is held fixed.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.61.\n\n30. outputs and effect may move together because both depend on system.\n[arxiv-2606-05528-p0018] The critical lesson is the gaming problem in acute form: a system designed to maximize perceived emotional authenticity produces outputs that appear consciousness-relevant while lacking the architectural substrates that would make those indicators genuine— underscoring our requirement for architectural evidence\n[arxiv-2212-14537-p0027] (D) Same system as in (B), but unit D has been changed so that it’s input-output function is identical to that of unit A. The system is deterministic (one non-zero entry in each row) but degenerate (more than one non-zero entry in each column), and has reduced cause and effect intrinsic\nFalsification test: Track outputs and effect across periods where system changes and where it does not. The hypothesis fails if they co-vary just as strongly when system is held fixed.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.61.\n\n31. higher degree of adaptive intelligent behavior and outputs may move together because both depend on system.\n[arxiv-1402-5332-p0002] With a larger number of traverses, a system can be relatively small and yet, produce a higher degree of adaptive/intelligent behavior than a system with a lower number of traverses.\n[arxiv-2606-05528-p0018] The critical lesson is the gaming problem in acute form: a system designed to maximize perceived emotional authenticity produces outputs that appear consciousness-relevant while lacking the architectural substrates that would make those indicators genuine— underscoring our requirement for architectural evidence\nFalsification test: Track higher degree of adaptive intelligent behavior and outputs across periods where system changes and where it does not. The hypothesis fails if they co-vary just as strongly when system is held fixed.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.58.\n\n32. brain and subjective sense of time may interact in their effect on consciousness.\n[arxiv-2204-07164-p0004] Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).\n[arxiv-2606-04011-p0002] Time may require conscious beings to have a meaning, while consciousness may require the subjective sense of time to have a meaning.\nFalsification test: Vary brain and subjective sense of time separately and together. The hypothesis fails if the joint change in consciousness equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.50, novelty 0.51.\n\n33. brain may affect informational entropy of possible future outcomes through consciousness.\n[arxiv-2204-07164-p0004] Let us first strictly define the problem most contemporary theories of consciousness are trying to solve, namely how the brain (a physical object) produces or supports consciousness (a mental phenomenon).\n[arxiv-2606-04011-p0002] From an ideometrics-based perspective, consciousness may reduce the informational entropy of many randomly possible future outcomes through ideometric processes.\nFalsification test: Compare settings where brain differs while other inputs are matched. The hypothesis fails if informational entropy of possible future outcomes does not change with brain, or if fixing consciousness removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.45, novelty 0.46.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
 }
