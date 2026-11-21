@@ -1,0 +1,400 @@
+{
+ "namespace": "dl_generalization_frontier",
+ "frontier_hypothesis": {
+  "id": "16ef4f4984ef",
+  "text": "distribution shifts and Misalignment of Low Loss Regions may jointly drive grokking, and their effects may compound.",
+  "pattern": "convergent",
+  "relation": "jointly_drive",
+  "anchors": [
+   "distribution shifts",
+   "Misalignment of Low Loss Regions",
+   "grokking"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2502-01774-p0007",
+   "arxiv-2502-01774-p0016",
+   "arxiv-2610-00620-p0001"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2502-01774-p0007",
+    "quote": "While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.",
+    "start": 257,
+    "end": 438,
+    "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+    "relation": "causes",
+    "subject": "distribution shifts",
+    "object": "grokking",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2502-01774-p0016",
+    "quote": "The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.",
+    "start": 859,
+    "end": 977,
+    "chunk_sha256": "e46483042e639a5b9c1f29d4321ac6a29d20c1f1cffe9e5c30e807d38d93ed17",
+    "relation": "causes",
+    "subject": "distribution shifts",
+    "object": "grokking",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2610-00620-p0001",
+    "quote": "# Misalignment of Low-Loss Regions Causes Grokking",
+    "start": 0,
+    "end": 50,
+    "chunk_sha256": "77b4beca6ccf182d0255f8124a528444b513150f00fb59ba311acb211978892f",
+    "relation": "causes",
+    "subject": "Misalignment of Low Loss Regions",
+    "object": "Grokking",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.925,
+   "novelty": 0.714
+  },
+  "falsification_test": "Vary distribution shifts and Misalignment of Low Loss Regions separately and together. The hypothesis fails if the joint change in grokking equals the sum of the separate changes.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "grokking"
+ },
+ "seconds": 13.35,
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "convergent",
+  "terms": {
+   "a": "distribution shifts",
+   "b": "Misalignment of Low Loss Regions",
+   "c": "grokking"
+  },
+  "links": [
+   {
+    "source": "distribution shifts",
+    "target": "grokking",
+    "expected_relation": "causes",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2502-01774-p0007",
+      "quote": "While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.",
+      "start": 257,
+      "end": 438,
+      "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+      "relation": "causes",
+      "subject": "distribution shifts",
+      "object": "grokking",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2502-01774-p0002",
+      "quote": "In this paper, we formalize and investigate grokking, highlighting that a key factor in its emergence is a distribution shift between training and test data.",
+      "start": 261,
+      "end": 418,
+      "chunk_sha256": "a92c56bd1355cbdb6b76119111c3810ae273a850889e2d003c4890d982763df5"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0002",
+      "quote": "By inducing distribution shifts through controlled imbalanced sampling of sub-categories, we systematically reproduce the phenomenon, demonstrating that while smallsampling is strongly associated with grokking, it is not its cause.",
+      "start": 616,
+      "end": 847,
+      "chunk_sha256": "a92c56bd1355cbdb6b76119111c3810ae273a850889e2d003c4890d982763df5"
+     },
+     {
+      "document_id": "arxiv-2502-01774-p0004",
+      "quote": "We posit that data sparsity induces grokking by causing a distribution shift during training.",
+      "start": 410,
+      "end": 503,
+      "chunk_sha256": "f7625a59aff1d15d2ed34a1f2e7391b737e586ab5f8b3d15d9ad9aad2a7083c5"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0
+   },
+   {
+    "source": "Misalignment of Low Loss Regions",
+    "target": "grokking",
+    "expected_relation": "causes",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2610-00620-p0001",
+      "quote": "# Misalignment of Low-Loss Regions Causes Grokking",
+      "start": 0,
+      "end": 50,
+      "chunk_sha256": "77b4beca6ccf182d0255f8124a528444b513150f00fb59ba311acb211978892f",
+      "relation": "causes",
+      "subject": "Misalignment of Low Loss Regions",
+      "object": "Grokking",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0
+   }
+  ],
+  "verdict": "all_links_supported",
+  "predictions": [
+   {
+    "document_id": "arxiv-2502-01774-p0004",
+    "quote": "To systematically investigate this hypothesis, we construct two synthetic datasets where distribution shifts between training and testing data can be precisely controlled to reproduce grokking, even in the presence of dense data.",
+    "start": 504,
+    "end": 733,
+    "chunk_sha256": "f7625a59aff1d15d2ed34a1f2e7391b737e586ab5f8b3d15d9ad9aad2a7083c5",
+    "qualification": "source_prediction"
+   },
+   {
+    "document_id": "arxiv-2502-01774-p0007",
+    "quote": "While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.",
+    "start": 257,
+    "end": 438,
+    "chunk_sha256": "63c0236fd58d993f1849d2131824b2c42d7820e7f70d92b8d6417208a54ea98b",
+    "qualification": "source_prediction"
+   },
+   {
+    "document_id": "arxiv-2502-01774-p0016",
+    "quote": "The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.",
+    "start": 859,
+    "end": 977,
+    "chunk_sha256": "e46483042e639a5b9c1f29d4321ac6a29d20c1f1cffe9e5c30e807d38d93ed17",
+    "qualification": "source_prediction"
+   },
+   {
+    "document_id": "arxiv-2502-01774-p0017",
+    "quote": "Since grokking can be viewed as deriving from distribution shifts between training and test sets, the methods and insights from (Rabanser et al., 2019) could be applied to detect and analyze these shifts in the",
+    "start": 332,
+    "end": 542,
+    "chunk_sha256": "ee5f779f5483d795dfdefc084d7a7b285400f371d43140279edde68c69fe8152",
+    "qualification": "source_prediction"
+   },
+   {
+    "document_id": "arxiv-2502-01774-p0019",
+    "quote": "Our hypothesis is that grokking is a statistical phenomenon derived from a distribution shift between test data and training data, which can be reproduced systematically and which is amplified, not defined, by high regularization and use of specific parametrization and initialization values.",
+    "start": 2129,
+    "end": 2421,
+    "chunk_sha256": "75ee60e16f426b1e51a7cd3d20917f9409fb8f46182a6333746e637330e5b95c",
+    "qualification": "source_prediction"
+   }
+  ],
+  "setups": [
+   {
+    "document_id": "arxiv-2502-01774-p0002",
+    "quote": "By inducing distribution shifts through controlled imbalanced sampling of sub-categories, we systematically reproduce the phenomenon, demonstrating that while smallsampling is strongly associated with grokking, it is not its cause.",
+    "start": 616,
+    "end": 847,
+    "chunk_sha256": "a92c56bd1355cbdb6b76119111c3810ae273a850889e2d003c4890d982763df5",
+    "measures": [
+     "distribution shifts",
+     "grokking"
+    ]
+   },
+   {
+    "document_id": "arxiv-2502-01774-p0004",
+    "quote": "To systematically investigate this hypothesis, we construct two synthetic datasets where distribution shifts between training and testing data can be precisely controlled to reproduce grokking, even in the presence of dense data.",
+    "start": 504,
+    "end": 733,
+    "chunk_sha256": "f7625a59aff1d15d2ed34a1f2e7391b737e586ab5f8b3d15d9ad9aad2a7083c5",
+    "measures": [
+     "distribution shifts",
+     "grokking"
+    ]
+   },
+   {
+    "document_id": "arxiv-2502-01774-p0005",
+    "quote": "In addition to the synthetic datasets, we conduct experiments on the MNIST dataset to explore grokking under a real-world scenario of induced distribution shifts.",
+    "start": 0,
+    "end": 162,
+    "chunk_sha256": "40c756f542f42b5d9a1e9703fd17f779497d238c7ef2a36d5b363e18f9544cdc",
+    "measures": [
+     "distribution shifts",
+     "grokking"
+    ]
+   },
+   {
+    "document_id": "arxiv-2502-01774-p0006",
+    "quote": "These experiments validate the role of distribution shifts in grokking and extend our findings",
+    "start": 316,
+    "end": 410,
+    "chunk_sha256": "91b1dcde3e2d0f7ca95b670b909ede480db90939c940fa5ae261978812710bd2",
+    "measures": [
+     "distribution shifts",
+     "grokking"
+    ]
+   },
+   {
+    "document_id": "arxiv-2502-01774-p0008",
+    "quote": "The contributions of this paper are as follows: • We introduce two synthetic datasets based on class hierarchies, designed to serve as benchmarks for analyzing late generalization and grokking intensity; • We replicate previous experiments and conduct new analyses, showing that grokking is more strongly associated with distribution shifts than with sparsity and regularization, as previously believed (https://anonymous.4open.science/ r/grokking_explained-2822 scripts are",
+    "start": 645,
+    "end": 1119,
+    "chunk_sha256": "f2902b75a1031db593cbfb7491bc82b2b2ac07a6a3ee9a22aef706aac741a040",
+    "measures": [
+     "distribution shifts",
+     "grokking"
+    ]
+   },
+   {
+    "document_id": "arxiv-2201-02177-p0001",
+    "quote": "# Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets",
+    "start": 0,
+    "end": 75,
+    "chunk_sha256": "7291c2b8cbfd3f97301fc6e538be74db8aed74a5e122492f16dced76959d4693",
+    "measures": [
+     "grokking"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "data",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2306-13253-p0009",
+     "quote": "In general, more data leads to faster grokking (i.e.",
+     "start": 965,
+     "end": 1017,
+     "chunk_sha256": "04445a7597880c948af6f569c5554de9a205139187c5999e8321335f5c648317",
+     "relation": "causes",
+     "subject": "data",
+     "object": "grokking",
+     "hedged": false
+    }
+   },
+   {
+    "term": "difficulty of optimization",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2408-08944-p0027",
+     "quote": "Loss Geometry Our experiments illustrated that grokking might be caused by the difficulty of optimization to navigate the loss landscapes.",
+     "start": 0,
+     "end": 138,
+     "chunk_sha256": "51bf14a32af2f1e3fe00db477ba16bd436559e9976f83b237e63b60151101df5",
+     "relation": "causes",
+     "subject": "difficulty of optimization",
+     "object": "grokking",
+     "hedged": true
+    }
+   },
+   {
+    "term": "intrinsic task symmetries",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2603-01968-p0002",
+     "quote": "We propose that intrinsic task symmetries primarily drive grokking and shape the geometry of the model’s representation space.",
+     "start": 203,
+     "end": 329,
+     "chunk_sha256": "4aafb9b244a700d08c919f79649ff2567b6bdb5303481cba686d23e1b284c238",
+     "relation": "increases",
+     "subject": "intrinsic task symmetries",
+     "object": "grokking",
+     "hedged": false
+    }
+   },
+   {
+    "term": "Larger datasets",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2210-01117-p0010",
+     "quote": "(2) Larger datasets lead to de-grokking.",
+     "start": 536,
+     "end": 576,
+     "chunk_sha256": "1243dc1b5f4550c9a2f84dcc7ef1ea1ac1ebfd4bd0835e00b12122028e9733ef",
+     "relation": "causes",
+     "subject": "Larger datasets",
+     "object": "grokking",
+     "hedged": false
+    }
+   },
+   {
+    "term": "mismatch",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2210-01117-p0003",
+     "quote": "This paper aims to answer these questions by analyzing neural loss landscapes: A1 Grokking is caused by the mismatch between training and test loss landscapes.",
+     "start": 577,
+     "end": 736,
+     "chunk_sha256": "7eb2628161ed023596c0ca5c7dc2657194fb57b8057b3d1bef5b0c5393074c34",
+     "relation": "causes",
+     "subject": "mismatch",
+     "object": "A1 Grokking",
+     "hedged": false
+    }
+   },
+   {
+    "term": "model ability",
+    "relation": "supports",
+    "citation": {
+     "document_id": "arxiv-2502-01774-p0002",
+     "quote": "We also show that when classes form an equivariant map, grokking can be explained by the model’s ability to learn from similar classes or sub-categories.",
+     "start": 953,
+     "end": 1106,
+     "chunk_sha256": "a92c56bd1355cbdb6b76119111c3810ae273a850889e2d003c4890d982763df5",
+     "relation": "supports",
+     "subject": "model ability",
+     "object": "grokking",
+     "hedged": true
+    }
+   }
+  ],
+  "test_plan": {
+   "design": "2x2 factorial",
+   "manipulate": [
+    "distribution shifts",
+    "Misalignment of Low Loss Regions"
+   ],
+   "measure": [
+    "grokking"
+   ],
+   "mediator": null,
+   "controls": [
+    "data",
+    "difficulty of optimization",
+    "intrinsic task symmetries",
+    "Larger datasets",
+    "mismatch",
+    "model ability"
+   ],
+   "steps": [
+    "Run all four combinations of low and high distribution shifts and Misalignment of Low Loss Regions; measure grokking.",
+    "Hold data, difficulty of optimization, intrinsic task symmetries, Larger datasets, mismatch, model ability fixed or record them as covariates.",
+    "Compare the joint effect with the sum of the separate effects."
+   ],
+   "fails_if": "Neither distribution shifts nor Misalignment of Low Loss Regions moves grokking, or their joint effect equals the sum of the separate effects (no interaction or shifting bottleneck)."
+  },
+  "relation_edges": 454,
+  "bridge_check": "encoder",
+  "encoded_terms": 467,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 454,
+   "bytes": 213299,
+   "seconds": 13.289
+  },
+  "snapshot": {
+   "as_of": 1795285390,
+   "chunk_count": 1652
+  }
+ },
+ "reply": "Deepen: distribution shifts and Misalignment of Low Loss Regions may jointly drive grokking, and their effects may compound.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\n\nLink distribution shifts -> grokking: supported (1 supporting, 0 contrary).\n  + [arxiv-2502-01774-p0007] While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.\n\nLink Misalignment of Low Loss Regions -> grokking: supported (1 supporting, 0 contrary).\n  + [arxiv-2610-00620-p0001] # Misalignment of Low-Loss Regions Causes Grokking\n\nSource predictions naming two or more of its terms:\n  [arxiv-2502-01774-p0004] To systematically investigate this hypothesis, we construct two synthetic datasets where distribution shifts between training and testing data can be precisely controlled to reproduce grokking, even in the presence of dense data.\n  [arxiv-2502-01774-p0007] While it remains difficult to predict when late generalization might occur, this paper takes an important step forward by elucidating how distribution shifts contribute to grokking.\n  [arxiv-2502-01774-p0016] The paper supports our hypothesis that grokking is caused by distribution shifts in the specific case of liner models.\n  [arxiv-2502-01774-p0017] Since grokking can be viewed as deriving from distribution shifts between training and test sets, the methods and insights from (Rabanser et al., 2019) could be applied to detect and analyze these shifts in the\n\nExisting setups that measure one of its terms:\n  [arxiv-2502-01774-p0002] By inducing distribution shifts through controlled imbalanced sampling of sub-categories, we systematically reproduce the phenomenon, demonstrating that while smallsampling is strongly associated with grokking, it is not its cause.\n  [arxiv-2502-01774-p0004] To systematically investigate this hypothesis, we construct two synthetic datasets where distribution shifts between training and testing data can be precisely controlled to reproduce grokking, even in the presence of dense data.\n  [arxiv-2502-01774-p0005] In addition to the synthetic datasets, we conduct experiments on the MNIST dataset to explore grokking under a real-world scenario of induced distribution shifts.\n  [arxiv-2502-01774-p0006] These experiments validate the role of distribution shifts in grokking and extend our findings\n\nOther causes of the outcome in the sources (control these):\n  data [arxiv-2306-13253-p0009]\n  difficulty of optimization [arxiv-2408-08944-p0027]\n  intrinsic task symmetries [arxiv-2603-01968-p0002]\n  Larger datasets [arxiv-2210-01117-p0010]\n  mismatch [arxiv-2210-01117-p0003]\n  model ability [arxiv-2502-01774-p0002]\n\nTest plan (2x2 factorial):\n  1. Run all four combinations of low and high distribution shifts and Misalignment of Low Loss Regions; measure grokking.\n  2. Hold data, difficulty of optimization, intrinsic task symmetries, Larger datasets, mismatch, model ability fixed or record them as covariates.\n  3. Compare the joint effect with the sum of the separate effects.\n  Fails if: Neither distribution shifts nor Misalignment of Low Loss Regions moves grokking, or their joint effect equals the sum of the separate effects (no interaction or shifting bottleneck).\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

@@ -448,7 +448,9 @@ def parsed_relations(doc):
         children = list(token.children)
         if any(c.dep_ == 'mark' and c.lower_ in {'if', 'unless', 'whether'} for c in children):
             continue
-        negative = any(c.dep_ == 'neg' for c in children)
+        negative = any(c.dep_ == 'neg' for c in children) or any(
+            g.dep_ in {'det', 'preconj', 'neg'} and g.lower_ in {'neither', 'no', 'nor', 'none'}
+            for c in children if c.dep_ in {'nsubj', 'nsubjpass', 'dobj'} for g in c.children)
         lemma = token.lemma_.casefold()
         passive_subject = next((c for c in children if c.dep_ in {'nsubjpass', 'nsubj:pass'}), None)
         if passive_subject is not None:
@@ -978,7 +980,8 @@ def deductive_check(candidate, reading, context):
 
 _VAGUE = frozenset("""associated somewhat such way case thing part lot year month day week time factor value result
     number amount level kind type aspect set use order fact example instance respect term half rest end top method
-    approach technique work paper study edition ingredient enhancement condition impact similar increase""".split())
+    approach technique work paper study edition ingredient enhancement condition impact similar increase behavior
+    behaviour match combination discrepancy occurrence observation finding phenomenon situation""".split())
 _BARE_ADJECTIVE = frozenset('''regulatory associated facilitated similar various different important significant
     relevant available possible effective efficient large small high low new recent current technical economic
     environmental computational sufficient necessary critical key global local general specific overall'''.split())

@@ -18,7 +18,7 @@ from cpu_llm.access import AccessError, AuthenticationError, SourceForbidden, St
 from cpu_llm.documents import SourceDocument
 from cpu_llm.entry import Entry
 
-_ASK_FIELDS = ("discover", "imagine", "deep", "math", "finance", "as_of", "session_id", "strict_evidence", "small_talk", "cycle_search", "invent", "nammade", "nammade_kappa", "target_level", "inference", "frontier")
+_ASK_FIELDS = ("discover", "imagine", "deep", "math", "finance", "as_of", "session_id", "strict_evidence", "small_talk", "cycle_search", "invent", "nammade", "nammade_kappa", "target_level", "inference", "frontier", "deepen")
 
 
 MAX_REQUEST_BYTES = 1024 * 1024
@@ -155,6 +155,8 @@ def _dispatch(entry: Entry, path: str, secret: str, payload: dict[str, Any], *, 
             raise ValueError('invent must be a boolean')
         if 'frontier' in kwargs and type(kwargs['frontier']) is not bool and not isinstance(kwargs['frontier'], dict):
             raise ValueError('frontier must be a boolean or an object')
+        if 'deepen' in kwargs and type(kwargs['deepen']) is not bool and not isinstance(kwargs['deepen'], (dict, str)):
+            raise ValueError('deepen must be a boolean, a hypothesis text, or an object')
         if 'nammade' in kwargs and type(kwargs['nammade']) is not bool:
             raise ValueError('nammade must be a boolean')
         if 'nammade_kappa' in kwargs and (isinstance(kwargs['nammade_kappa'], bool) or not isinstance(kwargs['nammade_kappa'], (int, float))):

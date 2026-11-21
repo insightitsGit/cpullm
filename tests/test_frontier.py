@@ -474,6 +474,8 @@ def test_dependency_parser_reads_clean_noun_phrases():
     assert list(parsed_relations(nlp('Does memory bandwidth limit inference?'))) == []
     [(_, _, _, negative, _)] = list(parsed_relations(nlp('Export controls do not reduce domestic supply.')))
     assert negative
+    found = list(parsed_relations(nlp('Neither implicit bias alone minimizes the generalization error.')))
+    assert found and all(negative for *_, negative, _ in found)
 
 
 

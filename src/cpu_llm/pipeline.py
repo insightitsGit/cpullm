@@ -650,6 +650,7 @@ class Appliance:
         target_level: str | None = None,
         inference: dict | None = None,
         frontier: bool | dict | None = None,
+        deepen: bool | dict | str | None = None,
     ) -> dict[str, Any]:
         """Separate explicit compound requests; each task uses the full pipeline."""
         from cpu_llm.request_planner import dispatch_request
@@ -672,6 +673,20 @@ class Appliance:
             return inference_response(raw_message, self.tenant_id, 'needs_clarification', str(exc))
         from cpu_llm.evidence_analysis import EvidenceAnalysisRequest
         explicit_inference = explicit_inference or isinstance(inference_request, EvidenceAnalysisRequest)
+        from cpu_llm.deepen import deepen_seed, execute_deepen, finish_deepen_response
+        if deepen is not None and type(deepen) is not bool and not isinstance(deepen, (dict, str)):
+            raise ValueError('deepen must be a boolean, a hypothesis text, or a Frontier hypothesis object')
+        deepen_target = (deepen if isinstance(deepen, (dict, str)) else
+                         deepen_seed(content, forced=True) if deepen is True else deepen_seed(content))
+        if deepen_target is not None:
+            if frontier not in (None, False) or any((invent, nammade, imagine, math, finance)) or cycle_search is not None \
+                    or inference is not None or any(value is not None for value in (
+                        payment, authority, objective, hypothesis, causal_graph)):
+                raise ValueError('Submit Deepen and other specialist requests separately.')
+            from cpu_llm.response_policy import classify_response_request
+            result = execute_deepen(self, raw_message, deepen_target, caller=caller, as_of=as_of, strict=enabled)
+            result['response_plan'] = classify_response_request(content)
+            return finish_deepen_response(result)
         from cpu_llm.frontier import execute_frontier, finish_frontier_response, frontier_seed, validate_frontier_option
         frontier_options = validate_frontier_option(frontier)
         frontier_topic = frontier_seed(content, forced=frontier_options is not None)

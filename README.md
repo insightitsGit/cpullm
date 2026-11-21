@@ -57,6 +57,8 @@ Question + authorized knowledge base
        +-- Abductive ---> Unverified hypotheses and shared-constant checks
   |
   +-- Frontier ---------> 10 to 50 ranked, cited hypotheses across the whole KB
+        |
+        +-- Deepen ------> One hypothesis: evidence per link, confounders, test plan
 ```
 
 ## Verification contract compared with generative RAG
@@ -472,6 +474,7 @@ See the [architecture](docs/current-design.md) and [prompt-to-node mapping](docs
 - `Temporal: sources: dates-p0000, dates-p0001`, `Induction: sources: trial-p0000, trial-p0001`, and `Abduction: sources: research-p0000, research-p0001, research-p0002` select structured analyses. The referenced chunks must already contain the documented JSON records. These source-only additions are described in the [inference guide](inference-guide.md).
 - `List chunks for notes.pdf.` opens scoped inventory. `Delete chunk notes-p0001.` opens a preview. The deletion API handles confirmation.
 - `Frontier: AI energy bottlenecks.`, `app.ask(topic, frontier=True)` or `"frontier": true` over HTTP runs the Frontier node: ranked, cited `UNVERIFIED_HYPOTHESIS` entries built from relations across the whole authorized knowledge base. See [Frontier](#frontier-ranked-hypotheses-across-a-knowledge-base-unreleased).
+- `Deepen: <hypothesis>.` or `app.ask(message, deepen=frontier_hypothesis)` examines one hypothesis link by link: supporting and contrary evidence, predictions, existing setups, confounders and a test plan. See [Deepen](#deepen-examine-one-hypothesis-unreleased).
 
 Inspect `routing.executed_nodes` for graph execution and `routing.post_stages`
 where available for work outside the graph. See the
@@ -775,6 +778,30 @@ On these corpora, a minority of entries are strong research leads and many are
 weak. Treat the list as candidates to screen, not as findings. Design and
 decisions: [Frontier design](docs/frontier-node-design.md).
 
+## Deepen: examine one hypothesis (unreleased)
+
+Frontier searches wide; Deepen takes one of its hypotheses and checks it link by link against the same sources.
+
+```python
+frontier = app.ask("Frontier: grokking.")["frontier"]
+reply = app.ask("Deepen this.", deepen=frontier["hypotheses"][0])   # or "Deepen: A may constrain C through B."
+receipt = reply["deepen"]
+receipt["verdict"]                     # all_links_supported, partly_supported, contested, unsupported
+[(l["source"], l["target"], l["status"]) for l in receipt["links"]]
+receipt["predictions"], receipt["setups"], receipt["confounders"]
+receipt["test_plan"]                   # design, manipulate, measure, mediator, controls, steps, fails_if
+```
+
+Each link is `supported`, `contested`, `counter_only`, `weak` or `missing`. A source that states the opposite
+direction, or negates the link, counts against it.
+
+Example: Frontier proposed "low weight decay may increase generalization through the grokking phase". Deepen marked
+the first link contested, because the same paper (arXiv 2408.08944) also states that *increasing* weight decay
+leads to the emergent phase.
+
+The hypothesis stays unverified and is never written to the index. Strict evidence disables Deepen.
+Specification: [Deepen node](docs/deepen-node.md). Evaluation: [Deepen review](docs/reviews/2026-11-21-deepen/report.md).
+
 ## Quickstart and reproduction
 
 Python 3.11+ is required. Release checks used Windows/Python 3.12.10.
@@ -951,6 +978,7 @@ for the intended application.
   Saving that article did not run a physics audit.
 - [Abductive bridge node](docs/abductive-bridge-node.md). It compiles one
   unverified relation from Nammade comparisons, or it abstains.
+- [Deepen node](docs/deepen-node.md): one hypothesis checked link by link, with a test plan.
 - [Frontier node design](docs/frontier-node-design.md) and the
   [Frontier evaluation reports](docs/reviews/2026-11-21-frontier-v2/report.md).
   It returns ranked, cited, unverified hypotheses across a knowledge base.

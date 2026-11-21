@@ -124,6 +124,10 @@ FLAG_BINDINGS += (
          'frontier_pre_thinker', 'frontier_rank'), 'pre_graph',
         'Own route over one authorized snapshot; streamed exhaustive relation combinations under round, time, memory and candidate budgets; abductive, deductive and pre-thinker filters; 10 to 50 ranked UNVERIFIED_HYPOTHESIS entries, never promoted or indexed; strict disables.',
         'Frontier: AI bottlenecks.'),
+    FlagBinding('request.deepen', 'explicit Deepen: prompt or Python/HTTP deepen value (text or Frontier hypothesis)',
+        ('deepen_snapshot', 'deepen_links', 'deepen_evidence', 'deepen_plan'), 'pre_graph',
+        'Own route over one authorized snapshot; evidence for and against each link of one hypothesis, source predictions naming two or more of its terms, existing setups, confounders, and a test plan; stays UNVERIFIED_HYPOTHESIS, never promoted or indexed; strict disables.',
+        'Deepen: weight decay may constrain grokking through learning rate.'),
 )
 OPTIONAL_ORDER = ('deep', 'gather', 'compare', 'brief', 'math', 'finance', 'frame')
 _AFTER = {'shine': -1, 'deep': 0, 'imagine': 1, 'compare': 2, 'brief': 3, 'math': 4, 'finance': 5, 'frame': 6}
@@ -170,7 +174,8 @@ def validate_graph_consumers(nodes):
                 'document_compose', 'document_inverse_verify', 'crossdomin', 'constraint_check',
                 'chunk_inventory', 'chunk_delete', 'nammade_equilibrium', 'inference',
                 'frontier_snapshot', 'frontier_generate', 'frontier_abductive', 'frontier_deductive',
-                'frontier_pre_thinker', 'frontier_rank'}
+                'frontier_pre_thinker', 'frontier_rank',
+                'deepen_snapshot', 'deepen_links', 'deepen_evidence', 'deepen_plan'}
     expected = {node for binding in FLAG_BINDINGS for node in binding.consumers} - external
     if missing := expected - set(nodes):
         raise ValueError('Flag consumers missing from graph: ' + ', '.join(sorted(missing)))

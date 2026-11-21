@@ -1,0 +1,168 @@
+{
+ "namespace": "ai_bottlenecks_frontier",
+ "frontier_hypothesis": {
+  "id": "7f1239922ef3",
+  "text": "computing resources and tens of thousands of GPUs may jointly constrain training these large dense models, so relieving one may shift the bottleneck to the other.",
+  "pattern": "convergent",
+  "relation": "co_constrain",
+  "anchors": [
+   "computing resources",
+   "tens of thousands of GPUs",
+   "training these large dense models"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2112-06905-p0003",
+   "arxiv-2405-10799-p0021"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2112-06905-p0003",
+    "quote": "However, training these large dense models requires significant amounts of computing resources.",
+    "start": 103,
+    "end": 198,
+    "chunk_sha256": "ed18aece3480a86d033c2908c917b4a2d044699e1ed8638d4c43d5f6fb70014e",
+    "relation": "constrains",
+    "subject": "computing resources",
+    "object": "training these large dense models",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2405-10799-p0021",
+    "quote": "AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars.",
+    "start": 763,
+    "end": 934,
+    "chunk_sha256": "675ece2b880b715409c248a3d28395052ee62bb9cc19b57e858e58bc071d2dd9",
+    "relation": "constrains",
+    "subject": "tens of thousands of GPUs",
+    "object": "training stateof models",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.594,
+   "novelty": 0.65
+  },
+  "falsification_test": "Relieve computing resources alone while measuring training these large dense models. The hypothesis fails if training these large dense models keeps improving without tens of thousands of GPUs becoming the binding limit, or if relieving tens of thousands of GPUs alone has no effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "training large dense model"
+ },
+ "seconds": 11.04,
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "convergent",
+  "terms": {
+   "a": "computing resources",
+   "b": "tens of thousands of GPUs",
+   "c": "training these large dense models"
+  },
+  "links": [
+   {
+    "source": "computing resources",
+    "target": "training these large dense models",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2112-06905-p0003",
+      "quote": "However, training these large dense models requires significant amounts of computing resources.",
+      "start": 103,
+      "end": 198,
+      "chunk_sha256": "ed18aece3480a86d033c2908c917b4a2d044699e1ed8638d4c43d5f6fb70014e",
+      "relation": "constrains",
+      "subject": "computing resources",
+      "object": "training these large dense models",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2112-06905-p0003",
+      "quote": "However, training these large dense models requires significant amounts of computing resources.",
+      "start": 103,
+      "end": 198,
+      "chunk_sha256": "ed18aece3480a86d033c2908c917b4a2d044699e1ed8638d4c43d5f6fb70014e"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0
+   },
+   {
+    "source": "tens of thousands of GPUs",
+    "target": "training these large dense models",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2405-10799-p0021",
+      "quote": "AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars.",
+      "start": 763,
+      "end": 934,
+      "chunk_sha256": "675ece2b880b715409c248a3d28395052ee62bb9cc19b57e858e58bc071d2dd9",
+      "relation": "constrains",
+      "subject": "tens of thousands of GPUs",
+      "object": "training stateof models",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0
+   }
+  ],
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [],
+  "confounders": [],
+  "test_plan": {
+   "design": "2x2 factorial",
+   "manipulate": [
+    "computing resources",
+    "tens of thousands of GPUs"
+   ],
+   "measure": [
+    "training these large dense models"
+   ],
+   "mediator": null,
+   "controls": [],
+   "steps": [
+    "Run all four combinations of low and high computing resources and tens of thousands of GPUs; measure training these large dense models.",
+    "The sources name no other cause of the outcome; record the main training or measurement settings.",
+    "Compare the joint effect with the sum of the separate effects."
+   ],
+   "fails_if": "Neither computing resources nor tens of thousands of GPUs moves training these large dense models, or their joint effect equals the sum of the separate effects (no interaction or shifting bottleneck)."
+  },
+  "relation_edges": 522,
+  "bridge_check": "encoder",
+  "encoded_terms": 505,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 522,
+   "bytes": 249627,
+   "seconds": 10.976
+  },
+  "snapshot": {
+   "as_of": 1795285439,
+   "chunk_count": 1054
+  }
+ },
+ "reply": "Deepen: computing resources and tens of thousands of GPUs may jointly constrain training these large dense models, so relieving one may shift the bottleneck to the other.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\n\nLink computing resources -> training these large dense models: supported (1 supporting, 0 contrary).\n  + [arxiv-2112-06905-p0003] However, training these large dense models requires significant amounts of computing resources.\n\nLink tens of thousands of GPUs -> training these large dense models: supported (1 supporting, 0 contrary).\n  + [arxiv-2405-10799-p0021] AI companies carefully plan their training runs, as training stateof-the-art models often requires tens of thousands of GPUs and costs on the order of millions of dollars.\n\nTest plan (2x2 factorial):\n  1. Run all four combinations of low and high computing resources and tens of thousands of GPUs; measure training these large dense models.\n  2. The sources name no other cause of the outcome; record the main training or measurement settings.\n  3. Compare the joint effect with the sum of the separate effects.\n  Fails if: Neither computing resources nor tens of thousands of GPUs moves training these large dense models, or their joint effect equals the sum of the separate effects (no interaction or shifting bottleneck).\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

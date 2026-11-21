@@ -121,6 +121,15 @@ stop the run. Strict evidence disables the route. The response carries a
 `frontier` receipt and the standard invention note. See
 [the Frontier design](frontier-node-design.md).
 
+## Deepen (unreleased)
+
+`request.deepen` is selected by `Deepen: <hypothesis>.`, `ask(..., deepen=<hypothesis>)` or `"deepen": ...` on
+`/v1/ask`. The value is a hypothesis object from a Frontier receipt (preferred), its text, or `true`. Deepen is a
+pre-graph route over one authorized snapshot. It runs `deepen_snapshot`, `deepen_links`, `deepen_evidence` and
+`deepen_plan`, and returns evidence for and against each link, source predictions, existing setups, confounders
+and a test plan. The hypothesis stays unverified and is never written to the index; strict evidence disables the
+route. See [the Deepen node](deepen-node.md).
+
 ## Explicit rule inference
 
 The repository source includes an experimental InferenceNode for registered
