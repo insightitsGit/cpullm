@@ -382,3 +382,29 @@ def test_background_topic_words_anchor_only_when_the_focus_is_too_narrow():
     graph = build_graph(rows, Budget(FrontierLimits()))
     _, present, focus = topic_focus('accelerator wafer', graph)
     assert present == ['accelerator', 'wafer'] and focus == ['wafer']   # accelerator is in every chunk
+
+
+@pytest.mark.parametrize('sentence, expected', [
+    ('Integrated information theory entails panpsychism.', ('Integrated information theory', 'supports', 'panpsychism')),
+    ('The knowledge argument undermines physicalism.', ('knowledge argument', 'undermines', 'physicalism')),
+    ('Illusionism is incompatible with phenomenal realism.', ('Illusionism', 'undermines', 'phenomenal realism')),
+    ('Global workspace theory cannot explain phenomenal character.',
+     ('Global workspace theory', 'undermines', 'phenomenal character')),
+])
+def test_argument_relations_for_philosophical_prose(sentence, expected):
+    [(subject, kind, obj, negative, _)] = list(lexical_relations(sentence))
+    assert (subject, kind, obj) == expected and not negative
+
+
+def test_argument_relations_compose_by_sign():
+    assert compose('supports', 'supports') == ('supports', 1.0)
+    assert compose('supports', 'undermines') == ('undermines', 1.0)
+    assert compose('undermines', 'undermines') == ('affects', 0.5)
+    assert compose('supports', 'increases') == ('affects', 0.6)
+    rows = rows_of('Integrated information theory entails panpsychism.',
+                   'Panpsychism supports the intrinsic nature view.', 'The combination problem undermines panpsychism.')
+    receipt = run_frontier('panpsychism', rows)
+    texts = [h['text'] for h in receipt['hypotheses']]
+    assert any('Integrated information theory may support intrinsic nature view through panpsychism' in t for t in texts)
+    assert 'combination problem may undermine intrinsic nature view through panpsychism.' in texts
+    assert any('may be cancelled by combination problem' in t for t in texts)

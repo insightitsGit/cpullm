@@ -179,13 +179,19 @@ _INCREASE = (r'increases?|increased|raises?|raised|drives?|drove|boosts?|boosted
              r'spurs?|spurred|consumes?|consumed|grows|intensifies|intensified|speeds? up|sped up|maximizes?|'
              r'doubles?|doubled|triples?|tripled|multiplies')
 _DECREASE = (r'reduces?|reduced|lowers?|lowered|decreases?|decreased|cuts?|slows?|slowed|hinders?|hindered|'
-             r'hampers?|hampered|impedes?|impeded|erodes?|eroded|offsets?|undermines?|undermined|delays?|delayed|'
+             r'hampers?|hampered|impedes?|impeded|erodes?|eroded|offsets?|delays?|delayed|'
              r'mitigates?|mitigated|alleviates?|alleviated|saves?|saved|lessens?|shrinks?|minimizes?|minimized|'
              r'eliminates?|eliminated')
 _CONSTRAIN = (r'limits?|constrains?|restricts?|caps?|bounds|bottlenecks?|throttles?|gates?|'
               r'determines?|governs?')
 _REQUIRE = r'requires?|required|depends? on|depended on|relies? on|relied on|needs?|demands?'
 _SCALES = r'scales? with|grows? with|rises? with|increases? with'
+# Argument relations, for philosophical and theoretical prose.
+_SUPPORT = (r'entails?|entailed|implies|implied|presupposes?|presupposed|supports?|supported|motivates?|motivated|'
+            r'explains?|explained|vindicates?|vindicated|grounds')
+_UNDERMINE = (r'undermines?|undermined|challenges?|challenged|refutes?|refuted|contradicts?|contradicted|'
+              r'conflicts? with|(?:is|are) incompatible with|rules? out|ruled out|threatens?|threatened|'
+              r'cannot explain|fails? to explain|failed to explain')
 _CAUSE_VERB = (r'leads? to|led to|results? in|resulted in|contributes? to|contributed to|accounts? for|'
                r'gives? rise to|gave rise to|produces?|produced|emits?|emitted|(?:is|are) (?:an?|the) (?:\w+ )?'
                r'drivers? of')
@@ -198,7 +204,7 @@ _BOTTLENECK_NOUN = (r'(?:is|are|was|were|remains?|becomes?|has become|have becom
                     r'(?:for|to|on|in|of)')
 _CUE = re.compile(
     rf'\b(?:(?P<passive>{_PASSIVE})|(?P<noun>{_BOTTLENECK_NOUN})|(?P<scales>{_SCALES})|(?P<require>{_REQUIRE})|'
-    rf'(?P<cause>{_CAUSE_VERB})|(?P<increase>{_INCREASE})|(?P<decrease>{_DECREASE})|(?P<constrain>{_CONSTRAIN}))\b',
+    rf'(?P<support>{_SUPPORT})|(?P<undermine>{_UNDERMINE})|(?P<cause>{_CAUSE_VERB})|(?P<increase>{_INCREASE})|(?P<decrease>{_DECREASE})|(?P<constrain>{_CONSTRAIN}))\b',
     re.I)
 _PASSIVE_KIND = dict(limited='constrains', constrained='constrains', bottlenecked='constrains',
                      bounded='constrains', gated='constrains', capped='constrains', throttled='constrains',
@@ -215,9 +221,11 @@ _SUBJECT_CUT = re.compile(r'[,;:()\[\]"“”]|\b(?:that|which|who|while|whereas
 _OBJECT_CUT = re.compile(r'[,;:()\[\]"“”]|\b(?:and|but|which|that|who|while|whereas|because|as|by|through|via|'
                          r'due|when|where|if|unless|from|at|on|in|with|within|across|over|under|among|than|to|'
                          r'into|during|until|so|thus|whose|since|after|before|beyond|without|rather)\b', re.I)
-_CAUSAL = frozenset({'increases', 'decreases', 'constrains', 'causes'})
+_LOGICAL = frozenset({'supports', 'undermines'})
+_CAUSAL = frozenset({'increases', 'decreases', 'constrains', 'causes'}) | _LOGICAL
 _STRUCTURAL = frozenset({'is_a', 'alias_of', 'has'})
 _VERB = dict(increases='increase', decreases='reduce', constrains='constrain', causes='contribute to',
+             supports='support', undermines='undermine',
              affects='affect')
 
 
@@ -261,6 +269,10 @@ def _cue_kind(match):
         return 'increases', True
     if match['cause']:
         return 'causes', False
+    if match['support']:
+        return 'supports', False
+    if match['undermine']:
+        return 'undermines', False
     if match['require']:
         return 'constrains', True      # "A requires B": the supply of B bounds A.
     for kind in ('increase', 'decrease', 'constrain'):
@@ -298,7 +310,8 @@ def lexical_relations(sentence):
         obj = _clean_term(_tokens(after), keep='head')
         if not subject or not obj or not usable_term(subject) or not usable_term(obj):
             continue
-        negative = bool(_NEGATION.search(sentence[max(0, match.start() - 40):match.end() + 10]))
+        negative = bool(_NEGATION.search(sentence[max(0, match.start() - 40):match.start()])
+                        or _NEGATION.search(sentence[match.end():match.end() + 10]))
         if reverse:
             subject, obj = obj, subject
         yield subject, kind, obj, negative, hedged
@@ -555,7 +568,7 @@ def batches(stream, size, budget):
 # --------------------------------------------------------------------------- filters
 
 def _sign(kind):
-    return {'increases': 1, 'causes': 1, 'decreases': -1}.get(kind)
+    return {'increases': 1, 'causes': 1, 'decreases': -1, 'supports': 1, 'undermines': -1}.get(kind)
 
 
 def compose(left, right):
@@ -569,6 +582,13 @@ def compose(left, right):
     if left not in _CAUSAL | {'affects'} or right not in _CAUSAL | {'affects'}:
         return None
     if 'affects' in (left, right):
+        return 'affects', 0.6
+    if left in _LOGICAL and right in _LOGICAL:
+        # Support passes support along; support then undermining undermines; two underminings do not cancel.
+        if left == right == 'undermines':
+            return 'affects', 0.5
+        return ('supports' if _sign(left) * _sign(right) > 0 else 'undermines'), 1.0
+    if left in _LOGICAL or right in _LOGICAL:
         return 'affects', 0.6
     ls, rs = _sign(left), _sign(right)
     if ls is not None and rs is not None:
@@ -615,6 +635,12 @@ def abductive_check(candidate):
         return None, 'unrelated_bridge'
     if candidate.pattern == 'convergent':
         signs = {_sign(first.kind), _sign(second.kind)}
+        if {first.kind, second.kind} <= _LOGICAL:
+            relation = {frozenset({'supports'}): 'jointly_support', frozenset({'undermines'}): 'jointly_undermine'}.get(
+                frozenset({first.kind, second.kind}), 'contested')
+            return dict(relation=relation, certainty=0.85 * shared, anchors=(first.subject, second.subject, first.object),
+                        keys=(first.subject_key, second.subject_key, first.object_key), via=[],
+                        same_quantity=shared < 1.0), None
         if {first.kind, second.kind} <= {'constrains', 'decreases'}:
             relation, certainty = 'co_constrain', 0.9
         elif signs == {1, -1}:
@@ -626,7 +652,8 @@ def abductive_check(candidate):
         return dict(relation=relation, certainty=certainty * shared, anchors=(first.subject, second.subject, first.object),
                     keys=(first.subject_key, second.subject_key, first.object_key), via=[],
                     same_quantity=shared < 1.0), None
-    return dict(relation='common_driver', certainty=0.8 * shared, anchors=(first.object, second.object, first.subject),
+    relation = 'common_ground' if {first.kind, second.kind} <= _LOGICAL else 'common_driver'
+    return dict(relation=relation, certainty=0.8 * shared, anchors=(first.object, second.object, first.subject),
                 keys=(first.object_key, second.object_key, first.subject_key), via=[],
                 same_quantity=shared < 1.0), None
 
@@ -851,11 +878,26 @@ def hypothesis_text(candidate, reading):
         return f'{a} and {b} may jointly drive {hub}, and their effects may compound.'
     if reading['relation'] == 'jointly_affect':
         return f'{a} and {b} may interact in their effect on {hub}.'
+    if reading['relation'] == 'jointly_support':
+        return f'{a} and {b} may jointly support {hub}, each covering what the other leaves open.'
+    if reading['relation'] == 'jointly_undermine':
+        return f'{a} and {b} may jointly undermine {hub}, so answering one objection may leave the other standing.'
+    if reading['relation'] == 'contested':
+        up, down = (a, b) if _sign(edges[0].kind) == 1 else (b, a)
+        return f'The support that {up} gives {hub} may be cancelled by {down}.'
+    if reading['relation'] == 'common_ground':
+        return f'{a} and {b} may stand or fall together because both rest on {hub}.'
     return f'{a} and {b} may move together because both depend on {hub}.'
 
 
 def falsification(candidate, reading):
     edges = candidate.edges
+    if candidate.pattern == 'chain' and reading['relation'] in _LOGICAL:
+        start, end = edges[0].subject, edges[-1].object
+        via = ', '.join(reading['via'])
+        claim = 'holds' if reading['relation'] == 'supports' else 'fails'
+        return (f'Construct a coherent case where {start} is accepted. The hypothesis fails if {end} still '
+                f'{"fails" if claim == "holds" else "holds"} in that case, or if the argument does not need {via}.')
     if candidate.pattern == 'chain':
         start, end = edges[0].subject, edges[-1].object
         via = ', '.join(reading['via'])
@@ -870,6 +912,12 @@ def falsification(candidate, reading):
     if reading['relation'] == 'offset':
         return (f'Measure {hub} where both {a} and {b} vary independently. The hypothesis fails if the effect of '
                 'one does not shrink when the other is present.')
+    if reading['relation'] in {'jointly_support', 'jointly_undermine', 'contested'}:
+        return (f'Assess {hub} against {a} alone, {b} alone, and both together. The hypothesis fails if the '
+                'combined case adds nothing to the stronger single case.')
+    if reading['relation'] == 'common_ground':
+        return (f'Find a position that keeps {a} and rejects {b}, or the reverse, without giving up {hub}. The '
+                'hypothesis fails if such a position is coherent.')
     if reading['relation'] in {'jointly_drive', 'jointly_affect'}:
         return (f'Vary {a} and {b} separately and together. The hypothesis fails if the joint change in {hub} '
                 'equals the sum of the separate changes.')
