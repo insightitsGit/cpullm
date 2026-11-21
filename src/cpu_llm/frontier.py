@@ -131,6 +131,11 @@ def _tokens(text):
     return re.findall(r"[A-Za-z0-9][A-Za-z0-9'’-]*", text)
 
 
+def _strip_markup(text):
+    """Drop Markdown heading and emphasis marks that an ingested title can carry."""
+    return re.sub(r'^[#>*\s]+|[*_`]+', '', text).strip()
+
+
 def _stem(token):
     word = token.casefold().replace('’', "'").removesuffix("'s")
     if len(word) > 4 and word.endswith('ies'):
@@ -244,6 +249,10 @@ def usable_term(term):
     """A term must be a noun phrase: no leading preposition or verb, no pronoun-only phrase."""
     tokens = [t.casefold() for t in _tokens(term)]
     if not tokens or tokens[0] in _BAD_START or tokens[0] in _PRONOUN or tokens[0] in _WH_START:
+        return False
+    if tokens[0] in {'no', 'none', 'neither', 'any', 'every', 'each'}:
+        return False                                  # a quantifier phrase, not a named quantity
+    if term.lstrip().startswith(('#', '>', '*')):
         return False
     if re.search(r'[^\x00-\x7f\u2019]', term) and len(tokens) == 1:
         return False                                  # a bare symbol such as a Greek variable
@@ -415,7 +424,7 @@ def _phrase(token):
             if objects:
                 phrase += [child.text, *_phrase(objects[0]).split()]
             break
-    return _clean_term(phrase, keep='head')
+    return _clean_term([w for w in phrase if w not in {'#', '*', '>'}], keep='head')
 
 
 def _conjoined(token):
@@ -1289,13 +1298,17 @@ def run_frontier(topic, rows, *, limits=None, clock=time.monotonic, encode=None)
     # Diversity: up to HUB_CAP entries per bridge or hub term first, then the rest in rank order, so one
     # well-connected term cannot fill the list while alternatives exist. Nothing is dropped for lack of them.
     limit = min(limits.max_results, HARD_CAP)
-    per_hub, first, deferred = Counter(), [], []
+    per_term, first, deferred = Counter(), [], []
     for item in hypotheses:
-        (first if per_hub[item['hub']] < HUB_CAP else deferred).append(item)
-        per_hub[item['hub']] += 1
+        # Spread by the hub and by every anchor, so one well-connected side term cannot fill the list.
+        terms = {item['hub'], *(term_key(a) for a in item['anchors'])}
+        if all(per_term[t] < HUB_CAP for t in terms):
+            first.append(item)
+            per_term.update(terms)
+        else:
+            deferred.append(item)
     returned = (first + deferred)[:limit]
-    receipt['hub_deferred'] = sum(1 for item in deferred if item not in returned) + sum(
-        1 for item in returned if item in deferred)
+    receipt['hub_deferred'] = len(deferred)    # entries moved behind more varied ones (none dropped)
     incomplete = stop_reason is not None
     shortage = None
     if len(returned) < limits.min_results:

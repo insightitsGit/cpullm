@@ -474,3 +474,18 @@ def test_dependency_parser_reads_clean_noun_phrases():
     assert list(parsed_relations(nlp('Does memory bandwidth limit inference?'))) == []
     [(_, _, _, negative, _)] = list(parsed_relations(nlp('Export controls do not reduce domestic supply.')))
     assert negative
+
+
+
+def test_quantifier_and_markup_terms_are_not_anchors():
+    from cpu_llm.frontier import usable_term
+    assert not usable_term('no sign') and not usable_term('# Grokking') and usable_term('Grokking')
+
+
+def test_a_side_term_cannot_fill_the_list():
+    # One method name links to many different targets; the spread keeps it to three of the first entries.
+    texts = [f'ResMem improves {name} accuracy.' for name in _OUTPUTS]
+    texts += [f'{other.title()} tuning improves {name} accuracy.' for other in _NAMES[:6] for name in _OUTPUTS]
+    receipt = run_frontier('accuracy', rows_of(*texts))
+    top = [h for h in receipt['hypotheses'][:10]]
+    assert sum('ResMem' in h['text'] for h in top) <= 3
