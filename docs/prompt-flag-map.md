@@ -105,7 +105,7 @@ authorized snapshot. It is disabled by a strict request/operator floor. See
 [usage and limits](research-cycle-user-guide.md). New flags do not change the
 number of ordinary graph nodes.
 
-## Frontier hypotheses (unreleased)
+## Frontier hypotheses (1.15.0)
 
 `request.frontier` is selected by `Frontier: <topic>.`, `ask(..., frontier=True)`
 or `"frontier": true` on `/v1/ask`. An object form, `{"topic": ..., "limits": {...}}`,
@@ -121,7 +121,7 @@ stop the run. Strict evidence disables the route. The response carries a
 `frontier` receipt and the standard invention note. See
 [the Frontier design](frontier-node-design.md).
 
-## Deepen (unreleased)
+## Deepen (1.15.0)
 
 `request.deepen` is selected by `Deepen: <hypothesis>.`, `ask(..., deepen=<hypothesis>)` or `"deepen": ...` on
 `/v1/ask`. The value is a hypothesis object from a Frontier receipt (preferred), its text, or `true`. Deepen is a

@@ -22,12 +22,11 @@ routes do not run that check against a dataset and do not promote the claim.
 Numerical results on the separate constraint-check route stay conditional on
 the selected model and the supplied constraints.
 
-**Latest release** [CPU-LLM 1.14.0 on PyPI](https://pypi.org/project/cpu-llm/1.14.0/).
-**Repository additions:** the inference expansion documented below is newer
-than that release. Install this checkout to use the expanded deduction,
-temporal, statistical and explanation-comparison APIs; installing the published
-1.14.0 package alone does not include them. No new PyPI version is published by
-these repository changes.
+**Latest release** [CPU-LLM 1.15.0 on PyPI](https://pypi.org/project/cpu-llm/1.15.0/).
+New in 1.15.0: the [Frontier](#frontier-ranked-hypotheses-across-a-knowledge-base) and
+[Deepen](#deepen-examine-one-hypothesis) hypothesis nodes, natural-language routing to both, and the expanded
+grounded inference (deduction, temporal, statistical and explanation-comparison APIs). See the
+[1.15.0 release notes](docs/releases/1.15.0.md).
 Author **Amin Parva, Independent Engineer**.
 
 Individuals and small teams can use CPU-LLM free of charge under Apache 2.0.
@@ -81,6 +80,8 @@ mode has different verification limits, including optional learned producers.
 ## Core capabilities
 
 ### Experimental inference: proofs, calculations and hypotheses
+
+Expanded in 1.15.0.
 
 These are different result contracts: deduction returns source-bound rule
 proofs; temporal analysis returns date calculations; induction returns statistical
@@ -473,8 +474,8 @@ See the [architecture](docs/current-design.md) and [prompt-to-node mapping](docs
 - `Infer whether Kestrel requires a radio.` explicitly requests registered deduction over the authorized snapshot. Supported ordinary questions can attach an inference receipt from retrieved evidence; their normal answer is preserved. Strict ordinary questions keep their quotation route.
 - `Temporal: sources: dates-p0000, dates-p0001`, `Induction: sources: trial-p0000, trial-p0001`, and `Abduction: sources: research-p0000, research-p0001, research-p0002` select structured analyses. The referenced chunks must already contain the documented JSON records. These source-only additions are described in the [inference guide](inference-guide.md).
 - `List chunks for notes.pdf.` opens scoped inventory. `Delete chunk notes-p0001.` opens a preview. The deletion API handles confirmation.
-- `Frontier: AI energy bottlenecks.`, `app.ask(topic, frontier=True)` or `"frontier": true` over HTTP runs the Frontier node: ranked, cited `UNVERIFIED_HYPOTHESIS` entries built from relations across the whole authorized knowledge base. See [Frontier](#frontier-ranked-hypotheses-across-a-knowledge-base-unreleased).
-- `Deepen: <hypothesis>.` or `app.ask(message, deepen=frontier_hypothesis)` examines one hypothesis link by link: supporting and contrary evidence, predictions, existing setups, confounders and a test plan. See [Deepen](#deepen-examine-one-hypothesis-unreleased).
+- `Frontier: AI energy bottlenecks.`, `app.ask(topic, frontier=True)` or `"frontier": true` over HTTP runs the Frontier node: ranked, cited `UNVERIFIED_HYPOTHESIS` entries built from relations across the whole authorized knowledge base. See [Frontier](#frontier-ranked-hypotheses-across-a-knowledge-base).
+- `Deepen: <hypothesis>.` or `app.ask(message, deepen=frontier_hypothesis)` examines one hypothesis link by link: supporting and contrary evidence, predictions, existing setups, confounders and a test plan. See [Deepen](#deepen-examine-one-hypothesis).
 - Natural wording also routes to these two nodes when no other specialist claims the prompt. "What unexplored connections exist around grokking?" or "What don't we know about AI energy bottlenecks?" runs Frontier. "Check this hypothesis: A may constrain C through B." runs Deepen. After a Frontier answer in the same session, "Deepen idea 3" examines that entry. See the [natural-route list](docs/prompt-flag-map.md#natural-language-routes-to-frontier-and-deepen).
 
 Inspect `routing.executed_nodes` for graph execution and `routing.post_stages`
@@ -706,7 +707,9 @@ Its brackets describe transitions between sampled points. See the
 [constraint evaluator spec](docs/invention-constraint-evaluator-spec.md) for the
 full scan inputs, reported limits, and interpretation.
 
-## Frontier: ranked hypotheses across a knowledge base (unreleased)
+## Frontier: ranked hypotheses across a knowledge base
+
+Added in 1.15.0.
 
 Frontier proposes possibilities that no single source states. It reads one
 authorized snapshot and collects the relations its sources state, such as
@@ -758,7 +761,7 @@ Over HTTP, send `{"message": "grokking", "frontier": true}` to `/v1/ask`.
     the same head noun must pass a cosine check.
   - At most three of the leading entries may share one term.
 - **Checking and ranking.**
-  - The first five entries are checked automatically with [Deepen](#deepen-examine-one-hypothesis-unreleased).
+  - The first five entries are checked automatically with [Deepen](#deepen-examine-one-hypothesis).
     Each one is marked with its verdict, and contested entries are flagged with the quotes that contradict them.
   - Set `frontier={"deepen_top": n}` to choose how many are checked (0–10; 0 turns the check off).
   - Relevance is scaled by how specific the hypothesis's terms are in the corpus, so entries built on terms found
@@ -785,7 +788,9 @@ On these corpora, a minority of entries are strong research leads and many are
 weak. Treat the list as candidates to screen, not as findings. Design and
 decisions: [Frontier design](docs/frontier-node-design.md).
 
-## Deepen: examine one hypothesis (unreleased)
+## Deepen: examine one hypothesis
+
+Added in 1.15.0.
 
 Frontier searches wide; Deepen takes one of its hypotheses and checks it link by link against the same sources.
 
@@ -815,7 +820,7 @@ Python 3.11+ is required. Release checks used Windows/Python 3.12.10.
 
 ```shell
 python -m pip install --upgrade pip
-python -m pip install "cpu-llm==1.14.0"
+python -m pip install "cpu-llm==1.15.0"
 python -m pip check
 python -c "import cpu_llm; print(cpu_llm.__version__)"
 ```
@@ -830,7 +835,7 @@ python -m pip check
 This uses the checked-out source; the version string may still match the latest
 published release. To build a distribution from a checkout, run
 `python -m pip install build` and then
-`python -m build --outdir dist/1.14.0`.
+`python -m build --outdir dist/1.15.0`.
 
 The inference expansion and follow-up audit fixes passed **338 regression tests**
 across focused, live pipeline and HTTP suites, plus **8 synthetic PostgreSQL smoke

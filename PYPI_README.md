@@ -22,7 +22,7 @@ routes do not run that check against a dataset and do not promote the claim.
 Numerical results on the separate constraint-check route stay conditional on
 the selected model and the supplied constraints.
 
-**This release** `1.14.0`.
+**This release** `1.15.0`. New: the Frontier and Deepen hypothesis nodes, natural-language routing to both, and expanded grounded inference. [Release notes](https://github.com/insightitsGit/cpullm/blob/main/docs/releases/1.15.0.md).
 Author **Amin Parva, Independent Engineer**.
 
 Individuals and small teams can use CPU-LLM free of charge under Apache 2.0.
@@ -50,6 +50,10 @@ Question + authorized knowledge base
        +-- Invention ---> Propose hypotheses, or cite stored sentences
        +-- Nammade -----> Compare authorized passages and quote excerpts
        +-- Abductive ---> Unverified hypotheses and shared-constant checks
+  |
+  +-- Frontier ---------> 10 to 50 ranked, cited hypotheses across the whole KB
+        |
+        +-- Deepen ------> One hypothesis: evidence per link, confounders, test plan
 ```
 
 ## Verification contract compared with generative RAG
@@ -70,6 +74,79 @@ preserve an incorrect source, and an unsupported request can be refused. Ordinar
 mode has different verification limits, including optional learned producers.
 
 ## Core capabilities
+
+### Experimental inference: proofs, calculations and hypotheses
+
+Expanded in 1.15.0.
+
+These are different result contracts: deduction returns source-bound rule
+proofs; temporal analysis returns date calculations; induction returns statistical
+estimates; abduction returns unverified explanatory alternatives. None guarantees
+that an incorrect source is true. The structured modes below require explicitly
+selected evidence records; they do not automatically activate during ordinary chat.
+
+Innovation, hypothesis/research requests, and Nammade automatically check
+applicable registered inference rules on their authorized source snapshot.
+`research_inference.receipts` contains replayable proofs; `research_methods.inference`
+records the outcome. These checks do not validate or promote speculative proposals.
+Registered ordering, taxonomy, physical-part/location, possession and class-requirement
+rules apply; other scientific relationships return `no_applicable_rule`. At most eight topic-related deductions
+are checked per response, with resource limits recorded in `complete`.
+Direct questions such as `Is elephant bigger than cat?` and
+`Does Kestrel have radio?` retain normal answering. A useful deduction from their
+already retrieved passages can be attached in `inference`, with
+`inference_evidence_scope="retrieved_subset"`; this does not replace the answer or
+scan the whole KB. Strict questions retain their quotation route. Strict evidence mode retains
+its existing restrictions. CrossDomain also checks applicable rules, using only
+the selected KB prefixes. Combined research prepares deduction once and shares
+its facts and bounded closures rather than running it separately in each method.
+
+For example, after ingesting the two ordering premises below, asking
+`Nammade: elephant` or `Propose a testable hypothesis about elephant.` also
+checks `elephant bigger_than cat`. The response lists the rule verdict and
+stores its full proof in `research_inference.receipts`. If no supported rule
+applies, the other research methods continue with `no_applicable_rule` recorded.
+
+InferenceNode is a shared service outside the ordinary graph. Its
+explicit deduction route reads an authorized snapshot and checks registered
+rule forms. Ingest “The elephant is bigger than the donkey” and “The donkey is
+bigger than the cat,” then ask:
+
+> Infer whether the elephant is bigger than the cat.
+
+The result uses `derived_inference` and contains a replayable proof with both
+source passages and the registered transitivity rule. Universal membership
+joins are also supported, such as “The Kestrel is a rescue cutter” plus
+“Every rescue cutter has a radio.”
+
+An `inference` object in Python or HTTP can specify `subject`, `relation`
+(`bigger_than`, `has`, `member_of`, `subclass_of`, `physical_part_of`,
+`physically_contains`, `located_in`, or `requires`), `object`, and resource limits.
+For example, “Kestrel is a cutter,” “every cutter is a vessel,” and “every vessel
+requires a radio” support `Does Kestrel require a radio?` Generic relatedness,
+class averages and arbitrary conditional prose do not become trusted rules.
+Compound names or trailing clauses such as `radio and a crew of five` and
+`donkey in Kenya` are rejected conservatively rather than turned into predicates.
+
+This release also supports opt-in analyses of selected JSON evidence chunks:
+
+```python
+# First ingest the two complete JSON records shown in the inference guide.
+result = app.ask(
+    "Compare the two dated intervals.",
+    inference={"mode": "temporal", "source_ids": ["dates-p0000", "dates-p0001"]},
+)
+```
+
+`temporal` compares explicit calendar-date intervals; `inductive` estimates a
+Bernoulli proportion with a 95% Wilson interval; `abductive` uses the existing
+AbductiveBridge to compare explicitly declared explanations and their tests.
+The last two return statistical estimates or **unverified hypotheses**, never
+deductive proof. They require structured records and are not enabled by ordinary
+chat. Strict Evidence Mode refuses all these derived-answer routes.
+[Record formats, triggers and examples](https://github.com/insightitsGit/cpullm/blob/main/inference-guide.md)
+[Implementation tracker](https://github.com/insightitsGit/cpullm/blob/main/docs/inference-expansion-implementation-spec.md)
+[Inference design and implementation status](https://github.com/insightitsGit/cpullm/blob/main/docs/inference-node-design.md)
 
 ### Evidence and research workspace
 
@@ -385,7 +462,12 @@ See the [architecture](https://github.com/insightitsGit/cpullm/blob/main/docs/cu
 - `Calculate 17 times 24.` requests arithmetic. Use `app.ask(question, discover=True)` to request discovery after the ordinary reply.
 - `Write a detailed report about Helios.` selects the document workflow. `Invention: Leptogenesis.` selects invention. `Nammade: dark matter.` runs the standalone scan. `Investigate dark matter.` runs invention, source hypotheses, the Nammade comparison, and then the abductive bridge.
 - `Research Casas-Ibarra using KBs: physics, math.` selects CrossDomain. `Constraint Check: Leptogenesis using KBs: physics, math, experiment.` requests the interval comparison directly.
+- `Infer whether Kestrel requires a radio.` explicitly requests registered deduction over the authorized snapshot. Supported ordinary questions can attach an inference receipt from retrieved evidence; their normal answer is preserved. Strict ordinary questions keep their quotation route.
+- `Temporal: sources: dates-p0000, dates-p0001`, `Induction: sources: trial-p0000, trial-p0001`, and `Abduction: sources: research-p0000, research-p0001, research-p0002` select structured analyses. The referenced chunks must already contain the documented JSON records. These source-only additions are described in the [inference guide](https://github.com/insightitsGit/cpullm/blob/main/inference-guide.md).
 - `List chunks for notes.pdf.` opens scoped inventory. `Delete chunk notes-p0001.` opens a preview. The deletion API handles confirmation.
+- `Frontier: AI energy bottlenecks.`, `app.ask(topic, frontier=True)` or `"frontier": true` over HTTP runs the Frontier node: ranked, cited `UNVERIFIED_HYPOTHESIS` entries built from relations across the whole authorized knowledge base. See [Frontier](#frontier-ranked-hypotheses-across-a-knowledge-base).
+- `Deepen: <hypothesis>.` or `app.ask(message, deepen=frontier_hypothesis)` examines one hypothesis link by link: supporting and contrary evidence, predictions, existing setups, confounders and a test plan. See [Deepen](#deepen-examine-one-hypothesis).
+- Natural wording also routes to these two nodes when no other specialist claims the prompt. "What unexplored connections exist around grokking?" or "What don't we know about AI energy bottlenecks?" runs Frontier. "Check this hypothesis: A may constrain C through B." runs Deepen. After a Frontier answer in the same session, "Deepen idea 3" examines that entry. See the [natural-route list](https://github.com/insightitsGit/cpullm/blob/main/docs/prompt-flag-map.md#natural-language-routes-to-frontier-and-deepen).
 
 Inspect `routing.executed_nodes` for graph execution and `routing.post_stages`
 where available for work outside the graph. See the
@@ -616,20 +698,127 @@ Its brackets describe transitions between sampled points. See the
 [constraint evaluator spec](https://github.com/insightitsGit/cpullm/blob/main/docs/invention-constraint-evaluator-spec.md) for the
 full scan inputs, reported limits, and interpretation.
 
+## Frontier: ranked hypotheses across a knowledge base
+
+Added in 1.15.0.
+
+Frontier proposes possibilities that no single source states. It reads one
+authorized snapshot and collects the relations its sources state, such as
+"A limits B", "B drives C" or "X undermines Y". It then tries every combination
+of those relations around a topic, within budgets, and keeps a candidate only if
+it passes three checks:
+
+1. **Abductive.** The relations combine into a coherent explanation.
+2. **Deductive.** Every premise is an exact source span, nothing in the sources
+   negates the premises or the conclusion, and the registered rule engine does
+   not contradict it.
+3. **Pre-thinker.** The candidate is not malformed, circular, drawn from one
+   source, or a restatement of one source sentence.
+
+Survivors are ranked by source support, then deductive relevance, then
+novelty. All three scores are shown.
+
+```python
+reply = app.ask("Frontier: grokking.")                    # prompt form
+reply = app.ask("grokking", frontier=True)                # Python flag
+reply = app.ask("grokking", frontier={"topic": "grokking",
+                                       "limits": {"max_path_edges": 3, "max_seconds": 60}})
+receipt = reply["frontier"]
+receipt["status"]                 # hypotheses, shortage, insufficient_evidence, ...
+receipt["candidates_generated"], receipt["candidates_passed"]   # per filter
+receipt["incomplete"], receipt["budget_used"]
+for item in receipt["hypotheses"]:
+    item["text"], item["scores"], item["citations"], item["falsification_test"]
+```
+
+Over HTTP, send `{"message": "grokking", "frontier": true}` to `/v1/ask`.
+
+- **Output.** Between 10 and 50 entries, with 50 as the hard cap. If fewer survive,
+  `status` is `shortage` and the list is not padded. Each entry carries its
+  hypothesis text, cited source IDs and exact quotes, the three scores, its
+  assumptions and a falsification test.
+- **Contract.** Every entry is an `UNVERIFIED_HYPOTHESIS` with
+  `promotion: blocked`. Nothing is written to the index. The standard invention
+  note is appended. Strict evidence mode disables Frontier.
+- **Budgets.** Round, candidate, edge, memory and time limits apply. The defaults
+  are 1,000 rounds of 256 candidates, 200,000 candidates and 60 s. A stopped run
+  sets `incomplete: true` and says so in the reply.
+- **Reading the sources.**
+  - With spaCy and an English model installed (the `prompt_nlp` extra plus
+    `en_core_web_lg` or `en_core_web_sm`), relations come from a dependency
+    parse. Otherwise a regex reader is used. `FRONTIER_PARSER` selects a model or
+    `regex`.
+  - When the appliance has an encoder, a link between two different terms with
+    the same head noun must pass a cosine check.
+  - At most three of the leading entries may share one term.
+- **Checking and ranking.**
+  - The first five entries are checked automatically with [Deepen](#deepen-examine-one-hypothesis).
+    Each one is marked with its verdict, and contested entries are flagged with the quotes that contradict them.
+  - Set `frontier={"deepen_top": n}` to choose how many are checked (0–10; 0 turns the check off).
+  - Relevance is scaled by how specific the hypothesis's terms are in the corpus, so entries built on terms found
+    everywhere ("training", "brain") rank lower.
+- **Who judges.** Frontier generates, filters and ranks. A person decides whether
+  a hypothesis is true or worth pursuing, using the cited passages and the
+  falsification test.
+
+Example from the deep-learning generalization evaluation (106 arXiv papers).
+The two cited papers each state one premise; neither states the conclusion:
+
+> Additional noise may reduce generalization error for diagonal linear networks
+> through implicit bias. Scores: source support 0.80, deductive relevance 0.75,
+> novelty 0.53. Sources: arXiv 2402.08344, 2505.21423.
+
+Evaluations so far are in
+[docs/reviews/2026-11-21-frontier](https://github.com/insightitsGit/cpullm/blob/main/docs/reviews/2026-11-21-frontier/report.md)
+(AI bottlenecks, with held-out findings),
+[deep-learning generalization](https://github.com/insightitsGit/cpullm/blob/main/docs/reviews/2026-11-21-frontier-dl-generalization/report.md),
+[consciousness](https://github.com/insightitsGit/cpullm/blob/main/docs/reviews/2026-11-21-frontier-consciousness/report.md) and the
+[before/after comparison](https://github.com/insightitsGit/cpullm/blob/main/docs/reviews/2026-11-21-frontier-v2/report.md).
+
+On these corpora, a minority of entries are strong research leads and many are
+weak. Treat the list as candidates to screen, not as findings. Design and
+decisions: [Frontier design](https://github.com/insightitsGit/cpullm/blob/main/docs/frontier-node-design.md).
+
+## Deepen: examine one hypothesis
+
+Added in 1.15.0.
+
+Frontier searches wide; Deepen takes one of its hypotheses and checks it link by link against the same sources.
+
+```python
+frontier = app.ask("Frontier: grokking.")["frontier"]
+reply = app.ask("Deepen this.", deepen=frontier["hypotheses"][0])   # or "Deepen: A may constrain C through B."
+receipt = reply["deepen"]
+receipt["verdict"]                     # all_links_supported, partly_supported, contested, unsupported
+[(l["source"], l["target"], l["status"]) for l in receipt["links"]]
+receipt["predictions"], receipt["setups"], receipt["confounders"]
+receipt["test_plan"]                   # design, manipulate, measure, mediator, controls, steps, fails_if
+```
+
+Each link is `supported`, `contested`, `counter_only`, `weak` or `missing`. A source that states the opposite
+direction, or negates the link, counts against it.
+
+Example: Frontier proposed "low weight decay may increase generalization through the grokking phase". Deepen marked
+the first link contested, because the same paper (arXiv 2408.08944) also states that *increasing* weight decay
+leads to the emergent phase.
+
+The hypothesis stays unverified and is never written to the index. Strict evidence disables Deepen.
+Specification: [Deepen node](https://github.com/insightitsGit/cpullm/blob/main/docs/deepen-node.md). Evaluation: [Deepen review](https://github.com/insightitsGit/cpullm/blob/main/docs/reviews/2026-11-21-deepen/report.md).
+
 ## Quickstart and reproduction
 
 Python 3.11+ is required. Release checks used Windows/Python 3.12.10.
 
 ```shell
 python -m pip install --upgrade pip
-python -m pip install "cpu-llm==1.14.0"
+python -m pip install "cpu-llm==1.15.0"
 python -m pip check
 python -c "import cpu_llm; print(cpu_llm.__version__)"
 ```
 
 Before publication, install the supplied wheel instead of the version from PyPI.
 To build from a checkout, run `python -m pip install build` and then
-`python -m build --outdir dist/1.14.0`.
+`python -m build --outdir dist/1.15.0`.
 
 Document queries require PostgreSQL/pgvector and the pretrained
 `sentence-transformers/all-mpnet-base-v2` encoder assets. The trained projection
@@ -777,6 +966,8 @@ for the intended application.
 - [Abductive bridge node](https://github.com/insightitsGit/cpullm/blob/main/docs/abductive-bridge-node.md). It compiles one
   unverified relation from Nammade comparisons, or it abstains.
 
+- [Frontier node design](https://github.com/insightitsGit/cpullm/blob/main/docs/frontier-node-design.md), [Deepen node](https://github.com/insightitsGit/cpullm/blob/main/docs/deepen-node.md) and the
+  [Frontier and Deepen evaluations](https://github.com/insightitsGit/cpullm/blob/main/docs/reviews/2026-11-21-frontier-v3/report.md).
 - [1.11.1 release notes](https://github.com/insightitsGit/cpullm/blob/main/docs/releases/1.11.1.md) and [build validation](https://github.com/insightitsGit/cpullm/blob/main/docs/releases/1.11.1-build-validation.md).
 - [Whitepaper](https://www.insightits.com/research-tools/cpu-llm/whitepaper) and [1.11.1 PDF](https://www.insightits.com/assets/whitepapers/cpu-llm-1.11.1-whitepaper.pdf).
 - [Strict evidence](https://github.com/insightitsGit/cpullm/blob/main/docs/strict-evidence-spec.md), [tone specification](https://github.com/insightitsGit/cpullm/blob/main/docs/stylistic-generation-spec.md), [flag mapping](https://github.com/insightitsGit/cpullm/blob/main/docs/prompt-flag-map.md).
