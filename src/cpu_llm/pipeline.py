@@ -687,6 +687,10 @@ class Appliance:
         if isinstance(deepen_target, tuple):
             # "Deepen idea 3" after a Frontier answer in the same session.
             from cpu_llm.deepen import clarification
+            if self.guard.check(raw_message).decision != 'allow':
+                return clarification(self, raw_message, 'Request blocked.', status='blocked')
+            if enabled:
+                return clarification(self, raw_message, 'Strict evidence mode disables Deepen.', status='unsupported')
             deepen_target, reason = recall_frontier(self, hypothesis_key, deepen_target[1])
             if deepen_target is None:
                 return finish_deepen_response(clarification(self, raw_message, reason))

@@ -77,9 +77,10 @@ def test_counter_evidence_marks_a_link_contested():
     receipt = run_deepen(hypothesis, rows)
     assert receipt['links'][1]['status'] == 'contested' and receipt['verdict'] == 'contested'
     assert receipt['links'][1]['counter_count'] >= 1
-    # The text form carries no expected relation, so the same link counts only as support.
+    # Text and structured forms both retain conflicting directional evidence.
     text = run_deepen('HBM supply may constrain inference throughput through memory bandwidth.', rows)
-    assert text['links'][1]['status'] == 'supported'
+    assert text['links'][1]['status'] == 'contested'
+    assert text['verdict'] == 'contested'
 
 
 def test_missing_links_and_plans_for_pairs():

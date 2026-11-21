@@ -798,7 +798,7 @@ Frontier searches wide; Deepen takes one of its hypotheses and checks it link by
 frontier = app.ask("Frontier: grokking.")["frontier"]
 reply = app.ask("Deepen this.", deepen=frontier["hypotheses"][0])   # or "Deepen: A may constrain C through B."
 receipt = reply["deepen"]
-receipt["verdict"]                     # all_links_supported, partly_supported, contested, unsupported
+receipt["verdict"]                     # all_links_supported, partly_supported, contested, unsupported, incomplete
 [(l["source"], l["target"], l["status"]) for l in receipt["links"]]
 receipt["predictions"], receipt["setups"], receipt["confounders"]
 receipt["test_plan"]                   # design, manipulate, measure, mediator, controls, steps, fails_if
@@ -806,6 +806,18 @@ receipt["test_plan"]                   # design, manipulate, measure, mediator, 
 
 Each link is `supported`, `contested`, `counter_only`, `weak` or `missing`. A source that states the opposite
 direction, or negates the link, counts against it.
+
+Text hypotheses retain their requested direction, and Deepen checks the composed
+effect across every link—including three-edge chains. Two negative links can
+support a positive end-to-end effect. Negation retains its relation and citation;
+“does not reduce” does not negate “increases.” Inspect `direction_check`,
+`path_nodes` and `test_plan.mediators` for these details.
+
+Leading checks share Frontier's request budget. `candidate_search_complete` and
+`leading_check` distinguish a finished candidate search from an unfinished check;
+useful candidates remain available with explicit incomplete labels. Candidate
+generation, ranking, result limits and unverified-hypothesis status are unchanged.
+[Correctness fixes and regression evidence](docs/frontier-deepen-correctness-spec.md).
 
 Example: Frontier proposed "low weight decay may increase generalization through the grokking phase". Deepen marked
 the first link contested, because the same paper (arXiv 2408.08944) also states that *increasing* weight decay
