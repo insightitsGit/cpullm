@@ -1,0 +1,456 @@
+{
+ "namespace": "ai_bottlenecks_frontier",
+ "frontier_hypothesis": {
+  "id": "02f4210c7b9c",
+  "text": "Inadequate access may reduce performance gap through certain groups ability (read as ability of large compute investors).",
+  "pattern": "chain",
+  "relation": "decreases",
+  "anchors": [
+   "Inadequate access",
+   "performance gap"
+  ],
+  "via": [
+   "certain groups ability (read as ability of large compute investors)"
+  ],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2307-04699-p0012",
+   "arxiv-2311-15377-p0053"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2307-04699-p0012",
+    "quote": "Inadequate access to internet services, computing power, or availability of machine learning training/expertise will also hinder certain groups’ ability to benefit fully from AI advances.",
+    "start": 228,
+    "end": 415,
+    "chunk_sha256": "ce9ee636336f95ece864100afc87704e9809a2ee9f8d295feac6f962e3744209",
+    "relation": "decreases",
+    "subject": "Inadequate access",
+    "object": "certain groups ability",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2311-15377-p0053",
+    "quote": "The ability of large compute investors to rapidly scale their investment greatly increases the performance gap between them and other actors, who only have limited capacity to scale.",
+    "start": 57,
+    "end": 239,
+    "chunk_sha256": "7c9e45b9ce9c6d8906c6eedf48d2261761e1a798b08d52e1f0790bda8e73c9de",
+    "relation": "increases",
+    "subject": "ability of large compute investors",
+    "object": "performance gap",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.742,
+   "novelty": 0.619
+  },
+  "falsification_test": "Compare settings where Inadequate access differs while other inputs are matched. The hypothesis fails if performance gap does not fall with Inadequate access, or if fixing certain groups ability (read as ability of large compute investors) removes no part of the effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "certain group ability"
+ },
+ "seconds": 16.58,
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "Inadequate access",
+   "b": "certain groups ability",
+   "c": "performance gap"
+  },
+  "path_nodes": [
+   "Inadequate access",
+   "certain groups ability",
+   "performance gap"
+  ],
+  "links": [
+   {
+    "source": "Inadequate access",
+    "target": "certain groups ability",
+    "expected_relation": "decreases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2307-04699-p0012",
+      "quote": "Inadequate access to internet services, computing power, or availability of machine learning training/expertise will also hinder certain groups’ ability to benefit fully from AI advances.",
+      "start": 228,
+      "end": 415,
+      "chunk_sha256": "ce9ee636336f95ece864100afc87704e9809a2ee9f8d295feac6f962e3744209",
+      "relation": "decreases",
+      "subject": "Inadequate access",
+      "object": "certain groups ability",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "decreases"
+    ]
+   },
+   {
+    "source": "certain groups ability",
+    "target": "performance gap",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2311-15377-p0053",
+      "quote": "The ability of large compute investors to rapidly scale their investment greatly increases the performance gap between them and other actors, who only have limited capacity to scale.",
+      "start": 57,
+      "end": 239,
+      "chunk_sha256": "7c9e45b9ce9c6d8906c6eedf48d2261761e1a798b08d52e1f0790bda8e73c9de",
+      "relation": "increases",
+      "subject": "ability of large compute investors",
+      "object": "performance gap",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   }
+  ],
+  "expected_relation": "decreases",
+  "direction_check": {
+   "requested": "decreases",
+   "status": "consistent",
+   "observed": [
+    "decreases"
+   ],
+   "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-2112-06905-p0007",
+    "quote": "More importantly, on social dimensions, our results are also the first, to our knowledge, to close the performance gap between stereotypical and anti-stereotypical examples on the WinoGender benchmark, suggesting that large, sparsely activated models may rely less on superficial statistical correlations.",
+    "start": 221,
+    "end": 526,
+    "chunk_sha256": "0c631e6a604e982c88a647b886f0620bb4017f5488d9c4343d2ab0407bad722a",
+    "measures": [
+     "performance gap"
+    ]
+   },
+   {
+    "document_id": "arxiv-2207-02852-p0029",
+    "quote": "As for the record-setting models hypothesis, we have con- firmed that most models below the gap released after GPT-3 do not seem to compete directly with big models on language generation performance, but instead make progress in niche tasks or introduce innovations that do not include raising the SOTA in language generation benchmarks (again, see Table",
+    "start": 578,
+    "end": 933,
+    "chunk_sha256": "a30368e1f4a4321ed87c4dd016c3346d43ed2a99ea2c14bfbd57ca80f2419ec7",
+    "measures": [
+     "performance gap"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "random noise",
+    "relation": "supports",
+    "citation": {
+     "document_id": "arxiv-2207-02852-p0017",
+     "quote": "The same statistical analysis of the previous section, when performed only on systems in the Other domain, shows that the gap can be explained by random noise, whereas for systems in the Language domains the gap is very unlikely: The probability of observing this gap conditional on our model being correct is 0.23 for systems in the Other domain and 0.02 for those in the Language domain6.",
+     "start": 201,
+     "end": 591,
+     "chunk_sha256": "87b7fc7ee5a8901e537437e2ca1cf7ca3bdf4ddb200d06d81ea34880a90f5346",
+     "relation": "supports",
+     "subject": "random noise",
+     "object": "gap",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "certain groups ability",
+     "source_term": "ability of large compute investors",
+     "citation": {
+      "document_id": "arxiv-2311-15377-p0053",
+      "quote": "The ability of large compute investors to rapidly scale their investment greatly increases the performance gap between them and other actors, who only have limited capacity to scale.",
+      "start": 57,
+      "end": 239,
+      "chunk_sha256": "7c9e45b9ce9c6d8906c6eedf48d2261761e1a798b08d52e1f0790bda8e73c9de",
+      "relation": "increases",
+      "subject": "ability of large compute investors",
+      "object": "performance gap",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [
+    {
+     "link": 1,
+     "citation": {
+      "document_id": "arxiv-2311-15377-p0053",
+      "quote": "The ability of large compute investors to rapidly scale their investment greatly increases the performance gap between them and other actors, who only have limited capacity to scale.",
+      "start": 57,
+      "end": 239,
+      "chunk_sha256": "7c9e45b9ce9c6d8906c6eedf48d2261761e1a798b08d52e1f0790bda8e73c9de",
+      "relation": "increases",
+      "subject": "ability of large compute investors",
+      "object": "performance gap",
+      "hedged": false
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    }
+   ],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "qualification_review",
+    "kind": "scope",
+    "instruction": "Restrict the proposal to the cited conditions and quantifiers."
+   },
+   {
+    "id": "519516caecdef401",
+    "kind": "variable",
+    "term": "Inadequate access",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for Inadequate access."
+   },
+   {
+    "id": "e85afe69a3cff0d6",
+    "kind": "variable",
+    "term": "Inadequate access",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for Inadequate access."
+   },
+   {
+    "id": "94d0004487a87f16",
+    "kind": "variable",
+    "term": "performance gap",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for performance gap."
+   },
+   {
+    "id": "9e7f8378b56a4678",
+    "kind": "variable",
+    "term": "performance gap",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for performance gap."
+   },
+   {
+    "id": "0802d1768df681ed",
+    "kind": "variable",
+    "term": "certain groups ability",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for certain groups ability."
+   },
+   {
+    "id": "a2523d2e088d0dfe",
+    "kind": "variable",
+    "term": "certain groups ability",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for certain groups ability."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "Inadequate access"
+   ],
+   "measure": [
+    "performance gap"
+   ],
+   "mediator": "certain groups ability",
+   "controls": [
+    "random noise"
+   ],
+   "steps": [
+    "Vary Inadequate access across matched settings and measure performance gap.",
+    "Review candidate controls (random noise) for timing, feasibility and causal role before adjustment.",
+    "Repeat with certain groups ability held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "performance gap does not change when Inadequate access varies with the controls fixed, or holding certain groups ability fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "Inadequate access",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "performance gap",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "certain groups ability",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "Inadequate access",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "Inadequate access",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "performance gap",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "performance gap",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "certain groups ability",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "certain groups ability",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "certain groups ability"
+   ]
+  },
+  "relation_edges": 522,
+  "bridge_check": "encoder",
+  "encoded_terms": 505,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 539,
+   "bytes": 256445,
+   "seconds": 15.928
+  },
+  "snapshot": {
+   "as_of": 1795308523,
+   "chunk_count": 1054,
+   "fingerprint": "c0c9e4c442264e7797046bda66f5d5f27aaf4ff52b67c3e943d1288d647e4c62"
+  }
+ },
+ "reply": "Deepen: Inadequate access may reduce performance gap through certain groups ability (read as ability of large compute investors).\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: consistent.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: ability of large compute investors versus certain groups ability.\n  Retain qualification [arxiv-2311-15377-p0053]: The ability of large compute investors to rapidly scale their investment greatly increases the performance gap between them and other actors, who only have limited capacity to scale.\n\nLink Inadequate access -> certain groups ability: supported (1 supporting, 0 contrary).\n  + [arxiv-2307-04699-p0012] Inadequate access to internet services, computing power, or availability of machine learning training/expertise will also hinder certain groups’ ability to benefit fully from AI advances.\n\nLink certain groups ability -> performance gap: supported (1 supporting, 0 contrary).\n  + [arxiv-2311-15377-p0053] The ability of large compute investors to rapidly scale their investment greatly increases the performance gap between them and other actors, who only have limited capacity to scale.\n\nExisting setups that measure one of its terms:\n  [arxiv-2112-06905-p0007] More importantly, on social dimensions, our results are also the first, to our knowledge, to close the performance gap between stereotypical and anti-stereotypical examples on the WinoGender benchmark, suggesting that large, sparsely activated models may rely less on superficial statistical correlations.\n  [arxiv-2207-02852-p0029] As for the record-setting models hypothesis, we have con- firmed that most models below the gap released after GPT-3 do not seem to compete directly with big models on language generation performance, but instead make progress in niche tasks or introduce innovations that do not include raising the SOTA in language generation benchmarks (again, see Table\n\nCandidate controls (review before adjustment):\n  random noise: outcome_predictor [arxiv-2207-02852-p0017]\n\nTest plan (mediation):\n  1. Vary Inadequate access across matched settings and measure performance gap.\n  2. Review candidate controls (random noise) for timing, feasibility and causal role before adjustment.\n  3. Repeat with certain groups ability held fixed or blocked to test whether it carries the effect.\n  Fails if: performance gap does not change when Inadequate access varies with the controls fixed, or holding certain groups ability fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for Inadequate access.\n  Required: feasible intervention or justified observational design for Inadequate access.\n  Required: measurement procedure for performance gap.\n  Required: unit or explicit categorical scale for performance gap.\n  Required: measurement procedure for certain groups ability.\n  Required: unit or explicit categorical scale for certain groups ability.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

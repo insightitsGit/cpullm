@@ -168,7 +168,7 @@ the KB. `novelty=true` searches the authorized snapshot for potential overlap;
 adapter and never enables an LLM fallback. After Deepen in the same scoped
 session, `Go deeper`, `Explain more`, and `Deepen further` select the next
 unresolved research requirement. Without remembered Deepen context they keep
-the existing conversation path. See [the research assessment contract](deepen-node.md#research-assessments-unreleased-after-1150).
+the existing conversation path. See [the research assessment contract](deepen-node.md#research-assessments-1160).
 
 ## Explicit rule inference
 

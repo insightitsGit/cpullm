@@ -1,3 +1,3 @@
 """cpu-llm vertical slice. CPU-only; this package never imports torch."""
 
-__version__ = "1.15.0"
+__version__ = "1.16.0"

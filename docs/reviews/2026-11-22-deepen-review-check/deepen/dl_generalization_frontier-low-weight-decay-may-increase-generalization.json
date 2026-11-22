@@ -1,0 +1,735 @@
+{
+ "namespace": "dl_generalization_frontier",
+ "frontier_hypothesis": {
+  "id": "0ae55a415db6",
+  "text": "Low weight decay may increase generalization through emergence phase (read as grokking phase).",
+  "pattern": "chain",
+  "relation": "increases",
+  "anchors": [
+   "Low weight decay",
+   "generalization"
+  ],
+  "via": [
+   "emergence phase (read as grokking phase)"
+  ],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2408-08944-p0012",
+   "arxiv-2205-10343-p0021"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2408-08944-p0012",
+    "quote": "Low weight decay delays the emergence phase We first study the most common setting of grokking for a model trained with low weight decay of 0.1.",
+    "start": 93,
+    "end": 237,
+    "chunk_sha256": "410b99860d75ac8c0cee75b0076da8882fbcd7bfcf538ebe552b817bd0412c4c",
+    "relation": "decreases",
+    "subject": "Low weight decay",
+    "object": "emergence phase",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2205-10343-p0021",
+    "quote": "The 2D plane is split into four phases: comprehension, grokking, memorization and confusion, defined in Table 1 in Appendix A. Both comprehension and grokking are able to generalize (in the “Goldilocks zone”), although the grokking phase has delayed generalization.",
+    "start": 1742,
+    "end": 2007,
+    "chunk_sha256": "b2218cd4d49e7b23211128b14c86a48057f6d75ead8ab1c4f41ba5641e702602",
+    "relation": "decreases",
+    "subject": "grokking phase",
+    "object": "generalization",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.975,
+   "novelty": 0.45
+  },
+  "falsification_test": "Compare settings where Low weight decay differs while other inputs are matched. The hypothesis fails if generalization does not rise with Low weight decay, or if fixing emergence phase (read as grokking phase) removes no part of the effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "emergence phase"
+ },
+ "seconds": 3.38,
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "Low weight decay",
+   "b": "emergence phase",
+   "c": "generalization"
+  },
+  "path_nodes": [
+   "Low weight decay",
+   "emergence phase",
+   "generalization"
+  ],
+  "links": [
+   {
+    "source": "Low weight decay",
+    "target": "emergence phase",
+    "expected_relation": "decreases",
+    "status": "contested",
+    "support": [
+     {
+      "document_id": "arxiv-2408-08944-p0012",
+      "quote": "Low weight decay delays the emergence phase We first study the most common setting of grokking for a model trained with low weight decay of 0.1.",
+      "start": 93,
+      "end": 237,
+      "chunk_sha256": "410b99860d75ac8c0cee75b0076da8882fbcd7bfcf538ebe552b817bd0412c4c",
+      "relation": "decreases",
+      "subject": "Low weight decay",
+      "object": "emergence phase",
+      "hedged": false
+     }
+    ],
+    "counter": [
+     {
+      "document_id": "arxiv-2408-08944-p0005",
+      "quote": "We find that weight initialization and increasing weight decay directly leads to an emergent phase and reduces the delayed generalization gap • We present preliminary findings indicating that the subnetworks at the emergent phase may be causally related",
+      "start": 107,
+      "end": 360,
+      "chunk_sha256": "5fab17f4204d25fd74b8ecd3943a555d1d6fbebc45a586e98d7511c6fc2b49fc",
+      "relation": "causes",
+      "subject": "increasing weight decay",
+      "object": "emergent phase",
+      "hedged": false
+     }
+    ],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2408-08944-p0005",
+      "quote": "• We observe that a low weight decay value results in an additional divergent and delayed emergence phase.",
+      "start": 0,
+      "end": 106,
+      "chunk_sha256": "5fab17f4204d25fd74b8ecd3943a555d1d6fbebc45a586e98d7511c6fc2b49fc"
+     },
+     {
+      "document_id": "arxiv-2408-08944-p0012",
+      "quote": "Low weight decay delays the emergence phase We first study the most common setting of grokking for a model trained with low weight decay of 0.1.",
+      "start": 93,
+      "end": 237,
+      "chunk_sha256": "410b99860d75ac8c0cee75b0076da8882fbcd7bfcf538ebe552b817bd0412c4c"
+     },
+     {
+      "document_id": "arxiv-2408-08944-p0021",
+      "quote": "For comparison, we also evaluate subnetworks identified during the delayed emergence phase of a model trained with low weight decay (0.1).",
+      "start": 627,
+      "end": 765,
+      "chunk_sha256": "9d29134eabb1ff21b5ce6fd2cb841f4ad75c0a49017be1e850bf36b5054df0e8"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 1,
+    "negations": [],
+    "observed_relations": [
+     "causes",
+     "decreases"
+    ]
+   },
+   {
+    "source": "emergence phase",
+    "target": "generalization",
+    "expected_relation": "decreases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2205-10343-p0021",
+      "quote": "The 2D plane is split into four phases: comprehension, grokking, memorization and confusion, defined in Table 1 in Appendix A. Both comprehension and grokking are able to generalize (in the “Goldilocks zone”), although the grokking phase has delayed generalization.",
+      "start": 1742,
+      "end": 2007,
+      "chunk_sha256": "b2218cd4d49e7b23211128b14c86a48057f6d75ead8ab1c4f41ba5641e702602",
+      "relation": "decreases",
+      "subject": "grokking phase",
+      "object": "generalization",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2205-10343-p0020",
+      "quote": "4 Delayed Generalization: A Phase Diagram So far, we have (1) observed empirically that generalization on algorithmic datasets corresponds with the emergence of well-structured representations, (2) defined a notion of representation quality in a toy setting and shown that it predicts generalization, and (3) developed an effective theory to describe",
+      "start": 2430,
+      "end": 2780,
+      "chunk_sha256": "c024130e0698b7e0c65c0d9f4c3ed94ed09abd2519ee306d34adb6f9a5d968e8"
+     },
+     {
+      "document_id": "arxiv-2408-08944-p0021",
+      "quote": "This experiment investigates whether sub-networks with high synergy during the emergence phase contribute to delayed generalization in models.",
+      "start": 81,
+      "end": 223,
+      "chunk_sha256": "9d29134eabb1ff21b5ce6fd2cb841f4ad75c0a49017be1e850bf36b5054df0e8"
+     },
+     {
+      "document_id": "arxiv-2412-09810-p0003",
+      "quote": "The study of phase transitions in learning systems provides a window into fundamental questions about the nature of generalization and emergence of structure.",
+      "start": 54,
+      "end": 212,
+      "chunk_sha256": "c9d101aa2626353188ec50763d28c4b1ef624f4cb6ad12040a2accef3f7e4900"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "decreases"
+    ]
+   }
+  ],
+  "expected_relation": "increases",
+  "direction_check": {
+   "requested": "increases",
+   "status": "contested",
+   "observed": [
+    "decreases",
+    "increases"
+   ],
+   "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+  },
+  "verdict": "contested",
+  "predictions": [
+   {
+    "document_id": "arxiv-2205-10343-p0020",
+    "quote": "4 Delayed Generalization: A Phase Diagram So far, we have (1) observed empirically that generalization on algorithmic datasets corresponds with the emergence of well-structured representations, (2) defined a notion of representation quality in a toy setting and shown that it predicts generalization, and (3) developed an effective theory to describe",
+    "start": 2430,
+    "end": 2780,
+    "chunk_sha256": "c024130e0698b7e0c65c0d9f4c3ed94ed09abd2519ee306d34adb6f9a5d968e8",
+    "qualification": "source_prediction"
+   }
+  ],
+  "setups": [
+   {
+    "document_id": "arxiv-2205-10343-p0020",
+    "quote": "4 Delayed Generalization: A Phase Diagram So far, we have (1) observed empirically that generalization on algorithmic datasets corresponds with the emergence of well-structured representations, (2) defined a notion of representation quality in a toy setting and shown that it predicts generalization, and (3) developed an effective theory to describe",
+    "start": 2430,
+    "end": 2780,
+    "chunk_sha256": "c024130e0698b7e0c65c0d9f4c3ed94ed09abd2519ee306d34adb6f9a5d968e8",
+    "measures": [
+     "emergence phase",
+     "generalization"
+    ]
+   },
+   {
+    "document_id": "arxiv-2408-08944-p0021",
+    "quote": "This experiment investigates whether sub-networks with high synergy during the emergence phase contribute to delayed generalization in models.",
+    "start": 81,
+    "end": 223,
+    "chunk_sha256": "9d29134eabb1ff21b5ce6fd2cb841f4ad75c0a49017be1e850bf36b5054df0e8",
+    "measures": [
+     "emergence phase",
+     "generalization"
+    ]
+   },
+   {
+    "document_id": "arxiv-1611-01838-p0002",
+    "quote": "Our experiments on convolutional and recurrent networks demonstrate that Entropy-SGD compares favorably to state-of-the-art techniques in terms of generalization error and training time.",
+    "start": 931,
+    "end": 1117,
+    "chunk_sha256": "1e0570f30c23574006793fc09b3c19f8c8b4792b9970c06fc45c0051b2824c5e",
+    "measures": [
+     "generalization"
+    ]
+   },
+   {
+    "document_id": "arxiv-1705-08741-p0002",
+    "quote": "Following this hypothesis we conducted experiments to show empirically that the \"generalization gap\" stems from the relatively small number of updates rather than the batch size, and can be completely eliminated by adapting the training regime used.",
+    "start": 797,
+    "end": 1046,
+    "chunk_sha256": "7b2838d306fe24a11e2057b331f1aa51fab243bd5348cc7b2570add2e645ed94",
+    "measures": [
+     "generalization"
+    ]
+   },
+   {
+    "document_id": "arxiv-1706-05394-p0002",
+    "quote": "We also demonstrate that for appropriately tuned explicit regularization (e.g., dropout) we can degrade DNN training performance on noise datasets without compromising generalization on real data.",
+    "start": 410,
+    "end": 606,
+    "chunk_sha256": "509c15cc1b6cb0a2991a7b2cef431f5d9e56a60f7185ce04b2014155b7a81163",
+    "measures": [
+     "generalization"
+    ]
+   },
+   {
+    "document_id": "arxiv-1706-05394-p0002",
+    "quote": "Our analysis suggests that the notions of effective capacity which are dataset independent are unlikely to explain the generalization performance of deep networks when trained with gradient based methods because training data itself plays an important role in determining the degree of memorization.",
+    "start": 607,
+    "end": 906,
+    "chunk_sha256": "509c15cc1b6cb0a2991a7b2cef431f5d9e56a60f7185ce04b2014155b7a81163",
+    "measures": [
+     "generalization"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "ensembling",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2410-16201-p0002",
+     "quote": "In contrast to the underparameterized regime, where ensembling typically induces regularization and increases generalization, we prove with minimal assumptions that infinite ensembles of overparameterized RF regressors become pointwise equivalent to (single) infinite-width RF regressors, and finite width ensembles rapidly converge to single models with the same parameter budget.",
+     "start": 470,
+     "end": 851,
+     "chunk_sha256": "557b23c0964fc2a5aca6f4e4c1243a616e9c9ed7bedb6819c32b412bfccc0e99",
+     "relation": "increases",
+     "subject": "ensembling",
+     "object": "generalization",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "flatness of minima of loss function",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-1703-04933-p0002",
+     "quote": "(2017), is that the flatness of minima of the loss function found by stochastic gradient based methods results in good generalization.",
+     "start": 349,
+     "end": 483,
+     "chunk_sha256": "57e946894713b8c25d6e69b9907b5e96636a21c80ae061d15306e64c208869cf",
+     "relation": "causes",
+     "subject": "flatness of minima of loss function",
+     "object": "good generalization",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "increasing overparameterization",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2407-03848-p0004",
+     "quote": "• We show that increasing overparameterization in terms of width improves the generalization of SGD, while for randomly sampled networks, it remains mostly unaffected.",
+     "start": 1874,
+     "end": 2041,
+     "chunk_sha256": "749fe7c811d46553e18870a7786659891c0f2fd4edeeae8ed9e87cca85eeffb8",
+     "relation": "increases",
+     "subject": "increasing overparameterization",
+     "object": "generalization of SGD",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "individual data samples",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2610-16161-p0026",
+     "quote": "4 Contributions of Individual Samples 4.1 Sample Contributions to the Eigenspectrum To better understand how individual data samples contribute to generalization and the structure of the Fisher information, we examine the participation ratios associated with individual samples in the eigenspectrum of the (layerwise) Fisher.",
+     "start": 0,
+     "end": 325,
+     "chunk_sha256": "bb3eb539fd8fac2f7ea7b73cd710c0f0f87907985566f3d33556df9fafdc9f75",
+     "relation": "causes",
+     "subject": "individual data samples",
+     "object": "generalization",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "inductive bias",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2311-02622-p0003",
+     "quote": "This preference for simplicity might seem reasonable, as this inductive bias naturally reflects the properties of real-world data and leads to generalization [42].",
+     "start": 561,
+     "end": 724,
+     "chunk_sha256": "10270fe5f971f1c9b2ad6ae688bce8546609b9a5825c23776b713fe66a3f5162",
+     "relation": "causes",
+     "subject": "inductive bias",
+     "object": "generalization",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Neural Collapse",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2411-13733-p0035",
+     "quote": "Neural Collapse improves the generalization bound.",
+     "start": 663,
+     "end": 713,
+     "chunk_sha256": "f6938e50d500fc11e489a60e8f62d3691eb98f422fd89d94d5ed06e756d603c9",
+     "relation": "increases",
+     "subject": "Neural Collapse",
+     "object": "generalization",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "incompatible_direction",
+   "bridges": [
+    {
+     "link": 0,
+     "requested": "Low weight decay",
+     "source_term": "increasing weight decay",
+     "citation": {
+      "document_id": "arxiv-2408-08944-p0005",
+      "quote": "We find that weight initialization and increasing weight decay directly leads to an emergent phase and reduces the delayed generalization gap • We present preliminary findings indicating that the subnetworks at the emergent phase may be causally related",
+      "start": 107,
+      "end": 360,
+      "chunk_sha256": "5fab17f4204d25fd74b8ecd3943a555d1d6fbebc45a586e98d7511c6fc2b49fc",
+      "relation": "causes",
+      "subject": "increasing weight decay",
+      "object": "emergent phase",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 0,
+     "requested": "emergence phase",
+     "source_term": "emergent phase",
+     "citation": {
+      "document_id": "arxiv-2408-08944-p0005",
+      "quote": "We find that weight initialization and increasing weight decay directly leads to an emergent phase and reduces the delayed generalization gap • We present preliminary findings indicating that the subnetworks at the emergent phase may be causally related",
+      "start": 107,
+      "end": 360,
+      "chunk_sha256": "5fab17f4204d25fd74b8ecd3943a555d1d6fbebc45a586e98d7511c6fc2b49fc",
+      "relation": "causes",
+      "subject": "increasing weight decay",
+      "object": "emergent phase",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 1,
+     "requested": "emergence phase",
+     "source_term": "grokking phase",
+     "citation": {
+      "document_id": "arxiv-2205-10343-p0021",
+      "quote": "The 2D plane is split into four phases: comprehension, grokking, memorization and confusion, defined in Table 1 in Appendix A. Both comprehension and grokking are able to generalize (in the “Goldilocks zone”), although the grokking phase has delayed generalization.",
+      "start": 1742,
+      "end": 2007,
+      "chunk_sha256": "b2218cd4d49e7b23211128b14c86a48057f6d75ead8ab1c4f41ba5641e702602",
+      "relation": "decreases",
+      "subject": "grokking phase",
+      "object": "generalization",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [
+    {
+     "link": 0,
+     "citation": {
+      "document_id": "arxiv-2408-08944-p0005",
+      "quote": "We find that weight initialization and increasing weight decay directly leads to an emergent phase and reduces the delayed generalization gap • We present preliminary findings indicating that the subnetworks at the emergent phase may be causally related",
+      "start": 107,
+      "end": 360,
+      "chunk_sha256": "5fab17f4204d25fd74b8ecd3943a555d1d6fbebc45a586e98d7511c6fc2b49fc",
+      "relation": "causes",
+      "subject": "increasing weight decay",
+      "object": "emergent phase",
+      "hedged": false
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    }
+   ],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "qualification_review",
+    "kind": "scope",
+    "instruction": "Restrict the proposal to the cited conditions and quantifiers."
+   },
+   {
+    "id": "cda03ca60199595b",
+    "kind": "variable",
+    "term": "Low weight decay",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for Low weight decay."
+   },
+   {
+    "id": "a8f14d8d70fbaae4",
+    "kind": "variable",
+    "term": "Low weight decay",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for Low weight decay."
+   },
+   {
+    "id": "3e081246377e06bb",
+    "kind": "variable",
+    "term": "generalization",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for generalization."
+   },
+   {
+    "id": "278ca498623a7643",
+    "kind": "variable",
+    "term": "generalization",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for generalization."
+   },
+   {
+    "id": "955e6f8e5cd8a238",
+    "kind": "variable",
+    "term": "emergence phase",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for emergence phase."
+   },
+   {
+    "id": "6473532564db6cb4",
+    "kind": "variable",
+    "term": "emergence phase",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for emergence phase."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "Low weight decay"
+   ],
+   "measure": [
+    "generalization"
+   ],
+   "mediator": "emergence phase",
+   "controls": [
+    "ensembling",
+    "flatness of minima of loss function",
+    "increasing overparameterization",
+    "individual data samples",
+    "inductive bias",
+    "Neural Collapse"
+   ],
+   "steps": [
+    "Vary Low weight decay across matched settings and measure generalization.",
+    "Review candidate controls (ensembling, flatness of minima of loss function, increasing overparameterization, individual data samples, inductive bias, Neural Collapse) for timing, feasibility and causal role before adjustment.",
+    "Repeat with emergence phase held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "generalization does not change when Low weight decay varies with the controls fixed, or holding emergence phase fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "Low weight decay",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "generalization",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1706-08947-p0002",
+       "quote": "We study how these measures can ensure generalization, highlighting the importance of scale normalization, and making a connection between sharpness and PAC-Bayes theory.",
+       "start": 183,
+       "end": 353,
+       "chunk_sha256": "36daa4b6882bcbd5ee98380e92c1b82f09f85eee6d9314cef534344c6d269777",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1805-08522-p0004",
+       "quote": "For a typical supervised learning scenario, classical learning theory provides bounds on the generalization error ε(f) for target function f that typically scale as the complexity of the hypothesis class H. Complexity measures, C(H), include simply the number of functions in H, the VC dimension, and the Rademacher complexity (Shalev-Shwartz & Ben-David (2014)).",
+       "start": 423,
+       "end": 786,
+       "chunk_sha256": "17504e29aaee731c7fde33018e81e87bdef20178faf9107036a796f15d99b441",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1805-08522-p0004",
+       "quote": "(2016) simple gradient descent (GD) was shown to lead to differences in generalization with SGD of at most a few percent.",
+       "start": 3035,
+       "end": 3156,
+       "chunk_sha256": "17504e29aaee731c7fde33018e81e87bdef20178faf9107036a796f15d99b441",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "emergence phase",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2408-08944-p0004",
+       "quote": "Our contributions are as follows : • Using the synergy and redundancy as progress measures, we identify three key phases during training: Feature Learning of low-level patterns, Emergence of a generalizing sub-network, and Decoupling for",
+       "start": 1630,
+       "end": 1867,
+       "chunk_sha256": "ba211d1f2b18d2e458e9649abea07da08f65310fe8dfa5a5aea456cf4d8dcee5",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "Low weight decay",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "Low weight decay",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "generalization",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "generalization",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "emergence phase",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "emergence phase",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "emergence phase"
+   ]
+  },
+  "relation_edges": 454,
+  "bridge_check": "encoder",
+  "encoded_terms": 467,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 496,
+   "bytes": 230329,
+   "seconds": 3.328
+  },
+  "snapshot": {
+   "as_of": 1795308503,
+   "chunk_count": 1652,
+   "fingerprint": "96599b3a93a4df2e620713497795b20e75e36347819af96b9752de56a7dcee49"
+  }
+ },
+ "reply": "Deepen: Low weight decay may increase generalization through emergence phase (read as grokking phase).\nOverall: contested. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: contested.\nComposition assessment: incompatible direction. Component support does not establish a joint effect or causal validity.\n  Review meaning: increasing weight decay versus Low weight decay.\n  Review meaning: emergent phase versus emergence phase.\n  Review meaning: grokking phase versus emergence phase.\n  Retain qualification [arxiv-2408-08944-p0005]: We find that weight initialization and increasing weight decay directly leads to an emergent phase and reduces the delayed generalization gap • We present preliminary findings indicating that the subnetworks at the emergent phase may be causally related\n\nLink Low weight decay -> emergence phase: contested (1 supporting, 1 contrary).\n  + [arxiv-2408-08944-p0012] Low weight decay delays the emergence phase We first study the most common setting of grokking for a model trained with low weight decay of 0.1.\n  - [arxiv-2408-08944-p0005] We find that weight initialization and increasing weight decay directly leads to an emergent phase and reduces the delayed generalization gap • We present preliminary findings indicating that the subnetworks at the emergent phase may be causally related\n\nLink emergence phase -> generalization: supported (1 supporting, 0 contrary).\n  + [arxiv-2205-10343-p0021] The 2D plane is split into four phases: comprehension, grokking, memorization and confusion, defined in Table 1 in Appendix A. Both comprehension and grokking are able to generalize (in the “Goldilocks zone”), although the grokking phase has delayed generalization.\n\nSource predictions naming two or more of its terms:\n  [arxiv-2205-10343-p0020] 4 Delayed Generalization: A Phase Diagram So far, we have (1) observed empirically that generalization on algorithmic datasets corresponds with the emergence of well-structured representations, (2) defined a notion of representation quality in a toy setting and shown that it predicts generalization, and (3) developed an effective theory to describe\n\nExisting setups that measure one of its terms:\n  [arxiv-2205-10343-p0020] 4 Delayed Generalization: A Phase Diagram So far, we have (1) observed empirically that generalization on algorithmic datasets corresponds with the emergence of well-structured representations, (2) defined a notion of representation quality in a toy setting and shown that it predicts generalization, and (3) developed an effective theory to describe\n  [arxiv-2408-08944-p0021] This experiment investigates whether sub-networks with high synergy during the emergence phase contribute to delayed generalization in models.\n  [arxiv-1611-01838-p0002] Our experiments on convolutional and recurrent networks demonstrate that Entropy-SGD compares favorably to state-of-the-art techniques in terms of generalization error and training time.\n  [arxiv-1705-08741-p0002] Following this hypothesis we conducted experiments to show empirically that the \"generalization gap\" stems from the relatively small number of updates rather than the batch size, and can be completely eliminated by adapting the training regime used.\n\nCandidate controls (review before adjustment):\n  ensembling: outcome_predictor [arxiv-2410-16201-p0002]\n  flatness of minima of loss function: outcome_predictor [arxiv-1703-04933-p0002]\n  increasing overparameterization: outcome_predictor [arxiv-2407-03848-p0004]\n  individual data samples: outcome_predictor [arxiv-2610-16161-p0026]\n  inductive bias: outcome_predictor [arxiv-2311-02622-p0003]\n  Neural Collapse: outcome_predictor [arxiv-2411-13733-p0035]\n\nTest plan (mediation):\n  1. Vary Low weight decay across matched settings and measure generalization.\n  2. Review candidate controls (ensembling, flatness of minima of loss function, increasing overparameterization, individual data samples, inductive bias, Neural Collapse) for timing, feasibility and causal role before adjustment.\n  3. Repeat with emergence phase held fixed or blocked to test whether it carries the effect.\n  Fails if: generalization does not change when Low weight decay varies with the controls fixed, or holding emergence phase fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for Low weight decay.\n  Required: feasible intervention or justified observational design for Low weight decay.\n  Required: measurement procedure for generalization.\n  Required: unit or explicit categorical scale for generalization.\n  Required: measurement procedure for emergence phase.\n  Required: unit or explicit categorical scale for emergence phase.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

@@ -7,7 +7,7 @@ calculations deterministically, and proposes cited, unverified research hypothes
 [![Code license Apache 2.0](https://img.shields.io/badge/Code-Apache_2.0-green)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue)](pyproject.toml)
 
-**Latest release:** [1.15.0](https://pypi.org/project/cpu-llm/1.15.0/), which adds the
+**Latest release:** [1.16.0](https://pypi.org/project/cpu-llm/1.16.0/), which strengthens Deepen's research review. 1.15.0 added the
 [Frontier](#frontier-ranked-hypotheses-across-a-knowledge-base) and
 [Deepen](#deepen-examine-one-hypothesis) hypothesis nodes. See the [changelog](CHANGELOG.md).
 Author **Amin Parva, Independent Engineer**. Code under Apache 2.0; free for individuals and teams.
@@ -53,11 +53,14 @@ Python 3.11 or later. About 3 GB of RAM for a running appliance.
 **1. Install.**
 
 ```shell
-python -m pip install "cpu-llm==1.15.0"
+python -m pip install "cpu-llm==1.16.0"
 # Optional, recommended for Frontier and Deepen: a dependency parser.
-python -m pip install "cpu-llm[prompt_nlp]==1.15.0"
+python -m pip install "cpu-llm[prompt_nlp]==1.16.0"
 python -m spacy download en_core_web_lg      # or en_core_web_sm
 ```
+
+To use the newest code on GitHub before it reaches PyPI, install from the `main` branch:
+`python -m pip install "git+https://github.com/insightitsGit/cpullm@main"`.
 
 **2. Start PostgreSQL with pgvector 0.7 or later.** From a checkout, `docker compose up -d --wait postgres` starts
 one on `127.0.0.1:5433` that matches the default connection string. Otherwise point `VECTORPRISM_PG_DSN` at your own
@@ -381,7 +384,7 @@ or negating the link counts against it.
 - **Details.** Inspect `direction_check`, `path_nodes` and `test_plan.mediators`.
 
 [Correctness fixes and regression evidence](docs/frontier-deepen-correctness-spec.md). For Frontier's own entries, "supported" is nearly guaranteed, because each
-entry is built from source sentences. The informative signals include `contested`, `missing`, and, in the unreleased research enhancements below, the separate composition and plan-readiness assessments. In one evaluation run,
+entry is built from source sentences. The informative signals include `contested`, `missing`, and, in the research review enhancements below, the separate composition and plan-readiness assessments. In one evaluation run,
 Frontier proposed that low weight decay increases generalization through the grokking phase; Deepen marked it
 contested, because the cited paper also states that *increasing* weight decay leads to that phase.
 [Deepen node](docs/deepen-node.md).
@@ -415,9 +418,9 @@ documents the exact prompts, outputs, corpus, and remaining weaknesses. Use
 Frontier and Deepen as research assistants for generating and examining leads,
 not as substitutes for scientific validation.
 
-#### Research review enhancements (unreleased, after 1.15.0)
+#### Research review enhancements (1.16.0)
 
-The current source adds seven improvements while **preserving multiple
+Added in 1.16.0: seven improvements, made while **preserving multiple
 possibilities**: semantic bridge warnings; separate composition and interaction
 assessments; operational definitions and measurement hints; careful candidate
 control roles; cited conditions and source settings; progressive follow-ups;
@@ -443,7 +446,7 @@ invent progress when measurements or definitions are missing. Supply variable
 definitions and an experimental protocol through the documented hypothesis
 envelope to refine the plan. External literature review stays off unless both
 the operator and the request enable it; local overlap is not proof of novelty.
-See [Deepen usage and adapter setup](docs/deepen-node.md#research-assessments-unreleased-after-1150)
+See [Deepen usage and adapter setup](docs/deepen-node.md#research-assessments-1160)
 and the [seven-part specification](docs/deepen-research-strengthening-spec.md).
 
 ### Deterministic finance
@@ -530,10 +533,10 @@ curl -s http://127.0.0.1:8765/v1/ask -H "Authorization: Bearer $CPU_LLM_TOKEN" \
 
 ## Verification
 
-The repository suite for 1.15.0 reports **1,312 passed, 56 skipped, 3 xfailed and 3 failed**. The three failures
+The repository suite for 1.16.0 reports **1,343 passed, 56 skipped, 3 xfailed and 3 failed**. The three failures
 predate this release (`test_cycle_composition` ×2 and `test_request_pipeline_benchmark`). The run used a disposable
 PostgreSQL 16 with pgvector 0.8. The installed wheel was checked in a clean environment.
-[1.15.0 build validation](docs/releases/1.15.0-build-validation.md) · [Testing results](docs/testing-results.md).
+[1.16.0 build validation](docs/releases/1.16.0-build-validation.md) · [Testing results](docs/testing-results.md).
 
 Demos (after database and encoder setup):
 

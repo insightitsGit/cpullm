@@ -3,6 +3,23 @@
 Release notes for each version are in [docs/releases](docs/releases). This file summarizes what each release added,
 so the README can describe the current version only.
 
+## 1.16.0
+
+- **Deepen research review.** Annotates each hypothesis without changing Frontier's candidates, ranking or limits:
+  - semantic bridge warnings when linked terms change modifiers or meaning ("low weight decay" vs "increasing
+    weight decay");
+  - a `composition` assessment separate from per-link support, plus an interaction status;
+  - operational test plans with user-supplied definitions, levels, units and protocol, `readiness`, and a list of
+    `research_actions`;
+  - candidate-control roles (outcome predictor, shared cause, downstream), never adjusted automatically;
+  - cited source conditions and context;
+  - progressive "Go deeper" follow-ups;
+  - an optional novelty review that reports overlap in the knowledge base (`deepen={"hypothesis": ..., "novelty": True}`),
+    with an operator-registered literature reviewer that is off by default.
+- Deepen accepts an envelope: `deepen={"hypothesis", "definitions", "protocol", "novelty", "external_review"}`.
+- Frontier/Deepen correctness fixes (direction across every link, negation semantics, shared request budget).
+- Install the newest source with `pip install "git+https://github.com/insightitsGit/cpullm@main"`.
+
 ## 1.15.0
 
 - **Frontier node.** `Frontier: <topic>.`, `frontier=True`, or `"frontier"` on `/v1/ask`.

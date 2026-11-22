@@ -79,7 +79,7 @@ Evaluation: [docs/reviews/2026-11-21-deepen/report.md](reviews/2026-11-21-deepen
 
 [Fix specification and verification](frontier-deepen-correctness-spec.md).
 
-## Research assessments (unreleased, after 1.15.0)
+## Research assessments (1.16.0)
 
 See the [strengthening specification](deepen-research-strengthening-spec.md).
 These additions annotate proposals without changing Frontier enumeration,

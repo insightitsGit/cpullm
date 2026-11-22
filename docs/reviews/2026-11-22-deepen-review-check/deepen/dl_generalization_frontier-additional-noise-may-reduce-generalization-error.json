@@ -1,0 +1,453 @@
+{
+ "namespace": "dl_generalization_frontier",
+ "frontier_hypothesis": {
+  "id": "5b8f68456d78",
+  "text": "additional noise may reduce generalization error for diagonal linear networks through implicit bias.",
+  "pattern": "chain",
+  "relation": "decreases",
+  "anchors": [
+   "additional noise",
+   "generalization error for diagonal linear networks"
+  ],
+  "via": [
+   "implicit bias"
+  ],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2402-08344-p0002",
+   "arxiv-2505-21423-p0002"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2402-08344-p0002",
+    "quote": "We theoretically analyse the solutions obtained with continuous versions of Noisy- SGD for the Linear Least Square and Diagonal Linear Network settings, and reveal that the implicit bias is indeed amplified by the additional noise.",
+    "start": 784,
+    "end": 1015,
+    "chunk_sha256": "de2226491aa51e8dcd5f1cfac6d82da72b3174efa8281bd1b9682bfbcd1a4c4b",
+    "relation": "increases",
+    "subject": "additional noise",
+    "object": "implicit bias",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2505-21423-p0002",
+    "quote": "We furthermore prove that neither implicit bias alone minimizes the generalization error for diagonal linear networks trained on a simple regression task.",
+    "start": 547,
+    "end": 701,
+    "chunk_sha256": "7ec31a3b2ccf1d3d74267c9bab8a9f241683b66e461c2a162ae6b2a6f4e89912",
+    "relation": "decreases",
+    "subject": "implicit bias",
+    "object": "generalization error for diagonal linear networks",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.75,
+   "novelty": 0.532
+  },
+  "falsification_test": "Compare settings where additional noise differs while other inputs are matched. The hypothesis fails if generalization error for diagonal linear networks does not fall with additional noise, or if fixing implicit bias removes no part of the effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "implicit bia"
+ },
+ "seconds": 20.67,
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "additional noise",
+   "b": "implicit bias",
+   "c": "generalization error for diagonal linear networks"
+  },
+  "path_nodes": [
+   "additional noise",
+   "implicit bias",
+   "generalization error for diagonal linear networks"
+  ],
+  "links": [
+   {
+    "source": "additional noise",
+    "target": "implicit bias",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2402-08344-p0002",
+      "quote": "We theoretically analyse the solutions obtained with continuous versions of Noisy- SGD for the Linear Least Square and Diagonal Linear Network settings, and reveal that the implicit bias is indeed amplified by the additional noise.",
+      "start": 784,
+      "end": 1015,
+      "chunk_sha256": "de2226491aa51e8dcd5f1cfac6d82da72b3174efa8281bd1b9682bfbcd1a4c4b",
+      "relation": "increases",
+      "subject": "additional noise",
+      "object": "implicit bias",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2402-08344-p0002",
+      "quote": "We first show that the phenomenon extends to Noisy-SGD (DP-SGD without clipping), suggesting that the stochasticity (and not the clipping) is the cause of this implicit bias, even with additional isotropic Gaussian noise.",
+      "start": 562,
+      "end": 783,
+      "chunk_sha256": "de2226491aa51e8dcd5f1cfac6d82da72b3174efa8281bd1b9682bfbcd1a4c4b"
+     },
+     {
+      "document_id": "arxiv-2402-08344-p0002",
+      "quote": "We theoretically analyse the solutions obtained with continuous versions of Noisy- SGD for the Linear Least Square and Diagonal Linear Network settings, and reveal that the implicit bias is indeed amplified by the additional noise.",
+      "start": 784,
+      "end": 1015,
+      "chunk_sha256": "de2226491aa51e8dcd5f1cfac6d82da72b3174efa8281bd1b9682bfbcd1a4c4b"
+     },
+     {
+      "document_id": "arxiv-2402-08344-p0005",
+      "quote": "For Linear Least Squares, we show how Noisy- SGD alters the limiting distributions: the different implicit bias compared to SGD can be controlled by the amount of additional noise 3.",
+      "start": 3256,
+      "end": 3438,
+      "chunk_sha256": "dab6fe99f9a10de79e802c9c90f2ecf2859180aa40a4beeb0edede59139b2f1b"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   },
+   {
+    "source": "implicit bias",
+    "target": "generalization error for diagonal linear networks",
+    "expected_relation": "decreases",
+    "status": "counter_only",
+    "support": [],
+    "counter": [
+     {
+      "document_id": "arxiv-2505-21423-p0002",
+      "quote": "We furthermore prove that neither implicit bias alone minimizes the generalization error for diagonal linear networks trained on a simple regression task.",
+      "start": 547,
+      "end": 701,
+      "chunk_sha256": "7ec31a3b2ccf1d3d74267c9bab8a9f241683b66e461c2a162ae6b2a6f4e89912",
+      "negated": true,
+      "relation": "decreases"
+     }
+    ],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2505-21423-p0002",
+      "quote": "We furthermore prove that neither implicit bias alone minimizes the generalization error for diagonal linear networks trained on a simple regression task.",
+      "start": 547,
+      "end": 701,
+      "chunk_sha256": "7ec31a3b2ccf1d3d74267c9bab8a9f241683b66e461c2a162ae6b2a6f4e89912"
+     }
+    ],
+    "support_count": 0,
+    "counter_count": 1,
+    "negations": [
+     {
+      "document_id": "arxiv-2505-21423-p0002",
+      "quote": "We furthermore prove that neither implicit bias alone minimizes the generalization error for diagonal linear networks trained on a simple regression task.",
+      "start": 547,
+      "end": 701,
+      "chunk_sha256": "7ec31a3b2ccf1d3d74267c9bab8a9f241683b66e461c2a162ae6b2a6f4e89912",
+      "negated": true,
+      "relation": "decreases"
+     }
+    ],
+    "observed_relations": []
+   }
+  ],
+  "expected_relation": "decreases",
+  "direction_check": {
+   "requested": "decreases",
+   "status": "unresolved",
+   "observed": []
+  },
+  "verdict": "contested",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-2402-08344-p0005",
+    "quote": "For Linear Least Squares, we show how Noisy- SGD alters the limiting distributions: the different implicit bias compared to SGD can be controlled by the amount of additional noise 3.",
+    "start": 3256,
+    "end": 3438,
+    "chunk_sha256": "dab6fe99f9a10de79e802c9c90f2ecf2859180aa40a4beeb0edede59139b2f1b",
+    "measures": [
+     "additional noise",
+     "implicit bias"
+    ]
+   },
+   {
+    "document_id": "arxiv-2106-09524-p0022",
+    "quote": "Interestingly, Problem (5) tells us that the implicit bias of SGD initialised at α acts as if we run GD initialised at α∞ (see Section 5.3).",
+    "start": 500,
+    "end": 640,
+    "chunk_sha256": "0a33922eea4b9f41a150e7f5266547cc2497f0c96492cbd6417cd9096074158f",
+    "measures": [
+     "implicit bias"
+    ]
+   },
+   {
+    "document_id": "arxiv-2305-05448-p0002",
+    "quote": "Experiments suggest that the gains in both convergence speed and robustness of the implicit bias are improved dramatically by using weight normalization in overparameterized diagonal linear network models.",
+    "start": 1476,
+    "end": 1681,
+    "chunk_sha256": "b47ef2ac684b2dd69f55c2d249b902a1d4e3a9300e4c07b17c8ae5d79048cd4d",
+    "measures": [
+     "implicit bias"
+    ]
+   },
+   {
+    "document_id": "arxiv-2505-21423-p0008",
+    "quote": "Our contribution consists of three major points: (i) Implicit bias trade-off in training: Across a wide range of settings, we empirically demonstrate that at the end of training there is a trade-off between small norm of the parameters and small sharpness of the training loss (see Figure 1 for an illustration, and Figure 2 for a prototypical experiment).",
+    "start": 288,
+    "end": 644,
+    "chunk_sha256": "5c2a9527a2a647864144035d96d46414d2aba323711f5db1d3fd8b2edf8844d4",
+    "measures": [
+     "implicit bias"
+    ]
+   },
+   {
+    "document_id": "arxiv-2606-20469-p0017",
+    "quote": "We compared mini-batch SGD and Adam across both architectures to assess whether the implicit bias toward Riemannian flatness is optimizer-specific.",
+    "start": 423,
+    "end": 570,
+    "chunk_sha256": "4442dfc251da10d7f77aa0ad1f2b70d5a9f9b3eff903e2df410d8278ca19bd85",
+    "measures": [
+     "implicit bias"
+    ]
+   }
+  ],
+  "confounders": [],
+  "composition": {
+   "status": "insufficient_evidence",
+   "bridges": [],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "8f8726a747c0f463",
+    "kind": "variable",
+    "term": "additional noise",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for additional noise."
+   },
+   {
+    "id": "72e422379cfc266c",
+    "kind": "variable",
+    "term": "additional noise",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for additional noise."
+   },
+   {
+    "id": "6d82b4ad260f0df4",
+    "kind": "variable",
+    "term": "generalization error for diagonal linear networks",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for generalization error for diagonal linear networks."
+   },
+   {
+    "id": "c0cc5a240fcf7d94",
+    "kind": "variable",
+    "term": "generalization error for diagonal linear networks",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for generalization error for diagonal linear networks."
+   },
+   {
+    "id": "aa9443a21425bc01",
+    "kind": "variable",
+    "term": "implicit bias",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for implicit bias."
+   },
+   {
+    "id": "8fe1f31118373ffd",
+    "kind": "variable",
+    "term": "implicit bias",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for implicit bias."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "additional noise"
+   ],
+   "measure": [
+    "generalization error for diagonal linear networks"
+   ],
+   "mediator": "implicit bias",
+   "controls": [],
+   "steps": [
+    "Vary additional noise across matched settings and measure generalization error for diagonal linear networks.",
+    "No additional outcome cause was extracted; this does not establish absence of confounding.",
+    "Repeat with implicit bias held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "generalization error for diagonal linear networks does not change when additional noise varies with the controls fixed, or holding implicit bias fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "additional noise",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "generalization error for diagonal linear networks",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "implicit bias",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "additional noise",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "additional noise",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "generalization error for diagonal linear networks",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "generalization error for diagonal linear networks",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "implicit bias",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "implicit bias",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "implicit bias"
+   ]
+  },
+  "relation_edges": 454,
+  "bridge_check": "encoder",
+  "encoded_terms": 467,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 496,
+   "bytes": 230329,
+   "seconds": 19.647
+  },
+  "snapshot": {
+   "as_of": 1795308449,
+   "chunk_count": 1652,
+   "fingerprint": "96599b3a93a4df2e620713497795b20e75e36347819af96b9752de56a7dcee49"
+  }
+ },
+ "reply": "Deepen: additional noise may reduce generalization error for diagonal linear networks through implicit bias.\nOverall: contested. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unresolved.\nComposition assessment: insufficient evidence. Component support does not establish a joint effect or causal validity.\n\nLink additional noise -> implicit bias: supported (1 supporting, 0 contrary).\n  + [arxiv-2402-08344-p0002] We theoretically analyse the solutions obtained with continuous versions of Noisy- SGD for the Linear Least Square and Diagonal Linear Network settings, and reveal that the implicit bias is indeed amplified by the additional noise.\n\nLink implicit bias -> generalization error for diagonal linear networks: counter only (0 supporting, 1 contrary).\n  - [arxiv-2505-21423-p0002] We furthermore prove that neither implicit bias alone minimizes the generalization error for diagonal linear networks trained on a simple regression task.\n  ~ [arxiv-2505-21423-p0002] We furthermore prove that neither implicit bias alone minimizes the generalization error for diagonal linear networks trained on a simple regression task.\n\nExisting setups that measure one of its terms:\n  [arxiv-2402-08344-p0005] For Linear Least Squares, we show how Noisy- SGD alters the limiting distributions: the different implicit bias compared to SGD can be controlled by the amount of additional noise 3.\n  [arxiv-2106-09524-p0022] Interestingly, Problem (5) tells us that the implicit bias of SGD initialised at α acts as if we run GD initialised at α∞ (see Section 5.3).\n  [arxiv-2305-05448-p0002] Experiments suggest that the gains in both convergence speed and robustness of the implicit bias are improved dramatically by using weight normalization in overparameterized diagonal linear network models.\n  [arxiv-2505-21423-p0008] Our contribution consists of three major points: (i) Implicit bias trade-off in training: Across a wide range of settings, we empirically demonstrate that at the end of training there is a trade-off between small norm of the parameters and small sharpness of the training loss (see Figure 1 for an illustration, and Figure 2 for a prototypical experiment).\n\nTest plan (mediation):\n  1. Vary additional noise across matched settings and measure generalization error for diagonal linear networks.\n  2. No additional outcome cause was extracted; this does not establish absence of confounding.\n  3. Repeat with implicit bias held fixed or blocked to test whether it carries the effect.\n  Fails if: generalization error for diagonal linear networks does not change when additional noise varies with the controls fixed, or holding implicit bias fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for additional noise.\n  Required: feasible intervention or justified observational design for additional noise.\n  Required: measurement procedure for generalization error for diagonal linear networks.\n  Required: unit or explicit categorical scale for generalization error for diagonal linear networks.\n  Required: measurement procedure for implicit bias.\n  Required: unit or explicit categorical scale for implicit bias.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}
