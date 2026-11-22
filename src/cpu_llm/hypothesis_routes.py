@@ -52,6 +52,8 @@ _DEEPEN_FORMS = tuple(re.compile(form, re.I) for form in (
 _FOLLOW_UP = re.compile(
     r'(?:deepen|check|test|examine|evaluate|assess|dig into|probe|vet)\s+(?:the\s+)?(?:hypothesis|idea|entry|item|'
     r'number|no\.?|#)?\s*#?\s*(?P<number>\d{1,2})', re.I)
+_CONTINUE_DEEPEN = re.compile(r'(?:go deeper|deepen (?:this|further|more)|explain (?:this )?more|'
+                             r'continue (?:deepening|this investigation))', re.I)
 
 
 def _strip(message):
@@ -93,6 +95,8 @@ def natural_deepen_target(message):
     from cpu_llm.deepen import parse_hypothesis
 
     text = _strip(message)
+    if _CONTINUE_DEEPEN.fullmatch(text) and not _claimed_by_existing_route(message):
+        return ('continue_deepen', 0)
     follow_up = _FOLLOW_UP.fullmatch(text)
     if follow_up and not _claimed_by_existing_route(message):
         return ('follow_up', int(follow_up['number']))
@@ -137,3 +141,80 @@ def recall_frontier(app, key, number):
     if not 1 <= number <= len(hypotheses):
         return None, f'The last Frontier answer has {len(hypotheses)} hypotheses; choose a number from 1 to {len(hypotheses)}.'
     return hypotheses[number - 1], None
+
+
+def _deepen_sessions(app):
+    from cpu_llm.request_planner import RequestSessions
+    sessions = getattr(app, 'deepen_sessions', None)
+    return sessions if sessions is not None else app.__dict__.setdefault('deepen_sessions', RequestSessions())
+
+
+def recall_deepen(app, key):
+    """Reuse only the same authorized session; return a copy for this request."""
+    from copy import deepcopy
+    if key is None:
+        return None
+    sessions = _deepen_sessions(app)
+    state = sessions.pop(key)
+    if state is not None:
+        sessions.save(key, state)
+    return deepcopy(state)
+
+
+def forget_deepen(app, key):
+    if key is not None:
+        _deepen_sessions(app).pop(key)
+
+
+def remember_deepen(app, key, hypothesis, result, previous=None):
+    """Record focused requirements, never mark missing scientific inputs resolved."""
+    from copy import deepcopy
+    receipt = result.get('deepen')
+    if key is None or receipt is None or receipt['incomplete']:
+        return
+    old = previous or {}
+    viewed = list(old.get('viewed', []))
+    focus = next((a for a in receipt['research_actions'] if a['id'] not in viewed), None) if previous else None
+    if focus:
+        viewed.append(focus['id'])
+    fingerprint = receipt['snapshot']['fingerprint']
+    progress = dict(status='initial_review' if previous is None else 'focused_requirement' if focus else 'needs_more_data',
+        focus=focus, new_source_evidence=None if not previous else fingerprint != previous['fingerprint'],
+        requirements_resolved=False, reviewed_action_count=len(viewed))
+    receipt['progress'] = progress
+    if previous:
+        lines = ['Deepen follow-up: ' + progress['status'].replace('_', ' ') + '.']
+        lines.append('The authorized source snapshot changed; evidence was rechecked.' if progress['new_source_evidence'] else
+                     'No new source content was found; the proposal has not gained empirical support.')
+        if focus:
+            lines.append('Next unresolved requirement: ' + focus['instruction'])
+        else:
+            lines.append('The current requirements have all been presented. Supply definitions, relevant sources or measurements to advance.')
+        if focus and focus['kind'] == 'variable':
+            variable = next((v for v in receipt['test_plan']['variables'] if v['term'] == focus['term']), None)
+            if variable:
+                lines.append('Variable role: ' + variable['role'] + '. Missing: ' + '; '.join(variable['missing']) + '.')
+                lines.extend(f'Measurement hint [{c["document_id"]}]: {c["quote"]}' for c in variable['source_hints'])
+                lines.append('Supply a definition with the hypothesis envelope; definitions are assumptions to review.')
+        elif focus and focus['kind'] in {'semantic', 'scope', 'composition'}:
+            composition = receipt['composition']
+            lines.append('Composition assessment: ' + composition['status'] + '.')
+            for bridge in composition['bridges'][:6]:
+                lines.append(f'Review {bridge["source_term"]} versus {bridge["requested"]}: '
+                             f'[{bridge["citation"]["document_id"]}] {bridge["citation"]["quote"]}')
+            for item in composition['qualifications'][:6]:
+                lines.append(f'[{item["citation"]["document_id"]}] {item["citation"]["quote"]}')
+            for item in composition['scope_differences']:
+                lines.append(item['field'] + ': ' + '; '.join(item['values']))
+        elif focus and focus['kind'] == 'novelty':
+            novelty = receipt['novelty_review']
+            lines.append('KB review: ' + novelty['kb_status'] + '; scientific novelty is not established.')
+            lines.extend(f'[{c["document_id"]}] {c["quote"]}' for c in novelty['matches'])
+        elif focus and focus['kind'] == 'execution':
+            lines.append('Plan readiness: ' + receipt['test_plan']['readiness'] + '; no experiment executed.')
+        lines.append('The hypothesis remains unverified; all alternatives remain available in the Frontier receipt.')
+        text = '\n'.join(lines)
+        result['reply'].update(text=text, body=text)
+    next_action = next((a for a in receipt['research_actions'] if a['id'] not in viewed), None)
+    _deepen_sessions(app).save(key, dict(hypothesis=deepcopy(hypothesis), fingerprint=fingerprint,
+                                      viewed=viewed, next_action=next_action))

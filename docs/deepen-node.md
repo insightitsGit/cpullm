@@ -14,6 +14,9 @@ link by link over one authorized snapshot.
 - `"deepen": <text | object | true>` on `/v1/ask`.
 
 Deepen cannot be combined with Frontier or another specialist in one request.
+Frontier can automatically check several leading proposals; callers can also
+deepen selected entries in separate requests. No single winner is forced and
+the new assessments do not remove alternatives.
 
 ## What it returns (`deepen` receipt)
 
@@ -75,3 +78,80 @@ Evaluation: [docs/reviews/2026-11-21-deepen/report.md](reviews/2026-11-21-deepen
   existing breadth/result/path limits are unchanged.
 
 [Fix specification and verification](frontier-deepen-correctness-spec.md).
+
+## Research assessments (unreleased, after 1.15.0)
+
+See the [strengthening specification](deepen-research-strengthening-spec.md).
+These additions annotate proposals without changing Frontier enumeration,
+ranking, diversity or result limits:
+
+- `composition` separates component support from composition assumptions and an
+  untested joint interaction. Changed endpoint modifiers trigger semantic review.
+  Exact labels still do not establish semantic identity. This is a heuristic
+  review, not a scientific-validity certificate.
+- `composition.qualifications` keeps cited conditional/quantified statements.
+  `source_contexts` and `scope_differences` retain explicit context metadata or
+  plain-text `Workload: ...`, `Model: ...`, `Population: ...`, `Domain: ...`,
+  `Version: ...`, `Regime: ...`, and `Temperature: ...` lines in ingested chunks.
+  Missing context stays unknown; different contexts require review.
+- `test_plan.variables` contains exact variable labels, user definitions, cited
+  measurement hints and missing requirements. `readiness` is `needs_input` or
+  `specified_for_review`, never proof that an experiment is valid or executed.
+- `confounders` remains for compatibility, but items now carry `role`,
+  `exposure_evidence`, `downstream_evidence` and a recommended action. Additional
+  outcome causes are candidate controls. Evidence of a shared cause or downstream
+  variable calls for causal review, not automatic adjustment.
+- `test_plan.interaction_test` distinguishes the joint interaction contrast from
+  individual effects. A zero contrast does not disprove those individual effects.
+- `research_actions` lists unresolved requirements. After a Deepen response in
+  the same session, `Go deeper`, `Explain more`, or `Deepen further` rechecks the
+  authorized snapshot and focuses on a different requirement, with relevant
+  evidence/measurement hints. `progress` reports whether source content changed;
+  showing a requirement does not resolve it. An exhausted queue asks for inputs.
+  A different request supersedes the Deepen focus. Use sequential requests within
+  a session and separate sessions to explore alternatives independently.
+- `novelty_review` is optional. Co-mentions in the authorized snapshot are
+  potential overlap, not a prior demonstration. Absence is not scientific novelty.
+
+### Supply operational definitions
+
+Existing hypothesis strings/objects still work. An envelope adds review options:
+
+```python
+result = app.ask("Review this proposal.", session_id="bandwidth-study", deepen={
+    "hypothesis": "Memory bandwidth may increase serving revenue through inference throughput.",
+    "definitions": {
+        "memory bandwidth": {"levels": ["configuration A", "configuration B"], "feasible": True},
+        "inference throughput": {"measurement": "completed output tokens / elapsed time", "unit": "tokens/s"},
+        "serving revenue": {"measurement": "sum of settled serving invoices", "unit": "USD/day"},
+    },
+    "protocol": {"replicates": 10, "acceptance_criterion": "pre-registered effect interval"},
+    "novelty": True,
+    "external_review": False,
+})
+follow_up = app.ask("Go deeper.", session_id="bandwidth-study")
+```
+
+Use the exact variable labels from the hypothesis; unknown definitions request
+clarification. Definitions/protocol are user-supplied assumptions, not stored
+facts or evidence. The example's repeat count is illustrative, not a power
+analysis or recommendation. Review feasibility, causal identification, sample
+size, uncertainty and acceptance thresholds before running an experiment.
+
+### Optional external literature adapter
+
+No network access is added by default. An operator may pass
+`Appliance(..., literature_reviewer=my_reviewer)`. The callable receives keyword
+arguments `query`, `max_results=6`, and `timeout_seconds`, and returns up to six
+objects with `title`, an HTTPS `url` without credentials, and `excerpt`.
+It is invoked only when a request sets both `novelty=True` and
+`external_review=True`. The operator owns provider credentials, literature
+coverage, network policy and timeout enforcement. Registration authorizes sending
+hypothesis terms to that provider; no arbitrary endpoint is accepted from chat.
+
+Returned records remain `external_overlap_candidate_not_kb_evidence`, separate
+from component evidence and never ingested automatically. Provider errors and
+invalid records produce an unavailable status, not an invented literature review.
+Calls share the request deadline, checked before and after; in-process callbacks
+cannot be forcibly interrupted and must honor the supplied timeout. Strict mode
+and guard policy take precedence over session recall, source reads and adapters.

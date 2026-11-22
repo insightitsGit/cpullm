@@ -176,6 +176,7 @@ class Appliance:
         strict_evidence: bool = False,
         small_talk: bool = True,
         external_llm_fallback: ExternalLLMFallback | None = None,
+        literature_reviewer: Any = None,
         prismlexicon: bool = False,
     ) -> None:
         from cpu_llm.child_safety import ChildSafetyGate, enabled_by_default
@@ -187,6 +188,9 @@ class Appliance:
             raise ValueError('small_talk must be a boolean')
         self.small_talk = small_talk
         self.external_llm_fallback = external_llm_fallback
+        if literature_reviewer is not None and not callable(literature_reviewer):
+            raise ValueError('literature_reviewer must be a callable or None')
+        self.literature_reviewer = literature_reviewer
         if type(prismlexicon) is not bool:
             raise ValueError('prismlexicon must be a boolean')
         self.prismlexicon = prismlexicon
@@ -677,13 +681,28 @@ class Appliance:
         if deepen is not None and type(deepen) is not bool and not isinstance(deepen, (dict, str)):
             raise ValueError('deepen must be a boolean, a hypothesis text, or a Frontier hypothesis object')
         from cpu_llm.hypothesis_routes import (natural_deepen_target, natural_frontier_topic, recall_frontier,
-                                               remember_frontier)
+                                               remember_frontier, recall_deepen, remember_deepen, forget_deepen)
         from cpu_llm.invention import invention_session
         hypothesis_key = invention_session(self, caller, session_id, as_of)
         deepen_target = (deepen if isinstance(deepen, (dict, str)) else
                          deepen_seed(content, forced=True) if deepen is True else deepen_seed(content))
         if deepen_target is None and deepen is None and frontier in (None, False):
             deepen_target = natural_deepen_target(content)
+        previous_deepen = None
+        if isinstance(deepen_target, tuple) and deepen_target[0] == 'continue_deepen':
+            if self.guard.check(raw_message).decision != 'allow':
+                from cpu_llm.deepen import clarification
+                return clarification(self, raw_message, 'Request blocked.', status='blocked')
+            if enabled:
+                from cpu_llm.deepen import clarification
+                return clarification(self, raw_message, 'Strict evidence mode disables Deepen.', status='unsupported')
+            previous_deepen = recall_deepen(self, hypothesis_key)
+            deepen_target = previous_deepen['hypothesis'] if previous_deepen else None
+            if previous_deepen and (previous_deepen.get('next_action') or {}).get('kind') == 'novelty':
+                # Only the local corpus check is enabled implicitly; no new egress opt-in.
+                deepen_target = dict(deepen_target) if isinstance(deepen_target, dict) and 'hypothesis' in deepen_target else {
+                    'hypothesis': deepen_target}
+                deepen_target['novelty'] = True
         if isinstance(deepen_target, tuple):
             # "Deepen idea 3" after a Frontier answer in the same session.
             from cpu_llm.deepen import clarification
@@ -701,8 +720,12 @@ class Appliance:
                 raise ValueError('Submit Deepen and other specialist requests separately.')
             from cpu_llm.response_policy import classify_response_request
             result = execute_deepen(self, raw_message, deepen_target, caller=caller, as_of=as_of, strict=enabled)
+            remember_deepen(self, hypothesis_key, deepen_target, result, previous_deepen)
             result['response_plan'] = classify_response_request(content)
             return finish_deepen_response(result)
+        # A different request supersedes Deepen's follow-up focus in this session.
+        if hypothesis_key is not None and not enabled:
+            forget_deepen(self, hypothesis_key)
         from cpu_llm.frontier import execute_frontier, finish_frontier_response, frontier_seed, validate_frontier_option
         frontier_options = validate_frontier_option(frontier)
         frontier_topic = frontier_seed(content, forced=frontier_options is not None)

@@ -8,11 +8,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_tool_schema_matches_the_server_fields():
-    schema = json.loads((ROOT / 'docs/agent-tool-schema.json').read_text())
+    schema = json.loads((ROOT / 'docs/agent-tool-schema.json').read_text(encoding="utf-8"))
     [ask] = [tool for tool in schema['tools'] if tool['name'] == 'cpu_llm_ask']
     assert set(ask['parameters']['properties']) - {'message'} <= set(_ASK_FIELDS)
     import tomllib
-    assert schema['version'] == tomllib.loads((ROOT / 'pyproject.toml').read_text())['project']['version']
+    assert schema['version'] == tomllib.loads((ROOT / 'pyproject.toml').read_text(encoding="utf-8"))['project']['version']
 
 
 def test_pypi_readme_is_generated_from_the_readme():
@@ -26,8 +26,8 @@ def test_pypi_readme_is_generated_from_the_readme():
 
 
 def test_documented_statuses_and_files_exist():
-    readme = (ROOT / 'README.md').read_text()
-    agents = (ROOT / 'AGENTS.md').read_text()
+    readme = (ROOT / 'README.md').read_text(encoding="utf-8")
+    agents = (ROOT / 'AGENTS.md').read_text(encoding="utf-8")
     for status in ('answered', 'evidence_quote', 'derived_inference', 'hypotheses', 'shortage', 'deepened',
                    'insufficient_evidence', 'unsupported', 'needs_clarification', 'partial', 'blocked'):
         assert f'`{status}`' in readme and f'`{status}`' in agents, status

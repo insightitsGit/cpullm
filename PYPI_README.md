@@ -13,6 +13,14 @@ calculations deterministically, and proposes cited, unverified research hypothes
 Author **Amin Parva, Independent Engineer**. Code under Apache 2.0; free for individuals and teams.
 [Enterprise enquiries](https://www.insightits.com/research-tools/cpu-llm).
 
+**For scientific research:** [Frontier](#frontier-ranked-hypotheses-across-a-knowledge-base)
+combines relationships across ingested papers into proposed explanations that
+need not appear in any single passage. [Deepen](#deepen-examine-one-hypothesis)
+develops a selected hypothesis into cited evidence checks, predictions,
+confounders, and an experiment plan. This supports literature exploration and
+experiment design on CPUs; a generated combination is not necessarily new to
+science, and its proposed experiment still needs to be run.
+
 ## What it is, and what it is not
 
 - **It is** an embeddable Python library and a local HTTP service. You ingest your documents (stored in
@@ -373,10 +381,70 @@ or negating the link counts against it.
 - **Details.** Inspect `direction_check`, `path_nodes` and `test_plan.mediators`.
 
 [Correctness fixes and regression evidence](https://github.com/insightitsGit/cpullm/blob/main/docs/frontier-deepen-correctness-spec.md). For Frontier's own entries, "supported" is nearly guaranteed, because each
-entry is built from source sentences. The informative signals are `contested` and `missing`. In one evaluation run,
+entry is built from source sentences. The informative signals include `contested`, `missing`, and, in the unreleased research enhancements below, the separate composition and plan-readiness assessments. In one evaluation run,
 Frontier proposed that low weight decay increases generalization through the grokking phase; Deepen marked it
 contested, because the cited paper also states that *increasing* weight decay leads to that phase.
 [Deepen node](https://github.com/insightitsGit/cpullm/blob/main/docs/deepen-node.md).
+
+#### Scientific workflow: AI-bottleneck research example
+
+After ingesting the literature, ask:
+
+> What unexplored connections exist around inference energy and output quality?
+
+In a source-scoped run over 25 papers (360 chunks), Frontier returned:
+
+> implementation of H2O and vLLM may jointly drive throughput, and their effects may compound.
+
+Then ask **“Deepen idea 1.”** in the same session. Deepen found cited evidence
+for the individual throughput improvements and proposed a four-condition
+experiment: neither system, H2O alone, vLLM alone, and both together, comparing
+the joint effect with the separate effects. This is a proposed experiment, not
+an executed measurement or evidence of a combined benefit.
+
+The example demonstrates hypothesis construction and experiment planning, with
+important limits: it shifted from energy/output quality to throughput, and an
+independent literature check found the broad H2O–vLLM combination had already
+been explored. `all_links_supported` means evidence was found for the component
+links; it does not validate their composition, establish causation, or certify
+novelty. Review the source meanings, operationalize the variables, check current
+literature, and execute the experiment before drawing a scientific conclusion.
+
+The [recorded AI-bottlenecks run](https://github.com/insightitsGit/cpullm/blob/main/docs/reviews/2026-11-21-ai-bottlenecks-fixed-run/report.md)
+documents the exact prompts, outputs, corpus, and remaining weaknesses. Use
+Frontier and Deepen as research assistants for generating and examining leads,
+not as substitutes for scientific validation.
+
+#### Research review enhancements (unreleased, after 1.15.0)
+
+The current source adds seven improvements while **preserving multiple
+possibilities**: semantic bridge warnings; separate composition and interaction
+assessments; operational definitions and measurement hints; careful candidate
+control roles; cited conditions and source settings; progressive follow-ups;
+and optional literature overlap review. These annotate alternatives without
+changing Frontier's generation, ranking or result limits. You can examine several
+entries independently rather than accepting one answer:
+
+```python
+frontier = app.ask("Frontier: inference throughput.")["frontier"]
+reviews = [
+    app.ask("Examine this proposal.",
+            deepen={"hypothesis": idea, "novelty": True},
+            session_id=f"research-option-{i}")
+    for i, idea in enumerate(frontier["hypotheses"][:3], 1)
+]
+follow_up = app.ask("Go deeper.", session_id="research-option-1")
+```
+
+Inspect `deepen.composition`, `test_plan.readiness`, `test_plan.variables`,
+`research_actions`, and `novelty_review`. A follow-up focuses on the next
+unresolved requirement and states whether source content changed. It does not
+invent progress when measurements or definitions are missing. Supply variable
+definitions and an experimental protocol through the documented hypothesis
+envelope to refine the plan. External literature review stays off unless both
+the operator and the request enable it; local overlap is not proof of novelty.
+See [Deepen usage and adapter setup](https://github.com/insightitsGit/cpullm/blob/main/docs/deepen-node.md#research-assessments-unreleased-after-1150)
+and the [seven-part specification](https://github.com/insightitsGit/cpullm/blob/main/docs/deepen-research-strengthening-spec.md).
 
 ### Deterministic finance
 

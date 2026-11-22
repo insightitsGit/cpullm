@@ -267,8 +267,8 @@ def _confounders(graph, outcome, exclude, similar, budget=None):
             continue
         if any(related(edge.subject_key, key) for key in excluded) or edge.subject_key in seen:
             continue
-        if _malformed(edge.subject) or not usable_term(edge.subject) or edge.subject.split()[0].endswith('ing'):
-            continue                                   # a fragment or a gerund clause names no quantity to control
+        if _malformed(edge.subject) or not usable_term(edge.subject):
+            continue  # Nouns such as cooling demand and training cost remain valid candidate variables.
         seen.add(edge.subject_key)
         found.append(dict(term=edge.subject, relation=edge.kind, citation=_cite(edge)))
         if len(found) == _MAX_ITEMS:
@@ -278,8 +278,8 @@ def _confounders(graph, outcome, exclude, similar, budget=None):
 
 def test_plan(pattern, a, b, c, confounders):
     controls = [item['term'] for item in confounders]
-    hold = ('Hold ' + ', '.join(controls) + ' fixed or record them as covariates.') if controls else (
-        'The sources name no other cause of the outcome; record the main training or measurement settings.')
+    hold = ('Review candidate controls (' + ', '.join(controls) + ') for timing, feasibility and causal role before adjustment.') if controls else (
+        'No additional outcome cause was extracted; this does not establish absence of confounding.')
     if pattern == 'chain':
         return dict(design='mediation', manipulate=[a], measure=[c], mediator=b, controls=controls,
                     steps=[f'Vary {a} across matched settings and measure {c}.', hold,
@@ -290,8 +290,8 @@ def test_plan(pattern, a, b, c, confounders):
         return dict(design='2x2 factorial', manipulate=[a, b], measure=[c], mediator=None, controls=controls,
                     steps=[f'Run all four combinations of low and high {a} and {b}; measure {c}.', hold,
                            'Compare the joint effect with the sum of the separate effects.'],
-                    fails_if=(f'Neither {a} nor {b} moves {c}, or their joint effect equals the sum of the separate '
-                              'effects (no interaction or shifting bottleneck).'))
+                    fails_if=(f'A precisely measured absence of an interaction challenges compounding in {c}; '
+                              f'it does not refute individual effects of {a} or {b}. Predefine a meaningful effect threshold.'))
     return dict(design='common cause', manipulate=[c], measure=[a, b], mediator=None, controls=controls,
                 steps=[f'Vary {c} and measure {a} and {b}.', hold,
                        f'Check whether {a} and {b} still co-vary when {c} is held fixed.'],
@@ -333,9 +333,16 @@ def _direction_assessment(spec, links, budget):
                 assumption='Cited effects compose across the same setting; this is not empirical validation.')
 
 
-def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, similar=None, sentences=None, budget=None):
+def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, similar=None, sentences=None, budget=None,
+               literature_reviewer=None):
     """Pure source-bound analysis. Children share the parent's ledger, never reset it."""
+    from cpu_llm.deepen_review import (request_options, assess_composition, classify_controls,
+                                      operationalize, novelty_review, research_actions, measurement_hints)
+    hypothesis, options = request_options(hypothesis)
     spec = read_hypothesis(hypothesis)
+    known = {term_key(t) for t in (spec.a, *spec.via, spec.b, spec.c)}
+    if set(options['definitions']) - known:
+        raise ValueError('Definitions must use the exact hypothesis variable terms.')
     pattern, a, b, c = spec.pattern, spec.a, spec.b, spec.c
     if budget is None:
         budget = Budget(limits or FrontierLimits())
@@ -346,6 +353,11 @@ def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, simila
     direction = dict(requested=spec.relation, status='unresolved', observed=[])
     stop_reason = None
     verdict = 'incomplete'
+    composition = dict(status='incomplete', bridges=[], qualifications=[], source_contexts=[], scope_differences=[],
+                       interaction=dict(status='not_assessed'), scientific_validity='not_established')
+    novelty = dict(requested=options['novelty'], kb_status='not_assessed', matches=[], external_matches=[],
+                   external_status='not_assessed', scientific_novelty='not_established')
+    hints = {}
     try:
         budget.check()
         if graph is None:
@@ -368,6 +380,10 @@ def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, simila
         for outcome in outcome_terms:
             confounders += _confounders(graph, outcome, terms, similar, budget)
         confounders = confounders[:_MAX_ITEMS]
+        classify_controls(confounders, spec, graph, budget)
+        composition = assess_composition(spec, links, rows, direction, budget)
+        novelty = novelty_review(spec, sentences, options, budget, literature_reviewer)
+        hints = measurement_hints(spec, sentences)
         budget.check()
         statuses = [link['status'] for link in links]
         verdict = ('contested' if 'contested' in statuses or 'counter_only' in statuses
@@ -382,6 +398,7 @@ def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, simila
     if incomplete:
         verdict = 'incomplete'
     plan = test_plan(pattern, a, b, c, confounders)
+    operationalize(plan, spec, options, composition, hints)
     if pattern == 'chain':
         plan['mediators'] = list(spec.via)
         if len(spec.via) > 1:
@@ -393,6 +410,8 @@ def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, simila
                 path_nodes=[a, *spec.via, c] if pattern == 'chain' else None, links=links,
                 expected_relation=spec.relation, direction_check=direction,
                 verdict=verdict, predictions=predictions, setups=setups, confounders=confounders,
+                composition=composition, novelty_review=novelty,
+                research_actions=research_actions(composition, plan, novelty),
                 test_plan=plan, relation_edges=len(graph.edges) if graph is not None else 0,
                 bridge_check='encoder' if similar is not None else 'head_noun', encoded_terms=encoded,
                 graph_reused=graph_reused, incomplete=bool(incomplete),
@@ -406,6 +425,16 @@ def format_reply(receipt, text):
              'hypothesis; the evidence below is what the authorized sources state about each link.']
     if receipt['direction_check']['requested'] is not None:
         lines.append('End-to-end direction: ' + receipt['direction_check']['status'] + '.')
+    composition = receipt['composition']
+    lines.append('Composition assessment: ' + composition['status'].replace('_', ' ') +
+                 '. Component support does not establish a joint effect or causal validity.')
+    for bridge in composition['bridges']:
+        lines.append(f'  Review meaning: {bridge["source_term"]} versus {bridge["requested"]}.')
+    for difference in composition['scope_differences']:
+        lines.append(f'  Review {difference["field"]}: ' + '; '.join(difference['values']) + '.')
+    for qualification in composition['qualifications'][:6]:
+        cite = qualification['citation']
+        lines.append(f'  Retain qualification [{cite["document_id"]}]: {cite["quote"]}')
     for link in receipt['links']:
         lines.append(f'\nLink {link["source"]} -> {link["target"]}: {link["status"].replace("_", " ")} '
                      f'({link["support_count"]} supporting, {link["counter_count"]} contrary).')
@@ -420,11 +449,24 @@ def format_reply(receipt, text):
         lines.append('\nExisting setups that measure one of its terms:')
         lines.extend(f'  [{s["document_id"]}] {s["quote"]}' for s in receipt['setups'][:4])
     if receipt['confounders']:
-        lines.append('\nOther causes of the outcome in the sources (control these):')
-        lines.extend(f'  {item["term"]} [{item["citation"]["document_id"]}]' for item in receipt['confounders'])
+        lines.append('\nCandidate controls (review before adjustment):')
+        lines.extend(f'  {item["term"]}: {item.get("role", "not_assessed")} '
+                     f'[{item["citation"]["document_id"]}]' for item in receipt['confounders'])
     lines.append(f'\nTest plan ({plan["design"]}):')
     lines.extend(f'  {number}. {step}' for number, step in enumerate(plan['steps'], 1))
     lines.append(f'  Fails if: {plan["fails_if"]}')
+    lines.append('Plan readiness: ' + plan['readiness'].replace('_', ' ') + '; experiment not executed.')
+    for variable in plan['variables']:
+        if variable['definition']:
+            lines.append(f'  User-supplied definition for {variable["term"]}: {variable["definition"]}')
+    for item in plan['missing_requirements']:
+        lines.append('  Required: ' + item['requirement'].rstrip('.') + (f' for {item["term"]}.' if 'term' in item else '.'))
+    novelty = receipt['novelty_review']
+    lines.append('Novelty: ' + novelty['kb_status'].replace('_', ' ') + '; external review: ' +
+                 novelty['external_status'].replace('_', ' ') + '. Scientific novelty not established.')
+    lines.extend(f'  Potential KB overlap [{c["document_id"]}]: {c["quote"]}' for c in novelty['matches'])
+    lines.extend(f'  External overlap candidate: {c["title"]} ({c["url"]}) — {c["excerpt"]}'
+                 for c in novelty['external_matches'])
     if receipt['incomplete']:
         lines.append(f'\nEvidence search incomplete: {receipt["stop_reason"]}.')
     return '\n'.join(lines)
@@ -437,7 +479,8 @@ def execute_deepen(app, message, hypothesis, *, caller=None, as_of=None, strict=
 
     context = _caller_for(app, caller)
     allowed = None if context is None else context.allowed_sources
-    text = hypothesis.get('text', '') if isinstance(hypothesis, dict) else (hypothesis or '')
+    raw_hypothesis = hypothesis.get('hypothesis', hypothesis) if isinstance(hypothesis, dict) else hypothesis
+    text = raw_hypothesis.get('text', '') if isinstance(raw_hypothesis, dict) else (raw_hypothesis or '')
 
     def result(status, body, receipt=None):
         response = dict(message=message, tenant_id=app.tenant_id, status=status, answer_status=status, answer=None,
@@ -455,10 +498,16 @@ def execute_deepen(app, message, hypothesis, *, caller=None, as_of=None, strict=
     if strict:
         return result('unsupported', 'Strict evidence mode disables Deepen.')
     try:
-        spec = read_hypothesis(hypothesis)
+        from cpu_llm.deepen_review import request_options
+        unwrapped, options = request_options(hypothesis)
+        spec = read_hypothesis(unwrapped)
+        if set(options['definitions']) - {term_key(t) for t in (spec.a, *spec.via, spec.b, spec.c)}:
+            raise ValueError('Definitions must use the exact hypothesis variable terms.')
     except ValueError as exc:
         return result('needs_clarification', str(exc))
-    if app.guard.check(message + '\n' + ' '.join([spec.a, *spec.via, spec.b, spec.c])).decision != 'allow':
+    import json
+    if app.guard.check(message + '\n' + ' '.join([spec.a, *spec.via, spec.b, spec.c]) +
+                       '\n' + json.dumps(options)).decision != 'allow':
         return result('blocked', 'Request blocked.')
     try:
         rows, when = _snapshot(app, allowed, as_of)
@@ -466,10 +515,13 @@ def execute_deepen(app, message, hypothesis, *, caller=None, as_of=None, strict=
         return result('partial', 'The Deepen source snapshot was unavailable or exceeded its limit.')
     pipeline = getattr(app.index, 'pipeline', None)
     try:
-        receipt = run_deepen(hypothesis, rows, encode=getattr(pipeline, 'encode_texts', None))
+        receipt = run_deepen(hypothesis, rows, encode=getattr(pipeline, 'encode_texts', None),
+                             literature_reviewer=getattr(app, 'literature_reviewer', None))
     except StopSearch as exc:
         return result('partial', f'The Deepen evidence search stopped: {exc}.')
     receipt['snapshot'] = dict(as_of=when, chunk_count=len(rows))
+    from cpu_llm.deepen_review import fingerprint
+    receipt['snapshot']['fingerprint'] = fingerprint(rows)
     response = result('partial' if receipt['incomplete'] else 'deepened', format_reply(receipt, text or f'{receipt["terms"]}'), receipt)
     response['answer_evidence'] = [c for link in receipt['links'] for c in link['support']][:100]
     return response

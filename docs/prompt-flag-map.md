@@ -160,6 +160,16 @@ Session follow-up: after a Frontier answer in the same `session_id`, "Deepen ide
 clarification. Ordinary questions such as "What is the frontier of AI?" or "What do we know about X?" keep the
 normal answer path.
 
+Unreleased Deepen research options: a `deepen` object with `hypothesis` accepts
+`definitions`, `protocol`, `novelty`, and `external_review`. It keeps the same
+Deepen route and guard/strict policy. Definitions refine the review plan, not
+the KB. `novelty=true` searches the authorized snapshot for potential overlap;
+`external_review=true` additionally requires an operator-registered literature
+adapter and never enables an LLM fallback. After Deepen in the same scoped
+session, `Go deeper`, `Explain more`, and `Deepen further` select the next
+unresolved research requirement. Without remembered Deepen context they keep
+the existing conversation path. See [the research assessment contract](deepen-node.md#research-assessments-unreleased-after-1150).
+
 ## Explicit rule inference
 
 The repository source includes an experimental InferenceNode for registered

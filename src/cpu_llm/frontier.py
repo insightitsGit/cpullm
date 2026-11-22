@@ -1388,6 +1388,7 @@ def _check_leading(items, rows, graph, encode, budget):
             receipt = run_deepen(item, rows, graph=graph, similar=similar, sentences=sentences, budget=budget)
             item['check'] = dict(verdict=receipt['verdict'], incomplete=receipt['incomplete'],
                 direction_check=receipt['direction_check'],
+                composition=receipt['composition'], plan_readiness=receipt['test_plan']['readiness'],
                 links=[dict(source=l['source'], target=l['target'], status=l['status'],
                             counter=l['counter'][:2]) for l in receipt['links']])
             if receipt['incomplete']:
@@ -1421,6 +1422,9 @@ def format_reply(receipt):
                                  for l in check['links'])
             flag = 'Warning, contested: ' if check['verdict'] == 'contested' else 'Deepen check: '
             lines.append(f'{flag}{check["verdict"].replace("_", " ")} ({statuses}).')
+            if 'composition' in check:
+                lines.append('Composition: ' + check['composition']['status'].replace('_', ' ') +
+                             '; plan readiness: ' + check['plan_readiness'].replace('_', ' ') + '.')
             lines.extend(f'  - [{c["document_id"]}] {c["quote"]}' for l in check['links'] for c in l['counter'])
         lines.append(f'Scores: source support {scores["source_support"]:.2f}, deductive relevance '
                      f'{scores["deductive_relevance"]:.2f}, novelty {scores["novelty"]:.2f}.')
