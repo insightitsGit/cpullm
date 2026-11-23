@@ -46,7 +46,10 @@ a software DOI. Cite that software DOI in a later version of the paper.
 6. arXiv moderators check that a paper is a substantive research contribution. A clear limitations section and
    real evaluation numbers help.
 
-## Suggested order
+## Status
 
-Publish on Zenodo first to get a DOI. Submit to arXiv once you have an endorsement, and put the Zenodo DOI in the
-arXiv comments.
+- Zenodo: published, DOI [10.5281/zenodo.24453546](https://doi.org/10.5281/zenodo.24453546).
+- arXiv: not yet submitted. Once you have an endorsement, use this comments line:
+  "9 pages. Also available at doi:10.5281/zenodo.24453546. Software: https://github.com/insightitsGit/cpullm
+  (version 1.16.0)".
+- A corrected paper goes to Zenodo as a new version of the same record, not as a new upload.

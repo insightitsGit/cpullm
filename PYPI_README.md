@@ -590,5 +590,21 @@ workflow adapters. These are integration opportunities, not claims of deployed r
 Code: [Apache-2.0](https://github.com/insightitsGit/cpullm/blob/main/LICENSE). Bundled WikiText-2 data is under **CC BY-SA 3.0/GFDL** with separate attribution;
 see [third-party notices](https://github.com/insightitsGit/cpullm/blob/main/THIRD_PARTY_NOTICES.md). The Apache label does not cover the bundled data.
 
-Cite as **cpu-llm: Evidence-Based AI Engine**, Amin Parva, the repository URL, and the exact version or commit
-evaluated.
+The design and evaluation are described in the preprint
+[*CPU-LLM: A CPU-First Evidence Engine for Cited Answers, Deterministic Checks and Labelled
+Hypotheses*](https://doi.org/10.5281/zenodo.24453546) (Zenodo, DOI
+[10.5281/zenodo.24453546](https://doi.org/10.5281/zenodo.24453546)). The source is in [paper/](https://github.com/insightitsGit/cpullm/blob/main/paper/).
+Cite it as:
+
+```bibtex
+@misc{parva2026cpullm,
+  author    = {Parva, Amin},
+  title     = {{CPU-LLM}: A {CPU}-First Evidence Engine for Cited Answers, Deterministic Checks and Labelled Hypotheses},
+  year      = {2026},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.24453546},
+  note      = {Preprint; software version 1.16.0}
+}
+```
+
+When you report results, also give the exact version or commit you evaluated.
