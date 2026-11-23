@@ -1,0 +1,379 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{microtype}
+\emergencystretch=2em
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,frame=single,framerule=0.3pt}
+\setlist{itemsep=2pt,topsep=3pt}
+
+\title{CPU-LLM: A CPU-First Evidence Engine for Cited Answers,\\Deterministic Checks and Labelled Hypotheses}
+\author{Amin Parva\\\small Independent researcher\\\small\url{https://github.com/insightitsGit/cpullm}}
+\date{November 2026 \quad (software version 1.16.0)}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We describe CPU-LLM, an open-source Python library that answers questions from a user's own documents on
+commodity CPUs without a generative language model. Documents are split into passages, encoded once with a frozen
+sentence encoder, and stored with explicit directed facts in PostgreSQL/pgvector. A request passes through a
+27-stage graph that authenticates the caller, retrieves passages through six representation channels, and
+delivers only sentences or licensed constructions whose relation to the question has been checked. Every reply
+carries an \texttt{answer\_status}: answered, refused for insufficient evidence, conflicting, or
+unverified hypothesis. An optional strict mode delivers only literal substrings of authorized stored text.
+Deterministic nodes handle rule-based deduction, exact arithmetic and interval constraints. A separate family of
+nodes proposes hypotheses, always labelled \texttt{UNVERIFIED\_HYPOTHESIS}. Frontier enumerates relation chains
+across a knowledge base in the manner of Swanson's literature-based discovery. Deepen then examines one hypothesis
+link by link and returns supporting and contrary quotes and a test plan. We report the recorded evaluations:
+a synthetic request benchmark (460/460 rows, 86/86 expected abstentions), an answerability contract (6/6
+answerable, 0 unsupported answers on 9 unanswerable items), ingestion cost, and Frontier runs over three corpora
+of openly licensed papers. On a holdout in which nine published findings were removed, Frontier recovered none
+fully and two partially. We state what the system does not do: it does not establish that a source is true, and
+its hypotheses are candidates to screen, not findings.
+\end{abstract}
+
+\section{Introduction}
+
+Large language models produce fluent answers, but their wording is generated, and a generated claim can be
+unsupported by any source \cite{ji2023hallucination}. Retrieval-augmented generation \cite{lewis2020rag} narrows
+this gap by conditioning generation on retrieved passages; the final wording is still generated. Some
+deployments need a different contract: an answer is a quotation or a checked construction from an authorized
+source, a missing fact is reported as missing, and disagreement between sources is shown rather than resolved.
+Such deployments also often lack GPUs or cannot send documents to an external service.
+
+CPU-LLM targets that contract. Despite its name it is not a language model. It is a neuro-symbolic
+\cite{garcez2020neurosymbolic} evidence engine: neural components (a frozen sentence encoder and small trained
+projection heads) retrieve and route, and symbolic components (relation binders, a fact graph, deduction rules,
+exact arithmetic) decide what may be said. This paper describes the whole system as of version 1.16.0, including
+two recent hypothesis nodes, and collects the evaluations recorded in the repository. Our contributions are:
+
+\begin{enumerate}
+  \item an architecture in which every reply is typed by an \texttt{answer\_status} that separates source-backed
+        answers, justified refusals, conflicts and unverified hypotheses (\S\ref{sec:arch}--\ref{sec:status});
+  \item a strict evidence mode with an explicit, narrow meaning of ``no generated factual wording''
+        (\S\ref{sec:strict});
+  \item deterministic inference, arithmetic and constraint nodes with replayable proofs (\S\ref{sec:inference});
+  \item Frontier and Deepen, a scored, budgeted form of literature-based discovery whose output is fenced off from
+        answers (\S\ref{sec:hyp});
+  \item an honest account of the evaluations and limitations (\S\ref{sec:eval}--\ref{sec:limits}).
+\end{enumerate}
+
+\section{System overview}
+\label{sec:arch}
+
+\paragraph{Storage.} Documents (text, Markdown, PDF) are split into passages with stable identifiers of the form
+\texttt{prefix-p0001}. Each passage is encoded once with \texttt{all-mpnet-base-v2} \cite{reimers2019sbert} and
+projected into a 1{,}024-value tensor called VectorPrism: a 16-value header, a 368-value dense core, and five
+128-value slices for relational, disentangled, hyperbolic/taxonomy, identity and causal/time signals. Tensors and
+text are stored in PostgreSQL with pgvector \cite{pgvector}. Only the dense and identity heads are trained in the
+shipped checkpoint; the other slices are computed but not treated as enabled retrieval heads. A per-namespace fact
+graph stores explicit directed facts (alias, type, location, colour, possession, lifespan, cause, contrast) with
+their source sentences. Ingestion is the only encoder-heavy step; requests reuse stored vectors.
+
+\paragraph{Request lifecycle.} A request (Python \texttt{Appliance.ask} or HTTP \texttt{POST /v1/ask}) passes a
+27-stage graph. In order, the main steps are:
+\begin{enumerate}
+  \item authenticate the caller and resolve its source scope; an empty scope is refused before any state is used;
+  \item guard the raw prompt, and guard it again after reference resolution;
+  \item ask for missing criteria in subjective requests (``Which lobster is best?'') before any search;
+  \item resolve pronouns against session context, or ask for an explicit name;
+  \item apply conservative, corpus-backed spelling repair;
+  \item encode the query and score six intent channels;
+  \item retrieve dense candidates, named-entity matches and a bounded neighbourhood of the fact graph;
+  \item run specialist producers (definitions, attributes, events, rankings, rules, arithmetic);
+  \item bind evidence to the question (\S\ref{sec:status});
+  \item audit, check grammar and render.
+\end{enumerate}
+Compound prompts are first split into independent cited lookups that share the caller's scope. Channel prototype
+scores route a request; they never count as proof of a relation.
+
+\paragraph{Specialist routes.} Explicit prompt prefixes or API flags send a request to a specialist node before
+the ordinary graph. The routes are inference, arithmetic, CrossDomain and Constraint Check, relationship-loop
+search, research, Invention, Nammade, Frontier and Deepen. A request may name only one specialist; combining two
+raises an error. A classifier maps natural phrasings (``What don't we know about X?'') to a specialist only when no
+existing trigger claims the prompt, so existing routes keep their behaviour.
+
+\section{Grounded answering and the answer status}
+\label{sec:status}
+
+The binder decides whether a retrieved sentence \emph{answers} the question, not merely whether it is similar to
+it. For an attribute question, a sentence qualifies only if it states that attribute of that entity, in the
+question's tense, as an affirmative claim, and not under a conditional. Sharing the words ``France'' and
+``capital'' is not enough, and ``France Area'' does not count as ``France''. A definition question requires a
+definition, type or role construction: \emph{Mary baked a cake} cannot answer \emph{Who is Mary?}
+
+Each reply carries an \texttt{answer\_status} and, when applicable, \texttt{answer\_evidence} (the cited passage
+identifier and sentence). The statuses form four groups:
+\begin{itemize}
+  \item \textbf{source-backed or derived:} \texttt{answered}, \texttt{evidence\_quote}, \texttt{derived\_inference};
+  \item \textbf{justified refusal:} \texttt{insufficient\_evidence}, \texttt{unsupported};
+  \item \textbf{disagreement:} \texttt{conflicting}, \texttt{contradicted}, where the reply quotes each value
+        and does not choose one;
+  \item \textbf{unverified:} \texttt{hypotheses}, \texttt{shortage}, \texttt{research\_question},
+        \texttt{deepened}.
+\end{itemize}
+Further statuses cover clarification, budget stops (\texttt{partial}) and guard refusals (\texttt{blocked}). An
+agent or application branches on this field instead of interpreting prose.
+
+\paragraph{Documents.} Requests such as ``Write a detailed report about X'' produce reports, articles or emails.
+The text is assembled from source sentences and a small set of curated constructions. Each generated sentence is
+checked by an inverse grammar: it is parsed back into the relation it claims, and that relation must match its
+source proof. An optional tone (formal, friendly, and others) selects among verified constructions. General
+free-form word generation is not supported. An optional external LLM fallback exists for deployments that want
+it; it is off by default, and its output is labelled \texttt{external\_unverified}.
+
+\section{Strict evidence mode}
+\label{sec:strict}
+
+Strict mode (\texttt{strict\_evidence=True}, a header, or an operator floor) intercepts a request before the
+ordinary graph. It runs literal, scoped SQL evidence lookups, and no learned model writes answer wording. Delivered
+evidence must be a literal substring of an authorized stored chunk. Version~2 adds bounded batches, explicit
+one-hop joins, recognised paraphrase conflicts, exact scalar--unit equivalence, direct-attribute overviews and
+exact arithmetic. When the evidence cannot satisfy the lookup contract, the mode returns a non-answer. It never
+retries through ordinary generation. Strict mode disables every hypothesis route.
+
+We call this ``zero hallucination'' only in a narrow sense: an execution restriction on where answer wording
+comes from. It does not show that a quotation is true, current, complete or suitable for a decision. It is not a
+claim of factual accuracy, universal contradiction detection or clinical validation.
+
+\section{Deterministic inference, arithmetic and constraints}
+\label{sec:inference}
+
+\paragraph{Deduction.} ``Infer whether A is bigger than C'' or an explicit
+\texttt{inference=\{subject, relation, object\}} triggers grounded deduction. Premises are source facts; the node
+applies only a fixed set of application-owned rules: transitivity of size, taxonomy and part--whole relations,
+membership inheritance and part--location, for example
+\[
+\textit{member\_of}(x,c)\wedge\textit{every\_member\_has}(c,y)\;\to\;\textit{has}(x,y).
+\] It returns a replayable proof in which every premise cites a passage. The status is \texttt{derived\_inference}, or a
+refusal when no proof exists. Temporal, inductive and abductive analyses run over explicitly selected JSON
+evidence records, and their outputs are labelled by kind. One prepared deduction is shared by the research,
+Nammade and CrossDomain routes in a request.
+
+\paragraph{Arithmetic and constraints.} ``Calculate 17 times 24'' is evaluated exactly (decimal and rational
+arithmetic) rather than generated. Constraint Check intersects numeric intervals stated in sources. CrossDomain joins facts
+across knowledge-base prefixes. A finance module checks ledger covenants. Relationship-loop search
+(\texttt{cycle\_search}) enumerates bounded cycles in the fact graph under explicit round, candidate and time
+budgets.
+
+\section{Hypothesis nodes}
+\label{sec:hyp}
+
+The remaining nodes produce candidates rather than answers. Every result is labelled
+\texttt{UNVERIFIED\_HYPOTHESIS}, comes with \texttt{promotion: blocked}, is never written back to the index, and carries a standard disclosure.
+
+\paragraph{Research, Invention, Nammade and the abductive bridge.} ``Research X'' runs Innovation (taxonomy-driven
+cross-passage invention), source hypothesis generation and a Nammade scan in parallel on one snapshot, and lists
+each reading as a separate option with the reason it abstains or proposes. A Nammade scan quotes authorized
+passages admitted by the dense core (cosine~$\ge 0.62$) and reports volumetric labels and polarity bridges between
+words that share a span; those labels are explicitly not evidence. The abductive bridge emits one schema-bound
+hypothesis when two passages give interval-disjoint bounds on one observable and differ on a regime variable.
+
+\paragraph{Frontier.} Frontier implements a scored, budgeted variant of Swanson's ABC model of literature-based
+discovery \cite{swanson1986fish,swanson1997arrowsmith,henry2017lbd}: if one document links A to B and another links
+B to C, the A--C connection is a candidate no single document states. Frontier extracts relation edges
+(cause, increase, decrease, constrain, and others, with hedging and negation) from every authorized passage.
+It uses a spaCy dependency parse when a model is installed \cite{honnibal2020spacy} and a regex fallback otherwise.
+Around the topic it streams three candidate shapes: chains $A\to B\to C$, convergent pairs (two causes of one
+outcome) and divergent pairs (one cause, two outcomes). The search is bounded by rounds, candidates, edges, memory
+and time (default 60\,s); a stopped run is flagged \texttt{incomplete}. Candidates pass three filters in order:
+\begin{itemize}
+  \item \emph{abductive:} the edges compose into a coherent explanation;
+  \item \emph{deductive:} each edge has an exact source span, and no source states its negation or its opposite;
+  \item \emph{pre-thinker:} rejects malformed, circular, single-source and restated candidates.
+\end{itemize}
+A candidate stated as a whole by any one passage is not new and is dropped.
+
+Each survivor receives three scores in $[0,1]$. An edge's support is $0.80$ for an assertive source and
+$0.55$ for a hedged one. It gains $0.10$ per additional supporting document (at most $0.20$) and $0.05$ for a
+quantitative statement, capped at 1. A path's support is the minimum over its edges, and
+\begin{equation}
+  \textit{source\_support} = 1 - \prod_{i=1}^{\min(k,5)} (1 - s_i),
+\end{equation}
+a noisy-or over up to five supporting paths. Relevance combines composition certainty $c$, quote fit $q$ and
+topic-term fit $t$, scaled by term specificity:
+\begin{equation}
+  \textit{relevance} = (0.5c + 0.3q + 0.2t)\,(0.6 + 0.4\sigma), \qquad
+  \sigma = \frac{1}{|T|}\sum_{w\in T}\Bigl(1 - \frac{\log(1+\mathrm{df}_w)}{\log(1+N)}\Bigr),
+\end{equation}
+where $\mathrm{df}_w$ is the number of passages containing term $w$ and $N$ the number of passages. Without the
+specificity factor, generic hubs such as ``performance'' dominated the ranking. Novelty is
+\begin{equation}
+  \textit{novelty} = 0.5(1 - o) + 0.3\min\!\Bigl(1, \frac{D-1}{2}\Bigr) + 0.2\,\textit{sep},
+\end{equation}
+with $o$ the largest fraction of the hypothesis's content words found in any one premise quote, $D$ the number
+of distinct source documents, and $\textit{sep}=0.5$ when some sentence names both endpoints (without a relation cue),
+$0.75$ when they share only a passage, and $1$ when they never co-occur. Entries are ranked by support, then relevance, then novelty.
+No term may appear in more than three of the leading entries. Frontier returns 10 to 50 entries; when fewer survive,
+it reports a \texttt{shortage} rather than padding the list. Each entry carries its citations and a falsification
+test. When an encoder is available, a link between two terms that share only a head noun must also pass a
+cosine check ($\ge 0.6$).
+
+\paragraph{Deepen.} Deepen takes one hypothesis (a Frontier entry, free text, or ``Deepen idea 3'' in a session)
+and examines it link by link. For each link it searches the whole authorized graph, not only the passages that
+produced the hypothesis, for supporting and contrary statements, and assigns a status: \texttt{supported},
+\texttt{contested}, \texttt{counter\_only}, \texttt{weak} or \texttt{missing}. The overall verdict is one of
+\texttt{all\_links\_supported}, \texttt{partly\_supported}, \texttt{contested}, \texttt{unsupported} or
+\texttt{incomplete} (a budget stop). It also reports:
+\begin{itemize}
+  \item source predictions that name at least two of the hypothesis's terms;
+  \item existing experimental setups that already measure one of its terms;
+  \item confounders, i.e.\ other stated causes of the outcome, with their causal role (outcome predictor, shared
+        cause or downstream) but never adjusted for automatically \cite{pearl2009causality};
+  \item a test plan (mediation, $2\times2$ factorial or common cause) stating what to vary, measure, block and
+        control, and when the hypothesis fails.
+\end{itemize}
+Version 1.16.0 adds a composition assessment separate from per-link support. Composition certainty is 1.0 for an
+exact shared term and lower for weaker term matches (0.95, 0.85, 0.7, 0.6), multiplied by $0.8$ per head-noun
+bridge (or by the cosine when an encoder is present) and by $0.9$ per edge beyond two. The release also adds
+warnings when a bridged term changes modifier or meaning (``low weight decay'' vs.\ ``increasing weight decay''),
+user-supplied definitions and protocol, a readiness flag and an optional novelty review against the knowledge
+base. Frontier runs Deepen on its first five entries by default and flags contested ones with the contrary quote.
+
+Because every Frontier link has at least its own premise, \texttt{all\_links\_supported} is nearly guaranteed for
+Frontier output and is weak evidence. The informative signals are \texttt{contested} and \texttt{missing}.
+
+\section{Evaluation}
+\label{sec:eval}
+
+All numbers below are recorded in the repository with their scripts and revisions. They measure stated contracts
+on stated fixtures; none is a general accuracy figure.
+
+\subsection{Grounded answering}
+
+\paragraph{Answerability contract.} Seventeen frozen fixtures were scored three ways: six answerable, nine
+unanswerable, and two conflicts. Table~\ref{tab:answer} gives the results. Baseline~A labels the first retrieved
+passage as a passage. Baseline~B speaks the first passage as the answer. The fixtures were written with the binder,
+so this is a contract test rather than a held-out corpus.
+
+\begin{table}[h]
+\centering\footnotesize
+\begin{tabular}{lcccc}
+\toprule
+ & Answerable & Unsupported & Conflicts & Exact-span\\
+ & covered (of 6) & answers (of 9) & shown (of 2) & citations\\
+\midrule
+Baseline A & 0 & 0 & 0 & 0\\
+Baseline B & 5 & 8 & 0 & 5\\
+CPU-LLM binder & 6 & 0 & 2 & 6\\
+\bottomrule
+\end{tabular}
+\caption{Answerability contract (fixtures in \texttt{tests/test\_answerability.py}).}
+\label{tab:answer}
+\end{table}
+
+\paragraph{Request benchmark.} A synthetic request suite exercises citation, access control, clarification,
+abstention and budgets. At revision \texttt{7adf319}, 460/460 rows passed, including 278/278 expected answers and
+86/86 expected abstentions, and the scorer flagged no false assertions. An independent harbour fixture first
+scored 20/24. Both misses involved the colour word \emph{ochre}. After a vocabulary fix the fixture replayed at
+24/24, and a typo replay passed 32/32. The replay figures measure regression coverage after a fix, not first-run
+accuracy. Our own validity review notes that the aggregate mixes response depth and adversarial input handling
+with evidence lookup, and should be read as a regression metric.
+
+\paragraph{Other receipts.} The stylistic document node passed 49 contract scenarios per arm (rules and spaCy). A
+healthcare demonstration on fictional data produced 12/12 authored outcomes; this is not clinical validation. The source test suite at 1.16.0 gives 1{,}343 passed, 56 skipped (mostly opt-in database
+integration tests) and 3 expected failures, with 3 failures that predate this release.
+
+\subsection{Cost on a CPU}
+
+A 162-page PDF (MIT 18.04 lecture notes) produced 265 chunks. With one encoder worker and four Torch threads,
+ingestion took 85.7\,s and peaked at 3.00\,GiB. With four workers, it took 113.7\,s and 6.53\,GiB. Both runs
+stored identical chunks and vectors. On a seven-question latency check after start-up, the median request took
+167\,ms (range 112--668\,ms), with 11.5\,s start-up. That check also recorded failures: ``What is the capital of
+France?'' returned unrelated stored sentences at that revision. The answerability binder above was the
+response. Frontier on a 1{,}054-chunk knowledge base took about 3.5\,s per prompt at 2.98\,GB resident memory.
+
+\subsection{Hypothesis nodes}
+
+We built three knowledge bases from openly licensed arXiv papers (fixtures in the repository):
+\begin{itemize}
+  \item AI bottlenecks: 64 papers, 32 in full text (CC BY/BY-SA), 1{,}054 chunks;
+  \item deep-learning generalization: 106 papers, 60 in full text, 1{,}652 chunks;
+  \item consciousness and philosophy of mind: 153 papers, 48 in full text, 1{,}241 chunks.
+\end{itemize}
+
+\paragraph{Holdout rediscovery.} In the AI-bottlenecks base we selected nine published findings and removed every
+sentence that contained the terms of any finding: 767 sentences. We then asked whether Frontier would propose them.
+An automatic substring matcher reported 3 full and 7 partial matches. Hand adjudication found that most of these
+were spurious, and the corrected result is \textbf{0 of 9 full and 2 of 9 partial}. One partial is close to text
+that remained in another paper and is weak evidence of discovery. Three repeated runs produced identical output.
+
+\paragraph{Deepen checks.} On the deep-learning base, Deepen checked 70 leading Frontier entries: 65 had all links
+supported, 4 were partly supported and 1 was contested. The contested entry was ``low weight decay may increase
+generalization through the grokking phase''; a corpus paper \cite{clauw2024grokking} reports the opposite effect.
+An early version found 69/70 supported because it searched only the passages that produced the hypothesis, which
+hides contrary evidence; it now searches the whole graph, and a regression test covers this. Separately, on seven
+hypotheses Deepen found two contested. The second was a claim about implicit bias, negated by a ``neither \ldots{}
+alone'' sentence in \cite{matveev2025biases}. With the 1.16.0 composition review, four of five fully supported
+hypotheses were marked \texttt{requires\_review} because a bridge changed a term's meaning, and the novelty review
+found prior overlap for one of seven (\cite{mayama2025iit}). Frontier's output on 15 prompts was unchanged by the
+review layer.
+
+\paragraph{Qualitative observations.} Causal empirical prose (systems and ML papers) gave the most usable chains.
+Philosophy gave the fewest: its arguments are rarely stated as directed causal relations. Several entries read as
+plausible research leads to us, but we did not run a blind expert rating like that of Si et al.\ \cite{si2024ideas}.
+We therefore claim only that a minority of entries are worth a researcher's attention, not that they are correct
+or novel to the field.
+
+\section{Related work}
+
+Retrieval-augmented generation \cite{lewis2020rag} and the hallucination literature \cite{ji2023hallucination}
+motivate grounding; CPU-LLM removes generation from the answer path rather than conditioning it. Neuro-symbolic
+AI \cite{garcez2020neurosymbolic} combines learned perception with symbolic reasoning; here the learned parts
+retrieve and route while symbolic parts decide what may be said. Literature-based discovery
+\cite{swanson1986fish,swanson1997arrowsmith,henry2017lbd} is the closest precedent for Frontier. Our additions
+are typed and hedged relation edges, explicit scoring, budgets, deductive and contrary-evidence filtering, and a
+link-level audit (Deepen). LLM-driven discovery systems such as FunSearch \cite{romeraparedes2024funsearch} pair
+generation with an automatic evaluator; Frontier has no generator, and its evaluator is source evidence rather
+than an executable objective. Human studies of LLM research ideation \cite{si2024ideas} indicate the kind of
+evaluation our hypothesis nodes still need.
+
+\section{Limitations}
+\label{sec:limits}
+
+\begin{itemize}
+  \item \textbf{Source truth.} A cited quotation can be false, outdated or out of context. The system checks that
+        a sentence states the asked relation, not that the world agrees.
+  \item \textbf{Coverage.} The binder handles recognised question shapes; other forms abstain. Word overlap and
+        parse patterns are not semantic entailment. Free-form generation is not supported.
+  \item \textbf{Trained components.} Only the dense and identity heads are trained; four of six channels are
+        symbolic or uncalibrated.
+  \item \textbf{Evaluation.} Most benchmarks are synthetic or were written alongside the code. The holdout result
+        is small (nine findings) and was hand adjudicated by the developer. There is no blind expert rating of
+        hypotheses and no comparison against an LLM baseline on the same corpora.
+  \item \textbf{Hypotheses.} Frontier depends on how explicitly a field states directed relations. Its scores
+        are heuristics with hand-chosen constants, not calibrated probabilities.
+  \item \textbf{Deployment.} Ingestion requires PostgreSQL with pgvector 0.7 or later and about 3\,GB of memory.
+        The fact graph is scanned rather than indexed.
+\end{itemize}
+
+\section{Availability and reproducibility}
+
+CPU-LLM is available on PyPI as \texttt{cpu-llm} and at \url{https://github.com/insightitsGit/cpullm}
+\cite{cpullm2026}. This paper describes version 1.16.0. The repository contains:
+\begin{itemize}
+  \item the three corpora with their source lists, licences and holdout definitions (\texttt{tests/fixtures});
+  \item the fetch, build, run and evaluation scripts and raw outputs (\texttt{docs/reviews});
+  \item benchmark and answerability records under \texttt{docs/};
+  \item an OpenAPI contract and function-calling tool definitions for AI agents (\texttt{docs/}).
+\end{itemize}
+Frontier and Deepen are deterministic for a fixed corpus, parser model and configuration.
+
+\section*{Acknowledgements and AI assistance}
+The system design, including the Frontier and Deepen nodes, is the author's. Parts of the implementation, tests,
+evaluation scripts and the drafting of this manuscript were done with an AI coding assistant (Claude, Anthropic)
+under the author's direction. The author reviewed the content and takes full responsibility for it. The corpus
+papers are by their respective authors and are used under their open licences.
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
