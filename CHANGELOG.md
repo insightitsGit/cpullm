@@ -3,6 +3,37 @@
 Release notes for each version are in [docs/releases](docs/releases). This file summarizes what each release added,
 so the README can describe the current version only.
 
+## Unreleased (Frontier/Deepen v2)
+
+Specified in [docs/frontier-deepen-v2-spec.md](docs/frontier-deepen-v2-spec.md), from the quantum computing audit.
+
+- **Artefact filter.** Section headers, figure labels, author names, words merged by text extraction, meta nouns
+  and bare comparator quantities no longer become hypothesis terms or candidate controls (`pre_thinker:artefact`).
+- **Composition gate.**
+  - Every Deepen receipt and Frontier check carries `lead_status`.
+  - Contradictions that rest only on differently worded terms become `bridge_mismatch` instead of `contested`.
+  - Contested and meaning-mismatched leads get a `resolve_first` plan instead of an experiment.
+- **Coverage gaps.** Weak or missing links report document coverage. Thin coverage gives `coverage_gap` and an
+  `add_sources` action.
+- **Variable types.** Terms are typed as intervention, observable property, noise channel or outcome metric.
+  Fixed properties and noise sources route to stratified or observational designs instead of a 2×2 factorial.
+- **Suggested procedures.** Plans list cited setups that measure each variable, labelled not validated.
+- **Frontier options.**
+  - `screen` drops generic entries, re-ranks by relevance and novelty, and checks a shortlist with the novelty
+    review.
+  - `axiom_sources` marks background sources.
+  - `topic_match` reports topic drift.
+  - With checks requested, generation reserves 20% of the time budget for them.
+- **Free-form Deepen.** Plain forms such as "A may reduce C", "A limits C via B" and "C may grow exponentially
+  with A" are read, with a one-link `direct` pattern.
+- **Prior art (opt-in).** `cpu_llm.literature_arxiv.ArxivReviewer` searches arXiv. The novelty review reports
+  `prior_art_status`, which is never a finding.
+- **Scale warnings.** Adjacent links at time scales 1,000× apart, or two abstraction levels apart, are flagged
+  for review.
+- **Ingestion speed.**
+  - Relation edges stay in memory between ingests: about 14% faster per document on a 3,369-chunk knowledge base.
+  - `ingest(..., consolidate="end")` consolidates once per call: about 3.4× faster for folders. It is opt-in.
+
 ## 1.16.0
 
 - **Deepen research review.** Annotates each hypothesis without changing Frontier's candidates, ranking or limits:

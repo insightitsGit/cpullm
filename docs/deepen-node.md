@@ -23,17 +23,23 @@ the new assessments do not remove alternatives.
 | Field | Content |
 |---|---|
 | `links` | One entry per adjacent path link, including all three links of a two-mediator chain; A → C and B → C for a shared target; C → A and C → B for a shared source. Each entry has its supporting edges, its contrary edges (opposite direction, or negated), co-mentions, and a `status`: `supported`, `contested`, `counter_only`, `weak` (co-mention only) or `missing`. |
-| `verdict` | `all_links_supported`, `partly_supported`, `contested`, `unsupported` or `incomplete` |
+| `verdict` | `all_links_supported`, `partly_supported`, `contested`, `bridge_mismatch` (the only contrary evidence uses different terms), `unsupported` or `incomplete` |
+| `lead_status` | What to do next: `testable`, `needs_semantic_resolution`, `contested_tension`, `coverage_gap`, `insufficient_evidence`, `needs_review` or `incomplete` ([v2 spec](frontier-deepen-v2-spec.md)) |
 | `predictions` | Source sentences with a prediction marker that name at least two of the hypothesis terms |
 | `setups` | Source sentences describing experiments, datasets or benchmarks that involve its terms |
 | `confounders` | Other causes of the outcome stated in the sources, each cited |
-| `test_plan` | The design (mediation, 2×2 factorial or common cause), what to manipulate, measure and block, the controls (the confounders), steps, and `fails_if` |
+| `test_plan` | The design, what to manipulate, measure and block, the controls (the confounders), steps, `fails_if`, `variable_types`, `design_reason` and cited `suggested_procedures`. Designs: mediation, intervention (one link), 2×2 factorial, stratified (one factor is a fixed property or a noise source), observational regime map, common cause, or `resolve_first` (quarantined; `blocked_design` keeps the withheld design) |
 
 Text hypotheses retain their requested end-to-end direction. Chain evidence is composed using the same relation rules as Frontier; two negative links can support a positive effect. `direction_check` reports consistent, contradicted, contested, unresolved or unspecified direction. Local link support alone does not establish the requested end-to-end effect.
 
 Directions are compared by sign. `constrains` counts as capacity-positive (more A allows more B), so a source saying
 that A *reduces* B contradicts it. Links reuse Frontier's relation graph and parse cache, its related-term matching,
 and, when the appliance has an encoder, the cosine check on head-noun bridges.
+
+Each citation carries `endpoint_match`: `exact`, `contained` (the requested term with added modifiers), `similar`
+(encoder cosine ≥ 0.8) or `bridged`. Contrary evidence that is only `bridged` produces `bridge_mismatch` rather than
+`contested`. Plain-sentence hypotheses ("A may reduce C", "A limits C via B", "C may grow exponentially with A") are
+read as a chain or as a one-link `direct` pattern.
 
 ## Automatic use inside Frontier
 

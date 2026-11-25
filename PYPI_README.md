@@ -365,53 +365,61 @@ Treat the list as candidates to screen. [Design](https://github.com/insightitsGi
 
 Frontier ranks by source support first, so the top slots often go to generic entries backed by many papers ("qubit
 count", "noise", "sampling cost"). In a quantum computing run (155 papers, 12 topics), the most specific entries sat
-at ranks 5–26. In that run, 110 of 300 distinct entries appeared under several topics. Screen in this order:
+at ranks 5–26. In that run, 110 of 300 distinct entries appeared under several topics.
 
 1. **Phrase the topic as the field does.** "Two-level system defects" found the right papers, but "two-level
-   systems" matched "system size".
-2. **Give broad topics time.** A topic over a large knowledge base can hit the 60 s default; pass
-   `frontier={"limits": {"max_seconds": 120}}` (the maximum) and check `incomplete`.
-3. **Drop generic and artefact entries.** Remove entries that recur across several topics, and entries built from
-   PDF artefacts: section headers, author names, or merged words.
-4. **Re-rank the rest** by `deductive_relevance` and `novelty` instead of reading in list order.
-5. **Deepen the shortlist with the novelty review**, and discard what the review rejects:
-   - a `contested` verdict caused by a bridge that changes a term's meaning (`composition.bridges`);
-   - `composition.status` of `incompatible_direction`;
-   - a novelty review that finds the claim already stated (`potential_overlap`).
+   systems" matched "system size". `topic_match.drift_warning` flags this.
+2. **Turn on screening.** `frontier={"screen": True}`:
+   - drops generic entries;
+   - ranks the rest by `0.6 × relevance + 0.4 × novelty`;
+   - checks a shortlist of 15 (`{"screen": {"shortlist": n}}`, 5–30) with Deepen and its novelty review.
+
+   Document artefacts are always filtered: section headers, author names, merged words.
+3. **Give broad topics time.** Pass `"limits": {"max_seconds": 120}` and check `incomplete`. When checks are
+   requested, generation stops at 80% of the budget so the checks can run.
+4. **Act on `lead_status`, not the verdict alone:**
+   - only `testable` leads come with an experiment design;
+   - `needs_semantic_resolution` and `contested_tension` get a `resolve_first` plan;
+   - `coverage_gap` means the knowledge base is too thin to judge.
+5. **Check prior art.** The built-in novelty review only searches your knowledge base. Operators can register
+   `cpu_llm.literature_arxiv.ArxivReviewer` and request `external_review`, which reports `prior_art_status`.
 
 ```python
-lists = {t: app.ask(f"Frontier: {t}.", frontier={"limits": {"max_seconds": 120}})["frontier"]["hypotheses"]
-         for t in topics}
-seen = Counter(h["text"] for hs in lists.values() for h in hs)
-shortlist = [h for hs in lists.values() for h in hs
-             if seen[h["text"]] == 1 and (h.get("check") or {}).get("verdict") != "contested"]
-shortlist.sort(key=lambda h: -(0.6 * h["scores"]["deductive_relevance"] + 0.4 * h["scores"]["novelty"]))
-for h in shortlist[:20]:
-    review = app.ask("Deepen this.", deepen={"hypothesis": h, "novelty": True})["deepen"]
-    review["verdict"], review["composition"]["status"], review["novelty_review"]["kb_status"]
+receipt = app.ask("Frontier: barren plateaus.",
+                  frontier={"screen": True, "limits": {"max_seconds": 120}})["frontier"]
+receipt["topic_match"], receipt["screen"]["dropped_generic"]
+for h in receipt["hypotheses"]:
+    check = h.get("check") or {}
+    h["text"], check.get("lead_status"), check.get("novelty_kb"), check.get("design")
 ```
 
-Deepen reads hypotheses only in Frontier's sentence forms, such as "A may reduce C through B." or "A and B may
-jointly drive C."; other wording returns `needs_clarification`. Every entry stays an `UNVERIFIED_HYPOTHESIS`. The
-novelty review checks only your knowledge base, not the wider literature.
-[Quantum computing run and audit](https://github.com/insightitsGit/cpullm/blob/main/docs/reviews/2026-11-25-quantum-computing/report.md).
+Every entry stays an `UNVERIFIED_HYPOTHESIS`. A `potential_prior_art` record is a candidate for a reviewer, not a
+finding. [Quantum computing run and audit](https://github.com/insightitsGit/cpullm/blob/main/docs/reviews/2026-11-25-quantum-computing/report.md) ·
+[v2 spec](https://github.com/insightitsGit/cpullm/blob/main/docs/frontier-deepen-v2-spec.md).
 
 ### Deepen: examine one hypothesis
 
 Added in 1.15.0. Deepen takes one hypothesis and checks it link by link against the same sources. Pass a Frontier
-entry, write "Deepen: A may constrain C through B.", or say "Deepen idea 3" after a Frontier answer in the same
-session.
+entry, write "Deepen: A may constrain C through B.", say "Deepen idea 3" after a Frontier answer in the same
+session, or use a plain form: "A may reduce C", "A limits C via B", "C may grow exponentially with A".
 
 ```python
 receipt = app.ask("Deepen this.", deepen=frontier_entry)["deepen"]
-receipt["verdict"]          # all_links_supported, partly_supported, contested, unsupported, incomplete
-receipt["links"]            # each: source, target, status, support, counter
+receipt["lead_status"]      # testable, needs_semantic_resolution, contested_tension, coverage_gap, ...
+receipt["verdict"]          # all_links_supported, partly_supported, contested, bridge_mismatch, unsupported, incomplete
+receipt["links"]            # each: source, target, status, support, counter (each citation has endpoint_match)
 receipt["predictions"], receipt["setups"], receipt["confounders"]
-receipt["test_plan"]        # design, manipulate, measure, mediator, controls, steps, fails_if
+receipt["test_plan"]        # design, manipulate, measure, strata, steps, fails_if, variable_types, suggested_procedures
 ```
 
-Each link is `supported`, `contested`, `counter_only`, `weak` or `missing`; a source stating the opposite direction
-or negating the link counts against it.
+Each link is `supported`, `contested`, `bridge_mismatch`, `counter_only`, `weak` or `missing`. A source stating the
+opposite direction or negating the link counts against it.
+- **Different terms.** When the only contrary source uses differently worded terms, the link is a
+  `bridge_mismatch`.
+- **Quarantine.** Contested and meaning-mismatched leads get a `resolve_first` plan that lists what to resolve, not
+  an experiment.
+- **Typed designs.** Variables are typed. A fixed property, such as Pauli weight, or a noise source routes to a
+  stratified or observational design instead of a 2×2 factorial.
 
 - **Direction.** Text hypotheses keep their requested direction, and Deepen checks the composed effect across every
   link, including three-edge chains, so two negative links can support a positive end-to-end effect.

@@ -579,7 +579,7 @@
             "description": "Positive finite volumetric stiffness used by an explicit Nammade scan. The default is 1."
           },
           "deepen": {
-            "description": "Opt in to the Deepen node for one hypothesis: evidence for and against each link, source predictions, existing setups, confounders and a test plan. Pass the hypothesis text, a hypothesis object from a Frontier receipt, or true to read the message as the hypothesis. Text direction and every intermediary are preserved. Malformed hypothesis objects request clarification. Shared budget expiry produces partial output with an incomplete receipt. Results stay unverified and are never written to the index. Strict evidence disables this path.",
+            "description": "Opt in to the Deepen node for one hypothesis: evidence for and against each link, source predictions, existing setups, confounders and a test plan. Pass the hypothesis text (Frontier forms or plain forms such as 'A may reduce C', 'A limits C via B', 'C may grow exponentially with A'), a hypothesis object from a Frontier receipt, true to read the message as the hypothesis, or an envelope {hypothesis, definitions, protocol, novelty, external_review, axiom_sources}. definitions[term] may set measurement, unit, levels, feasible and type (intervention, observable_property, noise_channel, outcome_metric, unknown). The receipt carries lead_status (testable, needs_semantic_resolution, contested_tension, coverage_gap, insufficient_evidence, needs_review, incomplete); contested and meaning-mismatched leads get a resolve_first plan instead of an experiment. external_review calls an operator-registered literature reviewer (for example cpu_llm.literature_arxiv.ArxivReviewer) and reports prior_art_status. Malformed hypothesis objects request clarification. Shared budget expiry produces partial output with an incomplete receipt. Results stay unverified and are never written to the index. Strict evidence disables this path.",
             "oneOf": [{"type": "boolean"}, {"type": "string", "minLength": 1}, {"type": "object"}]
           },
           "frontier": {
@@ -591,7 +591,9 @@
                 "additionalProperties": false,
                 "properties": {
                   "topic": {"type": "string", "minLength": 1, "maxLength": 240},
-                  "deepen_top": {"type": "integer", "default": 5, "minimum": 0, "maximum": 10, "description": "Run Deepen on this many leading entries and mark each with its verdict; 0 turns the check off."},
+                  "deepen_top": {"type": "integer", "default": 5, "minimum": 0, "maximum": 10, "description": "Run Deepen on this many leading entries and mark each with its verdict and lead_status; 0 turns the check off. With checks requested, candidate generation stops at 80% of max_seconds (stop_reason generation_time_reserved)."},
+                  "screen": {"description": "Drop generic entries (no term names the topic, or an off-topic term spans at least 8% of chunks, with relevance below 0.8), rank by 0.6 x relevance + 0.4 x novelty, and check the shortlist with Deepen's novelty review.", "oneOf": [{"type": "boolean"}, {"type": "object", "additionalProperties": false, "properties": {"shortlist": {"type": "integer", "default": 15, "minimum": 5, "maximum": 30}}}]},
+                  "axiom_sources": {"type": "array", "maxItems": 50, "items": {"type": "string", "minLength": 1, "maxLength": 120}, "description": "Source prefixes holding background knowledge; candidates built only from them are dropped and they do not count toward novelty."},
                   "limits": {
                     "type": "object",
                     "additionalProperties": false,

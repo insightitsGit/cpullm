@@ -48,8 +48,11 @@ and proposes cited hypotheses that are clearly labelled unverified.
 1. Never present an `UNVERIFIED_HYPOTHESIS` as fact. Frontier, Deepen, research and invention output is always
    unverified.
 2. Keep citations (`answer_evidence`, `frontier.hypotheses[*].citations`, `deepen.links[*].support`).
-3. In Frontier output, skip or flag entries whose `check.verdict` is `contested`. In Deepen, the informative
-   statuses are `contested` and `missing`. A verdict of `incomplete` means the check stopped at a budget.
+3. Act on `lead_status` (on Deepen receipts and on Frontier `check`s). Only `testable` leads have a ready
+   experiment design. `contested_tension` and `needs_semantic_resolution` carry a `resolve_first` plan: present what
+   must be resolved, not an experiment. `coverage_gap` means the knowledge base barely covers the terms; suggest
+   adding sources. `incomplete` means the check stopped at a budget. For Frontier lists, prefer
+   `frontier={"screen": True}`, which drops generic entries and checks a shortlist with the novelty review.
 4. Send one specialist request per call. Combining `frontier`, `deepen`, `invent`, `nammade`, `cycle_search` or
    `inference` raises an error.
 5. Use `session_id` for follow-ups and clarifications.
