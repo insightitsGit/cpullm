@@ -1,0 +1,545 @@
+{
+ "topic": "surface code decoders",
+ "hypothesis": {
+  "id": "e7b91cbb9cd8",
+  "text": "full syndrome and sequence of noisy syndromes may jointly constrain decoding, so relieving one may shift the bottleneck to the other.",
+  "pattern": "convergent",
+  "relation": "co_constrain",
+  "anchors": [
+   "full syndrome",
+   "sequence of noisy syndromes",
+   "decoding"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2212-11632-p0009",
+   "arxiv-2402-13863-p0012"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2212-11632-p0009",
+    "quote": "Usually decoding requires the full syndrome, nevertheless some studies have been made as to optimize the syndrome data required by the decoder [28].",
+    "start": 196,
+    "end": 344,
+    "chunk_sha256": "16a052474e7239d69f83502501821fdcdcab148f2dddc199ff007974db91817a",
+    "relation": "constrains",
+    "subject": "full syndrome",
+    "object": "decoding",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2402-13863-p0012",
+    "quote": "One drawback of using 2D surface codes for this purpose is that their decoding is not single-shot: In the case where measurements are imperfect, the decoding needs a sequence of (noisy) syndromes obtained from repeated measurements.",
+    "start": 491,
+    "end": 723,
+    "chunk_sha256": "0f3ad894e0a328755a0c71389f1a29878c60ca1c073410a96322bb13fe94a938",
+    "relation": "constrains",
+    "subject": "sequence of noisy syndromes",
+    "object": "decoding",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.646,
+   "novelty": 0.623
+  },
+  "falsification_test": "Relieve full syndrome alone while measuring decoding. The hypothesis fails if decoding keeps improving without sequence of noisy syndromes becoming the binding limit, or if relieving sequence of noisy syndromes alone has no effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "decoding"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "convergent",
+  "terms": {
+   "a": "full syndrome",
+   "b": "sequence of noisy syndromes",
+   "c": "decoding"
+  },
+  "path_nodes": null,
+  "links": [
+   {
+    "source": "full syndrome",
+    "target": "decoding",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2212-11632-p0009",
+      "quote": "Usually decoding requires the full syndrome, nevertheless some studies have been made as to optimize the syndrome data required by the decoder [28].",
+      "start": 196,
+      "end": 344,
+      "chunk_sha256": "16a052474e7239d69f83502501821fdcdcab148f2dddc199ff007974db91817a",
+      "relation": "constrains",
+      "subject": "full syndrome",
+      "object": "decoding",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2212-11632-p0009",
+      "quote": "Usually decoding requires the full syndrome, nevertheless some studies have been made as to optimize the syndrome data required by the decoder [28].",
+      "start": 196,
+      "end": 344,
+      "chunk_sha256": "16a052474e7239d69f83502501821fdcdcab148f2dddc199ff007974db91817a"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   },
+   {
+    "source": "sequence of noisy syndromes",
+    "target": "decoding",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2402-13863-p0012",
+      "quote": "One drawback of using 2D surface codes for this purpose is that their decoding is not single-shot: In the case where measurements are imperfect, the decoding needs a sequence of (noisy) syndromes obtained from repeated measurements.",
+      "start": 491,
+      "end": 723,
+      "chunk_sha256": "0f3ad894e0a328755a0c71389f1a29878c60ca1c073410a96322bb13fe94a938",
+      "relation": "constrains",
+      "subject": "sequence of noisy syndromes",
+      "object": "decoding",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2402-13863-p0012",
+      "quote": "One drawback of using 2D surface codes for this purpose is that their decoding is not single-shot: In the case where measurements are imperfect, the decoding needs a sequence of (noisy) syndromes obtained from repeated measurements.",
+      "start": 491,
+      "end": 723,
+      "chunk_sha256": "0f3ad894e0a328755a0c71389f1a29878c60ca1c073410a96322bb13fe94a938"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   }
+  ],
+  "expected_relation": "co_constrain",
+  "direction_check": {
+   "requested": "co_constrain",
+   "status": "unspecified",
+   "observed": []
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-1901-10847-p0002",
+    "quote": "We tested the decoding performance under depolarizing noise with noiseless error syndrome measurements for the rotated surface code and compared against the Blossom algorithm and a neural network based decoder.",
+    "start": 737,
+    "end": 947,
+    "chunk_sha256": "32fcdd3ab39e5c821d6cd13e1971c2f211cce64118b67525e7ffae5cb3469100",
+    "measures": [
+     "decoding"
+    ]
+   },
+   {
+    "document_id": "arxiv-2310-10722-p0057",
+    "quote": "The possible impact for near-term quantum error correction experiments is very high, since the involved distances are rather small and the decoding can typically be performed offline.",
+    "start": 2391,
+    "end": 2574,
+    "chunk_sha256": "55c4083dea8420752abe1167d6532a65f7df28d012c8bf7036025a7db6be4d66",
+    "measures": [
+     "decoding"
+    ]
+   },
+   {
+    "document_id": "arxiv-2407-16176-p0027",
+    "quote": "In order to estimate the threshold, we simulate the decoding process on three concatenated quantum Hamming codes, which are concatenated up to level 1, level 2, level 3, and correspond to the [[15, 7, 3]], [[31, 21, 3]], [[63, 51, 3]] quantum Hamming codes, respectively.",
+    "start": 0,
+    "end": 271,
+    "chunk_sha256": "72d458f6b1a1f19d6c13238989420a5f1e346475fa1ef23d79143de502c0fb0d",
+    "measures": [
+     "decoding"
+    ]
+   },
+   {
+    "document_id": "arxiv-2407-16176-p0038",
+    "quote": "We compare the decoding time of the surface code and that of the concatenated quantum Hamming code, ensuring both achieve a comparable logical error rate at a physical error rate of p = 0.01526.",
+    "start": 164,
+    "end": 358,
+    "chunk_sha256": "6ce5a8d0c750edccea985c5269df9058f78dd42524d368c2941b965edc0fc5df",
+    "measures": [
+     "decoding"
+    ]
+   },
+   {
+    "document_id": "arxiv-2411-08177-p0003",
+    "quote": "In this work, we evaluate belief propagation with guided decimation (BPGD) decoding of quantum LDPC codes for the quantum erasure channel.",
+    "start": 3118,
+    "end": 3256,
+    "chunk_sha256": "959712a633054d75d76d2c35f72466df68edceacbb5a7529060ce9e338b4a5af",
+    "measures": [
+     "decoding"
+    ]
+   },
+   {
+    "document_id": "arxiv-2411-08177-p0036",
+    "quote": "Specifically, we compare the performance of BPGD decoding with other established erasure decoders via simulation for a lifted product QLDPC code and two hypergraph product (HGP) QLDPC codes.",
+    "start": 32,
+    "end": 222,
+    "chunk_sha256": "8605f9c56b3e7c5bb94b17b53c1168d1afd6d7a65e8778fea62fd4b6198c1c65",
+    "measures": [
+     "decoding"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "line of work",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2608-27682-p0008",
+     "quote": "Another line of work boosts BP decoding by coupling multiple diverse BP decoders in an ensemble-like manner, as in AMBP [28] and Relay-BP [30].",
+     "start": 27,
+     "end": 170,
+     "chunk_sha256": "328e7fe84164f69bea3cd3c1d86b7a728cb2b5482c2468628072ead9a79522f0",
+     "relation": "increases",
+     "subject": "line of work",
+     "object": "BP decoding",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "mapping",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2511-13192-p0021",
+     "quote": "II D. This mapping transforms the independent X/Z decoding for the surface code against depolarizing error into the independent Rb/Rg restricted lattice decoding for the color code against two-qubit bit-flip error (i.e., the restricted decoder), illustrated in Fig. 2(a).",
+     "start": 753,
+     "end": 1024,
+     "chunk_sha256": "497e6673e2350f3b241aad88f31a9a90eb4e2bd3a7b7c3742863f5e7e2363f71",
+     "relation": "constrains",
+     "subject": "mapping",
+     "object": "lattice decoding for color code",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [],
+   "qualifications": [
+    {
+     "link": 0,
+     "citation": {
+      "document_id": "arxiv-2212-11632-p0009",
+      "quote": "Usually decoding requires the full syndrome, nevertheless some studies have been made as to optimize the syndrome data required by the decoder [28].",
+      "start": 196,
+      "end": 344,
+      "chunk_sha256": "16a052474e7239d69f83502501821fdcdcab148f2dddc199ff007974db91817a",
+      "relation": "constrains",
+      "subject": "full syndrome",
+      "object": "decoding",
+      "hedged": false
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    }
+   ],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "untested",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "qualification_review",
+    "kind": "scope",
+    "instruction": "Restrict the proposal to the cited conditions and quantifiers."
+   },
+   {
+    "id": "c16466d8c90434b3",
+    "kind": "variable",
+    "term": "full syndrome",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for full syndrome."
+   },
+   {
+    "id": "049794777a043f47",
+    "kind": "variable",
+    "term": "full syndrome",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for full syndrome."
+   },
+   {
+    "id": "ecef7e46273592f4",
+    "kind": "variable",
+    "term": "sequence of noisy syndromes",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for sequence of noisy syndromes."
+   },
+   {
+    "id": "6a6d816a5df51923",
+    "kind": "variable",
+    "term": "sequence of noisy syndromes",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for sequence of noisy syndromes."
+   },
+   {
+    "id": "c13abc98ca88e2a3",
+    "kind": "variable",
+    "term": "decoding",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for decoding."
+   },
+   {
+    "id": "b9d02ac97cbb1bee",
+    "kind": "variable",
+    "term": "decoding",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for decoding."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "2x2 factorial",
+   "manipulate": [
+    "full syndrome",
+    "sequence of noisy syndromes"
+   ],
+   "measure": [
+    "decoding"
+   ],
+   "mediator": null,
+   "controls": [
+    "line of work",
+    "mapping"
+   ],
+   "steps": [
+    "Run all four combinations of low and high full syndrome and sequence of noisy syndromes; measure decoding.",
+    "Review candidate controls (line of work, mapping) for timing, feasibility and causal role before adjustment.",
+    "Compare the joint effect with the sum of the separate effects."
+   ],
+   "fails_if": "A precisely measured absence of an interaction challenges compounding in decoding; it does not refute individual effects of full syndrome or sequence of noisy syndromes. Predefine a meaningful effect threshold.",
+   "variables": [
+    {
+     "term": "full syndrome",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2505-13599-p0022",
+       "quote": "If the measured outcome of a detector differs from its ideal outcome, we call this a defect, and the full set of defects is the error syndrome.",
+       "start": 279,
+       "end": 422,
+       "chunk_sha256": "235009ca7694ba00baf7639f508e57a2543281f863f268690fa7f5ed5eb7ee35",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "sequence of noisy syndromes",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2402-13863-p0012",
+       "quote": "One drawback of using 2D surface codes for this purpose is that their decoding is not single-shot: In the case where measurements are imperfect, the decoding needs a sequence of (noisy) syndromes obtained from repeated measurements.",
+       "start": 491,
+       "end": 723,
+       "chunk_sha256": "0f3ad894e0a328755a0c71389f1a29878c60ca1c073410a96322bb13fe94a938",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "decoding",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1901-10847-p0002",
+       "quote": "We tested the decoding performance under depolarizing noise with noiseless error syndrome measurements for the rotated surface code and compared against the Blossom algorithm and a neural network based decoder.",
+       "start": 737,
+       "end": 947,
+       "chunk_sha256": "32fcdd3ab39e5c821d6cd13e1971c2f211cce64118b67525e7ffae5cb3469100",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2208-02191-p0003",
+       "quote": "The most famous among these is the surface code [1–4], which only requires four-qubit par- Konstantin Tiurev: konstantin.tiurev@quantumsimulations.de ity measurements, admits fast and efficient decoding, and exhibits one of the highest thresholds among quantum codes with a two-dimensional qubit architecture.",
+       "start": 358,
+       "end": 667,
+       "chunk_sha256": "5ec97b7081aea9f76b20b8fa5828ae2977c2d76f5d4feab47a991a72412c33ed",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2208-02191-p0003",
+       "quote": "For a standard Calderbank-Shor-Steane (CSS) surface code in the presence of depolarizing noise and assuming error-free parity measurements, the error threshold is estimated to be around pth ≈ 16% when a perfect-matching algorithm is used for decoding [11–13].",
+       "start": 1029,
+       "end": 1288,
+       "chunk_sha256": "5ec97b7081aea9f76b20b8fa5828ae2977c2d76f5d4feab47a991a72412c33ed",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "full syndrome",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "full syndrome",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "sequence of noisy syndromes",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "sequence of noisy syndromes",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "decoding",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "decoding",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "interaction_test": {
+    "contrast": "Y11 - Y10 - Y01 + Y00",
+    "assumptions": "Additive outcome scale, matched conditions and defined interventions.",
+    "interpretation": "A zero interaction contrast challenges compounding, not the individual effects."
+   }
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 8.089
+  },
+  "snapshot": {
+   "as_of": 1795596424,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: full syndrome and sequence of noisy syndromes may jointly constrain decoding, so relieving one may shift the bottleneck to the other.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unspecified.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Retain qualification [arxiv-2212-11632-p0009]: Usually decoding requires the full syndrome, nevertheless some studies have been made as to optimize the syndrome data required by the decoder [28].\n\nLink full syndrome -> decoding: supported (1 supporting, 0 contrary).\n  + [arxiv-2212-11632-p0009] Usually decoding requires the full syndrome, nevertheless some studies have been made as to optimize the syndrome data required by the decoder [28].\n\nLink sequence of noisy syndromes -> decoding: supported (1 supporting, 0 contrary).\n  + [arxiv-2402-13863-p0012] One drawback of using 2D surface codes for this purpose is that their decoding is not single-shot: In the case where measurements are imperfect, the decoding needs a sequence of (noisy) syndromes obtained from repeated measurements.\n\nExisting setups that measure one of its terms:\n  [arxiv-1901-10847-p0002] We tested the decoding performance under depolarizing noise with noiseless error syndrome measurements for the rotated surface code and compared against the Blossom algorithm and a neural network based decoder.\n  [arxiv-2310-10722-p0057] The possible impact for near-term quantum error correction experiments is very high, since the involved distances are rather small and the decoding can typically be performed offline.\n  [arxiv-2407-16176-p0027] In order to estimate the threshold, we simulate the decoding process on three concatenated quantum Hamming codes, which are concatenated up to level 1, level 2, level 3, and correspond to the [[15, 7, 3]], [[31, 21, 3]], [[63, 51, 3]] quantum Hamming codes, respectively.\n  [arxiv-2407-16176-p0038] We compare the decoding time of the surface code and that of the concatenated quantum Hamming code, ensuring both achieve a comparable logical error rate at a physical error rate of p = 0.01526.\n\nCandidate controls (review before adjustment):\n  line of work: outcome_predictor [arxiv-2608-27682-p0008]\n  mapping: outcome_predictor [arxiv-2511-13192-p0021]\n\nTest plan (2x2 factorial):\n  1. Run all four combinations of low and high full syndrome and sequence of noisy syndromes; measure decoding.\n  2. Review candidate controls (line of work, mapping) for timing, feasibility and causal role before adjustment.\n  3. Compare the joint effect with the sum of the separate effects.\n  Fails if: A precisely measured absence of an interaction challenges compounding in decoding; it does not refute individual effects of full syndrome or sequence of noisy syndromes. Predefine a meaningful effect threshold.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for full syndrome.\n  Required: feasible intervention or justified observational design for full syndrome.\n  Required: intervention levels for sequence of noisy syndromes.\n  Required: feasible intervention or justified observational design for sequence of noisy syndromes.\n  Required: measurement procedure for decoding.\n  Required: unit or explicit categorical scale for decoding.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

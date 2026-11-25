@@ -71,6 +71,61 @@ direction in the field, not a discovery.
   source edges. The informative signals were the 5 contested checks and the composition review (23 of 26
   `requires_review`).
 
+## Execution review and corrected re-run
+
+We audited how the engine was used. The configuration was correct throughout:
+- the spaCy `en_core_web_lg` parser and the encoder bridge check were active;
+- each chunk carries its source prefix, so single-source detection works;
+- the Deepen calls used the documented envelope `deepen={"hypothesis": <Frontier entry>, "novelty": True}`.
+
+Four usage mistakes were ours:
+
+1. **Seed selection.** The first run sent only ranks 1–3 per topic to Deepen. Frontier ranks by source support
+   first, so those slots went to generic multi-document entries. 110 of the 300 distinct entries appear under several
+   topics, and 37 contain PDF artefacts. The topic-specific entries sat at ranks 5–26 and were never checked.
+2. **Open-problem phrasing.** The first open-problem prompts were not in Deepen's sentence forms. They were rephrased
+   (above).
+3. **Budget.** "Quantum error correction" hit the 60 s default. With `frontier={"limits": {"max_seconds": 120}}`
+   it finished in 42 s, and its leading check found 1 contested entry among 5.
+4. **Topic phrasing.** "Two-level systems" matched "system size". "Two-level system defects" (19 entries),
+   "dielectric loss" (8) and "quasiparticles" (2) retrieved the right papers. These knowledge bases are thin
+   because most TLS papers were abstracts only.
+
+**Corrected Deepen pass** (`scripts/rerun_qc.py`): up to four entries per topic from anywhere in the list of 50.
+Entries were dropped if they were cross-topic, contained artefacts, were already contested, or were duplicates.
+The rest were ranked by 0.6 × relevance + 0.4 × novelty. That gave 53 reviews:
+
+- verdicts: 50 all links supported, 2 contested, 1 partly supported;
+- composition: 47 `requires_review`, 5 `conditional`, 1 insufficient evidence;
+- novelty review: 51 found no overlap in the knowledge base, 2 found potential overlap.
+
+What the checks caught:
+- **Both new contested cases are meaning slips.** "Leakage-induced correlated errors" was bridged to "X, Y errors",
+  and "uncorrelated pairwise defects" to stabilizer defects. The composition review flagged the bridges. Discard
+  both.
+- **Both novelty overlaps were correct.** "Charge noise drives flux noise through quasiparticles" is stated almost
+  verbatim in 2407.21177. "Quantum computers depend on error correction" is a truism.
+
+**Entries worth a researcher's look**, found below the top ranks:
+
+| Entry | Rank | Evidence | Note |
+|---|---|---|---|
+| Mid-circuit measurements may reduce the exponential scaling of gradient-free optimizers through barren plateaus | #23 in barren plateaus, relevance 0.975 | Barren plateaus also affect gradient-free optimizers, and mid-circuit measurements mitigate barren plateaus (two papers) | Testable in simulation: does a mitigation shown for gradients also cut the shot count of gradient-free optimizers? |
+| Chemical initialization and mid-circuit measurements jointly constrain barren plateaus (composition `conditional`) | #1 | 2609.22729, 2406.14285 | As above: a 2×2 factorial simulation |
+| Low-weight Pauli operators and the sample count jointly constrain error mitigation (`conditional`) | #8 in error mitigation | — | A sampling-budget trade-off; likely known in the field, but stated in no single paper here |
+| Rapid distillation speed may increase circuit error through discarded magic states | #6 in magic state distillation | — | A speed/fidelity trade-off in factories; plausible and known in outline |
+| Cosmic rays and faulty magic states may jointly drive correlated errors | #25 in magic state distillation | — | Asks whether radiation bursts correlate failures inside distillation factories. Speculative, but specific |
+
+All of these are `UNVERIFIED_HYPOTHESIS`. Novelty to the field has not been checked against the literature outside
+this knowledge base.
+
+**Lesson for users.** Do not read only the top of a Frontier list:
+- filter out entries that repeat across topics and entries built from header or author-name artefacts;
+- rank the remainder by relevance and novelty;
+- deepen those, and use the composition and novelty reviews to discard meaning slips and restatements.
+
+This workflow could become a Frontier option.
+
 ## Conclusion
 
 No open problem was resolved, and none could be: the engine recombines what the papers state. One seed (combining

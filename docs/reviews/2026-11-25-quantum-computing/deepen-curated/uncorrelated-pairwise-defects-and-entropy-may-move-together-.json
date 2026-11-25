@@ -1,0 +1,627 @@
+{
+ "topic": "two-level system defects",
+ "hypothesis": {
+  "id": "19a3d1278c5d",
+  "text": "uncorrelated pairwise defects and entropy may move together because both depend on intrinsic noise.",
+  "pattern": "divergent",
+  "relation": "common_driver",
+  "anchors": [
+   "uncorrelated pairwise defects",
+   "entropy",
+   "intrinsic noise"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2506-16834-p0011",
+   "arxiv-2510-06324-p0066"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2506-16834-p0011",
+    "quote": "The idea behind these alternative approaches is that intrinsic noise leads to uncorrelated pairwise defects, as such the shortest path between two unmatched syndromes should cover the most probable defect source.",
+    "start": 871,
+    "end": 1083,
+    "chunk_sha256": "36574181e54046c61a55a2172e907d1b52b6c558c72f4a277f1e08474a5a3a59",
+    "relation": "causes",
+    "subject": "intrinsic noise",
+    "object": "uncorrelated pairwise defects",
+    "hedged": true,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2510-06324-p0066",
+    "quote": "This is because while depolarizing noise, or unital noise in general, never decreases the entropy of the system, non-unital noise can reduce entropy and even purify the system over time.",
+    "start": 167,
+    "end": 353,
+    "chunk_sha256": "f6fd5956e73edc2eff1da2ef2f7745dc112e374e1d44485788a825a5fc2bcb3f",
+    "relation": "decreases",
+    "subject": "non - unital noise",
+    "object": "entropy",
+    "hedged": true,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.55,
+   "deductive_relevance": 0.579,
+   "novelty": 0.6
+  },
+  "falsification_test": "Track uncorrelated pairwise defects and entropy across periods where intrinsic noise changes and where it does not. The hypothesis fails if they co-vary just as strongly when intrinsic noise is held fixed.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "intrinsic noise"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "divergent",
+  "terms": {
+   "a": "uncorrelated pairwise defects",
+   "b": "entropy",
+   "c": "intrinsic noise"
+  },
+  "path_nodes": null,
+  "links": [
+   {
+    "source": "intrinsic noise",
+    "target": "uncorrelated pairwise defects",
+    "expected_relation": "causes",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2208-02191-p0040",
+      "quote": "When used in conjunction with the standard CSS code, such two-qubit noise produces stabilizers defects in pairs, making the syndrome well suitable for the MWPM decoder.",
+      "start": 196,
+      "end": 364,
+      "chunk_sha256": "ad3fbfcc460cddc83b1f0ab6deee90a75935e35e625eda856284f44d2c569bba",
+      "relation": "causes",
+      "subject": "two qubit noise",
+      "object": "stabilizers defects",
+      "hedged": false
+     },
+     {
+      "document_id": "arxiv-2506-16834-p0011",
+      "quote": "The idea behind these alternative approaches is that intrinsic noise leads to uncorrelated pairwise defects, as such the shortest path between two unmatched syndromes should cover the most probable defect source.",
+      "start": 871,
+      "end": 1083,
+      "chunk_sha256": "36574181e54046c61a55a2172e907d1b52b6c558c72f4a277f1e08474a5a3a59",
+      "relation": "causes",
+      "subject": "intrinsic noise",
+      "object": "uncorrelated pairwise defects",
+      "hedged": true
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2506-16834-p0011",
+      "quote": "The idea behind these alternative approaches is that intrinsic noise leads to uncorrelated pairwise defects, as such the shortest path between two unmatched syndromes should cover the most probable defect source.",
+      "start": 871,
+      "end": 1083,
+      "chunk_sha256": "36574181e54046c61a55a2172e907d1b52b6c558c72f4a277f1e08474a5a3a59"
+     }
+    ],
+    "support_count": 2,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "causes"
+    ]
+   },
+   {
+    "source": "intrinsic noise",
+    "target": "entropy",
+    "expected_relation": "decreases",
+    "status": "contested",
+    "support": [
+     {
+      "document_id": "arxiv-2510-06324-p0066",
+      "quote": "This is because while depolarizing noise, or unital noise in general, never decreases the entropy of the system, non-unital noise can reduce entropy and even purify the system over time.",
+      "start": 167,
+      "end": 353,
+      "chunk_sha256": "f6fd5956e73edc2eff1da2ef2f7745dc112e374e1d44485788a825a5fc2bcb3f",
+      "relation": "decreases",
+      "subject": "non - unital noise",
+      "object": "entropy",
+      "hedged": true
+     }
+    ],
+    "counter": [
+     {
+      "document_id": "arxiv-2609-39734-p0036",
+      "quote": "The duration of the non-trivial magic window depends on the rate at which local depolarising noise increases the state’s 2-R ́enyi entropy (equivalently, decreases Tr(ρ2)).",
+      "start": 292,
+      "end": 464,
+      "chunk_sha256": "1e8fb08ee391d7ad8b9dfd2c00f990f158a2d4ad3354935586e6c9096162fc9a",
+      "relation": "increases",
+      "subject": "local depolarising noise",
+      "object": "state 2 R ́enyi entropy",
+      "hedged": false
+     },
+     {
+      "document_id": "arxiv-2510-06324-p0066",
+      "quote": "This is because while depolarizing noise, or unital noise in general, never decreases the entropy of the system, non-unital noise can reduce entropy and even purify the system over time.",
+      "start": 167,
+      "end": 353,
+      "chunk_sha256": "f6fd5956e73edc2eff1da2ef2f7745dc112e374e1d44485788a825a5fc2bcb3f",
+      "negated": true,
+      "relation": "decreases"
+     },
+     {
+      "document_id": "arxiv-2510-06324-p0066",
+      "quote": "This is because while depolarizing noise, or unital noise in general, never decreases the entropy of the system, non-unital noise can reduce entropy and even purify the system over time.",
+      "start": 167,
+      "end": 353,
+      "chunk_sha256": "f6fd5956e73edc2eff1da2ef2f7745dc112e374e1d44485788a825a5fc2bcb3f",
+      "negated": true,
+      "relation": "decreases"
+     }
+    ],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 3,
+    "negations": [
+     {
+      "document_id": "arxiv-2510-06324-p0066",
+      "quote": "This is because while depolarizing noise, or unital noise in general, never decreases the entropy of the system, non-unital noise can reduce entropy and even purify the system over time.",
+      "start": 167,
+      "end": 353,
+      "chunk_sha256": "f6fd5956e73edc2eff1da2ef2f7745dc112e374e1d44485788a825a5fc2bcb3f",
+      "negated": true,
+      "relation": "decreases"
+     },
+     {
+      "document_id": "arxiv-2510-06324-p0066",
+      "quote": "This is because while depolarizing noise, or unital noise in general, never decreases the entropy of the system, non-unital noise can reduce entropy and even purify the system over time.",
+      "start": 167,
+      "end": 353,
+      "chunk_sha256": "f6fd5956e73edc2eff1da2ef2f7745dc112e374e1d44485788a825a5fc2bcb3f",
+      "negated": true,
+      "relation": "decreases"
+     }
+    ],
+    "observed_relations": [
+     "decreases",
+     "increases"
+    ]
+   }
+  ],
+  "expected_relation": "common_driver",
+  "direction_check": {
+   "requested": "common_driver",
+   "status": "unspecified",
+   "observed": []
+  },
+  "verdict": "contested",
+  "predictions": [
+   {
+    "document_id": "arxiv-2506-16834-p0011",
+    "quote": "The idea behind these alternative approaches is that intrinsic noise leads to uncorrelated pairwise defects, as such the shortest path between two unmatched syndromes should cover the most probable defect source.",
+    "start": 871,
+    "end": 1083,
+    "chunk_sha256": "36574181e54046c61a55a2172e907d1b52b6c558c72f4a277f1e08474a5a3a59",
+    "qualification": "source_prediction"
+   }
+  ],
+  "setups": [
+   {
+    "document_id": "arxiv-2506-16834-p0006",
+    "quote": "The incidence of false positives is significantly lower than the incidence of intrinsic noise in the quantum device, which in our experiments is set to p = 10−5 to replicate the behaviour of near future quantum devices.",
+    "start": 782,
+    "end": 1001,
+    "chunk_sha256": "6f5f1d5925a36ececb40afc688fd064c275f39f5e636caebeb569b7949837d79",
+    "measures": [
+     "intrinsic noise"
+    ]
+   }
+  ],
+  "confounders": [],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 0,
+     "requested": "intrinsic noise",
+     "source_term": "two qubit noise",
+     "citation": {
+      "document_id": "arxiv-2208-02191-p0040",
+      "quote": "When used in conjunction with the standard CSS code, such two-qubit noise produces stabilizers defects in pairs, making the syndrome well suitable for the MWPM decoder.",
+      "start": 196,
+      "end": 364,
+      "chunk_sha256": "ad3fbfcc460cddc83b1f0ab6deee90a75935e35e625eda856284f44d2c569bba",
+      "relation": "causes",
+      "subject": "two qubit noise",
+      "object": "stabilizers defects",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 0,
+     "requested": "uncorrelated pairwise defects",
+     "source_term": "stabilizers defects",
+     "citation": {
+      "document_id": "arxiv-2208-02191-p0040",
+      "quote": "When used in conjunction with the standard CSS code, such two-qubit noise produces stabilizers defects in pairs, making the syndrome well suitable for the MWPM decoder.",
+      "start": 196,
+      "end": 364,
+      "chunk_sha256": "ad3fbfcc460cddc83b1f0ab6deee90a75935e35e625eda856284f44d2c569bba",
+      "relation": "causes",
+      "subject": "two qubit noise",
+      "object": "stabilizers defects",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 1,
+     "requested": "intrinsic noise",
+     "source_term": "non - unital noise",
+     "citation": {
+      "document_id": "arxiv-2510-06324-p0066",
+      "quote": "This is because while depolarizing noise, or unital noise in general, never decreases the entropy of the system, non-unital noise can reduce entropy and even purify the system over time.",
+      "start": 167,
+      "end": 353,
+      "chunk_sha256": "f6fd5956e73edc2eff1da2ef2f7745dc112e374e1d44485788a825a5fc2bcb3f",
+      "relation": "decreases",
+      "subject": "non - unital noise",
+      "object": "entropy",
+      "hedged": true
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 1,
+     "requested": "intrinsic noise",
+     "source_term": "local depolarising noise",
+     "citation": {
+      "document_id": "arxiv-2609-39734-p0036",
+      "quote": "The duration of the non-trivial magic window depends on the rate at which local depolarising noise increases the state’s 2-R ́enyi entropy (equivalently, decreases Tr(ρ2)).",
+      "start": 292,
+      "end": 464,
+      "chunk_sha256": "1e8fb08ee391d7ad8b9dfd2c00f990f158a2d4ad3354935586e6c9096162fc9a",
+      "relation": "increases",
+      "subject": "local depolarising noise",
+      "object": "state 2 R ́enyi entropy",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 1,
+     "requested": "entropy",
+     "source_term": "state 2 R ́enyi entropy",
+     "citation": {
+      "document_id": "arxiv-2609-39734-p0036",
+      "quote": "The duration of the non-trivial magic window depends on the rate at which local depolarising noise increases the state’s 2-R ́enyi entropy (equivalently, decreases Tr(ρ2)).",
+      "start": 292,
+      "end": 464,
+      "chunk_sha256": "1e8fb08ee391d7ad8b9dfd2c00f990f158a2d4ad3354935586e6c9096162fc9a",
+      "relation": "increases",
+      "subject": "local depolarising noise",
+      "object": "state 2 R ́enyi entropy",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [
+    {
+     "link": 0,
+     "citation": {
+      "document_id": "arxiv-2208-02191-p0040",
+      "quote": "When used in conjunction with the standard CSS code, such two-qubit noise produces stabilizers defects in pairs, making the syndrome well suitable for the MWPM decoder.",
+      "start": 196,
+      "end": 364,
+      "chunk_sha256": "ad3fbfcc460cddc83b1f0ab6deee90a75935e35e625eda856284f44d2c569bba",
+      "relation": "causes",
+      "subject": "two qubit noise",
+      "object": "stabilizers defects",
+      "hedged": false
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    },
+    {
+     "link": 0,
+     "citation": {
+      "document_id": "arxiv-2506-16834-p0011",
+      "quote": "The idea behind these alternative approaches is that intrinsic noise leads to uncorrelated pairwise defects, as such the shortest path between two unmatched syndromes should cover the most probable defect source.",
+      "start": 871,
+      "end": 1083,
+      "chunk_sha256": "36574181e54046c61a55a2172e907d1b52b6c558c72f4a277f1e08474a5a3a59",
+      "relation": "causes",
+      "subject": "intrinsic noise",
+      "object": "uncorrelated pairwise defects",
+      "hedged": true
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    },
+    {
+     "link": 1,
+     "citation": {
+      "document_id": "arxiv-2510-06324-p0066",
+      "quote": "This is because while depolarizing noise, or unital noise in general, never decreases the entropy of the system, non-unital noise can reduce entropy and even purify the system over time.",
+      "start": 167,
+      "end": 353,
+      "chunk_sha256": "f6fd5956e73edc2eff1da2ef2f7745dc112e374e1d44485788a825a5fc2bcb3f",
+      "relation": "decreases",
+      "subject": "non - unital noise",
+      "object": "entropy",
+      "hedged": true
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    }
+   ],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "qualification_review",
+    "kind": "scope",
+    "instruction": "Restrict the proposal to the cited conditions and quantifiers."
+   },
+   {
+    "id": "5dd9459e73126d72",
+    "kind": "variable",
+    "term": "intrinsic noise",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for intrinsic noise."
+   },
+   {
+    "id": "dbf6260b0faeef68",
+    "kind": "variable",
+    "term": "intrinsic noise",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for intrinsic noise."
+   },
+   {
+    "id": "e631d396762e3fc8",
+    "kind": "variable",
+    "term": "uncorrelated pairwise defects",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for uncorrelated pairwise defects."
+   },
+   {
+    "id": "1ad0491776f2c10b",
+    "kind": "variable",
+    "term": "uncorrelated pairwise defects",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for uncorrelated pairwise defects."
+   },
+   {
+    "id": "014c4b157505d7ab",
+    "kind": "variable",
+    "term": "entropy",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for entropy."
+   },
+   {
+    "id": "3bf2afdfcb1acf34",
+    "kind": "variable",
+    "term": "entropy",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for entropy."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "common cause",
+   "manipulate": [
+    "intrinsic noise"
+   ],
+   "measure": [
+    "uncorrelated pairwise defects",
+    "entropy"
+   ],
+   "mediator": null,
+   "controls": [],
+   "steps": [
+    "Vary intrinsic noise and measure uncorrelated pairwise defects and entropy.",
+    "No additional outcome cause was extracted; this does not establish absence of confounding.",
+    "Check whether uncorrelated pairwise defects and entropy still co-vary when intrinsic noise is held fixed."
+   ],
+   "fails_if": "uncorrelated pairwise defects and entropy co-vary just as strongly when intrinsic noise is held fixed, or intrinsic noise moves neither.",
+   "variables": [
+    {
+     "term": "intrinsic noise",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2506-16834-p0007",
+       "quote": "It is common practice to approximate the ensemble of all these hindering effects through an intrinsic noise model, which generally involves appending one random Pauli gate with probability p after each quantum gate or before each measure operator in a quantum circuit.",
+       "start": 1649,
+       "end": 1917,
+       "chunk_sha256": "b223c851b9df157039049ec073ccf88c786596ed30f1d165bd3a527f3a9c78e0",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "uncorrelated pairwise defects",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "entropy",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2406-14285-p0058",
+       "quote": "[77] showed formalized the definition of a weak barren plateau using the second reyni entropy defined as:",
+       "start": 243,
+       "end": 348,
+       "chunk_sha256": "d280dde0a2f6bcb463dda89e8b432a4ffe9b21df3e48fcefa022cf33b1c71315",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2406-14285-p0059",
+       "quote": "therefore, mid-circuit measurements, circuit pretraining, entanglement regularization to add terms to the cost function, and initial partitioning play on the entanglement entropy to better mitigate barren plateaus",
+       "start": 493,
+       "end": 706,
+       "chunk_sha256": "6d841bff052354ea4562410baa2c53f48560a3bd6a4dd123121c90cdf9900c28",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2601-10461-p0009",
+       "quote": "Right: leakage is checked by unitarily transferring the information from an old to a new data pair before measuring the old one out, which reduces the entropy of the system.",
+       "start": 428,
+       "end": 601,
+       "chunk_sha256": "5e63ef4827e0c157a893aa95d40d36afe7aaf138f08edb713554b62ff1b1b4f2",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "intrinsic noise",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "intrinsic noise",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "uncorrelated pairwise defects",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "uncorrelated pairwise defects",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "entropy",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "entropy",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established"
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 8.561
+  },
+  "snapshot": {
+   "as_of": 1795596448,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: uncorrelated pairwise defects and entropy may move together because both depend on intrinsic noise.\nOverall: contested. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unspecified.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: two qubit noise versus intrinsic noise.\n  Review meaning: stabilizers defects versus uncorrelated pairwise defects.\n  Review meaning: non - unital noise versus intrinsic noise.\n  Review meaning: local depolarising noise versus intrinsic noise.\n  Review meaning: state 2 R ́enyi entropy versus entropy.\n  Retain qualification [arxiv-2208-02191-p0040]: When used in conjunction with the standard CSS code, such two-qubit noise produces stabilizers defects in pairs, making the syndrome well suitable for the MWPM decoder.\n  Retain qualification [arxiv-2506-16834-p0011]: The idea behind these alternative approaches is that intrinsic noise leads to uncorrelated pairwise defects, as such the shortest path between two unmatched syndromes should cover the most probable defect source.\n  Retain qualification [arxiv-2510-06324-p0066]: This is because while depolarizing noise, or unital noise in general, never decreases the entropy of the system, non-unital noise can reduce entropy and even purify the system over time.\n\nLink intrinsic noise -> uncorrelated pairwise defects: supported (2 supporting, 0 contrary).\n  + [arxiv-2208-02191-p0040] When used in conjunction with the standard CSS code, such two-qubit noise produces stabilizers defects in pairs, making the syndrome well suitable for the MWPM decoder.\n  + [arxiv-2506-16834-p0011] The idea behind these alternative approaches is that intrinsic noise leads to uncorrelated pairwise defects, as such the shortest path between two unmatched syndromes should cover the most probable defect source.\n\nLink intrinsic noise -> entropy: contested (1 supporting, 3 contrary).\n  + [arxiv-2510-06324-p0066] This is because while depolarizing noise, or unital noise in general, never decreases the entropy of the system, non-unital noise can reduce entropy and even purify the system over time.\n  - [arxiv-2609-39734-p0036] The duration of the non-trivial magic window depends on the rate at which local depolarising noise increases the state’s 2-R ́enyi entropy (equivalently, decreases Tr(ρ2)).\n  - [arxiv-2510-06324-p0066] This is because while depolarizing noise, or unital noise in general, never decreases the entropy of the system, non-unital noise can reduce entropy and even purify the system over time.\n  - [arxiv-2510-06324-p0066] This is because while depolarizing noise, or unital noise in general, never decreases the entropy of the system, non-unital noise can reduce entropy and even purify the system over time.\n\nSource predictions naming two or more of its terms:\n  [arxiv-2506-16834-p0011] The idea behind these alternative approaches is that intrinsic noise leads to uncorrelated pairwise defects, as such the shortest path between two unmatched syndromes should cover the most probable defect source.\n\nExisting setups that measure one of its terms:\n  [arxiv-2506-16834-p0006] The incidence of false positives is significantly lower than the incidence of intrinsic noise in the quantum device, which in our experiments is set to p = 10−5 to replicate the behaviour of near future quantum devices.\n\nTest plan (common cause):\n  1. Vary intrinsic noise and measure uncorrelated pairwise defects and entropy.\n  2. No additional outcome cause was extracted; this does not establish absence of confounding.\n  3. Check whether uncorrelated pairwise defects and entropy still co-vary when intrinsic noise is held fixed.\n  Fails if: uncorrelated pairwise defects and entropy co-vary just as strongly when intrinsic noise is held fixed, or intrinsic noise moves neither.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for intrinsic noise.\n  Required: feasible intervention or justified observational design for intrinsic noise.\n  Required: measurement procedure for uncorrelated pairwise defects.\n  Required: unit or explicit categorical scale for uncorrelated pairwise defects.\n  Required: measurement procedure for entropy.\n  Required: unit or explicit categorical scale for entropy.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

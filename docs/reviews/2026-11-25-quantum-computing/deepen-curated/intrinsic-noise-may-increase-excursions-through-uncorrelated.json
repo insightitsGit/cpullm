@@ -1,0 +1,520 @@
+{
+ "topic": "two-level system defects",
+ "hypothesis": {
+  "id": "98d0bd0b8d6a",
+  "text": "intrinsic noise may increase excursions through uncorrelated pairwise defects (read as single coupled TLS defects).",
+  "pattern": "chain",
+  "relation": "increases",
+  "anchors": [
+   "intrinsic noise",
+   "excursions"
+  ],
+  "via": [
+   "uncorrelated pairwise defects (read as single coupled TLS defects)"
+  ],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2506-16834-p0011",
+   "arxiv-2610-34485-p0002"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2506-16834-p0011",
+    "quote": "The idea behind these alternative approaches is that intrinsic noise leads to uncorrelated pairwise defects, as such the shortest path between two unmatched syndromes should cover the most probable defect source.",
+    "start": 871,
+    "end": 1083,
+    "chunk_sha256": "36574181e54046c61a55a2172e907d1b52b6c558c72f4a277f1e08474a5a3a59",
+    "relation": "causes",
+    "subject": "intrinsic noise",
+    "object": "uncorrelated pairwise defects",
+    "hedged": true,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2610-34485-p0002",
+    "quote": "Using interleaved lifetime and coherence time measurements, noise spectroscopy, and two-level-system (TLS) spectroscopy, we find that these excursions are caused by single or few strongly-coupled TLS defects that spectrally diffuse into resonance with the qubit frequency.",
+    "start": 431,
+    "end": 703,
+    "chunk_sha256": "42a14fbc16e79ace5c8bd446b567da067676791fc2e3dd4efdbd0255e1b3a1f2",
+    "relation": "causes",
+    "subject": "single coupled TLS defects",
+    "object": "excursions",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.55,
+   "deductive_relevance": 0.569,
+   "novelty": 0.642
+  },
+  "falsification_test": "Compare settings where intrinsic noise differs while other inputs are matched. The hypothesis fails if excursions does not rise with intrinsic noise, or if fixing uncorrelated pairwise defects (read as single coupled TLS defects) removes no part of the effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "uncorrelated pairwise defect"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "intrinsic noise",
+   "b": "uncorrelated pairwise defects",
+   "c": "excursions"
+  },
+  "path_nodes": [
+   "intrinsic noise",
+   "uncorrelated pairwise defects",
+   "excursions"
+  ],
+  "links": [
+   {
+    "source": "intrinsic noise",
+    "target": "uncorrelated pairwise defects",
+    "expected_relation": "causes",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2208-02191-p0040",
+      "quote": "When used in conjunction with the standard CSS code, such two-qubit noise produces stabilizers defects in pairs, making the syndrome well suitable for the MWPM decoder.",
+      "start": 196,
+      "end": 364,
+      "chunk_sha256": "ad3fbfcc460cddc83b1f0ab6deee90a75935e35e625eda856284f44d2c569bba",
+      "relation": "causes",
+      "subject": "two qubit noise",
+      "object": "stabilizers defects",
+      "hedged": false
+     },
+     {
+      "document_id": "arxiv-2506-16834-p0011",
+      "quote": "The idea behind these alternative approaches is that intrinsic noise leads to uncorrelated pairwise defects, as such the shortest path between two unmatched syndromes should cover the most probable defect source.",
+      "start": 871,
+      "end": 1083,
+      "chunk_sha256": "36574181e54046c61a55a2172e907d1b52b6c558c72f4a277f1e08474a5a3a59",
+      "relation": "causes",
+      "subject": "intrinsic noise",
+      "object": "uncorrelated pairwise defects",
+      "hedged": true
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2506-16834-p0011",
+      "quote": "The idea behind these alternative approaches is that intrinsic noise leads to uncorrelated pairwise defects, as such the shortest path between two unmatched syndromes should cover the most probable defect source.",
+      "start": 871,
+      "end": 1083,
+      "chunk_sha256": "36574181e54046c61a55a2172e907d1b52b6c558c72f4a277f1e08474a5a3a59"
+     }
+    ],
+    "support_count": 2,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "causes"
+    ]
+   },
+   {
+    "source": "uncorrelated pairwise defects",
+    "target": "excursions",
+    "expected_relation": "causes",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2610-34485-p0002",
+      "quote": "Using interleaved lifetime and coherence time measurements, noise spectroscopy, and two-level-system (TLS) spectroscopy, we find that these excursions are caused by single or few strongly-coupled TLS defects that spectrally diffuse into resonance with the qubit frequency.",
+      "start": 431,
+      "end": 703,
+      "chunk_sha256": "42a14fbc16e79ace5c8bd446b567da067676791fc2e3dd4efdbd0255e1b3a1f2",
+      "relation": "causes",
+      "subject": "single coupled TLS defects",
+      "object": "excursions",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "causes"
+    ]
+   }
+  ],
+  "expected_relation": "increases",
+  "direction_check": {
+   "requested": "increases",
+   "status": "consistent",
+   "observed": [
+    "increases"
+   ],
+   "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+  },
+  "verdict": "all_links_supported",
+  "predictions": [
+   {
+    "document_id": "arxiv-2506-16834-p0011",
+    "quote": "The idea behind these alternative approaches is that intrinsic noise leads to uncorrelated pairwise defects, as such the shortest path between two unmatched syndromes should cover the most probable defect source.",
+    "start": 871,
+    "end": 1083,
+    "chunk_sha256": "36574181e54046c61a55a2172e907d1b52b6c558c72f4a277f1e08474a5a3a59",
+    "qualification": "source_prediction"
+   }
+  ],
+  "setups": [
+   {
+    "document_id": "arxiv-2506-16834-p0006",
+    "quote": "The incidence of false positives is significantly lower than the incidence of intrinsic noise in the quantum device, which in our experiments is set to p = 10−5 to replicate the behaviour of near future quantum devices.",
+    "start": 782,
+    "end": 1001,
+    "chunk_sha256": "6f5f1d5925a36ececb40afc688fd064c275f39f5e636caebeb569b7949837d79",
+    "measures": [
+     "intrinsic noise"
+    ]
+   }
+  ],
+  "confounders": [],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 0,
+     "requested": "intrinsic noise",
+     "source_term": "two qubit noise",
+     "citation": {
+      "document_id": "arxiv-2208-02191-p0040",
+      "quote": "When used in conjunction with the standard CSS code, such two-qubit noise produces stabilizers defects in pairs, making the syndrome well suitable for the MWPM decoder.",
+      "start": 196,
+      "end": 364,
+      "chunk_sha256": "ad3fbfcc460cddc83b1f0ab6deee90a75935e35e625eda856284f44d2c569bba",
+      "relation": "causes",
+      "subject": "two qubit noise",
+      "object": "stabilizers defects",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 0,
+     "requested": "uncorrelated pairwise defects",
+     "source_term": "stabilizers defects",
+     "citation": {
+      "document_id": "arxiv-2208-02191-p0040",
+      "quote": "When used in conjunction with the standard CSS code, such two-qubit noise produces stabilizers defects in pairs, making the syndrome well suitable for the MWPM decoder.",
+      "start": 196,
+      "end": 364,
+      "chunk_sha256": "ad3fbfcc460cddc83b1f0ab6deee90a75935e35e625eda856284f44d2c569bba",
+      "relation": "causes",
+      "subject": "two qubit noise",
+      "object": "stabilizers defects",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 1,
+     "requested": "uncorrelated pairwise defects",
+     "source_term": "single coupled TLS defects",
+     "citation": {
+      "document_id": "arxiv-2610-34485-p0002",
+      "quote": "Using interleaved lifetime and coherence time measurements, noise spectroscopy, and two-level-system (TLS) spectroscopy, we find that these excursions are caused by single or few strongly-coupled TLS defects that spectrally diffuse into resonance with the qubit frequency.",
+      "start": 431,
+      "end": 703,
+      "chunk_sha256": "42a14fbc16e79ace5c8bd446b567da067676791fc2e3dd4efdbd0255e1b3a1f2",
+      "relation": "causes",
+      "subject": "single coupled TLS defects",
+      "object": "excursions",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [
+    {
+     "link": 0,
+     "citation": {
+      "document_id": "arxiv-2208-02191-p0040",
+      "quote": "When used in conjunction with the standard CSS code, such two-qubit noise produces stabilizers defects in pairs, making the syndrome well suitable for the MWPM decoder.",
+      "start": 196,
+      "end": 364,
+      "chunk_sha256": "ad3fbfcc460cddc83b1f0ab6deee90a75935e35e625eda856284f44d2c569bba",
+      "relation": "causes",
+      "subject": "two qubit noise",
+      "object": "stabilizers defects",
+      "hedged": false
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    },
+    {
+     "link": 0,
+     "citation": {
+      "document_id": "arxiv-2506-16834-p0011",
+      "quote": "The idea behind these alternative approaches is that intrinsic noise leads to uncorrelated pairwise defects, as such the shortest path between two unmatched syndromes should cover the most probable defect source.",
+      "start": 871,
+      "end": 1083,
+      "chunk_sha256": "36574181e54046c61a55a2172e907d1b52b6c558c72f4a277f1e08474a5a3a59",
+      "relation": "causes",
+      "subject": "intrinsic noise",
+      "object": "uncorrelated pairwise defects",
+      "hedged": true
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    }
+   ],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "qualification_review",
+    "kind": "scope",
+    "instruction": "Restrict the proposal to the cited conditions and quantifiers."
+   },
+   {
+    "id": "5dd9459e73126d72",
+    "kind": "variable",
+    "term": "intrinsic noise",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for intrinsic noise."
+   },
+   {
+    "id": "dbf6260b0faeef68",
+    "kind": "variable",
+    "term": "intrinsic noise",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for intrinsic noise."
+   },
+   {
+    "id": "3d50896b7fd32ed0",
+    "kind": "variable",
+    "term": "excursions",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for excursions."
+   },
+   {
+    "id": "52e8944baa358714",
+    "kind": "variable",
+    "term": "excursions",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for excursions."
+   },
+   {
+    "id": "e631d396762e3fc8",
+    "kind": "variable",
+    "term": "uncorrelated pairwise defects",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for uncorrelated pairwise defects."
+   },
+   {
+    "id": "1ad0491776f2c10b",
+    "kind": "variable",
+    "term": "uncorrelated pairwise defects",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for uncorrelated pairwise defects."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "intrinsic noise"
+   ],
+   "measure": [
+    "excursions"
+   ],
+   "mediator": "uncorrelated pairwise defects",
+   "controls": [],
+   "steps": [
+    "Vary intrinsic noise across matched settings and measure excursions.",
+    "No additional outcome cause was extracted; this does not establish absence of confounding.",
+    "Repeat with uncorrelated pairwise defects held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "excursions does not change when intrinsic noise varies with the controls fixed, or holding uncorrelated pairwise defects fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "intrinsic noise",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2506-16834-p0007",
+       "quote": "It is common practice to approximate the ensemble of all these hindering effects through an intrinsic noise model, which generally involves appending one random Pauli gate with probability p after each quantum gate or before each measure operator in a quantum circuit.",
+       "start": 1649,
+       "end": 1917,
+       "chunk_sha256": "b223c851b9df157039049ec073ccf88c786596ed30f1d165bd3a527f3a9c78e0",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "excursions",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2610-34485-p0002",
+       "quote": "Using interleaved lifetime and coherence time measurements, noise spectroscopy, and two-level-system (TLS) spectroscopy, we find that these excursions are caused by single or few strongly-coupled TLS defects that spectrally diffuse into resonance with the qubit frequency.",
+       "start": 431,
+       "end": 703,
+       "chunk_sha256": "42a14fbc16e79ace5c8bd446b567da067676791fc2e3dd4efdbd0255e1b3a1f2",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "uncorrelated pairwise defects",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "intrinsic noise",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "intrinsic noise",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "excursions",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "excursions",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "uncorrelated pairwise defects",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "uncorrelated pairwise defects",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "uncorrelated pairwise defects"
+   ]
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 7.429
+  },
+  "snapshot": {
+   "as_of": 1795596432,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: intrinsic noise may increase excursions through uncorrelated pairwise defects (read as single coupled TLS defects).\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: consistent.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: two qubit noise versus intrinsic noise.\n  Review meaning: stabilizers defects versus uncorrelated pairwise defects.\n  Review meaning: single coupled TLS defects versus uncorrelated pairwise defects.\n  Retain qualification [arxiv-2208-02191-p0040]: When used in conjunction with the standard CSS code, such two-qubit noise produces stabilizers defects in pairs, making the syndrome well suitable for the MWPM decoder.\n  Retain qualification [arxiv-2506-16834-p0011]: The idea behind these alternative approaches is that intrinsic noise leads to uncorrelated pairwise defects, as such the shortest path between two unmatched syndromes should cover the most probable defect source.\n\nLink intrinsic noise -> uncorrelated pairwise defects: supported (2 supporting, 0 contrary).\n  + [arxiv-2208-02191-p0040] When used in conjunction with the standard CSS code, such two-qubit noise produces stabilizers defects in pairs, making the syndrome well suitable for the MWPM decoder.\n  + [arxiv-2506-16834-p0011] The idea behind these alternative approaches is that intrinsic noise leads to uncorrelated pairwise defects, as such the shortest path between two unmatched syndromes should cover the most probable defect source.\n\nLink uncorrelated pairwise defects -> excursions: supported (1 supporting, 0 contrary).\n  + [arxiv-2610-34485-p0002] Using interleaved lifetime and coherence time measurements, noise spectroscopy, and two-level-system (TLS) spectroscopy, we find that these excursions are caused by single or few strongly-coupled TLS defects that spectrally diffuse into resonance with the qubit frequency.\n\nSource predictions naming two or more of its terms:\n  [arxiv-2506-16834-p0011] The idea behind these alternative approaches is that intrinsic noise leads to uncorrelated pairwise defects, as such the shortest path between two unmatched syndromes should cover the most probable defect source.\n\nExisting setups that measure one of its terms:\n  [arxiv-2506-16834-p0006] The incidence of false positives is significantly lower than the incidence of intrinsic noise in the quantum device, which in our experiments is set to p = 10−5 to replicate the behaviour of near future quantum devices.\n\nTest plan (mediation):\n  1. Vary intrinsic noise across matched settings and measure excursions.\n  2. No additional outcome cause was extracted; this does not establish absence of confounding.\n  3. Repeat with uncorrelated pairwise defects held fixed or blocked to test whether it carries the effect.\n  Fails if: excursions does not change when intrinsic noise varies with the controls fixed, or holding uncorrelated pairwise defects fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for intrinsic noise.\n  Required: feasible intervention or justified observational design for intrinsic noise.\n  Required: measurement procedure for excursions.\n  Required: unit or explicit categorical scale for excursions.\n  Required: measurement procedure for uncorrelated pairwise defects.\n  Required: unit or explicit categorical scale for uncorrelated pairwise defects.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

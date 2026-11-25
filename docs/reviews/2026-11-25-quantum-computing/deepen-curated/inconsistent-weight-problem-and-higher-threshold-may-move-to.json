@@ -1,0 +1,530 @@
+{
+ "topic": "surface code decoders",
+ "hypothesis": {
+  "id": "3d4f7cfa040d",
+  "text": "inconsistent weight problem and higher threshold may move together because both depend on correlated decoder.",
+  "pattern": "divergent",
+  "relation": "common_driver",
+  "anchors": [
+   "inconsistent weight problem",
+   "higher threshold",
+   "correlated decoder"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2511-13192-p0038",
+   "arxiv-2203-04948-p0002"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2511-13192-p0038",
+    "quote": "Our correlated decoder substantially mitigates this ”inconsistent weight” problem in the 4.8.8 color code compared to the restricted decoder.",
+    "start": 83,
+    "end": 224,
+    "chunk_sha256": "b68dcbe2eeb7d92866999f6b3e22961007106516f5219d006e62962ee16d7421",
+    "relation": "decreases",
+    "subject": "correlated decoder",
+    "object": "inconsistent weight problem",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2203-04948-p0002",
+    "quote": "We find that the decoders led to a much higher threshold and lower qubit overhead in the tailored surface code with respect to the standard, square surface code.",
+    "start": 1163,
+    "end": 1324,
+    "chunk_sha256": "19904cb0c0e005b0c7282e57731f762d14e4a5507688bd1e45a3bb9dbaecb6c1",
+    "relation": "causes",
+    "subject": "decoders",
+    "object": "higher threshold",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.648,
+   "novelty": 0.623
+  },
+  "falsification_test": "Track inconsistent weight problem and higher threshold across periods where correlated decoder changes and where it does not. The hypothesis fails if they co-vary just as strongly when correlated decoder is held fixed.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "correlated decoder"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "divergent",
+  "terms": {
+   "a": "inconsistent weight problem",
+   "b": "higher threshold",
+   "c": "correlated decoder"
+  },
+  "path_nodes": null,
+  "links": [
+   {
+    "source": "correlated decoder",
+    "target": "inconsistent weight problem",
+    "expected_relation": "decreases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2511-13192-p0038",
+      "quote": "Our correlated decoder substantially mitigates this ”inconsistent weight” problem in the 4.8.8 color code compared to the restricted decoder.",
+      "start": 83,
+      "end": 224,
+      "chunk_sha256": "b68dcbe2eeb7d92866999f6b3e22961007106516f5219d006e62962ee16d7421",
+      "relation": "decreases",
+      "subject": "correlated decoder",
+      "object": "inconsistent weight problem",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2511-13192-p0038",
+      "quote": "Our correlated decoder substantially mitigates this ”inconsistent weight” problem in the 4.8.8 color code compared to the restricted decoder.",
+      "start": 83,
+      "end": 224,
+      "chunk_sha256": "b68dcbe2eeb7d92866999f6b3e22961007106516f5219d006e62962ee16d7421"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "decreases"
+    ]
+   },
+   {
+    "source": "correlated decoder",
+    "target": "higher threshold",
+    "expected_relation": "causes",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2203-04948-p0002",
+      "quote": "We find that the decoders led to a much higher threshold and lower qubit overhead in the tailored surface code with respect to the standard, square surface code.",
+      "start": 1163,
+      "end": 1324,
+      "chunk_sha256": "19904cb0c0e005b0c7282e57731f762d14e4a5507688bd1e45a3bb9dbaecb6c1",
+      "relation": "causes",
+      "subject": "decoders",
+      "object": "higher threshold",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2511-13192-p0003",
+      "quote": "Analytical and numerical results show that the correlated decoder achieves higher thresholds than the restricted and unified decoders, while matching the performance of the unified decoder at very low physical error rates.",
+      "start": 701,
+      "end": 923,
+      "chunk_sha256": "722016656028d8dc42d1a32109ce91d25ba7f6ea59c6457b9c9141b7b00d77ec"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "causes"
+    ]
+   }
+  ],
+  "expected_relation": "common_driver",
+  "direction_check": {
+   "requested": "common_driver",
+   "status": "unspecified",
+   "observed": []
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-2607-27644-p0013",
+    "quote": "We cautiously say “potentially” for several reasons: (i) the Relay-BP decoder can behave suboptimally at low noise due to trapping sets and may not be able to correct all errors of weight below half the circuit distance, which our extrapolation suggests; (ii) the actual per-logical-qubit LER in practice is not really the same as dividing the block LER by the number of logical qubits, since a block failure could be correlated among many logical qubits; (iii) we only benchmark memory, and achieving the aforementioned quop regimes also requires a complete architecture across a universal logical gate set.",
+    "start": 1965,
+    "end": 2573,
+    "chunk_sha256": "f5b992016c5f0d6c758b3470735edd4b8bf1d1e65628a01fb328badb32d8df5b",
+    "measures": [
+     "correlated decoder"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "choice of QEC codes",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2511-13192-p0004",
+     "quote": "The threshold depends strongly on the choice of QEC codes, the noise model, and the decoding algorithm, making the development of high-performance and low-overhead decoders essential for scalable quantum",
+     "start": 995,
+     "end": 1198,
+     "chunk_sha256": "f0c03213d92a75e5c2c8ac23c75a1f42638205ecc6103733eedbdc3d3f7ec70a",
+     "relation": "constrains",
+     "subject": "choice of QEC codes",
+     "object": "threshold",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "correlated errors",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2407-16176-p0047",
+     "quote": "However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.",
+     "start": 802,
+     "end": 968,
+     "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c",
+     "relation": "increases",
+     "subject": "correlated errors",
+     "object": "error threshold",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Errors",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2407-16176-p0040",
+     "quote": "Errors accumulated in the syndrome extraction circuit may significantly reduce the error threshold, negating any advantages.",
+     "start": 1714,
+     "end": 1838,
+     "chunk_sha256": "56e73665ee9ce430d01147b25234b0f22063b1dd2b516fc35d0902c4475279a0",
+     "relation": "decreases",
+     "subject": "Errors",
+     "object": "error threshold",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "finite temperature effects",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2308-13291-p0038",
+     "quote": "Our results show how finite temperature effects reduce the threshold of the system’s imperfections that are sufficient for an efficient simulation of the experiment to be feasible.",
+     "start": 266,
+     "end": 446,
+     "chunk_sha256": "2ab09d24d71ce4ec74a00b549732dbc6fe0c5a3ae8ee13dadd22ca911071df37",
+     "relation": "decreases",
+     "subject": "finite temperature effects",
+     "object": "threshold of system imperfections",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "protocol robustness",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2202-12052-p0002",
+     "quote": "In this work we introduce higher order non-linearities as a mean to enhance the computational complexity of the problem and the protocol’s robustness against noise, i.e., increase the noise threshold that allows to perform an efficient classical simulation of the problem.",
+     "start": 694,
+     "end": 966,
+     "chunk_sha256": "4f22297719889cb6fbdd82e3b88e68fdde7d1493d8dfe50f6b8acf8828e4071e",
+     "relation": "increases",
+     "subject": "protocol robustness",
+     "object": "noise threshold",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "second order properties of noisy output",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2609-39734-p0059",
+     "quote": "Classical simulation thresholds depend on second-order properties of the noisy output state, whereas the dynamical resources considered here, mixed-state magic, scrambling, and fermionic non-Gaussianity, depend on fourth-order correlations.",
+     "start": 145,
+     "end": 385,
+     "chunk_sha256": "3e62179f839415ef323e33c9cf031477c2362f5cb5502a1065905a0f8c893c5f",
+     "relation": "constrains",
+     "subject": "second order properties of noisy output",
+     "object": "Classical simulation thresholds",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "correlated decoder",
+     "source_term": "decoders",
+     "citation": {
+      "document_id": "arxiv-2203-04948-p0002",
+      "quote": "We find that the decoders led to a much higher threshold and lower qubit overhead in the tailored surface code with respect to the standard, square surface code.",
+      "start": 1163,
+      "end": 1324,
+      "chunk_sha256": "19904cb0c0e005b0c7282e57731f762d14e4a5507688bd1e45a3bb9dbaecb6c1",
+      "relation": "causes",
+      "subject": "decoders",
+      "object": "higher threshold",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "c7cfa43d5f19caaa",
+    "kind": "variable",
+    "term": "correlated decoder",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for correlated decoder."
+   },
+   {
+    "id": "ea447443c61b99a3",
+    "kind": "variable",
+    "term": "correlated decoder",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for correlated decoder."
+   },
+   {
+    "id": "6b65c7f54bc11827",
+    "kind": "variable",
+    "term": "inconsistent weight problem",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for inconsistent weight problem."
+   },
+   {
+    "id": "45816755d05cfa94",
+    "kind": "variable",
+    "term": "inconsistent weight problem",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for inconsistent weight problem."
+   },
+   {
+    "id": "f621ee8aba45c4e3",
+    "kind": "variable",
+    "term": "higher threshold",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for higher threshold."
+   },
+   {
+    "id": "0adff48274b81284",
+    "kind": "variable",
+    "term": "higher threshold",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for higher threshold."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "common cause",
+   "manipulate": [
+    "correlated decoder"
+   ],
+   "measure": [
+    "inconsistent weight problem",
+    "higher threshold"
+   ],
+   "mediator": null,
+   "controls": [
+    "choice of QEC codes",
+    "correlated errors",
+    "Errors",
+    "finite temperature effects",
+    "protocol robustness",
+    "second order properties of noisy output"
+   ],
+   "steps": [
+    "Vary correlated decoder and measure inconsistent weight problem and higher threshold.",
+    "Review candidate controls (choice of QEC codes, correlated errors, Errors, finite temperature effects, protocol robustness, second order properties of noisy output) for timing, feasibility and causal role before adjustment.",
+    "Check whether inconsistent weight problem and higher threshold still co-vary when correlated decoder is held fixed."
+   ],
+   "fails_if": "inconsistent weight problem and higher threshold co-vary just as strongly when correlated decoder is held fixed, or correlated decoder moves neither.",
+   "variables": [
+    {
+     "term": "correlated decoder",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "inconsistent weight problem",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "higher threshold",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "correlated decoder",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "correlated decoder",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "inconsistent weight problem",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "inconsistent weight problem",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "higher threshold",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "higher threshold",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established"
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 7.865
+  },
+  "snapshot": {
+   "as_of": 1795596416,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: inconsistent weight problem and higher threshold may move together because both depend on correlated decoder.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unspecified.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: decoders versus correlated decoder.\n\nLink correlated decoder -> inconsistent weight problem: supported (1 supporting, 0 contrary).\n  + [arxiv-2511-13192-p0038] Our correlated decoder substantially mitigates this ”inconsistent weight” problem in the 4.8.8 color code compared to the restricted decoder.\n\nLink correlated decoder -> higher threshold: supported (1 supporting, 0 contrary).\n  + [arxiv-2203-04948-p0002] We find that the decoders led to a much higher threshold and lower qubit overhead in the tailored surface code with respect to the standard, square surface code.\n\nExisting setups that measure one of its terms:\n  [arxiv-2607-27644-p0013] We cautiously say “potentially” for several reasons: (i) the Relay-BP decoder can behave suboptimally at low noise due to trapping sets and may not be able to correct all errors of weight below half the circuit distance, which our extrapolation suggests; (ii) the actual per-logical-qubit LER in practice is not really the same as dividing the block LER by the number of logical qubits, since a block failure could be correlated among many logical qubits; (iii) we only benchmark memory, and achieving the aforementioned quop regimes also requires a complete architecture across a universal logical gate set.\n\nCandidate controls (review before adjustment):\n  choice of QEC codes: outcome_predictor [arxiv-2511-13192-p0004]\n  correlated errors: outcome_predictor [arxiv-2407-16176-p0047]\n  Errors: outcome_predictor [arxiv-2407-16176-p0040]\n  finite temperature effects: outcome_predictor [arxiv-2308-13291-p0038]\n  protocol robustness: outcome_predictor [arxiv-2202-12052-p0002]\n  second order properties of noisy output: outcome_predictor [arxiv-2609-39734-p0059]\n\nTest plan (common cause):\n  1. Vary correlated decoder and measure inconsistent weight problem and higher threshold.\n  2. Review candidate controls (choice of QEC codes, correlated errors, Errors, finite temperature effects, protocol robustness, second order properties of noisy output) for timing, feasibility and causal role before adjustment.\n  3. Check whether inconsistent weight problem and higher threshold still co-vary when correlated decoder is held fixed.\n  Fails if: inconsistent weight problem and higher threshold co-vary just as strongly when correlated decoder is held fixed, or correlated decoder moves neither.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for correlated decoder.\n  Required: feasible intervention or justified observational design for correlated decoder.\n  Required: measurement procedure for inconsistent weight problem.\n  Required: unit or explicit categorical scale for inconsistent weight problem.\n  Required: measurement procedure for higher threshold.\n  Required: unit or explicit categorical scale for higher threshold.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

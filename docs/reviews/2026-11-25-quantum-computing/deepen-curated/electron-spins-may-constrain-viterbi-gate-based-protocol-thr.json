@@ -1,0 +1,549 @@
+{
+ "topic": "qubit coherence",
+ "hypothesis": {
+  "id": "c162c83c536c",
+  "text": "electron spins may constrain Viterbi gate based protocol through ST qubits (read as auxiliary logical qubit).",
+  "pattern": "chain",
+  "relation": "constrains",
+  "anchors": [
+   "electron spins",
+   "Viterbi gate based protocol"
+  ],
+  "via": [
+   "ST qubits (read as auxiliary logical qubit)"
+  ],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2601-10461-p0007",
+   "arxiv-2607-16166-p0082"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2601-10461-p0007",
+    "quote": "Also note that, while ST qubits require twice as many electron spins, this does not necessarily translate into a doubled resource overhead.",
+    "start": 1826,
+    "end": 1965,
+    "chunk_sha256": "d42087e16969a97c8e757a45b22a3f8ef145c21a9e3fac0945f05b2e67fb9130",
+    "relation": "constrains",
+    "subject": "electron spins",
+    "object": "ST qubits",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2607-16166-p0082",
+    "quote": "As the Viterbi gate-based protocol requires an auxiliary logical qubit, we used random Cliffords on l = k − 1 logical qubits.",
+    "start": 518,
+    "end": 643,
+    "chunk_sha256": "185f1d2c8e8094bae1687c906d01875834b904be1c334df7645299729c1b8f65",
+    "relation": "constrains",
+    "subject": "auxiliary logical qubit",
+    "object": "Viterbi gate based protocol",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.666,
+   "novelty": 0.658
+  },
+  "falsification_test": "Compare settings where electron spins differs while other inputs are matched. The hypothesis fails if Viterbi gate based protocol does not stay bounded with electron spins, or if fixing ST qubits (read as auxiliary logical qubit) removes no part of the effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": "INSUFFICIENT_SUPPORT",
+  "hub": "st qubit"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "electron spins",
+   "b": "ST qubits",
+   "c": "Viterbi gate based protocol"
+  },
+  "path_nodes": [
+   "electron spins",
+   "ST qubits",
+   "Viterbi gate based protocol"
+  ],
+  "links": [
+   {
+    "source": "electron spins",
+    "target": "ST qubits",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2601-10461-p0007",
+      "quote": "Also note that, while ST qubits require twice as many electron spins, this does not necessarily translate into a doubled resource overhead.",
+      "start": 1826,
+      "end": 1965,
+      "chunk_sha256": "d42087e16969a97c8e757a45b22a3f8ef145c21a9e3fac0945f05b2e67fb9130",
+      "relation": "constrains",
+      "subject": "electron spins",
+      "object": "ST qubits",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2601-10461-p0007",
+      "quote": "Also note that, while ST qubits require twice as many electron spins, this does not necessarily translate into a doubled resource overhead.",
+      "start": 1826,
+      "end": 1965,
+      "chunk_sha256": "d42087e16969a97c8e757a45b22a3f8ef145c21a9e3fac0945f05b2e67fb9130"
+     },
+     {
+      "document_id": "arxiv-2601-10461-p0013",
+      "quote": "An alternative approach is provided by the ST qubit, which encodes information in the joint spin state of two electrons confined in a double quantum dot.",
+      "start": 0,
+      "end": 153,
+      "chunk_sha256": "02465f7222a9b4691ced4d7c6674b8df7cdf27e20e957b449f79fe75c6562fa4"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   },
+   {
+    "source": "ST qubits",
+    "target": "Viterbi gate based protocol",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2607-16166-p0082",
+      "quote": "As the Viterbi gate-based protocol requires an auxiliary logical qubit, we used random Cliffords on l = k − 1 logical qubits.",
+      "start": 518,
+      "end": 643,
+      "chunk_sha256": "185f1d2c8e8094bae1687c906d01875834b904be1c334df7645299729c1b8f65",
+      "relation": "constrains",
+      "subject": "auxiliary logical qubit",
+      "object": "Viterbi gate based protocol",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   }
+  ],
+  "expected_relation": "constrains",
+  "direction_check": {
+   "requested": "constrains",
+   "status": "consistent",
+   "observed": [
+    "constrains"
+   ],
+   "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-2407-21177-p0065",
+    "quote": "We now calculate the free induction decay (FID) time T ∗ 2 measured in a Ramsey experiment with an ST qubit.",
+    "start": 155,
+    "end": 263,
+    "chunk_sha256": "53774ebed84603b6603ebc9549513bcde098ab9417dcc6d03f51254f85202df0",
+    "measures": [
+     "ST qubits"
+    ]
+   },
+   {
+    "document_id": "arxiv-2601-10461-p0006",
+    "quote": "Additionally, spin qubits have demonstrated exceptional shuttling capabilities, with recent experiments succeeding in shuttling electrons across a silicon spin qubit structure with 99.99% fidelity per shuttling increment and at a high speed [18, 19].",
+    "start": 60,
+    "end": 310,
+    "chunk_sha256": "2239e80cb54d826440bf09cd5a91370096d653d4e9aa90b53ff9f17939725446",
+    "measures": [
+     "electron spins"
+    ]
+   },
+   {
+    "document_id": "arxiv-2601-10461-p0007",
+    "quote": "Notably, ST qubits can also be fully electrically controlled, which allows for fast and naturally localised gates [37].",
+    "start": 1487,
+    "end": 1606,
+    "chunk_sha256": "d42087e16969a97c8e757a45b22a3f8ef145c21a9e3fac0945f05b2e67fb9130",
+    "measures": [
+     "ST qubits"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "MECM",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2607-16166-p0029",
+     "quote": "The MEDM protocol requires only 1.81 cat-based measurements per target Pauli and the MECM only 1.71 cat-based measurements (see Tables II and III).",
+     "start": 1066,
+     "end": 1213,
+     "chunk_sha256": "511d01f84c05873dda4afc57750a218b4b9de35d56c706f04fceae932a19b1da",
+     "relation": "constrains",
+     "subject": "MECM",
+     "object": "MEDM protocol",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "multiple registers",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2510-10905-p0021",
+     "quote": "The quantum forking protocol requires multiple registers, one for each channel, each of which is the size of the system the channels are being applied to.",
+     "start": 620,
+     "end": 774,
+     "chunk_sha256": "9ab7a0829a17935a2941661f01288a1c9079948fbe0ba43784d09b8690d162f8",
+     "relation": "constrains",
+     "subject": "multiple registers",
+     "object": "quantum forking protocol",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "samples",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2208-09178-p0034",
+     "quote": "We then showed that error-mitigation protocols with certain intermediate operations and an arbitrary trailing process require the number of samples that grows exponentially with the circuit depth to mitigate various types of noise.",
+     "start": 656,
+     "end": 887,
+     "chunk_sha256": "4e07730ac3ceee6fbdae3b566c5197b7768550cd682963ac3869c475c299e610",
+     "relation": "constrains",
+     "subject": "samples",
+     "object": "error mitigation protocols",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "ST qubits",
+     "source_term": "auxiliary logical qubit",
+     "citation": {
+      "document_id": "arxiv-2607-16166-p0082",
+      "quote": "As the Viterbi gate-based protocol requires an auxiliary logical qubit, we used random Cliffords on l = k − 1 logical qubits.",
+      "start": 518,
+      "end": 643,
+      "chunk_sha256": "185f1d2c8e8094bae1687c906d01875834b904be1c334df7645299729c1b8f65",
+      "relation": "constrains",
+      "subject": "auxiliary logical qubit",
+      "object": "Viterbi gate based protocol",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "cb057f6be9812d61",
+    "kind": "variable",
+    "term": "electron spins",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for electron spins."
+   },
+   {
+    "id": "7566a499e0d2ce37",
+    "kind": "variable",
+    "term": "electron spins",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for electron spins."
+   },
+   {
+    "id": "2d654ca85b04539e",
+    "kind": "variable",
+    "term": "Viterbi gate based protocol",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for Viterbi gate based protocol."
+   },
+   {
+    "id": "ff02ec335a8c475d",
+    "kind": "variable",
+    "term": "Viterbi gate based protocol",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for Viterbi gate based protocol."
+   },
+   {
+    "id": "2a4b254b197b6c1e",
+    "kind": "variable",
+    "term": "ST qubits",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for ST qubits."
+   },
+   {
+    "id": "30475f3abe8ed683",
+    "kind": "variable",
+    "term": "ST qubits",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for ST qubits."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "electron spins"
+   ],
+   "measure": [
+    "Viterbi gate based protocol"
+   ],
+   "mediator": "ST qubits",
+   "controls": [
+    "MECM",
+    "multiple registers",
+    "samples"
+   ],
+   "steps": [
+    "Vary electron spins across matched settings and measure Viterbi gate based protocol.",
+    "Review candidate controls (MECM, multiple registers, samples) for timing, feasibility and causal role before adjustment.",
+    "Repeat with ST qubits held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "Viterbi gate based protocol does not change when electron spins varies with the controls fixed, or holding ST qubits fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "electron spins",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2601-10461-p0012",
+       "quote": "Measurement can be performed via spin-to-charge conversion: for example, when one attempts to force an electron onto an adjacent dot where existing electron(s) are present, the resulting behaviour depends on their mutual spin state due to Pauli exclusion [63].",
+       "start": 479,
+       "end": 739,
+       "chunk_sha256": "c09bd92b5464c353ca46512e45cc148f9e6a0e6d4baec38cc7a01698a9be63b9",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2601-10461-p0015",
+       "quote": "We assume measurement is performed via a spin-tocharge mapping whereby dot potentials are altered to favour two electrons occupying one quantum dot: the timescale for this double occupancy to be reached (relaxation time) depends on the prior spin state in such a fashion that one can determine the most likely prior state.",
+       "start": 2584,
+       "end": 2906,
+       "chunk_sha256": "f75635f74bcfda48b71f08515e28a146498e4cdc7b3bb6e1f7a2b343e1c00c00",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2607-16166-p0003",
+       "quote": "Our approach requires bringing cat states next to the qubits to measure, making this protocol well-suited for moving qubits such as trapped ions [31], neutral atoms [32], spin qubits [33] or electrons floating",
+       "start": 2035,
+       "end": 2244,
+       "chunk_sha256": "3e3cb942f4e017a5f680c2ac1177330b90cc25d334bd8068179c0c72eaaeab80",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "Viterbi gate based protocol",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "ST qubits",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2407-21177-p0065",
+       "quote": "We now calculate the free induction decay (FID) time T ∗ 2 measured in a Ramsey experiment with an ST qubit.",
+       "start": 155,
+       "end": 263,
+       "chunk_sha256": "53774ebed84603b6603ebc9549513bcde098ab9417dcc6d03f51254f85202df0",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2601-10461-p0007",
+       "quote": "While the majority of past literature has explored the implementation of QEC with LD qubits [12, 52–55], a study has explored switching the ancillas to ST qubits (for ease of measurement, since spin qubits can naturally be initialised in the singlet state and measured in the singlet-triplet basis) [56, 57].",
+       "start": 3640,
+       "end": 3948,
+       "chunk_sha256": "d42087e16969a97c8e757a45b22a3f8ef145c21a9e3fac0945f05b2e67fb9130",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2601-10461-p0039",
+       "quote": "For ST qubits, as the measurement process can yield three distinct outcomes, we suppose that it leads to any of the two erroneous ones with probability pmeas,ST/2.",
+       "start": 1447,
+       "end": 1610,
+       "chunk_sha256": "7507367f108f9d878c954223e25dbb3bcb6060c19d1b5f63a5881212897cab3e",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "electron spins",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "electron spins",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "Viterbi gate based protocol",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "Viterbi gate based protocol",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "ST qubits",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "ST qubits",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "ST qubits"
+   ]
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 8.51
+  },
+  "snapshot": {
+   "as_of": 1795596383,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: electron spins may constrain Viterbi gate based protocol through ST qubits (read as auxiliary logical qubit).\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: consistent.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: auxiliary logical qubit versus ST qubits.\n\nLink electron spins -> ST qubits: supported (1 supporting, 0 contrary).\n  + [arxiv-2601-10461-p0007] Also note that, while ST qubits require twice as many electron spins, this does not necessarily translate into a doubled resource overhead.\n\nLink ST qubits -> Viterbi gate based protocol: supported (1 supporting, 0 contrary).\n  + [arxiv-2607-16166-p0082] As the Viterbi gate-based protocol requires an auxiliary logical qubit, we used random Cliffords on l = k − 1 logical qubits.\n\nExisting setups that measure one of its terms:\n  [arxiv-2407-21177-p0065] We now calculate the free induction decay (FID) time T ∗ 2 measured in a Ramsey experiment with an ST qubit.\n  [arxiv-2601-10461-p0006] Additionally, spin qubits have demonstrated exceptional shuttling capabilities, with recent experiments succeeding in shuttling electrons across a silicon spin qubit structure with 99.99% fidelity per shuttling increment and at a high speed [18, 19].\n  [arxiv-2601-10461-p0007] Notably, ST qubits can also be fully electrically controlled, which allows for fast and naturally localised gates [37].\n\nCandidate controls (review before adjustment):\n  MECM: outcome_predictor [arxiv-2607-16166-p0029]\n  multiple registers: outcome_predictor [arxiv-2510-10905-p0021]\n  samples: outcome_predictor [arxiv-2208-09178-p0034]\n\nTest plan (mediation):\n  1. Vary electron spins across matched settings and measure Viterbi gate based protocol.\n  2. Review candidate controls (MECM, multiple registers, samples) for timing, feasibility and causal role before adjustment.\n  3. Repeat with ST qubits held fixed or blocked to test whether it carries the effect.\n  Fails if: Viterbi gate based protocol does not change when electron spins varies with the controls fixed, or holding ST qubits fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for electron spins.\n  Required: feasible intervention or justified observational design for electron spins.\n  Required: measurement procedure for Viterbi gate based protocol.\n  Required: unit or explicit categorical scale for Viterbi gate based protocol.\n  Required: measurement procedure for ST qubits.\n  Required: unit or explicit categorical scale for ST qubits.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

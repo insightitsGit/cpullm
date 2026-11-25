@@ -1,0 +1,537 @@
+{
+ "topic": "surface code decoders",
+ "hypothesis": {
+  "id": "8e90fc314452",
+  "text": "mapping and sequence of noisy syndromes may jointly constrain lattice decoding for color code, so relieving one may shift the bottleneck to the other.",
+  "pattern": "convergent",
+  "relation": "co_constrain",
+  "anchors": [
+   "mapping",
+   "sequence of noisy syndromes",
+   "lattice decoding for color code"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2511-13192-p0021",
+   "arxiv-2402-13863-p0012"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2511-13192-p0021",
+    "quote": "II D. This mapping transforms the independent X/Z decoding for the surface code against depolarizing error into the independent Rb/Rg restricted lattice decoding for the color code against two-qubit bit-flip error (i.e., the restricted decoder), illustrated in Fig. 2(a).",
+    "start": 753,
+    "end": 1024,
+    "chunk_sha256": "497e6673e2350f3b241aad88f31a9a90eb4e2bd3a7b7c3742863f5e7e2363f71",
+    "relation": "constrains",
+    "subject": "mapping",
+    "object": "lattice decoding for color code",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2402-13863-p0012",
+    "quote": "One drawback of using 2D surface codes for this purpose is that their decoding is not single-shot: In the case where measurements are imperfect, the decoding needs a sequence of (noisy) syndromes obtained from repeated measurements.",
+    "start": 491,
+    "end": 723,
+    "chunk_sha256": "0f3ad894e0a328755a0c71389f1a29878c60ca1c073410a96322bb13fe94a938",
+    "relation": "constrains",
+    "subject": "sequence of noisy syndromes",
+    "object": "decoding",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.706,
+   "novelty": 0.636
+  },
+  "falsification_test": "Relieve mapping alone while measuring lattice decoding for color code. The hypothesis fails if lattice decoding for color code keeps improving without sequence of noisy syndromes becoming the binding limit, or if relieving sequence of noisy syndromes alone has no effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "lattice decoding for color code",
+  "check": {
+   "verdict": "all_links_supported",
+   "incomplete": false,
+   "direction_check": {
+    "requested": "co_constrain",
+    "status": "unspecified",
+    "observed": []
+   },
+   "composition": {
+    "status": "requires_review",
+    "bridges": [
+     {
+      "link": 1,
+      "requested": "lattice decoding for color code",
+      "source_term": "decoding",
+      "citation": {
+       "document_id": "arxiv-2402-13863-p0012",
+       "quote": "One drawback of using 2D surface codes for this purpose is that their decoding is not single-shot: In the case where measurements are imperfect, the decoding needs a sequence of (noisy) syndromes obtained from repeated measurements.",
+       "start": 491,
+       "end": 723,
+       "chunk_sha256": "0f3ad894e0a328755a0c71389f1a29878c60ca1c073410a96322bb13fe94a938",
+       "relation": "constrains",
+       "subject": "sequence of noisy syndromes",
+       "object": "decoding",
+       "hedged": false
+      },
+      "status": "requires_review",
+      "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+     }
+    ],
+    "qualifications": [],
+    "source_contexts": [],
+    "scope_differences": [],
+    "context_coverage": "not_recorded",
+    "interaction": {
+     "status": "untested",
+     "reason": "Individual effects do not establish a joint interaction."
+    },
+    "assumptions": [
+     "Source terms denote compatible quantities and settings.",
+     "Composed source relationships are not causal identification."
+    ],
+    "scientific_validity": "not_established"
+   },
+   "plan_readiness": "needs_input",
+   "links": [
+    {
+     "source": "mapping",
+     "target": "lattice decoding for color code",
+     "status": "supported",
+     "counter": []
+    },
+    {
+     "source": "sequence of noisy syndromes",
+     "target": "lattice decoding for color code",
+     "status": "supported",
+     "counter": []
+    }
+   ]
+  }
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "convergent",
+  "terms": {
+   "a": "mapping",
+   "b": "sequence of noisy syndromes",
+   "c": "lattice decoding for color code"
+  },
+  "path_nodes": null,
+  "links": [
+   {
+    "source": "mapping",
+    "target": "lattice decoding for color code",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2511-13192-p0021",
+      "quote": "II D. This mapping transforms the independent X/Z decoding for the surface code against depolarizing error into the independent Rb/Rg restricted lattice decoding for the color code against two-qubit bit-flip error (i.e., the restricted decoder), illustrated in Fig. 2(a).",
+      "start": 753,
+      "end": 1024,
+      "chunk_sha256": "497e6673e2350f3b241aad88f31a9a90eb4e2bd3a7b7c3742863f5e7e2363f71",
+      "relation": "constrains",
+      "subject": "mapping",
+      "object": "lattice decoding for color code",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2511-13192-p0003",
+      "quote": "Inspired by the global decoding insight of the unified decoder (Benhemou et al., 2023), this paper introduces a correlated decoder for the 4.8.8 color code, which improves upon the conventional restricted decoder by leveraging correlations between restricted lattices, and is derived by mapping the correlated matching decoder for the surface code onto the color code lattice.",
+      "start": 324,
+      "end": 700,
+      "chunk_sha256": "722016656028d8dc42d1a32109ce91d25ba7f6ea59c6457b9c9141b7b00d77ec"
+     },
+     {
+      "document_id": "arxiv-2511-13192-p0021",
+      "quote": "II D. This mapping transforms the independent X/Z decoding for the surface code against depolarizing error into the independent Rb/Rg restricted lattice decoding for the color code against two-qubit bit-flip error (i.e., the restricted decoder), illustrated in Fig. 2(a).",
+      "start": 753,
+      "end": 1024,
+      "chunk_sha256": "497e6673e2350f3b241aad88f31a9a90eb4e2bd3a7b7c3742863f5e7e2363f71"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   },
+   {
+    "source": "sequence of noisy syndromes",
+    "target": "lattice decoding for color code",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2402-13863-p0012",
+      "quote": "One drawback of using 2D surface codes for this purpose is that their decoding is not single-shot: In the case where measurements are imperfect, the decoding needs a sequence of (noisy) syndromes obtained from repeated measurements.",
+      "start": 491,
+      "end": 723,
+      "chunk_sha256": "0f3ad894e0a328755a0c71389f1a29878c60ca1c073410a96322bb13fe94a938",
+      "relation": "constrains",
+      "subject": "sequence of noisy syndromes",
+      "object": "decoding",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   }
+  ],
+  "expected_relation": "co_constrain",
+  "direction_check": {
+   "requested": "co_constrain",
+   "status": "unspecified",
+   "observed": []
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [],
+  "confounders": [
+   {
+    "term": "full syndrome",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2212-11632-p0009",
+     "quote": "Usually decoding requires the full syndrome, nevertheless some studies have been made as to optimize the syndrome data required by the decoder [28].",
+     "start": 196,
+     "end": 344,
+     "chunk_sha256": "16a052474e7239d69f83502501821fdcdcab148f2dddc199ff007974db91817a",
+     "relation": "constrains",
+     "subject": "full syndrome",
+     "object": "decoding",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "line of work",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2608-27682-p0008",
+     "quote": "Another line of work boosts BP decoding by coupling multiple diverse BP decoders in an ensemble-like manner, as in AMBP [28] and Relay-BP [30].",
+     "start": 27,
+     "end": 170,
+     "chunk_sha256": "328e7fe84164f69bea3cd3c1d86b7a728cb2b5482c2468628072ead9a79522f0",
+     "relation": "increases",
+     "subject": "line of work",
+     "object": "BP decoding",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "lattice decoding for color code",
+     "source_term": "decoding",
+     "citation": {
+      "document_id": "arxiv-2402-13863-p0012",
+      "quote": "One drawback of using 2D surface codes for this purpose is that their decoding is not single-shot: In the case where measurements are imperfect, the decoding needs a sequence of (noisy) syndromes obtained from repeated measurements.",
+      "start": 491,
+      "end": 723,
+      "chunk_sha256": "0f3ad894e0a328755a0c71389f1a29878c60ca1c073410a96322bb13fe94a938",
+      "relation": "constrains",
+      "subject": "sequence of noisy syndromes",
+      "object": "decoding",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "untested",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "945ea56f45853f3b",
+    "kind": "variable",
+    "term": "mapping",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for mapping."
+   },
+   {
+    "id": "9db7de8553b7d374",
+    "kind": "variable",
+    "term": "mapping",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for mapping."
+   },
+   {
+    "id": "ecef7e46273592f4",
+    "kind": "variable",
+    "term": "sequence of noisy syndromes",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for sequence of noisy syndromes."
+   },
+   {
+    "id": "6a6d816a5df51923",
+    "kind": "variable",
+    "term": "sequence of noisy syndromes",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for sequence of noisy syndromes."
+   },
+   {
+    "id": "1c299931f4a70a9b",
+    "kind": "variable",
+    "term": "lattice decoding for color code",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for lattice decoding for color code."
+   },
+   {
+    "id": "4f4401c4c14d4a4d",
+    "kind": "variable",
+    "term": "lattice decoding for color code",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for lattice decoding for color code."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "2x2 factorial",
+   "manipulate": [
+    "mapping",
+    "sequence of noisy syndromes"
+   ],
+   "measure": [
+    "lattice decoding for color code"
+   ],
+   "mediator": null,
+   "controls": [
+    "full syndrome",
+    "line of work"
+   ],
+   "steps": [
+    "Run all four combinations of low and high mapping and sequence of noisy syndromes; measure lattice decoding for color code.",
+    "Review candidate controls (full syndrome, line of work) for timing, feasibility and causal role before adjustment.",
+    "Compare the joint effect with the sum of the separate effects."
+   ],
+   "fails_if": "A precisely measured absence of an interaction challenges compounding in lattice decoding for color code; it does not refute individual effects of mapping or sequence of noisy syndromes. Predefine a meaningful effect threshold.",
+   "variables": [
+    {
+     "term": "mapping",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2402-18868-p0003",
+       "quote": "Meanwhile, we demonstrate the feasibility of mid-circuit measurements, a crucial step for recent implementations of quantum error correction, by mapping the hyperfine qubit to metastable levels.",
+       "start": 631,
+       "end": 825,
+       "chunk_sha256": "351467c21d48c2f9cf932da253365e794f47dbffc0f0c271ef7bffc031378092",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2406-14285-p0010",
+       "quote": "Furthermore, it is worth exploring a mapping for SU (N ) for Haar measures to prompt exploring symmetric circuit ansatz for PQCs to take advantage of problem-specific",
+       "start": 1160,
+       "end": 1326,
+       "chunk_sha256": "88505cf3d9dc24404b5cf5d5b3b982121ada21e62c4c36c0ca70db2979006947",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2506-16834-p0026",
+       "quote": "code’s mapping on the device, and a dynamic backlog made of the previous syndrome measurements.",
+       "start": 0,
+       "end": 95,
+       "chunk_sha256": "e98c477649d4379189a2f523fe66ed71eb0a3a948ed48cbb6897f23a8c07ef3e",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "sequence of noisy syndromes",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2402-13863-p0012",
+       "quote": "One drawback of using 2D surface codes for this purpose is that their decoding is not single-shot: In the case where measurements are imperfect, the decoding needs a sequence of (noisy) syndromes obtained from repeated measurements.",
+       "start": 491,
+       "end": 723,
+       "chunk_sha256": "0f3ad894e0a328755a0c71389f1a29878c60ca1c073410a96322bb13fe94a938",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "lattice decoding for color code",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "mapping",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "mapping",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "sequence of noisy syndromes",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "sequence of noisy syndromes",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "lattice decoding for color code",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "lattice decoding for color code",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "interaction_test": {
+    "contrast": "Y11 - Y10 - Y01 + Y00",
+    "assumptions": "Additive outcome scale, matched conditions and defined interventions.",
+    "interpretation": "A zero interaction contrast challenges compounding, not the individual effects."
+   }
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 8.09
+  },
+  "snapshot": {
+   "as_of": 1795596399,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: mapping and sequence of noisy syndromes may jointly constrain lattice decoding for color code, so relieving one may shift the bottleneck to the other.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unspecified.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: decoding versus lattice decoding for color code.\n\nLink mapping -> lattice decoding for color code: supported (1 supporting, 0 contrary).\n  + [arxiv-2511-13192-p0021] II D. This mapping transforms the independent X/Z decoding for the surface code against depolarizing error into the independent Rb/Rg restricted lattice decoding for the color code against two-qubit bit-flip error (i.e., the restricted decoder), illustrated in Fig. 2(a).\n\nLink sequence of noisy syndromes -> lattice decoding for color code: supported (1 supporting, 0 contrary).\n  + [arxiv-2402-13863-p0012] One drawback of using 2D surface codes for this purpose is that their decoding is not single-shot: In the case where measurements are imperfect, the decoding needs a sequence of (noisy) syndromes obtained from repeated measurements.\n\nCandidate controls (review before adjustment):\n  full syndrome: outcome_predictor [arxiv-2212-11632-p0009]\n  line of work: outcome_predictor [arxiv-2608-27682-p0008]\n\nTest plan (2x2 factorial):\n  1. Run all four combinations of low and high mapping and sequence of noisy syndromes; measure lattice decoding for color code.\n  2. Review candidate controls (full syndrome, line of work) for timing, feasibility and causal role before adjustment.\n  3. Compare the joint effect with the sum of the separate effects.\n  Fails if: A precisely measured absence of an interaction challenges compounding in lattice decoding for color code; it does not refute individual effects of mapping or sequence of noisy syndromes. Predefine a meaningful effect threshold.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for mapping.\n  Required: feasible intervention or justified observational design for mapping.\n  Required: intervention levels for sequence of noisy syndromes.\n  Required: feasible intervention or justified observational design for sequence of noisy syndromes.\n  Required: measurement procedure for lattice decoding for color code.\n  Required: unit or explicit categorical scale for lattice decoding for color code.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

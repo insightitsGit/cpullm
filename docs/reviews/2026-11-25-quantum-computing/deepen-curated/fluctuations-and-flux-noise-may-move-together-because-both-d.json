@@ -1,0 +1,756 @@
+{
+ "topic": "quasiparticles",
+ "hypothesis": {
+  "id": "2ec380479b42",
+  "text": "fluctuations and flux noise may move together because both depend on Charge noise.",
+  "pattern": "divergent",
+  "relation": "common_driver",
+  "anchors": [
+   "fluctuations",
+   "flux noise",
+   "Charge noise"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-1904-10378-p0034",
+   "arxiv-2407-21177-p0003"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-1904-10378-p0034",
+    "quote": "Withineachstabilisercheck, we assume the following error model: • Two-qubit gates: Charge noise leads to fluctuations in the exchange strength J, which can lead to the following errors for Accepted in Quantum 2019-12-01, click title to verify.",
+    "start": 599,
+    "end": 842,
+    "chunk_sha256": "57c9c54cf628984d03e868dc0130dc6c8ecb862c161bd61924f081c20d6bdedd",
+    "relation": "causes",
+    "subject": "Charge noise",
+    "object": "fluctuations",
+    "hedged": true,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2407-21177-p0003",
+    "quote": "In addition, we show that charge noise from quasiparticles leads to flux noise that is logarithmic-in-frequency, giving rise to a “nearly white” contribution that is comparable to the flux noise observed in flux qubits.",
+    "start": 1120,
+    "end": 1339,
+    "chunk_sha256": "401bbb55f724cbc62f5160915e7b3737651e2e85d02c3c85e7838f3bd62d7d55",
+    "relation": "causes",
+    "subject": "charge noise",
+    "object": "flux noise",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.55,
+   "deductive_relevance": 0.573,
+   "novelty": 0.562
+  },
+  "falsification_test": "Track fluctuations and flux noise across periods where Charge noise changes and where it does not. The hypothesis fails if they co-vary just as strongly when Charge noise is held fixed.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "charge noise",
+  "check": {
+   "verdict": "all_links_supported",
+   "incomplete": false,
+   "direction_check": {
+    "requested": "common_driver",
+    "status": "unspecified",
+    "observed": []
+   },
+   "composition": {
+    "status": "requires_review",
+    "bridges": [],
+    "qualifications": [
+     {
+      "link": 0,
+      "citation": {
+       "document_id": "arxiv-1904-10378-p0034",
+       "quote": "Withineachstabilisercheck, we assume the following error model: • Two-qubit gates: Charge noise leads to fluctuations in the exchange strength J, which can lead to the following errors for Accepted in Quantum 2019-12-01, click title to verify.",
+       "start": 599,
+       "end": 842,
+       "chunk_sha256": "57c9c54cf628984d03e868dc0130dc6c8ecb862c161bd61924f081c20d6bdedd",
+       "relation": "causes",
+       "subject": "Charge noise",
+       "object": "fluctuations",
+       "hedged": true
+      },
+      "instruction": "Retain this full qualified statement; do not treat it as universal."
+     }
+    ],
+    "source_contexts": [],
+    "scope_differences": [],
+    "context_coverage": "not_recorded",
+    "interaction": {
+     "status": "not_applicable",
+     "reason": "Individual effects do not establish a joint interaction."
+    },
+    "assumptions": [
+     "Source terms denote compatible quantities and settings.",
+     "Composed source relationships are not causal identification."
+    ],
+    "scientific_validity": "not_established"
+   },
+   "plan_readiness": "needs_input",
+   "links": [
+    {
+     "source": "Charge noise",
+     "target": "fluctuations",
+     "status": "supported",
+     "counter": []
+    },
+    {
+     "source": "Charge noise",
+     "target": "flux noise",
+     "status": "supported",
+     "counter": []
+    }
+   ]
+  }
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "divergent",
+  "terms": {
+   "a": "fluctuations",
+   "b": "flux noise",
+   "c": "Charge noise"
+  },
+  "path_nodes": null,
+  "links": [
+   {
+    "source": "Charge noise",
+    "target": "fluctuations",
+    "expected_relation": "causes",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-1904-10378-p0034",
+      "quote": "Withineachstabilisercheck, we assume the following error model: • Two-qubit gates: Charge noise leads to fluctuations in the exchange strength J, which can lead to the following errors for Accepted in Quantum 2019-12-01, click title to verify.",
+      "start": 599,
+      "end": 842,
+      "chunk_sha256": "57c9c54cf628984d03e868dc0130dc6c8ecb862c161bd61924f081c20d6bdedd",
+      "relation": "causes",
+      "subject": "Charge noise",
+      "object": "fluctuations",
+      "hedged": true
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-1904-10378-p0034",
+      "quote": "Withineachstabilisercheck, we assume the following error model: • Two-qubit gates: Charge noise leads to fluctuations in the exchange strength J, which can lead to the following errors for Accepted in Quantum 2019-12-01, click title to verify.",
+      "start": 599,
+      "end": 842,
+      "chunk_sha256": "57c9c54cf628984d03e868dc0130dc6c8ecb862c161bd61924f081c20d6bdedd"
+     },
+     {
+      "document_id": "arxiv-2407-21177-p0006",
+      "quote": "Additionally, we show that charge noise from QP Ohmic loss both near and far from junctions generates flux fluctuations due to the self-inductance of the wires, giving rise to a flux noise background that is logarithmic in frequency.",
+      "start": 0,
+      "end": 233,
+      "chunk_sha256": "03baf15f392e4516543ed50b811174bb6cf825b2bfbee8b2bd1af316edd0879c"
+     },
+     {
+      "document_id": "arxiv-2407-21177-p0014",
+      "quote": "It must be emphasized that if the origin of flux noise is charge fluctuation, then Eqs.",
+      "start": 0,
+      "end": 87,
+      "chunk_sha256": "6a8c669751ab56fa7315a9a2d1bb09ba1c1c98f8f5ba1808dcab1bbaa1298752"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "causes"
+    ]
+   },
+   {
+    "source": "Charge noise",
+    "target": "flux noise",
+    "expected_relation": "causes",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2407-21177-p0003",
+      "quote": "In addition, we show that charge noise from quasiparticles leads to flux noise that is logarithmic-in-frequency, giving rise to a “nearly white” contribution that is comparable to the flux noise observed in flux qubits.",
+      "start": 1120,
+      "end": 1339,
+      "chunk_sha256": "401bbb55f724cbc62f5160915e7b3737651e2e85d02c3c85e7838f3bd62d7d55",
+      "relation": "causes",
+      "subject": "charge noise",
+      "object": "flux noise",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2407-21177-p0001",
+      "quote": "# Nonequilibrium Quasiparticles in Superconducting Circuits: Energy Relaxation, Charge and Flux Noise",
+      "start": 0,
+      "end": 101,
+      "chunk_sha256": "42c5550818e602bd310dcdfd58944017e6434a469dc087290b98cbbd91d18095"
+     },
+     {
+      "document_id": "arxiv-2407-21177-p0002",
+      "quote": "Nonequilibrium Quasiparticles in Superconducting Circuits: Energy Relaxation, Charge and Flux Noise Jos ́e Alberto Nava Aquino and Rog ́erio de Sousa Department of Physics and Astronomy, University of Victoria, Victoria, British Columbia V8W 2Y2, Canada and Centre for Advanced Materials and Related Technology, University of Victoria, Victoria, British Columbia V8W 2Y2, Canada",
+      "start": 0,
+      "end": 378,
+      "chunk_sha256": "cfdb118bbbb6f5eb6c1709645912f366c507f2ccb3e8dcd84b1ca914bc03823d"
+     },
+     {
+      "document_id": "arxiv-2407-21177-p0003",
+      "quote": "132, 217001 (2024)] and uses a generalized fluctuation-dissipation theorem to predict the amount of charge and flux noise generated by them.",
+      "start": 627,
+      "end": 767,
+      "chunk_sha256": "401bbb55f724cbc62f5160915e7b3737651e2e85d02c3c85e7838f3bd62d7d55"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "causes"
+    ]
+   }
+  ],
+  "expected_relation": "common_driver",
+  "direction_check": {
+   "requested": "common_driver",
+   "status": "unspecified",
+   "observed": []
+  },
+  "verdict": "all_links_supported",
+  "predictions": [
+   {
+    "document_id": "arxiv-2407-21177-p0003",
+    "quote": "132, 217001 (2024)] and uses a generalized fluctuation-dissipation theorem to predict the amount of charge and flux noise generated by them.",
+    "start": 627,
+    "end": 767,
+    "chunk_sha256": "401bbb55f724cbc62f5160915e7b3737651e2e85d02c3c85e7838f3bd62d7d55",
+    "qualification": "source_prediction"
+   },
+   {
+    "document_id": "arxiv-2407-21177-p0005",
+    "quote": "We calculate the charge and flux noise spectral densities that emerge from this generalized Ohmic loss, and use it to predict energy relaxation times T1 and coherence times T ∗ 2 for superconducting qubits.",
+    "start": 838,
+    "end": 1044,
+    "chunk_sha256": "394812ddf02dc8422d23619272143510192e9cedfe5f3738c93cda8b6b79093d",
+    "qualification": "source_prediction"
+   }
+  ],
+  "setups": [
+   {
+    "document_id": "arxiv-2407-21177-p0055",
+    "quote": "When the qubit frequency Ω is sensitive to flux fluctuations, off-resonant flux noise at ω ̸= Ω can significantly impact the decoherence times measured in Ramsey (T ∗ 2 ) and Hahn-echo (T2) experiments.",
+    "start": 0,
+    "end": 202,
+    "chunk_sha256": "3dc822759fa4f31d9dde61f56ec8288744222827cfba31114389c28d9d678a4d",
+    "measures": [
+     "fluctuations",
+     "flux noise"
+    ]
+   },
+   {
+    "document_id": "arxiv-2407-21177-p0006",
+    "quote": "The magnitude of the predicted “nearly white flux noise background” is found to be comparable to values observed in flux qubit experiments [24, 25].",
+    "start": 234,
+    "end": 382,
+    "chunk_sha256": "03baf15f392e4516543ed50b811174bb6cf825b2bfbee8b2bd1af316edd0879c",
+    "measures": [
+     "flux noise"
+    ]
+   },
+   {
+    "document_id": "arxiv-2407-21177-p0045",
+    "quote": "In this section, we calculate the flux noise contribution from QPs in two scenarios of interest: (1) the flux noise in a flux qubit, which we compare to the flux noise extracted from T1 measurements in such qubits; and (2) the flux noise contribution to decoherence time T ∗ 2 in flux-tunable split-junction transmons.",
+    "start": 181,
+    "end": 499,
+    "chunk_sha256": "7fafa621e450309af07b81758c5a8360bab5329ce704b812ff5650e410617799",
+    "measures": [
+     "flux noise"
+    ]
+   },
+   {
+    "document_id": "arxiv-2407-21177-p0045",
+    "quote": "A. Flux noise spectral density in flux qubits Several experiments extract the environmental flux noise spectral density from relaxation time measurements in flux-sensitive qubits using Eq.",
+    "start": 500,
+    "end": 688,
+    "chunk_sha256": "7fafa621e450309af07b81758c5a8360bab5329ce704b812ff5650e410617799",
+    "measures": [
+     "flux noise"
+    ]
+   },
+   {
+    "document_id": "arxiv-2407-21177-p0051",
+    "quote": "Another experiment performed in a different device of the same material measured a similar white flux noise background of magnitude 2 × 10−16 Φ2 0/Hz [39].",
+    "start": 126,
+    "end": 281,
+    "chunk_sha256": "2add38820525ea56f61b14f05eec6b4ccdc2e3b89445ba975804ef8f38bb4811",
+    "measures": [
+     "flux noise"
+    ]
+   },
+   {
+    "document_id": "arxiv-2407-21177-p0051",
+    "quote": "(41) would explain the white flux noise background obtained in both experiments [25, 39].",
+    "start": 662,
+    "end": 751,
+    "chunk_sha256": "2add38820525ea56f61b14f05eec6b4ccdc2e3b89445ba975804ef8f38bb4811",
+    "measures": [
+     "flux noise"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "Richardson extrapolation",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2607-25746-p0014",
+     "quote": "Because Richardson extrapolation amplifies statistical fluctuations, the resulting estimator can have large sampling variance and a potential extrapolation bias.",
+     "start": 233,
+     "end": 394,
+     "chunk_sha256": "518a6436a52ab41644bcbdd3368fed53c67e1bffb9bcf7d9cec274c6853460c0",
+     "relation": "increases",
+     "subject": "Richardson extrapolation",
+     "object": "statistical fluctuations",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "asymmetric gap engineering",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2407-21177-p0003",
+     "quote": "The final conclusion is that asymmetric gap engineering can greatly reduce noise and increase coherence times in superconducting qubits.",
+     "start": 1545,
+     "end": 1681,
+     "chunk_sha256": "401bbb55f724cbc62f5160915e7b3737651e2e85d02c3c85e7838f3bd62d7d55",
+     "relation": "decreases",
+     "subject": "asymmetric gap engineering",
+     "object": "noise",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "frequency",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2407-21177-p0050",
+     "quote": "At low frequencies (ħω ≪ kB T ), flux noise scales logarithmically with frequency and temperature, ̃SΦ(ω) ∝ ln (4kB T /ħω)/T 1/2.",
+     "start": 0,
+     "end": 129,
+     "chunk_sha256": "d3a453f42ef2a5a677c7beb1e10f13ff137e9f4152dbdc323750a22f41d3b237",
+     "relation": "increases",
+     "subject": "frequency",
+     "object": "flux noise",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "idea",
+    "relation": "supports",
+    "citation": {
+     "document_id": "arxiv-2402-13863-p0056",
+     "quote": "Pauli noise, and is physically motivated by the idea that physical sources of noise are typically such that errors are exponentially suppressed in their weight.",
+     "start": 22,
+     "end": 182,
+     "chunk_sha256": "d8a5a5b5d233701a6444bdbe38d5aa16b55ed3719ca0d3c0e5e1dade2a36e5f5",
+     "relation": "supports",
+     "subject": "idea",
+     "object": "Pauli noise",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "KT",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2512-13908-p0011",
+     "quote": "Second, KT reduces the projection noise compared to standard tomography: measuring along the prepared state also results in measurement averages close to zero, reducing the variance in the binomial distribution.",
+     "start": 231,
+     "end": 442,
+     "chunk_sha256": "ecae496e0d2cfd2d06ebe70f0bbf948abb23913a7f6167bb9ad86f484f763d67",
+     "relation": "decreases",
+     "subject": "KT",
+     "object": "projection noise",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "parameters",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2403-08706-p0002",
+     "quote": "While noise generally requires many parameters to describe completely, we find that to achieve near optimal decoding it appears only necessary adapt the decoder to a small number of critical parameters.",
+     "start": 955,
+     "end": 1157,
+     "chunk_sha256": "04623127fe2c510788f9f48dc8505d6b2ce78f15978df6e79093ee3fd53f589b",
+     "relation": "constrains",
+     "subject": "parameters",
+     "object": "noise",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [],
+   "qualifications": [
+    {
+     "link": 0,
+     "citation": {
+      "document_id": "arxiv-1904-10378-p0034",
+      "quote": "Withineachstabilisercheck, we assume the following error model: • Two-qubit gates: Charge noise leads to fluctuations in the exchange strength J, which can lead to the following errors for Accepted in Quantum 2019-12-01, click title to verify.",
+      "start": 599,
+      "end": 842,
+      "chunk_sha256": "57c9c54cf628984d03e868dc0130dc6c8ecb862c161bd61924f081c20d6bdedd",
+      "relation": "causes",
+      "subject": "Charge noise",
+      "object": "fluctuations",
+      "hedged": true
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    }
+   ],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "potential_overlap",
+   "matches": [
+    {
+     "document_id": "arxiv-2407-21177-p0006",
+     "quote": "Additionally, we show that charge noise from QP Ohmic loss both near and far from junctions generates flux fluctuations due to the self-inductance of the wires, giving rise to a flux noise background that is logarithmic in frequency.",
+     "start": 0,
+     "end": 233,
+     "chunk_sha256": "03baf15f392e4516543ed50b811174bb6cf825b2bfbee8b2bd1af316edd0879c",
+     "qualification": "potential_overlap_not_equivalence"
+    },
+    {
+     "document_id": "arxiv-2407-21177-p0014",
+     "quote": "It must be emphasized that if the origin of flux noise is charge fluctuation, then Eqs.",
+     "start": 0,
+     "end": 87,
+     "chunk_sha256": "6a8c669751ab56fa7315a9a2d1bb09ba1c1c98f8f5ba1808dcab1bbaa1298752",
+     "qualification": "potential_overlap_not_equivalence"
+    },
+    {
+     "document_id": "arxiv-2407-21177-p0070",
+     "quote": "As explained in section II, charge noise in an inductive element generate flux fluctuations so it can also be interpreted as flux noise.",
+     "start": 740,
+     "end": 876,
+     "chunk_sha256": "81505cb19a28d272a3c9d7f1e7094d131edd8fe583102938b0d46ef14109def3",
+     "qualification": "potential_overlap_not_equivalence"
+    }
+   ],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "qualification_review",
+    "kind": "scope",
+    "instruction": "Restrict the proposal to the cited conditions and quantifiers."
+   },
+   {
+    "id": "0719dc9c203e1a7c",
+    "kind": "variable",
+    "term": "Charge noise",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for Charge noise."
+   },
+   {
+    "id": "c91a9d5ebaac6a5c",
+    "kind": "variable",
+    "term": "Charge noise",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for Charge noise."
+   },
+   {
+    "id": "52d001de3acd348d",
+    "kind": "variable",
+    "term": "fluctuations",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for fluctuations."
+   },
+   {
+    "id": "eff8addda2eb8d64",
+    "kind": "variable",
+    "term": "fluctuations",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for fluctuations."
+   },
+   {
+    "id": "ef6bf46bc2da515d",
+    "kind": "variable",
+    "term": "flux noise",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for flux noise."
+   },
+   {
+    "id": "e014df43cd33d030",
+    "kind": "variable",
+    "term": "flux noise",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for flux noise."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "common cause",
+   "manipulate": [
+    "Charge noise"
+   ],
+   "measure": [
+    "fluctuations",
+    "flux noise"
+   ],
+   "mediator": null,
+   "controls": [
+    "Richardson extrapolation",
+    "asymmetric gap engineering",
+    "frequency",
+    "idea",
+    "KT",
+    "parameters"
+   ],
+   "steps": [
+    "Vary Charge noise and measure fluctuations and flux noise.",
+    "Review candidate controls (Richardson extrapolation, asymmetric gap engineering, frequency, idea, KT, parameters) for timing, feasibility and causal role before adjustment.",
+    "Check whether fluctuations and flux noise still co-vary when Charge noise is held fixed."
+   ],
+   "fails_if": "fluctuations and flux noise co-vary just as strongly when Charge noise is held fixed, or Charge noise moves neither.",
+   "variables": [
+    {
+     "term": "Charge noise",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2407-21177-p0054",
+       "quote": "Here we point out that the flux noise associated to TLS charge noise may provide an explanation for the super- Ohmic noise measured in [24].",
+       "start": 0,
+       "end": 140,
+       "chunk_sha256": "c850b94be17540c45543dab03eb064bb356c45363ee057478453d96228e9b832",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "fluctuations",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2407-21177-p0055",
+       "quote": "When the qubit frequency Ω is sensitive to flux fluctuations, off-resonant flux noise at ω ̸= Ω can significantly impact the decoherence times measured in Ramsey (T ∗ 2 ) and Hahn-echo (T2) experiments.",
+       "start": 0,
+       "end": 202,
+       "chunk_sha256": "3dc822759fa4f31d9dde61f56ec8288744222827cfba31114389c28d9d678a4d",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2610-34485-p0002",
+       "quote": "Our measurement protocol provides a powerful tool for understanding the noise sources that cause temporal fluctuations in superconducting qubit performance.",
+       "start": 704,
+       "end": 860,
+       "chunk_sha256": "42a14fbc16e79ace5c8bd446b567da067676791fc2e3dd4efdbd0255e1b3a1f2",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "flux noise",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2407-21177-p0045",
+       "quote": "In this section, we calculate the flux noise contribution from QPs in two scenarios of interest: (1) the flux noise in a flux qubit, which we compare to the flux noise extracted from T1 measurements in such qubits; and (2) the flux noise contribution to decoherence time T ∗ 2 in flux-tunable split-junction transmons.",
+       "start": 181,
+       "end": 499,
+       "chunk_sha256": "7fafa621e450309af07b81758c5a8360bab5329ce704b812ff5650e410617799",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2407-21177-p0045",
+       "quote": "A. Flux noise spectral density in flux qubits Several experiments extract the environmental flux noise spectral density from relaxation time measurements in flux-sensitive qubits using Eq.",
+       "start": 500,
+       "end": 688,
+       "chunk_sha256": "7fafa621e450309af07b81758c5a8360bab5329ce704b812ff5650e410617799",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2407-21177-p0051",
+       "quote": "Another experiment performed in a different device of the same material measured a similar white flux noise background of magnitude 2 × 10−16 Φ2 0/Hz [39].",
+       "start": 126,
+       "end": 281,
+       "chunk_sha256": "2add38820525ea56f61b14f05eec6b4ccdc2e3b89445ba975804ef8f38bb4811",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "Charge noise",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "Charge noise",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "fluctuations",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "fluctuations",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "flux noise",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "flux noise",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established"
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 7.678
+  },
+  "snapshot": {
+   "as_of": 1795596359,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: fluctuations and flux noise may move together because both depend on Charge noise.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unspecified.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Retain qualification [arxiv-1904-10378-p0034]: Withineachstabilisercheck, we assume the following error model: • Two-qubit gates: Charge noise leads to fluctuations in the exchange strength J, which can lead to the following errors for Accepted in Quantum 2019-12-01, click title to verify.\n\nLink Charge noise -> fluctuations: supported (1 supporting, 0 contrary).\n  + [arxiv-1904-10378-p0034] Withineachstabilisercheck, we assume the following error model: • Two-qubit gates: Charge noise leads to fluctuations in the exchange strength J, which can lead to the following errors for Accepted in Quantum 2019-12-01, click title to verify.\n\nLink Charge noise -> flux noise: supported (1 supporting, 0 contrary).\n  + [arxiv-2407-21177-p0003] In addition, we show that charge noise from quasiparticles leads to flux noise that is logarithmic-in-frequency, giving rise to a “nearly white” contribution that is comparable to the flux noise observed in flux qubits.\n\nSource predictions naming two or more of its terms:\n  [arxiv-2407-21177-p0003] 132, 217001 (2024)] and uses a generalized fluctuation-dissipation theorem to predict the amount of charge and flux noise generated by them.\n  [arxiv-2407-21177-p0005] We calculate the charge and flux noise spectral densities that emerge from this generalized Ohmic loss, and use it to predict energy relaxation times T1 and coherence times T ∗ 2 for superconducting qubits.\n\nExisting setups that measure one of its terms:\n  [arxiv-2407-21177-p0055] When the qubit frequency Ω is sensitive to flux fluctuations, off-resonant flux noise at ω ̸= Ω can significantly impact the decoherence times measured in Ramsey (T ∗ 2 ) and Hahn-echo (T2) experiments.\n  [arxiv-2407-21177-p0006] The magnitude of the predicted “nearly white flux noise background” is found to be comparable to values observed in flux qubit experiments [24, 25].\n  [arxiv-2407-21177-p0045] In this section, we calculate the flux noise contribution from QPs in two scenarios of interest: (1) the flux noise in a flux qubit, which we compare to the flux noise extracted from T1 measurements in such qubits; and (2) the flux noise contribution to decoherence time T ∗ 2 in flux-tunable split-junction transmons.\n  [arxiv-2407-21177-p0045] A. Flux noise spectral density in flux qubits Several experiments extract the environmental flux noise spectral density from relaxation time measurements in flux-sensitive qubits using Eq.\n\nCandidate controls (review before adjustment):\n  Richardson extrapolation: outcome_predictor [arxiv-2607-25746-p0014]\n  asymmetric gap engineering: outcome_predictor [arxiv-2407-21177-p0003]\n  frequency: outcome_predictor [arxiv-2407-21177-p0050]\n  idea: outcome_predictor [arxiv-2402-13863-p0056]\n  KT: outcome_predictor [arxiv-2512-13908-p0011]\n  parameters: outcome_predictor [arxiv-2403-08706-p0002]\n\nTest plan (common cause):\n  1. Vary Charge noise and measure fluctuations and flux noise.\n  2. Review candidate controls (Richardson extrapolation, asymmetric gap engineering, frequency, idea, KT, parameters) for timing, feasibility and causal role before adjustment.\n  3. Check whether fluctuations and flux noise still co-vary when Charge noise is held fixed.\n  Fails if: fluctuations and flux noise co-vary just as strongly when Charge noise is held fixed, or Charge noise moves neither.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for Charge noise.\n  Required: feasible intervention or justified observational design for Charge noise.\n  Required: measurement procedure for fluctuations.\n  Required: unit or explicit categorical scale for fluctuations.\n  Required: measurement procedure for flux noise.\n  Required: unit or explicit categorical scale for flux noise.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: potential overlap; external review: not requested. Scientific novelty not established.\n  Potential KB overlap [arxiv-2407-21177-p0006]: Additionally, we show that charge noise from QP Ohmic loss both near and far from junctions generates flux fluctuations due to the self-inductance of the wires, giving rise to a flux noise background that is logarithmic in frequency.\n  Potential KB overlap [arxiv-2407-21177-p0014]: It must be emphasized that if the origin of flux noise is charge fluctuation, then Eqs.\n  Potential KB overlap [arxiv-2407-21177-p0070]: As explained in section II, charge noise in an inductive element generate flux fluctuations so it can also be interpreted as flux noise.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

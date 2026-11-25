@@ -1,0 +1,553 @@
+{
+ "topic": "quantum LDPC codes",
+ "hypothesis": {
+  "id": "a658f49a8366",
+  "text": "cubic lattice and weight four parity checks may interact in their effect on code.",
+  "pattern": "convergent",
+  "relation": "jointly_affect",
+  "anchors": [
+   "cubic lattice",
+   "weight four parity checks",
+   "code"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2103-08049-p0005",
+   "arxiv-2507-09690-p0002"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2103-08049-p0005",
+    "quote": "Instead, it moves the syndrome in a fixed direction of the cubic lattice supporting the code.",
+    "start": 89,
+    "end": 182,
+    "chunk_sha256": "12b36f4f95d7f74d4934834b60488a46f601512be0a56fa1475590712e697905",
+    "relation": "supports",
+    "subject": "cubic lattice",
+    "object": "code",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2507-09690-p0002",
+    "quote": "Our codes are approximately twice as efficient as comparable surface codes, yet require only weight-four parity checks, which simplifies experimental realization compared to other quantum LDPC codes.",
+    "start": 814,
+    "end": 1013,
+    "chunk_sha256": "29111f32bb93ccca05ebcd58d29523770c1e19e9056332d4dcb1d1b895e37f78",
+    "relation": "constrains",
+    "subject": "weight four parity checks",
+    "object": "codes",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.601,
+   "novelty": 0.683
+  },
+  "falsification_test": "Vary cubic lattice and weight four parity checks separately and together. The hypothesis fails if the joint change in code equals the sum of the separate changes.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "code"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "convergent",
+  "terms": {
+   "a": "cubic lattice",
+   "b": "weight four parity checks",
+   "c": "code"
+  },
+  "path_nodes": null,
+  "links": [
+   {
+    "source": "cubic lattice",
+    "target": "code",
+    "expected_relation": "supports",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2103-08049-p0005",
+      "quote": "Instead, it moves the syndrome in a fixed direction of the cubic lattice supporting the code.",
+      "start": 89,
+      "end": 182,
+      "chunk_sha256": "12b36f4f95d7f74d4934834b60488a46f601512be0a56fa1475590712e697905",
+      "relation": "supports",
+      "subject": "cubic lattice",
+      "object": "code",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2103-08049-p0004",
+      "quote": "This strategy applies to all local codes defined on cubic lattices but it is unclear to us how to build these self-similar patches for hyperbolic codes or for general quantum LDPC codes.",
+      "start": 3261,
+      "end": 3447,
+      "chunk_sha256": "9befe85e4b0bc1cb70df89c059933341085282a2adbe01c2dfd89ffbe256e019"
+     },
+     {
+      "document_id": "arxiv-2103-08049-p0005",
+      "quote": "Instead, it moves the syndrome in a fixed direction of the cubic lattice supporting the code.",
+      "start": 89,
+      "end": 182,
+      "chunk_sha256": "12b36f4f95d7f74d4934834b60488a46f601512be0a56fa1475590712e697905"
+     },
+     {
+      "document_id": "arxiv-2103-08049-p0016",
+      "quote": "The major advantage of toric codes is that they can be naturally embedded in a cubic lattice and they achieve a large minimum distance.",
+      "start": 0,
+      "end": 135,
+      "chunk_sha256": "a6e1fc05d3c9e4fd4f43676d4824fa63d73a10907b51ae015d6fb4527c303fd9"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "supports"
+    ]
+   },
+   {
+    "source": "weight four parity checks",
+    "target": "code",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2507-09690-p0002",
+      "quote": "Our codes are approximately twice as efficient as comparable surface codes, yet require only weight-four parity checks, which simplifies experimental realization compared to other quantum LDPC codes.",
+      "start": 814,
+      "end": 1013,
+      "chunk_sha256": "29111f32bb93ccca05ebcd58d29523770c1e19e9056332d4dcb1d1b895e37f78",
+      "relation": "constrains",
+      "subject": "weight four parity checks",
+      "object": "codes",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   }
+  ],
+  "expected_relation": "jointly_affect",
+  "direction_check": {
+   "requested": "jointly_affect",
+   "status": "unspecified",
+   "observed": []
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-1811-00566-p0024",
+    "quote": "In this section we compare the overhead cost of our fault-tolerant magic state preparation scheme for preparing an encoded |H⟩ state in the concatenated Steane code to the overhead cost of the MEK scheme for distilling |H⟩ states (also encoded in the concatenated Steane code).",
+    "start": 0,
+    "end": 277,
+    "chunk_sha256": "a3f6b10949adda061ad14ea085746a1f0e47df43339a23c6a911079a47d65ab6",
+    "measures": [
+     "code"
+    ]
+   },
+   {
+    "document_id": "arxiv-1901-10847-p0002",
+    "quote": "We tested the decoding performance under depolarizing noise with noiseless error syndrome measurements for the rotated surface code and compared against the Blossom algorithm and a neural network based decoder.",
+    "start": 737,
+    "end": 947,
+    "chunk_sha256": "32fcdd3ab39e5c821d6cd13e1971c2f211cce64118b67525e7ffae5cb3469100",
+    "measures": [
+     "code"
+    ]
+   },
+   {
+    "document_id": "arxiv-1905-06903-p0020",
+    "quote": "Before we construct a surface-code implementation of the 15-to-1 protocol, we first discuss two different ways of performing faulty logical π/8 rotations with surface codes: the traditional method based on state injection, and a protocol based Accepted in Quantum 2019-10-30, click title to verify 6",
+    "start": 1251,
+    "end": 1550,
+    "chunk_sha256": "f55210d8b39765ccd353315acdd37279a756b362f80efb1b8a802400ae0410d3",
+    "measures": [
+     "code"
+    ]
+   },
+   {
+    "document_id": "arxiv-2009-14226-p0002",
+    "quote": "From these two ingredients, we construct a decoder on the product code.",
+    "start": 2473,
+    "end": 2544,
+    "chunk_sha256": "7b38d5f1a65b629f994e1f056e680963e18a05ba3e4aad7e3a9e0224969d5c6d",
+    "measures": [
+     "code"
+    ]
+   },
+   {
+    "document_id": "arxiv-2009-14226-p0022",
+    "quote": "To illustrate further the advantage of augmented codes, we compare numerically the performance of toric codes and their product with a [[4, 2, 2]] code.",
+    "start": 752,
+    "end": 904,
+    "chunk_sha256": "891befc8e47fac96589c676bee4be2114ac77d4817db8b105a90205fc3caffcc",
+    "measures": [
+     "code"
+    ]
+   },
+   {
+    "document_id": "arxiv-2009-14226-p0022",
+    "quote": "In Figure 3, we compare the product TC(m) ⊗ [[4, 2, 2]] with all the toric codes TC(l) achieving a smaller or equal qubit overhead.",
+    "start": 1035,
+    "end": 1166,
+    "chunk_sha256": "891befc8e47fac96589c676bee4be2114ac77d4817db8b105a90205fc3caffcc",
+    "measures": [
+     "code"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "Gottesman construction of fault tolerant schemes",
+    "relation": "supports",
+    "citation": {
+     "document_id": "arxiv-1711-08351-p0002",
+     "quote": "Finding codes with these properties is also motivated by Gottesman's construction of fault tolerant schemes with constant space overhead.",
+     "start": 434,
+     "end": 571,
+     "chunk_sha256": "a7a9942774ab998d1ef31507d9cf419130e566919725d79ea37cfe9a3fcbb67c",
+     "relation": "supports",
+     "subject": "Gottesman construction of fault tolerant schemes",
+     "object": "Finding codes",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "nearest neighbor gates",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2407-16176-p0004",
+     "quote": "The surface code and its variants can achieve a high error threshold and require only nearest-neighbor gates in experimental implementation, making them the most promising candidates for fault-tolerant quantum computation [5].",
+     "start": 426,
+     "end": 652,
+     "chunk_sha256": "4de79d3e9f2dbc59c8319a8326b6b88c498f458dd9593669c44ff9c288988e7b",
+     "relation": "constrains",
+     "subject": "nearest neighbor gates",
+     "object": "surface code",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "physical qubit counts",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2607-27644-p0016",
+     "quote": "On one hand, the qLDPC codes in both these works require physical qubit counts in the thousands, whereas our codes (other than ZSZ-LP-775) stay under a thousand.",
+     "start": 1408,
+     "end": 1569,
+     "chunk_sha256": "a7a6ca7bc2ec77358e4119e32fe532730f2a718a2da2ee1f6c80034d8156614a",
+     "relation": "constrains",
+     "subject": "physical qubit counts",
+     "object": "qLDPC codes",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [],
+   "qualifications": [
+    {
+     "link": 1,
+     "citation": {
+      "document_id": "arxiv-2507-09690-p0002",
+      "quote": "Our codes are approximately twice as efficient as comparable surface codes, yet require only weight-four parity checks, which simplifies experimental realization compared to other quantum LDPC codes.",
+      "start": 814,
+      "end": 1013,
+      "chunk_sha256": "29111f32bb93ccca05ebcd58d29523770c1e19e9056332d4dcb1d1b895e37f78",
+      "relation": "constrains",
+      "subject": "weight four parity checks",
+      "object": "codes",
+      "hedged": false
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    }
+   ],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "untested",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "qualification_review",
+    "kind": "scope",
+    "instruction": "Restrict the proposal to the cited conditions and quantifiers."
+   },
+   {
+    "id": "85f66e975f3fb88f",
+    "kind": "variable",
+    "term": "cubic lattice",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for cubic lattice."
+   },
+   {
+    "id": "321d026e20d1c1b0",
+    "kind": "variable",
+    "term": "cubic lattice",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for cubic lattice."
+   },
+   {
+    "id": "d3ac36b91c14e0c1",
+    "kind": "variable",
+    "term": "weight four parity checks",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for weight four parity checks."
+   },
+   {
+    "id": "291358dfe65bbb75",
+    "kind": "variable",
+    "term": "weight four parity checks",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for weight four parity checks."
+   },
+   {
+    "id": "20373c3c7fad6b1a",
+    "kind": "variable",
+    "term": "code",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for code."
+   },
+   {
+    "id": "28eb4fc3795478d8",
+    "kind": "variable",
+    "term": "code",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for code."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "2x2 factorial",
+   "manipulate": [
+    "cubic lattice",
+    "weight four parity checks"
+   ],
+   "measure": [
+    "code"
+   ],
+   "mediator": null,
+   "controls": [
+    "Gottesman construction of fault tolerant schemes",
+    "nearest neighbor gates",
+    "physical qubit counts"
+   ],
+   "steps": [
+    "Run all four combinations of low and high cubic lattice and weight four parity checks; measure code.",
+    "Review candidate controls (Gottesman construction of fault tolerant schemes, nearest neighbor gates, physical qubit counts) for timing, feasibility and causal role before adjustment.",
+    "Compare the joint effect with the sum of the separate effects."
+   ],
+   "fails_if": "A precisely measured absence of an interaction challenges compounding in code; it does not refute individual effects of cubic lattice or weight four parity checks. Predefine a meaningful effect threshold.",
+   "variables": [
+    {
+     "term": "cubic lattice",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "weight four parity checks",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "code",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1412-7010-p0002",
+       "quote": "Our study shows that leakage errors can be corrected without the need of measurements and at the cost of only a few additional ancilla qubits and gate operations compared to standard quantum error correction codes.",
+       "start": 504,
+       "end": 718,
+       "chunk_sha256": "cb0d6222a255361d1f52b063bea503a39ae721c581db1cb7c0ebae8177730c51",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1811-00566-p0017",
+       "quote": "However, Steane error correction (not to confuse with the Steane code) was used for the EC units and cat states were fault-tolerantly prepared in order to measure ̄T ̄X ̄T† 4.",
+       "start": 374,
+       "end": 549,
+       "chunk_sha256": "ce365563ada4ac7591d95230e63dd2b04adfb1174483adfc938e437bcf103cac",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1811-00566-p0018",
+       "quote": "Accepted in Quantum 2019-05-14, click title to verify 4 Figure 3: Fault-tolerant error correction circuit introduced by Reichardt [25] for measuring the stabilizers of the [[7, 1, 3]] Steane code.",
+       "start": 1233,
+       "end": 1429,
+       "chunk_sha256": "df3567604a5539ec31f53b980e6f0ff5292c989a22937b7958aea6b7141ed3ac",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "cubic lattice",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "cubic lattice",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "weight four parity checks",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "weight four parity checks",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "code",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "code",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "interaction_test": {
+    "contrast": "Y11 - Y10 - Y01 + Y00",
+    "assumptions": "Additive outcome scale, matched conditions and defined interventions.",
+    "interpretation": "A zero interaction contrast challenges compounding, not the individual effects."
+   }
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 9.41
+  },
+  "snapshot": {
+   "as_of": 1795596341,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: cubic lattice and weight four parity checks may interact in their effect on code.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unspecified.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Retain qualification [arxiv-2507-09690-p0002]: Our codes are approximately twice as efficient as comparable surface codes, yet require only weight-four parity checks, which simplifies experimental realization compared to other quantum LDPC codes.\n\nLink cubic lattice -> code: supported (1 supporting, 0 contrary).\n  + [arxiv-2103-08049-p0005] Instead, it moves the syndrome in a fixed direction of the cubic lattice supporting the code.\n\nLink weight four parity checks -> code: supported (1 supporting, 0 contrary).\n  + [arxiv-2507-09690-p0002] Our codes are approximately twice as efficient as comparable surface codes, yet require only weight-four parity checks, which simplifies experimental realization compared to other quantum LDPC codes.\n\nExisting setups that measure one of its terms:\n  [arxiv-1811-00566-p0024] In this section we compare the overhead cost of our fault-tolerant magic state preparation scheme for preparing an encoded |H⟩ state in the concatenated Steane code to the overhead cost of the MEK scheme for distilling |H⟩ states (also encoded in the concatenated Steane code).\n  [arxiv-1901-10847-p0002] We tested the decoding performance under depolarizing noise with noiseless error syndrome measurements for the rotated surface code and compared against the Blossom algorithm and a neural network based decoder.\n  [arxiv-1905-06903-p0020] Before we construct a surface-code implementation of the 15-to-1 protocol, we first discuss two different ways of performing faulty logical π/8 rotations with surface codes: the traditional method based on state injection, and a protocol based Accepted in Quantum 2019-10-30, click title to verify 6\n  [arxiv-2009-14226-p0002] From these two ingredients, we construct a decoder on the product code.\n\nCandidate controls (review before adjustment):\n  Gottesman construction of fault tolerant schemes: outcome_predictor [arxiv-1711-08351-p0002]\n  nearest neighbor gates: outcome_predictor [arxiv-2407-16176-p0004]\n  physical qubit counts: outcome_predictor [arxiv-2607-27644-p0016]\n\nTest plan (2x2 factorial):\n  1. Run all four combinations of low and high cubic lattice and weight four parity checks; measure code.\n  2. Review candidate controls (Gottesman construction of fault tolerant schemes, nearest neighbor gates, physical qubit counts) for timing, feasibility and causal role before adjustment.\n  3. Compare the joint effect with the sum of the separate effects.\n  Fails if: A precisely measured absence of an interaction challenges compounding in code; it does not refute individual effects of cubic lattice or weight four parity checks. Predefine a meaningful effect threshold.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for cubic lattice.\n  Required: feasible intervention or justified observational design for cubic lattice.\n  Required: intervention levels for weight four parity checks.\n  Required: feasible intervention or justified observational design for weight four parity checks.\n  Required: measurement procedure for code.\n  Required: unit or explicit categorical scale for code.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

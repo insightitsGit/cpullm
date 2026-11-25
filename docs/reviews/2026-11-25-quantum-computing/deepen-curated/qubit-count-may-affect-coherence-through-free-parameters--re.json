@@ -1,0 +1,502 @@
+{
+ "topic": "qubit coherence",
+ "hypothesis": {
+  "id": "f80740972210",
+  "text": "qubit count may affect coherence through free parameters (read as hardware platform design parameters of particular).",
+  "pattern": "chain",
+  "relation": "affects",
+  "anchors": [
+   "qubit count",
+   "coherence"
+  ],
+  "via": [
+   "free parameters (read as hardware platform design parameters of particular)"
+  ],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2406-14285-p0067",
+   "arxiv-2208-02191-p0022"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2406-14285-p0067",
+    "quote": "Though The dimensionality of the vector space grows as 2n, the fixed circuit model reduces complexity by having free parameters scale polynomially with qubit count rather than exponentially [84].",
+    "start": 163,
+    "end": 358,
+    "chunk_sha256": "7fddb16f7a3ca0278f8e282312962044ab3e1fcc7413151951b3d1d952afba8d",
+    "relation": "increases",
+    "subject": "qubit count",
+    "object": "free parameters",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2208-02191-p0022",
+    "quote": "Experimental data shows that coherence times T1 and T2 depend heavily on hardware platform, design and manufacturing parameters of a particular device.",
+    "start": 123,
+    "end": 274,
+    "chunk_sha256": "351d9baa0f231cad64744657feafcd4373feb622b49e566ea62f51b37da7cc81",
+    "relation": "constrains",
+    "subject": "hardware platform design parameters of particular",
+    "object": "coherence",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.678,
+   "novelty": 0.6
+  },
+  "falsification_test": "Compare settings where qubit count differs while other inputs are matched. The hypothesis fails if coherence does not change with qubit count, or if fixing free parameters (read as hardware platform design parameters of particular) removes no part of the effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "free parameter"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "qubit count",
+   "b": "free parameters",
+   "c": "coherence"
+  },
+  "path_nodes": [
+   "qubit count",
+   "free parameters",
+   "coherence"
+  ],
+  "links": [
+   {
+    "source": "qubit count",
+    "target": "free parameters",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2406-14285-p0067",
+      "quote": "Though The dimensionality of the vector space grows as 2n, the fixed circuit model reduces complexity by having free parameters scale polynomially with qubit count rather than exponentially [84].",
+      "start": 163,
+      "end": 358,
+      "chunk_sha256": "7fddb16f7a3ca0278f8e282312962044ab3e1fcc7413151951b3d1d952afba8d",
+      "relation": "increases",
+      "subject": "qubit count",
+      "object": "free parameters",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2406-14285-p0067",
+      "quote": "Though The dimensionality of the vector space grows as 2n, the fixed circuit model reduces complexity by having free parameters scale polynomially with qubit count rather than exponentially [84].",
+      "start": 163,
+      "end": 358,
+      "chunk_sha256": "7fddb16f7a3ca0278f8e282312962044ab3e1fcc7413151951b3d1d952afba8d"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   },
+   {
+    "source": "free parameters",
+    "target": "coherence",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2208-02191-p0022",
+      "quote": "Experimental data shows that coherence times T1 and T2 depend heavily on hardware platform, design and manufacturing parameters of a particular device.",
+      "start": 123,
+      "end": 274,
+      "chunk_sha256": "351d9baa0f231cad64744657feafcd4373feb622b49e566ea62f51b37da7cc81",
+      "relation": "constrains",
+      "subject": "hardware platform design parameters of particular",
+      "object": "coherence",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   }
+  ],
+  "expected_relation": "affects",
+  "direction_check": {
+   "requested": "affects",
+   "status": "consistent",
+   "observed": [
+    "affects"
+   ],
+   "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-1811-00566-p0012",
+    "quote": "For example, trapped ion experiments have coherence times T2 = 2T1 on the order of 1 − 10 seconds with gate times on the order of 10μs.",
+    "start": 268,
+    "end": 403,
+    "chunk_sha256": "10e8ec8a2031785479423d2fbc11d6d26b6b1c894999bdb9cfb5d434278312af",
+    "measures": [
+     "coherence"
+    ]
+   },
+   {
+    "document_id": "arxiv-2501-03661-p0003",
+    "quote": "We measure energy decay times T1 ≈ 8 μs and coherence times T2E ≈ 3 μs, robust in fields beyond 1 T, with less than 2 % qubit frequency shift in this entire range.",
+    "start": 1539,
+    "end": 1702,
+    "chunk_sha256": "ea66eb48b298ac0d4a3b47076c27d846c167e7c583d0e009f52871b0b55bf5e9",
+    "measures": [
+     "coherence"
+    ]
+   },
+   {
+    "document_id": "arxiv-2504-12091-p0002",
+    "quote": "Numerical experiments on random circuit sampling and 2D Ising Hamiltonian simulation demonstrate that our scheme significantly reduces execution time, while incurring little or no additional spatial overhead, compared to sequential Pauli-based computation, a conventional computation scheme, and scales favorably with increasing qubit count.",
+    "start": 906,
+    "end": 1247,
+    "chunk_sha256": "a0bcfdc389e98e6fdc0be498263c32d506ea2c093a6ef67e34a951f71cc63ba9",
+    "measures": [
+     "qubit count"
+    ]
+   },
+   {
+    "document_id": "arxiv-2512-13908-p0040",
+    "quote": "The coherence T2 is from a CPMG experiment.",
+    "start": 208,
+    "end": 251,
+    "chunk_sha256": "9852dcfc679068bc3fe1b193d79085d0530e13b6da69c6f8b808eb0ebd4685ea",
+    "measures": [
+     "coherence"
+    ]
+   },
+   {
+    "document_id": "arxiv-2602-22117-p0003",
+    "quote": "We measure acoustic modes with phonon lifetimes up to 400 μs and lifetime-limited coherence times approaching one millisecond in the quantum regime.",
+    "start": 774,
+    "end": 922,
+    "chunk_sha256": "46d644635400e755fa70d37138564e6980758c3ff2c3f179371040069a16acd6",
+    "measures": [
+     "coherence"
+    ]
+   },
+   {
+    "document_id": "arxiv-2602-22117-p0006",
+    "quote": "Nearly all of our mechanical modes have single-phonon Q’s above 106 with negligible dephasing, and we measure single-phonon lifetimes as high as T1,p = 396 ± 11 μs corresponding to Q = 1.3 × 107, and a lifetime-limited mechanical coherence time of T ∗ 2,p = 806 ± 24 μs.",
+    "start": 596,
+    "end": 866,
+    "chunk_sha256": "cd07e6e929ebbcf80efe708e916001b5d726b65a960126fdd759d6968389b340",
+    "measures": [
+     "coherence"
+    ]
+   }
+  ],
+  "confounders": [],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "free parameters",
+     "source_term": "hardware platform design parameters of particular",
+     "citation": {
+      "document_id": "arxiv-2208-02191-p0022",
+      "quote": "Experimental data shows that coherence times T1 and T2 depend heavily on hardware platform, design and manufacturing parameters of a particular device.",
+      "start": 123,
+      "end": 274,
+      "chunk_sha256": "351d9baa0f231cad64744657feafcd4373feb622b49e566ea62f51b37da7cc81",
+      "relation": "constrains",
+      "subject": "hardware platform design parameters of particular",
+      "object": "coherence",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "c0cf7f7ef5639030",
+    "kind": "variable",
+    "term": "qubit count",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for qubit count."
+   },
+   {
+    "id": "7bd2383711aa5207",
+    "kind": "variable",
+    "term": "qubit count",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for qubit count."
+   },
+   {
+    "id": "23541067535206a1",
+    "kind": "variable",
+    "term": "coherence",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for coherence."
+   },
+   {
+    "id": "770ed6cca1fef3e6",
+    "kind": "variable",
+    "term": "coherence",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for coherence."
+   },
+   {
+    "id": "3e4eee8fd984f380",
+    "kind": "variable",
+    "term": "free parameters",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for free parameters."
+   },
+   {
+    "id": "f8e799a8d092bbd7",
+    "kind": "variable",
+    "term": "free parameters",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for free parameters."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "qubit count"
+   ],
+   "measure": [
+    "coherence"
+   ],
+   "mediator": "free parameters",
+   "controls": [],
+   "steps": [
+    "Vary qubit count across matched settings and measure coherence.",
+    "No additional outcome cause was extracted; this does not establish absence of confounding.",
+    "Repeat with free parameters held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "coherence does not change when qubit count varies with the controls fixed, or holding free parameters fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "qubit count",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2110-10794-p0043",
+       "quote": "Such a magic-state distillation scheme can be implemented using ∼ 15000 physical qubits where we do not count the qubits needed for stabilizer measurements.",
+       "start": 655,
+       "end": 811,
+       "chunk_sha256": "ec1930d8b517d49c5028401fe7b2b74bbcd93db1b87cfc1bc36e6a0234920083",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2512-13908-p0056",
+       "quote": "In order to facilitate the removal and addition of qubit degrees of freedom from a circuit, we convert all measurement operations to destructive measurements followed by creative resets, which reduce or increase the qubit count by one, respectively.",
+       "start": 0,
+       "end": 249,
+       "chunk_sha256": "9f04ca4d0faacde216336b087a8391cf5cf26c1b5bbfbf4ac14ccebfd9c59997",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "coherence",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1506-07972-p0002",
+       "quote": "In particular, the intensity of the central peak in the fluorescence spectrum becomes a function of the electron coherence, allowing access to the coherence time of a two dimensional electron gas through a fluorescence intensity measurement.",
+       "start": 436,
+       "end": 677,
+       "chunk_sha256": "ad0e678c6f47b96bf496b4832ed54a59dfa6265061797bf5eb23bfc637d5f09e",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2402-18868-p0022",
+       "quote": "We experimentally examine the above idea by investigating the coherence preservation of a single qubit in the superposition state when transferred to the 2D3/2 levels and then measured.",
+       "start": 0,
+       "end": 185,
+       "chunk_sha256": "3b22523c957ae6249a9b4fadc5e8dc4ca4bfc1549b7ad332112183908379cd7e",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2402-18868-p0024",
+       "quote": "b Experimental sequences to examine the coherence perservation during the mid-circuit measurement.",
+       "start": 225,
+       "end": 323,
+       "chunk_sha256": "5670a7fbaa7ccb9abd15e7581b3e2b640e1ae6d5af49516408e0aa9967659d4b",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "free parameters",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "qubit count",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "qubit count",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "coherence",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "coherence",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "free parameters",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "free parameters",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "free parameters"
+   ]
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 7.404
+  },
+  "snapshot": {
+   "as_of": 1795596391,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: qubit count may affect coherence through free parameters (read as hardware platform design parameters of particular).\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: consistent.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: hardware platform design parameters of particular versus free parameters.\n\nLink qubit count -> free parameters: supported (1 supporting, 0 contrary).\n  + [arxiv-2406-14285-p0067] Though The dimensionality of the vector space grows as 2n, the fixed circuit model reduces complexity by having free parameters scale polynomially with qubit count rather than exponentially [84].\n\nLink free parameters -> coherence: supported (1 supporting, 0 contrary).\n  + [arxiv-2208-02191-p0022] Experimental data shows that coherence times T1 and T2 depend heavily on hardware platform, design and manufacturing parameters of a particular device.\n\nExisting setups that measure one of its terms:\n  [arxiv-1811-00566-p0012] For example, trapped ion experiments have coherence times T2 = 2T1 on the order of 1 − 10 seconds with gate times on the order of 10μs.\n  [arxiv-2501-03661-p0003] We measure energy decay times T1 ≈ 8 μs and coherence times T2E ≈ 3 μs, robust in fields beyond 1 T, with less than 2 % qubit frequency shift in this entire range.\n  [arxiv-2504-12091-p0002] Numerical experiments on random circuit sampling and 2D Ising Hamiltonian simulation demonstrate that our scheme significantly reduces execution time, while incurring little or no additional spatial overhead, compared to sequential Pauli-based computation, a conventional computation scheme, and scales favorably with increasing qubit count.\n  [arxiv-2512-13908-p0040] The coherence T2 is from a CPMG experiment.\n\nTest plan (mediation):\n  1. Vary qubit count across matched settings and measure coherence.\n  2. No additional outcome cause was extracted; this does not establish absence of confounding.\n  3. Repeat with free parameters held fixed or blocked to test whether it carries the effect.\n  Fails if: coherence does not change when qubit count varies with the controls fixed, or holding free parameters fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for qubit count.\n  Required: feasible intervention or justified observational design for qubit count.\n  Required: measurement procedure for coherence.\n  Required: unit or explicit categorical scale for coherence.\n  Required: measurement procedure for free parameters.\n  Required: unit or explicit categorical scale for free parameters.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

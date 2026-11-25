@@ -1,0 +1,765 @@
+{
+ "topic": "quasiparticles",
+ "hypothesis": {
+  "id": "1356a86468d9",
+  "text": "correlated errors and quasiparticle may move together because both depend on Ionizing radiation.",
+  "pattern": "divergent",
+  "relation": "common_driver",
+  "anchors": [
+   "correlated errors",
+   "quasiparticle",
+   "Ionizing radiation"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2610-20132-p0002",
+   "arxiv-2603-16494-p0002"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2610-20132-p0002",
+    "quote": "Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.",
+    "start": 0,
+    "end": 124,
+    "chunk_sha256": "ff8e50d626238325449b9c299fd1ea576640140085fa7b93de4476d44924581e",
+    "relation": "causes",
+    "subject": "Ionizing radiation",
+    "object": "correlated errors",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2603-16494-p0002",
+    "quote": "Radiation from cosmic and terrestrial sources can increase the quasiparticle (QP) density in a superconducting qubit device, resulting in an increased rate of QPs tunneling across proximal Josephson junctions (JJs) and causing correlated errors.",
+    "start": 125,
+    "end": 370,
+    "chunk_sha256": "4f37bcd17b2ee0eb1dab3371e6950721989df56964e8a9df4355b7a073dcd169",
+    "relation": "increases",
+    "subject": "Radiation",
+    "object": "quasiparticle",
+    "hedged": true,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.55,
+   "deductive_relevance": 0.737,
+   "novelty": 0.578
+  },
+  "falsification_test": "Track correlated errors and quasiparticle across periods where Ionizing radiation changes and where it does not. The hypothesis fails if they co-vary just as strongly when Ionizing radiation is held fixed.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "ionizing radiation",
+  "check": {
+   "verdict": "all_links_supported",
+   "incomplete": false,
+   "direction_check": {
+    "requested": "common_driver",
+    "status": "unspecified",
+    "observed": []
+   },
+   "composition": {
+    "status": "requires_review",
+    "bridges": [
+     {
+      "link": 1,
+      "requested": "Ionizing radiation",
+      "source_term": "Radiation",
+      "citation": {
+       "document_id": "arxiv-2603-16494-p0002",
+       "quote": "Radiation from cosmic and terrestrial sources can increase the quasiparticle (QP) density in a superconducting qubit device, resulting in an increased rate of QPs tunneling across proximal Josephson junctions (JJs) and causing correlated errors.",
+       "start": 125,
+       "end": 370,
+       "chunk_sha256": "4f37bcd17b2ee0eb1dab3371e6950721989df56964e8a9df4355b7a073dcd169",
+       "relation": "increases",
+       "subject": "Radiation",
+       "object": "quasiparticle",
+       "hedged": true
+      },
+      "status": "requires_review",
+      "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+     }
+    ],
+    "qualifications": [
+     {
+      "link": 0,
+      "citation": {
+       "document_id": "arxiv-2610-20132-p0002",
+       "quote": "Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.",
+       "start": 0,
+       "end": 124,
+       "chunk_sha256": "ff8e50d626238325449b9c299fd1ea576640140085fa7b93de4476d44924581e",
+       "relation": "causes",
+       "subject": "Ionizing radiation",
+       "object": "correlated errors",
+       "hedged": false
+      },
+      "instruction": "Retain this full qualified statement; do not treat it as universal."
+     },
+     {
+      "link": 1,
+      "citation": {
+       "document_id": "arxiv-2603-16494-p0002",
+       "quote": "Radiation from cosmic and terrestrial sources can increase the quasiparticle (QP) density in a superconducting qubit device, resulting in an increased rate of QPs tunneling across proximal Josephson junctions (JJs) and causing correlated errors.",
+       "start": 125,
+       "end": 370,
+       "chunk_sha256": "4f37bcd17b2ee0eb1dab3371e6950721989df56964e8a9df4355b7a073dcd169",
+       "relation": "increases",
+       "subject": "Radiation",
+       "object": "quasiparticle",
+       "hedged": true
+      },
+      "instruction": "Retain this full qualified statement; do not treat it as universal."
+     }
+    ],
+    "source_contexts": [],
+    "scope_differences": [],
+    "context_coverage": "not_recorded",
+    "interaction": {
+     "status": "not_applicable",
+     "reason": "Individual effects do not establish a joint interaction."
+    },
+    "assumptions": [
+     "Source terms denote compatible quantities and settings.",
+     "Composed source relationships are not causal identification."
+    ],
+    "scientific_validity": "not_established"
+   },
+   "plan_readiness": "needs_input",
+   "links": [
+    {
+     "source": "Ionizing radiation",
+     "target": "correlated errors",
+     "status": "supported",
+     "counter": []
+    },
+    {
+     "source": "Ionizing radiation",
+     "target": "quasiparticle",
+     "status": "supported",
+     "counter": []
+    }
+   ]
+  }
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "divergent",
+  "terms": {
+   "a": "correlated errors",
+   "b": "quasiparticle",
+   "c": "Ionizing radiation"
+  },
+  "path_nodes": null,
+  "links": [
+   {
+    "source": "Ionizing radiation",
+    "target": "correlated errors",
+    "expected_relation": "causes",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2610-20132-p0002",
+      "quote": "Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.",
+      "start": 0,
+      "end": 124,
+      "chunk_sha256": "ff8e50d626238325449b9c299fd1ea576640140085fa7b93de4476d44924581e",
+      "relation": "causes",
+      "subject": "Ionizing radiation",
+      "object": "correlated errors",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2402-03208-p0002",
+      "quote": "Several recent superconducting-qubit experiments, however, reported observing intermittent spatiotemporally correlated errors that would be problematic for conventional codes, with ionizing radiation being a likely cause.",
+      "start": 138,
+      "end": 359,
+      "chunk_sha256": "cf6f8c168197d2b4428e077deb9fb2bf91c7a48f06b9653e72ddb00a4fd06767"
+     },
+     {
+      "document_id": "arxiv-2603-13124-p0002",
+      "quote": "Ionizing radiation is a known source of correlated errors in superconducting quantum processors, inhibiting the functionality of quantum error correction surface codes.",
+      "start": 0,
+      "end": 168,
+      "chunk_sha256": "ccced170bf747543a129381a3618f7d622cbf5402c8ea96a43c242c6a9af1a3d"
+     },
+     {
+      "document_id": "arxiv-2607-14293-p0002",
+      "quote": "Ionizing radiation from cosmic rays and gammas can induce discontinuous jumps in the environmental charge of superconducting qubits (charge jumps), causing correlated errors that challenge fault-tolerant quantum computing while simultaneously providing a detection signature for quantum sensing applications.",
+      "start": 0,
+      "end": 308,
+      "chunk_sha256": "5d105c41716b25deddcdb7906361c2072d2b11e9bfe69e6fe586bbf01e1bc492"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "causes"
+    ]
+   },
+   {
+    "source": "Ionizing radiation",
+    "target": "quasiparticle",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2603-16494-p0002",
+      "quote": "Radiation from cosmic and terrestrial sources can increase the quasiparticle (QP) density in a superconducting qubit device, resulting in an increased rate of QPs tunneling across proximal Josephson junctions (JJs) and causing correlated errors.",
+      "start": 125,
+      "end": 370,
+      "chunk_sha256": "4f37bcd17b2ee0eb1dab3371e6950721989df56964e8a9df4355b7a073dcd169",
+      "relation": "increases",
+      "subject": "Radiation",
+      "object": "quasiparticle",
+      "hedged": true
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2603-13124-p0002",
+      "quote": "Previous investigations of this problem have relied on ambient, stochastic sources of ionizing radiation or alternative methods of quasiparticle generation.",
+      "start": 350,
+      "end": 506,
+      "chunk_sha256": "ccced170bf747543a129381a3618f7d622cbf5402c8ea96a43c242c6a9af1a3d"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   }
+  ],
+  "expected_relation": "common_driver",
+  "direction_check": {
+   "requested": "common_driver",
+   "status": "unspecified",
+   "observed": []
+  },
+  "verdict": "all_links_supported",
+  "predictions": [
+   {
+    "document_id": "arxiv-2402-03208-p0002",
+    "quote": "Several recent superconducting-qubit experiments, however, reported observing intermittent spatiotemporally correlated errors that would be problematic for conventional codes, with ionizing radiation being a likely cause.",
+    "start": 138,
+    "end": 359,
+    "chunk_sha256": "cf6f8c168197d2b4428e077deb9fb2bf91c7a48f06b9653e72ddb00a4fd06767",
+    "qualification": "source_prediction"
+   }
+  ],
+  "setups": [
+   {
+    "document_id": "arxiv-2402-03208-p0002",
+    "quote": "Several recent superconducting-qubit experiments, however, reported observing intermittent spatiotemporally correlated errors that would be problematic for conventional codes, with ionizing radiation being a likely cause.",
+    "start": 138,
+    "end": 359,
+    "chunk_sha256": "cf6f8c168197d2b4428e077deb9fb2bf91c7a48f06b9653e72ddb00a4fd06767",
+    "measures": [
+     "correlated errors",
+     "Ionizing radiation"
+    ]
+   },
+   {
+    "document_id": "arxiv-2208-02191-p0004",
+    "quote": "Recent experiments have proven that such correlated errors have a crucial effect on the efficiency of surface-code quantum error correction [36].",
+    "start": 1628,
+    "end": 1773,
+    "chunk_sha256": "d0057b890a7f40b2058e93b4f9dc807b9fdb342d14a15bbf3661c59ab3f09b1c",
+    "measures": [
+     "correlated errors"
+    ]
+   },
+   {
+    "document_id": "arxiv-2402-04245-p0002",
+    "quote": "Recent experiments with superconducting qubits indicate that they can arise from quasiparticle (QP) bursts induced by cosmic-ray muons and {\\gamma}-rays.",
+    "start": 136,
+    "end": 289,
+    "chunk_sha256": "79fdb44a57ba452009da678ab5d61a442991fbefeac900f0e2e3a4899cf02d69",
+    "measures": [
+     "quasiparticle"
+    ]
+   },
+   {
+    "document_id": "arxiv-2407-16176-p0046",
+    "quote": "To investigate the effect of correlated errors, we compare the logical error rates in the absence and presence of correlated errors.",
+    "start": 0,
+    "end": 132,
+    "chunk_sha256": "c331ce8d8cb87bfb432a8db5843d025fb36e1c388a644043bb1ec57617dbbb9c",
+    "measures": [
+     "correlated errors"
+    ]
+   },
+   {
+    "document_id": "arxiv-2407-16176-p0047",
+    "quote": "We compare the logical error rates derived from assuming the absence and presence of correlated errors, as shown in Fig. 10.",
+    "start": 448,
+    "end": 572,
+    "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c",
+    "measures": [
+     "correlated errors"
+    ]
+   },
+   {
+    "document_id": "arxiv-2603-13460-p0003",
+    "quote": "Recent experiments reduced correlated errors by making the difference in superconducting gap energy across the JJ larger than the qubit transition energy.",
+    "start": 287,
+    "end": 441,
+    "chunk_sha256": "9314264383ade6665563324516105b15bcc1259258cb3b8d271b4c4b176e87ef",
+    "measures": [
+     "correlated errors"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "CNOT gate",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2208-02191-p0033",
+     "quote": "Particularly, in the context of surface-code error correction, a CNOT gate between data and ancilla qubits can cause unwanted ZZ error between the data qubit involved in the gate and one of the neighbouring data qubits [39].",
+     "start": 636,
+     "end": 860,
+     "chunk_sha256": "803fde3109cf4f3d3896787e0dfb037da9c0871412fcf31984ed13e2f8f22d70",
+     "relation": "causes",
+     "subject": "CNOT gate",
+     "object": "unwanted ZZ error",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Cosmic rays",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2402-03208-p0002",
+     "quote": "Cosmic rays caused correlated errors at a rate of 1/(10 min), accounting for 17pm1% of all such events.",
+     "start": 637,
+     "end": 740,
+     "chunk_sha256": "cf6f8c168197d2b4428e077deb9fb2bf91c7a48f06b9653e72ddb00a4fd06767",
+     "relation": "causes",
+     "subject": "Cosmic rays",
+     "object": "correlated errors",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Cultivation",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2512-13908-p0002",
+     "quote": "Cultivation reduces the error by a factor of 40, with a state fidelity of 0.9999(1) (retaining 8% of attempts).",
+     "start": 659,
+     "end": 770,
+     "chunk_sha256": "85a99549516d12374e46f736e12e64c9d3821633fb29b4914050cecaa0cab105",
+     "relation": "decreases",
+     "subject": "Cultivation",
+     "object": "error",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "cultivation circuit",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2512-13908-p0010",
+     "quote": "Then the cultivation circuit projects the state to the X = Z line (right Bloch sphere, red arrow), and reduces the state error (red clouds).",
+     "start": 160,
+     "end": 300,
+     "chunk_sha256": "37262bc09e60fdad96efd34a518e058be9cd79f7b6d94c153bef8714897c1f82",
+     "relation": "decreases",
+     "subject": "cultivation circuit",
+     "object": "state error",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "D. Implications for Future Processors",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2603-13460-p0023",
+     "quote": "D. Implications for Future Processors While JJ GE significantly mitigates radiation-induced errors, qubit arrays protected in this way remain sensitive to radiation that deposits energy on the scale of a few MeV.",
+     "start": 416,
+     "end": 628,
+     "chunk_sha256": "21084cca402c41f5b16ae0915c7ce0bfe6205831ca6fa9e43780f1891b3c9caf",
+     "relation": "decreases",
+     "subject": "D. Implications for Future Processors",
+     "object": "radiation induced errors",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Erasure",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2601-10461-p0002",
+     "quote": "Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction Adam Siegel1, 2, ∗ and Simon Benjamin1, 2 1Quantum Motion, 9 Sterling Way, London N7 9HJ, United Kingdom 2Department of Materials, University of Oxford, Parks Road, Oxford OX1 3PH, United Kingdom",
+     "start": 0,
+     "end": 312,
+     "chunk_sha256": "b77a82404b90606a45af786e79808049fd266cf7267c7d62e43d2f2b6e26cf52",
+     "relation": "increases",
+     "subject": "Erasure",
+     "object": "high performance shuttling based quantum error",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "Ionizing radiation",
+     "source_term": "Radiation",
+     "citation": {
+      "document_id": "arxiv-2603-16494-p0002",
+      "quote": "Radiation from cosmic and terrestrial sources can increase the quasiparticle (QP) density in a superconducting qubit device, resulting in an increased rate of QPs tunneling across proximal Josephson junctions (JJs) and causing correlated errors.",
+      "start": 125,
+      "end": 370,
+      "chunk_sha256": "4f37bcd17b2ee0eb1dab3371e6950721989df56964e8a9df4355b7a073dcd169",
+      "relation": "increases",
+      "subject": "Radiation",
+      "object": "quasiparticle",
+      "hedged": true
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [
+    {
+     "link": 0,
+     "citation": {
+      "document_id": "arxiv-2610-20132-p0002",
+      "quote": "Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.",
+      "start": 0,
+      "end": 124,
+      "chunk_sha256": "ff8e50d626238325449b9c299fd1ea576640140085fa7b93de4476d44924581e",
+      "relation": "causes",
+      "subject": "Ionizing radiation",
+      "object": "correlated errors",
+      "hedged": false
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    },
+    {
+     "link": 1,
+     "citation": {
+      "document_id": "arxiv-2603-16494-p0002",
+      "quote": "Radiation from cosmic and terrestrial sources can increase the quasiparticle (QP) density in a superconducting qubit device, resulting in an increased rate of QPs tunneling across proximal Josephson junctions (JJs) and causing correlated errors.",
+      "start": 125,
+      "end": 370,
+      "chunk_sha256": "4f37bcd17b2ee0eb1dab3371e6950721989df56964e8a9df4355b7a073dcd169",
+      "relation": "increases",
+      "subject": "Radiation",
+      "object": "quasiparticle",
+      "hedged": true
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    }
+   ],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "qualification_review",
+    "kind": "scope",
+    "instruction": "Restrict the proposal to the cited conditions and quantifiers."
+   },
+   {
+    "id": "2c6bf4c1f50a2db6",
+    "kind": "variable",
+    "term": "Ionizing radiation",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for Ionizing radiation."
+   },
+   {
+    "id": "2289146e6278adcd",
+    "kind": "variable",
+    "term": "Ionizing radiation",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for Ionizing radiation."
+   },
+   {
+    "id": "50a36ed644fa727e",
+    "kind": "variable",
+    "term": "correlated errors",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for correlated errors."
+   },
+   {
+    "id": "970107871cf6364a",
+    "kind": "variable",
+    "term": "correlated errors",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for correlated errors."
+   },
+   {
+    "id": "da01c086585b0574",
+    "kind": "variable",
+    "term": "quasiparticle",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for quasiparticle."
+   },
+   {
+    "id": "d2a0baa8e40e9f87",
+    "kind": "variable",
+    "term": "quasiparticle",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for quasiparticle."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "common cause",
+   "manipulate": [
+    "Ionizing radiation"
+   ],
+   "measure": [
+    "correlated errors",
+    "quasiparticle"
+   ],
+   "mediator": null,
+   "controls": [
+    "CNOT gate",
+    "Cosmic rays",
+    "Cultivation",
+    "cultivation circuit",
+    "D. Implications for Future Processors",
+    "Erasure"
+   ],
+   "steps": [
+    "Vary Ionizing radiation and measure correlated errors and quasiparticle.",
+    "Review candidate controls (CNOT gate, Cosmic rays, Cultivation, cultivation circuit, D. Implications for Future Processors, Erasure) for timing, feasibility and causal role before adjustment.",
+    "Check whether correlated errors and quasiparticle still co-vary when Ionizing radiation is held fixed."
+   ],
+   "fails_if": "correlated errors and quasiparticle co-vary just as strongly when Ionizing radiation is held fixed, or Ionizing radiation moves neither.",
+   "variables": [
+    {
+     "term": "Ionizing radiation",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2603-16494-p0002",
+       "quote": "We measure two types of errors in the same device, linking the first to ionizing radiation and the second to PT operation.",
+       "start": 517,
+       "end": 639,
+       "chunk_sha256": "4f37bcd17b2ee0eb1dab3371e6950721989df56964e8a9df4355b7a073dcd169",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "correlated errors",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2305-02591-p0001",
+       "quote": "# Mechanically Induced Correlated Errors on Superconducting Qubits with Relaxation Times Exceeding 0.4 Milliseconds",
+       "start": 0,
+       "end": 115,
+       "chunk_sha256": "be6985438b474355d2b502fdcbca2ab0d4693330bd691ddc9015e0cf2b8b23df",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2402-03208-p0002",
+       "quote": "Here, we directly measured the cosmic-ray contribution to spatiotemporally correlated qubit errors.",
+       "start": 360,
+       "end": 459,
+       "chunk_sha256": "cf6f8c168197d2b4428e077deb9fb2bf91c7a48f06b9653e72ddb00a4fd06767",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2603-13460-p0003",
+       "quote": "For electrons from a pulsed linear accelerator, we observe temporally correlated T1 and T2 errors, this measurement is insensitive to spatial correlations.",
+       "start": 814,
+       "end": 969,
+       "chunk_sha256": "9314264383ade6665563324516105b15bcc1259258cb3b8d271b4c4b176e87ef",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "quasiparticle",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "Ionizing radiation",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "Ionizing radiation",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "correlated errors",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "correlated errors",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "quasiparticle",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "quasiparticle",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established"
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 8.136
+  },
+  "snapshot": {
+   "as_of": 1795596351,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: correlated errors and quasiparticle may move together because both depend on Ionizing radiation.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unspecified.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: Radiation versus Ionizing radiation.\n  Retain qualification [arxiv-2610-20132-p0002]: Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.\n  Retain qualification [arxiv-2603-16494-p0002]: Radiation from cosmic and terrestrial sources can increase the quasiparticle (QP) density in a superconducting qubit device, resulting in an increased rate of QPs tunneling across proximal Josephson junctions (JJs) and causing correlated errors.\n\nLink Ionizing radiation -> correlated errors: supported (1 supporting, 0 contrary).\n  + [arxiv-2610-20132-p0002] Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.\n\nLink Ionizing radiation -> quasiparticle: supported (1 supporting, 0 contrary).\n  + [arxiv-2603-16494-p0002] Radiation from cosmic and terrestrial sources can increase the quasiparticle (QP) density in a superconducting qubit device, resulting in an increased rate of QPs tunneling across proximal Josephson junctions (JJs) and causing correlated errors.\n\nSource predictions naming two or more of its terms:\n  [arxiv-2402-03208-p0002] Several recent superconducting-qubit experiments, however, reported observing intermittent spatiotemporally correlated errors that would be problematic for conventional codes, with ionizing radiation being a likely cause.\n\nExisting setups that measure one of its terms:\n  [arxiv-2402-03208-p0002] Several recent superconducting-qubit experiments, however, reported observing intermittent spatiotemporally correlated errors that would be problematic for conventional codes, with ionizing radiation being a likely cause.\n  [arxiv-2208-02191-p0004] Recent experiments have proven that such correlated errors have a crucial effect on the efficiency of surface-code quantum error correction [36].\n  [arxiv-2402-04245-p0002] Recent experiments with superconducting qubits indicate that they can arise from quasiparticle (QP) bursts induced by cosmic-ray muons and {\\gamma}-rays.\n  [arxiv-2407-16176-p0046] To investigate the effect of correlated errors, we compare the logical error rates in the absence and presence of correlated errors.\n\nCandidate controls (review before adjustment):\n  CNOT gate: outcome_predictor [arxiv-2208-02191-p0033]\n  Cosmic rays: outcome_predictor [arxiv-2402-03208-p0002]\n  Cultivation: outcome_predictor [arxiv-2512-13908-p0002]\n  cultivation circuit: outcome_predictor [arxiv-2512-13908-p0010]\n  D. Implications for Future Processors: outcome_predictor [arxiv-2603-13460-p0023]\n  Erasure: outcome_predictor [arxiv-2601-10461-p0002]\n\nTest plan (common cause):\n  1. Vary Ionizing radiation and measure correlated errors and quasiparticle.\n  2. Review candidate controls (CNOT gate, Cosmic rays, Cultivation, cultivation circuit, D. Implications for Future Processors, Erasure) for timing, feasibility and causal role before adjustment.\n  3. Check whether correlated errors and quasiparticle still co-vary when Ionizing radiation is held fixed.\n  Fails if: correlated errors and quasiparticle co-vary just as strongly when Ionizing radiation is held fixed, or Ionizing radiation moves neither.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for Ionizing radiation.\n  Required: feasible intervention or justified observational design for Ionizing radiation.\n  Required: measurement procedure for correlated errors.\n  Required: unit or explicit categorical scale for correlated errors.\n  Required: measurement procedure for quasiparticle.\n  Required: unit or explicit categorical scale for quasiparticle.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}
