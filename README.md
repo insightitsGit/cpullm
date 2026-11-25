@@ -361,6 +361,41 @@ On evaluation corpora of 64–153 arXiv papers, a minority of entries were stron
 Treat the list as candidates to screen. [Design](docs/frontier-node-design.md) ·
 [Evaluation](docs/reviews/2026-11-21-frontier-v3/report.md).
 
+#### Best practice: screen the whole list, not just the top
+
+Frontier ranks by source support first, so the top slots often go to generic entries backed by many papers ("qubit
+count", "noise", "sampling cost"). In a quantum computing run (155 papers, 12 topics), the most specific entries sat
+at ranks 5–26. In that run, 110 of 300 distinct entries appeared under several topics. Screen in this order:
+
+1. **Phrase the topic as the field does.** "Two-level system defects" found the right papers, but "two-level
+   systems" matched "system size".
+2. **Give broad topics time.** A topic over a large knowledge base can hit the 60 s default; pass
+   `frontier={"limits": {"max_seconds": 120}}` (the maximum) and check `incomplete`.
+3. **Drop generic and artefact entries.** Remove entries that recur across several topics, and entries built from
+   PDF artefacts: section headers, author names, or merged words.
+4. **Re-rank the rest** by `deductive_relevance` and `novelty` instead of reading in list order.
+5. **Deepen the shortlist with the novelty review**, and discard what the review rejects:
+   - a `contested` verdict caused by a bridge that changes a term's meaning (`composition.bridges`);
+   - `composition.status` of `incompatible_direction`;
+   - a novelty review that finds the claim already stated (`potential_overlap`).
+
+```python
+lists = {t: app.ask(f"Frontier: {t}.", frontier={"limits": {"max_seconds": 120}})["frontier"]["hypotheses"]
+         for t in topics}
+seen = Counter(h["text"] for hs in lists.values() for h in hs)
+shortlist = [h for hs in lists.values() for h in hs
+             if seen[h["text"]] == 1 and (h.get("check") or {}).get("verdict") != "contested"]
+shortlist.sort(key=lambda h: -(0.6 * h["scores"]["deductive_relevance"] + 0.4 * h["scores"]["novelty"]))
+for h in shortlist[:20]:
+    review = app.ask("Deepen this.", deepen={"hypothesis": h, "novelty": True})["deepen"]
+    review["verdict"], review["composition"]["status"], review["novelty_review"]["kb_status"]
+```
+
+Deepen reads hypotheses only in Frontier's sentence forms, such as "A may reduce C through B." or "A and B may
+jointly drive C."; other wording returns `needs_clarification`. Every entry stays an `UNVERIFIED_HYPOTHESIS`. The
+novelty review checks only your knowledge base, not the wider literature.
+[Quantum computing run and audit](docs/reviews/2026-11-25-quantum-computing/report.md).
+
 ### Deepen: examine one hypothesis
 
 Added in 1.15.0. Deepen takes one hypothesis and checks it link by link against the same sources. Pass a Frontier
