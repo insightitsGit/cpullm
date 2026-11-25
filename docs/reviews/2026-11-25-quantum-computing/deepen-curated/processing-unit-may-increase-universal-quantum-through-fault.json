@@ -1,0 +1,466 @@
+{
+ "topic": "fault-tolerant quantum computation",
+ "hypothesis": {
+  "id": "94c3b2136845",
+  "text": "processing unit may increase universal quantum through fault tolerant measurement of logical Pauli (read as Pauli measurements).",
+  "pattern": "chain",
+  "relation": "increases",
+  "anchors": [
+   "processing unit",
+   "universal quantum"
+  ],
+  "via": [
+   "fault tolerant measurement of logical Pauli (read as Pauli measurements)"
+  ],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2503-10390-p0006",
+   "arxiv-2503-05003-p0006"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2503-10390-p0006",
+    "quote": "The processing unit, which we call an extractor, enables the fault-tolerant measurement of any logical Pauli operator on the memory via",
+    "start": 374,
+    "end": 509,
+    "chunk_sha256": "9222bff765e5855691547ecbf0e0940a3af6cf210d31cdae59c6c76f9e472668",
+    "relation": "increases",
+    "subject": "processing unit",
+    "object": "fault tolerant measurement of logical Pauli",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2503-05003-p0006",
+    "quote": "powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.",
+    "start": 276,
+    "end": 879,
+    "chunk_sha256": "896909438bda7e68db9428d19a58db42cd14f57dd68d35741e45af24adf3ff74",
+    "relation": "increases",
+    "subject": "Pauli measurements",
+    "object": "universal quantum",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.721,
+   "novelty": 0.592
+  },
+  "falsification_test": "Compare settings where processing unit differs while other inputs are matched. The hypothesis fails if universal quantum does not rise with processing unit, or if fixing fault tolerant measurement of logical Pauli (read as Pauli measurements) removes no part of the effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "fault tolerant measurement of logical pauli"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "processing unit",
+   "b": "fault tolerant measurement of logical Pauli",
+   "c": "universal quantum"
+  },
+  "path_nodes": [
+   "processing unit",
+   "fault tolerant measurement of logical Pauli",
+   "universal quantum"
+  ],
+  "links": [
+   {
+    "source": "processing unit",
+    "target": "fault tolerant measurement of logical Pauli",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2503-10390-p0006",
+      "quote": "The processing unit, which we call an extractor, enables the fault-tolerant measurement of any logical Pauli operator on the memory via",
+      "start": 374,
+      "end": 509,
+      "chunk_sha256": "9222bff765e5855691547ecbf0e0940a3af6cf210d31cdae59c6c76f9e472668",
+      "relation": "increases",
+      "subject": "processing unit",
+      "object": "fault tolerant measurement of logical Pauli",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   },
+   {
+    "source": "fault tolerant measurement of logical Pauli",
+    "target": "universal quantum",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2503-05003-p0006",
+      "quote": "powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.",
+      "start": 276,
+      "end": 879,
+      "chunk_sha256": "896909438bda7e68db9428d19a58db42cd14f57dd68d35741e45af24adf3ff74",
+      "relation": "increases",
+      "subject": "Pauli measurements",
+      "object": "universal quantum",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   }
+  ],
+  "expected_relation": "increases",
+  "direction_check": {
+   "requested": "increases",
+   "status": "consistent",
+   "observed": [
+    "increases"
+   ],
+   "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-2602-16948-p0035",
+    "quote": "We work in the circuit model of quantum computation, with a finite gate set A consisting of an idle gate, initialization and measurement in the computational (Pauli-Z) basis, a universal set of unitary gates (e.g., CNOT, Hadamard H, and T ), and their corresponding classically controlled versions.",
+    "start": 0,
+    "end": 298,
+    "chunk_sha256": "ecc02d47b72c7e1700279d21924f6096b05a58546a3dfbedefbc3de60d69abaa",
+    "measures": [
+     "universal quantum"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "magic states",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2503-05003-p0006",
+     "quote": "powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.",
+     "start": 276,
+     "end": 879,
+     "chunk_sha256": "896909438bda7e68db9428d19a58db42cd14f57dd68d35741e45af24adf3ff74",
+     "relation": "increases",
+     "subject": "magic states",
+     "object": "universal quantum",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "fault tolerant measurement of logical Pauli",
+     "source_term": "Pauli measurements",
+     "citation": {
+      "document_id": "arxiv-2503-05003-p0006",
+      "quote": "powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.",
+      "start": 276,
+      "end": 879,
+      "chunk_sha256": "896909438bda7e68db9428d19a58db42cd14f57dd68d35741e45af24adf3ff74",
+      "relation": "increases",
+      "subject": "Pauli measurements",
+      "object": "universal quantum",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "6adcc6b97b982e44",
+    "kind": "variable",
+    "term": "processing unit",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for processing unit."
+   },
+   {
+    "id": "779b3df0b166cfb5",
+    "kind": "variable",
+    "term": "processing unit",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for processing unit."
+   },
+   {
+    "id": "5aa3a664e8f06c02",
+    "kind": "variable",
+    "term": "universal quantum",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for universal quantum."
+   },
+   {
+    "id": "75053924ce4da962",
+    "kind": "variable",
+    "term": "universal quantum",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for universal quantum."
+   },
+   {
+    "id": "cf6f1d9397ba471f",
+    "kind": "variable",
+    "term": "fault tolerant measurement of logical Pauli",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for fault tolerant measurement of logical Pauli."
+   },
+   {
+    "id": "534398d4b860e6ca",
+    "kind": "variable",
+    "term": "fault tolerant measurement of logical Pauli",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for fault tolerant measurement of logical Pauli."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "processing unit"
+   ],
+   "measure": [
+    "universal quantum"
+   ],
+   "mediator": "fault tolerant measurement of logical Pauli",
+   "controls": [
+    "magic states"
+   ],
+   "steps": [
+    "Vary processing unit across matched settings and measure universal quantum.",
+    "Review candidate controls (magic states) for timing, feasibility and causal role before adjustment.",
+    "Repeat with fault tolerant measurement of logical Pauli held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "universal quantum does not change when processing unit varies with the controls fixed, or holding fault tolerant measurement of logical Pauli fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "processing unit",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2503-10390-p0006",
+       "quote": "The processing unit, which we call an extractor, enables the fault-tolerant measurement of any logical Pauli operator on the memory via",
+       "start": 374,
+       "end": 509,
+       "chunk_sha256": "9222bff765e5855691547ecbf0e0940a3af6cf210d31cdae59c6c76f9e472668",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2511-21236-p0007",
+       "quote": "This brings about an exponential quantum processing unit (QPU) measurement cost just from the dimensions of the matrix alone, thereby limiting its application to small systems.",
+       "start": 914,
+       "end": 1090,
+       "chunk_sha256": "9238fa90d87558b00e44bd58265fb86b0fbb9d166209aa84648afff426e95c82",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "universal quantum",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2110-10794-p0042",
+       "quote": "With a scheme to perform Pauli measurements on quantum LDPC codes, we consider how this approach can be integrated into a broader scheme for performing universal fault tolerant quantum computing with low overhead.",
+       "start": 0,
+       "end": 213,
+       "chunk_sha256": "77f6b492eaf0de9fc2eb20c059b8620fd272107e4227b9629866d04528784670",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2503-05003-p0006",
+       "quote": "powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.",
+       "start": 276,
+       "end": 879,
+       "chunk_sha256": "896909438bda7e68db9428d19a58db42cd14f57dd68d35741e45af24adf3ff74",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2503-10390-p0002",
+       "quote": "When combined with any user-defined source of high fidelity |T ⟩ states, our architecture can implement universal quantum circuits via parallel logical measurements, such that all single-block Clifford gates are compiled away.",
+       "start": 926,
+       "end": 1152,
+       "chunk_sha256": "15716b125fd4d1031a1f2010ac90bdaa555d5ba1f9d4ae038bd82ee003fd46ba",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "fault tolerant measurement of logical Pauli",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "processing unit",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "processing unit",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "universal quantum",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "universal quantum",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "fault tolerant measurement of logical Pauli",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "fault tolerant measurement of logical Pauli",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "fault tolerant measurement of logical Pauli"
+   ]
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 8.01
+  },
+  "snapshot": {
+   "as_of": 1795596149,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: processing unit may increase universal quantum through fault tolerant measurement of logical Pauli (read as Pauli measurements).\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: consistent.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: Pauli measurements versus fault tolerant measurement of logical Pauli.\n\nLink processing unit -> fault tolerant measurement of logical Pauli: supported (1 supporting, 0 contrary).\n  + [arxiv-2503-10390-p0006] The processing unit, which we call an extractor, enables the fault-tolerant measurement of any logical Pauli operator on the memory via\n\nLink fault tolerant measurement of logical Pauli -> universal quantum: supported (1 supporting, 0 contrary).\n  + [arxiv-2503-05003-p0006] powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.\n\nExisting setups that measure one of its terms:\n  [arxiv-2602-16948-p0035] We work in the circuit model of quantum computation, with a finite gate set A consisting of an idle gate, initialization and measurement in the computational (Pauli-Z) basis, a universal set of unitary gates (e.g., CNOT, Hadamard H, and T ), and their corresponding classically controlled versions.\n\nCandidate controls (review before adjustment):\n  magic states: outcome_predictor [arxiv-2503-05003-p0006]\n\nTest plan (mediation):\n  1. Vary processing unit across matched settings and measure universal quantum.\n  2. Review candidate controls (magic states) for timing, feasibility and causal role before adjustment.\n  3. Repeat with fault tolerant measurement of logical Pauli held fixed or blocked to test whether it carries the effect.\n  Fails if: universal quantum does not change when processing unit varies with the controls fixed, or holding fault tolerant measurement of logical Pauli fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for processing unit.\n  Required: feasible intervention or justified observational design for processing unit.\n  Required: measurement procedure for universal quantum.\n  Required: unit or explicit categorical scale for universal quantum.\n  Required: measurement procedure for fault tolerant measurement of logical Pauli.\n  Required: unit or explicit categorical scale for fault tolerant measurement of logical Pauli.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

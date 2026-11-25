@@ -1,0 +1,584 @@
+{
+ "topic": "leakage",
+ "hypothesis": {
+  "id": "832ac15409e5",
+  "text": "Gains in leakage from resonant couplings may be offset by LRU.",
+  "pattern": "convergent",
+  "relation": "offset",
+  "anchors": [
+   "LRU",
+   "resonant couplings",
+   "leakage"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2302-09876-p0002",
+   "arxiv-2402-18868-p0005"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2302-09876-p0002",
+    "quote": "This LRU effectively reduces leakage in the second- and third-excited transmon states with up to 99% efficacy in 220~mathrmns, with minimum impact on the qubit subspace.",
+    "start": 309,
+    "end": 478,
+    "chunk_sha256": "6604e353a0dec2e010788f373f1865fcb4b2f2a031d00ec98942ba5ad3a35ba0",
+    "relation": "decreases",
+    "subject": "LRU",
+    "object": "leakage",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2402-18868-p0005",
+    "quote": "However, off-resonant couplings between undesired levels can cause qubit state leakage during the detection process, representing one of the main errors in measuring ion qubits.",
+    "start": 343,
+    "end": 520,
+    "chunk_sha256": "89b1aa11b18f3d876deeedac54049378c1b840355541822d76650e02a87641b5",
+    "relation": "causes",
+    "subject": "resonant couplings",
+    "object": "qubit state leakage",
+    "hedged": true,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.55,
+   "deductive_relevance": 0.801,
+   "novelty": 0.683
+  },
+  "falsification_test": "Measure leakage where both LRU and resonant couplings vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "leakage",
+  "check": {
+   "verdict": "all_links_supported",
+   "incomplete": false,
+   "direction_check": {
+    "requested": "offset",
+    "status": "unspecified",
+    "observed": []
+   },
+   "composition": {
+    "status": "requires_review",
+    "bridges": [
+     {
+      "link": 1,
+      "requested": "leakage",
+      "source_term": "qubit state leakage",
+      "citation": {
+       "document_id": "arxiv-2402-18868-p0005",
+       "quote": "However, off-resonant couplings between undesired levels can cause qubit state leakage during the detection process, representing one of the main errors in measuring ion qubits.",
+       "start": 343,
+       "end": 520,
+       "chunk_sha256": "89b1aa11b18f3d876deeedac54049378c1b840355541822d76650e02a87641b5",
+       "relation": "causes",
+       "subject": "resonant couplings",
+       "object": "qubit state leakage",
+       "hedged": true
+      },
+      "status": "requires_review",
+      "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+     }
+    ],
+    "qualifications": [
+     {
+      "link": 1,
+      "citation": {
+       "document_id": "arxiv-2402-18868-p0005",
+       "quote": "However, off-resonant couplings between undesired levels can cause qubit state leakage during the detection process, representing one of the main errors in measuring ion qubits.",
+       "start": 343,
+       "end": 520,
+       "chunk_sha256": "89b1aa11b18f3d876deeedac54049378c1b840355541822d76650e02a87641b5",
+       "relation": "causes",
+       "subject": "resonant couplings",
+       "object": "qubit state leakage",
+       "hedged": true
+      },
+      "instruction": "Retain this full qualified statement; do not treat it as universal."
+     }
+    ],
+    "source_contexts": [],
+    "scope_differences": [],
+    "context_coverage": "not_recorded",
+    "interaction": {
+     "status": "untested",
+     "reason": "Individual effects do not establish a joint interaction."
+    },
+    "assumptions": [
+     "Source terms denote compatible quantities and settings.",
+     "Composed source relationships are not causal identification."
+    ],
+    "scientific_validity": "not_established"
+   },
+   "plan_readiness": "needs_input",
+   "links": [
+    {
+     "source": "LRU",
+     "target": "leakage",
+     "status": "supported",
+     "counter": []
+    },
+    {
+     "source": "resonant couplings",
+     "target": "leakage",
+     "status": "supported",
+     "counter": []
+    }
+   ]
+  }
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "convergent",
+  "terms": {
+   "a": "LRU",
+   "b": "resonant couplings",
+   "c": "leakage"
+  },
+  "path_nodes": null,
+  "links": [
+   {
+    "source": "LRU",
+    "target": "leakage",
+    "expected_relation": "decreases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2302-09876-p0002",
+      "quote": "This LRU effectively reduces leakage in the second- and third-excited transmon states with up to 99% efficacy in 220~mathrmns, with minimum impact on the qubit subspace.",
+      "start": 309,
+      "end": 478,
+      "chunk_sha256": "6604e353a0dec2e010788f373f1865fcb4b2f2a031d00ec98942ba5ad3a35ba0",
+      "relation": "decreases",
+      "subject": "LRU",
+      "object": "leakage",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2302-09876-p0002",
+      "quote": "We realize and extend the quantum-hardware-efficient, all-microwave leakage reduction unit (LRU) for transmons in a circuit QED architecture proposed by Battistel et al.",
+      "start": 139,
+      "end": 308,
+      "chunk_sha256": "6604e353a0dec2e010788f373f1865fcb4b2f2a031d00ec98942ba5ad3a35ba0"
+     },
+     {
+      "document_id": "arxiv-2302-09876-p0002",
+      "quote": "This LRU effectively reduces leakage in the second- and third-excited transmon states with up to 99% efficacy in 220~mathrmns, with minimum impact on the qubit subspace.",
+      "start": 309,
+      "end": 478,
+      "chunk_sha256": "6604e353a0dec2e010788f373f1865fcb4b2f2a031d00ec98942ba5ad3a35ba0"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "decreases"
+    ]
+   },
+   {
+    "source": "resonant couplings",
+    "target": "leakage",
+    "expected_relation": "causes",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2402-18868-p0005",
+      "quote": "However, off-resonant couplings between undesired levels can cause qubit state leakage during the detection process, representing one of the main errors in measuring ion qubits.",
+      "start": 343,
+      "end": 520,
+      "chunk_sha256": "89b1aa11b18f3d876deeedac54049378c1b840355541822d76650e02a87641b5",
+      "relation": "causes",
+      "subject": "resonant couplings",
+      "object": "qubit state leakage",
+      "hedged": true
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "causes"
+    ]
+   }
+  ],
+  "expected_relation": "offset",
+  "direction_check": {
+   "requested": "offset",
+   "status": "unspecified",
+   "observed": []
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-1412-7010-p0002",
+    "quote": "Furthermore we construct explicit leakage reduction units that need, in the ideal setup, as few as three manipulation steps.",
+    "start": 379,
+    "end": 503,
+    "chunk_sha256": "cb0d6222a255361d1f52b063bea503a39ae721c581db1cb7c0ebae8177730c51",
+    "measures": [
+     "leakage"
+    ]
+   },
+   {
+    "document_id": "arxiv-2102-06131-p0003",
+    "quote": "We benchmark the reset gate using the bit-flip error correction code [5] and measure growth and removal of leakage in-situ.",
+    "start": 2590,
+    "end": 2713,
+    "chunk_sha256": "591b0bdd0ef0fa06184f2861ac064e8f518a04b9c113748c8302f78f9b439b3b",
+    "measures": [
+     "leakage"
+    ]
+   },
+   {
+    "document_id": "arxiv-2102-06131-p0035",
+    "quote": "[19] V. Negirneac, H. Ali, N. Muthusubramanian, F. Battistel, R. Sagastizabal, M. S. Moreira, J. F. Marques, W. Vlothuizen, M. Beekman, N. Haider, A. Bruno, and L. DiCarlo, High-fidelity controlled-z gate with maximal intermediate leakage operating at the speed limit in a superconducting quantum processor (2020),",
+    "start": 0,
+    "end": 314,
+    "chunk_sha256": "137a61bab3ae8d5ce9ebea54028ec4b10019b6f856e7b95b3e5a50b79ab5669c",
+    "measures": [
+     "leakage"
+    ]
+   },
+   {
+    "document_id": "arxiv-2102-06131-p0054",
+    "quote": "In Fig. 3 of the main text, we measure the growth of leakage with rounds k during the bit-flip code using a readout similar to that shown in Fig. S4.",
+    "start": 0,
+    "end": 149,
+    "chunk_sha256": "46601e5917e6b8557cd2d0d206023d44c81f64cb5aad0be03f4bff9940fe3aa4",
+    "measures": [
+     "leakage"
+    ]
+   },
+   {
+    "document_id": "arxiv-2102-06131-p0057",
+    "quote": "For the leakage populations shown in Fig. 3 of the main text, we chose 20 random initial bitstrings for the data qubits, and repeated the experiment 5000 times for each bitstring.",
+    "start": 220,
+    "end": 399,
+    "chunk_sha256": "93dd11661df2018fab292a6cba8c3dad639b490352aaabb2924f4444edb8b5a1",
+    "measures": [
+     "leakage"
+    ]
+   },
+   {
+    "document_id": "arxiv-2208-05378-p0002",
+    "quote": "Furthermore, we benchmark the influence of leakage noise on VQAs in real-world learning tasks.",
+    "start": 1471,
+    "end": 1565,
+    "chunk_sha256": "1542a0b3c1cc131a383107b202370db80acd5bee684a7ba9b6edf42d88543815",
+    "measures": [
+     "leakage"
+    ]
+   }
+  ],
+  "confounders": [],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "leakage",
+     "source_term": "qubit state leakage",
+     "citation": {
+      "document_id": "arxiv-2402-18868-p0005",
+      "quote": "However, off-resonant couplings between undesired levels can cause qubit state leakage during the detection process, representing one of the main errors in measuring ion qubits.",
+      "start": 343,
+      "end": 520,
+      "chunk_sha256": "89b1aa11b18f3d876deeedac54049378c1b840355541822d76650e02a87641b5",
+      "relation": "causes",
+      "subject": "resonant couplings",
+      "object": "qubit state leakage",
+      "hedged": true
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [
+    {
+     "link": 1,
+     "citation": {
+      "document_id": "arxiv-2402-18868-p0005",
+      "quote": "However, off-resonant couplings between undesired levels can cause qubit state leakage during the detection process, representing one of the main errors in measuring ion qubits.",
+      "start": 343,
+      "end": 520,
+      "chunk_sha256": "89b1aa11b18f3d876deeedac54049378c1b840355541822d76650e02a87641b5",
+      "relation": "causes",
+      "subject": "resonant couplings",
+      "object": "qubit state leakage",
+      "hedged": true
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    }
+   ],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "untested",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "qualification_review",
+    "kind": "scope",
+    "instruction": "Restrict the proposal to the cited conditions and quantifiers."
+   },
+   {
+    "id": "b370990fc8e92da7",
+    "kind": "variable",
+    "term": "LRU",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for LRU."
+   },
+   {
+    "id": "9303856cf43b5c3b",
+    "kind": "variable",
+    "term": "LRU",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for LRU."
+   },
+   {
+    "id": "21a0a0e8a6beb151",
+    "kind": "variable",
+    "term": "resonant couplings",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for resonant couplings."
+   },
+   {
+    "id": "663baebc75bfd1ed",
+    "kind": "variable",
+    "term": "resonant couplings",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for resonant couplings."
+   },
+   {
+    "id": "57461047d416af49",
+    "kind": "variable",
+    "term": "leakage",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for leakage."
+   },
+   {
+    "id": "b02b20a413dcd259",
+    "kind": "variable",
+    "term": "leakage",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for leakage."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "2x2 factorial",
+   "manipulate": [
+    "LRU",
+    "resonant couplings"
+   ],
+   "measure": [
+    "leakage"
+   ],
+   "mediator": null,
+   "controls": [],
+   "steps": [
+    "Run all four combinations of low and high LRU and resonant couplings; measure leakage.",
+    "No additional outcome cause was extracted; this does not establish absence of confounding.",
+    "Compare the joint effect with the sum of the separate effects."
+   ],
+   "fails_if": "A precisely measured absence of an interaction challenges compounding in leakage; it does not refute individual effects of LRU or resonant couplings. Predefine a meaningful effect threshold.",
+   "variables": [
+    {
+     "term": "LRU",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "resonant couplings",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "leakage",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1412-7010-p0002",
+       "quote": "Our study shows that leakage errors can be corrected without the need of measurements and at the cost of only a few additional ancilla qubits and gate operations compared to standard quantum error correction codes.",
+       "start": 504,
+       "end": 718,
+       "chunk_sha256": "cb0d6222a255361d1f52b063bea503a39ae721c581db1cb7c0ebae8177730c51",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1509-05470-p0001",
+       "quote": "# Measuring and Suppressing Quantum State Leakage in a Superconducting Qubit",
+       "start": 0,
+       "end": 76,
+       "chunk_sha256": "df4feb408bba8c5a61f0d6de6310c52b07f24d2b741a0c49bc5965a64895650f",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1509-05470-p0002",
+       "quote": "To quantify leakage errors, we use randomized benchmarking in conjunction with measurement of the leakage population.",
+       "start": 169,
+       "end": 286,
+       "chunk_sha256": "46201165cc7dee1b5b2a6e23564de372da5aeb75ff2f06d59cafacaefd12967b",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "LRU",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "LRU",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "resonant couplings",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "resonant couplings",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "leakage",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "leakage",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "interaction_test": {
+    "contrast": "Y11 - Y10 - Y01 + Y00",
+    "assumptions": "Additive outcome scale, matched conditions and defined interventions.",
+    "interpretation": "A zero interaction contrast challenges compounding, not the individual effects."
+   }
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 8.481
+  },
+  "snapshot": {
+   "as_of": 1795596200,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: Gains in leakage from resonant couplings may be offset by LRU.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unspecified.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: qubit state leakage versus leakage.\n  Retain qualification [arxiv-2402-18868-p0005]: However, off-resonant couplings between undesired levels can cause qubit state leakage during the detection process, representing one of the main errors in measuring ion qubits.\n\nLink LRU -> leakage: supported (1 supporting, 0 contrary).\n  + [arxiv-2302-09876-p0002] This LRU effectively reduces leakage in the second- and third-excited transmon states with up to 99% efficacy in 220~mathrmns, with minimum impact on the qubit subspace.\n\nLink resonant couplings -> leakage: supported (1 supporting, 0 contrary).\n  + [arxiv-2402-18868-p0005] However, off-resonant couplings between undesired levels can cause qubit state leakage during the detection process, representing one of the main errors in measuring ion qubits.\n\nExisting setups that measure one of its terms:\n  [arxiv-1412-7010-p0002] Furthermore we construct explicit leakage reduction units that need, in the ideal setup, as few as three manipulation steps.\n  [arxiv-2102-06131-p0003] We benchmark the reset gate using the bit-flip error correction code [5] and measure growth and removal of leakage in-situ.\n  [arxiv-2102-06131-p0035] [19] V. Negirneac, H. Ali, N. Muthusubramanian, F. Battistel, R. Sagastizabal, M. S. Moreira, J. F. Marques, W. Vlothuizen, M. Beekman, N. Haider, A. Bruno, and L. DiCarlo, High-fidelity controlled-z gate with maximal intermediate leakage operating at the speed limit in a superconducting quantum processor (2020),\n  [arxiv-2102-06131-p0054] In Fig. 3 of the main text, we measure the growth of leakage with rounds k during the bit-flip code using a readout similar to that shown in Fig. S4.\n\nTest plan (2x2 factorial):\n  1. Run all four combinations of low and high LRU and resonant couplings; measure leakage.\n  2. No additional outcome cause was extracted; this does not establish absence of confounding.\n  3. Compare the joint effect with the sum of the separate effects.\n  Fails if: A precisely measured absence of an interaction challenges compounding in leakage; it does not refute individual effects of LRU or resonant couplings. Predefine a meaningful effect threshold.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for LRU.\n  Required: feasible intervention or justified observational design for LRU.\n  Required: intervention levels for resonant couplings.\n  Required: feasible intervention or justified observational design for resonant couplings.\n  Required: measurement procedure for leakage.\n  Required: unit or explicit categorical scale for leakage.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

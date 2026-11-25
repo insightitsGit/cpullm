@@ -1,0 +1,559 @@
+{
+ "topic": "fault-tolerant quantum computation",
+ "hypothesis": {
+  "id": "6e9cdf02ab30",
+  "text": "smallest intractable quantum computations and substantial reduction may move together because both depend on qubits.",
+  "pattern": "divergent",
+  "relation": "common_driver",
+  "anchors": [
+   "smallest intractable quantum computations",
+   "substantial reduction",
+   "qubits"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-1905-06903-p0002",
+   "arxiv-2403-06228-p0002"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-1905-06903-p0002",
+    "quote": "While the smallest classically intractable quantum computations require ∼100 qubits, Accepted in Quantum 2019-10-30, click title to verify 2 Figure 2: A sequence of 16 π/8 rotations on 5 qubits that is non-trivially equivalent to the identity.",
+    "start": 2822,
+    "end": 3065,
+    "chunk_sha256": "ddfce22f1244560baa491ef8a8983625514b98d736149ecdc969f994d7f3fb9f",
+    "relation": "constrains",
+    "subject": "qubits",
+    "object": "smallest intractable quantum computations",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2403-06228-p0002",
+    "quote": "Low Overhead Qutrit Magic State Distillation Shiroman Prakash1 and Tanay Saha1,2 1Department of Physics and Computer Science, Dayalbagh Educational Institute, Agra-282005, India 2Present Address: Department of Mathematics, Simon Fraser University, Burnaby, B.C., Canada We show that using qutrits rather than qubits leads to a substantial reduction in the overhead cost associated with an approach to fault-tolerant quantum computing known as magic state distillation.",
+    "start": 0,
+    "end": 468,
+    "chunk_sha256": "268c107d13cd09d5e1ae7ef7b9015614a605ade0db8fa2669a80427bdadcf092",
+    "relation": "causes",
+    "subject": "using qutrits rather than qubits",
+    "object": "substantial reduction",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.681,
+   "novelty": 0.623
+  },
+  "falsification_test": "Track smallest intractable quantum computations and substantial reduction across periods where qubits changes and where it does not. The hypothesis fails if they co-vary just as strongly when qubits is held fixed.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "qubit"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "divergent",
+  "terms": {
+   "a": "smallest intractable quantum computations",
+   "b": "substantial reduction",
+   "c": "qubits"
+  },
+  "path_nodes": null,
+  "links": [
+   {
+    "source": "qubits",
+    "target": "smallest intractable quantum computations",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-1905-06903-p0002",
+      "quote": "While the smallest classically intractable quantum computations require ∼100 qubits, Accepted in Quantum 2019-10-30, click title to verify 2 Figure 2: A sequence of 16 π/8 rotations on 5 qubits that is non-trivially equivalent to the identity.",
+      "start": 2822,
+      "end": 3065,
+      "chunk_sha256": "ddfce22f1244560baa491ef8a8983625514b98d736149ecdc969f994d7f3fb9f",
+      "relation": "constrains",
+      "subject": "qubits",
+      "object": "smallest intractable quantum computations",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-1905-06903-p0002",
+      "quote": "While the smallest classically intractable quantum computations require ∼100 qubits, Accepted in Quantum 2019-10-30, click title to verify 2 Figure 2: A sequence of 16 π/8 rotations on 5 qubits that is non-trivially equivalent to the identity.",
+      "start": 2822,
+      "end": 3065,
+      "chunk_sha256": "ddfce22f1244560baa491ef8a8983625514b98d736149ecdc969f994d7f3fb9f"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   },
+   {
+    "source": "qubits",
+    "target": "substantial reduction",
+    "expected_relation": "causes",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2403-06228-p0002",
+      "quote": "Low Overhead Qutrit Magic State Distillation Shiroman Prakash1 and Tanay Saha1,2 1Department of Physics and Computer Science, Dayalbagh Educational Institute, Agra-282005, India 2Present Address: Department of Mathematics, Simon Fraser University, Burnaby, B.C., Canada We show that using qutrits rather than qubits leads to a substantial reduction in the overhead cost associated with an approach to fault-tolerant quantum computing known as magic state distillation.",
+      "start": 0,
+      "end": 468,
+      "chunk_sha256": "268c107d13cd09d5e1ae7ef7b9015614a605ade0db8fa2669a80427bdadcf092",
+      "relation": "causes",
+      "subject": "using qutrits rather than qubits",
+      "object": "substantial reduction",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2403-06228-p0002",
+      "quote": "Low Overhead Qutrit Magic State Distillation Shiroman Prakash1 and Tanay Saha1,2 1Department of Physics and Computer Science, Dayalbagh Educational Institute, Agra-282005, India 2Present Address: Department of Mathematics, Simon Fraser University, Burnaby, B.C., Canada We show that using qutrits rather than qubits leads to a substantial reduction in the overhead cost associated with an approach to fault-tolerant quantum computing known as magic state distillation.",
+      "start": 0,
+      "end": 468,
+      "chunk_sha256": "268c107d13cd09d5e1ae7ef7b9015614a605ade0db8fa2669a80427bdadcf092"
+     },
+     {
+      "document_id": "arxiv-2510-10905-p0022",
+      "quote": "Even for a simple canonical example, we have seen that our circuit achieves a substantial reduction in both qubits and gate counts relative to current state-of-the-art methods.",
+      "start": 3009,
+      "end": 3185,
+      "chunk_sha256": "b09166baf2ff73b771dfcd8346cbcd6c61aeff36991ab4655fb3364ad1c01034"
+     },
+     {
+      "document_id": "arxiv-2607-16166-p0002",
+      "quote": "Quantum LDPC codes provide a substantial reduction in qubit overhead required for fault-tolerant quantum computation compared to surface code, thanks to their high encoding rate.",
+      "start": 0,
+      "end": 178,
+      "chunk_sha256": "52d52a70ac6ee4550dc9d65baa7861531e0767f91a89f00a375b11c5d0c06723"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "causes"
+    ]
+   }
+  ],
+  "expected_relation": "common_driver",
+  "direction_check": {
+   "requested": "common_driver",
+   "status": "unspecified",
+   "observed": []
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-1811-00566-p0003",
+    "quote": "We compare the physical qubit and gate cost of our scheme to the magic state distillation protocol of Meier, Eastin, and Knill (MEK), which is efficient and uses a small stabilizer circuit.",
+    "start": 472,
+    "end": 661,
+    "chunk_sha256": "8092e9aa9cb68b48bcc481756a4755542dd78552925c15e985cb9b30f40cedf9",
+    "measures": [
+     "qubits"
+    ]
+   },
+   {
+    "document_id": "arxiv-1811-00566-p0009",
+    "quote": "Proofs of faulttolerance are given in Appendix A. In Section 4 we briefly review the MEK magic state distillation scheme and in Section 5 we compare the qubit and gate overhead costs of both schemes.",
+    "start": 297,
+    "end": 496,
+    "chunk_sha256": "b092236d8a96422a42f04a6b36540f2bc08dde2a9c6d0dc9452b8a0610ab96c3",
+    "measures": [
+     "qubits"
+    ]
+   },
+   {
+    "document_id": "arxiv-1811-00566-p0022",
+    "quote": "The extra flag qubits are used to localize errors occurring near the fourth controlled-Hadamard gate since these cannot be distinguished from errors occurring at the other controlled-Hadamard gates.",
+    "start": 122,
+    "end": 320,
+    "chunk_sha256": "3ed09e9672d5fff68a0b1fdb46a5db0440046cf595fa6ec94461277c63ac1486",
+    "measures": [
+     "qubits"
+    ]
+   },
+   {
+    "document_id": "arxiv-1904-10378-p0004",
+    "quote": "[13] proposed a compact quantum dot array controlled via acrossbar geometry, enabling N qubits to be controlled with",
+    "start": 622,
+    "end": 738,
+    "chunk_sha256": "d4684cd56e64d222d1d2247bfc4e4672ab912a1f4850afbff3403bacd3ee2f06",
+    "measures": [
+     "qubits"
+    ]
+   },
+   {
+    "document_id": "arxiv-2006-05416-p0002",
+    "quote": "To implement quantum computation without this cancellation, we construct a protocol for photonic MBQC that achieves as low as poly-logarithmic overhead, by introducing an entanglement structure for low-overhead qubit permutation.",
+    "start": 537,
+    "end": 766,
+    "chunk_sha256": "1b7eb200185309b7a3888e024bd27890f0da072ce3772ea7c0bb1bf4b6ebf5a3",
+    "measures": [
+     "qubits"
+    ]
+   },
+   {
+    "document_id": "arxiv-2009-14226-p0022",
+    "quote": "In Figure 3, we compare the product TC(m) ⊗ [[4, 2, 2]] with all the toric codes TC(l) achieving a smaller or equal qubit overhead.",
+    "start": 1035,
+    "end": 1166,
+    "chunk_sha256": "891befc8e47fac96589c676bee4be2114ac77d4817db8b105a90205fc3caffcc",
+    "measures": [
+     "qubits"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "high fidelity instruction executions",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2509-24402-p0002",
+     "quote": "Practical quantum computation requires high-fidelity instruction executions on qubits.",
+     "start": 0,
+     "end": 86,
+     "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+     "relation": "constrains",
+     "subject": "high fidelity instruction executions",
+     "object": "Practical quantum computation",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Magic state distillation",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2507-12511-p0002",
+     "quote": "Magic state distillation enables universal fault-tolerant quantum computation by implementing non-Clifford gates via the preparation of high-fidelity magic states.",
+     "start": 0,
+     "end": 163,
+     "chunk_sha256": "8299ab8968e968302dbfc0bda28f03d5ead9bf1f7220bc34fbd3c9ffb6edbcec",
+     "relation": "increases",
+     "subject": "Magic state distillation",
+     "object": "universal fault tolerant quantum computation",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "strategy",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2009-14226-p0012",
+     "quote": "Overall, this strategy leads to a significant reduction of the qubit overhead required to achieve a given minimum distance as shown in Figure 2.",
+     "start": 349,
+     "end": 493,
+     "chunk_sha256": "0c649b966aa48051fd99bb5499f9f1253802f42dadab7bfdc963230eb1170200",
+     "relation": "causes",
+     "subject": "strategy",
+     "object": "reduction of qubit",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "qubits",
+     "source_term": "using qutrits rather than qubits",
+     "citation": {
+      "document_id": "arxiv-2403-06228-p0002",
+      "quote": "Low Overhead Qutrit Magic State Distillation Shiroman Prakash1 and Tanay Saha1,2 1Department of Physics and Computer Science, Dayalbagh Educational Institute, Agra-282005, India 2Present Address: Department of Mathematics, Simon Fraser University, Burnaby, B.C., Canada We show that using qutrits rather than qubits leads to a substantial reduction in the overhead cost associated with an approach to fault-tolerant quantum computing known as magic state distillation.",
+      "start": 0,
+      "end": 468,
+      "chunk_sha256": "268c107d13cd09d5e1ae7ef7b9015614a605ade0db8fa2669a80427bdadcf092",
+      "relation": "causes",
+      "subject": "using qutrits rather than qubits",
+      "object": "substantial reduction",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "1b15a957a29a9ff2",
+    "kind": "variable",
+    "term": "qubits",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for qubits."
+   },
+   {
+    "id": "3636315788a236d7",
+    "kind": "variable",
+    "term": "qubits",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for qubits."
+   },
+   {
+    "id": "85a1680c62c3c92b",
+    "kind": "variable",
+    "term": "smallest intractable quantum computations",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for smallest intractable quantum computations."
+   },
+   {
+    "id": "6ffe6183a652430e",
+    "kind": "variable",
+    "term": "smallest intractable quantum computations",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for smallest intractable quantum computations."
+   },
+   {
+    "id": "70b73c51d1cc393d",
+    "kind": "variable",
+    "term": "substantial reduction",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for substantial reduction."
+   },
+   {
+    "id": "0ccc291847e54f5b",
+    "kind": "variable",
+    "term": "substantial reduction",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for substantial reduction."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "common cause",
+   "manipulate": [
+    "qubits"
+   ],
+   "measure": [
+    "smallest intractable quantum computations",
+    "substantial reduction"
+   ],
+   "mediator": null,
+   "controls": [
+    "high fidelity instruction executions",
+    "Magic state distillation",
+    "strategy"
+   ],
+   "steps": [
+    "Vary qubits and measure smallest intractable quantum computations and substantial reduction.",
+    "Review candidate controls (high fidelity instruction executions, Magic state distillation, strategy) for timing, feasibility and causal role before adjustment.",
+    "Check whether smallest intractable quantum computations and substantial reduction still co-vary when qubits is held fixed."
+   ],
+   "fails_if": "smallest intractable quantum computations and substantial reduction co-vary just as strongly when qubits is held fixed, or qubits moves neither.",
+   "variables": [
+    {
+     "term": "qubits",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1412-7010-p0002",
+       "quote": "Our study shows that leakage errors can be corrected without the need of measurements and at the cost of only a few additional ancilla qubits and gate operations compared to standard quantum error correction codes.",
+       "start": 504,
+       "end": 718,
+       "chunk_sha256": "cb0d6222a255361d1f52b063bea503a39ae721c581db1cb7c0ebae8177730c51",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1509-05470-p0001",
+       "quote": "# Measuring and Suppressing Quantum State Leakage in a Superconducting Qubit",
+       "start": 0,
+       "end": 76,
+       "chunk_sha256": "df4feb408bba8c5a61f0d6de6310c52b07f24d2b741a0c49bc5965a64895650f",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1811-00566-p0007",
+       "quote": "Recently, new schemes using flag qubits have been introduced to implement error correction protocols using the minimal number of ancilla qubits to measure the codesstabilizergenerators [20–25].",
+       "start": 0,
+       "end": 193,
+       "chunk_sha256": "3789bf5615c0c59ab38e747c33edf34ea5ae17950708b4c4eafe177a0459248c",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "smallest intractable quantum computations",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "substantial reduction",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "qubits",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "qubits",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "smallest intractable quantum computations",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "smallest intractable quantum computations",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "substantial reduction",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "substantial reduction",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established"
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 8.595
+  },
+  "snapshot": {
+   "as_of": 1795596158,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: smallest intractable quantum computations and substantial reduction may move together because both depend on qubits.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unspecified.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: using qutrits rather than qubits versus qubits.\n\nLink qubits -> smallest intractable quantum computations: supported (1 supporting, 0 contrary).\n  + [arxiv-1905-06903-p0002] While the smallest classically intractable quantum computations require ∼100 qubits, Accepted in Quantum 2019-10-30, click title to verify 2 Figure 2: A sequence of 16 π/8 rotations on 5 qubits that is non-trivially equivalent to the identity.\n\nLink qubits -> substantial reduction: supported (1 supporting, 0 contrary).\n  + [arxiv-2403-06228-p0002] Low Overhead Qutrit Magic State Distillation Shiroman Prakash1 and Tanay Saha1,2 1Department of Physics and Computer Science, Dayalbagh Educational Institute, Agra-282005, India 2Present Address: Department of Mathematics, Simon Fraser University, Burnaby, B.C., Canada We show that using qutrits rather than qubits leads to a substantial reduction in the overhead cost associated with an approach to fault-tolerant quantum computing known as magic state distillation.\n\nExisting setups that measure one of its terms:\n  [arxiv-1811-00566-p0003] We compare the physical qubit and gate cost of our scheme to the magic state distillation protocol of Meier, Eastin, and Knill (MEK), which is efficient and uses a small stabilizer circuit.\n  [arxiv-1811-00566-p0009] Proofs of faulttolerance are given in Appendix A. In Section 4 we briefly review the MEK magic state distillation scheme and in Section 5 we compare the qubit and gate overhead costs of both schemes.\n  [arxiv-1811-00566-p0022] The extra flag qubits are used to localize errors occurring near the fourth controlled-Hadamard gate since these cannot be distinguished from errors occurring at the other controlled-Hadamard gates.\n  [arxiv-1904-10378-p0004] [13] proposed a compact quantum dot array controlled via acrossbar geometry, enabling N qubits to be controlled with\n\nCandidate controls (review before adjustment):\n  high fidelity instruction executions: outcome_predictor [arxiv-2509-24402-p0002]\n  Magic state distillation: outcome_predictor [arxiv-2507-12511-p0002]\n  strategy: outcome_predictor [arxiv-2009-14226-p0012]\n\nTest plan (common cause):\n  1. Vary qubits and measure smallest intractable quantum computations and substantial reduction.\n  2. Review candidate controls (high fidelity instruction executions, Magic state distillation, strategy) for timing, feasibility and causal role before adjustment.\n  3. Check whether smallest intractable quantum computations and substantial reduction still co-vary when qubits is held fixed.\n  Fails if: smallest intractable quantum computations and substantial reduction co-vary just as strongly when qubits is held fixed, or qubits moves neither.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for qubits.\n  Required: feasible intervention or justified observational design for qubits.\n  Required: measurement procedure for smallest intractable quantum computations.\n  Required: unit or explicit categorical scale for smallest intractable quantum computations.\n  Required: measurement procedure for substantial reduction.\n  Required: unit or explicit categorical scale for substantial reduction.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

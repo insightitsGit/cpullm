@@ -1,0 +1,338 @@
+{
+ "prompt": "Frontier: quasiparticles.",
+ "options": {},
+ "seconds": 8.6,
+ "answer_status": "shortage",
+ "frontier": {
+  "schema": "frontier-v1",
+  "triggered": true,
+  "topic": "quasiparticles",
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "limits": {
+   "max_rounds": 1000,
+   "max_candidates": 200000,
+   "max_edges": 50000,
+   "max_bytes": 67108864,
+   "max_seconds": 60.0,
+   "batch_size": 256,
+   "max_path_edges": 2,
+   "max_results": 50,
+   "min_results": 10
+  },
+  "topic_terms": [
+   "quasiparticle"
+  ],
+  "focus_terms": [
+   "quasiparticle"
+  ],
+  "chunk_count": 3369,
+  "candidate_search_complete": true,
+  "deepened": 2,
+  "leading_check": {
+   "requested": 2,
+   "checked": 2,
+   "complete": true,
+   "stop_reason": null
+  },
+  "parser": "en_core_web_lg",
+  "bridge_check": "encoder",
+  "encoded_terms": 6,
+  "hub_deferred": 0,
+  "status": "shortage",
+  "hypotheses": [
+   {
+    "id": "1356a86468d9",
+    "text": "correlated errors and quasiparticle may move together because both depend on Ionizing radiation.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "correlated errors",
+     "quasiparticle",
+     "Ionizing radiation"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2610-20132-p0002",
+     "arxiv-2603-16494-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2610-20132-p0002",
+      "quote": "Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.",
+      "start": 0,
+      "end": 124,
+      "chunk_sha256": "ff8e50d626238325449b9c299fd1ea576640140085fa7b93de4476d44924581e",
+      "relation": "causes",
+      "subject": "Ionizing radiation",
+      "object": "correlated errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2603-16494-p0002",
+      "quote": "Radiation from cosmic and terrestrial sources can increase the quasiparticle (QP) density in a superconducting qubit device, resulting in an increased rate of QPs tunneling across proximal Josephson junctions (JJs) and causing correlated errors.",
+      "start": 125,
+      "end": 370,
+      "chunk_sha256": "4f37bcd17b2ee0eb1dab3371e6950721989df56964e8a9df4355b7a073dcd169",
+      "relation": "increases",
+      "subject": "Radiation",
+      "object": "quasiparticle",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.737,
+     "novelty": 0.578
+    },
+    "falsification_test": "Track correlated errors and quasiparticle across periods where Ionizing radiation changes and where it does not. The hypothesis fails if they co-vary just as strongly when Ionizing radiation is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "ionizing radiation",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "common_driver",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 1,
+        "requested": "Ionizing radiation",
+        "source_term": "Radiation",
+        "citation": {
+         "document_id": "arxiv-2603-16494-p0002",
+         "quote": "Radiation from cosmic and terrestrial sources can increase the quasiparticle (QP) density in a superconducting qubit device, resulting in an increased rate of QPs tunneling across proximal Josephson junctions (JJs) and causing correlated errors.",
+         "start": 125,
+         "end": 370,
+         "chunk_sha256": "4f37bcd17b2ee0eb1dab3371e6950721989df56964e8a9df4355b7a073dcd169",
+         "relation": "increases",
+         "subject": "Radiation",
+         "object": "quasiparticle",
+         "hedged": true
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [
+       {
+        "link": 0,
+        "citation": {
+         "document_id": "arxiv-2610-20132-p0002",
+         "quote": "Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.",
+         "start": 0,
+         "end": 124,
+         "chunk_sha256": "ff8e50d626238325449b9c299fd1ea576640140085fa7b93de4476d44924581e",
+         "relation": "causes",
+         "subject": "Ionizing radiation",
+         "object": "correlated errors",
+         "hedged": false
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       },
+       {
+        "link": 1,
+        "citation": {
+         "document_id": "arxiv-2603-16494-p0002",
+         "quote": "Radiation from cosmic and terrestrial sources can increase the quasiparticle (QP) density in a superconducting qubit device, resulting in an increased rate of QPs tunneling across proximal Josephson junctions (JJs) and causing correlated errors.",
+         "start": 125,
+         "end": 370,
+         "chunk_sha256": "4f37bcd17b2ee0eb1dab3371e6950721989df56964e8a9df4355b7a073dcd169",
+         "relation": "increases",
+         "subject": "Radiation",
+         "object": "quasiparticle",
+         "hedged": true
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       }
+      ],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "Ionizing radiation",
+       "target": "correlated errors",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "Ionizing radiation",
+       "target": "quasiparticle",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "2ec380479b42",
+    "text": "fluctuations and flux noise may move together because both depend on Charge noise.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "fluctuations",
+     "flux noise",
+     "Charge noise"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1904-10378-p0034",
+     "arxiv-2407-21177-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1904-10378-p0034",
+      "quote": "Withineachstabilisercheck, we assume the following error model: • Two-qubit gates: Charge noise leads to fluctuations in the exchange strength J, which can lead to the following errors for Accepted in Quantum 2019-12-01, click title to verify.",
+      "start": 599,
+      "end": 842,
+      "chunk_sha256": "57c9c54cf628984d03e868dc0130dc6c8ecb862c161bd61924f081c20d6bdedd",
+      "relation": "causes",
+      "subject": "Charge noise",
+      "object": "fluctuations",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-21177-p0003",
+      "quote": "In addition, we show that charge noise from quasiparticles leads to flux noise that is logarithmic-in-frequency, giving rise to a “nearly white” contribution that is comparable to the flux noise observed in flux qubits.",
+      "start": 1120,
+      "end": 1339,
+      "chunk_sha256": "401bbb55f724cbc62f5160915e7b3737651e2e85d02c3c85e7838f3bd62d7d55",
+      "relation": "causes",
+      "subject": "charge noise",
+      "object": "flux noise",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.573,
+     "novelty": 0.562
+    },
+    "falsification_test": "Track fluctuations and flux noise across periods where Charge noise changes and where it does not. The hypothesis fails if they co-vary just as strongly when Charge noise is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "charge noise",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "common_driver",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [],
+      "qualifications": [
+       {
+        "link": 0,
+        "citation": {
+         "document_id": "arxiv-1904-10378-p0034",
+         "quote": "Withineachstabilisercheck, we assume the following error model: • Two-qubit gates: Charge noise leads to fluctuations in the exchange strength J, which can lead to the following errors for Accepted in Quantum 2019-12-01, click title to verify.",
+         "start": 599,
+         "end": 842,
+         "chunk_sha256": "57c9c54cf628984d03e868dc0130dc6c8ecb862c161bd61924f081c20d6bdedd",
+         "relation": "causes",
+         "subject": "Charge noise",
+         "object": "fluctuations",
+         "hedged": true
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       }
+      ],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "Charge noise",
+       "target": "fluctuations",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "Charge noise",
+       "target": "flux noise",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   }
+  ],
+  "survivors": 2,
+  "candidates_generated": 20,
+  "candidates_passed": {
+   "abductive": 16,
+   "deductive": 16,
+   "pre_thinker": 2
+  },
+  "candidates_rejected": {
+   "abductive:unrelated_bridge": 4,
+   "pre_thinker:malformed": 10,
+   "pre_thinker:restates_source": 1,
+   "pre_thinker:single_source": 3
+  },
+  "relation_edges": 996,
+  "scoped_edges": 17,
+  "budget_used": {
+   "rounds": 1,
+   "candidates": 20,
+   "edges": 1042,
+   "bytes": 489050,
+   "seconds": 8.547
+  },
+  "incomplete": false,
+  "stop_reason": null,
+  "shortage": {
+   "returned": 2,
+   "target_min": 10,
+   "reason": "Fewer candidates survived the filters than the target; the list is not padded."
+  },
+  "snapshot": {
+   "as_of": 1795596011,
+   "chunk_count": 3369
+  }
+ },
+ "reply": "Frontier hypotheses for quasiparticles. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 20. Passed abductive check: 16; deductive check: 16; pre-thinker validation: 2.\n\n1. correlated errors and quasiparticle may move together because both depend on Ionizing radiation.\n[arxiv-2610-20132-p0002] Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.\n[arxiv-2603-16494-p0002] Radiation from cosmic and terrestrial sources can increase the quasiparticle (QP) density in a superconducting qubit device, resulting in an increased rate of QPs tunneling across proximal Josephson junctions (JJs) and causing correlated errors.\nFalsification test: Track correlated errors and quasiparticle across periods where Ionizing radiation changes and where it does not. The hypothesis fails if they co-vary just as strongly when Ionizing radiation is held fixed.\nDeepen check: all links supported (Ionizing radiation -> correlated errors: supported, Ionizing radiation -> quasiparticle: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.55, deductive relevance 0.74, novelty 0.58.\n\n2. fluctuations and flux noise may move together because both depend on Charge noise.\n[arxiv-1904-10378-p0034] Withineachstabilisercheck, we assume the following error model: • Two-qubit gates: Charge noise leads to fluctuations in the exchange strength J, which can lead to the following errors for Accepted in Quantum 2019-12-01, click title to verify.\n[arxiv-2407-21177-p0003] In addition, we show that charge noise from quasiparticles leads to flux noise that is logarithmic-in-frequency, giving rise to a “nearly white” contribution that is comparable to the flux noise observed in flux qubits.\nFalsification test: Track fluctuations and flux noise across periods where Charge noise changes and where it does not. The hypothesis fails if they co-vary just as strongly when Charge noise is held fixed.\nDeepen check: all links supported (Charge noise -> fluctuations: supported, Charge noise -> flux noise: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.55, deductive relevance 0.57, novelty 0.56.\n\nOnly 2 hypotheses survived the filters (target at least 10). The list is not padded.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

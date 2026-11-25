@@ -1,6 +1,11 @@
 {
  "prompt": "Frontier: quantum error correction.",
- "seconds": 60.28,
+ "options": {
+  "limits": {
+   "max_seconds": 120
+  }
+ },
+ "seconds": 41.7,
  "answer_status": "hypotheses",
  "frontier": {
   "schema": "frontier-v1",
@@ -15,7 +20,7 @@
    "max_candidates": 200000,
    "max_edges": 50000,
    "max_bytes": 67108864,
-   "max_seconds": 60.0,
+   "max_seconds": 120,
    "batch_size": 256,
    "max_path_edges": 2,
    "max_results": 50,
@@ -33,12 +38,12 @@
   ],
   "chunk_count": 3369,
   "candidate_search_complete": true,
-  "deepened": 0,
+  "deepened": 5,
   "leading_check": {
    "requested": 5,
-   "checked": 0,
-   "complete": false,
-   "stop_reason": "deadline"
+   "checked": 5,
+   "complete": true,
+   "stop_reason": null
   },
   "parser": "en_core_web_lg",
   "bridge_check": "encoder",
@@ -98,7 +103,67 @@
     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
     "supporting_paths": 2,
     "rule_verdict": null,
-    "hub": "noise"
+    "hub": "noise",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "common_driver",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 0,
+        "requested": "noise",
+        "source_term": "strong noise",
+        "citation": {
+         "document_id": "arxiv-2405-05332-p0011",
+         "quote": "Sufficiently strong noise also generically leads to BPs [48–51].",
+         "start": 9,
+         "end": 73,
+         "chunk_sha256": "eed34e9a40d50ff38c45389354876de468a96ab0a84da70e4ef72a153dfa6460",
+         "relation": "causes",
+         "subject": "strong noise",
+         "object": "BPs",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "noise",
+       "target": "BPs",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "noise",
+       "target": "quest for universal superconducting quantum computing",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
    },
    {
     "id": "fca0e8a06f94",
@@ -165,7 +230,121 @@
     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
     "supporting_paths": 2,
     "rule_verdict": null,
-    "hub": "sampling cost"
+    "hub": "sampling cost",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "jointly_drive",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 0,
+        "requested": "circuit depth for noise models",
+        "source_term": "circuit depth",
+        "citation": {
+         "document_id": "arxiv-2208-09385-p0079",
+         "quote": "By using the convergence of the relative entropy, they showed for generic noisy layered circuits that the sampling cost of QEM grows exponentially with the circuit depth.",
+         "start": 2804,
+         "end": 2974,
+         "chunk_sha256": "9e22ba71c4a87daa68ef79dec6da6e15a9205dde29fc891316fdbef92b1f5792",
+         "relation": "increases",
+         "subject": "circuit depth",
+         "object": "sampling cost of QEM",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 0,
+        "requested": "sampling cost",
+        "source_term": "sampling cost of QEM",
+        "citation": {
+         "document_id": "arxiv-2208-09385-p0079",
+         "quote": "By using the convergence of the relative entropy, they showed for generic noisy layered circuits that the sampling cost of QEM grows exponentially with the circuit depth.",
+         "start": 2804,
+         "end": 2974,
+         "chunk_sha256": "9e22ba71c4a87daa68ef79dec6da6e15a9205dde29fc891316fdbef92b1f5792",
+         "relation": "increases",
+         "subject": "circuit depth",
+         "object": "sampling cost of QEM",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "sampling cost",
+        "source_term": "cost",
+        "citation": {
+         "document_id": "arxiv-2208-09385-p0002",
+         "quote": "Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.",
+         "start": 1125,
+         "end": 1241,
+         "chunk_sha256": "133876183918ad42ee680678cb2b9a17d2df6ebe8aa0cb141e08e1099bc2c4ab",
+         "relation": "increases",
+         "subject": "qubit count",
+         "object": "cost",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "sampling cost",
+        "source_term": "cost of QEM",
+        "citation": {
+         "document_id": "arxiv-2208-09385-p0076",
+         "quote": "First, these results indicate the exponential decay of the quantum Fisher information matrix with respect to qubit count, meaning that the cost of QEM grows exponentially with qubit count.",
+         "start": 168,
+         "end": 356,
+         "chunk_sha256": "e588dd20846f6e548b31da15f2d812bb12344005bb191a28cc58f02f5ac2c655",
+         "relation": "increases",
+         "subject": "qubit count",
+         "object": "cost of QEM",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "untested",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "circuit depth for noise models",
+       "target": "sampling cost",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "qubit count",
+       "target": "sampling cost",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
    },
    {
     "id": "73067a6d5973",
@@ -232,7 +411,85 @@
     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
     "supporting_paths": 2,
     "rule_verdict": null,
-    "hub": "sampling cost"
+    "hub": "sampling cost",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "jointly_drive",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 1,
+        "requested": "sampling cost",
+        "source_term": "cost",
+        "citation": {
+         "document_id": "arxiv-2208-09385-p0002",
+         "quote": "Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.",
+         "start": 1125,
+         "end": 1241,
+         "chunk_sha256": "133876183918ad42ee680678cb2b9a17d2df6ebe8aa0cb141e08e1099bc2c4ab",
+         "relation": "increases",
+         "subject": "qubit count",
+         "object": "cost",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "sampling cost",
+        "source_term": "cost of QEM",
+        "citation": {
+         "document_id": "arxiv-2208-09385-p0076",
+         "quote": "First, these results indicate the exponential decay of the quantum Fisher information matrix with respect to qubit count, meaning that the cost of QEM grows exponentially with qubit count.",
+         "start": 168,
+         "end": 356,
+         "chunk_sha256": "e588dd20846f6e548b31da15f2d812bb12344005bb191a28cc58f02f5ac2c655",
+         "relation": "increases",
+         "subject": "qubit count",
+         "object": "cost of QEM",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "untested",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "circuit size",
+       "target": "sampling cost",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "qubit count",
+       "target": "sampling cost",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
    },
    {
     "id": "f8b0d78009b6",
@@ -287,7 +544,88 @@
     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
     "supporting_paths": 2,
     "rule_verdict": null,
-    "hub": "coset probability of error"
+    "hub": "coset probability of error",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "increases",
+      "status": "consistent",
+      "observed": [
+       "increases"
+      ],
+      "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 0,
+        "requested": "coset probability of error",
+        "source_term": "probability of error",
+        "citation": {
+         "document_id": "arxiv-2309-10331-p0031",
+         "quote": "The difference between definitions 1 and 2 is that definition 1 maximizes the probability of the error found while definition 2 maximizes the coset probability of the error found.",
+         "start": 615,
+         "end": 794,
+         "chunk_sha256": "66932de024586bbb671bca0dabb45136f456b49c0519a99ac4a96bf679726023",
+         "relation": "increases",
+         "subject": "definition",
+         "object": "probability of error",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "coset probability of error",
+        "source_term": "physical error probability",
+        "citation": {
+         "document_id": "arxiv-2212-11632-p0020",
+         "quote": "Over the depolarizing channel (pX = pY = pZ = p/3) the performance of the code has been benchmarked through the probability threshold (pth), that is, the physical error probability at which increasing the distance of the code does improve its performance.",
+         "start": 127,
+         "end": 382,
+         "chunk_sha256": "0f534921050ebf2166d63ddabe3ad53d3582c3a29aa7f1a32b33d15335065fea",
+         "relation": "increases",
+         "subject": "physical error probability",
+         "object": "performance",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "definition",
+       "target": "coset probability of error",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "coset probability of error",
+       "target": "performance",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
    },
    {
     "id": "864f730f0e13",
@@ -341,7 +679,179 @@
     "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
     "supporting_paths": 2,
     "rule_verdict": null,
-    "hub": "initial state"
+    "hub": "initial state",
+    "check": {
+     "verdict": "contested",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "co_constrain",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 1,
+        "requested": "initial state",
+        "source_term": "syndrome state",
+        "citation": {
+         "document_id": "arxiv-2508-08246-p0054",
+         "quote": "In other words, the syndrome state |sE ⟩ is independent of the logical state and only depends on the error E. We now consider the case of a more general error superoperator E (not necessarily CPTP).",
+         "start": 64,
+         "end": 262,
+         "chunk_sha256": "a096f6dcf27613b546432fc959f58d9baaae9ddb659d5687beb5a99ab425911d",
+         "relation": "constrains",
+         "subject": "error",
+         "object": "syndrome state",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "error",
+        "source_term": "input error",
+        "citation": {
+         "document_id": "arxiv-2508-08246-p0063",
+         "quote": "In particular, the logical output state may depend on the input error in a highly non-trivial way.",
+         "start": 48,
+         "end": 146,
+         "chunk_sha256": "ae44ef3bf68adff95e0ca407a6b31edb4ebdd615c1f96744de8e378a5311b446",
+         "relation": "constrains",
+         "subject": "input error",
+         "object": "logical output state",
+         "hedged": true
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "initial state",
+        "source_term": "logical output state",
+        "citation": {
+         "document_id": "arxiv-2508-08246-p0063",
+         "quote": "In particular, the logical output state may depend on the input error in a highly non-trivial way.",
+         "start": 48,
+         "end": 146,
+         "chunk_sha256": "ae44ef3bf68adff95e0ca407a6b31edb4ebdd615c1f96744de8e378a5311b446",
+         "relation": "constrains",
+         "subject": "input error",
+         "object": "logical output state",
+         "hedged": true
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "initial state",
+        "source_term": "state",
+        "citation": {
+         "document_id": "arxiv-2208-09385-p0078",
+         "quote": "For the numerical simulation performed to obtain the cost of generalized subspace expansion [21], we optimize parameter c1 and c2 so that the error mitigated state (c1I/2n + c2E ′(ρ))(c1I/2n + c2E ′(ρ))† = |c1|2/4nI + Re(c1c∗ 2)/2n−1E ′(ρ) + |c2|2E ′(ρ)2 reaches the noiseless state",
+         "start": 585,
+         "end": 867,
+         "chunk_sha256": "adf28b1f99ac4aea11c404b94a040c315b7f9e7029e52e231e0bcfe46416c2e1",
+         "relation": "decreases",
+         "subject": "error",
+         "object": "state",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [
+       {
+        "link": 0,
+        "citation": {
+         "document_id": "arxiv-2405-05332-p0013",
+         "quote": "The class of VQAs we consider here restricts the initial state ρ to be a stabilizer state, the observable O to be a sum of poly(n) Pauli stings O = P i ciPi with real coefficients ci, and the circuit U (φφφ) to consist only of the constant Clifford gates and parametric Pauli rotation gates e−ıPk φk /2.",
+         "start": 0,
+         "end": 303,
+         "chunk_sha256": "00217a3822671968b26cb8b4fbe92787040b60d7eddd063479b70337ec1327a7",
+         "relation": "constrains",
+         "subject": "class of VQAs",
+         "object": "initial state",
+         "hedged": false
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       },
+       {
+        "link": 1,
+        "citation": {
+         "document_id": "arxiv-2508-08246-p0054",
+         "quote": "In other words, the syndrome state |sE ⟩ is independent of the logical state and only depends on the error E. We now consider the case of a more general error superoperator E (not necessarily CPTP).",
+         "start": 64,
+         "end": 262,
+         "chunk_sha256": "a096f6dcf27613b546432fc959f58d9baaae9ddb659d5687beb5a99ab425911d",
+         "relation": "constrains",
+         "subject": "error",
+         "object": "syndrome state",
+         "hedged": false
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       },
+       {
+        "link": 1,
+        "citation": {
+         "document_id": "arxiv-2508-08246-p0063",
+         "quote": "In particular, the logical output state may depend on the input error in a highly non-trivial way.",
+         "start": 48,
+         "end": 146,
+         "chunk_sha256": "ae44ef3bf68adff95e0ca407a6b31edb4ebdd615c1f96744de8e378a5311b446",
+         "relation": "constrains",
+         "subject": "input error",
+         "object": "logical output state",
+         "hedged": true
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       }
+      ],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "untested",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "class of VQAs",
+       "target": "initial state",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "error",
+       "target": "initial state",
+       "status": "contested",
+       "counter": [
+        {
+         "document_id": "arxiv-2208-09385-p0078",
+         "quote": "For the numerical simulation performed to obtain the cost of generalized subspace expansion [21], we optimize parameter c1 and c2 so that the error mitigated state (c1I/2n + c2E ′(ρ))(c1I/2n + c2E ′(ρ))† = |c1|2/4nI + Re(c1c∗ 2)/2n−1E ′(ρ) + |c2|2E ′(ρ)2 reaches the noiseless state",
+         "start": 585,
+         "end": 867,
+         "chunk_sha256": "adf28b1f99ac4aea11c404b94a040c315b7f9e7029e52e231e0bcfe46416c2e1",
+         "relation": "decreases",
+         "subject": "error",
+         "object": "state",
+         "hedged": false
+        }
+       ]
+      }
+     ]
+    }
    },
    {
     "id": "d7a565132c31",
@@ -2865,15 +3375,15 @@
    "candidates": 4554,
    "edges": 1042,
    "bytes": 1573855,
-   "seconds": 60.139
+   "seconds": 41.576
   },
-  "incomplete": true,
-  "stop_reason": "leading_check:deadline",
+  "incomplete": false,
+  "stop_reason": null,
   "shortage": null,
   "snapshot": {
-   "as_of": 1795594535,
+   "as_of": 1795595946,
    "chunk_count": 3369
   }
  },
- "reply": "Frontier hypotheses for quantum error correction. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 4554. Passed abductive check: 3290; deductive check: 3287; pre-thinker validation: 1255.\n\n1. BPs and quest for universal superconducting quantum computing may move together because both depend on noise.\n[arxiv-2102-01828-p0004] And the noise from quantum hardware also causes BPs, which are called noiseinduced BPs [25].\n[arxiv-2506-16834-p0002] The quest for universal superconducting quantum computing is hindered by noise and errors.\nFalsification test: Track BPs and quest for universal superconducting quantum computing across periods where noise changes and where it does not. The hypothesis fails if they co-vary just as strongly when noise is held fixed.\nScores: source support 0.96, deductive relevance 0.55, novelty 0.58.\n\n2. circuit depth for noise models and qubit count may jointly drive sampling cost, and their effects may compound.\n[arxiv-2208-09178-p0002] The results imply that the sampling cost required for a wide class of protocols to mitigate errors must grow exponentially with the circuit depth for various noise models, revealing the fundamental obstacles in the scalability of useful noisy near-term quantum devices.\n[arxiv-2208-09385-p0002] Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.\n[arxiv-2208-09385-p0004] Furthermore, for random layered circuits under local noise, we show that the cost grows exponentially also with the qubit count n (Theorem 2).\nFalsification test: Vary circuit depth for noise models and qubit count separately and together. The hypothesis fails if the joint change in sampling cost equals the sum of the separate changes.\nScores: source support 0.96, deductive relevance 0.50, novelty 0.55.\n\n3. circuit size and qubit count may jointly drive sampling cost, and their effects may compound.\n[arxiv-2208-09178-p0002] Various prominent quantum error mitigation methods face this problem, where sampling cost grows exponentially with circuit size [4–8].\n[arxiv-2208-09385-p0002] Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.\n[arxiv-2208-09385-p0004] Furthermore, for random layered circuits under local noise, we show that the cost grows exponentially also with the qubit count n (Theorem 2).\nFalsification test: Vary circuit size and qubit count separately and together. The hypothesis fails if the joint change in sampling cost equals the sum of the separate changes.\nScores: source support 0.96, deductive relevance 0.49, novelty 0.65.\n\n4. definition may increase performance through coset probability of error (read as physical error probability).\n[arxiv-2309-10331-p0031] The difference between definitions 1 and 2 is that definition 1 maximizes the probability of the error found while definition 2 maximizes the coset probability of the error found.\n[arxiv-2212-11632-p0020] Over the depolarizing channel (pX = pY = pZ = p/3) the performance of the code has been benchmarked through the probability threshold (pth), that is, the physical error probability at which increasing the distance of the code does improve its performance.\nFalsification test: Compare settings where definition differs while other inputs are matched. The hypothesis fails if performance does not rise with definition, or if fixing coset probability of error (read as physical error probability) removes no part of the effect.\nScores: source support 0.96, deductive relevance 0.47, novelty 0.52.\n\n5. class of VQAs and error may jointly constrain initial state, so relieving one may shift the bottleneck to the other.\n[arxiv-2405-05332-p0013] The class of VQAs we consider here restricts the initial state ρ to be a stabilizer state, the observable O to be a sum of poly(n) Pauli stings O = P i ciPi with real coefficients ci, and the circuit U (φφφ) to consist only of the constant Clifford gates and parametric Pauli rotation gates e−ıPk φk /2.\n[arxiv-2508-08246-p0054] In other words, the syndrome state |sE ⟩ is independent of the logical state and only depends on the error E. We now consider the case of a more general error superoperator E (not necessarily CPTP).\nFalsification test: Relieve class of VQAs alone while measuring initial state. The hypothesis fails if initial state keeps improving without error becoming the binding limit, or if relieving error alone has no effect.\nScores: source support 0.96, deductive relevance 0.46, novelty 0.62.\n\n6. Gains in qubit cost from qubit count may be offset by Dynamic pipelines.\n[arxiv-2509-24402-p0002] Dynamic pipelines reduce the qubit cost by 16%-70% for large-scale quantum applications and achieve average reductions of 26%-37% in qubit-time volume on generated distillation benchmarks compared to state-of-the-art static architectures.\n[arxiv-2208-09385-p0002] Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.\n[arxiv-2208-09385-p0004] Furthermore, for random layered circuits under local noise, we show that the cost grows exponentially also with the qubit count n (Theorem 2).\nFalsification test: Measure qubit cost where both Dynamic pipelines and qubit count vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.96, deductive relevance 0.43, novelty 0.56.\n\n7. idea may affect BPs through Pauli noise (read as noise).\n[arxiv-2402-13863-p0056] Pauli noise, and is physically motivated by the idea that physical sources of noise are typically such that errors are exponentially suppressed in their weight.\n[arxiv-2102-01828-p0004] And the noise from quantum hardware also causes BPs, which are called noiseinduced BPs [25].\nFalsification test: Compare settings where idea differs while other inputs are matched. The hypothesis fails if BPs does not change with idea, or if fixing Pauli noise (read as noise) removes no part of the effect.\nScores: source support 0.96, deductive relevance 0.39, novelty 0.59.\n\n8. development of mitigation strategies may constrain Realizing the full potential of quantum through Robust quantum error correction (read as quantum error correction).\n[arxiv-2012-06029-p0002] Robust quantum error correction will require the development of mitigation strategies to protect multiqubit arrays from correlated errors due to particle impacts.\n[arxiv-2203-04948-p0002] Realizing the full potential of quantum computation requires quantum error correction (QEC), with most recent breakthrough demonstrations of QEC using the surface code.\nFalsification test: Compare settings where development of mitigation strategies differs while other inputs are matched. The hypothesis fails if Realizing the full potential of quantum does not stay bounded with development of mitigation strategies, or if fixing Robust quantum error correction (read as quantum error correction) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.93, novelty 0.58.\n\n9. successful implementation of quantum error correction and Pauli X for ST qubit may move together because both depend on negligible correlated errors.\n[arxiv-2305-02591-p0002] Moreover, successful implementation of quantum error correction requires negligible correlated errors among qubits.\n[arxiv-2601-10461-p0025] However, a Pauli X for an ST qubit requires an X and/or a Y error on both spins of the same pair (as per Table I).\nFalsification test: Track successful implementation of quantum error correction and Pauli X for ST qubit across periods where negligible correlated errors changes and where it does not. The hypothesis fails if they co-vary just as strongly when negligible correlated errors is held fixed.\nScores: source support 0.80, deductive relevance 0.85, novelty 0.56.\n\n10. Gains in high performance shuttling based quantum error from Erasure conversion for singlet triplet spin may be offset by less than 10 mEh.\n[arxiv-2601-10461-p0001] # Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction\n[arxiv-2511-21236-p0043] We observe that the effect of using REM alone is minor compared to M0 and tiled M0, so we only show it for LiH in the SI where the energy errors are reduced by less than 10 mEh.\nFalsification test: Measure high performance shuttling based quantum error where both Erasure conversion for singlet triplet spin and less than 10 mEh vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.84, novelty 0.67.\n\n11. Gains in high performance shuttling based quantum error from Erasure conversion for singlet triplet spin may be offset by S. Bravyi.\n[arxiv-2601-10461-p0001] # Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction\n[arxiv-2208-09385-p0034] [44] S. Bravyi, S. Sheldon, A. Kandala, D. C. Mckay, and J. M. Gambetta, Mitigating measurement errors in multiqubit experiments, arXiv preprint arXiv:2006.14044\nFalsification test: Measure high performance shuttling based quantum error where both Erasure conversion for singlet triplet spin and S. Bravyi vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.84, novelty 0.67.\n\n12. Erasure conversion for singlet triplet spin and higher level state occupations may jointly drive high performance shuttling based quantum error, and their effects may compound.\n[arxiv-2601-10461-p0001] # Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction\n[arxiv-2102-06131-p0014] This result also raises the question how higher level state occupations that naturally arise during the stabilizer codes lead to correlated errors.\nFalsification test: Vary Erasure conversion for singlet triplet spin and higher level state occupations separately and together. The hypothesis fails if the joint change in high performance shuttling based quantum error equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.83, novelty 0.72.\n\n13. negligible correlated errors may constrain experimental quantum advantage demonstrations through successful implementation of quantum error correction (read as noisy implementations).\n[arxiv-2305-02591-p0002] Moreover, successful implementation of quantum error correction requires negligible correlated errors among qubits.\n[arxiv-2609-39734-p0006] Since experimental quantum advantage demonstrations rely on noisy implementations, additional evidence is needed to connect experimentally observed dynamics to classical simulation complexity.\nFalsification test: Compare settings where negligible correlated errors differs while other inputs are matched. The hypothesis fails if experimental quantum advantage demonstrations does not stay bounded with negligible correlated errors, or if fixing successful implementation of quantum error correction (read as noisy implementations) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.83, novelty 0.60.\n\n14. Bout and successful implementation of quantum error correction may move together because both depend on input output bad error.\n[arxiv-2508-08246-p0059] We use the circuit input/output definitions (input/output bad error supports Bin and Bout, etc.) from Definition 4.7 extended to the environment circuit in the trivial way by assigning trivial code types to all edges of the environment\n[arxiv-2305-02591-p0002] Moreover, successful implementation of quantum error correction requires negligible correlated errors among qubits.\nFalsification test: Track Bout and successful implementation of quantum error correction across periods where input output bad error changes and where it does not. The hypothesis fails if they co-vary just as strongly when input output bad error is held fixed.\nScores: source support 0.80, deductive relevance 0.82, novelty 0.66.\n\n15. development of mitigation strategies may constrain Quantum computing through Robust quantum error correction (read as quantum error correction for high fidelity).\n[arxiv-2012-06029-p0002] Robust quantum error correction will require the development of mitigation strategies to protect multiqubit arrays from correlated errors due to particle impacts.\n[arxiv-2511-06124-p0002] Quantum computing relies on quantum error correction for high-fidelity logical operations, but scaling to achieve near-term quantum utility is highly resource-intensive.\nFalsification test: Compare settings where development of mitigation strategies differs while other inputs are matched. The hypothesis fails if Quantum computing does not stay bounded with development of mitigation strategies, or if fixing Robust quantum error correction (read as quantum error correction for high fidelity) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.82, novelty 0.58.\n\n16. development of mitigation strategies may constrain Quantum computers through Robust quantum error correction (read as quantum error correction).\n[arxiv-2012-06029-p0002] Robust quantum error correction will require the development of mitigation strategies to protect multiqubit arrays from correlated errors due to particle impacts.\n[arxiv-2309-07060-p0002] Quantum computers will require quantum error correction to reach the low error rates necessary for solving problems that surpass the capabilities of conventional computers.\nFalsification test: Compare settings where development of mitigation strategies differs while other inputs are matched. The hypothesis fails if Quantum computers does not stay bounded with development of mitigation strategies, or if fixing Robust quantum error correction (read as quantum error correction) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.82, novelty 0.48.\n\n17. alternative decoders and quantum error correction for high fidelity may jointly constrain practical quantum computing, so relieving one may shift the bottleneck to the other.\n[arxiv-2511-13192-p0020] Thus, practical quantum computing requires alternative decoders that trade optimality for efficiency.\n[arxiv-2511-06124-p0002] Quantum computing relies on quantum error correction for high-fidelity logical operations, but scaling to achieve near-term quantum utility is highly resource-intensive.\nFalsification test: Relieve alternative decoders alone while measuring practical quantum computing. The hypothesis fails if practical quantum computing keeps improving without quantum error correction for high fidelity becoming the binding limit, or if relieving quantum error correction for high fidelity alone has no effect.\nScores: source support 0.80, deductive relevance 0.81, novelty 0.68.\n\n18. Ionizing radiation may increase Z error of output qubit through correlated errors (read as error).\n[arxiv-2610-20132-p0002] Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.\n[arxiv-1905-06903-p0030] Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.\nFalsification test: Compare settings where Ionizing radiation differs while other inputs are matched. The hypothesis fails if Z error of output qubit does not rise with Ionizing radiation, or if fixing correlated errors (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.78, novelty 0.57.\n\n19. Ionizing radiation may increase incorrect interpretation of lattice surgery measurement through correlated errors (read as error).\n[arxiv-2610-20132-p0002] Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.\n[arxiv-1905-06903-p0031] Such an error leads to an incorrect interpretation of the lattice-surgery measurement outcome.\nFalsification test: Compare settings where Ionizing radiation differs while other inputs are matched. The hypothesis fails if incorrect interpretation of lattice surgery measurement does not rise with Ionizing radiation, or if fixing correlated errors (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.76, novelty 0.68.\n\n20. active feedback error correction and theavailabilityofnoisyintermediate scalequantum(NISQ)devices may move together because both depend on advances.\n[arxiv-2501-03661-p0002] These advances have enabled the observation of quantum jumps and trajectories [2–4], active feedback error correction [5–7] and the exploration of quantum mechanics foundations [8–10].\n[arxiv-2109-04457-p0004] Recent advances in quantum technologies have resulted in theavailabilityofnoisyintermediate-scalequantum(NISQ)devices,promisingadvantagesofquantuminformationprocessing by controlling tens to hundreds of qubits [1, 2].\nFalsification test: Track active feedback error correction and theavailabilityofnoisyintermediate scalequantum(NISQ)devices across periods where advances changes and where it does not. The hypothesis fails if they co-vary just as strongly when advances is held fixed.\nScores: source support 0.80, deductive relevance 0.76, novelty 0.66.\n\n21. ZNE may increase quest for universal superconducting quantum computing through errors.\n[arxiv-2607-25746-p0004] ZNE mitigates errors by evaluating a circuit at several amplified noise levels and then extrapolating the resulting estimates to the zero-noise limit.\n[arxiv-2506-16834-p0002] The quest for universal superconducting quantum computing is hindered by noise and errors.\nFalsification test: Compare settings where ZNE differs while other inputs are matched. The hypothesis fails if quest for universal superconducting quantum computing does not rise with ZNE, or if fixing errors removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.76, novelty 0.52.\n\n22. advances may affect Realizing the full potential of quantum through active feedback error correction (read as quantum error correction).\n[arxiv-2501-03661-p0002] These advances have enabled the observation of quantum jumps and trajectories [2–4], active feedback error correction [5–7] and the exploration of quantum mechanics foundations [8–10].\n[arxiv-2203-04948-p0002] Realizing the full potential of quantum computation requires quantum error correction (QEC), with most recent breakthrough demonstrations of QEC using the surface code.\nFalsification test: Compare settings where advances differs while other inputs are matched. The hypothesis fails if Realizing the full potential of quantum does not change with advances, or if fixing active feedback error correction (read as quantum error correction) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.75, novelty 0.60.\n\n23. Cultivation may increase quest for universal superconducting quantum computing through error.\n[arxiv-2512-13908-p0002] Cultivation reduces the error by a factor of 40, with a state fidelity of 0.9999(1) (retaining 8% of attempts).\n[arxiv-2506-16834-p0002] The quest for universal superconducting quantum computing is hindered by noise and errors.\nFalsification test: Compare settings where Cultivation differs while other inputs are matched. The hypothesis fails if quest for universal superconducting quantum computing does not rise with Cultivation, or if fixing error removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.75, novelty 0.52.\n\n24. Quantum computers and Realizing the full potential of quantum may move together because both depend on quantum error correction.\n[arxiv-2309-07060-p0002] Quantum computers will require quantum error correction to reach the low error rates necessary for solving problems that surpass the capabilities of conventional computers.\n[arxiv-2203-04948-p0002] Realizing the full potential of quantum computation requires quantum error correction (QEC), with most recent breakthrough demonstrations of QEC using the surface code.\nFalsification test: Track Quantum computers and Realizing the full potential of quantum across periods where quantum error correction changes and where it does not. The hypothesis fails if they co-vary just as strongly when quantum error correction is held fixed.\nScores: source support 0.80, deductive relevance 0.74, novelty 0.58.\n\n25. Ionizing radiation may increase majority of error through correlated errors (read as computational error).\n[arxiv-2610-20132-p0002] Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.\n[arxiv-2102-06131-p0051] We see that computational error accounts for the majority of error in all cases.\nFalsification test: Compare settings where Ionizing radiation differs while other inputs are matched. The hypothesis fails if majority of error does not rise with Ionizing radiation, or if fixing correlated errors (read as computational error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.73, novelty 0.63.\n\n26. - local connectivity1 may constrain leakage errors through scheme (read as leakage correction schemes).\n[arxiv-1811-00566-p0008] The scheme we numerically analyze in this work does require code concatenation for distances d > 3 and thus requires non-local connectivity1.\n[arxiv-1904-10378-p0028] Without the use of mediators, leakage errors apply directly to the qubit dots and require leakage correction schemes to be applied.\nFalsification test: Compare settings where - local connectivity1 differs while other inputs are matched. The hypothesis fails if leakage errors does not stay bounded with - local connectivity1, or if fixing scheme (read as leakage correction schemes) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.72, novelty 0.63.\n\n27. exploration of quantum mechanics foundations and theavailabilityofnoisyintermediate scalequantum(NISQ)devices may move together because both depend on advances.\n[arxiv-2501-03661-p0002] These advances have enabled the observation of quantum jumps and trajectories [2–4], active feedback error correction [5–7] and the exploration of quantum mechanics foundations [8–10].\n[arxiv-2109-04457-p0004] Recent advances in quantum technologies have resulted in theavailabilityofnoisyintermediate-scalequantum(NISQ)devices,promisingadvantagesofquantuminformationprocessing by controlling tens to hundreds of qubits [1, 2].\nFalsification test: Track exploration of quantum mechanics foundations and theavailabilityofnoisyintermediate scalequantum(NISQ)devices across periods where advances changes and where it does not. The hypothesis fails if they co-vary just as strongly when advances is held fixed.\nScores: source support 0.80, deductive relevance 0.70, novelty 0.66.\n\n28. preparation of large cat state ancillas may constrain leakage errors through scheme (read as leakage correction schemes).\n[arxiv-1811-00566-p0008] However, the scheme proposed by AGP requires the preparation and verification of large cat state ancillas to perform the logical measurements.\n[arxiv-1904-10378-p0028] Without the use of mediators, leakage errors apply directly to the qubit dots and require leakage correction schemes to be applied.\nFalsification test: Compare settings where preparation of large cat state ancillas differs while other inputs are matched. The hypothesis fails if leakage errors does not stay bounded with preparation of large cat state ancillas, or if fixing scheme (read as leakage correction schemes) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.70, novelty 0.60.\n\n29. Gains in radiation induced errors from Erasure may be offset by D. Implications for Future Processors.\n[arxiv-2603-13460-p0023] D. Implications for Future Processors While JJ GE significantly mitigates radiation-induced errors, qubit arrays protected in this way remain sensitive to radiation that deposits energy on the scale of a few MeV.\n[arxiv-2601-10461-p0002] Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction Adam Siegel1, 2, ∗ and Simon Benjamin1, 2 1Quantum Motion, 9 Sterling Way, London N7 9HJ, United Kingdom 2Department of Materials, University of Oxford, Parks Road, Oxford OX1 3PH, United Kingdom\nFalsification test: Measure radiation induced errors where both D. Implications for Future Processors and Erasure vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.70, novelty 0.57.\n\n30. NBP Decoders may contribute to ordinary 15 protocol through estimate (read as error estimate).\n[arxiv-2608-27682-p0013] 2.2 Quantum BP and NBP Decoders In the code-capacity model, where stabilizer measurements are error-free, the decoder produces an estimate ˆE from the measured syndrome s of size m.\n[arxiv-1905-06903-p0047] The error estimate is identical to the ordinary 15-to-1 protocol.\nFalsification test: Compare settings where NBP Decoders differs while other inputs are matched. The hypothesis fails if ordinary 15 protocol does not rise with NBP Decoders, or if fixing estimate (read as error estimate) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.69, novelty 0.63.\n\n31. EMRE may contribute to ordinary 15 protocol through better estimate of expectation value (read as error estimate).\n[arxiv-2409-06636-p0028] We numerically demonstrate that for the low noise probabilities that we have from current quantum hardware, EMRE produces a better estimate of the expectation value compared to PEC with limited samples.\n[arxiv-1905-06903-p0047] The error estimate is identical to the ordinary 15-to-1 protocol.\nFalsification test: Compare settings where EMRE differs while other inputs are matched. The hypothesis fails if ordinary 15 protocol does not rise with EMRE, or if fixing better estimate of expectation value (read as error estimate) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.69, novelty 0.62.\n\n32. non may constrain leakage errors through scheme (read as leakage correction schemes).\n[arxiv-1811-00566-p0008] The scheme we numerically analyze in this work does require code concatenation for distances d > 3 and thus requires non-local connectivity1.\n[arxiv-1904-10378-p0028] Without the use of mediators, leakage errors apply directly to the qubit dots and require leakage correction schemes to be applied.\nFalsification test: Compare settings where non differs while other inputs are matched. The hypothesis fails if leakage errors does not stay bounded with non, or if fixing scheme (read as leakage correction schemes) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.69, novelty 0.60.\n\n33. error analysis of protocols may reduce unwanted effect of noise through two level 15 protocols (read as protocols).\n[arxiv-1905-06903-p0042] The error analysis of protocols labeled as (15-to-1)nL1 dX ,dZ ,dm × (20-to-4)dX2 ,dZ2 ,dm2 is identical to two-level 15-to-1 protocols, albeit with a different space and time cost, and the extra step of dividing the space-time cost and output error by four.\n[arxiv-2210-11505-p0008] Such protocols reduce the unwanted effect of noise on a quantum circuit by measuring it and classically post-processing the results (see Fig. 3).\nFalsification test: Compare settings where error analysis of protocols differs while other inputs are matched. The hypothesis fails if unwanted effect of noise does not fall with error analysis of protocols, or if fixing two level 15 protocols (read as protocols) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.66, novelty 0.62.\n\n34. logical error rate requirement and powerful decoder may move together because both depend on larger repetition code.\n[arxiv-2607-16166-p0051] The logical error rate requirement requires a larger repetition code to meet the target - in Table V we see that the smallest code meeting the LER target is m = 11 and this matches the value found for the EDM protocol in [17].\n[arxiv-2503-05003-p0006] powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.\nFalsification test: Track logical error rate requirement and powerful decoder across periods where larger repetition code changes and where it does not. The hypothesis fails if they co-vary just as strongly when larger repetition code is held fixed.\nScores: source support 0.80, deductive relevance 0.66, novelty 0.58.\n\n35. Quantum computers and Quantum computing may move together because both depend on quantum error correction.\n[arxiv-2309-07060-p0002] Quantum computers will require quantum error correction to reach the low error rates necessary for solving problems that surpass the capabilities of conventional computers.\n[arxiv-2511-06124-p0002] Quantum computing relies on quantum error correction for high-fidelity logical operations, but scaling to achieve near-term quantum utility is highly resource-intensive.\nFalsification test: Track Quantum computers and Quantum computing across periods where quantum error correction changes and where it does not. The hypothesis fails if they co-vary just as strongly when quantum error correction is held fixed.\nScores: source support 0.80, deductive relevance 0.66, novelty 0.53.\n\n36. faulty magic state may increase majority of error through error of circuit outcome (read as computational error).\n[arxiv-1905-06903-p0011] The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].\n[arxiv-2102-06131-p0051] We see that computational error accounts for the majority of error in all cases.\nFalsification test: Compare settings where faulty magic state differs while other inputs are matched. The hypothesis fails if majority of error does not rise with faulty magic state, or if fixing error of circuit outcome (read as computational error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.64, novelty 0.58.\n\n37. minimum weight failure mechanisms may constrain characteristic error rate pphys through logical error rate (read as error rate of two qubit gates).\n[arxiv-2511-13192-p0027] In the regime of asymptotically low physical error rates, the logical error rate is mainly determined by the number of minimum-weight failure mechanisms Pfail ∼ Nfail pm(1 − p)n−m ∼ Nfail pm (4) where Nfail is the number of minimum-weight (m) error configurations leading to a logical failure.\n[arxiv-1905-06903-p0021] Since twoqubit gates are typically the lowest-fidelity operations, and syndrome-readout circuits of surface codes mostly consist of two-qubit gates, the characteristic error rate pphys in circuit-level noise will be largely determined by the error rate of two-qubit gates.\nFalsification test: Compare settings where minimum weight failure mechanisms differs while other inputs are matched. The hypothesis fails if characteristic error rate pphys does not stay bounded with minimum weight failure mechanisms, or if fixing logical error rate (read as error rate of two qubit gates) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.63, novelty 0.68.\n\n38. error detection scheme and smallest intractable quantum computations may move together because both depend on fewer qubits.\n[arxiv-1811-00566-p0028] Hence for physical error rates 4 × 10−5 ≤ p ≤ 6 × 10−5, the error detection scheme will require fewer qubits by several orders of magnitude compared to MEK (see Figs.\n[arxiv-1905-06903-p0002] While the smallest classically intractable quantum computations require ∼100 qubits, Accepted in Quantum 2019-10-30, click title to verify 2 Figure 2: A sequence of 16 π/8 rotations on 5 qubits that is non-trivially equivalent to the identity.\nFalsification test: Track error detection scheme and smallest intractable quantum computations across periods where fewer qubits changes and where it does not. The hypothesis fails if they co-vary just as strongly when fewer qubits is held fixed.\nScores: source support 0.80, deductive relevance 0.63, novelty 0.66.\n\n39. arbitrary trailing process and weak quantum error mitigation algorithm may move together because both depend on samples.\n[arxiv-2208-09178-p0034] We then showed that error-mitigation protocols with certain intermediate operations and an arbitrary trailing process require the number of samples that grows exponentially with the circuit depth to mitigate various types of noise.\n[arxiv-2510-10905-p0003] In particular, Theorem 1 of [20] shows that any (weak) quantum error mitigation algorithm requires a number of samples proportional to p−Ω(nD) where p is the local depolarizing noise rate, n is the number of qubits, and D is the depth of the circuit.\n[arxiv-2510-10905-p0009] Recall that recent work (namely, Theorem 1 of [20]) has shown that any (weak) quantum error mitigation algorithm requires a number of samples proportional to p−Ω(nD) where p is the local depolarizing noise rate, n is the number of qubits, and D is the depth of the circuit.\nFalsification test: Track arbitrary trailing process and weak quantum error mitigation algorithm across periods where samples changes and where it does not. The hypothesis fails if they co-vary just as strongly when samples is held fixed.\nScores: source support 0.80, deductive relevance 0.63, novelty 0.62.\n\n40. Gains in radiation induced errors from faulty magic state may be offset by D. Implications for Future Processors.\n[arxiv-2603-13460-p0023] D. Implications for Future Processors While JJ GE significantly mitigates radiation-induced errors, qubit arrays protected in this way remain sensitive to radiation that deposits energy on the scale of a few MeV.\n[arxiv-1905-06903-p0011] The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].\nFalsification test: Measure radiation induced errors where both D. Implications for Future Processors and faulty magic state vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.63, novelty 0.62.\n\n41. FTQC programs may increase error of circuit outcome through magic states (read as faulty magic state).\n[arxiv-2407-07394-p0003] FTQC programs consume many magic states, and magic state distillation is one of the major bottlenecks of FTQC.\n[arxiv-2407-07394-p0020] We believe that this scenario is generic when a quantum program is highly parallelized, and this problem requires attention given that FTQC programs consume many magic states during computation.\n[arxiv-1905-06903-p0011] The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].\nFalsification test: Compare settings where FTQC programs differs while other inputs are matched. The hypothesis fails if error of circuit outcome does not rise with FTQC programs, or if fixing magic states (read as faulty magic state) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.63, novelty 0.58.\n\n42. less than 10 mEh may reduce Z error of output qubit through energy errors (read as error).\n[arxiv-2511-21236-p0043] We observe that the effect of using REM alone is minor compared to M0 and tiled M0, so we only show it for LiH in the SI where the energy errors are reduced by less than 10 mEh.\n[arxiv-1905-06903-p0030] Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.\nFalsification test: Compare settings where less than 10 mEh differs while other inputs are matched. The hypothesis fails if Z error of output qubit does not fall with less than 10 mEh, or if fixing energy errors (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.66.\n\n43. S. Bravyi may reduce Z error of output qubit through measurement errors (read as error).\n[arxiv-2208-09385-p0034] [44] S. Bravyi, S. Sheldon, A. Kandala, D. C. Mckay, and J. M. Gambetta, Mitigating measurement errors in multiqubit experiments, arXiv preprint arXiv:2006.14044\n[arxiv-1905-06903-p0030] Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.\nFalsification test: Compare settings where S. Bravyi differs while other inputs are matched. The hypothesis fails if Z error of output qubit does not fall with S. Bravyi, or if fixing measurement errors (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.66.\n\n44. error estimate may reduce unwanted effect of noise through ordinary 15 protocol (read as protocols).\n[arxiv-1905-06903-p0047] The error estimate is identical to the ordinary 15-to-1 protocol.\n[arxiv-2210-11505-p0008] Such protocols reduce the unwanted effect of noise on a quantum circuit by measuring it and classically post-processing the results (see Fig. 3).\nFalsification test: Compare settings where error estimate differs while other inputs are matched. The hypothesis fails if unwanted effect of noise does not fall with error estimate, or if fixing ordinary 15 protocol (read as protocols) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.60.\n\n45. distillation pipelines may increase error of circuit outcome through magic states (read as faulty magic state).\n[arxiv-2509-24402-p0002] Observing that distillation pipelines consume magic states in a burst-then-steady pattern, we develop dynamic factory scheduling and resource allocation techniques that go beyond existing static pipeline organizations.\n[arxiv-1905-06903-p0011] The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].\nFalsification test: Compare settings where distillation pipelines differs while other inputs are matched. The hypothesis fails if error of circuit outcome does not rise with distillation pipelines, or if fixing magic states (read as faulty magic state) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.58.\n\n46. using qutrits rather than qubits may increase unavoidable computational overhead through substantial reduction (read as reduction).\n[arxiv-2403-06228-p0002] Low Overhead Qutrit Magic State Distillation Shiroman Prakash1 and Tanay Saha1,2 1Department of Physics and Computer Science, Dayalbagh Educational Institute, Agra-282005, India 2Present Address: Department of Mathematics, Simon Fraser University, Burnaby, B.C., Canada We show that using qutrits rather than qubits leads to a substantial reduction in the overhead cost associated with an approach to fault-tolerant quantum computing known as magic state distillation.\n[arxiv-2208-09178-p0034] Our results formalize the idea that the reduction in the state distinguishability caused by noise and error-mitigation processes leads to the unavoidable computational overhead in quantum error mitigation.\nFalsification test: Compare settings where using qutrits rather than qubits differs while other inputs are matched. The hypothesis fails if unavoidable computational overhead does not rise with using qutrits rather than qubits, or if fixing substantial reduction (read as reduction) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.58.\n\n47. high energy event intensity and performance of error correcting code may move together because both depend on quantum circuit structure.\n[arxiv-2506-16834-p0020] From this, it follows that the high energy event’s intensity depends on the quantum circuit’s structure, the architecture of the quantum\n[arxiv-2208-02191-p0003] In particular, the performance of an error correcting code heavily depends on the structure of noise affecting the physical constituents.\nFalsification test: Track high energy event intensity and performance of error correcting code across periods where quantum circuit structure changes and where it does not. The hypothesis fails if they co-vary just as strongly when quantum circuit structure is held fixed.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.58.\n\n48. less than 10 mEh may reduce incorrect interpretation of lattice surgery measurement through energy errors (read as error).\n[arxiv-2511-21236-p0043] We observe that the effect of using REM alone is minor compared to M0 and tiled M0, so we only show it for LiH in the SI where the energy errors are reduced by less than 10 mEh.\n[arxiv-1905-06903-p0031] Such an error leads to an incorrect interpretation of the lattice-surgery measurement outcome.\nFalsification test: Compare settings where less than 10 mEh differs while other inputs are matched. The hypothesis fails if incorrect interpretation of lattice surgery measurement does not fall with less than 10 mEh, or if fixing energy errors (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.61, novelty 0.67.\n\n49. D. Implications for Future Processors may reduce incorrect interpretation of lattice surgery measurement through radiation induced errors (read as error).\n[arxiv-2603-13460-p0023] D. Implications for Future Processors While JJ GE significantly mitigates radiation-induced errors, qubit arrays protected in this way remain sensitive to radiation that deposits energy on the scale of a few MeV.\n[arxiv-1905-06903-p0031] Such an error leads to an incorrect interpretation of the lattice-surgery measurement outcome.\nFalsification test: Compare settings where D. Implications for Future Processors differs while other inputs are matched. The hypothesis fails if incorrect interpretation of lattice surgery measurement does not fall with D. Implications for Future Processors, or if fixing radiation induced errors (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.61, novelty 0.67.\n\n50. problem inspired ansatzes may constrain error mitigation protocol through space.\n[arxiv-2105-14377-p0006] Here, the intuition is that problem-inspired ansatzes constrain the space explored during the optimization to a space that either contains the solution to the problem, or that at least contains a good approximation to the solution, while maintaining a low\n[arxiv-2510-10905-p0002] This comes at the cost of exponential circuit depth, however, and leads us to conjecture that any error mitigation protocol with (sub-)polynomial sample complexity requires exponential time and/or space, even when logical qubits are utilized as a resource.\nFalsification test: Compare settings where problem inspired ansatzes differs while other inputs are matched. The hypothesis fails if error mitigation protocol does not stay bounded with problem inspired ansatzes, or if fixing space removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.61, novelty 0.63.\n\nLeading checks incomplete: leading_check:deadline. Candidate enumeration completed; entries without a completed check remain unchecked.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+ "reply": "Frontier hypotheses for quantum error correction. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 4554. Passed abductive check: 3290; deductive check: 3287; pre-thinker validation: 1255.\n\n1. BPs and quest for universal superconducting quantum computing may move together because both depend on noise.\n[arxiv-2102-01828-p0004] And the noise from quantum hardware also causes BPs, which are called noiseinduced BPs [25].\n[arxiv-2506-16834-p0002] The quest for universal superconducting quantum computing is hindered by noise and errors.\nFalsification test: Track BPs and quest for universal superconducting quantum computing across periods where noise changes and where it does not. The hypothesis fails if they co-vary just as strongly when noise is held fixed.\nDeepen check: all links supported (noise -> BPs: supported, noise -> quest for universal superconducting quantum computing: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.96, deductive relevance 0.55, novelty 0.58.\n\n2. circuit depth for noise models and qubit count may jointly drive sampling cost, and their effects may compound.\n[arxiv-2208-09178-p0002] The results imply that the sampling cost required for a wide class of protocols to mitigate errors must grow exponentially with the circuit depth for various noise models, revealing the fundamental obstacles in the scalability of useful noisy near-term quantum devices.\n[arxiv-2208-09385-p0002] Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.\n[arxiv-2208-09385-p0004] Furthermore, for random layered circuits under local noise, we show that the cost grows exponentially also with the qubit count n (Theorem 2).\nFalsification test: Vary circuit depth for noise models and qubit count separately and together. The hypothesis fails if the joint change in sampling cost equals the sum of the separate changes.\nDeepen check: all links supported (circuit depth for noise models -> sampling cost: supported, qubit count -> sampling cost: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.96, deductive relevance 0.50, novelty 0.55.\n\n3. circuit size and qubit count may jointly drive sampling cost, and their effects may compound.\n[arxiv-2208-09178-p0002] Various prominent quantum error mitigation methods face this problem, where sampling cost grows exponentially with circuit size [4–8].\n[arxiv-2208-09385-p0002] Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.\n[arxiv-2208-09385-p0004] Furthermore, for random layered circuits under local noise, we show that the cost grows exponentially also with the qubit count n (Theorem 2).\nFalsification test: Vary circuit size and qubit count separately and together. The hypothesis fails if the joint change in sampling cost equals the sum of the separate changes.\nDeepen check: all links supported (circuit size -> sampling cost: supported, qubit count -> sampling cost: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.96, deductive relevance 0.49, novelty 0.65.\n\n4. definition may increase performance through coset probability of error (read as physical error probability).\n[arxiv-2309-10331-p0031] The difference between definitions 1 and 2 is that definition 1 maximizes the probability of the error found while definition 2 maximizes the coset probability of the error found.\n[arxiv-2212-11632-p0020] Over the depolarizing channel (pX = pY = pZ = p/3) the performance of the code has been benchmarked through the probability threshold (pth), that is, the physical error probability at which increasing the distance of the code does improve its performance.\nFalsification test: Compare settings where definition differs while other inputs are matched. The hypothesis fails if performance does not rise with definition, or if fixing coset probability of error (read as physical error probability) removes no part of the effect.\nDeepen check: all links supported (definition -> coset probability of error: supported, coset probability of error -> performance: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.96, deductive relevance 0.47, novelty 0.52.\n\n5. class of VQAs and error may jointly constrain initial state, so relieving one may shift the bottleneck to the other.\n[arxiv-2405-05332-p0013] The class of VQAs we consider here restricts the initial state ρ to be a stabilizer state, the observable O to be a sum of poly(n) Pauli stings O = P i ciPi with real coefficients ci, and the circuit U (φφφ) to consist only of the constant Clifford gates and parametric Pauli rotation gates e−ıPk φk /2.\n[arxiv-2508-08246-p0054] In other words, the syndrome state |sE ⟩ is independent of the logical state and only depends on the error E. We now consider the case of a more general error superoperator E (not necessarily CPTP).\nFalsification test: Relieve class of VQAs alone while measuring initial state. The hypothesis fails if initial state keeps improving without error becoming the binding limit, or if relieving error alone has no effect.\nWarning, contested: contested (class of VQAs -> initial state: supported, error -> initial state: contested).\nComposition: requires review; plan readiness: needs input.\n  - [arxiv-2208-09385-p0078] For the numerical simulation performed to obtain the cost of generalized subspace expansion [21], we optimize parameter c1 and c2 so that the error mitigated state (c1I/2n + c2E ′(ρ))(c1I/2n + c2E ′(ρ))† = |c1|2/4nI + Re(c1c∗ 2)/2n−1E ′(ρ) + |c2|2E ′(ρ)2 reaches the noiseless state\nScores: source support 0.96, deductive relevance 0.46, novelty 0.62.\n\n6. Gains in qubit cost from qubit count may be offset by Dynamic pipelines.\n[arxiv-2509-24402-p0002] Dynamic pipelines reduce the qubit cost by 16%-70% for large-scale quantum applications and achieve average reductions of 26%-37% in qubit-time volume on generated distillation benchmarks compared to state-of-the-art static architectures.\n[arxiv-2208-09385-p0002] Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.\n[arxiv-2208-09385-p0004] Furthermore, for random layered circuits under local noise, we show that the cost grows exponentially also with the qubit count n (Theorem 2).\nFalsification test: Measure qubit cost where both Dynamic pipelines and qubit count vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.96, deductive relevance 0.43, novelty 0.56.\n\n7. idea may affect BPs through Pauli noise (read as noise).\n[arxiv-2402-13863-p0056] Pauli noise, and is physically motivated by the idea that physical sources of noise are typically such that errors are exponentially suppressed in their weight.\n[arxiv-2102-01828-p0004] And the noise from quantum hardware also causes BPs, which are called noiseinduced BPs [25].\nFalsification test: Compare settings where idea differs while other inputs are matched. The hypothesis fails if BPs does not change with idea, or if fixing Pauli noise (read as noise) removes no part of the effect.\nScores: source support 0.96, deductive relevance 0.39, novelty 0.59.\n\n8. development of mitigation strategies may constrain Realizing the full potential of quantum through Robust quantum error correction (read as quantum error correction).\n[arxiv-2012-06029-p0002] Robust quantum error correction will require the development of mitigation strategies to protect multiqubit arrays from correlated errors due to particle impacts.\n[arxiv-2203-04948-p0002] Realizing the full potential of quantum computation requires quantum error correction (QEC), with most recent breakthrough demonstrations of QEC using the surface code.\nFalsification test: Compare settings where development of mitigation strategies differs while other inputs are matched. The hypothesis fails if Realizing the full potential of quantum does not stay bounded with development of mitigation strategies, or if fixing Robust quantum error correction (read as quantum error correction) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.93, novelty 0.58.\n\n9. successful implementation of quantum error correction and Pauli X for ST qubit may move together because both depend on negligible correlated errors.\n[arxiv-2305-02591-p0002] Moreover, successful implementation of quantum error correction requires negligible correlated errors among qubits.\n[arxiv-2601-10461-p0025] However, a Pauli X for an ST qubit requires an X and/or a Y error on both spins of the same pair (as per Table I).\nFalsification test: Track successful implementation of quantum error correction and Pauli X for ST qubit across periods where negligible correlated errors changes and where it does not. The hypothesis fails if they co-vary just as strongly when negligible correlated errors is held fixed.\nScores: source support 0.80, deductive relevance 0.85, novelty 0.56.\n\n10. Gains in high performance shuttling based quantum error from Erasure conversion for singlet triplet spin may be offset by less than 10 mEh.\n[arxiv-2601-10461-p0001] # Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction\n[arxiv-2511-21236-p0043] We observe that the effect of using REM alone is minor compared to M0 and tiled M0, so we only show it for LiH in the SI where the energy errors are reduced by less than 10 mEh.\nFalsification test: Measure high performance shuttling based quantum error where both Erasure conversion for singlet triplet spin and less than 10 mEh vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.84, novelty 0.67.\n\n11. Gains in high performance shuttling based quantum error from Erasure conversion for singlet triplet spin may be offset by S. Bravyi.\n[arxiv-2601-10461-p0001] # Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction\n[arxiv-2208-09385-p0034] [44] S. Bravyi, S. Sheldon, A. Kandala, D. C. Mckay, and J. M. Gambetta, Mitigating measurement errors in multiqubit experiments, arXiv preprint arXiv:2006.14044\nFalsification test: Measure high performance shuttling based quantum error where both Erasure conversion for singlet triplet spin and S. Bravyi vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.84, novelty 0.67.\n\n12. Erasure conversion for singlet triplet spin and higher level state occupations may jointly drive high performance shuttling based quantum error, and their effects may compound.\n[arxiv-2601-10461-p0001] # Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction\n[arxiv-2102-06131-p0014] This result also raises the question how higher level state occupations that naturally arise during the stabilizer codes lead to correlated errors.\nFalsification test: Vary Erasure conversion for singlet triplet spin and higher level state occupations separately and together. The hypothesis fails if the joint change in high performance shuttling based quantum error equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.83, novelty 0.72.\n\n13. negligible correlated errors may constrain experimental quantum advantage demonstrations through successful implementation of quantum error correction (read as noisy implementations).\n[arxiv-2305-02591-p0002] Moreover, successful implementation of quantum error correction requires negligible correlated errors among qubits.\n[arxiv-2609-39734-p0006] Since experimental quantum advantage demonstrations rely on noisy implementations, additional evidence is needed to connect experimentally observed dynamics to classical simulation complexity.\nFalsification test: Compare settings where negligible correlated errors differs while other inputs are matched. The hypothesis fails if experimental quantum advantage demonstrations does not stay bounded with negligible correlated errors, or if fixing successful implementation of quantum error correction (read as noisy implementations) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.83, novelty 0.60.\n\n14. Bout and successful implementation of quantum error correction may move together because both depend on input output bad error.\n[arxiv-2508-08246-p0059] We use the circuit input/output definitions (input/output bad error supports Bin and Bout, etc.) from Definition 4.7 extended to the environment circuit in the trivial way by assigning trivial code types to all edges of the environment\n[arxiv-2305-02591-p0002] Moreover, successful implementation of quantum error correction requires negligible correlated errors among qubits.\nFalsification test: Track Bout and successful implementation of quantum error correction across periods where input output bad error changes and where it does not. The hypothesis fails if they co-vary just as strongly when input output bad error is held fixed.\nScores: source support 0.80, deductive relevance 0.82, novelty 0.66.\n\n15. development of mitigation strategies may constrain Quantum computing through Robust quantum error correction (read as quantum error correction for high fidelity).\n[arxiv-2012-06029-p0002] Robust quantum error correction will require the development of mitigation strategies to protect multiqubit arrays from correlated errors due to particle impacts.\n[arxiv-2511-06124-p0002] Quantum computing relies on quantum error correction for high-fidelity logical operations, but scaling to achieve near-term quantum utility is highly resource-intensive.\nFalsification test: Compare settings where development of mitigation strategies differs while other inputs are matched. The hypothesis fails if Quantum computing does not stay bounded with development of mitigation strategies, or if fixing Robust quantum error correction (read as quantum error correction for high fidelity) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.82, novelty 0.58.\n\n16. development of mitigation strategies may constrain Quantum computers through Robust quantum error correction (read as quantum error correction).\n[arxiv-2012-06029-p0002] Robust quantum error correction will require the development of mitigation strategies to protect multiqubit arrays from correlated errors due to particle impacts.\n[arxiv-2309-07060-p0002] Quantum computers will require quantum error correction to reach the low error rates necessary for solving problems that surpass the capabilities of conventional computers.\nFalsification test: Compare settings where development of mitigation strategies differs while other inputs are matched. The hypothesis fails if Quantum computers does not stay bounded with development of mitigation strategies, or if fixing Robust quantum error correction (read as quantum error correction) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.82, novelty 0.48.\n\n17. alternative decoders and quantum error correction for high fidelity may jointly constrain practical quantum computing, so relieving one may shift the bottleneck to the other.\n[arxiv-2511-13192-p0020] Thus, practical quantum computing requires alternative decoders that trade optimality for efficiency.\n[arxiv-2511-06124-p0002] Quantum computing relies on quantum error correction for high-fidelity logical operations, but scaling to achieve near-term quantum utility is highly resource-intensive.\nFalsification test: Relieve alternative decoders alone while measuring practical quantum computing. The hypothesis fails if practical quantum computing keeps improving without quantum error correction for high fidelity becoming the binding limit, or if relieving quantum error correction for high fidelity alone has no effect.\nScores: source support 0.80, deductive relevance 0.81, novelty 0.68.\n\n18. Ionizing radiation may increase Z error of output qubit through correlated errors (read as error).\n[arxiv-2610-20132-p0002] Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.\n[arxiv-1905-06903-p0030] Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.\nFalsification test: Compare settings where Ionizing radiation differs while other inputs are matched. The hypothesis fails if Z error of output qubit does not rise with Ionizing radiation, or if fixing correlated errors (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.78, novelty 0.57.\n\n19. Ionizing radiation may increase incorrect interpretation of lattice surgery measurement through correlated errors (read as error).\n[arxiv-2610-20132-p0002] Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.\n[arxiv-1905-06903-p0031] Such an error leads to an incorrect interpretation of the lattice-surgery measurement outcome.\nFalsification test: Compare settings where Ionizing radiation differs while other inputs are matched. The hypothesis fails if incorrect interpretation of lattice surgery measurement does not rise with Ionizing radiation, or if fixing correlated errors (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.76, novelty 0.68.\n\n20. active feedback error correction and theavailabilityofnoisyintermediate scalequantum(NISQ)devices may move together because both depend on advances.\n[arxiv-2501-03661-p0002] These advances have enabled the observation of quantum jumps and trajectories [2–4], active feedback error correction [5–7] and the exploration of quantum mechanics foundations [8–10].\n[arxiv-2109-04457-p0004] Recent advances in quantum technologies have resulted in theavailabilityofnoisyintermediate-scalequantum(NISQ)devices,promisingadvantagesofquantuminformationprocessing by controlling tens to hundreds of qubits [1, 2].\nFalsification test: Track active feedback error correction and theavailabilityofnoisyintermediate scalequantum(NISQ)devices across periods where advances changes and where it does not. The hypothesis fails if they co-vary just as strongly when advances is held fixed.\nScores: source support 0.80, deductive relevance 0.76, novelty 0.66.\n\n21. ZNE may increase quest for universal superconducting quantum computing through errors.\n[arxiv-2607-25746-p0004] ZNE mitigates errors by evaluating a circuit at several amplified noise levels and then extrapolating the resulting estimates to the zero-noise limit.\n[arxiv-2506-16834-p0002] The quest for universal superconducting quantum computing is hindered by noise and errors.\nFalsification test: Compare settings where ZNE differs while other inputs are matched. The hypothesis fails if quest for universal superconducting quantum computing does not rise with ZNE, or if fixing errors removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.76, novelty 0.52.\n\n22. advances may affect Realizing the full potential of quantum through active feedback error correction (read as quantum error correction).\n[arxiv-2501-03661-p0002] These advances have enabled the observation of quantum jumps and trajectories [2–4], active feedback error correction [5–7] and the exploration of quantum mechanics foundations [8–10].\n[arxiv-2203-04948-p0002] Realizing the full potential of quantum computation requires quantum error correction (QEC), with most recent breakthrough demonstrations of QEC using the surface code.\nFalsification test: Compare settings where advances differs while other inputs are matched. The hypothesis fails if Realizing the full potential of quantum does not change with advances, or if fixing active feedback error correction (read as quantum error correction) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.75, novelty 0.60.\n\n23. Cultivation may increase quest for universal superconducting quantum computing through error.\n[arxiv-2512-13908-p0002] Cultivation reduces the error by a factor of 40, with a state fidelity of 0.9999(1) (retaining 8% of attempts).\n[arxiv-2506-16834-p0002] The quest for universal superconducting quantum computing is hindered by noise and errors.\nFalsification test: Compare settings where Cultivation differs while other inputs are matched. The hypothesis fails if quest for universal superconducting quantum computing does not rise with Cultivation, or if fixing error removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.75, novelty 0.52.\n\n24. Quantum computers and Realizing the full potential of quantum may move together because both depend on quantum error correction.\n[arxiv-2309-07060-p0002] Quantum computers will require quantum error correction to reach the low error rates necessary for solving problems that surpass the capabilities of conventional computers.\n[arxiv-2203-04948-p0002] Realizing the full potential of quantum computation requires quantum error correction (QEC), with most recent breakthrough demonstrations of QEC using the surface code.\nFalsification test: Track Quantum computers and Realizing the full potential of quantum across periods where quantum error correction changes and where it does not. The hypothesis fails if they co-vary just as strongly when quantum error correction is held fixed.\nScores: source support 0.80, deductive relevance 0.74, novelty 0.58.\n\n25. Ionizing radiation may increase majority of error through correlated errors (read as computational error).\n[arxiv-2610-20132-p0002] Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.\n[arxiv-2102-06131-p0051] We see that computational error accounts for the majority of error in all cases.\nFalsification test: Compare settings where Ionizing radiation differs while other inputs are matched. The hypothesis fails if majority of error does not rise with Ionizing radiation, or if fixing correlated errors (read as computational error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.73, novelty 0.63.\n\n26. - local connectivity1 may constrain leakage errors through scheme (read as leakage correction schemes).\n[arxiv-1811-00566-p0008] The scheme we numerically analyze in this work does require code concatenation for distances d > 3 and thus requires non-local connectivity1.\n[arxiv-1904-10378-p0028] Without the use of mediators, leakage errors apply directly to the qubit dots and require leakage correction schemes to be applied.\nFalsification test: Compare settings where - local connectivity1 differs while other inputs are matched. The hypothesis fails if leakage errors does not stay bounded with - local connectivity1, or if fixing scheme (read as leakage correction schemes) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.72, novelty 0.63.\n\n27. exploration of quantum mechanics foundations and theavailabilityofnoisyintermediate scalequantum(NISQ)devices may move together because both depend on advances.\n[arxiv-2501-03661-p0002] These advances have enabled the observation of quantum jumps and trajectories [2–4], active feedback error correction [5–7] and the exploration of quantum mechanics foundations [8–10].\n[arxiv-2109-04457-p0004] Recent advances in quantum technologies have resulted in theavailabilityofnoisyintermediate-scalequantum(NISQ)devices,promisingadvantagesofquantuminformationprocessing by controlling tens to hundreds of qubits [1, 2].\nFalsification test: Track exploration of quantum mechanics foundations and theavailabilityofnoisyintermediate scalequantum(NISQ)devices across periods where advances changes and where it does not. The hypothesis fails if they co-vary just as strongly when advances is held fixed.\nScores: source support 0.80, deductive relevance 0.70, novelty 0.66.\n\n28. preparation of large cat state ancillas may constrain leakage errors through scheme (read as leakage correction schemes).\n[arxiv-1811-00566-p0008] However, the scheme proposed by AGP requires the preparation and verification of large cat state ancillas to perform the logical measurements.\n[arxiv-1904-10378-p0028] Without the use of mediators, leakage errors apply directly to the qubit dots and require leakage correction schemes to be applied.\nFalsification test: Compare settings where preparation of large cat state ancillas differs while other inputs are matched. The hypothesis fails if leakage errors does not stay bounded with preparation of large cat state ancillas, or if fixing scheme (read as leakage correction schemes) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.70, novelty 0.60.\n\n29. Gains in radiation induced errors from Erasure may be offset by D. Implications for Future Processors.\n[arxiv-2603-13460-p0023] D. Implications for Future Processors While JJ GE significantly mitigates radiation-induced errors, qubit arrays protected in this way remain sensitive to radiation that deposits energy on the scale of a few MeV.\n[arxiv-2601-10461-p0002] Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction Adam Siegel1, 2, ∗ and Simon Benjamin1, 2 1Quantum Motion, 9 Sterling Way, London N7 9HJ, United Kingdom 2Department of Materials, University of Oxford, Parks Road, Oxford OX1 3PH, United Kingdom\nFalsification test: Measure radiation induced errors where both D. Implications for Future Processors and Erasure vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.70, novelty 0.57.\n\n30. NBP Decoders may contribute to ordinary 15 protocol through estimate (read as error estimate).\n[arxiv-2608-27682-p0013] 2.2 Quantum BP and NBP Decoders In the code-capacity model, where stabilizer measurements are error-free, the decoder produces an estimate ˆE from the measured syndrome s of size m.\n[arxiv-1905-06903-p0047] The error estimate is identical to the ordinary 15-to-1 protocol.\nFalsification test: Compare settings where NBP Decoders differs while other inputs are matched. The hypothesis fails if ordinary 15 protocol does not rise with NBP Decoders, or if fixing estimate (read as error estimate) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.69, novelty 0.63.\n\n31. EMRE may contribute to ordinary 15 protocol through better estimate of expectation value (read as error estimate).\n[arxiv-2409-06636-p0028] We numerically demonstrate that for the low noise probabilities that we have from current quantum hardware, EMRE produces a better estimate of the expectation value compared to PEC with limited samples.\n[arxiv-1905-06903-p0047] The error estimate is identical to the ordinary 15-to-1 protocol.\nFalsification test: Compare settings where EMRE differs while other inputs are matched. The hypothesis fails if ordinary 15 protocol does not rise with EMRE, or if fixing better estimate of expectation value (read as error estimate) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.69, novelty 0.62.\n\n32. non may constrain leakage errors through scheme (read as leakage correction schemes).\n[arxiv-1811-00566-p0008] The scheme we numerically analyze in this work does require code concatenation for distances d > 3 and thus requires non-local connectivity1.\n[arxiv-1904-10378-p0028] Without the use of mediators, leakage errors apply directly to the qubit dots and require leakage correction schemes to be applied.\nFalsification test: Compare settings where non differs while other inputs are matched. The hypothesis fails if leakage errors does not stay bounded with non, or if fixing scheme (read as leakage correction schemes) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.69, novelty 0.60.\n\n33. error analysis of protocols may reduce unwanted effect of noise through two level 15 protocols (read as protocols).\n[arxiv-1905-06903-p0042] The error analysis of protocols labeled as (15-to-1)nL1 dX ,dZ ,dm × (20-to-4)dX2 ,dZ2 ,dm2 is identical to two-level 15-to-1 protocols, albeit with a different space and time cost, and the extra step of dividing the space-time cost and output error by four.\n[arxiv-2210-11505-p0008] Such protocols reduce the unwanted effect of noise on a quantum circuit by measuring it and classically post-processing the results (see Fig. 3).\nFalsification test: Compare settings where error analysis of protocols differs while other inputs are matched. The hypothesis fails if unwanted effect of noise does not fall with error analysis of protocols, or if fixing two level 15 protocols (read as protocols) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.66, novelty 0.62.\n\n34. logical error rate requirement and powerful decoder may move together because both depend on larger repetition code.\n[arxiv-2607-16166-p0051] The logical error rate requirement requires a larger repetition code to meet the target - in Table V we see that the smallest code meeting the LER target is m = 11 and this matches the value found for the EDM protocol in [17].\n[arxiv-2503-05003-p0006] powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.\nFalsification test: Track logical error rate requirement and powerful decoder across periods where larger repetition code changes and where it does not. The hypothesis fails if they co-vary just as strongly when larger repetition code is held fixed.\nScores: source support 0.80, deductive relevance 0.66, novelty 0.58.\n\n35. Quantum computers and Quantum computing may move together because both depend on quantum error correction.\n[arxiv-2309-07060-p0002] Quantum computers will require quantum error correction to reach the low error rates necessary for solving problems that surpass the capabilities of conventional computers.\n[arxiv-2511-06124-p0002] Quantum computing relies on quantum error correction for high-fidelity logical operations, but scaling to achieve near-term quantum utility is highly resource-intensive.\nFalsification test: Track Quantum computers and Quantum computing across periods where quantum error correction changes and where it does not. The hypothesis fails if they co-vary just as strongly when quantum error correction is held fixed.\nScores: source support 0.80, deductive relevance 0.66, novelty 0.53.\n\n36. faulty magic state may increase majority of error through error of circuit outcome (read as computational error).\n[arxiv-1905-06903-p0011] The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].\n[arxiv-2102-06131-p0051] We see that computational error accounts for the majority of error in all cases.\nFalsification test: Compare settings where faulty magic state differs while other inputs are matched. The hypothesis fails if majority of error does not rise with faulty magic state, or if fixing error of circuit outcome (read as computational error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.64, novelty 0.58.\n\n37. minimum weight failure mechanisms may constrain characteristic error rate pphys through logical error rate (read as error rate of two qubit gates).\n[arxiv-2511-13192-p0027] In the regime of asymptotically low physical error rates, the logical error rate is mainly determined by the number of minimum-weight failure mechanisms Pfail ∼ Nfail pm(1 − p)n−m ∼ Nfail pm (4) where Nfail is the number of minimum-weight (m) error configurations leading to a logical failure.\n[arxiv-1905-06903-p0021] Since twoqubit gates are typically the lowest-fidelity operations, and syndrome-readout circuits of surface codes mostly consist of two-qubit gates, the characteristic error rate pphys in circuit-level noise will be largely determined by the error rate of two-qubit gates.\nFalsification test: Compare settings where minimum weight failure mechanisms differs while other inputs are matched. The hypothesis fails if characteristic error rate pphys does not stay bounded with minimum weight failure mechanisms, or if fixing logical error rate (read as error rate of two qubit gates) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.63, novelty 0.68.\n\n38. error detection scheme and smallest intractable quantum computations may move together because both depend on fewer qubits.\n[arxiv-1811-00566-p0028] Hence for physical error rates 4 × 10−5 ≤ p ≤ 6 × 10−5, the error detection scheme will require fewer qubits by several orders of magnitude compared to MEK (see Figs.\n[arxiv-1905-06903-p0002] While the smallest classically intractable quantum computations require ∼100 qubits, Accepted in Quantum 2019-10-30, click title to verify 2 Figure 2: A sequence of 16 π/8 rotations on 5 qubits that is non-trivially equivalent to the identity.\nFalsification test: Track error detection scheme and smallest intractable quantum computations across periods where fewer qubits changes and where it does not. The hypothesis fails if they co-vary just as strongly when fewer qubits is held fixed.\nScores: source support 0.80, deductive relevance 0.63, novelty 0.66.\n\n39. arbitrary trailing process and weak quantum error mitigation algorithm may move together because both depend on samples.\n[arxiv-2208-09178-p0034] We then showed that error-mitigation protocols with certain intermediate operations and an arbitrary trailing process require the number of samples that grows exponentially with the circuit depth to mitigate various types of noise.\n[arxiv-2510-10905-p0003] In particular, Theorem 1 of [20] shows that any (weak) quantum error mitigation algorithm requires a number of samples proportional to p−Ω(nD) where p is the local depolarizing noise rate, n is the number of qubits, and D is the depth of the circuit.\n[arxiv-2510-10905-p0009] Recall that recent work (namely, Theorem 1 of [20]) has shown that any (weak) quantum error mitigation algorithm requires a number of samples proportional to p−Ω(nD) where p is the local depolarizing noise rate, n is the number of qubits, and D is the depth of the circuit.\nFalsification test: Track arbitrary trailing process and weak quantum error mitigation algorithm across periods where samples changes and where it does not. The hypothesis fails if they co-vary just as strongly when samples is held fixed.\nScores: source support 0.80, deductive relevance 0.63, novelty 0.62.\n\n40. Gains in radiation induced errors from faulty magic state may be offset by D. Implications for Future Processors.\n[arxiv-2603-13460-p0023] D. Implications for Future Processors While JJ GE significantly mitigates radiation-induced errors, qubit arrays protected in this way remain sensitive to radiation that deposits energy on the scale of a few MeV.\n[arxiv-1905-06903-p0011] The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].\nFalsification test: Measure radiation induced errors where both D. Implications for Future Processors and faulty magic state vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.63, novelty 0.62.\n\n41. FTQC programs may increase error of circuit outcome through magic states (read as faulty magic state).\n[arxiv-2407-07394-p0003] FTQC programs consume many magic states, and magic state distillation is one of the major bottlenecks of FTQC.\n[arxiv-2407-07394-p0020] We believe that this scenario is generic when a quantum program is highly parallelized, and this problem requires attention given that FTQC programs consume many magic states during computation.\n[arxiv-1905-06903-p0011] The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].\nFalsification test: Compare settings where FTQC programs differs while other inputs are matched. The hypothesis fails if error of circuit outcome does not rise with FTQC programs, or if fixing magic states (read as faulty magic state) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.63, novelty 0.58.\n\n42. less than 10 mEh may reduce Z error of output qubit through energy errors (read as error).\n[arxiv-2511-21236-p0043] We observe that the effect of using REM alone is minor compared to M0 and tiled M0, so we only show it for LiH in the SI where the energy errors are reduced by less than 10 mEh.\n[arxiv-1905-06903-p0030] Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.\nFalsification test: Compare settings where less than 10 mEh differs while other inputs are matched. The hypothesis fails if Z error of output qubit does not fall with less than 10 mEh, or if fixing energy errors (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.66.\n\n43. S. Bravyi may reduce Z error of output qubit through measurement errors (read as error).\n[arxiv-2208-09385-p0034] [44] S. Bravyi, S. Sheldon, A. Kandala, D. C. Mckay, and J. M. Gambetta, Mitigating measurement errors in multiqubit experiments, arXiv preprint arXiv:2006.14044\n[arxiv-1905-06903-p0030] Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.\nFalsification test: Compare settings where S. Bravyi differs while other inputs are matched. The hypothesis fails if Z error of output qubit does not fall with S. Bravyi, or if fixing measurement errors (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.66.\n\n44. error estimate may reduce unwanted effect of noise through ordinary 15 protocol (read as protocols).\n[arxiv-1905-06903-p0047] The error estimate is identical to the ordinary 15-to-1 protocol.\n[arxiv-2210-11505-p0008] Such protocols reduce the unwanted effect of noise on a quantum circuit by measuring it and classically post-processing the results (see Fig. 3).\nFalsification test: Compare settings where error estimate differs while other inputs are matched. The hypothesis fails if unwanted effect of noise does not fall with error estimate, or if fixing ordinary 15 protocol (read as protocols) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.60.\n\n45. distillation pipelines may increase error of circuit outcome through magic states (read as faulty magic state).\n[arxiv-2509-24402-p0002] Observing that distillation pipelines consume magic states in a burst-then-steady pattern, we develop dynamic factory scheduling and resource allocation techniques that go beyond existing static pipeline organizations.\n[arxiv-1905-06903-p0011] The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].\nFalsification test: Compare settings where distillation pipelines differs while other inputs are matched. The hypothesis fails if error of circuit outcome does not rise with distillation pipelines, or if fixing magic states (read as faulty magic state) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.58.\n\n46. using qutrits rather than qubits may increase unavoidable computational overhead through substantial reduction (read as reduction).\n[arxiv-2403-06228-p0002] Low Overhead Qutrit Magic State Distillation Shiroman Prakash1 and Tanay Saha1,2 1Department of Physics and Computer Science, Dayalbagh Educational Institute, Agra-282005, India 2Present Address: Department of Mathematics, Simon Fraser University, Burnaby, B.C., Canada We show that using qutrits rather than qubits leads to a substantial reduction in the overhead cost associated with an approach to fault-tolerant quantum computing known as magic state distillation.\n[arxiv-2208-09178-p0034] Our results formalize the idea that the reduction in the state distinguishability caused by noise and error-mitigation processes leads to the unavoidable computational overhead in quantum error mitigation.\nFalsification test: Compare settings where using qutrits rather than qubits differs while other inputs are matched. The hypothesis fails if unavoidable computational overhead does not rise with using qutrits rather than qubits, or if fixing substantial reduction (read as reduction) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.58.\n\n47. high energy event intensity and performance of error correcting code may move together because both depend on quantum circuit structure.\n[arxiv-2506-16834-p0020] From this, it follows that the high energy event’s intensity depends on the quantum circuit’s structure, the architecture of the quantum\n[arxiv-2208-02191-p0003] In particular, the performance of an error correcting code heavily depends on the structure of noise affecting the physical constituents.\nFalsification test: Track high energy event intensity and performance of error correcting code across periods where quantum circuit structure changes and where it does not. The hypothesis fails if they co-vary just as strongly when quantum circuit structure is held fixed.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.58.\n\n48. less than 10 mEh may reduce incorrect interpretation of lattice surgery measurement through energy errors (read as error).\n[arxiv-2511-21236-p0043] We observe that the effect of using REM alone is minor compared to M0 and tiled M0, so we only show it for LiH in the SI where the energy errors are reduced by less than 10 mEh.\n[arxiv-1905-06903-p0031] Such an error leads to an incorrect interpretation of the lattice-surgery measurement outcome.\nFalsification test: Compare settings where less than 10 mEh differs while other inputs are matched. The hypothesis fails if incorrect interpretation of lattice surgery measurement does not fall with less than 10 mEh, or if fixing energy errors (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.61, novelty 0.67.\n\n49. D. Implications for Future Processors may reduce incorrect interpretation of lattice surgery measurement through radiation induced errors (read as error).\n[arxiv-2603-13460-p0023] D. Implications for Future Processors While JJ GE significantly mitigates radiation-induced errors, qubit arrays protected in this way remain sensitive to radiation that deposits energy on the scale of a few MeV.\n[arxiv-1905-06903-p0031] Such an error leads to an incorrect interpretation of the lattice-surgery measurement outcome.\nFalsification test: Compare settings where D. Implications for Future Processors differs while other inputs are matched. The hypothesis fails if incorrect interpretation of lattice surgery measurement does not fall with D. Implications for Future Processors, or if fixing radiation induced errors (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.61, novelty 0.67.\n\n50. problem inspired ansatzes may constrain error mitigation protocol through space.\n[arxiv-2105-14377-p0006] Here, the intuition is that problem-inspired ansatzes constrain the space explored during the optimization to a space that either contains the solution to the problem, or that at least contains a good approximation to the solution, while maintaining a low\n[arxiv-2510-10905-p0002] This comes at the cost of exponential circuit depth, however, and leads us to conjecture that any error mitigation protocol with (sub-)polynomial sample complexity requires exponential time and/or space, even when logical qubits are utilized as a resource.\nFalsification test: Compare settings where problem inspired ansatzes differs while other inputs are matched. The hypothesis fails if error mitigation protocol does not stay bounded with problem inspired ansatzes, or if fixing space removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.61, novelty 0.63.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
 }

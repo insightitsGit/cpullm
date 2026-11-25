@@ -1,0 +1,486 @@
+{
+ "topic": "quantum LDPC codes",
+ "hypothesis": {
+  "id": "2d097d723b03",
+  "text": "comparison of cost function values and Tanner graphs may jointly constrain strategies, so relieving one may shift the bottleneck to the other.",
+  "pattern": "convergent",
+  "relation": "co_constrain",
+  "anchors": [
+   "comparison of cost function values",
+   "Tanner graphs",
+   "strategies"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2011-12245-p0038",
+   "arxiv-2103-08049-p0004"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2011-12245-p0038",
+    "quote": "However, we emphasize that all such strategies at minimum require the comparison of cost function values at different points and thus are subject to our scaling analysis.",
+    "start": 439,
+    "end": 609,
+    "chunk_sha256": "d9792d361ce5740faf8f2333290444734362277254c5b85f09168d2b46fd8d14",
+    "relation": "constrains",
+    "subject": "comparison of cost function values",
+    "object": "strategies",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2103-08049-p0004",
+    "quote": "These strategies rely on Tanner graphs with large expansion are are therefore unlikely to perform well with toric codes or with quantum LDPC codes with moderate expansion.",
+    "start": 2092,
+    "end": 2263,
+    "chunk_sha256": "9befe85e4b0bc1cb70df89c059933341085282a2adbe01c2dfd89ffbe256e019",
+    "relation": "constrains",
+    "subject": "Tanner graphs",
+    "object": "strategies",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.623,
+   "novelty": 0.658
+  },
+  "falsification_test": "Relieve comparison of cost function values alone while measuring strategies. The hypothesis fails if strategies keeps improving without Tanner graphs becoming the binding limit, or if relieving Tanner graphs alone has no effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "strategy"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "convergent",
+  "terms": {
+   "a": "comparison of cost function values",
+   "b": "Tanner graphs",
+   "c": "strategies"
+  },
+  "path_nodes": null,
+  "links": [
+   {
+    "source": "comparison of cost function values",
+    "target": "strategies",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2011-12245-p0038",
+      "quote": "However, we emphasize that all such strategies at minimum require the comparison of cost function values at different points and thus are subject to our scaling analysis.",
+      "start": 439,
+      "end": 609,
+      "chunk_sha256": "d9792d361ce5740faf8f2333290444734362277254c5b85f09168d2b46fd8d14",
+      "relation": "constrains",
+      "subject": "comparison of cost function values",
+      "object": "strategies",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2011-12245-p0038",
+      "quote": "However, we emphasize that all such strategies at minimum require the comparison of cost function values at different points and thus are subject to our scaling analysis.",
+      "start": 439,
+      "end": 609,
+      "chunk_sha256": "d9792d361ce5740faf8f2333290444734362277254c5b85f09168d2b46fd8d14"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   },
+   {
+    "source": "Tanner graphs",
+    "target": "strategies",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2103-08049-p0004",
+      "quote": "These strategies rely on Tanner graphs with large expansion are are therefore unlikely to perform well with toric codes or with quantum LDPC codes with moderate expansion.",
+      "start": 2092,
+      "end": 2263,
+      "chunk_sha256": "9befe85e4b0bc1cb70df89c059933341085282a2adbe01c2dfd89ffbe256e019",
+      "relation": "constrains",
+      "subject": "Tanner graphs",
+      "object": "strategies",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2103-08049-p0004",
+      "quote": "These strategies rely on Tanner graphs with large expansion are are therefore unlikely to perform well with toric codes or with quantum LDPC codes with moderate expansion.",
+      "start": 2092,
+      "end": 2263,
+      "chunk_sha256": "9befe85e4b0bc1cb70df89c059933341085282a2adbe01c2dfd89ffbe256e019"
+     },
+     {
+      "document_id": "arxiv-2103-08049-p0020",
+      "quote": "The same strategy can be used to correct Z errors by swapping the roles of X and Z. We describe the algorithm in the Tanner graph [48] associated with Z checks.",
+      "start": 178,
+      "end": 338,
+      "chunk_sha256": "4dc6010d93c61d336c8e9af6ed7f7be4f82f59516c2083f723bc71c389e77d9e"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   }
+  ],
+  "expected_relation": "co_constrain",
+  "direction_check": {
+   "requested": "co_constrain",
+   "status": "unspecified",
+   "observed": []
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-2311-18090-p0023",
+    "quote": "Two exploration rates are considered for the FV optimizer in order to analyze the effect of the exploitation vs. exploration strategies, which are controlled precisely by the exploration rate parameter.",
+    "start": 141,
+    "end": 343,
+    "chunk_sha256": "d62bef4ff0458ba7aa64719e54c4eee692259f034cac4403cb5c19ee48b5c1ec",
+    "measures": [
+     "strategies"
+    ]
+   },
+   {
+    "document_id": "arxiv-2311-18090-p0043",
+    "quote": "Experiments also suggest that the exploration strategy for particle regeneration is more important than the exploitation strategy in terms of algorithm performance.",
+    "start": 1163,
+    "end": 1327,
+    "chunk_sha256": "0c4c477e5028d284e35db75d429606116952133da5cdf1d18be640c0e9fa06dc",
+    "measures": [
+     "strategies"
+    ]
+   },
+   {
+    "document_id": "arxiv-2506-16834-p0042",
+    "quote": "To measure if RadMatching can be effectively used to compensate for radiation-induced events, we compare the logical error rate of the Rotated Surface code (distance 9 and with 9 repetitions per error correction round) after the decoding process adopting RadMatching versus adopting the Tanner graph based decoders presented in Section 2.4.",
+    "start": 0,
+    "end": 340,
+    "chunk_sha256": "b7b47e9ab42569b3df15e6b2befc6d4f7d4620b45571a73a902aeb8928354dd0",
+    "measures": [
+     "Tanner graphs"
+    ]
+   },
+   {
+    "document_id": "arxiv-2512-13908-p0017",
+    "quote": "While the data retainment rate should be independent of N for our post selection strategy (see [SI] for simulations), we observe a 10% difference in data retainment rates around θ = π/4 for the N = 2 and N = 3 experiments.",
+    "start": 698,
+    "end": 920,
+    "chunk_sha256": "1e5cd2743635224f76fb8251ac7bddf92a63ba6cb8812b86780c4522ac86daf2",
+    "measures": [
+     "strategies"
+    ]
+   },
+   {
+    "document_id": "arxiv-2606-20441-p0002",
+    "quote": "We also perform experiments on a quantum processor using 56 superconducting qubits, revealing the tradeoffs of their respective truncation strategies.",
+    "start": 1119,
+    "end": 1269,
+    "chunk_sha256": "8ca6e234cdda8b0a6665870fab1793df042c53ba3883bd757f5a8d5815b2893e",
+    "measures": [
+     "strategies"
+    ]
+   },
+   {
+    "document_id": "arxiv-2609-22729-p0002",
+    "quote": "In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.",
+    "start": 936,
+    "end": 1357,
+    "chunk_sha256": "c14a4d47645a2e6ff3c26ec8fe1bfa93681d2ad322463bb69604f75e3789fdf4",
+    "measures": [
+     "strategies"
+    ]
+   }
+  ],
+  "confounders": [],
+  "composition": {
+   "status": "conditional",
+   "bridges": [],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "untested",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "03168664bfa11540",
+    "kind": "variable",
+    "term": "comparison of cost function values",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for comparison of cost function values."
+   },
+   {
+    "id": "4e32349e0517b8d9",
+    "kind": "variable",
+    "term": "comparison of cost function values",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for comparison of cost function values."
+   },
+   {
+    "id": "36882cc95d2250a0",
+    "kind": "variable",
+    "term": "Tanner graphs",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for Tanner graphs."
+   },
+   {
+    "id": "6a87e72d57ec688b",
+    "kind": "variable",
+    "term": "Tanner graphs",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for Tanner graphs."
+   },
+   {
+    "id": "b0e0f8ea7bfa5277",
+    "kind": "variable",
+    "term": "strategies",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for strategies."
+   },
+   {
+    "id": "80cd41fee76610ef",
+    "kind": "variable",
+    "term": "strategies",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for strategies."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "2x2 factorial",
+   "manipulate": [
+    "comparison of cost function values",
+    "Tanner graphs"
+   ],
+   "measure": [
+    "strategies"
+   ],
+   "mediator": null,
+   "controls": [],
+   "steps": [
+    "Run all four combinations of low and high comparison of cost function values and Tanner graphs; measure strategies.",
+    "No additional outcome cause was extracted; this does not establish absence of confounding.",
+    "Compare the joint effect with the sum of the separate effects."
+   ],
+   "fails_if": "A precisely measured absence of an interaction challenges compounding in strategies; it does not refute individual effects of comparison of cost function values or Tanner graphs. Predefine a meaningful effect threshold.",
+   "variables": [
+    {
+     "term": "comparison of cost function values",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "Tanner graphs",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2109-14609-p0002",
+       "quote": "For any CSS code with a degree-δ Tanner graph, we design stabilizer measurement circuits with depth at most (2δ + 2) using at most ⌈δ/2⌉ layers.",
+       "start": 804,
+       "end": 948,
+       "chunk_sha256": "c2e499e901f47c7e2608b8a39bded5af49f3602761204e99df2ab841d893fcbc",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2109-14609-p0005",
+       "quote": "This 1 Surface codes are HGP codes formed when the input graphs are the Tanner graphs of a pair of repetition codes result applies to any quantum circuit (not just stabilizer measurement circuits) and in particular to all low-depth",
+       "start": 904,
+       "end": 1135,
+       "chunk_sha256": "8d0bf360ed1a38f8e7684de951b4b168bca0bd1fdeaf5876b75748c74b515727",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2109-14609-p0011",
+       "quote": "For each direction D ∈{N, S, E, W}, we consider the subgraph TD of the Tanner graph T induced by the edges with direction D. The following circuit interleaves X and Z measurements and can achieve a depth lower than the coloration",
+       "start": 313,
+       "end": 542,
+       "chunk_sha256": "693d932b94ec071c98f9df84ca73aaee68736a629fa8f1b9c4bc48d74d08ea3b",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "strategies",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2109-04457-p0048",
+       "quote": "The strategies in Fig. 3 admit small N’s that do not scale with the total shot budget, representing examples for which our results give fruitful insights into their round number M. On the other hand, some strategies that employ highly nonlinear computation on the measurement outcomes (e.g., exponential noise extrapolation [11], subspace expansion [27])",
+       "start": 380,
+       "end": 734,
+       "chunk_sha256": "82f4e427f95bf609e2fa1d6bfcb0327aa517b230eade3e88ad6dd5f93f4d0778",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2208-09178-p0002",
+       "quote": "Our results place the fundamental limitations imposed on the capability of general error-mitigation strategies that include existing protocols [5–8, 12–31] and the ones yet to be discovered, being analogous to the performance converse bounds established in several other disciplines — such as thermodynamics [32–34], quantum communication [35, 36], and quantum resource theories [37, 38] — that contributed to characterizing the ultimate operational capability allowed in",
+       "start": 4753,
+       "end": 5224,
+       "chunk_sha256": "f6da52aed0ba56986b72f4b040adeb7b0e0ef8bb4c40419d8d2f10788552bee5",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2208-09178-p0023",
+       "quote": "This closely aligns with the operational motivation, where one would like an error mitigation strategy to be able to provide a good estimate for each observable in O and an ideal state in S at a high probability.",
+       "start": 110,
+       "end": 322,
+       "chunk_sha256": "a83f76311f18fa2bb7313eb68f1e148f265ff4f698b31d3f10aef0ab7d0177df",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "comparison of cost function values",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "comparison of cost function values",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "Tanner graphs",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "Tanner graphs",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "strategies",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "strategies",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "interaction_test": {
+    "contrast": "Y11 - Y10 - Y01 + Y00",
+    "assumptions": "Additive outcome scale, matched conditions and defined interventions.",
+    "interpretation": "A zero interaction contrast challenges compounding, not the individual effects."
+   }
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 9.938
+  },
+  "snapshot": {
+   "as_of": 1795596331,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: comparison of cost function values and Tanner graphs may jointly constrain strategies, so relieving one may shift the bottleneck to the other.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unspecified.\nComposition assessment: conditional. Component support does not establish a joint effect or causal validity.\n\nLink comparison of cost function values -> strategies: supported (1 supporting, 0 contrary).\n  + [arxiv-2011-12245-p0038] However, we emphasize that all such strategies at minimum require the comparison of cost function values at different points and thus are subject to our scaling analysis.\n\nLink Tanner graphs -> strategies: supported (1 supporting, 0 contrary).\n  + [arxiv-2103-08049-p0004] These strategies rely on Tanner graphs with large expansion are are therefore unlikely to perform well with toric codes or with quantum LDPC codes with moderate expansion.\n\nExisting setups that measure one of its terms:\n  [arxiv-2311-18090-p0023] Two exploration rates are considered for the FV optimizer in order to analyze the effect of the exploitation vs. exploration strategies, which are controlled precisely by the exploration rate parameter.\n  [arxiv-2311-18090-p0043] Experiments also suggest that the exploration strategy for particle regeneration is more important than the exploitation strategy in terms of algorithm performance.\n  [arxiv-2506-16834-p0042] To measure if RadMatching can be effectively used to compensate for radiation-induced events, we compare the logical error rate of the Rotated Surface code (distance 9 and with 9 repetitions per error correction round) after the decoding process adopting RadMatching versus adopting the Tanner graph based decoders presented in Section 2.4.\n  [arxiv-2512-13908-p0017] While the data retainment rate should be independent of N for our post selection strategy (see [SI] for simulations), we observe a 10% difference in data retainment rates around θ = π/4 for the N = 2 and N = 3 experiments.\n\nTest plan (2x2 factorial):\n  1. Run all four combinations of low and high comparison of cost function values and Tanner graphs; measure strategies.\n  2. No additional outcome cause was extracted; this does not establish absence of confounding.\n  3. Compare the joint effect with the sum of the separate effects.\n  Fails if: A precisely measured absence of an interaction challenges compounding in strategies; it does not refute individual effects of comparison of cost function values or Tanner graphs. Predefine a meaningful effect threshold.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for comparison of cost function values.\n  Required: feasible intervention or justified observational design for comparison of cost function values.\n  Required: intervention levels for Tanner graphs.\n  Required: feasible intervention or justified observational design for Tanner graphs.\n  Required: measurement procedure for strategies.\n  Required: unit or explicit categorical scale for strategies.\n  Required: replicates.\n  Required: acceptance_criterion.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

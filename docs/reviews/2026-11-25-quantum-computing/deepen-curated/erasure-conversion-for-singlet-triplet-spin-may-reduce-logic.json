@@ -1,0 +1,599 @@
+{
+ "topic": "correlated errors",
+ "hypothesis": {
+  "id": "5367f8263728",
+  "text": "Erasure conversion for singlet triplet spin may reduce logical error rate through high performance shuttling based quantum error (read as correlated errors).",
+  "pattern": "chain",
+  "relation": "decreases",
+  "anchors": [
+   "Erasure conversion for singlet triplet spin",
+   "logical error rate"
+  ],
+  "via": [
+   "high performance shuttling based quantum error (read as correlated errors)"
+  ],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2601-10461-p0001",
+   "arxiv-2407-16176-p0047"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2601-10461-p0001",
+    "quote": "# Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction",
+    "start": 0,
+    "end": 118,
+    "chunk_sha256": "55cf0c7e46e3cab8e23fefc5e4e3220d8c293ce09fc1a0510e0816e8d99f3d05",
+    "relation": "increases",
+    "subject": "Erasure conversion for singlet triplet spin",
+    "object": "high performance shuttling based quantum error",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2407-16176-p0047",
+    "quote": "However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.",
+    "start": 802,
+    "end": 968,
+    "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c",
+    "relation": "decreases",
+    "subject": "correlated errors",
+    "object": "logical error rate",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.853,
+   "novelty": 0.703
+  },
+  "falsification_test": "Compare settings where Erasure conversion for singlet triplet spin differs while other inputs are matched. The hypothesis fails if logical error rate does not fall with Erasure conversion for singlet triplet spin, or if fixing high performance shuttling based quantum error (read as correlated errors) removes no part of the effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "high performance shuttling based quantum error"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "Erasure conversion for singlet triplet spin",
+   "b": "high performance shuttling based quantum error",
+   "c": "logical error rate"
+  },
+  "path_nodes": [
+   "Erasure conversion for singlet triplet spin",
+   "high performance shuttling based quantum error",
+   "logical error rate"
+  ],
+  "links": [
+   {
+    "source": "Erasure conversion for singlet triplet spin",
+    "target": "high performance shuttling based quantum error",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2601-10461-p0001",
+      "quote": "# Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction",
+      "start": 0,
+      "end": 118,
+      "chunk_sha256": "55cf0c7e46e3cab8e23fefc5e4e3220d8c293ce09fc1a0510e0816e8d99f3d05",
+      "relation": "increases",
+      "subject": "Erasure conversion for singlet triplet spin",
+      "object": "high performance shuttling based quantum error",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   },
+   {
+    "source": "high performance shuttling based quantum error",
+    "target": "logical error rate",
+    "expected_relation": "decreases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2407-16176-p0047",
+      "quote": "However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.",
+      "start": 802,
+      "end": 968,
+      "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c",
+      "relation": "decreases",
+      "subject": "correlated errors",
+      "object": "logical error rate",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "decreases"
+    ]
+   }
+  ],
+  "expected_relation": "decreases",
+  "direction_check": {
+   "requested": "decreases",
+   "status": "consistent",
+   "observed": [
+    "decreases"
+   ],
+   "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-2208-02191-p0004",
+    "quote": "We numerically benchmark the performance of the noise-tailored code versus nonoptimized CSS surface codes and demonstrate that (i) the sub-threshold logical error rates are exponentially suppressed as a function of the code distance and (ii) the threshold grows monotonically as noise becomes less uniform across qubits.",
+    "start": 2703,
+    "end": 3023,
+    "chunk_sha256": "d0057b890a7f40b2058e93b4f9dc807b9fdb342d14a15bbf3661c59ab3f09b1c",
+    "measures": [
+     "logical error rate"
+    ]
+   },
+   {
+    "document_id": "arxiv-2407-16176-p0033",
+    "quote": "In particular, we compare their logical error rates under the condition that they consume a comparable amount of resource overhead.",
+    "start": 1024,
+    "end": 1155,
+    "chunk_sha256": "4d9bc1875b7941e507deb3aed538c3340ef93f0afc0d9486fa5e6bb0ec8d8273",
+    "measures": [
+     "logical error rate"
+    ]
+   },
+   {
+    "document_id": "arxiv-2407-16176-p0038",
+    "quote": "We compare the decoding time of the surface code and that of the concatenated quantum Hamming code, ensuring both achieve a comparable logical error rate at a physical error rate of p = 0.01526.",
+    "start": 164,
+    "end": 358,
+    "chunk_sha256": "6ce5a8d0c750edccea985c5269df9058f78dd42524d368c2941b965edc0fc5df",
+    "measures": [
+     "logical error rate"
+    ]
+   },
+   {
+    "document_id": "arxiv-2407-16176-p0046",
+    "quote": "To investigate the effect of correlated errors, we compare the logical error rates in the absence and presence of correlated errors.",
+    "start": 0,
+    "end": 132,
+    "chunk_sha256": "c331ce8d8cb87bfb432a8db5843d025fb36e1c388a644043bb1ec57617dbbb9c",
+    "measures": [
+     "logical error rate"
+    ]
+   },
+   {
+    "document_id": "arxiv-2407-16176-p0047",
+    "quote": "We compare the logical error rates derived from assuming the absence and presence of correlated errors, as shown in Fig. 10.",
+    "start": 448,
+    "end": 572,
+    "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c",
+    "measures": [
+     "logical error rate"
+    ]
+   },
+   {
+    "document_id": "arxiv-2506-16834-p0006",
+    "quote": "We measure its effectiveness at dealing with syndrome measurements corrupted by radiation, and we observe how the logical error rate of separate logical qubits correlates with their position on the quantum chip.",
+    "start": 1427,
+    "end": 1638,
+    "chunk_sha256": "6f5f1d5925a36ececb40afc688fd064c275f39f5e636caebeb569b7949837d79",
+    "measures": [
+     "logical error rate"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "addition of reset",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2102-06131-p0022",
+     "quote": "We observe the logical performance stabilizing to values of Λbit > 1, and that the addition of reset improves both the stable performance and rate with which the code approaches stability.",
+     "start": 0,
+     "end": 188,
+     "chunk_sha256": "68cc52adf5a8515200c8445c8b2aaab9165e3ae52badc8764ad60e41039761b8",
+     "relation": "increases",
+     "subject": "addition of reset",
+     "object": "rate",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "code distance",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-1905-06903-p0017",
+     "quote": "The code distance determines the logical error rate of the encoded qubits, which also depends on the underlying error model.",
+     "start": 0,
+     "end": 124,
+     "chunk_sha256": "5860b349d244950333ad40662d87e8421c1a463a6f78b3f969b9bf6b8680b21b",
+     "relation": "constrains",
+     "subject": "code distance",
+     "object": "logical error rate of encoded qubits",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "filter",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2411-04101-p0002",
+     "quote": "We demonstrate the operation of the filter as leakage reduction unit in a mock-up of a single-qubit quantum error correcting cycle, showing that the filter increases the seepage rate back to the qubit subspace.",
+     "start": 1374,
+     "end": 1584,
+     "chunk_sha256": "52fad84cd82e9361f64580091c447e97b87450049801732735a1805d7ac201d2",
+     "relation": "increases",
+     "subject": "filter",
+     "object": "seepage rate",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "higher weight stabilizers",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2110-10794-p0007",
+     "quote": "In particular, higher weight stabilizers will increase the failure rate under circuit-level noise and this should be taken into account when considering the estimates in Table 1.",
+     "start": 616,
+     "end": 794,
+     "chunk_sha256": "d7b313c5b05ac59f1565accae51c7cc0a39e1e6e519e254fc8f63f1039188f63",
+     "relation": "increases",
+     "subject": "higher weight stabilizers",
+     "object": "failure rate",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "minimum weight failure events",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2511-13192-p0006",
+     "quote": "Since the logical failure rate in the low-error regime is dominated by minimum-weight failure events, this limitation directly impacts decoding performance.",
+     "start": 768,
+     "end": 924,
+     "chunk_sha256": "03db362bb3b5734c7a99c545c419d02066c3729f255db3b562941ecf872c7a35",
+     "relation": "constrains",
+     "subject": "minimum weight failure events",
+     "object": "logical failure rate",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "minimum weight failure mechanisms",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2511-13192-p0027",
+     "quote": "In the regime of asymptotically low physical error rates, the logical error rate is mainly determined by the number of minimum-weight failure mechanisms Pfail ∼ Nfail pm(1 − p)n−m ∼ Nfail pm (4) where Nfail is the number of minimum-weight (m) error configurations leading to a logical failure.",
+     "start": 0,
+     "end": 293,
+     "chunk_sha256": "77014e29080acae5525c7dfb22a0fbc3b3cb83d5ce170074796668521c90b009",
+     "relation": "constrains",
+     "subject": "minimum weight failure mechanisms",
+     "object": "logical error rate",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "high performance shuttling based quantum error",
+     "source_term": "correlated errors",
+     "citation": {
+      "document_id": "arxiv-2407-16176-p0047",
+      "quote": "However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.",
+      "start": 802,
+      "end": 968,
+      "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c",
+      "relation": "decreases",
+      "subject": "correlated errors",
+      "object": "logical error rate",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "e95e3d5f158b0d89",
+    "kind": "variable",
+    "term": "Erasure conversion for singlet triplet spin",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for Erasure conversion for singlet triplet spin."
+   },
+   {
+    "id": "3b59ea374517ac11",
+    "kind": "variable",
+    "term": "Erasure conversion for singlet triplet spin",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for Erasure conversion for singlet triplet spin."
+   },
+   {
+    "id": "2500f6923c370c3c",
+    "kind": "variable",
+    "term": "logical error rate",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for logical error rate."
+   },
+   {
+    "id": "e6a0dcf7244b9436",
+    "kind": "variable",
+    "term": "logical error rate",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for logical error rate."
+   },
+   {
+    "id": "3c79fe2498f877fe",
+    "kind": "variable",
+    "term": "high performance shuttling based quantum error",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for high performance shuttling based quantum error."
+   },
+   {
+    "id": "4a813ba4bdc935a2",
+    "kind": "variable",
+    "term": "high performance shuttling based quantum error",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for high performance shuttling based quantum error."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "Erasure conversion for singlet triplet spin"
+   ],
+   "measure": [
+    "logical error rate"
+   ],
+   "mediator": "high performance shuttling based quantum error",
+   "controls": [
+    "addition of reset",
+    "code distance",
+    "filter",
+    "higher weight stabilizers",
+    "minimum weight failure events",
+    "minimum weight failure mechanisms"
+   ],
+   "steps": [
+    "Vary Erasure conversion for singlet triplet spin across matched settings and measure logical error rate.",
+    "Review candidate controls (addition of reset, code distance, filter, higher weight stabilizers, minimum weight failure events, minimum weight failure mechanisms) for timing, feasibility and causal role before adjustment.",
+    "Repeat with high performance shuttling based quantum error held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "logical error rate does not change when Erasure conversion for singlet triplet spin varies with the controls fixed, or holding high performance shuttling based quantum error fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "Erasure conversion for singlet triplet spin",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "logical error rate",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1905-06903-p0043",
+       "quote": "If the logical error rate of surface codes can be maintained at pL(pphys,d) even in the presence of coherent errors, and the only effect of coherent errors is to under- or over-rotate the physical T gate used in faulty T measurements, then one can argue that the effect of coherent errors is not too significant.",
+       "start": 249,
+       "end": 561,
+       "chunk_sha256": "31b9d52f5dd2c55a9d2b8a7caa9d277d58bef9b6803f03519b1d40fc9fb4dc76",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2505-13599-p0035",
+       "quote": "Hence, if in the final measurements of some algorithm, the final outcome is some xor of final measurements, it is advisable to include this as an observable in the generating set to minimize its logical error rate, see the numerical evidence for this choice of decoding in Section IVD2.",
+       "start": 1524,
+       "end": 1810,
+       "chunk_sha256": "e2d7afc774f08cf770bf5f71a016d933f304833f1044310642af4e49e7cc13c3",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2506-16834-p0006",
+       "quote": "We measure its effectiveness at dealing with syndrome measurements corrupted by radiation, and we observe how the logical error rate of separate logical qubits correlates with their position on the quantum chip.",
+       "start": 1427,
+       "end": 1638,
+       "chunk_sha256": "6f5f1d5925a36ececb40afc688fd064c275f39f5e636caebeb569b7949837d79",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "high performance shuttling based quantum error",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "Erasure conversion for singlet triplet spin",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "Erasure conversion for singlet triplet spin",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "logical error rate",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "logical error rate",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "high performance shuttling based quantum error",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "high performance shuttling based quantum error",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "high performance shuttling based quantum error"
+   ]
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 8.237
+  },
+  "snapshot": {
+   "as_of": 1795596051,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: Erasure conversion for singlet triplet spin may reduce logical error rate through high performance shuttling based quantum error (read as correlated errors).\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: consistent.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: correlated errors versus high performance shuttling based quantum error.\n\nLink Erasure conversion for singlet triplet spin -> high performance shuttling based quantum error: supported (1 supporting, 0 contrary).\n  + [arxiv-2601-10461-p0001] # Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction\n\nLink high performance shuttling based quantum error -> logical error rate: supported (1 supporting, 0 contrary).\n  + [arxiv-2407-16176-p0047] However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.\n\nExisting setups that measure one of its terms:\n  [arxiv-2208-02191-p0004] We numerically benchmark the performance of the noise-tailored code versus nonoptimized CSS surface codes and demonstrate that (i) the sub-threshold logical error rates are exponentially suppressed as a function of the code distance and (ii) the threshold grows monotonically as noise becomes less uniform across qubits.\n  [arxiv-2407-16176-p0033] In particular, we compare their logical error rates under the condition that they consume a comparable amount of resource overhead.\n  [arxiv-2407-16176-p0038] We compare the decoding time of the surface code and that of the concatenated quantum Hamming code, ensuring both achieve a comparable logical error rate at a physical error rate of p = 0.01526.\n  [arxiv-2407-16176-p0046] To investigate the effect of correlated errors, we compare the logical error rates in the absence and presence of correlated errors.\n\nCandidate controls (review before adjustment):\n  addition of reset: outcome_predictor [arxiv-2102-06131-p0022]\n  code distance: outcome_predictor [arxiv-1905-06903-p0017]\n  filter: outcome_predictor [arxiv-2411-04101-p0002]\n  higher weight stabilizers: outcome_predictor [arxiv-2110-10794-p0007]\n  minimum weight failure events: outcome_predictor [arxiv-2511-13192-p0006]\n  minimum weight failure mechanisms: outcome_predictor [arxiv-2511-13192-p0027]\n\nTest plan (mediation):\n  1. Vary Erasure conversion for singlet triplet spin across matched settings and measure logical error rate.\n  2. Review candidate controls (addition of reset, code distance, filter, higher weight stabilizers, minimum weight failure events, minimum weight failure mechanisms) for timing, feasibility and causal role before adjustment.\n  3. Repeat with high performance shuttling based quantum error held fixed or blocked to test whether it carries the effect.\n  Fails if: logical error rate does not change when Erasure conversion for singlet triplet spin varies with the controls fixed, or holding high performance shuttling based quantum error fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for Erasure conversion for singlet triplet spin.\n  Required: feasible intervention or justified observational design for Erasure conversion for singlet triplet spin.\n  Required: measurement procedure for logical error rate.\n  Required: unit or explicit categorical scale for logical error rate.\n  Required: measurement procedure for high performance shuttling based quantum error.\n  Required: unit or explicit categorical scale for high performance shuttling based quantum error.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

@@ -1,0 +1,521 @@
+{
+ "topic": "barren plateaus",
+ "hypothesis": {
+  "id": "373ae2e0050b",
+  "text": "pooling may reduce shots through qubits.",
+  "pattern": "chain",
+  "relation": "decreases",
+  "anchors": [
+   "pooling",
+   "shots"
+  ],
+  "via": [
+   "qubits"
+  ],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2407-07394-p0006",
+   "arxiv-2011-12245-p0002"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2407-07394-p0006",
+    "quote": "We also observed that pooling reduced the number of qubits required for distillation by 45% without increasing the time cost.",
+    "start": 408,
+    "end": 533,
+    "chunk_sha256": "6e34bbb4e95d74193a156ce09db80096c9cf0f5fdbe39c7bf08ef1d55a1d43d9",
+    "relation": "decreases",
+    "subject": "pooling",
+    "object": "qubits",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2011-12245-p0002",
+    "quote": "We numerically confirm this by training a parameterized quantum circuit in a barren plateau landscape with several gradientfree optimizers (Nelder-Mead, Powell, and COBYLA algorithms), and show that the number of shots required in the optimization grows exponentially with the number of qubits.",
+    "start": 1256,
+    "end": 1550,
+    "chunk_sha256": "25d08861f570956660596db04409263f9ac04b4a170523910cf7077f44cca0aa",
+    "relation": "increases",
+    "subject": "qubits",
+    "object": "shots",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.543,
+   "novelty": 0.65
+  },
+  "falsification_test": "Compare settings where pooling differs while other inputs are matched. The hypothesis fails if shots does not fall with pooling, or if fixing qubits removes no part of the effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "qubit"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "pooling",
+   "b": "qubits",
+   "c": "shots"
+  },
+  "path_nodes": [
+   "pooling",
+   "qubits",
+   "shots"
+  ],
+  "links": [
+   {
+    "source": "pooling",
+    "target": "qubits",
+    "expected_relation": "decreases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2407-07394-p0006",
+      "quote": "We also observed that pooling reduced the number of qubits required for distillation by 45% without increasing the time cost.",
+      "start": 408,
+      "end": 533,
+      "chunk_sha256": "6e34bbb4e95d74193a156ce09db80096c9cf0f5fdbe39c7bf08ef1d55a1d43d9",
+      "relation": "decreases",
+      "subject": "pooling",
+      "object": "qubits",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2407-07394-p0006",
+      "quote": "We also observed that pooling reduced the number of qubits required for distillation by 45% without increasing the time cost.",
+      "start": 408,
+      "end": 533,
+      "chunk_sha256": "6e34bbb4e95d74193a156ce09db80096c9cf0f5fdbe39c7bf08ef1d55a1d43d9"
+     },
+     {
+      "document_id": "arxiv-2407-07394-p0039",
+      "quote": "We consider it in Figure 17, where the horizontal axis represents the number of physical qubits required for magic state distillation and pooling, instead of #MSD.",
+      "start": 1191,
+      "end": 1354,
+      "chunk_sha256": "3774d7250cf22cbe36ed301423e474623d4a69394d813c9d0b74ed47d372ace1"
+     },
+     {
+      "document_id": "arxiv-2407-07394-p0040",
+      "quote": "In Figure 17, #MSD = 150 without pooling used 5,107,800 qubits and the total time cost was 28,313,114 cycles.",
+      "start": 52,
+      "end": 161,
+      "chunk_sha256": "93cd7ef8b47965ceef88a3c133dc48fe07785a7262419ddf655c07ef422a1a39"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "decreases"
+    ]
+   },
+   {
+    "source": "qubits",
+    "target": "shots",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2011-12245-p0002",
+      "quote": "We numerically confirm this by training a parameterized quantum circuit in a barren plateau landscape with several gradientfree optimizers (Nelder-Mead, Powell, and COBYLA algorithms), and show that the number of shots required in the optimization grows exponentially with the number of qubits.",
+      "start": 1256,
+      "end": 1550,
+      "chunk_sha256": "25d08861f570956660596db04409263f9ac04b4a170523910cf7077f44cca0aa",
+      "relation": "increases",
+      "subject": "qubits",
+      "object": "shots",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2011-12245-p0002",
+      "quote": "We numerically confirm this by training a parameterized quantum circuit in a barren plateau landscape with several gradientfree optimizers (Nelder-Mead, Powell, and COBYLA algorithms), and show that the number of shots required in the optimization grows exponentially with the number of qubits.",
+      "start": 1256,
+      "end": 1550,
+      "chunk_sha256": "25d08861f570956660596db04409263f9ac04b4a170523910cf7077f44cca0aa"
+     },
+     {
+      "document_id": "arxiv-2011-12245-p0007",
+      "quote": "In all cases, we find that the number of shots (i.e., the amount of statistics) required to begin to train the cost function grows exponentially in the number of qubits.",
+      "start": 898,
+      "end": 1067,
+      "chunk_sha256": "c57c9833cb42ffdaf3805b6cb92f9bb6da4f99f883494cf4d97166ec397701c9"
+     },
+     {
+      "document_id": "arxiv-2011-12245-p0033",
+      "quote": "Since the goal is to heuristically determine the precision (i.e., the number of shots N) needed to minimize the cost, we first ran simulations with Figure 3: Median value of the total shot number Ntotal necessary to reach C = 0.4 plotted versus the number of qubits n.",
+      "start": 0,
+      "end": 268,
+      "chunk_sha256": "fd985d538549462488e39e87dadac8dc0b30af5ba0978538acadcb726ad163b4"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   }
+  ],
+  "expected_relation": "decreases",
+  "direction_check": {
+   "requested": "decreases",
+   "status": "consistent",
+   "observed": [
+    "decreases"
+   ],
+   "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+  },
+  "verdict": "all_links_supported",
+  "predictions": [
+   {
+    "document_id": "arxiv-2511-21236-p0034",
+    "quote": "An improved approach could be to allocate more shots to circuits with more qubits and greater depth (i.e.",
+    "start": 941,
+    "end": 1046,
+    "chunk_sha256": "684d6d37684e189c977b1b30e00ac9c038e0ef5a65d7fba6c210d4829dbbcfe6",
+    "qualification": "source_prediction"
+   }
+  ],
+  "setups": [
+   {
+    "document_id": "arxiv-1811-00566-p0003",
+    "quote": "We compare the physical qubit and gate cost of our scheme to the magic state distillation protocol of Meier, Eastin, and Knill (MEK), which is efficient and uses a small stabilizer circuit.",
+    "start": 472,
+    "end": 661,
+    "chunk_sha256": "8092e9aa9cb68b48bcc481756a4755542dd78552925c15e985cb9b30f40cedf9",
+    "measures": [
+     "qubits"
+    ]
+   },
+   {
+    "document_id": "arxiv-1811-00566-p0009",
+    "quote": "Proofs of faulttolerance are given in Appendix A. In Section 4 we briefly review the MEK magic state distillation scheme and in Section 5 we compare the qubit and gate overhead costs of both schemes.",
+    "start": 297,
+    "end": 496,
+    "chunk_sha256": "b092236d8a96422a42f04a6b36540f2bc08dde2a9c6d0dc9452b8a0610ab96c3",
+    "measures": [
+     "qubits"
+    ]
+   },
+   {
+    "document_id": "arxiv-1811-00566-p0022",
+    "quote": "The extra flag qubits are used to localize errors occurring near the fourth controlled-Hadamard gate since these cannot be distinguished from errors occurring at the other controlled-Hadamard gates.",
+    "start": 122,
+    "end": 320,
+    "chunk_sha256": "3ed09e9672d5fff68a0b1fdb46a5db0440046cf595fa6ec94461277c63ac1486",
+    "measures": [
+     "qubits"
+    ]
+   },
+   {
+    "document_id": "arxiv-1904-10378-p0004",
+    "quote": "[13] proposed a compact quantum dot array controlled via acrossbar geometry, enabling N qubits to be controlled with",
+    "start": 622,
+    "end": 738,
+    "chunk_sha256": "d4684cd56e64d222d1d2247bfc4e4672ab912a1f4850afbff3403bacd3ee2f06",
+    "measures": [
+     "qubits"
+    ]
+   },
+   {
+    "document_id": "arxiv-2006-05416-p0002",
+    "quote": "To implement quantum computation without this cancellation, we construct a protocol for photonic MBQC that achieves as low as poly-logarithmic overhead, by introducing an entanglement structure for low-overhead qubit permutation.",
+    "start": 537,
+    "end": 766,
+    "chunk_sha256": "1b7eb200185309b7a3888e024bd27890f0da072ce3772ea7c0bb1bf4b6ebf5a3",
+    "measures": [
+     "qubits"
+    ]
+   },
+   {
+    "document_id": "arxiv-2009-14226-p0022",
+    "quote": "In Figure 3, we compare the product TC(m) ⊗ [[4, 2, 2]] with all the toric codes TC(l) achieving a smaller or equal qubit overhead.",
+    "start": 1035,
+    "end": 1166,
+    "chunk_sha256": "891befc8e47fac96589c676bee4be2114ac77d4817db8b105a90205fc3caffcc",
+    "measures": [
+     "qubits"
+    ]
+   }
+  ],
+  "confounders": [],
+  "composition": {
+   "status": "conditional",
+   "bridges": [],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "9d0ecf87be53714e",
+    "kind": "variable",
+    "term": "pooling",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for pooling."
+   },
+   {
+    "id": "bfbb1584c1a97a80",
+    "kind": "variable",
+    "term": "pooling",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for pooling."
+   },
+   {
+    "id": "540c4cc5f5a2eb90",
+    "kind": "variable",
+    "term": "shots",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for shots."
+   },
+   {
+    "id": "e5b5d8f9fc89428c",
+    "kind": "variable",
+    "term": "shots",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for shots."
+   },
+   {
+    "id": "89c7f8598d9fd302",
+    "kind": "variable",
+    "term": "qubits",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for qubits."
+   },
+   {
+    "id": "1a50c1af5383d633",
+    "kind": "variable",
+    "term": "qubits",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for qubits."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "pooling"
+   ],
+   "measure": [
+    "shots"
+   ],
+   "mediator": "qubits",
+   "controls": [],
+   "steps": [
+    "Vary pooling across matched settings and measure shots.",
+    "No additional outcome cause was extracted; this does not establish absence of confounding.",
+    "Repeat with qubits held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "shots does not change when pooling varies with the controls fixed, or holding qubits fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "pooling",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "shots",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2109-04457-p0048",
+       "quote": "The strategies in Fig. 3 admit small N’s that do not scale with the total shot budget, representing examples for which our results give fruitful insights into their round number M. On the other hand, some strategies that employ highly nonlinear computation on the measurement outcomes (e.g., exponential noise extrapolation [11], subspace expansion [27])",
+       "start": 380,
+       "end": 734,
+       "chunk_sha256": "82f4e427f95bf609e2fa1d6bfcb0327aa517b230eade3e88ad6dd5f93f4d0778",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2311-18090-p0031",
+       "quote": "An empirical estimate bf of the expectation value of the cost function ⟨ψγ,β |f |ψγ,β ⟩ is then measured on a specified number of shots run on the quantum circuit, and the goal is to classically optimize the variational parameters that minimize the quantum-approximated expected cost.",
+       "start": 573,
+       "end": 857,
+       "chunk_sha256": "297e6de4d491a6e52e8030b6f11a4b824b8aac3034e2d6dd4dc9c2a0a496f5b2",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2406-14285-p0060",
+       "quote": "In the quantum sense barren plateaus are much more of a fundamental issue due to the number of measurement shots needed to vary the cost function to account for flattened landscapes, as this is a resource intensive process and lends to expressive or inexpressive ansatz being untrainable [45].",
+       "start": 664,
+       "end": 957,
+       "chunk_sha256": "b705f5f82ce3b19d0504d1cd716a80211e0249b7a755199563e27872b91b7fe3",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "qubits",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1412-7010-p0002",
+       "quote": "Our study shows that leakage errors can be corrected without the need of measurements and at the cost of only a few additional ancilla qubits and gate operations compared to standard quantum error correction codes.",
+       "start": 504,
+       "end": 718,
+       "chunk_sha256": "cb0d6222a255361d1f52b063bea503a39ae721c581db1cb7c0ebae8177730c51",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1509-05470-p0001",
+       "quote": "# Measuring and Suppressing Quantum State Leakage in a Superconducting Qubit",
+       "start": 0,
+       "end": 76,
+       "chunk_sha256": "df4feb408bba8c5a61f0d6de6310c52b07f24d2b741a0c49bc5965a64895650f",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1811-00566-p0007",
+       "quote": "Recently, new schemes using flag qubits have been introduced to implement error correction protocols using the minimal number of ancilla qubits to measure the codesstabilizergenerators [20–25].",
+       "start": 0,
+       "end": 193,
+       "chunk_sha256": "3789bf5615c0c59ab38e747c33edf34ea5ae17950708b4c4eafe177a0459248c",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "pooling",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "pooling",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "shots",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "shots",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "qubits",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "qubits",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "qubits"
+   ]
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 7.743
+  },
+  "snapshot": {
+   "as_of": 1795596044,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: pooling may reduce shots through qubits.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: consistent.\nComposition assessment: conditional. Component support does not establish a joint effect or causal validity.\n\nLink pooling -> qubits: supported (1 supporting, 0 contrary).\n  + [arxiv-2407-07394-p0006] We also observed that pooling reduced the number of qubits required for distillation by 45% without increasing the time cost.\n\nLink qubits -> shots: supported (1 supporting, 0 contrary).\n  + [arxiv-2011-12245-p0002] We numerically confirm this by training a parameterized quantum circuit in a barren plateau landscape with several gradientfree optimizers (Nelder-Mead, Powell, and COBYLA algorithms), and show that the number of shots required in the optimization grows exponentially with the number of qubits.\n\nSource predictions naming two or more of its terms:\n  [arxiv-2511-21236-p0034] An improved approach could be to allocate more shots to circuits with more qubits and greater depth (i.e.\n\nExisting setups that measure one of its terms:\n  [arxiv-1811-00566-p0003] We compare the physical qubit and gate cost of our scheme to the magic state distillation protocol of Meier, Eastin, and Knill (MEK), which is efficient and uses a small stabilizer circuit.\n  [arxiv-1811-00566-p0009] Proofs of faulttolerance are given in Appendix A. In Section 4 we briefly review the MEK magic state distillation scheme and in Section 5 we compare the qubit and gate overhead costs of both schemes.\n  [arxiv-1811-00566-p0022] The extra flag qubits are used to localize errors occurring near the fourth controlled-Hadamard gate since these cannot be distinguished from errors occurring at the other controlled-Hadamard gates.\n  [arxiv-1904-10378-p0004] [13] proposed a compact quantum dot array controlled via acrossbar geometry, enabling N qubits to be controlled with\n\nTest plan (mediation):\n  1. Vary pooling across matched settings and measure shots.\n  2. No additional outcome cause was extracted; this does not establish absence of confounding.\n  3. Repeat with qubits held fixed or blocked to test whether it carries the effect.\n  Fails if: shots does not change when pooling varies with the controls fixed, or holding qubits fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for pooling.\n  Required: feasible intervention or justified observational design for pooling.\n  Required: measurement procedure for shots.\n  Required: unit or explicit categorical scale for shots.\n  Required: measurement procedure for qubits.\n  Required: unit or explicit categorical scale for qubits.\n  Required: replicates.\n  Required: acceptance_criterion.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

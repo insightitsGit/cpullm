@@ -1,0 +1,492 @@
+{
+ "topic": "quantum LDPC codes",
+ "hypothesis": {
+  "id": "9cb4c3f8fc82",
+  "text": "filter may increase overlap through seepage rate (read as rate of code).",
+  "pattern": "chain",
+  "relation": "increases",
+  "anchors": [
+   "filter",
+   "overlap"
+  ],
+  "via": [
+   "seepage rate (read as rate of code)"
+  ],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2411-04101-p0002",
+   "arxiv-2503-05003-p0011"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2411-04101-p0002",
+    "quote": "We demonstrate the operation of the filter as leakage reduction unit in a mock-up of a single-qubit quantum error correcting cycle, showing that the filter increases the seepage rate back to the qubit subspace.",
+    "start": 1374,
+    "end": 1584,
+    "chunk_sha256": "52fad84cd82e9361f64580091c447e97b87450049801732735a1805d7ac201d2",
+    "relation": "increases",
+    "subject": "filter",
+    "object": "seepage rate",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2503-05003-p0011",
+    "quote": "This obstacle is present because, generically, the logical operators to be measured in a high-rate LDPC code overlap substantially on data qubits as in Figure 2(b), with the overlap growing with the rate and distance of the code.",
+    "start": 960,
+    "end": 1189,
+    "chunk_sha256": "4b9fbb52eccfa89747ad24cefa346c47eb567a17ed685a40ec22171f5cc10e44",
+    "relation": "increases",
+    "subject": "rate of code",
+    "object": "overlap",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.702,
+   "novelty": 0.6
+  },
+  "falsification_test": "Compare settings where filter differs while other inputs are matched. The hypothesis fails if overlap does not rise with filter, or if fixing seepage rate (read as rate of code) removes no part of the effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "seepage rate"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "filter",
+   "b": "seepage rate",
+   "c": "overlap"
+  },
+  "path_nodes": [
+   "filter",
+   "seepage rate",
+   "overlap"
+  ],
+  "links": [
+   {
+    "source": "filter",
+    "target": "seepage rate",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2411-04101-p0002",
+      "quote": "We demonstrate the operation of the filter as leakage reduction unit in a mock-up of a single-qubit quantum error correcting cycle, showing that the filter increases the seepage rate back to the qubit subspace.",
+      "start": 1374,
+      "end": 1584,
+      "chunk_sha256": "52fad84cd82e9361f64580091c447e97b87450049801732735a1805d7ac201d2",
+      "relation": "increases",
+      "subject": "filter",
+      "object": "seepage rate",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2411-04101-p0002",
+      "quote": "We demonstrate the operation of the filter as leakage reduction unit in a mock-up of a single-qubit quantum error correcting cycle, showing that the filter increases the seepage rate back to the qubit subspace.",
+      "start": 1374,
+      "end": 1584,
+      "chunk_sha256": "52fad84cd82e9361f64580091c447e97b87450049801732735a1805d7ac201d2"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   },
+   {
+    "source": "seepage rate",
+    "target": "overlap",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2503-05003-p0011",
+      "quote": "This obstacle is present because, generically, the logical operators to be measured in a high-rate LDPC code overlap substantially on data qubits as in Figure 2(b), with the overlap growing with the rate and distance of the code.",
+      "start": 960,
+      "end": 1189,
+      "chunk_sha256": "4b9fbb52eccfa89747ad24cefa346c47eb567a17ed685a40ec22171f5cc10e44",
+      "relation": "increases",
+      "subject": "rate of code",
+      "object": "overlap",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   }
+  ],
+  "expected_relation": "increases",
+  "direction_check": {
+   "requested": "increases",
+   "status": "consistent",
+   "observed": [
+    "increases"
+   ],
+   "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-2407-21177-p0057",
+    "quote": "where F (ω, t) is a filter function that depends on the pulse sequence used in the experiment.",
+    "start": 0,
+    "end": 94,
+    "chunk_sha256": "136e1e45e5edefb887df58230e1c8c8de578faa973ac5e7229102faed005df01",
+    "measures": [
+     "filter"
+    ]
+   },
+   {
+    "document_id": "arxiv-2603-13460-p0019",
+    "quote": "Figure 3(a) displays the largest observed event in the JJ-Only dataset, determined by the matched filter trigger.",
+    "start": 871,
+    "end": 984,
+    "chunk_sha256": "d4b153a7a1bb3bd346b00d110a55c8cdcf27be4802cb860eaa28598c3dc1cbd6",
+    "measures": [
+     "filter"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "distance",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2503-05003-p0011",
+     "quote": "This obstacle is present because, generically, the logical operators to be measured in a high-rate LDPC code overlap substantially on data qubits as in Figure 2(b), with the overlap growing with the rate and distance of the code.",
+     "start": 960,
+     "end": 1189,
+     "chunk_sha256": "4b9fbb52eccfa89747ad24cefa346c47eb567a17ed685a40ec22171f5cc10e44",
+     "relation": "increases",
+     "subject": "distance",
+     "object": "overlap",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "seepage rate",
+     "source_term": "rate of code",
+     "citation": {
+      "document_id": "arxiv-2503-05003-p0011",
+      "quote": "This obstacle is present because, generically, the logical operators to be measured in a high-rate LDPC code overlap substantially on data qubits as in Figure 2(b), with the overlap growing with the rate and distance of the code.",
+      "start": 960,
+      "end": 1189,
+      "chunk_sha256": "4b9fbb52eccfa89747ad24cefa346c47eb567a17ed685a40ec22171f5cc10e44",
+      "relation": "increases",
+      "subject": "rate of code",
+      "object": "overlap",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "e6fd8ff6b0d78073",
+    "kind": "variable",
+    "term": "filter",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for filter."
+   },
+   {
+    "id": "3d8cd9fc9c55570d",
+    "kind": "variable",
+    "term": "filter",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for filter."
+   },
+   {
+    "id": "817fb5ff34feadeb",
+    "kind": "variable",
+    "term": "overlap",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for overlap."
+   },
+   {
+    "id": "9d60b3c7caf37587",
+    "kind": "variable",
+    "term": "overlap",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for overlap."
+   },
+   {
+    "id": "1f07d9e85acae480",
+    "kind": "variable",
+    "term": "seepage rate",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for seepage rate."
+   },
+   {
+    "id": "d12c5a052ef967d4",
+    "kind": "variable",
+    "term": "seepage rate",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for seepage rate."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "filter"
+   ],
+   "measure": [
+    "overlap"
+   ],
+   "mediator": "seepage rate",
+   "controls": [
+    "distance"
+   ],
+   "steps": [
+    "Vary filter across matched settings and measure overlap.",
+    "Review candidate controls (distance) for timing, feasibility and causal role before adjustment.",
+    "Repeat with seepage rate held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "overlap does not change when filter varies with the controls fixed, or holding seepage rate fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "filter",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2407-21177-p0065",
+       "quote": "(44) this is defined as α(T ∗ 2 ) = 1, with filter",
+       "start": 273,
+       "end": 323,
+       "chunk_sha256": "53774ebed84603b6603ebc9549513bcde098ab9417dcc6d03f51254f85202df0",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2512-13908-p0009",
+       "quote": "We again post select the data for no detection events, including the phase-kickback measurement, which filters the injected logical state for the desired |T ⟩ state.",
+       "start": 512,
+       "end": 677,
+       "chunk_sha256": "9b0cf4b0e70c2e8560359073273537b8cf9c59f59d11b13a7ee571945f5e5ecc",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2512-13908-p0054",
+       "quote": "Logical error probability (full circuit) as measured via kickback tomography, and data retainment rates, with and without echos to filter coherent phase noise.",
+       "start": 10,
+       "end": 169,
+       "chunk_sha256": "a908c2a46e9e62e4bb878f3607819cb50209cd95719d4320694659fd9c54f137",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "overlap",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2406-14285-p0019",
+       "quote": "State fidelity, also known as state overlap, measures how close two quantum states are to each other.",
+       "start": 0,
+       "end": 101,
+       "chunk_sha256": "e57d0873e0861a443d5422f64aea9db0681fc9469d20938b2cd0e812a6f9c684",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2503-05003-p0003",
+       "quote": "This addresses a shortcoming of several recently introduced surgery schemes which can only be applied to measure a limited number of logical operators in parallel if they overlap on data qubits.",
+       "start": 395,
+       "end": 589,
+       "chunk_sha256": "7c880451e8d1b5123bb18f28f7392a3a77bec4ebb6e9f6963fcd51a99616c717",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2503-05003-p0011",
+       "quote": "This obstacle is present because, generically, the logical operators to be measured in a high-rate LDPC code overlap substantially on data qubits as in Figure 2(b), with the overlap growing with the rate and distance of the code.",
+       "start": 960,
+       "end": 1189,
+       "chunk_sha256": "4b9fbb52eccfa89747ad24cefa346c47eb567a17ed685a40ec22171f5cc10e44",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "seepage rate",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "filter",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "filter",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "overlap",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "overlap",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "seepage rate",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "seepage rate",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "seepage rate"
+   ]
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 9.22
+  },
+  "snapshot": {
+   "as_of": 1795596313,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: filter may increase overlap through seepage rate (read as rate of code).\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: consistent.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: rate of code versus seepage rate.\n\nLink filter -> seepage rate: supported (1 supporting, 0 contrary).\n  + [arxiv-2411-04101-p0002] We demonstrate the operation of the filter as leakage reduction unit in a mock-up of a single-qubit quantum error correcting cycle, showing that the filter increases the seepage rate back to the qubit subspace.\n\nLink seepage rate -> overlap: supported (1 supporting, 0 contrary).\n  + [arxiv-2503-05003-p0011] This obstacle is present because, generically, the logical operators to be measured in a high-rate LDPC code overlap substantially on data qubits as in Figure 2(b), with the overlap growing with the rate and distance of the code.\n\nExisting setups that measure one of its terms:\n  [arxiv-2407-21177-p0057] where F (ω, t) is a filter function that depends on the pulse sequence used in the experiment.\n  [arxiv-2603-13460-p0019] Figure 3(a) displays the largest observed event in the JJ-Only dataset, determined by the matched filter trigger.\n\nCandidate controls (review before adjustment):\n  distance: outcome_predictor [arxiv-2503-05003-p0011]\n\nTest plan (mediation):\n  1. Vary filter across matched settings and measure overlap.\n  2. Review candidate controls (distance) for timing, feasibility and causal role before adjustment.\n  3. Repeat with seepage rate held fixed or blocked to test whether it carries the effect.\n  Fails if: overlap does not change when filter varies with the controls fixed, or holding seepage rate fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for filter.\n  Required: feasible intervention or justified observational design for filter.\n  Required: measurement procedure for overlap.\n  Required: unit or explicit categorical scale for overlap.\n  Required: measurement procedure for seepage rate.\n  Required: unit or explicit categorical scale for seepage rate.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

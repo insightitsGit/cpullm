@@ -1,0 +1,588 @@
+{
+ "topic": "quantum advantage",
+ "hypothesis": {
+  "id": "e025c483acc1",
+  "text": "exploration of quantum mechanics foundations and overhead may move together because both depend on advances.",
+  "pattern": "divergent",
+  "relation": "common_driver",
+  "anchors": [
+   "exploration of quantum mechanics foundations",
+   "overhead",
+   "advances"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2501-03661-p0002",
+   "arxiv-2504-12091-p0002"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2501-03661-p0002",
+    "quote": "These advances have enabled the observation of quantum jumps and trajectories [2–4], active feedback error correction [5–7] and the exploration of quantum mechanics foundations [8–10].",
+    "start": 2120,
+    "end": 2304,
+    "chunk_sha256": "b8afaa539c5b9d8a253a263142407b7c073c039200efd063fd2683dde920d3d6",
+    "relation": "increases",
+    "subject": "advances",
+    "object": "exploration of quantum mechanics foundations",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2504-12091-p0002",
+    "quote": "Recent advances in magic state distillation have significantly reduced the overhead, enabling the simultaneous preparation of many magic states.",
+    "start": 316,
+    "end": 460,
+    "chunk_sha256": "a0bcfdc389e98e6fdc0be498263c32d506ea2c093a6ef67e34a951f71cc63ba9",
+    "relation": "decreases",
+    "subject": "Recent advances",
+    "object": "overhead",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.533,
+   "novelty": 0.6
+  },
+  "falsification_test": "Track exploration of quantum mechanics foundations and overhead across periods where advances changes and where it does not. The hypothesis fails if they co-vary just as strongly when advances is held fixed.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "advance"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "divergent",
+  "terms": {
+   "a": "exploration of quantum mechanics foundations",
+   "b": "overhead",
+   "c": "advances"
+  },
+  "path_nodes": null,
+  "links": [
+   {
+    "source": "advances",
+    "target": "exploration of quantum mechanics foundations",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2501-03661-p0002",
+      "quote": "These advances have enabled the observation of quantum jumps and trajectories [2–4], active feedback error correction [5–7] and the exploration of quantum mechanics foundations [8–10].",
+      "start": 2120,
+      "end": 2304,
+      "chunk_sha256": "b8afaa539c5b9d8a253a263142407b7c073c039200efd063fd2683dde920d3d6",
+      "relation": "increases",
+      "subject": "advances",
+      "object": "exploration of quantum mechanics foundations",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2501-03661-p0002",
+      "quote": "These advances have enabled the observation of quantum jumps and trajectories [2–4], active feedback error correction [5–7] and the exploration of quantum mechanics foundations [8–10].",
+      "start": 2120,
+      "end": 2304,
+      "chunk_sha256": "b8afaa539c5b9d8a253a263142407b7c073c039200efd063fd2683dde920d3d6"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   },
+   {
+    "source": "advances",
+    "target": "overhead",
+    "expected_relation": "decreases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2504-12091-p0002",
+      "quote": "Recent advances in magic state distillation have significantly reduced the overhead, enabling the simultaneous preparation of many magic states.",
+      "start": 316,
+      "end": 460,
+      "chunk_sha256": "a0bcfdc389e98e6fdc0be498263c32d506ea2c093a6ef67e34a951f71cc63ba9",
+      "relation": "decreases",
+      "subject": "Recent advances",
+      "object": "overhead",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2504-12091-p0002",
+      "quote": "Recent advances in magic state distillation have significantly reduced the overhead, enabling the simultaneous preparation of many magic states.",
+      "start": 316,
+      "end": 460,
+      "chunk_sha256": "a0bcfdc389e98e6fdc0be498263c32d506ea2c093a6ef67e34a951f71cc63ba9"
+     },
+     {
+      "document_id": "arxiv-2507-09690-p0002",
+      "quote": "In parallel, theoretical advances in quantum low-density parity-check (LDPC) codes promise significantly lower overheads, albeit at the cost of requiring non-local parity checks.",
+      "start": 288,
+      "end": 466,
+      "chunk_sha256": "29111f32bb93ccca05ebcd58d29523770c1e19e9056332d4dcb1d1b895e37f78"
+     },
+     {
+      "document_id": "arxiv-2606-20441-p0002",
+      "quote": "Despite advances in scale and quality, the accuracy of quantum simulation is ultimately limited by error rates and sampling overheads.",
+      "start": 117,
+      "end": 251,
+      "chunk_sha256": "8ca6e234cdda8b0a6665870fab1793df042c53ba3883bd757f5a8d5815b2893e"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "decreases"
+    ]
+   }
+  ],
+  "expected_relation": "common_driver",
+  "direction_check": {
+   "requested": "common_driver",
+   "status": "unspecified",
+   "observed": []
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-1811-00566-p0008",
+    "quote": "In this model, we compare the overhead cost of our scheme to a magic state distillation scheme introduced by Meier, Eastin and Knill (MEK), due to its efficiency and small circuit size [26].",
+    "start": 329,
+    "end": 519,
+    "chunk_sha256": "49b4fc43f820fcf89566217833ecbfe8398bb5eb55dff2e9e7bc96c766fddd76",
+    "measures": [
+     "overhead"
+    ]
+   },
+   {
+    "document_id": "arxiv-1811-00566-p0009",
+    "quote": "Proofs of faulttolerance are given in Appendix A. In Section 4 we briefly review the MEK magic state distillation scheme and in Section 5 we compare the qubit and gate overhead costs of both schemes.",
+    "start": 297,
+    "end": 496,
+    "chunk_sha256": "b092236d8a96422a42f04a6b36540f2bc08dde2a9c6d0dc9452b8a0610ab96c3",
+    "measures": [
+     "overhead"
+    ]
+   },
+   {
+    "document_id": "arxiv-1811-00566-p0018",
+    "quote": "Error detection schemes have extra overhead arising 4Note that the T gates considered in this paper are Cliffordequivalent to the T gates considered in [30] 5In both Fig. 5a and Fig. 5b, the controlled Hadamard gates are implemented as shown in Fig. 2 and for concatenation levels greater than one, the T gates are implemented as in Fig. 1.",
+    "start": 859,
+    "end": 1199,
+    "chunk_sha256": "df3567604a5539ec31f53b980e6f0ff5292c989a22937b7958aea6b7141ed3ac",
+    "measures": [
+     "overhead"
+    ]
+   },
+   {
+    "document_id": "arxiv-1811-00566-p0024",
+    "quote": "In this section we compare the overhead cost of our fault-tolerant magic state preparation scheme for preparing an encoded |H⟩ state in the concatenated Steane code to the overhead cost of the MEK scheme for distilling |H⟩ states (also encoded in the concatenated Steane code).",
+    "start": 0,
+    "end": 277,
+    "chunk_sha256": "a3f6b10949adda061ad14ea085746a1f0e47df43339a23c6a911079a47d65ab6",
+    "measures": [
+     "overhead"
+    ]
+   },
+   {
+    "document_id": "arxiv-2006-05416-p0002",
+    "quote": "To implement quantum computation without this cancellation, we construct a protocol for photonic MBQC that achieves as low as poly-logarithmic overhead, by introducing an entanglement structure for low-overhead qubit permutation.",
+    "start": 537,
+    "end": 766,
+    "chunk_sha256": "1b7eb200185309b7a3888e024bd27890f0da072ce3772ea7c0bb1bf4b6ebf5a3",
+    "measures": [
+     "overhead"
+    ]
+   },
+   {
+    "document_id": "arxiv-2009-14226-p0022",
+    "quote": "In Figure 3, we compare the product TC(m) ⊗ [[4, 2, 2]] with all the toric codes TC(l) achieving a smaller or equal qubit overhead.",
+    "start": 1035,
+    "end": 1166,
+    "chunk_sha256": "891befc8e47fac96589c676bee4be2114ac77d4817db8b105a90205fc3caffcc",
+    "measures": [
+     "overhead"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "ability of scheme",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2503-05003-p0019",
+     "quote": "The ability of our scheme to directly measure logical Y terms in parallel significantly reduces the overhead in preparation of such logical ancillary states as compared to Ref.",
+     "start": 1351,
+     "end": 1527,
+     "chunk_sha256": "7f981fd76e1d56f01a5aa6ee4fe8036ca0d05b9379abda6fc3b8c0ee11a4190a",
+     "relation": "decreases",
+     "subject": "ability of scheme",
+     "object": "overhead",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "environment",
+    "relation": "supports",
+    "citation": {
+     "document_id": "arxiv-2310-10722-p0046",
+     "quote": "Unfortunately, such a procedure is not possible for loopy tensor networks, and computing the environment generally entails an exponential overhead.",
+     "start": 561,
+     "end": 708,
+     "chunk_sha256": "3bea60512d384e9d25a42ab6dd8876e191f319d33228d41fd0338751ee0df793",
+     "relation": "supports",
+     "subject": "environment",
+     "object": "exponential overhead",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "reduction",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2208-09178-p0034",
+     "quote": "Our results formalize the idea that the reduction in the state distinguishability caused by noise and error-mitigation processes leads to the unavoidable computational overhead in quantum error mitigation.",
+     "start": 450,
+     "end": 655,
+     "chunk_sha256": "4e07730ac3ceee6fbdae3b566c5197b7768550cd682963ac3869c475c299e610",
+     "relation": "causes",
+     "subject": "reduction",
+     "object": "unavoidable computational overhead",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "theoretical innovations",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2607-27644-p0009",
+     "quote": "On the other front, theoretical innovations in constant-rate quantum low-density parity-check (qLDPC) codes [TZ14, BE21b, DLV24] have also reduced the spatial overhead to a constant [Got14, FGL20, TKY26, ZZL26], with the current stateof-the-art scheme also achieving a (nearly) logarithmic time overhead [NP25], thus bridging the gap with classical fault tolerance [vN56].",
+     "start": 338,
+     "end": 710,
+     "chunk_sha256": "71d871ea1244ba72872525c034746d54525cac74c9e084c581d8239f3283cce0",
+     "relation": "decreases",
+     "subject": "theoretical innovations",
+     "object": "spatial overhead",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "advances",
+     "source_term": "Recent advances",
+     "citation": {
+      "document_id": "arxiv-2504-12091-p0002",
+      "quote": "Recent advances in magic state distillation have significantly reduced the overhead, enabling the simultaneous preparation of many magic states.",
+      "start": 316,
+      "end": 460,
+      "chunk_sha256": "a0bcfdc389e98e6fdc0be498263c32d506ea2c093a6ef67e34a951f71cc63ba9",
+      "relation": "decreases",
+      "subject": "Recent advances",
+      "object": "overhead",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "c75c33cf01e504dd",
+    "kind": "variable",
+    "term": "advances",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for advances."
+   },
+   {
+    "id": "03eef47512701684",
+    "kind": "variable",
+    "term": "advances",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for advances."
+   },
+   {
+    "id": "efce668f2e307ff4",
+    "kind": "variable",
+    "term": "exploration of quantum mechanics foundations",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for exploration of quantum mechanics foundations."
+   },
+   {
+    "id": "024c5cc24cd25188",
+    "kind": "variable",
+    "term": "exploration of quantum mechanics foundations",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for exploration of quantum mechanics foundations."
+   },
+   {
+    "id": "a709bb2e15905348",
+    "kind": "variable",
+    "term": "overhead",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for overhead."
+   },
+   {
+    "id": "62ad36b85acb53f6",
+    "kind": "variable",
+    "term": "overhead",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for overhead."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "common cause",
+   "manipulate": [
+    "advances"
+   ],
+   "measure": [
+    "exploration of quantum mechanics foundations",
+    "overhead"
+   ],
+   "mediator": null,
+   "controls": [
+    "ability of scheme",
+    "environment",
+    "reduction",
+    "theoretical innovations"
+   ],
+   "steps": [
+    "Vary advances and measure exploration of quantum mechanics foundations and overhead.",
+    "Review candidate controls (ability of scheme, environment, reduction, theoretical innovations) for timing, feasibility and causal role before adjustment.",
+    "Check whether exploration of quantum mechanics foundations and overhead still co-vary when advances is held fixed."
+   ],
+   "fails_if": "exploration of quantum mechanics foundations and overhead co-vary just as strongly when advances is held fixed, or advances moves neither.",
+   "variables": [
+    {
+     "term": "advances",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2311-05680-p0024",
+       "quote": "For these situations, we employ Bayesian Iterative Unfolding (BIU) [66] to mitigate measurement errors in advance.",
+       "start": 326,
+       "end": 440,
+       "chunk_sha256": "f745b245b411629ac26b35710ca92d4da1df6bba719a03dca2ba0a742c6bc1f2",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "exploration of quantum mechanics foundations",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "overhead",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2006-14044-p0002",
+       "quote": "The error mitigation overhead, including the the number of measurements and the cost of the classical post-processing, is exponential in epsilon n, where epsilon is the maximum error rate and n is the number of qubits.",
+       "start": 709,
+       "end": 927,
+       "chunk_sha256": "ab94fc74acecb70a069e893278ca4994e1829e8a0003594ab9ec5fc6425c2dec",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2007-01265-p0002",
+       "quote": "To fight the noise in the practical application of near-term quantum computers, instead of relying on quantum error correction which requires large qubit overhead, we turn to quantum error mitigation, in which we make use of extra measurements.",
+       "start": 101,
+       "end": 345,
+       "chunk_sha256": "0bb35c5682e82e9326e43ff2494b8b9ff0fa096e1b8e3658072f65023e25fa72",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2110-10794-p0002",
+       "quote": "In our approach, logic gates operate via logical Pauli measurements that preserve both the protection of the LDPC codes as well as the low overheads in terms of the required number of additional qubits.",
+       "start": 714,
+       "end": 916,
+       "chunk_sha256": "c6957f4fcf5cc2bd4843b82dc453c8c52fe18318b5dcc35257994cdb17837f55",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "advances",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "advances",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "exploration of quantum mechanics foundations",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "exploration of quantum mechanics foundations",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "overhead",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "overhead",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established"
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 8.279
+  },
+  "snapshot": {
+   "as_of": 1795596270,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: exploration of quantum mechanics foundations and overhead may move together because both depend on advances.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unspecified.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: Recent advances versus advances.\n\nLink advances -> exploration of quantum mechanics foundations: supported (1 supporting, 0 contrary).\n  + [arxiv-2501-03661-p0002] These advances have enabled the observation of quantum jumps and trajectories [2–4], active feedback error correction [5–7] and the exploration of quantum mechanics foundations [8–10].\n\nLink advances -> overhead: supported (1 supporting, 0 contrary).\n  + [arxiv-2504-12091-p0002] Recent advances in magic state distillation have significantly reduced the overhead, enabling the simultaneous preparation of many magic states.\n\nExisting setups that measure one of its terms:\n  [arxiv-1811-00566-p0008] In this model, we compare the overhead cost of our scheme to a magic state distillation scheme introduced by Meier, Eastin and Knill (MEK), due to its efficiency and small circuit size [26].\n  [arxiv-1811-00566-p0009] Proofs of faulttolerance are given in Appendix A. In Section 4 we briefly review the MEK magic state distillation scheme and in Section 5 we compare the qubit and gate overhead costs of both schemes.\n  [arxiv-1811-00566-p0018] Error detection schemes have extra overhead arising 4Note that the T gates considered in this paper are Cliffordequivalent to the T gates considered in [30] 5In both Fig. 5a and Fig. 5b, the controlled Hadamard gates are implemented as shown in Fig. 2 and for concatenation levels greater than one, the T gates are implemented as in Fig. 1.\n  [arxiv-1811-00566-p0024] In this section we compare the overhead cost of our fault-tolerant magic state preparation scheme for preparing an encoded |H⟩ state in the concatenated Steane code to the overhead cost of the MEK scheme for distilling |H⟩ states (also encoded in the concatenated Steane code).\n\nCandidate controls (review before adjustment):\n  ability of scheme: outcome_predictor [arxiv-2503-05003-p0019]\n  environment: outcome_predictor [arxiv-2310-10722-p0046]\n  reduction: outcome_predictor [arxiv-2208-09178-p0034]\n  theoretical innovations: outcome_predictor [arxiv-2607-27644-p0009]\n\nTest plan (common cause):\n  1. Vary advances and measure exploration of quantum mechanics foundations and overhead.\n  2. Review candidate controls (ability of scheme, environment, reduction, theoretical innovations) for timing, feasibility and causal role before adjustment.\n  3. Check whether exploration of quantum mechanics foundations and overhead still co-vary when advances is held fixed.\n  Fails if: exploration of quantum mechanics foundations and overhead co-vary just as strongly when advances is held fixed, or advances moves neither.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for advances.\n  Required: feasible intervention or justified observational design for advances.\n  Required: measurement procedure for exploration of quantum mechanics foundations.\n  Required: unit or explicit categorical scale for exploration of quantum mechanics foundations.\n  Required: measurement procedure for overhead.\n  Required: unit or explicit categorical scale for overhead.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

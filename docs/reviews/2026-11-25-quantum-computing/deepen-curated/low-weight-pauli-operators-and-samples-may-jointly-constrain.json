@@ -1,0 +1,525 @@
+{
+ "topic": "error mitigation",
+ "hypothesis": {
+  "id": "801cef0c64c7",
+  "text": "low weight Pauli operators and samples may jointly constrain error mitigation, so relieving one may shift the bottleneck to the other.",
+  "pattern": "convergent",
+  "relation": "co_constrain",
+  "anchors": [
+   "low weight Pauli operators",
+   "samples",
+   "error mitigation"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2607-25746-p0061",
+   "arxiv-2210-11505-p0016"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2607-25746-p0061",
+    "quote": "Intuitively, this is because observables whose ideal expectation values are recoverable via error mitigation must be dominated by low-weight Pauli operators, which are simultaneously easy to simulate classically.",
+    "start": 514,
+    "end": 726,
+    "chunk_sha256": "589971785526d6ab9140c51b4d03f58d879ea31a83930015d4f8afa7608fb3aa",
+    "relation": "constrains",
+    "subject": "low weight Pauli operators",
+    "object": "error mitigation",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2210-11505-p0016",
+    "quote": "By picking, e.g., the parameter s = Ω(n/ log2(n)), we see that even at the low depth D = poly log log(n), error mitigation already requires superpolynomially-many samples.",
+    "start": 709,
+    "end": 880,
+    "chunk_sha256": "5a382ba64ebd01de5cb8310314ec4fef5a2a8aea5e3b52ce6a362ef141c4304a",
+    "relation": "constrains",
+    "subject": "samples",
+    "object": "error mitigation",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.757,
+   "novelty": 0.696
+  },
+  "falsification_test": "Relieve low weight Pauli operators alone while measuring error mitigation. The hypothesis fails if error mitigation keeps improving without samples becoming the binding limit, or if relieving samples alone has no effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "error mitigation"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "convergent",
+  "terms": {
+   "a": "low weight Pauli operators",
+   "b": "samples",
+   "c": "error mitigation"
+  },
+  "path_nodes": null,
+  "links": [
+   {
+    "source": "low weight Pauli operators",
+    "target": "error mitigation",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2607-25746-p0061",
+      "quote": "Intuitively, this is because observables whose ideal expectation values are recoverable via error mitigation must be dominated by low-weight Pauli operators, which are simultaneously easy to simulate classically.",
+      "start": 514,
+      "end": 726,
+      "chunk_sha256": "589971785526d6ab9140c51b4d03f58d879ea31a83930015d4f8afa7608fb3aa",
+      "relation": "constrains",
+      "subject": "low weight Pauli operators",
+      "object": "error mitigation",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   },
+   {
+    "source": "samples",
+    "target": "error mitigation",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2210-11505-p0016",
+      "quote": "By picking, e.g., the parameter s = Ω(n/ log2(n)), we see that even at the low depth D = poly log log(n), error mitigation already requires superpolynomially-many samples.",
+      "start": 709,
+      "end": 880,
+      "chunk_sha256": "5a382ba64ebd01de5cb8310314ec4fef5a2a8aea5e3b52ce6a362ef141c4304a",
+      "relation": "constrains",
+      "subject": "samples",
+      "object": "error mitigation",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2208-09178-p0002",
+      "quote": "We derive lower bounds for the number of samples fundamentally required for general quantum error mitigations to realize the target performance.",
+      "start": 3847,
+      "end": 3991,
+      "chunk_sha256": "f6da52aed0ba56986b72f4b040adeb7b0e0ef8bb4c40419d8d2f10788552bee5"
+     },
+     {
+      "document_id": "arxiv-2208-09178-p0003",
+      "quote": "[39] introduced a general framework of quantum error mitigation and established lower bounds for the maximum estimator spread, i.e., the range of the outcomes of the estimator, imposed on all error mitigation in the class, which provides a sufficient number of samples to ensure the target accuracy.",
+      "start": 80,
+      "end": 379,
+      "chunk_sha256": "db78811b0f6db3c4e3af83ae48b6508f3c6fdf97c772b33ced814a73b46f8cea"
+     },
+     {
+      "document_id": "arxiv-2208-09178-p0027",
+      "quote": "This also reflects the observation that error mitigation accommodating a larger set O of target observables would require a larger number of samples.",
+      "start": 770,
+      "end": 919,
+      "chunk_sha256": "5ff1c996dce586c1d6f72edcbf8ea67512c5888104cc48931ad38a2d3afe8b8b"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   }
+  ],
+  "expected_relation": "co_constrain",
+  "direction_check": {
+   "requested": "co_constrain",
+   "status": "unspecified",
+   "observed": []
+  },
+  "verdict": "all_links_supported",
+  "predictions": [
+   {
+    "document_id": "arxiv-2208-09178-p0027",
+    "quote": "This also reflects the observation that error mitigation accommodating a larger set O of target observables would require a larger number of samples.",
+    "start": 770,
+    "end": 919,
+    "chunk_sha256": "5ff1c996dce586c1d6f72edcbf8ea67512c5888104cc48931ad38a2d3afe8b8b",
+    "qualification": "source_prediction"
+   },
+   {
+    "document_id": "arxiv-2210-11505-p0021",
+    "quote": "While it is not hard to see that for local observables, strong error mitigation implies weak error mitigation, we also ask the converse question: could there be an algorithm that takes in the output of weak error mitigation (expectation values) and “bootstraps” them into the output of strong error mitigation (samples)?",
+    "start": 608,
+    "end": 928,
+    "chunk_sha256": "78bd073851d2c78d4a79367bddb8e937e810cb5286b1f350b823e30ea1ac6551",
+    "qualification": "source_prediction"
+   }
+  ],
+  "setups": [
+   {
+    "document_id": "arxiv-2210-11505-p0003",
+    "quote": "By relating error mitigation to a statistical inference problem, we show that even at shallow circuit depths comparable to the current experiments, a superpolynomial number of samples is needed in the worst case to estimate the expectation values of noiseless observables, the principal task of error mitigation.",
+    "start": 534,
+    "end": 846,
+    "chunk_sha256": "bc4bf15652cc22c6ce7a63d4556c849658a096dcc50ffdca5a925157cf5a7417",
+    "measures": [
+     "samples",
+     "error mitigation"
+    ]
+   },
+   {
+    "document_id": "arxiv-2208-09385-p0017",
+    "quote": "We compare these results in Fig. 2 (a) with other error mitigation methods that also allow unbiased estimation.",
+    "start": 638,
+    "end": 749,
+    "chunk_sha256": "89be80af0c2c5a28d5e6b30290c2de43c995aa63955e2067197943b67e9002f1",
+    "measures": [
+     "error mitigation"
+    ]
+   },
+   {
+    "document_id": "arxiv-2308-00320-p0002",
+    "quote": "We validate the effectiveness of our approach through experiments conducted on IBM quantum devices with 7 and 13 qubits, demonstrating excellent error mitigation performance and highlighting the efficiency of our method.",
+    "start": 956,
+    "end": 1176,
+    "chunk_sha256": "4aba45ee86a423211f112186b3da3f2d4501f4df8b08237a4cae233de7672a45",
+    "measures": [
+     "error mitigation"
+    ]
+   },
+   {
+    "document_id": "arxiv-2311-05680-p0027",
+    "quote": "In this section, we benchmark different levels of error mitigation by conducting both noisy and noiseless classical simulations with Nshots = 10000 shots as outlined in Tab.",
+    "start": 0,
+    "end": 173,
+    "chunk_sha256": "c2c2ab0e1b7222107adaea3b582a15398ca83d1cbba3ece93f8ec37fd06db023",
+    "measures": [
+     "error mitigation"
+    ]
+   },
+   {
+    "document_id": "arxiv-2311-18090-p0050",
+    "quote": "10), the synthetic process consists of the following main steps: A) Generate barren areas covering at least the nominal percentage of barren plateaus in the domain and sample all grid points in them.",
+    "start": 249,
+    "end": 448,
+    "chunk_sha256": "d292b9db393de9453fcafb9cad73e1b43e3dbadbf371ce6c05a860749d4461c4",
+    "measures": [
+     "samples"
+    ]
+   },
+   {
+    "document_id": "arxiv-2511-21236-p0032",
+    "quote": "We performed error mitigation overhead screening before carrying out most of the quantum experiments in this work.",
+    "start": 0,
+    "end": 114,
+    "chunk_sha256": "ce199c7d0d870b30ba578456c5fdb5399882f40c56404c8ff6bdb6525241e989",
+    "measures": [
+     "error mitigation"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "size of devices",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2210-11505-p0008",
+     "quote": "While quantum error mitigation has seen practical success on small noisy quantum devices [9], our results put hard limits on how much we can expect error mitigation to scale with the size of such devices.",
+     "start": 0,
+     "end": 204,
+     "chunk_sha256": "c59398419acb0b91a30d55449232a9f754fb415763067450dd2f34e4feea976b",
+     "relation": "increases",
+     "subject": "size of devices",
+     "object": "error mitigation",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "conditional",
+   "bridges": [],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "untested",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "5f4b1a25184cbfef",
+    "kind": "variable",
+    "term": "low weight Pauli operators",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for low weight Pauli operators."
+   },
+   {
+    "id": "ea8a24729b57cde7",
+    "kind": "variable",
+    "term": "low weight Pauli operators",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for low weight Pauli operators."
+   },
+   {
+    "id": "00356c152658bb5a",
+    "kind": "variable",
+    "term": "samples",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for samples."
+   },
+   {
+    "id": "935d44a3fa2923cf",
+    "kind": "variable",
+    "term": "samples",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for samples."
+   },
+   {
+    "id": "4e22c13589132918",
+    "kind": "variable",
+    "term": "error mitigation",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for error mitigation."
+   },
+   {
+    "id": "ed59551addf359b7",
+    "kind": "variable",
+    "term": "error mitigation",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for error mitigation."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "2x2 factorial",
+   "manipulate": [
+    "low weight Pauli operators",
+    "samples"
+   ],
+   "measure": [
+    "error mitigation"
+   ],
+   "mediator": null,
+   "controls": [
+    "size of devices"
+   ],
+   "steps": [
+    "Run all four combinations of low and high low weight Pauli operators and samples; measure error mitigation.",
+    "Review candidate controls (size of devices) for timing, feasibility and causal role before adjustment.",
+    "Compare the joint effect with the sum of the separate effects."
+   ],
+   "fails_if": "A precisely measured absence of an interaction challenges compounding in error mitigation; it does not refute individual effects of low weight Pauli operators or samples. Predefine a meaningful effect threshold.",
+   "variables": [
+    {
+     "term": "low weight Pauli operators",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "samples",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2109-04457-p0043",
+       "quote": "P is then constrained to represent (1) local measurement procedures M„k” that can coherently interact distorted states within the kth cluster (i.e., fE„k” q „ψ”gQ q=1) to produce some classical interim outputsi„k” and (2) classical post-processing function eA that transform the interim outputs fi„k”gK k=1 into a sample",
+       "start": 370,
+       "end": 690,
+       "chunk_sha256": "4dab3e4b1ea8f205c387654790b4a3eb4ff53a48c26fea5e7badb4ba298e4900",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2206-08695-p0027",
+       "quote": "[40] See Supplemental Material at [URL will be inserted by publisher] for the details on the sample fabrication, measurement setup, qubit spectroscopy, rabi oscillations, mixing results for 5 and 6 driving pulses, analytical expressions for mixing maps, numerical simulations of mixing.",
+       "start": 0,
+       "end": 286,
+       "chunk_sha256": "51d575aef49c8580e6567312dc014e4a089770700448fc69b6701e211242727c",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2208-05378-p0008",
+       "quote": "Our expressibility measure evaluate minus MMD distance between Funiform and the ansatz’s output samples.",
+       "start": 256,
+       "end": 360,
+       "chunk_sha256": "1df3a5eb0bda4357aa49dfc07cfda622981383b0a4d8a8118f5b01d327a7ecd3",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "error mitigation",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2006-14044-p0002",
+       "quote": "Error mitigation is achieved by applying the inverse noise matrix to a probability vector that represents the outcomes of a noisy measurement.",
+       "start": 566,
+       "end": 708,
+       "chunk_sha256": "ab94fc74acecb70a069e893278ca4994e1829e8a0003594ab9ec5fc6425c2dec",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2006-14044-p0002",
+       "quote": "The error mitigation overhead, including the the number of measurements and the cost of the classical post-processing, is exponential in epsilon n, where epsilon is the maximum error rate and n is the number of qubits.",
+       "start": 709,
+       "end": 927,
+       "chunk_sha256": "ab94fc74acecb70a069e893278ca4994e1829e8a0003594ab9ec5fc6425c2dec",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2006-14044-p0002",
+       "quote": "We report experimental demonstration of our error mitigation methods on IBM Quantum devices using stabilizer measurements for graph states with nle 12 qubits and entangled 20-qubit states generated by low-depth random Clifford circuits.",
+       "start": 928,
+       "end": 1164,
+       "chunk_sha256": "ab94fc74acecb70a069e893278ca4994e1829e8a0003594ab9ec5fc6425c2dec",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "low weight Pauli operators",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "low weight Pauli operators",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "samples",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "samples",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "error mitigation",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "error mitigation",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "interaction_test": {
+    "contrast": "Y11 - Y10 - Y01 + Y00",
+    "assumptions": "Additive outcome scale, matched conditions and defined interventions.",
+    "interpretation": "A zero interaction contrast challenges compounding, not the individual effects."
+   }
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 7.867
+  },
+  "snapshot": {
+   "as_of": 1795596116,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: low weight Pauli operators and samples may jointly constrain error mitigation, so relieving one may shift the bottleneck to the other.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unspecified.\nComposition assessment: conditional. Component support does not establish a joint effect or causal validity.\n\nLink low weight Pauli operators -> error mitigation: supported (1 supporting, 0 contrary).\n  + [arxiv-2607-25746-p0061] Intuitively, this is because observables whose ideal expectation values are recoverable via error mitigation must be dominated by low-weight Pauli operators, which are simultaneously easy to simulate classically.\n\nLink samples -> error mitigation: supported (1 supporting, 0 contrary).\n  + [arxiv-2210-11505-p0016] By picking, e.g., the parameter s = Ω(n/ log2(n)), we see that even at the low depth D = poly log log(n), error mitigation already requires superpolynomially-many samples.\n\nSource predictions naming two or more of its terms:\n  [arxiv-2208-09178-p0027] This also reflects the observation that error mitigation accommodating a larger set O of target observables would require a larger number of samples.\n  [arxiv-2210-11505-p0021] While it is not hard to see that for local observables, strong error mitigation implies weak error mitigation, we also ask the converse question: could there be an algorithm that takes in the output of weak error mitigation (expectation values) and “bootstraps” them into the output of strong error mitigation (samples)?\n\nExisting setups that measure one of its terms:\n  [arxiv-2210-11505-p0003] By relating error mitigation to a statistical inference problem, we show that even at shallow circuit depths comparable to the current experiments, a superpolynomial number of samples is needed in the worst case to estimate the expectation values of noiseless observables, the principal task of error mitigation.\n  [arxiv-2208-09385-p0017] We compare these results in Fig. 2 (a) with other error mitigation methods that also allow unbiased estimation.\n  [arxiv-2308-00320-p0002] We validate the effectiveness of our approach through experiments conducted on IBM quantum devices with 7 and 13 qubits, demonstrating excellent error mitigation performance and highlighting the efficiency of our method.\n  [arxiv-2311-05680-p0027] In this section, we benchmark different levels of error mitigation by conducting both noisy and noiseless classical simulations with Nshots = 10000 shots as outlined in Tab.\n\nCandidate controls (review before adjustment):\n  size of devices: outcome_predictor [arxiv-2210-11505-p0008]\n\nTest plan (2x2 factorial):\n  1. Run all four combinations of low and high low weight Pauli operators and samples; measure error mitigation.\n  2. Review candidate controls (size of devices) for timing, feasibility and causal role before adjustment.\n  3. Compare the joint effect with the sum of the separate effects.\n  Fails if: A precisely measured absence of an interaction challenges compounding in error mitigation; it does not refute individual effects of low weight Pauli operators or samples. Predefine a meaningful effect threshold.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for low weight Pauli operators.\n  Required: feasible intervention or justified observational design for low weight Pauli operators.\n  Required: intervention levels for samples.\n  Required: feasible intervention or justified observational design for samples.\n  Required: measurement procedure for error mitigation.\n  Required: unit or explicit categorical scale for error mitigation.\n  Required: replicates.\n  Required: acceptance_criterion.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

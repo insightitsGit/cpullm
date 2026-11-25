@@ -1,0 +1,835 @@
+{
+ "prompt": "Frontier: dielectric loss.",
+ "options": {},
+ "seconds": 11.44,
+ "answer_status": "shortage",
+ "frontier": {
+  "schema": "frontier-v1",
+  "triggered": true,
+  "topic": "dielectric loss",
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "limits": {
+   "max_rounds": 1000,
+   "max_candidates": 200000,
+   "max_edges": 50000,
+   "max_bytes": 67108864,
+   "max_seconds": 60.0,
+   "batch_size": 256,
+   "max_path_edges": 2,
+   "max_results": 50,
+   "min_results": 10
+  },
+  "topic_terms": [
+   "dielectric",
+   "loss"
+  ],
+  "focus_terms": [
+   "dielectric",
+   "loss"
+  ],
+  "chunk_count": 3369,
+  "candidate_search_complete": true,
+  "deepened": 5,
+  "leading_check": {
+   "requested": 5,
+   "checked": 5,
+   "complete": true,
+   "stop_reason": null
+  },
+  "parser": "en_core_web_lg",
+  "bridge_check": "encoder",
+  "encoded_terms": 12,
+  "hub_deferred": 2,
+  "status": "shortage",
+  "hypotheses": [
+   {
+    "id": "629787822f2d",
+    "text": "Dae - Young Yun and reduced dielectric loss may jointly drive improvement, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "Dae - Young Yun",
+     "reduced dielectric loss",
+     "improvement"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2608-27682-p0042",
+     "arxiv-2103-07711-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2608-27682-p0042",
+      "quote": "Dae-Young Yun and Eliya Nachmani provided feedback and contributed to the revision and improvement of the manuscript.",
+      "start": 119,
+      "end": 236,
+      "chunk_sha256": "212e413d755a614677ae11b160f34db1d396cdfb12ac080bc85fc4baf4535f04",
+      "relation": "causes",
+      "subject": "Dae - Young Yun",
+      "object": "improvement",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2103-07711-p0002",
+      "quote": "These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).",
+      "start": 1137,
+      "end": 1329,
+      "chunk_sha256": "ce9e3a1d5da8c446e7f40df0c55aa737a677483f0e292301b9b65787a72c5e63",
+      "relation": "supports",
+      "subject": "reduced dielectric loss",
+      "object": "improvements",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.843,
+     "novelty": 0.668
+    },
+    "falsification_test": "Vary Dae - Young Yun and reduced dielectric loss separately and together. The hypothesis fails if the joint change in improvement equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "improvement",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "jointly_drive",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [],
+      "qualifications": [
+       {
+        "link": 0,
+        "citation": {
+         "document_id": "arxiv-2608-27682-p0042",
+         "quote": "Dae-Young Yun and Eliya Nachmani provided feedback and contributed to the revision and improvement of the manuscript.",
+         "start": 119,
+         "end": 236,
+         "chunk_sha256": "212e413d755a614677ae11b160f34db1d396cdfb12ac080bc85fc4baf4535f04",
+         "relation": "causes",
+         "subject": "Dae - Young Yun",
+         "object": "improvement",
+         "hedged": false
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       }
+      ],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "untested",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "Dae - Young Yun",
+       "target": "improvement",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "reduced dielectric loss",
+       "target": "improvement",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "bf12246ea385",
+    "text": "Eliya Nachmani and reduced dielectric loss may jointly drive improvement, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "Eliya Nachmani",
+     "reduced dielectric loss",
+     "improvement"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2608-27682-p0042",
+     "arxiv-2103-07711-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2608-27682-p0042",
+      "quote": "Dae-Young Yun and Eliya Nachmani provided feedback and contributed to the revision and improvement of the manuscript.",
+      "start": 119,
+      "end": 236,
+      "chunk_sha256": "212e413d755a614677ae11b160f34db1d396cdfb12ac080bc85fc4baf4535f04",
+      "relation": "causes",
+      "subject": "Eliya Nachmani",
+      "object": "improvement",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2103-07711-p0002",
+      "quote": "These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).",
+      "start": 1137,
+      "end": 1329,
+      "chunk_sha256": "ce9e3a1d5da8c446e7f40df0c55aa737a677483f0e292301b9b65787a72c5e63",
+      "relation": "supports",
+      "subject": "reduced dielectric loss",
+      "object": "improvements",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.833,
+     "novelty": 0.65
+    },
+    "falsification_test": "Vary Eliya Nachmani and reduced dielectric loss separately and together. The hypothesis fails if the joint change in improvement equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "improvement",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "jointly_drive",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [],
+      "qualifications": [
+       {
+        "link": 0,
+        "citation": {
+         "document_id": "arxiv-2608-27682-p0042",
+         "quote": "Dae-Young Yun and Eliya Nachmani provided feedback and contributed to the revision and improvement of the manuscript.",
+         "start": 119,
+         "end": 236,
+         "chunk_sha256": "212e413d755a614677ae11b160f34db1d396cdfb12ac080bc85fc4baf4535f04",
+         "relation": "causes",
+         "subject": "Eliya Nachmani",
+         "object": "improvement",
+         "hedged": false
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       }
+      ],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "untested",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "Eliya Nachmani",
+       "target": "improvement",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "reduced dielectric loss",
+       "target": "improvement",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "8afe41ffc13c",
+    "text": "total admittance and improvements may move together because both depend on Ohmic loss.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "total admittance",
+     "improvements",
+     "Ohmic loss"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-21177-p0041",
+     "arxiv-2103-07711-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-21177-p0041",
+      "quote": "In this case, the total admittance is dominated by Ohmic loss in the lead.",
+      "start": 227,
+      "end": 301,
+      "chunk_sha256": "a8718b6ad3f4940aea2eec57679bd62fbecf3d703743a5bf0a634bd09dcaff69",
+      "relation": "constrains",
+      "subject": "Ohmic loss",
+      "object": "total admittance",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2103-07711-p0002",
+      "quote": "These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).",
+      "start": 1137,
+      "end": 1329,
+      "chunk_sha256": "ce9e3a1d5da8c446e7f40df0c55aa737a677483f0e292301b9b65787a72c5e63",
+      "relation": "supports",
+      "subject": "reduced dielectric loss",
+      "object": "improvements",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.754,
+     "novelty": 0.628
+    },
+    "falsification_test": "Track total admittance and improvements across periods where Ohmic loss changes and where it does not. The hypothesis fails if they co-vary just as strongly when Ohmic loss is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "ohmic loss",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "common_driver",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 1,
+        "requested": "Ohmic loss",
+        "source_term": "reduced dielectric loss",
+        "citation": {
+         "document_id": "arxiv-2103-07711-p0002",
+         "quote": "These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).",
+         "start": 1137,
+         "end": 1329,
+         "chunk_sha256": "ce9e3a1d5da8c446e7f40df0c55aa737a677483f0e292301b9b65787a72c5e63",
+         "relation": "supports",
+         "subject": "reduced dielectric loss",
+         "object": "improvements",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "Ohmic loss",
+       "target": "total admittance",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "Ohmic loss",
+       "target": "improvements",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "b0b222ee1ff8",
+    "text": "mechanical absorption may constrain total admittance through loss (read as Ohmic loss).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "mechanical absorption",
+     "total admittance"
+    ],
+    "via": [
+     "loss (read as Ohmic loss)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2602-22117-p0017",
+     "arxiv-2407-21177-p0041"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2602-22117-p0017",
+      "quote": "With a smoother piezo-bulk interface, surface scattering loss in this sample is substantially lower, suggesting that its loss is dominated by mechanical absorption in the AlN, with a nearly flat frequency dependence.",
+      "start": 206,
+      "end": 422,
+      "chunk_sha256": "7fffe47f238664919e89cd7ea75dce2a6bd7370dd4975843cc2bda7ef70ac729",
+      "relation": "constrains",
+      "subject": "mechanical absorption",
+      "object": "loss",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-21177-p0041",
+      "quote": "In this case, the total admittance is dominated by Ohmic loss in the lead.",
+      "start": 227,
+      "end": 301,
+      "chunk_sha256": "a8718b6ad3f4940aea2eec57679bd62fbecf3d703743a5bf0a634bd09dcaff69",
+      "relation": "constrains",
+      "subject": "Ohmic loss",
+      "object": "total admittance",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.668,
+     "novelty": 0.628
+    },
+    "falsification_test": "Compare settings where mechanical absorption differs while other inputs are matched. The hypothesis fails if total admittance does not stay bounded with mechanical absorption, or if fixing loss (read as Ohmic loss) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "loss",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "constrains",
+      "status": "consistent",
+      "observed": [
+       "constrains"
+      ],
+      "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 1,
+        "requested": "loss",
+        "source_term": "Ohmic loss",
+        "citation": {
+         "document_id": "arxiv-2407-21177-p0041",
+         "quote": "In this case, the total admittance is dominated by Ohmic loss in the lead.",
+         "start": 227,
+         "end": 301,
+         "chunk_sha256": "a8718b6ad3f4940aea2eec57679bd62fbecf3d703743a5bf0a634bd09dcaff69",
+         "relation": "constrains",
+         "subject": "Ohmic loss",
+         "object": "total admittance",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "mechanical absorption",
+       "target": "loss",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "loss",
+       "target": "total admittance",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "13f6c09da437",
+    "text": "mechanical absorption may constrain resilience through loss (read as replacing single - spin ( Loss).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "mechanical absorption",
+     "resilience"
+    ],
+    "via": [
+     "loss (read as replacing single - spin ( Loss)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2602-22117-p0017",
+     "arxiv-2601-10461-p0046"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2602-22117-p0017",
+      "quote": "With a smoother piezo-bulk interface, surface scattering loss in this sample is substantially lower, suggesting that its loss is dominated by mechanical absorption in the AlN, with a nearly flat frequency dependence.",
+      "start": 206,
+      "end": 422,
+      "chunk_sha256": "7fffe47f238664919e89cd7ea75dce2a6bd7370dd4975843cc2bda7ef70ac729",
+      "relation": "constrains",
+      "subject": "mechanical absorption",
+      "object": "loss",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2601-10461-p0046",
+      "quote": "Building upon the growing body of work leveraging electron shuttling for scalable architectures, we have argued that replacing single-spin (Loss–DiVincenzo) data qubits with dual-spin encodings can substantially improve resilience to shuttling-induced noise, thanks to their intrinsic protection within their decoherence-free subspace.",
+      "start": 243,
+      "end": 578,
+      "chunk_sha256": "769c5a2bb711176ab43cc3cafcd85f52e356450b567ef25ad3f6192695e29e26",
+      "relation": "increases",
+      "subject": "replacing single - spin ( Loss",
+      "object": "resilience",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.582,
+     "novelty": 0.7
+    },
+    "falsification_test": "Compare settings where mechanical absorption differs while other inputs are matched. The hypothesis fails if resilience does not stay bounded with mechanical absorption, or if fixing loss (read as replacing single - spin ( Loss) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "loss",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "constrains",
+      "status": "consistent",
+      "observed": [
+       "constrains"
+      ],
+      "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 1,
+        "requested": "loss",
+        "source_term": "replacing single - spin ( Loss",
+        "citation": {
+         "document_id": "arxiv-2601-10461-p0046",
+         "quote": "Building upon the growing body of work leveraging electron shuttling for scalable architectures, we have argued that replacing single-spin (Loss–DiVincenzo) data qubits with dual-spin encodings can substantially improve resilience to shuttling-induced noise, thanks to their intrinsic protection within their decoherence-free subspace.",
+         "start": 243,
+         "end": 578,
+         "chunk_sha256": "769c5a2bb711176ab43cc3cafcd85f52e356450b567ef25ad3f6192695e29e26",
+         "relation": "increases",
+         "subject": "replacing single - spin ( Loss",
+         "object": "resilience",
+         "hedged": true
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [
+       {
+        "link": 1,
+        "citation": {
+         "document_id": "arxiv-2601-10461-p0046",
+         "quote": "Building upon the growing body of work leveraging electron shuttling for scalable architectures, we have argued that replacing single-spin (Loss–DiVincenzo) data qubits with dual-spin encodings can substantially improve resilience to shuttling-induced noise, thanks to their intrinsic protection within their decoherence-free subspace.",
+         "start": 243,
+         "end": 578,
+         "chunk_sha256": "769c5a2bb711176ab43cc3cafcd85f52e356450b567ef25ad3f6192695e29e26",
+         "relation": "increases",
+         "subject": "replacing single - spin ( Loss",
+         "object": "resilience",
+         "hedged": true
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       }
+      ],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "mechanical absorption",
+       "target": "loss",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "loss",
+       "target": "resilience",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "781c799cc530",
+    "text": "total admittance and resilience may move together because both depend on Ohmic loss.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "total admittance",
+     "resilience",
+     "Ohmic loss"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-21177-p0041",
+     "arxiv-2601-10461-p0046"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-21177-p0041",
+      "quote": "In this case, the total admittance is dominated by Ohmic loss in the lead.",
+      "start": 227,
+      "end": 301,
+      "chunk_sha256": "a8718b6ad3f4940aea2eec57679bd62fbecf3d703743a5bf0a634bd09dcaff69",
+      "relation": "constrains",
+      "subject": "Ohmic loss",
+      "object": "total admittance",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2601-10461-p0046",
+      "quote": "Building upon the growing body of work leveraging electron shuttling for scalable architectures, we have argued that replacing single-spin (Loss–DiVincenzo) data qubits with dual-spin encodings can substantially improve resilience to shuttling-induced noise, thanks to their intrinsic protection within their decoherence-free subspace.",
+      "start": 243,
+      "end": 578,
+      "chunk_sha256": "769c5a2bb711176ab43cc3cafcd85f52e356450b567ef25ad3f6192695e29e26",
+      "relation": "increases",
+      "subject": "replacing single - spin ( Loss",
+      "object": "resilience",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.555,
+     "novelty": 0.628
+    },
+    "falsification_test": "Track total admittance and resilience across periods where Ohmic loss changes and where it does not. The hypothesis fails if they co-vary just as strongly when Ohmic loss is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "ohmic loss"
+   },
+   {
+    "id": "e4ee8aef775f",
+    "text": "mechanical absorption may affect improvements through loss (read as reduced dielectric loss).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "mechanical absorption",
+     "improvements"
+    ],
+    "via": [
+     "loss (read as reduced dielectric loss)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2602-22117-p0017",
+     "arxiv-2103-07711-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2602-22117-p0017",
+      "quote": "With a smoother piezo-bulk interface, surface scattering loss in this sample is substantially lower, suggesting that its loss is dominated by mechanical absorption in the AlN, with a nearly flat frequency dependence.",
+      "start": 206,
+      "end": 422,
+      "chunk_sha256": "7fffe47f238664919e89cd7ea75dce2a6bd7370dd4975843cc2bda7ef70ac729",
+      "relation": "constrains",
+      "subject": "mechanical absorption",
+      "object": "loss",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2103-07711-p0002",
+      "quote": "These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).",
+      "start": 1137,
+      "end": 1329,
+      "chunk_sha256": "ce9e3a1d5da8c446e7f40df0c55aa737a677483f0e292301b9b65787a72c5e63",
+      "relation": "supports",
+      "subject": "reduced dielectric loss",
+      "object": "improvements",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.671,
+     "novelty": 0.578
+    },
+    "falsification_test": "Compare settings where mechanical absorption differs while other inputs are matched. The hypothesis fails if improvements does not change with mechanical absorption, or if fixing loss (read as reduced dielectric loss) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "loss"
+   },
+   {
+    "id": "fa0c814c60b7",
+    "text": "improvements and resilience may move together because both depend on reduced dielectric loss.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "improvements",
+     "resilience",
+     "reduced dielectric loss"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2103-07711-p0002",
+     "arxiv-2601-10461-p0046"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2103-07711-p0002",
+      "quote": "These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).",
+      "start": 1137,
+      "end": 1329,
+      "chunk_sha256": "ce9e3a1d5da8c446e7f40df0c55aa737a677483f0e292301b9b65787a72c5e63",
+      "relation": "supports",
+      "subject": "reduced dielectric loss",
+      "object": "improvements",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2601-10461-p0046",
+      "quote": "Building upon the growing body of work leveraging electron shuttling for scalable architectures, we have argued that replacing single-spin (Loss–DiVincenzo) data qubits with dual-spin encodings can substantially improve resilience to shuttling-induced noise, thanks to their intrinsic protection within their decoherence-free subspace.",
+      "start": 243,
+      "end": 578,
+      "chunk_sha256": "769c5a2bb711176ab43cc3cafcd85f52e356450b567ef25ad3f6192695e29e26",
+      "relation": "increases",
+      "subject": "replacing single - spin ( Loss",
+      "object": "resilience",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.761,
+     "novelty": 0.578
+    },
+    "falsification_test": "Track improvements and resilience across periods where reduced dielectric loss changes and where it does not. The hypothesis fails if they co-vary just as strongly when reduced dielectric loss is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "reduced dielectric loss"
+   }
+  ],
+  "survivors": 8,
+  "candidates_generated": 37,
+  "candidates_passed": {
+   "abductive": 35,
+   "deductive": 35,
+   "pre_thinker": 8
+  },
+  "candidates_rejected": {
+   "abductive:unrelated_bridge": 2,
+   "pre_thinker:circular": 2,
+   "pre_thinker:malformed": 21,
+   "pre_thinker:single_source": 4
+  },
+  "relation_edges": 996,
+  "scoped_edges": 37,
+  "budget_used": {
+   "rounds": 1,
+   "candidates": 37,
+   "edges": 1042,
+   "bytes": 494360,
+   "seconds": 11.389
+  },
+  "incomplete": false,
+  "stop_reason": null,
+  "shortage": {
+   "returned": 8,
+   "target_min": 10,
+   "reason": "Fewer candidates survived the filters than the target; the list is not padded."
+  },
+  "snapshot": {
+   "as_of": 1795595999,
+   "chunk_count": 3369
+  }
+ },
+ "reply": "Frontier hypotheses for dielectric loss. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 37. Passed abductive check: 35; deductive check: 35; pre-thinker validation: 8.\n\n1. Dae - Young Yun and reduced dielectric loss may jointly drive improvement, and their effects may compound.\n[arxiv-2608-27682-p0042] Dae-Young Yun and Eliya Nachmani provided feedback and contributed to the revision and improvement of the manuscript.\n[arxiv-2103-07711-p0002] These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).\nFalsification test: Vary Dae - Young Yun and reduced dielectric loss separately and together. The hypothesis fails if the joint change in improvement equals the sum of the separate changes.\nDeepen check: all links supported (Dae - Young Yun -> improvement: supported, reduced dielectric loss -> improvement: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.80, deductive relevance 0.84, novelty 0.67.\n\n2. Eliya Nachmani and reduced dielectric loss may jointly drive improvement, and their effects may compound.\n[arxiv-2608-27682-p0042] Dae-Young Yun and Eliya Nachmani provided feedback and contributed to the revision and improvement of the manuscript.\n[arxiv-2103-07711-p0002] These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).\nFalsification test: Vary Eliya Nachmani and reduced dielectric loss separately and together. The hypothesis fails if the joint change in improvement equals the sum of the separate changes.\nDeepen check: all links supported (Eliya Nachmani -> improvement: supported, reduced dielectric loss -> improvement: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.80, deductive relevance 0.83, novelty 0.65.\n\n3. total admittance and improvements may move together because both depend on Ohmic loss.\n[arxiv-2407-21177-p0041] In this case, the total admittance is dominated by Ohmic loss in the lead.\n[arxiv-2103-07711-p0002] These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).\nFalsification test: Track total admittance and improvements across periods where Ohmic loss changes and where it does not. The hypothesis fails if they co-vary just as strongly when Ohmic loss is held fixed.\nDeepen check: all links supported (Ohmic loss -> total admittance: supported, Ohmic loss -> improvements: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.80, deductive relevance 0.75, novelty 0.63.\n\n4. mechanical absorption may constrain total admittance through loss (read as Ohmic loss).\n[arxiv-2602-22117-p0017] With a smoother piezo-bulk interface, surface scattering loss in this sample is substantially lower, suggesting that its loss is dominated by mechanical absorption in the AlN, with a nearly flat frequency dependence.\n[arxiv-2407-21177-p0041] In this case, the total admittance is dominated by Ohmic loss in the lead.\nFalsification test: Compare settings where mechanical absorption differs while other inputs are matched. The hypothesis fails if total admittance does not stay bounded with mechanical absorption, or if fixing loss (read as Ohmic loss) removes no part of the effect.\nDeepen check: all links supported (mechanical absorption -> loss: supported, loss -> total admittance: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.63.\n\n5. mechanical absorption may constrain resilience through loss (read as replacing single - spin ( Loss).\n[arxiv-2602-22117-p0017] With a smoother piezo-bulk interface, surface scattering loss in this sample is substantially lower, suggesting that its loss is dominated by mechanical absorption in the AlN, with a nearly flat frequency dependence.\n[arxiv-2601-10461-p0046] Building upon the growing body of work leveraging electron shuttling for scalable architectures, we have argued that replacing single-spin (Loss–DiVincenzo) data qubits with dual-spin encodings can substantially improve resilience to shuttling-induced noise, thanks to their intrinsic protection within their decoherence-free subspace.\nFalsification test: Compare settings where mechanical absorption differs while other inputs are matched. The hypothesis fails if resilience does not stay bounded with mechanical absorption, or if fixing loss (read as replacing single - spin ( Loss) removes no part of the effect.\nDeepen check: all links supported (mechanical absorption -> loss: supported, loss -> resilience: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.55, deductive relevance 0.58, novelty 0.70.\n\n6. total admittance and resilience may move together because both depend on Ohmic loss.\n[arxiv-2407-21177-p0041] In this case, the total admittance is dominated by Ohmic loss in the lead.\n[arxiv-2601-10461-p0046] Building upon the growing body of work leveraging electron shuttling for scalable architectures, we have argued that replacing single-spin (Loss–DiVincenzo) data qubits with dual-spin encodings can substantially improve resilience to shuttling-induced noise, thanks to their intrinsic protection within their decoherence-free subspace.\nFalsification test: Track total admittance and resilience across periods where Ohmic loss changes and where it does not. The hypothesis fails if they co-vary just as strongly when Ohmic loss is held fixed.\nScores: source support 0.55, deductive relevance 0.56, novelty 0.63.\n\n7. mechanical absorption may affect improvements through loss (read as reduced dielectric loss).\n[arxiv-2602-22117-p0017] With a smoother piezo-bulk interface, surface scattering loss in this sample is substantially lower, suggesting that its loss is dominated by mechanical absorption in the AlN, with a nearly flat frequency dependence.\n[arxiv-2103-07711-p0002] These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).\nFalsification test: Compare settings where mechanical absorption differs while other inputs are matched. The hypothesis fails if improvements does not change with mechanical absorption, or if fixing loss (read as reduced dielectric loss) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.58.\n\n8. improvements and resilience may move together because both depend on reduced dielectric loss.\n[arxiv-2103-07711-p0002] These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).\n[arxiv-2601-10461-p0046] Building upon the growing body of work leveraging electron shuttling for scalable architectures, we have argued that replacing single-spin (Loss–DiVincenzo) data qubits with dual-spin encodings can substantially improve resilience to shuttling-induced noise, thanks to their intrinsic protection within their decoherence-free subspace.\nFalsification test: Track improvements and resilience across periods where reduced dielectric loss changes and where it does not. The hypothesis fails if they co-vary just as strongly when reduced dielectric loss is held fixed.\nScores: source support 0.55, deductive relevance 0.76, novelty 0.58.\n\nOnly 8 hypotheses survived the filters (target at least 10). The list is not padded.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

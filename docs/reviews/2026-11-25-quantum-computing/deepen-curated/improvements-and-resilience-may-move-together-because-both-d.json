@@ -1,0 +1,579 @@
+{
+ "topic": "dielectric loss",
+ "hypothesis": {
+  "id": "fa0c814c60b7",
+  "text": "improvements and resilience may move together because both depend on reduced dielectric loss.",
+  "pattern": "divergent",
+  "relation": "common_driver",
+  "anchors": [
+   "improvements",
+   "resilience",
+   "reduced dielectric loss"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2103-07711-p0002",
+   "arxiv-2601-10461-p0046"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2103-07711-p0002",
+    "quote": "These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).",
+    "start": 1137,
+    "end": 1329,
+    "chunk_sha256": "ce9e3a1d5da8c446e7f40df0c55aa737a677483f0e292301b9b65787a72c5e63",
+    "relation": "supports",
+    "subject": "reduced dielectric loss",
+    "object": "improvements",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2601-10461-p0046",
+    "quote": "Building upon the growing body of work leveraging electron shuttling for scalable architectures, we have argued that replacing single-spin (Loss–DiVincenzo) data qubits with dual-spin encodings can substantially improve resilience to shuttling-induced noise, thanks to their intrinsic protection within their decoherence-free subspace.",
+    "start": 243,
+    "end": 578,
+    "chunk_sha256": "769c5a2bb711176ab43cc3cafcd85f52e356450b567ef25ad3f6192695e29e26",
+    "relation": "increases",
+    "subject": "replacing single - spin ( Loss",
+    "object": "resilience",
+    "hedged": true,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.55,
+   "deductive_relevance": 0.761,
+   "novelty": 0.578
+  },
+  "falsification_test": "Track improvements and resilience across periods where reduced dielectric loss changes and where it does not. The hypothesis fails if they co-vary just as strongly when reduced dielectric loss is held fixed.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "reduced dielectric loss"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "divergent",
+  "terms": {
+   "a": "improvements",
+   "b": "resilience",
+   "c": "reduced dielectric loss"
+  },
+  "path_nodes": null,
+  "links": [
+   {
+    "source": "reduced dielectric loss",
+    "target": "improvements",
+    "expected_relation": "supports",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2103-07711-p0002",
+      "quote": "These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).",
+      "start": 1137,
+      "end": 1329,
+      "chunk_sha256": "ce9e3a1d5da8c446e7f40df0c55aa737a677483f0e292301b9b65787a72c5e63",
+      "relation": "supports",
+      "subject": "reduced dielectric loss",
+      "object": "improvements",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2103-07711-p0002",
+      "quote": "These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).",
+      "start": 1137,
+      "end": 1329,
+      "chunk_sha256": "ce9e3a1d5da8c446e7f40df0c55aa737a677483f0e292301b9b65787a72c5e63"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "supports"
+    ]
+   },
+   {
+    "source": "reduced dielectric loss",
+    "target": "resilience",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2601-10461-p0046",
+      "quote": "Building upon the growing body of work leveraging electron shuttling for scalable architectures, we have argued that replacing single-spin (Loss–DiVincenzo) data qubits with dual-spin encodings can substantially improve resilience to shuttling-induced noise, thanks to their intrinsic protection within their decoherence-free subspace.",
+      "start": 243,
+      "end": 578,
+      "chunk_sha256": "769c5a2bb711176ab43cc3cafcd85f52e356450b567ef25ad3f6192695e29e26",
+      "relation": "increases",
+      "subject": "replacing single - spin ( Loss",
+      "object": "resilience",
+      "hedged": true
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   }
+  ],
+  "expected_relation": "common_driver",
+  "direction_check": {
+   "requested": "common_driver",
+   "status": "unspecified",
+   "observed": []
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-2511-21236-p0044",
+    "quote": "In both the quantum experiments and simulations, we observe approximately the same improvements as for LiH, getting close to accuracies of 1.6 mEh in the simulations.",
+    "start": 1282,
+    "end": 1448,
+    "chunk_sha256": "ffe2f1df1991d7cd88263f70812f84bc6461d852d9c0bf3644eefdb413d5bf56",
+    "measures": [
+     "improvements"
+    ]
+   },
+   {
+    "document_id": "arxiv-2511-21236-p0051",
+    "quote": "In the quantum experiments, tiled M0 reduces the energy error by a factor of 2 from ∆Eraw = 912.3 mEh (sraw = 250.0 mEh) to ∆EtM0 = 415.8 mEh (stM0 = 249.2 mEh, RMSDtM0 = 462.9 mEh) while we obtain a better than one order of magnitude improvement on the simulator with both tiled M0 and M0 and better energies overall (e.g.",
+    "start": 317,
+    "end": 640,
+    "chunk_sha256": "99ed0ad426f43e7a85af319275cb6d0c97859ca3e2009a3cf8786cbd24f8dc30",
+    "measures": [
+     "improvements"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "Dae - Young Yun",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2608-27682-p0042",
+     "quote": "Dae-Young Yun and Eliya Nachmani provided feedback and contributed to the revision and improvement of the manuscript.",
+     "start": 119,
+     "end": 236,
+     "chunk_sha256": "212e413d755a614677ae11b160f34db1d396cdfb12ac080bc85fc4baf4535f04",
+     "relation": "causes",
+     "subject": "Dae - Young Yun",
+     "object": "improvement",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Eliya Nachmani",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2608-27682-p0042",
+     "quote": "Dae-Young Yun and Eliya Nachmani provided feedback and contributed to the revision and improvement of the manuscript.",
+     "start": 119,
+     "end": 236,
+     "chunk_sha256": "212e413d755a614677ae11b160f34db1d396cdfb12ac080bc85fc4baf4535f04",
+     "relation": "causes",
+     "subject": "Eliya Nachmani",
+     "object": "improvement",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "integrating a Union - Find decoder",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2601-10461-p0050",
+     "quote": "Further, integrating a Union-Find decoder may lead to even higher improvements.",
+     "start": 590,
+     "end": 669,
+     "chunk_sha256": "673a6cede7705c24b7248229d1da8af73146f0630e5e221e9121b3d3afd3fb12",
+     "relation": "causes",
+     "subject": "integrating a Union - Find decoder",
+     "object": "higher improvements",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Richardson extrapolation",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2607-25746-p0064",
+     "quote": "[41], once the amplified expectation values at large noise levels have reached an observabledependent floor, Richardson extrapolation may no longer recover the underlying physical signal and instead produce artefactual improvements.",
+     "start": 178,
+     "end": 410,
+     "chunk_sha256": "667f0ac5724369bcd5773d54c0f71a7c913ce716462e54c768c90f0634eb4441",
+     "relation": "causes",
+     "subject": "Richardson extrapolation",
+     "object": "artefactual improvements",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "sequential portion of computation",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2407-07394-p0003",
+     "quote": "We can rephrase this using Amdahl’s law [3], which states that the performance improvement gained by parallelization is limited by the sequential portion of the computation.",
+     "start": 2401,
+     "end": 2574,
+     "chunk_sha256": "ed0549cfb12a3302c36868790e23d8ed84db0186a765730700a09c23fc72f40f",
+     "relation": "constrains",
+     "subject": "sequential portion of computation",
+     "object": "performance improvement",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "small changes",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2212-11632-p0025",
+     "quote": "The primary takeaway from this work is that small changes to the MWPM decoding method can result in strong performance improvements when certain information about qubit noise is known.",
+     "start": 1121,
+     "end": 1305,
+     "chunk_sha256": "1a790e8a3496f4f031d2bc3b1d101f072af5c4ff8c590dcef4c625d48a85f730",
+     "relation": "causes",
+     "subject": "small changes",
+     "object": "strong performance improvements",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "reduced dielectric loss",
+     "source_term": "replacing single - spin ( Loss",
+     "citation": {
+      "document_id": "arxiv-2601-10461-p0046",
+      "quote": "Building upon the growing body of work leveraging electron shuttling for scalable architectures, we have argued that replacing single-spin (Loss–DiVincenzo) data qubits with dual-spin encodings can substantially improve resilience to shuttling-induced noise, thanks to their intrinsic protection within their decoherence-free subspace.",
+      "start": 243,
+      "end": 578,
+      "chunk_sha256": "769c5a2bb711176ab43cc3cafcd85f52e356450b567ef25ad3f6192695e29e26",
+      "relation": "increases",
+      "subject": "replacing single - spin ( Loss",
+      "object": "resilience",
+      "hedged": true
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [
+    {
+     "link": 1,
+     "citation": {
+      "document_id": "arxiv-2601-10461-p0046",
+      "quote": "Building upon the growing body of work leveraging electron shuttling for scalable architectures, we have argued that replacing single-spin (Loss–DiVincenzo) data qubits with dual-spin encodings can substantially improve resilience to shuttling-induced noise, thanks to their intrinsic protection within their decoherence-free subspace.",
+      "start": 243,
+      "end": 578,
+      "chunk_sha256": "769c5a2bb711176ab43cc3cafcd85f52e356450b567ef25ad3f6192695e29e26",
+      "relation": "increases",
+      "subject": "replacing single - spin ( Loss",
+      "object": "resilience",
+      "hedged": true
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    }
+   ],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "qualification_review",
+    "kind": "scope",
+    "instruction": "Restrict the proposal to the cited conditions and quantifiers."
+   },
+   {
+    "id": "b077391424c60f7d",
+    "kind": "variable",
+    "term": "reduced dielectric loss",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for reduced dielectric loss."
+   },
+   {
+    "id": "466788612c02cb69",
+    "kind": "variable",
+    "term": "reduced dielectric loss",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for reduced dielectric loss."
+   },
+   {
+    "id": "1c0756ac4dfa55e3",
+    "kind": "variable",
+    "term": "improvements",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for improvements."
+   },
+   {
+    "id": "88346a81ad995988",
+    "kind": "variable",
+    "term": "improvements",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for improvements."
+   },
+   {
+    "id": "6bef6a415ffa06d4",
+    "kind": "variable",
+    "term": "resilience",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for resilience."
+   },
+   {
+    "id": "ef3b805aaeb4db28",
+    "kind": "variable",
+    "term": "resilience",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for resilience."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "common cause",
+   "manipulate": [
+    "reduced dielectric loss"
+   ],
+   "measure": [
+    "improvements",
+    "resilience"
+   ],
+   "mediator": null,
+   "controls": [
+    "Dae - Young Yun",
+    "Eliya Nachmani",
+    "integrating a Union - Find decoder",
+    "Richardson extrapolation",
+    "sequential portion of computation",
+    "small changes"
+   ],
+   "steps": [
+    "Vary reduced dielectric loss and measure improvements and resilience.",
+    "Review candidate controls (Dae - Young Yun, Eliya Nachmani, integrating a Union - Find decoder, Richardson extrapolation, sequential portion of computation, small changes) for timing, feasibility and causal role before adjustment.",
+    "Check whether improvements and resilience still co-vary when reduced dielectric loss is held fixed."
+   ],
+   "fails_if": "improvements and resilience co-vary just as strongly when reduced dielectric loss is held fixed, or reduced dielectric loss moves neither.",
+   "variables": [
+    {
+     "term": "reduced dielectric loss",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "improvements",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2212-11632-p0003",
+       "quote": "We also obtain significant performance improvements when considering biased noise and independent non-identically distributed (i.ni.d.) error models derived from measurements performed on state-of-the-art quantum processors.",
+       "start": 585,
+       "end": 809,
+       "chunk_sha256": "750e2c819ff8cecf244f7f1289809de387ac7dc237d917d4d891c4b846ed246a",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2512-13908-p0006",
+       "quote": "We observe roughly a 40-fold improvement in state infidelity, relative to state-injection, corresponding to an upper bound of 1(1) × 10−4 error, after discarding instances with detected errors in logical state preparation and measurement.",
+       "start": 794,
+       "end": 1032,
+       "chunk_sha256": "52ed36050a14b64bc1f9ed8521c4116c1c5f64d1fd39630e684884f99ca9f05a",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "resilience",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2103-08049-p0017",
+       "quote": "Locally-testable quantum codes, introduced in [1], are of interest due to their resilience against faulty measurements which can lead to single-shot error correcting properties [9].",
+       "start": 0,
+       "end": 181,
+       "chunk_sha256": "e5b6f7173379de9d9d3cf5cf0358d9535912aba7e213e4b477366c6ca0641a3b",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "reduced dielectric loss",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "reduced dielectric loss",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "improvements",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "improvements",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "resilience",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "resilience",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established"
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 7.735
+  },
+  "snapshot": {
+   "as_of": 1795596092,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: improvements and resilience may move together because both depend on reduced dielectric loss.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unspecified.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: replacing single - spin ( Loss versus reduced dielectric loss.\n  Retain qualification [arxiv-2601-10461-p0046]: Building upon the growing body of work leveraging electron shuttling for scalable architectures, we have argued that replacing single-spin (Loss–DiVincenzo) data qubits with dual-spin encodings can substantially improve resilience to shuttling-induced noise, thanks to their intrinsic protection within their decoherence-free subspace.\n\nLink reduced dielectric loss -> improvements: supported (1 supporting, 0 contrary).\n  + [arxiv-2103-07711-p0002] These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).\n\nLink reduced dielectric loss -> resilience: supported (1 supporting, 0 contrary).\n  + [arxiv-2601-10461-p0046] Building upon the growing body of work leveraging electron shuttling for scalable architectures, we have argued that replacing single-spin (Loss–DiVincenzo) data qubits with dual-spin encodings can substantially improve resilience to shuttling-induced noise, thanks to their intrinsic protection within their decoherence-free subspace.\n\nExisting setups that measure one of its terms:\n  [arxiv-2511-21236-p0044] In both the quantum experiments and simulations, we observe approximately the same improvements as for LiH, getting close to accuracies of 1.6 mEh in the simulations.\n  [arxiv-2511-21236-p0051] In the quantum experiments, tiled M0 reduces the energy error by a factor of 2 from ∆Eraw = 912.3 mEh (sraw = 250.0 mEh) to ∆EtM0 = 415.8 mEh (stM0 = 249.2 mEh, RMSDtM0 = 462.9 mEh) while we obtain a better than one order of magnitude improvement on the simulator with both tiled M0 and M0 and better energies overall (e.g.\n\nCandidate controls (review before adjustment):\n  Dae - Young Yun: outcome_predictor [arxiv-2608-27682-p0042]\n  Eliya Nachmani: outcome_predictor [arxiv-2608-27682-p0042]\n  integrating a Union - Find decoder: outcome_predictor [arxiv-2601-10461-p0050]\n  Richardson extrapolation: outcome_predictor [arxiv-2607-25746-p0064]\n  sequential portion of computation: outcome_predictor [arxiv-2407-07394-p0003]\n  small changes: outcome_predictor [arxiv-2212-11632-p0025]\n\nTest plan (common cause):\n  1. Vary reduced dielectric loss and measure improvements and resilience.\n  2. Review candidate controls (Dae - Young Yun, Eliya Nachmani, integrating a Union - Find decoder, Richardson extrapolation, sequential portion of computation, small changes) for timing, feasibility and causal role before adjustment.\n  3. Check whether improvements and resilience still co-vary when reduced dielectric loss is held fixed.\n  Fails if: improvements and resilience co-vary just as strongly when reduced dielectric loss is held fixed, or reduced dielectric loss moves neither.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for reduced dielectric loss.\n  Required: feasible intervention or justified observational design for reduced dielectric loss.\n  Required: measurement procedure for improvements.\n  Required: unit or explicit categorical scale for improvements.\n  Required: measurement procedure for resilience.\n  Required: unit or explicit categorical scale for resilience.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

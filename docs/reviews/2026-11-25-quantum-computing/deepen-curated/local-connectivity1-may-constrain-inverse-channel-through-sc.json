@@ -1,0 +1,537 @@
+{
+ "topic": "error mitigation",
+ "hypothesis": {
+  "id": "90184d446eb2",
+  "text": "- local connectivity1 may constrain inverse channel through scheme (read as mitigation scheme).",
+  "pattern": "chain",
+  "relation": "constrains",
+  "anchors": [
+   "- local connectivity1",
+   "inverse channel"
+  ],
+  "via": [
+   "scheme (read as mitigation scheme)"
+  ],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-1811-00566-p0008",
+   "arxiv-2409-06636-p0029"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-1811-00566-p0008",
+    "quote": "The scheme we numerically analyze in this work does require code concatenation for distances d > 3 and thus requires non-local connectivity1.",
+    "start": 1587,
+    "end": 1728,
+    "chunk_sha256": "49b4fc43f820fcf89566217833ecbfe8398bb5eb55dff2e9e7bc96c766fddd76",
+    "relation": "constrains",
+    "subject": "- local connectivity1",
+    "object": "scheme",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2409-06636-p0029",
+    "quote": "It is an open problem to explore how to incorporate similar learning-based technique to find the optimal GQPD (or the positive part) and implement EMRE, and how well the mitigation scheme will perform when such a learning process is used to get rid of the pre-computation, and restrict the inverse channel to its positive part.",
+    "start": 1479,
+    "end": 1806,
+    "chunk_sha256": "2adfa7af888075852b6e55508c1c4bff79c33cafd67f3593f4225a9725e007c4",
+    "relation": "constrains",
+    "subject": "mitigation scheme",
+    "object": "inverse channel",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.688,
+   "novelty": 0.628
+  },
+  "falsification_test": "Compare settings where - local connectivity1 differs while other inputs are matched. The hypothesis fails if inverse channel does not stay bounded with - local connectivity1, or if fixing scheme (read as mitigation scheme) removes no part of the effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "scheme"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "- local connectivity1",
+   "b": "scheme",
+   "c": "inverse channel"
+  },
+  "path_nodes": [
+   "- local connectivity1",
+   "scheme",
+   "inverse channel"
+  ],
+  "links": [
+   {
+    "source": "- local connectivity1",
+    "target": "scheme",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-1811-00566-p0008",
+      "quote": "The scheme we numerically analyze in this work does require code concatenation for distances d > 3 and thus requires non-local connectivity1.",
+      "start": 1587,
+      "end": 1728,
+      "chunk_sha256": "49b4fc43f820fcf89566217833ecbfe8398bb5eb55dff2e9e7bc96c766fddd76",
+      "relation": "constrains",
+      "subject": "- local connectivity1",
+      "object": "scheme",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   },
+   {
+    "source": "scheme",
+    "target": "inverse channel",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2409-06636-p0029",
+      "quote": "It is an open problem to explore how to incorporate similar learning-based technique to find the optimal GQPD (or the positive part) and implement EMRE, and how well the mitigation scheme will perform when such a learning process is used to get rid of the pre-computation, and restrict the inverse channel to its positive part.",
+      "start": 1479,
+      "end": 1806,
+      "chunk_sha256": "2adfa7af888075852b6e55508c1c4bff79c33cafd67f3593f4225a9725e007c4",
+      "relation": "constrains",
+      "subject": "mitigation scheme",
+      "object": "inverse channel",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2409-06636-p0029",
+      "quote": "It is an open problem to explore how to incorporate similar learning-based technique to find the optimal GQPD (or the positive part) and implement EMRE, and how well the mitigation scheme will perform when such a learning process is used to get rid of the pre-computation, and restrict the inverse channel to its positive part.",
+      "start": 1479,
+      "end": 1806,
+      "chunk_sha256": "2adfa7af888075852b6e55508c1c4bff79c33cafd67f3593f4225a9725e007c4"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   }
+  ],
+  "expected_relation": "constrains",
+  "direction_check": {
+   "requested": "constrains",
+   "status": "consistent",
+   "observed": [
+    "constrains"
+   ],
+   "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-1811-00566-p0003",
+    "quote": "We compare the physical qubit and gate cost of our scheme to the magic state distillation protocol of Meier, Eastin, and Knill (MEK), which is efficient and uses a small stabilizer circuit.",
+    "start": 472,
+    "end": 661,
+    "chunk_sha256": "8092e9aa9cb68b48bcc481756a4755542dd78552925c15e985cb9b30f40cedf9",
+    "measures": [
+     "scheme"
+    ]
+   },
+   {
+    "document_id": "arxiv-1811-00566-p0008",
+    "quote": "In this model, we compare the overhead cost of our scheme to a magic state distillation scheme introduced by Meier, Eastin and Knill (MEK), due to its efficiency and small circuit size [26].",
+    "start": 329,
+    "end": 519,
+    "chunk_sha256": "49b4fc43f820fcf89566217833ecbfe8398bb5eb55dff2e9e7bc96c766fddd76",
+    "measures": [
+     "scheme"
+    ]
+   },
+   {
+    "document_id": "arxiv-1811-00566-p0008",
+    "quote": "Indeed the proposed scheme in this work could be accessible to near term ion trap based architectures which could be amongst the first experiments to demonstrate the fault-tolerant implementation of logical non-Clifford gates.",
+    "start": 1892,
+    "end": 2118,
+    "chunk_sha256": "49b4fc43f820fcf89566217833ecbfe8398bb5eb55dff2e9e7bc96c766fddd76",
+    "measures": [
+     "scheme"
+    ]
+   },
+   {
+    "document_id": "arxiv-1811-00566-p0009",
+    "quote": "Proofs of faulttolerance are given in Appendix A. In Section 4 we briefly review the MEK magic state distillation scheme and in Section 5 we compare the qubit and gate overhead costs of both schemes.",
+    "start": 297,
+    "end": 496,
+    "chunk_sha256": "b092236d8a96422a42f04a6b36540f2bc08dde2a9c6d0dc9452b8a0610ab96c3",
+    "measures": [
+     "scheme"
+    ]
+   },
+   {
+    "document_id": "arxiv-1811-00566-p0018",
+    "quote": "Error detection schemes have extra overhead arising 4Note that the T gates considered in this paper are Cliffordequivalent to the T gates considered in [30] 5In both Fig. 5a and Fig. 5b, the controlled Hadamard gates are implemented as shown in Fig. 2 and for concatenation levels greater than one, the T gates are implemented as in Fig. 1.",
+    "start": 859,
+    "end": 1199,
+    "chunk_sha256": "df3567604a5539ec31f53b980e6f0ff5292c989a22937b7958aea6b7141ed3ac",
+    "measures": [
+     "scheme"
+    ]
+   },
+   {
+    "document_id": "arxiv-1811-00566-p0024",
+    "quote": "In this section we compare the overhead cost of our fault-tolerant magic state preparation scheme for preparing an encoded |H⟩ state in the concatenated Steane code to the overhead cost of the MEK scheme for distilling |H⟩ states (also encoded in the concatenated Steane code).",
+    "start": 0,
+    "end": 277,
+    "chunk_sha256": "a3f6b10949adda061ad14ea085746a1f0e47df43339a23c6a911079a47d65ab6",
+    "measures": [
+     "scheme"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "introduction of piezoelectric films",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2602-22117-p0003",
+     "quote": "However, the introduction of piezoelectric films, which are necessary for coupling to a superconducting circuit, can lead to additional loss channels, such as surface scattering and two-level systems (TLS).",
+     "start": 357,
+     "end": 563,
+     "chunk_sha256": "46d644635400e755fa70d37138564e6980758c3ff2c3f179371040069a16acd6",
+     "relation": "causes",
+     "subject": "introduction of piezoelectric films",
+     "object": "additional loss channels",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "scheme",
+     "source_term": "mitigation scheme",
+     "citation": {
+      "document_id": "arxiv-2409-06636-p0029",
+      "quote": "It is an open problem to explore how to incorporate similar learning-based technique to find the optimal GQPD (or the positive part) and implement EMRE, and how well the mitigation scheme will perform when such a learning process is used to get rid of the pre-computation, and restrict the inverse channel to its positive part.",
+      "start": 1479,
+      "end": 1806,
+      "chunk_sha256": "2adfa7af888075852b6e55508c1c4bff79c33cafd67f3593f4225a9725e007c4",
+      "relation": "constrains",
+      "subject": "mitigation scheme",
+      "object": "inverse channel",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [
+    {
+     "link": 1,
+     "citation": {
+      "document_id": "arxiv-2409-06636-p0029",
+      "quote": "It is an open problem to explore how to incorporate similar learning-based technique to find the optimal GQPD (or the positive part) and implement EMRE, and how well the mitigation scheme will perform when such a learning process is used to get rid of the pre-computation, and restrict the inverse channel to its positive part.",
+      "start": 1479,
+      "end": 1806,
+      "chunk_sha256": "2adfa7af888075852b6e55508c1c4bff79c33cafd67f3593f4225a9725e007c4",
+      "relation": "constrains",
+      "subject": "mitigation scheme",
+      "object": "inverse channel",
+      "hedged": false
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    }
+   ],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "qualification_review",
+    "kind": "scope",
+    "instruction": "Restrict the proposal to the cited conditions and quantifiers."
+   },
+   {
+    "id": "5ac96ad0c3a789b7",
+    "kind": "variable",
+    "term": "- local connectivity1",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for - local connectivity1."
+   },
+   {
+    "id": "49a91163d074ab79",
+    "kind": "variable",
+    "term": "- local connectivity1",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for - local connectivity1."
+   },
+   {
+    "id": "38a68dc92be3fcc8",
+    "kind": "variable",
+    "term": "inverse channel",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for inverse channel."
+   },
+   {
+    "id": "c8c77c5cd56c67b1",
+    "kind": "variable",
+    "term": "inverse channel",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for inverse channel."
+   },
+   {
+    "id": "ef04a25f0fedf7ec",
+    "kind": "variable",
+    "term": "scheme",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for scheme."
+   },
+   {
+    "id": "eab3f37f2b30f555",
+    "kind": "variable",
+    "term": "scheme",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for scheme."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "- local connectivity1"
+   ],
+   "measure": [
+    "inverse channel"
+   ],
+   "mediator": "scheme",
+   "controls": [
+    "introduction of piezoelectric films"
+   ],
+   "steps": [
+    "Vary - local connectivity1 across matched settings and measure inverse channel.",
+    "Review candidate controls (introduction of piezoelectric films) for timing, feasibility and causal role before adjustment.",
+    "Repeat with scheme held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "inverse channel does not change when - local connectivity1 varies with the controls fixed, or holding scheme fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "- local connectivity1",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "inverse channel",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2606-20441-p0002",
+       "quote": "In this framework, a target observable is classically propagated through noise-canceling inverse channels, producing a modified observable that is measured directly on a quantum processor.",
+       "start": 787,
+       "end": 975,
+       "chunk_sha256": "8ca6e234cdda8b0a6665870fab1793df042c53ba3883bd757f5a8d5815b2893e",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "scheme",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1811-00566-p0007",
+       "quote": "Recently, new schemes using flag qubits have been introduced to implement error correction protocols using the minimal number of ancilla qubits to measure the codesstabilizergenerators [20–25].",
+       "start": 0,
+       "end": 193,
+       "chunk_sha256": "3789bf5615c0c59ab38e747c33edf34ea5ae17950708b4c4eafe177a0459248c",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1811-00566-p0008",
+       "quote": "However, the scheme proposed by AGP requires the preparation and verification of large cat state ancillas to perform the logical measurements.",
+       "start": 2262,
+       "end": 2404,
+       "chunk_sha256": "49b4fc43f820fcf89566217833ecbfe8398bb5eb55dff2e9e7bc96c766fddd76",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1811-00566-p0018",
+       "quote": "In an error detection scheme, where the |H⟩ state is rejected if errors are detected, the circuit in Fig. 5a can be used to measure the logical Hadamard operator.",
+       "start": 362,
+       "end": 524,
+       "chunk_sha256": "df3567604a5539ec31f53b980e6f0ff5292c989a22937b7958aea6b7141ed3ac",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "- local connectivity1",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "- local connectivity1",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "inverse channel",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "inverse channel",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "scheme",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "scheme",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "scheme"
+   ]
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 7.98
+  },
+  "snapshot": {
+   "as_of": 1795596141,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: - local connectivity1 may constrain inverse channel through scheme (read as mitigation scheme).\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: consistent.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: mitigation scheme versus scheme.\n  Retain qualification [arxiv-2409-06636-p0029]: It is an open problem to explore how to incorporate similar learning-based technique to find the optimal GQPD (or the positive part) and implement EMRE, and how well the mitigation scheme will perform when such a learning process is used to get rid of the pre-computation, and restrict the inverse channel to its positive part.\n\nLink - local connectivity1 -> scheme: supported (1 supporting, 0 contrary).\n  + [arxiv-1811-00566-p0008] The scheme we numerically analyze in this work does require code concatenation for distances d > 3 and thus requires non-local connectivity1.\n\nLink scheme -> inverse channel: supported (1 supporting, 0 contrary).\n  + [arxiv-2409-06636-p0029] It is an open problem to explore how to incorporate similar learning-based technique to find the optimal GQPD (or the positive part) and implement EMRE, and how well the mitigation scheme will perform when such a learning process is used to get rid of the pre-computation, and restrict the inverse channel to its positive part.\n\nExisting setups that measure one of its terms:\n  [arxiv-1811-00566-p0003] We compare the physical qubit and gate cost of our scheme to the magic state distillation protocol of Meier, Eastin, and Knill (MEK), which is efficient and uses a small stabilizer circuit.\n  [arxiv-1811-00566-p0008] In this model, we compare the overhead cost of our scheme to a magic state distillation scheme introduced by Meier, Eastin and Knill (MEK), due to its efficiency and small circuit size [26].\n  [arxiv-1811-00566-p0008] Indeed the proposed scheme in this work could be accessible to near term ion trap based architectures which could be amongst the first experiments to demonstrate the fault-tolerant implementation of logical non-Clifford gates.\n  [arxiv-1811-00566-p0009] Proofs of faulttolerance are given in Appendix A. In Section 4 we briefly review the MEK magic state distillation scheme and in Section 5 we compare the qubit and gate overhead costs of both schemes.\n\nCandidate controls (review before adjustment):\n  introduction of piezoelectric films: outcome_predictor [arxiv-2602-22117-p0003]\n\nTest plan (mediation):\n  1. Vary - local connectivity1 across matched settings and measure inverse channel.\n  2. Review candidate controls (introduction of piezoelectric films) for timing, feasibility and causal role before adjustment.\n  3. Repeat with scheme held fixed or blocked to test whether it carries the effect.\n  Fails if: inverse channel does not change when - local connectivity1 varies with the controls fixed, or holding scheme fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for - local connectivity1.\n  Required: feasible intervention or justified observational design for - local connectivity1.\n  Required: measurement procedure for inverse channel.\n  Required: unit or explicit categorical scale for inverse channel.\n  Required: measurement procedure for scheme.\n  Required: unit or explicit categorical scale for scheme.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

@@ -1,0 +1,575 @@
+{
+ "topic": "quantum advantage",
+ "hypothesis": {
+  "id": "8c43f0268b3f",
+  "text": "qubits may increase wide range of applications through algorithm (read as Quantum algorithms).",
+  "pattern": "chain",
+  "relation": "increases",
+  "anchors": [
+   "qubits",
+   "wide range of applications"
+  ],
+  "via": [
+   "algorithm (read as Quantum algorithms)"
+  ],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2311-05680-p0028",
+   "arxiv-2511-13408-p0002"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2311-05680-p0028",
+    "quote": "To better understand how the algorithm scales with the number of qubits we study the problem of fitting a multi-dimensional function.",
+    "start": 2024,
+    "end": 2157,
+    "chunk_sha256": "202e5f2e56285df14ca22eb717050905e3b4b049bfad204986823218790c70da",
+    "relation": "increases",
+    "subject": "qubits",
+    "object": "algorithm",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2511-13408-p0002",
+    "quote": "Quantum algorithms based on parameterized quantum circuits (PQCs) have enabled a wide range of applications on near-term quantum devices.",
+    "start": 0,
+    "end": 137,
+    "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130",
+    "relation": "increases",
+    "subject": "Quantum algorithms",
+    "object": "wide range of applications",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.566,
+   "novelty": 0.522
+  },
+  "falsification_test": "Compare settings where qubits differs while other inputs are matched. The hypothesis fails if wide range of applications does not rise with qubits, or if fixing algorithm (read as Quantum algorithms) removes no part of the effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "algorithm"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "qubits",
+   "b": "algorithm",
+   "c": "wide range of applications"
+  },
+  "path_nodes": [
+   "qubits",
+   "algorithm",
+   "wide range of applications"
+  ],
+  "links": [
+   {
+    "source": "qubits",
+    "target": "algorithm",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2311-05680-p0028",
+      "quote": "To better understand how the algorithm scales with the number of qubits we study the problem of fitting a multi-dimensional function.",
+      "start": 2024,
+      "end": 2157,
+      "chunk_sha256": "202e5f2e56285df14ca22eb717050905e3b4b049bfad204986823218790c70da",
+      "relation": "increases",
+      "subject": "qubits",
+      "object": "algorithm",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-1904-10378-p0003",
+      "quote": "However, the qubit overheads can be significant: it is estimated that > 2 × 108 physical qubits with gate error rate 10−3 might be needed to perform a non-trivial Shor’s factoring algorithm using surface codes [11].",
+      "start": 710,
+      "end": 925,
+      "chunk_sha256": "a241cfd291c47f8edb406f4af1f4a6df61f5dc7ee80af4c94b010b01122a26ac"
+     },
+     {
+      "document_id": "arxiv-1904-10378-p0010",
+      "quote": "can then be used to yield longer qubit operation times (T2 ∼ 28 ms [39]), and these can be integrated into algorithms [30, 40] or single qubit gates designed via gradient ascent pulsed engineering [41] to be inherently robust against environmental noise [26].",
+      "start": 0,
+      "end": 259,
+      "chunk_sha256": "5e8ecec44505c34d9943a8bbe2ce017bbb771345e467cad0af875e2e6424811b"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0002",
+      "quote": "more complicated quantum algorithms use thousands of qubits, such as factoring 2048-bit numbers using Shor’s algorithm.",
+      "start": 3066,
+      "end": 3185,
+      "chunk_sha256": "ddfce22f1244560baa491ef8a8983625514b98d736149ecdc969f994d7f3fb9f"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   },
+   {
+    "source": "algorithm",
+    "target": "wide range of applications",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2511-13408-p0002",
+      "quote": "Quantum algorithms based on parameterized quantum circuits (PQCs) have enabled a wide range of applications on near-term quantum devices.",
+      "start": 0,
+      "end": 137,
+      "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130",
+      "relation": "increases",
+      "subject": "Quantum algorithms",
+      "object": "wide range of applications",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2511-13408-p0002",
+      "quote": "Quantum algorithms based on parameterized quantum circuits (PQCs) have enabled a wide range of applications on near-term quantum devices.",
+      "start": 0,
+      "end": 137,
+      "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   }
+  ],
+  "expected_relation": "increases",
+  "direction_check": {
+   "requested": "increases",
+   "status": "consistent",
+   "observed": [
+    "increases"
+   ],
+   "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+  },
+  "verdict": "all_links_supported",
+  "predictions": [
+   {
+    "document_id": "arxiv-1904-10378-p0003",
+    "quote": "However, the qubit overheads can be significant: it is estimated that > 2 × 108 physical qubits with gate error rate 10−3 might be needed to perform a non-trivial Shor’s factoring algorithm using surface codes [11].",
+    "start": 710,
+    "end": 925,
+    "chunk_sha256": "a241cfd291c47f8edb406f4af1f4a6df61f5dc7ee80af4c94b010b01122a26ac",
+    "qualification": "source_prediction"
+   },
+   {
+    "document_id": "arxiv-2011-12245-p0004",
+    "quote": "Specifically, the exponential suppression of the gradient implies that one would need an exponential precision to make progress in the optimization, consequently, causing one’s algorithm to scale exponentially in the number of qubits.",
+    "start": 690,
+    "end": 924,
+    "chunk_sha256": "29029f30dfea4c2fb2c2b7b3e28275cfa74df5f6d2ffdb0e5c95caff55cde7af",
+    "qualification": "source_prediction"
+   },
+   {
+    "document_id": "arxiv-2103-08049-p0004",
+    "quote": "The basic idea of this decoding algorithm is to look for an error in a constant size neighborhood of a qubit such that correcting this error would reduce the weight of the syndrome.",
+    "start": 1450,
+    "end": 1631,
+    "chunk_sha256": "9befe85e4b0bc1cb70df89c059933341085282a2adbe01c2dfd89ffbe256e019",
+    "qualification": "source_prediction"
+   },
+   {
+    "document_id": "arxiv-2109-14609-p0028",
+    "quote": "Indeed, one could conceivably run a full large scale quantum algorithm using only the logical qubits encoded in a single block of the codes",
+    "start": 362,
+    "end": 501,
+    "chunk_sha256": "73fa5b31ec789c84f63ff27f5fc6123340150cdd8eac7439f0b7072a57be478c",
+    "qualification": "source_prediction"
+   },
+   {
+    "document_id": "arxiv-2309-10331-p0010",
+    "quote": "We would like our decoding algorithms to take advantage of this fact, and in fact there are many decoding algorithms that take as input not only the syndromes but also a noise model, often in the form of Pauli error probabilities for each qubit.",
+    "start": 5104,
+    "end": 5349,
+    "chunk_sha256": "b9a0aeaedeb78e5c3132d88ffc301d16bfb6045fda27e8f7e6d11fabcb926b31",
+    "qualification": "source_prediction"
+   }
+  ],
+  "setups": [
+   {
+    "document_id": "arxiv-2311-05680-p0002",
+    "quote": "We tested the algorithm by simulating and deploying the fit of a monodimensional u-Quark Parton Distribution Function (PDF) on a superconducting single-qubit device, and we further analyzed the scalability of the proposed technique by simulating a multidimensional fit with up to 8 qubits.",
+    "start": 1124,
+    "end": 1413,
+    "chunk_sha256": "49a4791569ab5ad2f9c651634d5dd657ff370a70ffc630f98cf07778b7f20be5",
+    "measures": [
+     "qubits",
+     "algorithm"
+    ]
+   },
+   {
+    "document_id": "arxiv-2512-13908-p0054",
+    "quote": "While the experiments used 12(14) measure, helper, and data qubits for Fig. 2(3), to speed up the simulation we implemented a modified Kraus operator reordering algorithm to ensure that, averaging over the circuit layers, 8.4(10.2) qubits were required in memory[42, 43].",
+    "start": 1699,
+    "end": 1970,
+    "chunk_sha256": "a908c2a46e9e62e4bb878f3607819cb50209cd95719d4320694659fd9c54f137",
+    "measures": [
+     "qubits",
+     "algorithm"
+    ]
+   },
+   {
+    "document_id": "arxiv-1811-00566-p0003",
+    "quote": "We compare the physical qubit and gate cost of our scheme to the magic state distillation protocol of Meier, Eastin, and Knill (MEK), which is efficient and uses a small stabilizer circuit.",
+    "start": 472,
+    "end": 661,
+    "chunk_sha256": "8092e9aa9cb68b48bcc481756a4755542dd78552925c15e985cb9b30f40cedf9",
+    "measures": [
+     "qubits"
+    ]
+   },
+   {
+    "document_id": "arxiv-1811-00566-p0009",
+    "quote": "Proofs of faulttolerance are given in Appendix A. In Section 4 we briefly review the MEK magic state distillation scheme and in Section 5 we compare the qubit and gate overhead costs of both schemes.",
+    "start": 297,
+    "end": 496,
+    "chunk_sha256": "b092236d8a96422a42f04a6b36540f2bc08dde2a9c6d0dc9452b8a0610ab96c3",
+    "measures": [
+     "qubits"
+    ]
+   },
+   {
+    "document_id": "arxiv-1811-00566-p0022",
+    "quote": "The extra flag qubits are used to localize errors occurring near the fourth controlled-Hadamard gate since these cannot be distinguished from errors occurring at the other controlled-Hadamard gates.",
+    "start": 122,
+    "end": 320,
+    "chunk_sha256": "3ed09e9672d5fff68a0b1fdb46a5db0440046cf595fa6ec94461277c63ac1486",
+    "measures": [
+     "qubits"
+    ]
+   },
+   {
+    "document_id": "arxiv-1901-10847-p0002",
+    "quote": "We tested the decoding performance under depolarizing noise with noiseless error syndrome measurements for the rotated surface code and compared against the Blossom algorithm and a neural network based decoder.",
+    "start": 737,
+    "end": 947,
+    "chunk_sha256": "32fcdd3ab39e5c821d6cd13e1971c2f211cce64118b67525e7ffae5cb3469100",
+    "measures": [
+     "algorithm"
+    ]
+   }
+  ],
+  "confounders": [],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "algorithm",
+     "source_term": "Quantum algorithms",
+     "citation": {
+      "document_id": "arxiv-2511-13408-p0002",
+      "quote": "Quantum algorithms based on parameterized quantum circuits (PQCs) have enabled a wide range of applications on near-term quantum devices.",
+      "start": 0,
+      "end": 137,
+      "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130",
+      "relation": "increases",
+      "subject": "Quantum algorithms",
+      "object": "wide range of applications",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "1b15a957a29a9ff2",
+    "kind": "variable",
+    "term": "qubits",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for qubits."
+   },
+   {
+    "id": "3636315788a236d7",
+    "kind": "variable",
+    "term": "qubits",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for qubits."
+   },
+   {
+    "id": "f5009160d62e847e",
+    "kind": "variable",
+    "term": "wide range of applications",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for wide range of applications."
+   },
+   {
+    "id": "864dab8a955db0dc",
+    "kind": "variable",
+    "term": "wide range of applications",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for wide range of applications."
+   },
+   {
+    "id": "ed61747e3fec9a7f",
+    "kind": "variable",
+    "term": "algorithm",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for algorithm."
+   },
+   {
+    "id": "5d9af448af1219f1",
+    "kind": "variable",
+    "term": "algorithm",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for algorithm."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "qubits"
+   ],
+   "measure": [
+    "wide range of applications"
+   ],
+   "mediator": "algorithm",
+   "controls": [],
+   "steps": [
+    "Vary qubits across matched settings and measure wide range of applications.",
+    "No additional outcome cause was extracted; this does not establish absence of confounding.",
+    "Repeat with algorithm held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "wide range of applications does not change when qubits varies with the controls fixed, or holding algorithm fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "qubits",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1412-7010-p0002",
+       "quote": "Our study shows that leakage errors can be corrected without the need of measurements and at the cost of only a few additional ancilla qubits and gate operations compared to standard quantum error correction codes.",
+       "start": 504,
+       "end": 718,
+       "chunk_sha256": "cb0d6222a255361d1f52b063bea503a39ae721c581db1cb7c0ebae8177730c51",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1509-05470-p0001",
+       "quote": "# Measuring and Suppressing Quantum State Leakage in a Superconducting Qubit",
+       "start": 0,
+       "end": 76,
+       "chunk_sha256": "df4feb408bba8c5a61f0d6de6310c52b07f24d2b741a0c49bc5965a64895650f",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1811-00566-p0007",
+       "quote": "Recently, new schemes using flag qubits have been introduced to implement error correction protocols using the minimal number of ancilla qubits to measure the codesstabilizergenerators [20–25].",
+       "start": 0,
+       "end": 193,
+       "chunk_sha256": "3789bf5615c0c59ab38e747c33edf34ea5ae17950708b4c4eafe177a0459248c",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "wide range of applications",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "algorithm",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1901-10847-p0002",
+       "quote": "We tested the decoding performance under depolarizing noise with noiseless error syndrome measurements for the rotated surface code and compared against the Blossom algorithm and a neural network based decoder.",
+       "start": 737,
+       "end": 947,
+       "chunk_sha256": "32fcdd3ab39e5c821d6cd13e1971c2f211cce64118b67525e7ffae5cb3469100",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2006-14044-p0002",
+       "quote": "Reducing measurement errors in multi-qubit quantum devices is critical for performing any quantum algorithm.",
+       "start": 0,
+       "end": 108,
+       "chunk_sha256": "ab94fc74acecb70a069e893278ca4994e1829e8a0003594ab9ec5fc6425c2dec",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2102-01828-p0009",
+       "quote": "Figure 1: The hybrid quantum-classical algorithm As demonstrated in Figure 1, the quantum part runs the PQC and obtains the measurement results and the classical part estimates the cost-function and updates the parameters.",
+       "start": 0,
+       "end": 222,
+       "chunk_sha256": "35f4dca9b1a0948827181883171e042c07908488f8fd42b5e68dd313cafddd10",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "qubits",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "qubits",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "wide range of applications",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "wide range of applications",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "algorithm",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "algorithm",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "algorithm"
+   ]
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 8.567
+  },
+  "snapshot": {
+   "as_of": 1795596278,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: qubits may increase wide range of applications through algorithm (read as Quantum algorithms).\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: consistent.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: Quantum algorithms versus algorithm.\n\nLink qubits -> algorithm: supported (1 supporting, 0 contrary).\n  + [arxiv-2311-05680-p0028] To better understand how the algorithm scales with the number of qubits we study the problem of fitting a multi-dimensional function.\n\nLink algorithm -> wide range of applications: supported (1 supporting, 0 contrary).\n  + [arxiv-2511-13408-p0002] Quantum algorithms based on parameterized quantum circuits (PQCs) have enabled a wide range of applications on near-term quantum devices.\n\nSource predictions naming two or more of its terms:\n  [arxiv-1904-10378-p0003] However, the qubit overheads can be significant: it is estimated that > 2 × 108 physical qubits with gate error rate 10−3 might be needed to perform a non-trivial Shor’s factoring algorithm using surface codes [11].\n  [arxiv-2011-12245-p0004] Specifically, the exponential suppression of the gradient implies that one would need an exponential precision to make progress in the optimization, consequently, causing one’s algorithm to scale exponentially in the number of qubits.\n  [arxiv-2103-08049-p0004] The basic idea of this decoding algorithm is to look for an error in a constant size neighborhood of a qubit such that correcting this error would reduce the weight of the syndrome.\n  [arxiv-2109-14609-p0028] Indeed, one could conceivably run a full large scale quantum algorithm using only the logical qubits encoded in a single block of the codes\n\nExisting setups that measure one of its terms:\n  [arxiv-2311-05680-p0002] We tested the algorithm by simulating and deploying the fit of a monodimensional u-Quark Parton Distribution Function (PDF) on a superconducting single-qubit device, and we further analyzed the scalability of the proposed technique by simulating a multidimensional fit with up to 8 qubits.\n  [arxiv-2512-13908-p0054] While the experiments used 12(14) measure, helper, and data qubits for Fig. 2(3), to speed up the simulation we implemented a modified Kraus operator reordering algorithm to ensure that, averaging over the circuit layers, 8.4(10.2) qubits were required in memory[42, 43].\n  [arxiv-1811-00566-p0003] We compare the physical qubit and gate cost of our scheme to the magic state distillation protocol of Meier, Eastin, and Knill (MEK), which is efficient and uses a small stabilizer circuit.\n  [arxiv-1811-00566-p0009] Proofs of faulttolerance are given in Appendix A. In Section 4 we briefly review the MEK magic state distillation scheme and in Section 5 we compare the qubit and gate overhead costs of both schemes.\n\nTest plan (mediation):\n  1. Vary qubits across matched settings and measure wide range of applications.\n  2. No additional outcome cause was extracted; this does not establish absence of confounding.\n  3. Repeat with algorithm held fixed or blocked to test whether it carries the effect.\n  Fails if: wide range of applications does not change when qubits varies with the controls fixed, or holding algorithm fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for qubits.\n  Required: feasible intervention or justified observational design for qubits.\n  Required: measurement procedure for wide range of applications.\n  Required: unit or explicit categorical scale for wide range of applications.\n  Required: measurement procedure for algorithm.\n  Required: unit or explicit categorical scale for algorithm.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

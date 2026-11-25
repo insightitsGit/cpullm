@@ -1,0 +1,546 @@
+{
+ "topic": "magic state distillation",
+ "hypothesis": {
+  "id": "1807b3734c6f",
+  "text": "rapid distillation speed may increase error of circuit outcome through discarded magic states (read as faulty magic state).",
+  "pattern": "chain",
+  "relation": "increases",
+  "anchors": [
+   "rapid distillation speed",
+   "error of circuit outcome"
+  ],
+  "via": [
+   "discarded magic states (read as faulty magic state)"
+  ],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2407-07394-p0024",
+   "arxiv-1905-06903-p0011"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2407-07394-p0024",
+    "quote": "Finally, a too rapid distillation speed leads to discarded magic states.",
+    "start": 1282,
+    "end": 1354,
+    "chunk_sha256": "e0a47cd12b6b6fb4a3ca4008194b9e22bbba02721a35c69304fd26647b4ec2c1",
+    "relation": "causes",
+    "subject": "rapid distillation speed",
+    "object": "discarded magic states",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-1905-06903-p0011",
+    "quote": "The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].",
+    "start": 63,
+    "end": 240,
+    "chunk_sha256": "47d20465e0fd13b2d631fbdf22bced01bbc3f0774694297fc46f174b447e7ddf",
+    "relation": "causes",
+    "subject": "faulty magic state",
+    "object": "error of circuit outcome",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.852,
+   "novelty": 0.619
+  },
+  "falsification_test": "Compare settings where rapid distillation speed differs while other inputs are matched. The hypothesis fails if error of circuit outcome does not rise with rapid distillation speed, or if fixing discarded magic states (read as faulty magic state) removes no part of the effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "discarded magic state"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "rapid distillation speed",
+   "b": "discarded magic states",
+   "c": "error of circuit outcome"
+  },
+  "path_nodes": [
+   "rapid distillation speed",
+   "discarded magic states",
+   "error of circuit outcome"
+  ],
+  "links": [
+   {
+    "source": "rapid distillation speed",
+    "target": "discarded magic states",
+    "expected_relation": "causes",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2407-07394-p0024",
+      "quote": "Finally, a too rapid distillation speed leads to discarded magic states.",
+      "start": 1282,
+      "end": 1354,
+      "chunk_sha256": "e0a47cd12b6b6fb4a3ca4008194b9e22bbba02721a35c69304fd26647b4ec2c1",
+      "relation": "causes",
+      "subject": "rapid distillation speed",
+      "object": "discarded magic states",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2407-07394-p0024",
+      "quote": "Finally, a too rapid distillation speed leads to discarded magic states.",
+      "start": 1282,
+      "end": 1354,
+      "chunk_sha256": "e0a47cd12b6b6fb4a3ca4008194b9e22bbba02721a35c69304fd26647b4ec2c1"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "causes"
+    ]
+   },
+   {
+    "source": "discarded magic states",
+    "target": "error of circuit outcome",
+    "expected_relation": "causes",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-1905-06903-p0011",
+      "quote": "The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].",
+      "start": 63,
+      "end": 240,
+      "chunk_sha256": "47d20465e0fd13b2d631fbdf22bced01bbc3f0774694297fc46f174b447e7ddf",
+      "relation": "causes",
+      "subject": "faulty magic state",
+      "object": "error of circuit outcome",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "causes"
+    ]
+   }
+  ],
+  "expected_relation": "increases",
+  "direction_check": {
+   "requested": "increases",
+   "status": "consistent",
+   "observed": [
+    "increases"
+   ],
+   "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [],
+  "confounders": [
+   {
+    "term": "CNOT gate",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2208-02191-p0033",
+     "quote": "Particularly, in the context of surface-code error correction, a CNOT gate between data and ancilla qubits can cause unwanted ZZ error between the data qubit involved in the gate and one of the neighbouring data qubits [39].",
+     "start": 636,
+     "end": 860,
+     "chunk_sha256": "803fde3109cf4f3d3896787e0dfb037da9c0871412fcf31984ed13e2f8f22d70",
+     "relation": "causes",
+     "subject": "CNOT gate",
+     "object": "unwanted ZZ error",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Cosmic rays",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2402-03208-p0002",
+     "quote": "Cosmic rays caused correlated errors at a rate of 1/(10 min), accounting for 17pm1% of all such events.",
+     "start": 637,
+     "end": 740,
+     "chunk_sha256": "cf6f8c168197d2b4428e077deb9fb2bf91c7a48f06b9653e72ddb00a4fd06767",
+     "relation": "causes",
+     "subject": "Cosmic rays",
+     "object": "correlated errors",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Cultivation",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2512-13908-p0002",
+     "quote": "Cultivation reduces the error by a factor of 40, with a state fidelity of 0.9999(1) (retaining 8% of attempts).",
+     "start": 659,
+     "end": 770,
+     "chunk_sha256": "85a99549516d12374e46f736e12e64c9d3821633fb29b4914050cecaa0cab105",
+     "relation": "decreases",
+     "subject": "Cultivation",
+     "object": "error",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "cultivation circuit",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2512-13908-p0010",
+     "quote": "Then the cultivation circuit projects the state to the X = Z line (right Bloch sphere, red arrow), and reduces the state error (red clouds).",
+     "start": 160,
+     "end": 300,
+     "chunk_sha256": "37262bc09e60fdad96efd34a518e058be9cd79f7b6d94c153bef8714897c1f82",
+     "relation": "decreases",
+     "subject": "cultivation circuit",
+     "object": "state error",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "D. Implications for Future Processors",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2603-13460-p0023",
+     "quote": "D. Implications for Future Processors While JJ GE significantly mitigates radiation-induced errors, qubit arrays protected in this way remain sensitive to radiation that deposits energy on the scale of a few MeV.",
+     "start": 416,
+     "end": 628,
+     "chunk_sha256": "21084cca402c41f5b16ae0915c7ce0bfe6205831ca6fa9e43780f1891b3c9caf",
+     "relation": "decreases",
+     "subject": "D. Implications for Future Processors",
+     "object": "radiation induced errors",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Erasure",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2601-10461-p0002",
+     "quote": "Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction Adam Siegel1, 2, ∗ and Simon Benjamin1, 2 1Quantum Motion, 9 Sterling Way, London N7 9HJ, United Kingdom 2Department of Materials, University of Oxford, Parks Road, Oxford OX1 3PH, United Kingdom",
+     "start": 0,
+     "end": 312,
+     "chunk_sha256": "b77a82404b90606a45af786e79808049fd266cf7267c7d62e43d2f2b6e26cf52",
+     "relation": "increases",
+     "subject": "Erasure",
+     "object": "high performance shuttling based quantum error",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "discarded magic states",
+     "source_term": "faulty magic state",
+     "citation": {
+      "document_id": "arxiv-1905-06903-p0011",
+      "quote": "The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].",
+      "start": 63,
+      "end": 240,
+      "chunk_sha256": "47d20465e0fd13b2d631fbdf22bced01bbc3f0774694297fc46f174b447e7ddf",
+      "relation": "causes",
+      "subject": "faulty magic state",
+      "object": "error of circuit outcome",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "cd38e625c37eb4f2",
+    "kind": "variable",
+    "term": "rapid distillation speed",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for rapid distillation speed."
+   },
+   {
+    "id": "e09adb3c54a9a2fd",
+    "kind": "variable",
+    "term": "rapid distillation speed",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for rapid distillation speed."
+   },
+   {
+    "id": "9c8fbe02a75a1d89",
+    "kind": "variable",
+    "term": "error of circuit outcome",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for error of circuit outcome."
+   },
+   {
+    "id": "53f850bcf69e77cc",
+    "kind": "variable",
+    "term": "error of circuit outcome",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for error of circuit outcome."
+   },
+   {
+    "id": "a8b4e96ccc9428c7",
+    "kind": "variable",
+    "term": "discarded magic states",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for discarded magic states."
+   },
+   {
+    "id": "72dbca2f2627e704",
+    "kind": "variable",
+    "term": "discarded magic states",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for discarded magic states."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "rapid distillation speed"
+   ],
+   "measure": [
+    "error of circuit outcome"
+   ],
+   "mediator": "discarded magic states",
+   "controls": [
+    "CNOT gate",
+    "Cosmic rays",
+    "Cultivation",
+    "cultivation circuit",
+    "D. Implications for Future Processors",
+    "Erasure"
+   ],
+   "steps": [
+    "Vary rapid distillation speed across matched settings and measure error of circuit outcome.",
+    "Review candidate controls (CNOT gate, Cosmic rays, Cultivation, cultivation circuit, D. Implications for Future Processors, Erasure) for timing, feasibility and causal role before adjustment.",
+    "Repeat with discarded magic states held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "error of circuit outcome does not change when rapid distillation speed varies with the controls fixed, or holding discarded magic states fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "rapid distillation speed",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "error of circuit outcome",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1905-06903-p0008",
+       "quote": "If the circuit is executed without errors, qubits 2-5 are initialized in the |+⟩ state and returned to the |+⟩ state, i.e., have an outcome of +1 upon X measurement.",
+       "start": 295,
+       "end": 460,
+       "chunk_sha256": "7a764e0ae20e73cced6de6e9c9e7416bdddf30eafe71e67e5c2a6533e9cd8d9f",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2310-10722-p0016",
+       "quote": "This significantly complicates the decoding process on one hand because the syndrome measurement outcome cannot be trusted (and thus the destabilizer part of the error cannot be determined with certainty) and on the other hand because the syndrome readout circuit itself might generate and spread noise throughout the data qubits.",
+       "start": 162,
+       "end": 492,
+       "chunk_sha256": "2a486caac2356c60df066b0779a54f26d0490ede197415f51e493d7f0c83c5d7",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2310-10722-p0016",
+       "quote": "While the stabilizer formalism provides a means to describe the relationship between error events in the circuit and observed measurement outcomes, it can be computationally advantageous to make use of the slightly different",
+       "start": 710,
+       "end": 934,
+       "chunk_sha256": "2a486caac2356c60df066b0779a54f26d0490ede197415f51e493d7f0c83c5d7",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "discarded magic states",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "rapid distillation speed",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "rapid distillation speed",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "error of circuit outcome",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "error of circuit outcome",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "discarded magic states",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "discarded magic states",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "discarded magic states"
+   ]
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 8.192
+  },
+  "snapshot": {
+   "as_of": 1795596227,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: rapid distillation speed may increase error of circuit outcome through discarded magic states (read as faulty magic state).\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: consistent.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: faulty magic state versus discarded magic states.\n\nLink rapid distillation speed -> discarded magic states: supported (1 supporting, 0 contrary).\n  + [arxiv-2407-07394-p0024] Finally, a too rapid distillation speed leads to discarded magic states.\n\nLink discarded magic states -> error of circuit outcome: supported (1 supporting, 0 contrary).\n  + [arxiv-1905-06903-p0011] The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].\n\nCandidate controls (review before adjustment):\n  CNOT gate: outcome_predictor [arxiv-2208-02191-p0033]\n  Cosmic rays: outcome_predictor [arxiv-2402-03208-p0002]\n  Cultivation: outcome_predictor [arxiv-2512-13908-p0002]\n  cultivation circuit: outcome_predictor [arxiv-2512-13908-p0010]\n  D. Implications for Future Processors: outcome_predictor [arxiv-2603-13460-p0023]\n  Erasure: outcome_predictor [arxiv-2601-10461-p0002]\n\nTest plan (mediation):\n  1. Vary rapid distillation speed across matched settings and measure error of circuit outcome.\n  2. Review candidate controls (CNOT gate, Cosmic rays, Cultivation, cultivation circuit, D. Implications for Future Processors, Erasure) for timing, feasibility and causal role before adjustment.\n  3. Repeat with discarded magic states held fixed or blocked to test whether it carries the effect.\n  Fails if: error of circuit outcome does not change when rapid distillation speed varies with the controls fixed, or holding discarded magic states fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for rapid distillation speed.\n  Required: feasible intervention or justified observational design for rapid distillation speed.\n  Required: measurement procedure for error of circuit outcome.\n  Required: unit or explicit categorical scale for error of circuit outcome.\n  Required: measurement procedure for discarded magic states.\n  Required: unit or explicit categorical scale for discarded magic states.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

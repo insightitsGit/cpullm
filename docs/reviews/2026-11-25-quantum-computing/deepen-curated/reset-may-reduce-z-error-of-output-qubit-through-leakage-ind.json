@@ -1,0 +1,790 @@
+{
+ "topic": "correlated errors",
+ "hypothesis": {
+  "id": "73593813d64d",
+  "text": "reset may reduce Z error of output qubit through leakage induced long time correlated errors (read as error).",
+  "pattern": "chain",
+  "relation": "decreases",
+  "anchors": [
+   "reset",
+   "Z error of output qubit"
+  ],
+  "via": [
+   "leakage induced long time correlated errors (read as error)"
+  ],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2102-06131-p0023",
+   "arxiv-1905-06903-p0030"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2102-06131-p0023",
+    "quote": "We show that reset mitigates leakage-induced long-time correlated errors and significantly improves logical error suppression.",
+    "start": 148,
+    "end": 274,
+    "chunk_sha256": "3f1fc374a9e34a7abb920d6f071d09be99f0e3d2fb6a993ff9bfdf1648a32362",
+    "relation": "decreases",
+    "subject": "reset",
+    "object": "leakage induced long time correlated errors",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-1905-06903-p0030",
+    "quote": "Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.",
+    "start": 1046,
+    "end": 1197,
+    "chunk_sha256": "187a5c07eae620effb533bcf4dd2bb0733b5aa3f84c500d61c49da77b79995c5",
+    "relation": "causes",
+    "subject": "error",
+    "object": "Z error of output qubit",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.764,
+   "novelty": 0.725
+  },
+  "falsification_test": "Compare settings where reset differs while other inputs are matched. The hypothesis fails if Z error of output qubit does not fall with reset, or if fixing leakage induced long time correlated errors (read as error) removes no part of the effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "leakage induced long time correlated error"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "reset",
+   "b": "leakage induced long time correlated errors",
+   "c": "Z error of output qubit"
+  },
+  "path_nodes": [
+   "reset",
+   "leakage induced long time correlated errors",
+   "Z error of output qubit"
+  ],
+  "links": [
+   {
+    "source": "reset",
+    "target": "leakage induced long time correlated errors",
+    "expected_relation": "decreases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2102-06131-p0023",
+      "quote": "We show that reset mitigates leakage-induced long-time correlated errors and significantly improves logical error suppression.",
+      "start": 148,
+      "end": 274,
+      "chunk_sha256": "3f1fc374a9e34a7abb920d6f071d09be99f0e3d2fb6a993ff9bfdf1648a32362",
+      "relation": "decreases",
+      "subject": "reset",
+      "object": "leakage induced long time correlated errors",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "decreases"
+    ]
+   },
+   {
+    "source": "leakage induced long time correlated errors",
+    "target": "Z error of output qubit",
+    "expected_relation": "causes",
+    "status": "contested",
+    "support": [
+     {
+      "document_id": "arxiv-1905-06903-p0022",
+      "quote": "X, Y and Z errors lead to S†, S and Z errors on |ψ⟩, respectively.",
+      "start": 780,
+      "end": 846,
+      "chunk_sha256": "b59c773607b2b2dbe1a8a5f7b4bc4879b89b8149f32ce9794ea512d1be158afa",
+      "relation": "causes",
+      "subject": "X Y errors",
+      "object": "S† S errors",
+      "hedged": false
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0030",
+      "quote": "Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.",
+      "start": 1046,
+      "end": 1197,
+      "chunk_sha256": "187a5c07eae620effb533bcf4dd2bb0733b5aa3f84c500d61c49da77b79995c5",
+      "relation": "causes",
+      "subject": "error",
+      "object": "Z error of output qubit",
+      "hedged": false
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0035",
+      "quote": "For single-qubit rotations, X errors on the dZ ×dm qubit cause P−π/4 errors and occur with a probability of 0.5dZpL(pphys,dm), whereas Z errors spread to the adjacent qubit with a probability of 0.5(d2 m/dZ)pL(pphys,dZ).",
+      "start": 2284,
+      "end": 2504,
+      "chunk_sha256": "ae9a6dcde98680beb4561783576ade5c7e3d0ee51dbb80400c9ef7b4887aa02f",
+      "relation": "causes",
+      "subject": "X errors",
+      "object": "P−π/4 errors",
+      "hedged": false
+     },
+     {
+      "document_id": "arxiv-2402-13863-p0061",
+      "quote": "It is straightforward to check that the output of the circuit then is a Pauli-corrupted version Eeff(E)Φ of the target state Φ, where the “effective error” Eeff(E) depends deterministically on the error E. We are interested in errors E that lead to a non-trivial overall effective error Eeff.",
+      "start": 450,
+      "end": 742,
+      "chunk_sha256": "94b8a4ea3047d083308f98f398563b6cf45a4bd294edcf2c014383be0ec9a501",
+      "relation": "constrains",
+      "subject": "error",
+      "object": "effective error",
+      "hedged": false
+     },
+     {
+      "document_id": "arxiv-2407-16176-p0005",
+      "quote": "However, independent errors in the lowest level of concatenation can generally lead to correlated errors in the higher levels of concatenation.",
+      "start": 638,
+      "end": 781,
+      "chunk_sha256": "359ca133c37f1669a37cfeed5cc26a3f31a6baaba208144e5e6ab695b2f3e612",
+      "relation": "causes",
+      "subject": "independent errors",
+      "object": "correlated errors",
+      "hedged": true
+     }
+    ],
+    "counter": [
+     {
+      "document_id": "arxiv-2009-14226-p0033",
+      "quote": "Note that since we consider a subcomplex, we are guaranteed that a Z error on a qubit in P will not produce an error on any stabilizer which is not in the set of (q− 1)-cells of the complex.",
+      "start": 312,
+      "end": 502,
+      "chunk_sha256": "3f08a939fb58d17c164118a591f66df59ee53dbf5d53dc0663bbde499f565a9a",
+      "negated": true,
+      "relation": "causes"
+     }
+    ],
+    "co_mentions": [],
+    "support_count": 5,
+    "counter_count": 1,
+    "negations": [
+     {
+      "document_id": "arxiv-2009-14226-p0033",
+      "quote": "Note that since we consider a subcomplex, we are guaranteed that a Z error on a qubit in P will not produce an error on any stabilizer which is not in the set of (q− 1)-cells of the complex.",
+      "start": 312,
+      "end": 502,
+      "chunk_sha256": "3f08a939fb58d17c164118a591f66df59ee53dbf5d53dc0663bbde499f565a9a",
+      "negated": true,
+      "relation": "causes"
+     }
+    ],
+    "observed_relations": [
+     "causes",
+     "constrains"
+    ]
+   }
+  ],
+  "expected_relation": "decreases",
+  "direction_check": {
+   "requested": "decreases",
+   "status": "unresolved",
+   "observed": [
+    "affects",
+    "decreases"
+   ],
+   "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+  },
+  "verdict": "contested",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-2102-06131-p0003",
+    "quote": "We benchmark the reset gate using the bit-flip error correction code [5] and measure growth and removal of leakage in-situ.",
+    "start": 2590,
+    "end": 2713,
+    "chunk_sha256": "591b0bdd0ef0fa06184f2861ac064e8f518a04b9c113748c8302f78f9b439b3b",
+    "measures": [
+     "reset"
+    ]
+   },
+   {
+    "document_id": "arxiv-2102-06131-p0007",
+    "quote": "Reset error versus swap and hold for experiment (d) and theory (e) show a wide range of optimal parameters.",
+    "start": 328,
+    "end": 435,
+    "chunk_sha256": "0ef8162397e80bd2ca1d2c336ccafcb6ad20744a7531aff884e7d9cb088a9f21",
+    "measures": [
+     "reset"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "CNOT gate",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2208-02191-p0033",
+     "quote": "Particularly, in the context of surface-code error correction, a CNOT gate between data and ancilla qubits can cause unwanted ZZ error between the data qubit involved in the gate and one of the neighbouring data qubits [39].",
+     "start": 636,
+     "end": 860,
+     "chunk_sha256": "803fde3109cf4f3d3896787e0dfb037da9c0871412fcf31984ed13e2f8f22d70",
+     "relation": "causes",
+     "subject": "CNOT gate",
+     "object": "unwanted ZZ error",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Cosmic rays",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2402-03208-p0002",
+     "quote": "Cosmic rays caused correlated errors at a rate of 1/(10 min), accounting for 17pm1% of all such events.",
+     "start": 637,
+     "end": 740,
+     "chunk_sha256": "cf6f8c168197d2b4428e077deb9fb2bf91c7a48f06b9653e72ddb00a4fd06767",
+     "relation": "causes",
+     "subject": "Cosmic rays",
+     "object": "correlated errors",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Cultivation",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2512-13908-p0002",
+     "quote": "Cultivation reduces the error by a factor of 40, with a state fidelity of 0.9999(1) (retaining 8% of attempts).",
+     "start": 659,
+     "end": 770,
+     "chunk_sha256": "85a99549516d12374e46f736e12e64c9d3821633fb29b4914050cecaa0cab105",
+     "relation": "decreases",
+     "subject": "Cultivation",
+     "object": "error",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "cultivation circuit",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2512-13908-p0010",
+     "quote": "Then the cultivation circuit projects the state to the X = Z line (right Bloch sphere, red arrow), and reduces the state error (red clouds).",
+     "start": 160,
+     "end": 300,
+     "chunk_sha256": "37262bc09e60fdad96efd34a518e058be9cd79f7b6d94c153bef8714897c1f82",
+     "relation": "decreases",
+     "subject": "cultivation circuit",
+     "object": "state error",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "D. Implications for Future Processors",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2603-13460-p0023",
+     "quote": "D. Implications for Future Processors While JJ GE significantly mitigates radiation-induced errors, qubit arrays protected in this way remain sensitive to radiation that deposits energy on the scale of a few MeV.",
+     "start": 416,
+     "end": 628,
+     "chunk_sha256": "21084cca402c41f5b16ae0915c7ce0bfe6205831ca6fa9e43780f1891b3c9caf",
+     "relation": "decreases",
+     "subject": "D. Implications for Future Processors",
+     "object": "radiation induced errors",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Erasure",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2601-10461-p0002",
+     "quote": "Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction Adam Siegel1, 2, ∗ and Simon Benjamin1, 2 1Quantum Motion, 9 Sterling Way, London N7 9HJ, United Kingdom 2Department of Materials, University of Oxford, Parks Road, Oxford OX1 3PH, United Kingdom",
+     "start": 0,
+     "end": 312,
+     "chunk_sha256": "b77a82404b90606a45af786e79808049fd266cf7267c7d62e43d2f2b6e26cf52",
+     "relation": "increases",
+     "subject": "Erasure",
+     "object": "high performance shuttling based quantum error",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "leakage induced long time correlated errors",
+     "source_term": "X Y errors",
+     "citation": {
+      "document_id": "arxiv-1905-06903-p0022",
+      "quote": "X, Y and Z errors lead to S†, S and Z errors on |ψ⟩, respectively.",
+      "start": 780,
+      "end": 846,
+      "chunk_sha256": "b59c773607b2b2dbe1a8a5f7b4bc4879b89b8149f32ce9794ea512d1be158afa",
+      "relation": "causes",
+      "subject": "X Y errors",
+      "object": "S† S errors",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 1,
+     "requested": "Z error of output qubit",
+     "source_term": "S† S errors",
+     "citation": {
+      "document_id": "arxiv-1905-06903-p0022",
+      "quote": "X, Y and Z errors lead to S†, S and Z errors on |ψ⟩, respectively.",
+      "start": 780,
+      "end": 846,
+      "chunk_sha256": "b59c773607b2b2dbe1a8a5f7b4bc4879b89b8149f32ce9794ea512d1be158afa",
+      "relation": "causes",
+      "subject": "X Y errors",
+      "object": "S† S errors",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 1,
+     "requested": "leakage induced long time correlated errors",
+     "source_term": "error",
+     "citation": {
+      "document_id": "arxiv-1905-06903-p0030",
+      "quote": "Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.",
+      "start": 1046,
+      "end": 1197,
+      "chunk_sha256": "187a5c07eae620effb533bcf4dd2bb0733b5aa3f84c500d61c49da77b79995c5",
+      "relation": "causes",
+      "subject": "error",
+      "object": "Z error of output qubit",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 1,
+     "requested": "leakage induced long time correlated errors",
+     "source_term": "X errors",
+     "citation": {
+      "document_id": "arxiv-1905-06903-p0035",
+      "quote": "For single-qubit rotations, X errors on the dZ ×dm qubit cause P−π/4 errors and occur with a probability of 0.5dZpL(pphys,dm), whereas Z errors spread to the adjacent qubit with a probability of 0.5(d2 m/dZ)pL(pphys,dZ).",
+      "start": 2284,
+      "end": 2504,
+      "chunk_sha256": "ae9a6dcde98680beb4561783576ade5c7e3d0ee51dbb80400c9ef7b4887aa02f",
+      "relation": "causes",
+      "subject": "X errors",
+      "object": "P−π/4 errors",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 1,
+     "requested": "Z error of output qubit",
+     "source_term": "P−π/4 errors",
+     "citation": {
+      "document_id": "arxiv-1905-06903-p0035",
+      "quote": "For single-qubit rotations, X errors on the dZ ×dm qubit cause P−π/4 errors and occur with a probability of 0.5dZpL(pphys,dm), whereas Z errors spread to the adjacent qubit with a probability of 0.5(d2 m/dZ)pL(pphys,dZ).",
+      "start": 2284,
+      "end": 2504,
+      "chunk_sha256": "ae9a6dcde98680beb4561783576ade5c7e3d0ee51dbb80400c9ef7b4887aa02f",
+      "relation": "causes",
+      "subject": "X errors",
+      "object": "P−π/4 errors",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 1,
+     "requested": "leakage induced long time correlated errors",
+     "source_term": "error",
+     "citation": {
+      "document_id": "arxiv-2402-13863-p0061",
+      "quote": "It is straightforward to check that the output of the circuit then is a Pauli-corrupted version Eeff(E)Φ of the target state Φ, where the “effective error” Eeff(E) depends deterministically on the error E. We are interested in errors E that lead to a non-trivial overall effective error Eeff.",
+      "start": 450,
+      "end": 742,
+      "chunk_sha256": "94b8a4ea3047d083308f98f398563b6cf45a4bd294edcf2c014383be0ec9a501",
+      "relation": "constrains",
+      "subject": "error",
+      "object": "effective error",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 1,
+     "requested": "Z error of output qubit",
+     "source_term": "effective error",
+     "citation": {
+      "document_id": "arxiv-2402-13863-p0061",
+      "quote": "It is straightforward to check that the output of the circuit then is a Pauli-corrupted version Eeff(E)Φ of the target state Φ, where the “effective error” Eeff(E) depends deterministically on the error E. We are interested in errors E that lead to a non-trivial overall effective error Eeff.",
+      "start": 450,
+      "end": 742,
+      "chunk_sha256": "94b8a4ea3047d083308f98f398563b6cf45a4bd294edcf2c014383be0ec9a501",
+      "relation": "constrains",
+      "subject": "error",
+      "object": "effective error",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 1,
+     "requested": "leakage induced long time correlated errors",
+     "source_term": "independent errors",
+     "citation": {
+      "document_id": "arxiv-2407-16176-p0005",
+      "quote": "However, independent errors in the lowest level of concatenation can generally lead to correlated errors in the higher levels of concatenation.",
+      "start": 638,
+      "end": 781,
+      "chunk_sha256": "359ca133c37f1669a37cfeed5cc26a3f31a6baaba208144e5e6ab695b2f3e612",
+      "relation": "causes",
+      "subject": "independent errors",
+      "object": "correlated errors",
+      "hedged": true
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 1,
+     "requested": "Z error of output qubit",
+     "source_term": "correlated errors",
+     "citation": {
+      "document_id": "arxiv-2407-16176-p0005",
+      "quote": "However, independent errors in the lowest level of concatenation can generally lead to correlated errors in the higher levels of concatenation.",
+      "start": 638,
+      "end": 781,
+      "chunk_sha256": "359ca133c37f1669a37cfeed5cc26a3f31a6baaba208144e5e6ab695b2f3e612",
+      "relation": "causes",
+      "subject": "independent errors",
+      "object": "correlated errors",
+      "hedged": true
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [
+    {
+     "link": 1,
+     "citation": {
+      "document_id": "arxiv-2407-16176-p0005",
+      "quote": "However, independent errors in the lowest level of concatenation can generally lead to correlated errors in the higher levels of concatenation.",
+      "start": 638,
+      "end": 781,
+      "chunk_sha256": "359ca133c37f1669a37cfeed5cc26a3f31a6baaba208144e5e6ab695b2f3e612",
+      "relation": "causes",
+      "subject": "independent errors",
+      "object": "correlated errors",
+      "hedged": true
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    }
+   ],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "qualification_review",
+    "kind": "scope",
+    "instruction": "Restrict the proposal to the cited conditions and quantifiers."
+   },
+   {
+    "id": "99c3b824da175e7d",
+    "kind": "variable",
+    "term": "reset",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for reset."
+   },
+   {
+    "id": "8efcd7d3de27b823",
+    "kind": "variable",
+    "term": "reset",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for reset."
+   },
+   {
+    "id": "6a89615ce6147809",
+    "kind": "variable",
+    "term": "Z error of output qubit",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for Z error of output qubit."
+   },
+   {
+    "id": "0565c804eaa5101c",
+    "kind": "variable",
+    "term": "Z error of output qubit",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for Z error of output qubit."
+   },
+   {
+    "id": "ac1eec0486110d2e",
+    "kind": "variable",
+    "term": "leakage induced long time correlated errors",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for leakage induced long time correlated errors."
+   },
+   {
+    "id": "4eb1d331e3bfe326",
+    "kind": "variable",
+    "term": "leakage induced long time correlated errors",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for leakage induced long time correlated errors."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "reset"
+   ],
+   "measure": [
+    "Z error of output qubit"
+   ],
+   "mediator": "leakage induced long time correlated errors",
+   "controls": [
+    "CNOT gate",
+    "Cosmic rays",
+    "Cultivation",
+    "cultivation circuit",
+    "D. Implications for Future Processors",
+    "Erasure"
+   ],
+   "steps": [
+    "Vary reset across matched settings and measure Z error of output qubit.",
+    "Review candidate controls (CNOT gate, Cosmic rays, Cultivation, cultivation circuit, D. Implications for Future Processors, Erasure) for timing, feasibility and causal role before adjustment.",
+    "Repeat with leakage induced long time correlated errors held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "Z error of output qubit does not change when reset varies with the controls fixed, or holding leakage induced long time correlated errors fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "reset",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1904-10378-p0007",
+       "quote": "We have included elongated mediator dots [22] to provide the basic two-qubit gate operation while increasing the fundamental interqubit spacing to more readily accommodate measuring devices for ancilla readout, and electron reservoirs for initialisation and reset of quantum dots.",
+       "start": 107,
+       "end": 387,
+       "chunk_sha256": "4cd37d06dbf2fbe018b1db4d821b58cd572391e79077f14300b1e482524a0f25",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2102-06131-p0003",
+       "quote": "However, the fundamental operations, such as single-qubit gates [14, 15], entangling gates [16–20], and measurement [21] are known to populate non-computational levels, creating a demand for a reset protocol [22–27] that can remove leakage population from these higher states without adversely impacting performance in a large scale system.",
+       "start": 1261,
+       "end": 1601,
+       "chunk_sha256": "591b0bdd0ef0fa06184f2861ac064e8f518a04b9c113748c8302f78f9b439b3b",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2102-06131-p0003",
+       "quote": "We benchmark the reset gate using the bit-flip error correction code [5] and measure growth and removal of leakage in-situ.",
+       "start": 2590,
+       "end": 2713,
+       "chunk_sha256": "591b0bdd0ef0fa06184f2861ac064e8f518a04b9c113748c8302f78f9b439b3b",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "Z error of output qubit",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "leakage induced long time correlated errors",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "reset",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "reset",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "Z error of output qubit",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "Z error of output qubit",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "leakage induced long time correlated errors",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "leakage induced long time correlated errors",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "leakage induced long time correlated errors"
+   ]
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 7.743
+  },
+  "snapshot": {
+   "as_of": 1795596076,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: reset may reduce Z error of output qubit through leakage induced long time correlated errors (read as error).\nOverall: contested. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unresolved.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: X Y errors versus leakage induced long time correlated errors.\n  Review meaning: S† S errors versus Z error of output qubit.\n  Review meaning: error versus leakage induced long time correlated errors.\n  Review meaning: X errors versus leakage induced long time correlated errors.\n  Review meaning: P−π/4 errors versus Z error of output qubit.\n  Review meaning: error versus leakage induced long time correlated errors.\n  Review meaning: effective error versus Z error of output qubit.\n  Review meaning: independent errors versus leakage induced long time correlated errors.\n  Review meaning: correlated errors versus Z error of output qubit.\n  Retain qualification [arxiv-2407-16176-p0005]: However, independent errors in the lowest level of concatenation can generally lead to correlated errors in the higher levels of concatenation.\n\nLink reset -> leakage induced long time correlated errors: supported (1 supporting, 0 contrary).\n  + [arxiv-2102-06131-p0023] We show that reset mitigates leakage-induced long-time correlated errors and significantly improves logical error suppression.\n\nLink leakage induced long time correlated errors -> Z error of output qubit: contested (5 supporting, 1 contrary).\n  + [arxiv-1905-06903-p0022] X, Y and Z errors lead to S†, S and Z errors on |ψ⟩, respectively.\n  + [arxiv-1905-06903-p0030] Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.\n  + [arxiv-1905-06903-p0035] For single-qubit rotations, X errors on the dZ ×dm qubit cause P−π/4 errors and occur with a probability of 0.5dZpL(pphys,dm), whereas Z errors spread to the adjacent qubit with a probability of 0.5(d2 m/dZ)pL(pphys,dZ).\n  - [arxiv-2009-14226-p0033] Note that since we consider a subcomplex, we are guaranteed that a Z error on a qubit in P will not produce an error on any stabilizer which is not in the set of (q− 1)-cells of the complex.\n\nExisting setups that measure one of its terms:\n  [arxiv-2102-06131-p0003] We benchmark the reset gate using the bit-flip error correction code [5] and measure growth and removal of leakage in-situ.\n  [arxiv-2102-06131-p0007] Reset error versus swap and hold for experiment (d) and theory (e) show a wide range of optimal parameters.\n\nCandidate controls (review before adjustment):\n  CNOT gate: outcome_predictor [arxiv-2208-02191-p0033]\n  Cosmic rays: outcome_predictor [arxiv-2402-03208-p0002]\n  Cultivation: outcome_predictor [arxiv-2512-13908-p0002]\n  cultivation circuit: outcome_predictor [arxiv-2512-13908-p0010]\n  D. Implications for Future Processors: outcome_predictor [arxiv-2603-13460-p0023]\n  Erasure: outcome_predictor [arxiv-2601-10461-p0002]\n\nTest plan (mediation):\n  1. Vary reset across matched settings and measure Z error of output qubit.\n  2. Review candidate controls (CNOT gate, Cosmic rays, Cultivation, cultivation circuit, D. Implications for Future Processors, Erasure) for timing, feasibility and causal role before adjustment.\n  3. Repeat with leakage induced long time correlated errors held fixed or blocked to test whether it carries the effect.\n  Fails if: Z error of output qubit does not change when reset varies with the controls fixed, or holding leakage induced long time correlated errors fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for reset.\n  Required: feasible intervention or justified observational design for reset.\n  Required: measurement procedure for Z error of output qubit.\n  Required: unit or explicit categorical scale for Z error of output qubit.\n  Required: measurement procedure for leakage induced long time correlated errors.\n  Required: unit or explicit categorical scale for leakage induced long time correlated errors.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

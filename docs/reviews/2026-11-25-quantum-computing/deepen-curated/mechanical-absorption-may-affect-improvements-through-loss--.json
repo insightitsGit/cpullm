@@ -1,0 +1,663 @@
+{
+ "topic": "dielectric loss",
+ "hypothesis": {
+  "id": "e4ee8aef775f",
+  "text": "mechanical absorption may affect improvements through loss (read as reduced dielectric loss).",
+  "pattern": "chain",
+  "relation": "affects",
+  "anchors": [
+   "mechanical absorption",
+   "improvements"
+  ],
+  "via": [
+   "loss (read as reduced dielectric loss)"
+  ],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2602-22117-p0017",
+   "arxiv-2103-07711-p0002"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2602-22117-p0017",
+    "quote": "With a smoother piezo-bulk interface, surface scattering loss in this sample is substantially lower, suggesting that its loss is dominated by mechanical absorption in the AlN, with a nearly flat frequency dependence.",
+    "start": 206,
+    "end": 422,
+    "chunk_sha256": "7fffe47f238664919e89cd7ea75dce2a6bd7370dd4975843cc2bda7ef70ac729",
+    "relation": "constrains",
+    "subject": "mechanical absorption",
+    "object": "loss",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2103-07711-p0002",
+    "quote": "These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).",
+    "start": 1137,
+    "end": 1329,
+    "chunk_sha256": "ce9e3a1d5da8c446e7f40df0c55aa737a677483f0e292301b9b65787a72c5e63",
+    "relation": "supports",
+    "subject": "reduced dielectric loss",
+    "object": "improvements",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.671,
+   "novelty": 0.578
+  },
+  "falsification_test": "Compare settings where mechanical absorption differs while other inputs are matched. The hypothesis fails if improvements does not change with mechanical absorption, or if fixing loss (read as reduced dielectric loss) removes no part of the effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "loss"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "mechanical absorption",
+   "b": "loss",
+   "c": "improvements"
+  },
+  "path_nodes": [
+   "mechanical absorption",
+   "loss",
+   "improvements"
+  ],
+  "links": [
+   {
+    "source": "mechanical absorption",
+    "target": "loss",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2602-22117-p0017",
+      "quote": "With a smoother piezo-bulk interface, surface scattering loss in this sample is substantially lower, suggesting that its loss is dominated by mechanical absorption in the AlN, with a nearly flat frequency dependence.",
+      "start": 206,
+      "end": 422,
+      "chunk_sha256": "7fffe47f238664919e89cd7ea75dce2a6bd7370dd4975843cc2bda7ef70ac729",
+      "relation": "constrains",
+      "subject": "mechanical absorption",
+      "object": "loss",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2602-22117-p0015",
+      "quote": "Q−1 X,mech is the intrinsic mechanical absorption loss for each layer, which could originate from internal friction and scattering at grain boundaries and defects as the material vibrates [43–45].",
+      "start": 1342,
+      "end": 1538,
+      "chunk_sha256": "407821cec8af95f9123a920e925512bec7a5f0f8af5e641f4854e529ddb2e5ea"
+     },
+     {
+      "document_id": "arxiv-2602-22117-p0017",
+      "quote": "With a smoother piezo-bulk interface, surface scattering loss in this sample is substantially lower, suggesting that its loss is dominated by mechanical absorption in the AlN, with a nearly flat frequency dependence.",
+      "start": 206,
+      "end": 422,
+      "chunk_sha256": "7fffe47f238664919e89cd7ea75dce2a6bd7370dd4975843cc2bda7ef70ac729"
+     },
+     {
+      "document_id": "arxiv-2602-22117-p0018",
+      "quote": "These effects might originate in the bulk, for example, due to polarization-conversion loss, where the longitudinal phonon modes leak into nearby shear or transverse modes, or due to variations in the sampling of defects by different HBAR modes, leading to an inhomogeneous mechanical absorption constant.",
+      "start": 293,
+      "end": 598,
+      "chunk_sha256": "16704f78637daa44759fc661da93b298fe30f2fd096ffbb2f53ad6a4aad12b0d"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   },
+   {
+    "source": "loss",
+    "target": "improvements",
+    "expected_relation": "supports",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2103-07711-p0002",
+      "quote": "These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).",
+      "start": 1137,
+      "end": 1329,
+      "chunk_sha256": "ce9e3a1d5da8c446e7f40df0c55aa737a677483f0e292301b9b65787a72c5e63",
+      "relation": "supports",
+      "subject": "reduced dielectric loss",
+      "object": "improvements",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2103-07711-p0002",
+      "quote": "These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).",
+      "start": 1137,
+      "end": 1329,
+      "chunk_sha256": "ce9e3a1d5da8c446e7f40df0c55aa737a677483f0e292301b9b65787a72c5e63"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "supports"
+    ]
+   }
+  ],
+  "expected_relation": "affects",
+  "direction_check": {
+   "requested": "affects",
+   "status": "consistent",
+   "observed": [
+    "affects"
+   ],
+   "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+  },
+  "verdict": "all_links_supported",
+  "predictions": [
+   {
+    "document_id": "arxiv-2602-22117-p0015",
+    "quote": "Q−1 X,mech is the intrinsic mechanical absorption loss for each layer, which could originate from internal friction and scattering at grain boundaries and defects as the material vibrates [43–45].",
+    "start": 1342,
+    "end": 1538,
+    "chunk_sha256": "407821cec8af95f9123a920e925512bec7a5f0f8af5e641f4854e529ddb2e5ea",
+    "qualification": "source_prediction"
+   },
+   {
+    "document_id": "arxiv-2602-22117-p0018",
+    "quote": "These effects might originate in the bulk, for example, due to polarization-conversion loss, where the longitudinal phonon modes leak into nearby shear or transverse modes, or due to variations in the sampling of defects by different HBAR modes, leading to an inhomogeneous mechanical absorption constant.",
+    "start": 293,
+    "end": 598,
+    "chunk_sha256": "16704f78637daa44759fc661da93b298fe30f2fd096ffbb2f53ad6a4aad12b0d",
+    "qualification": "source_prediction"
+   }
+  ],
+  "setups": [
+   {
+    "document_id": "arxiv-2308-13291-p0002",
+    "quote": "Furthermore, we show that there exists a threshold temperature, under the assumption of a uniform loss rate, at which quantum sampling experiments become classically simulable, and provide an intuitive physical interpretation by relating this occurrence with the disappearance of the quantum state’s non-classical properties.",
+    "start": 1153,
+    "end": 1478,
+    "chunk_sha256": "da3f0a6f2c50f53a55405b4a9aaf3b478212630f8748c6c94f3506c3f8d509a8",
+    "measures": [
+     "loss"
+    ]
+   },
+   {
+    "document_id": "arxiv-2308-13291-p0005",
+    "quote": "III we show that, under the assumption of a uniform loss rate, there exists a threshold temperature − which depends on the system’s losses − at which any sampling experiment becomes classically simulable, even in the presence of ideal detection.",
+    "start": 484,
+    "end": 729,
+    "chunk_sha256": "76e3eb9fa584dd27ed519354e002f921d3f80e545db7e75ae0fda10fbd50d886",
+    "measures": [
+     "loss"
+    ]
+   },
+   {
+    "document_id": "arxiv-2308-13291-p0038",
+    "quote": "Using a phase space method based on the negativity of the relevant quasi-probability distributions, we have established a sufficient condition for the efficient classical simulation of generic quantum (linear) optical experiments affected by loss and thermal noise.",
+    "start": 0,
+    "end": 265,
+    "chunk_sha256": "2ab09d24d71ce4ec74a00b549732dbc6fe0c5a3ae8ee13dadd22ca911071df37",
+    "measures": [
+     "loss"
+    ]
+   },
+   {
+    "document_id": "arxiv-2405-05332-p0043",
+    "quote": "As a warm-up, we test that uniformly sampling parameters φφφ yields the expected exponential decay of loss variance for deep enough circuits.",
+    "start": 0,
+    "end": 141,
+    "chunk_sha256": "f354edf01f9dc5ea53b294d2e1639760c37e947cf2dacb86adbc7a824e93cb6b",
+    "measures": [
+     "loss"
+    ]
+   },
+   {
+    "document_id": "arxiv-2407-21177-p0034",
+    "quote": "We evaluated QT LS by including a surface loss tangent in Eq.",
+    "start": 492,
+    "end": 553,
+    "chunk_sha256": "5513e05155f4d8bc95a6e03bf31568363ecac149b8f91f00681f21d4b2f8cb4f",
+    "measures": [
+     "loss"
+    ]
+   },
+   {
+    "document_id": "arxiv-2511-21236-p0044",
+    "quote": "In both the quantum experiments and simulations, we observe approximately the same improvements as for LiH, getting close to accuracies of 1.6 mEh in the simulations.",
+    "start": 1282,
+    "end": 1448,
+    "chunk_sha256": "ffe2f1df1991d7cd88263f70812f84bc6461d852d9c0bf3644eefdb413d5bf56",
+    "measures": [
+     "improvements"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "Dae - Young Yun",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2608-27682-p0042",
+     "quote": "Dae-Young Yun and Eliya Nachmani provided feedback and contributed to the revision and improvement of the manuscript.",
+     "start": 119,
+     "end": 236,
+     "chunk_sha256": "212e413d755a614677ae11b160f34db1d396cdfb12ac080bc85fc4baf4535f04",
+     "relation": "causes",
+     "subject": "Dae - Young Yun",
+     "object": "improvement",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Eliya Nachmani",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2608-27682-p0042",
+     "quote": "Dae-Young Yun and Eliya Nachmani provided feedback and contributed to the revision and improvement of the manuscript.",
+     "start": 119,
+     "end": 236,
+     "chunk_sha256": "212e413d755a614677ae11b160f34db1d396cdfb12ac080bc85fc4baf4535f04",
+     "relation": "causes",
+     "subject": "Eliya Nachmani",
+     "object": "improvement",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "integrating a Union - Find decoder",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2601-10461-p0050",
+     "quote": "Further, integrating a Union-Find decoder may lead to even higher improvements.",
+     "start": 590,
+     "end": 669,
+     "chunk_sha256": "673a6cede7705c24b7248229d1da8af73146f0630e5e221e9121b3d3afd3fb12",
+     "relation": "causes",
+     "subject": "integrating a Union - Find decoder",
+     "object": "higher improvements",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Richardson extrapolation",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2607-25746-p0064",
+     "quote": "[41], once the amplified expectation values at large noise levels have reached an observabledependent floor, Richardson extrapolation may no longer recover the underlying physical signal and instead produce artefactual improvements.",
+     "start": 178,
+     "end": 410,
+     "chunk_sha256": "667f0ac5724369bcd5773d54c0f71a7c913ce716462e54c768c90f0634eb4441",
+     "relation": "causes",
+     "subject": "Richardson extrapolation",
+     "object": "artefactual improvements",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "sequential portion of computation",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2407-07394-p0003",
+     "quote": "We can rephrase this using Amdahl’s law [3], which states that the performance improvement gained by parallelization is limited by the sequential portion of the computation.",
+     "start": 2401,
+     "end": 2574,
+     "chunk_sha256": "ed0549cfb12a3302c36868790e23d8ed84db0186a765730700a09c23fc72f40f",
+     "relation": "constrains",
+     "subject": "sequential portion of computation",
+     "object": "performance improvement",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "small changes",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2212-11632-p0025",
+     "quote": "The primary takeaway from this work is that small changes to the MWPM decoding method can result in strong performance improvements when certain information about qubit noise is known.",
+     "start": 1121,
+     "end": 1305,
+     "chunk_sha256": "1a790e8a3496f4f031d2bc3b1d101f072af5c4ff8c590dcef4c625d48a85f730",
+     "relation": "causes",
+     "subject": "small changes",
+     "object": "strong performance improvements",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "loss",
+     "source_term": "reduced dielectric loss",
+     "citation": {
+      "document_id": "arxiv-2103-07711-p0002",
+      "quote": "These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).",
+      "start": 1137,
+      "end": 1329,
+      "chunk_sha256": "ce9e3a1d5da8c446e7f40df0c55aa737a677483f0e292301b9b65787a72c5e63",
+      "relation": "supports",
+      "subject": "reduced dielectric loss",
+      "object": "improvements",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "a146c81de2d06b1a",
+    "kind": "variable",
+    "term": "mechanical absorption",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for mechanical absorption."
+   },
+   {
+    "id": "6298de73bc099b1d",
+    "kind": "variable",
+    "term": "mechanical absorption",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for mechanical absorption."
+   },
+   {
+    "id": "1c0756ac4dfa55e3",
+    "kind": "variable",
+    "term": "improvements",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for improvements."
+   },
+   {
+    "id": "88346a81ad995988",
+    "kind": "variable",
+    "term": "improvements",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for improvements."
+   },
+   {
+    "id": "368a78f3ae620e71",
+    "kind": "variable",
+    "term": "loss",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for loss."
+   },
+   {
+    "id": "9b4ff207f964a43b",
+    "kind": "variable",
+    "term": "loss",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for loss."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "mechanical absorption"
+   ],
+   "measure": [
+    "improvements"
+   ],
+   "mediator": "loss",
+   "controls": [
+    "Dae - Young Yun",
+    "Eliya Nachmani",
+    "integrating a Union - Find decoder",
+    "Richardson extrapolation",
+    "sequential portion of computation",
+    "small changes"
+   ],
+   "steps": [
+    "Vary mechanical absorption across matched settings and measure improvements.",
+    "Review candidate controls (Dae - Young Yun, Eliya Nachmani, integrating a Union - Find decoder, Richardson extrapolation, sequential portion of computation, small changes) for timing, feasibility and causal role before adjustment.",
+    "Repeat with loss held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "improvements does not change when mechanical absorption varies with the controls fixed, or holding loss fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "mechanical absorption",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "improvements",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2212-11632-p0003",
+       "quote": "We also obtain significant performance improvements when considering biased noise and independent non-identically distributed (i.ni.d.) error models derived from measurements performed on state-of-the-art quantum processors.",
+       "start": 585,
+       "end": 809,
+       "chunk_sha256": "750e2c819ff8cecf244f7f1289809de387ac7dc237d917d4d891c4b846ed246a",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2512-13908-p0006",
+       "quote": "We observe roughly a 40-fold improvement in state infidelity, relative to state-injection, corresponding to an upper bound of 1(1) × 10−4 error, after discarding instances with detected errors in logical state preparation and measurement.",
+       "start": 794,
+       "end": 1032,
+       "chunk_sha256": "52ed36050a14b64bc1f9ed8521c4116c1c5f64d1fd39630e684884f99ca9f05a",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "loss",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2109-04457-p0041",
+       "quote": "Note that there can be additional quantum operations before the POVM measurements fM„k” i„k”g, but these can be absorbed into the description of the POVMs without loss of generality.",
+       "start": 480,
+       "end": 662,
+       "chunk_sha256": "f74c93f27ab6064b7a4130c7d59b0ed6cc2ee82b67fbff91504dfdf862510bfe",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2308-13291-p0025",
+       "quote": "of this inequality (i.e., the threshold temperature) diverges at ηL = 1, which can be understood as the loss parameter also measures the ability of the LON to couple the system with the environment.",
+       "start": 11,
+       "end": 209,
+       "chunk_sha256": "245fb95dabf0043ac4547451c3da500bfacaeb1fccf1640bd9e8fc8aef0df0be",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2311-05680-p0007",
+       "quote": "The model estimations yest are then compared with some measured ground truth data ymeas by evaluating a loss function J(yest, ymeas), which quantifies the capability of the model to provide an estimate of the underlying law g.",
+       "start": 208,
+       "end": 434,
+       "chunk_sha256": "35f6f40c1e70597982f929e3468edbfbf12ad202ff52c0e6648cd57281d95566",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "mechanical absorption",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "mechanical absorption",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "improvements",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "improvements",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "loss",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "loss",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "loss"
+   ]
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 8.424
+  },
+  "snapshot": {
+   "as_of": 1795596108,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: mechanical absorption may affect improvements through loss (read as reduced dielectric loss).\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: consistent.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: reduced dielectric loss versus loss.\n\nLink mechanical absorption -> loss: supported (1 supporting, 0 contrary).\n  + [arxiv-2602-22117-p0017] With a smoother piezo-bulk interface, surface scattering loss in this sample is substantially lower, suggesting that its loss is dominated by mechanical absorption in the AlN, with a nearly flat frequency dependence.\n\nLink loss -> improvements: supported (1 supporting, 0 contrary).\n  + [arxiv-2103-07711-p0002] These significant improvements in quantum coherence are explained by the reduced dielectric loss compared to previously reported NbN-based qubits with MgO substrates (T1approxT2approx0.5 mus).\n\nSource predictions naming two or more of its terms:\n  [arxiv-2602-22117-p0015] Q−1 X,mech is the intrinsic mechanical absorption loss for each layer, which could originate from internal friction and scattering at grain boundaries and defects as the material vibrates [43–45].\n  [arxiv-2602-22117-p0018] These effects might originate in the bulk, for example, due to polarization-conversion loss, where the longitudinal phonon modes leak into nearby shear or transverse modes, or due to variations in the sampling of defects by different HBAR modes, leading to an inhomogeneous mechanical absorption constant.\n\nExisting setups that measure one of its terms:\n  [arxiv-2308-13291-p0002] Furthermore, we show that there exists a threshold temperature, under the assumption of a uniform loss rate, at which quantum sampling experiments become classically simulable, and provide an intuitive physical interpretation by relating this occurrence with the disappearance of the quantum state’s non-classical properties.\n  [arxiv-2308-13291-p0005] III we show that, under the assumption of a uniform loss rate, there exists a threshold temperature − which depends on the system’s losses − at which any sampling experiment becomes classically simulable, even in the presence of ideal detection.\n  [arxiv-2308-13291-p0038] Using a phase space method based on the negativity of the relevant quasi-probability distributions, we have established a sufficient condition for the efficient classical simulation of generic quantum (linear) optical experiments affected by loss and thermal noise.\n  [arxiv-2405-05332-p0043] As a warm-up, we test that uniformly sampling parameters φφφ yields the expected exponential decay of loss variance for deep enough circuits.\n\nCandidate controls (review before adjustment):\n  Dae - Young Yun: outcome_predictor [arxiv-2608-27682-p0042]\n  Eliya Nachmani: outcome_predictor [arxiv-2608-27682-p0042]\n  integrating a Union - Find decoder: outcome_predictor [arxiv-2601-10461-p0050]\n  Richardson extrapolation: outcome_predictor [arxiv-2607-25746-p0064]\n  sequential portion of computation: outcome_predictor [arxiv-2407-07394-p0003]\n  small changes: outcome_predictor [arxiv-2212-11632-p0025]\n\nTest plan (mediation):\n  1. Vary mechanical absorption across matched settings and measure improvements.\n  2. Review candidate controls (Dae - Young Yun, Eliya Nachmani, integrating a Union - Find decoder, Richardson extrapolation, sequential portion of computation, small changes) for timing, feasibility and causal role before adjustment.\n  3. Repeat with loss held fixed or blocked to test whether it carries the effect.\n  Fails if: improvements does not change when mechanical absorption varies with the controls fixed, or holding loss fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for mechanical absorption.\n  Required: feasible intervention or justified observational design for mechanical absorption.\n  Required: measurement procedure for improvements.\n  Required: unit or explicit categorical scale for improvements.\n  Required: measurement procedure for loss.\n  Required: unit or explicit categorical scale for loss.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

@@ -1,0 +1,505 @@
+{
+ "topic": "quantum advantage",
+ "hypothesis": {
+  "id": "7accde5d4dc8",
+  "text": "samples may constrain wide range of applications through weak quantum error mitigation algorithm (read as Quantum algorithms).",
+  "pattern": "chain",
+  "relation": "constrains",
+  "anchors": [
+   "samples",
+   "wide range of applications"
+  ],
+  "via": [
+   "weak quantum error mitigation algorithm (read as Quantum algorithms)"
+  ],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2510-10905-p0003",
+   "arxiv-2510-10905-p0009",
+   "arxiv-2511-13408-p0002"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2510-10905-p0003",
+    "quote": "In particular, Theorem 1 of [20] shows that any (weak) quantum error mitigation algorithm requires a number of samples proportional to p−Ω(nD) where p is the local depolarizing noise rate, n is the number of qubits, and D is the depth of the circuit.",
+    "start": 2887,
+    "end": 3137,
+    "chunk_sha256": "413de7d247f0ebe350b3a048046eb05716423d03c365d1be461509bd993f323b",
+    "relation": "constrains",
+    "subject": "samples",
+    "object": "weak quantum error mitigation algorithm",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2510-10905-p0009",
+    "quote": "Recall that recent work (namely, Theorem 1 of [20]) has shown that any (weak) quantum error mitigation algorithm requires a number of samples proportional to p−Ω(nD) where p is the local depolarizing noise rate, n is the number of qubits, and D is the depth of the circuit.",
+    "start": 0,
+    "end": 273,
+    "chunk_sha256": "3ac8dcd522b3fa635e501f711683cda70956deb0ae8d0b3209c3e3e05efa3edb",
+    "relation": "constrains",
+    "subject": "samples",
+    "object": "weak quantum error mitigation algorithm",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2511-13408-p0002",
+    "quote": "Quantum algorithms based on parameterized quantum circuits (PQCs) have enabled a wide range of applications on near-term quantum devices.",
+    "start": 0,
+    "end": 137,
+    "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130",
+    "relation": "increases",
+    "subject": "Quantum algorithms",
+    "object": "wide range of applications",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.543,
+   "novelty": 0.6
+  },
+  "falsification_test": "Compare settings where samples differs while other inputs are matched. The hypothesis fails if wide range of applications does not stay bounded with samples, or if fixing weak quantum error mitigation algorithm (read as Quantum algorithms) removes no part of the effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": "INSUFFICIENT_SUPPORT",
+  "hub": "weak quantum error mitigation algorithm"
+ },
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "samples",
+   "b": "weak quantum error mitigation algorithm",
+   "c": "wide range of applications"
+  },
+  "path_nodes": [
+   "samples",
+   "weak quantum error mitigation algorithm",
+   "wide range of applications"
+  ],
+  "links": [
+   {
+    "source": "samples",
+    "target": "weak quantum error mitigation algorithm",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2510-10905-p0003",
+      "quote": "In particular, Theorem 1 of [20] shows that any (weak) quantum error mitigation algorithm requires a number of samples proportional to p−Ω(nD) where p is the local depolarizing noise rate, n is the number of qubits, and D is the depth of the circuit.",
+      "start": 2887,
+      "end": 3137,
+      "chunk_sha256": "413de7d247f0ebe350b3a048046eb05716423d03c365d1be461509bd993f323b",
+      "relation": "constrains",
+      "subject": "samples",
+      "object": "weak quantum error mitigation algorithm",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2510-10905-p0003",
+      "quote": "In particular, Theorem 1 of [20] shows that any (weak) quantum error mitigation algorithm requires a number of samples proportional to p−Ω(nD) where p is the local depolarizing noise rate, n is the number of qubits, and D is the depth of the circuit.",
+      "start": 2887,
+      "end": 3137,
+      "chunk_sha256": "413de7d247f0ebe350b3a048046eb05716423d03c365d1be461509bd993f323b"
+     },
+     {
+      "document_id": "arxiv-2510-10905-p0009",
+      "quote": "Recall that recent work (namely, Theorem 1 of [20]) has shown that any (weak) quantum error mitigation algorithm requires a number of samples proportional to p−Ω(nD) where p is the local depolarizing noise rate, n is the number of qubits, and D is the depth of the circuit.",
+      "start": 0,
+      "end": 273,
+      "chunk_sha256": "3ac8dcd522b3fa635e501f711683cda70956deb0ae8d0b3209c3e3e05efa3edb"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   },
+   {
+    "source": "weak quantum error mitigation algorithm",
+    "target": "wide range of applications",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2511-13408-p0002",
+      "quote": "Quantum algorithms based on parameterized quantum circuits (PQCs) have enabled a wide range of applications on near-term quantum devices.",
+      "start": 0,
+      "end": 137,
+      "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130",
+      "relation": "increases",
+      "subject": "Quantum algorithms",
+      "object": "wide range of applications",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   }
+  ],
+  "expected_relation": "constrains",
+  "direction_check": {
+   "requested": "constrains",
+   "status": "consistent",
+   "observed": [
+    "constrains"
+   ],
+   "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-2210-11505-p0003",
+    "quote": "By relating error mitigation to a statistical inference problem, we show that even at shallow circuit depths comparable to the current experiments, a superpolynomial number of samples is needed in the worst case to estimate the expectation values of noiseless observables, the principal task of error mitigation.",
+    "start": 534,
+    "end": 846,
+    "chunk_sha256": "bc4bf15652cc22c6ce7a63d4556c849658a096dcc50ffdca5a925157cf5a7417",
+    "measures": [
+     "samples"
+    ]
+   },
+   {
+    "document_id": "arxiv-2311-18090-p0050",
+    "quote": "10), the synthetic process consists of the following main steps: A) Generate barren areas covering at least the nominal percentage of barren plateaus in the domain and sample all grid points in them.",
+    "start": 249,
+    "end": 448,
+    "chunk_sha256": "d292b9db393de9453fcafb9cad73e1b43e3dbadbf371ce6c05a860749d4461c4",
+    "measures": [
+     "samples"
+    ]
+   },
+   {
+    "document_id": "arxiv-2511-21236-p0043",
+    "quote": "2-5 show energy averages over all experiments with error bars that represent sample standard deviations.",
+    "start": 932,
+    "end": 1036,
+    "chunk_sha256": "274b94f27cefe0e8e2eadfb1e4b9e771c1ced2ec116f04a358c0596ef5063f90",
+    "measures": [
+     "samples"
+    ]
+   },
+   {
+    "document_id": "arxiv-2511-21236-p0047",
+    "quote": "For the LiH quantum experiments, the sample standard deviations of ∆EtM0 are 0.0119, 0.0227, 0.0414 and 0.0608 Eh for 1, 2, 3 and 4 layers, respectively.",
+    "start": 368,
+    "end": 521,
+    "chunk_sha256": "5228cd30c0540146790846e8024e5126423211d14d572aedf40ebd5afd5b9d60",
+    "measures": [
+     "samples"
+    ]
+   },
+   {
+    "document_id": "arxiv-2511-21236-p0050",
+    "quote": "For the quantum experiments, the sample standard deviations of ∆EtM0 are 0.1185 and 0.0160 Eh for butadiene and H2O, respectively.",
+    "start": 387,
+    "end": 517,
+    "chunk_sha256": "138d6c4b051ca6d384536975b6892a09479a9cab7c047c5f3e05020271db9e96",
+    "measures": [
+     "samples"
+    ]
+   },
+   {
+    "document_id": "arxiv-2511-21236-p0053",
+    "quote": "The sample standard deviation of ∆EtM0 from the quantum experiments is",
+    "start": 283,
+    "end": 353,
+    "chunk_sha256": "e20646d6f39ade3b2e7ade866db0c99ce363ae574db767ce9d9344274a699016",
+    "measures": [
+     "samples"
+    ]
+   }
+  ],
+  "confounders": [],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "weak quantum error mitigation algorithm",
+     "source_term": "Quantum algorithms",
+     "citation": {
+      "document_id": "arxiv-2511-13408-p0002",
+      "quote": "Quantum algorithms based on parameterized quantum circuits (PQCs) have enabled a wide range of applications on near-term quantum devices.",
+      "start": 0,
+      "end": 137,
+      "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130",
+      "relation": "increases",
+      "subject": "Quantum algorithms",
+      "object": "wide range of applications",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "00356c152658bb5a",
+    "kind": "variable",
+    "term": "samples",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for samples."
+   },
+   {
+    "id": "935d44a3fa2923cf",
+    "kind": "variable",
+    "term": "samples",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for samples."
+   },
+   {
+    "id": "f5009160d62e847e",
+    "kind": "variable",
+    "term": "wide range of applications",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for wide range of applications."
+   },
+   {
+    "id": "864dab8a955db0dc",
+    "kind": "variable",
+    "term": "wide range of applications",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for wide range of applications."
+   },
+   {
+    "id": "6258e60ac81c5549",
+    "kind": "variable",
+    "term": "weak quantum error mitigation algorithm",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for weak quantum error mitigation algorithm."
+   },
+   {
+    "id": "ed7cf8c58a2f74f8",
+    "kind": "variable",
+    "term": "weak quantum error mitigation algorithm",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for weak quantum error mitigation algorithm."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "samples"
+   ],
+   "measure": [
+    "wide range of applications"
+   ],
+   "mediator": "weak quantum error mitigation algorithm",
+   "controls": [],
+   "steps": [
+    "Vary samples across matched settings and measure wide range of applications.",
+    "No additional outcome cause was extracted; this does not establish absence of confounding.",
+    "Repeat with weak quantum error mitigation algorithm held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "wide range of applications does not change when samples varies with the controls fixed, or holding weak quantum error mitigation algorithm fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "samples",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2109-04457-p0043",
+       "quote": "P is then constrained to represent (1) local measurement procedures M„k” that can coherently interact distorted states within the kth cluster (i.e., fE„k” q „ψ”gQ q=1) to produce some classical interim outputsi„k” and (2) classical post-processing function eA that transform the interim outputs fi„k”gK k=1 into a sample",
+       "start": 370,
+       "end": 690,
+       "chunk_sha256": "4dab3e4b1ea8f205c387654790b4a3eb4ff53a48c26fea5e7badb4ba298e4900",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2206-08695-p0027",
+       "quote": "[40] See Supplemental Material at [URL will be inserted by publisher] for the details on the sample fabrication, measurement setup, qubit spectroscopy, rabi oscillations, mixing results for 5 and 6 driving pulses, analytical expressions for mixing maps, numerical simulations of mixing.",
+       "start": 0,
+       "end": 286,
+       "chunk_sha256": "51d575aef49c8580e6567312dc014e4a089770700448fc69b6701e211242727c",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2208-05378-p0008",
+       "quote": "Our expressibility measure evaluate minus MMD distance between Funiform and the ansatz’s output samples.",
+       "start": 256,
+       "end": 360,
+       "chunk_sha256": "1df3a5eb0bda4357aa49dfc07cfda622981383b0a4d8a8118f5b01d327a7ecd3",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "wide range of applications",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "weak quantum error mitigation algorithm",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "samples",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "samples",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "wide range of applications",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "wide range of applications",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "weak quantum error mitigation algorithm",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "weak quantum error mitigation algorithm",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "weak quantum error mitigation algorithm"
+   ]
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 9.363
+  },
+  "snapshot": {
+   "as_of": 1795596260,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: samples may constrain wide range of applications through weak quantum error mitigation algorithm (read as Quantum algorithms).\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: consistent.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: Quantum algorithms versus weak quantum error mitigation algorithm.\n\nLink samples -> weak quantum error mitigation algorithm: supported (1 supporting, 0 contrary).\n  + [arxiv-2510-10905-p0003] In particular, Theorem 1 of [20] shows that any (weak) quantum error mitigation algorithm requires a number of samples proportional to p−Ω(nD) where p is the local depolarizing noise rate, n is the number of qubits, and D is the depth of the circuit.\n\nLink weak quantum error mitigation algorithm -> wide range of applications: supported (1 supporting, 0 contrary).\n  + [arxiv-2511-13408-p0002] Quantum algorithms based on parameterized quantum circuits (PQCs) have enabled a wide range of applications on near-term quantum devices.\n\nExisting setups that measure one of its terms:\n  [arxiv-2210-11505-p0003] By relating error mitigation to a statistical inference problem, we show that even at shallow circuit depths comparable to the current experiments, a superpolynomial number of samples is needed in the worst case to estimate the expectation values of noiseless observables, the principal task of error mitigation.\n  [arxiv-2311-18090-p0050] 10), the synthetic process consists of the following main steps: A) Generate barren areas covering at least the nominal percentage of barren plateaus in the domain and sample all grid points in them.\n  [arxiv-2511-21236-p0043] 2-5 show energy averages over all experiments with error bars that represent sample standard deviations.\n  [arxiv-2511-21236-p0047] For the LiH quantum experiments, the sample standard deviations of ∆EtM0 are 0.0119, 0.0227, 0.0414 and 0.0608 Eh for 1, 2, 3 and 4 layers, respectively.\n\nTest plan (mediation):\n  1. Vary samples across matched settings and measure wide range of applications.\n  2. No additional outcome cause was extracted; this does not establish absence of confounding.\n  3. Repeat with weak quantum error mitigation algorithm held fixed or blocked to test whether it carries the effect.\n  Fails if: wide range of applications does not change when samples varies with the controls fixed, or holding weak quantum error mitigation algorithm fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for samples.\n  Required: feasible intervention or justified observational design for samples.\n  Required: measurement procedure for wide range of applications.\n  Required: unit or explicit categorical scale for wide range of applications.\n  Required: measurement procedure for weak quantum error mitigation algorithm.\n  Required: unit or explicit categorical scale for weak quantum error mitigation algorithm.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}
