@@ -21,7 +21,7 @@ from dataclasses import dataclass
 from cpu_llm.cycle_exploration import Budget, StopSearch
 from cpu_llm.frontier import (
     CLAIM_STATUS, FrontierLimits, _CAUSAL, _Term, _bridge, _content, _malformed, _similarity, _sign, _tokens,
-    build_graph, compose, related, term_key, usable_term,
+    artefact_reason, build_graph, compose, related, term_key, usable_term,
 )
 
 SCHEMA = 'deepen-v1'
@@ -267,7 +267,7 @@ def _confounders(graph, outcome, exclude, similar, budget=None):
             continue
         if any(related(edge.subject_key, key) for key in excluded) or edge.subject_key in seen:
             continue
-        if _malformed(edge.subject) or not usable_term(edge.subject):
+        if _malformed(edge.subject) or not usable_term(edge.subject) or artefact_reason(edge.subject):
             continue  # Nouns such as cooling demand and training cost remain valid candidate variables.
         seen.add(edge.subject_key)
         found.append(dict(term=edge.subject, relation=edge.kind, citation=_cite(edge)))

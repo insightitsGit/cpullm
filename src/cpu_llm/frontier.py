@@ -414,7 +414,12 @@ def parser_name():
 
 
 def _phrase(token):
-    """A noun phrase around ``token``: its modifiers and at most one ``of``/``for`` complement."""
+    """A noun phrase around ``token``: its modifiers and at most one ``of``/``for`` complement.
+
+    A phrase headed by a person's name (an author such as "Eliya Nachmani") names no variable and is dropped.
+    """
+    if token.ent_type_ == 'PERSON':
+        return ''
     left = []
 
     def gather(node):
@@ -1025,6 +1030,52 @@ _COMPARATIVE = frozenset('larger smaller higher lower faster slower better worse
 _NUMBER_WORD = frozenset('one two three four five six seven eight nine ten hundred thousand million billion'.split())
 
 
+_HEADER = re.compile(r'^\s*(?:(?:[A-Z]|[IVXL]{1,5}|\d{1,2}(?:\.\d{1,2}){0,3})\.\s+[A-Z]|\d{1,2}(?:\.\d{1,2}){1,3}\s+[A-Z]|'
+                     r'(?:Fig|Figs|Figure|Table|Tab|Sec|Section|Appendix|Eq|Eqs|Equation|Ref|Refs)\b\.?)')
+_INITIAL_NAME = re.compile(r'\b[A-Z]\.\s?(?:[A-Z]\.\s?)?[A-Z][a-z]{2,}\b')
+_JOINED = ('the', 'of', 'to', 'our', 'and')
+_META_HEAD = frozenset('''issue issues result results definition definitions implication implications advance advances
+    former latter remainder literature research'''.split())
+_META_START = frozenset('recent previous our this these'.split())
+_COMPARATOR = re.compile(r'^\s*(?:less|more|fewer|greater)\s+than\s+[\d.]|^\s*(?:at\s+(?:least|most)|up\s+to)\s+[\d.]',
+                         re.I)
+_PARTITIVE = re.compile(r'^\s*(?:the\s+)?(?:majority|minority|fraction|portion|proportion|bulk|most|part)\s+of\b',
+                        re.I)
+
+
+def artefact_reason(term):
+    """Why ``term`` is a document artefact rather than a variable, or None.
+
+    Catches section headers ("D. Implications for Future Processors"), figure and table labels, initial-plus-surname
+    author names ("S. Bravyi"), words merged by text extraction ("Tothebestofour"), meta nouns ("issues",
+    "definition", "Recent experiments"), bare comparator quantities ("less than 10 mEh") and partitive phrases
+    ("majority of error").
+    """
+    if not isinstance(term, str) or not term.strip():
+        return None
+    if re.fullmatch(r'\s*(?:[A-Z]\.\s?){1,2}[A-Z][a-z]+(?:[- ][A-Z][a-z]+)?\s*', term):
+        return 'author_name'          # "S. Bravyi": initials and a surname, nothing else
+    if _HEADER.search(term):
+        return 'header'               # "D. Implications for Future Processors", "3.2 Noise model", "Fig. 3"
+    if _INITIAL_NAME.search(term):
+        return 'author_name'
+    for token in re.findall(r'[A-Za-z]+', term):
+        lowered = token.casefold()
+        # Text extraction can drop spaces ("Tothebestofour"); a real long word rarely embeds "of" plus another
+        # function word ("photothermal" embeds "to" and "the" but not "of").
+        if len(lowered) >= 12 and ('of' in lowered or 'our' in lowered) and sum(w in lowered for w in _JOINED) >= 2:
+            return 'merged_words'
+    if _COMPARATOR.search(term):
+        return 'comparator_quantity'
+    if _PARTITIVE.search(term):
+        return 'partitive'
+    words = [t.casefold() for t in _tokens(term)]
+    if words and (words[0] in _META_START and len(words) <= 3 or words[-1] in _META_HEAD
+                  or ' '.join(words[:3]) == 'line of work'):
+        return 'meta_noun'
+    return None
+
+
 def _malformed(term):
     """A broken, vague or truncated phrase cannot anchor a hypothesis."""
     tokens = _tokens(term)
@@ -1065,6 +1116,8 @@ def _contains(left, right):
 def pre_thinker_check(candidate, reading, graph):
     """Reject malformed, circular, single-source or restated candidates."""
     terms = [term for edge in candidate.edges for term in (edge.subject, edge.object)]
+    if any(artefact_reason(term) for term in terms):
+        return None, 'artefact'
     if any(_malformed(term) for term in terms):
         return None, 'malformed'
     keys = reading['keys']
