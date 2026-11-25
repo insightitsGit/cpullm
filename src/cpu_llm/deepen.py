@@ -525,7 +525,7 @@ def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, simila
     composition = dict(status='incomplete', bridges=[], qualifications=[], source_contexts=[], scope_differences=[],
                        interaction=dict(status='not_assessed'), scientific_validity='not_established')
     novelty = dict(requested=options['novelty'], kb_status='not_assessed', matches=[], external_matches=[],
-                   external_status='not_assessed', scientific_novelty='not_established')
+                   external_status='not_assessed', prior_art_status='not_checked', scientific_novelty='not_established')
     hints = {}
     try:
         budget.check()
@@ -674,8 +674,11 @@ def format_reply(receipt, text):
     lines.append('Novelty: ' + novelty['kb_status'].replace('_', ' ') + '; external review: ' +
                  novelty['external_status'].replace('_', ' ') + '. Scientific novelty not established.')
     lines.extend(f'  Potential KB overlap [{c["document_id"]}]: {c["quote"]}' for c in novelty['matches'])
-    lines.extend(f'  External overlap candidate: {c["title"]} ({c["url"]}) — {c["excerpt"]}'
-                 for c in novelty['external_matches'])
+    if novelty.get('prior_art_status') == 'potential_prior_art':
+        lines.append('  Potential prior art found outside the knowledge base; a reviewer must decide whether it is '
+                     'the same claim.')
+    lines.extend(f'  External overlap candidate: {c["title"]} ({c["url"]}), names {", ".join(c.get("terms_named", [])) or "no terms"}'
+                 f' — {c["excerpt"][:300]}' for c in novelty['external_matches'])
     if receipt['incomplete']:
         lines.append(f'\nEvidence search incomplete: {receipt["stop_reason"]}.')
     return '\n'.join(lines)

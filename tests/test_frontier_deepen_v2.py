@@ -296,3 +296,57 @@ def test_plain_questions_keep_their_route_but_explicit_checks_read_free_forms():
     assert natural_deepen_target('Is it true that smoking causes cancer?') is None
     assert natural_deepen_target('Check this hypothesis: noise reduces quantum advantage.') == \
         'noise reduces quantum advantage'
+
+
+# ------------------------------------------------------------------ 10. opt-in arXiv prior-art reviewer
+
+import io  # noqa: E402
+
+from cpu_llm.literature_arxiv import ArxivReviewer, build_query, parse_feed  # noqa: E402
+
+FEED = b'''<?xml version="1.0" encoding="UTF-8"?><feed xmlns="http://www.w3.org/2005/Atom">
+<entry><id>http://arxiv.org/abs/2405.00146v2</id><title>Averting multi-qubit burst errors in surface code magic state
+factories</title><summary>Cosmic ray impacts cause correlated errors in magic state factories.</summary></entry>
+<entry><id>http://arxiv.org/abs/2101.00001v1</id><title>Unrelated</title><summary>Nothing here.</summary></entry>
+</feed>'''
+
+
+class _Response(io.BytesIO):
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        return False
+
+
+def test_query_pairs_terms_and_feed_parses():
+    query = build_query(['Cosmic rays', 'magic state factories', 'correlated errors'])
+    assert query.count(' AND ') == 3 and '"Cosmic rays"' in query
+    records = parse_feed(FEED)
+    assert records[0]['url'] == 'https://arxiv.org/abs/2405.00146'
+    with pytest.raises(ValueError):
+        parse_feed(b'<!DOCTYPE x [<!ENTITY a "b">]><feed/>')
+
+
+def test_external_review_flags_potential_prior_art_only():
+    seen = {}
+
+    def opener(request, timeout):
+        seen['url'] = request.full_url
+        return _Response(FEED)
+    reviewer = ArxivReviewer(opener=opener, sleep=lambda s: None)
+    rows = rows_of('Cosmic rays increase correlated errors.', 'Correlated errors increase magic state factories failures.')
+    receipt = run_deepen({'hypothesis': 'Cosmic rays may increase magic state factories failures through correlated errors.',
+                          'novelty': True, 'external_review': True}, rows, literature_reviewer=reviewer)
+    novelty = receipt['novelty_review']
+    assert 'export.arxiv.org' in seen['url']
+    assert novelty['prior_art_status'] == 'potential_prior_art'
+    assert novelty['scientific_novelty'] == 'not_established'
+    assert novelty['external_matches'][0]['terms_named']
+
+
+def test_external_review_needs_a_registered_reviewer():
+    rows = rows_of('Cosmic rays increase correlated errors.')
+    receipt = run_deepen({'hypothesis': 'Cosmic rays may increase correlated errors.', 'novelty': True,
+                          'external_review': True}, rows)
+    assert receipt['novelty_review']['prior_art_status'] == 'not_configured'

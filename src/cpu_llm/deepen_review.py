@@ -212,7 +212,8 @@ def operationalize(plan, spec, options, composition, hints=None):
 
 def novelty_review(spec, sentences, options, budget, reviewer=None):
     result = dict(requested=options['novelty'], kb_status='not_requested', matches=[],
-                  external_status='not_requested', external_matches=[], scientific_novelty='not_established')
+                  external_status='not_requested', external_matches=[], prior_art_status='not_checked',
+                  scientific_novelty='not_established')
     if not options['novelty']:
         return result
     terms = [t for t in dict.fromkeys([spec.a, *spec.via, spec.b, spec.c]) if t]
@@ -224,7 +225,7 @@ def novelty_review(spec, sentences, options, budget, reviewer=None):
     if not options['external_review']:
         return result
     if reviewer is None:
-        result['external_status'] = 'not_configured'
+        result.update(external_status='not_configured', prior_art_status='not_configured')
         return result
     budget.check()
     remaining = budget.limits.max_seconds - (budget.clock() - budget.started)
@@ -243,14 +244,19 @@ def novelty_review(spec, sentences, options, budget, reviewer=None):
             parsed = urlparse(url)
             if parsed.scheme != 'https' or not parsed.hostname or parsed.username or parsed.password:
                 raise ValueError('Literature references require HTTPS URLs without credentials.')
-            clean.append(dict(title=title, url=url, excerpt=_text(record.get('excerpt'), 'excerpt', 3000),
+            excerpt = _text(record.get('excerpt'), 'excerpt', 3000)
+            stems = set(_content(_tokens(title + ' ' + excerpt)))
+            named = [t for t in terms if set(_content(_tokens(t))) and set(_content(_tokens(t))) <= stems]
+            clean.append(dict(title=title, url=url, excerpt=excerpt, terms_named=named,
                               qualification='external_overlap_candidate_not_kb_evidence'))
-        result.update(external_status='reviewed_candidates', external_matches=clean)
+        result.update(external_status='reviewed_candidates', external_matches=clean,
+                      prior_art_status='potential_prior_art' if any(len(c['terms_named']) >= 2 for c in clean)
+                      else 'none_found')
     except Exception as exc:
         from cpu_llm.cycle_exploration import StopSearch
         if isinstance(exc, StopSearch):
             raise
-        result['external_status'] = 'unavailable_or_invalid'
+        result.update(external_status='unavailable_or_invalid', prior_art_status='unavailable')
     return result
 
 
