@@ -14,6 +14,10 @@
  "note": "Every lead is an UNVERIFIED_HYPOTHESIS. Novelty was checked only against this knowledge base.",
  "leads": [
   {
+   "status": "partly known in literature",
+   "prior_art": [
+    "arXiv:2505.05249, \"Quantum Surrogate-Driven Image Classifier: A Gradient-Free Approach to Avoid Barren Plateaus\": combines a gradient-free method with mid-circuit measurement and reset to avoid barren plateaus. It does not measure how a gradient-free optimizer's shot cost scales with qubit count under each mitigation, so the scaling question may remain open."
+   ],
    "id": "QC-1",
    "priority": "high",
    "title": "Do barren-plateau mitigations also remove the exponential cost of gradient-free optimizers?",
@@ -27,7 +31,6 @@
     "Simulate 4–12 qubit circuits with and without each mitigation; measure cost-function variance and the shots a gradient-free optimizer (e.g. Nelder–Mead, COBYLA) needs to reach a fixed accuracy, versus qubit count.",
     "Fit exponential vs polynomial scaling; the hypothesis fails if the shot count still grows exponentially with the mitigation."
    ],
-   "status": "open",
    "claim_status": "UNVERIFIED_HYPOTHESIS",
    "hypotheses": [
     {
@@ -129,6 +132,8 @@
    ]
   },
   {
+   "status": "open",
+   "prior_art": [],
    "id": "QC-2",
    "priority": "medium",
    "title": "Do two barren-plateau mitigations combine (chemical initialization × mid-circuit measurements)?",
@@ -141,7 +146,6 @@
     "Run the 2×2 simulation: neither, each alone, both; measure gradient variance versus system size.",
     "Predefine an effect threshold for \"interaction\"."
    ],
-   "status": "open",
    "claim_status": "UNVERIFIED_HYPOTHESIS",
    "hypotheses": [
     {
@@ -194,6 +198,8 @@
    ]
   },
   {
+   "status": "open",
+   "prior_art": [],
    "id": "QC-3",
    "priority": "medium",
    "title": "How much of the cosmic-ray penalty can correlation-aware decoding recover?",
@@ -206,7 +212,6 @@
     "Review the literature on radiation-aware and correlation-aware decoders.",
     "Simulate a surface code with injected radiation-like bursts; compare a standard decoder with one given the burst model."
    ],
-   "status": "open",
    "claim_status": "UNVERIFIED_HYPOTHESIS",
    "hypotheses": [
     {
@@ -246,6 +251,8 @@
    ]
   },
   {
+   "status": "open",
+   "prior_art": [],
    "id": "QC-4",
    "priority": "medium",
    "title": "Is error mitigation useful only where classical simulation is already easy?",
@@ -258,7 +265,6 @@
     "Check whether a paper states the trade-off directly.",
     "For a benchmark family, map observable weight versus mitigation sample cost versus classical simulation cost."
    ],
-   "status": "open",
    "claim_status": "UNVERIFIED_HYPOTHESIS",
    "hypotheses": [
     {
@@ -309,6 +315,8 @@
    ]
   },
   {
+   "status": "open",
+   "prior_art": [],
    "id": "QC-5",
    "priority": "low",
    "title": "Distillation speed versus circuit error in magic-state factories",
@@ -319,7 +327,6 @@
    "next_steps": [
     "Read 2407.07394 for how discarded states are handled; the link to output error may not hold if discarded states are never used."
    ],
-   "status": "open",
    "claim_status": "UNVERIFIED_HYPOTHESIS",
    "hypotheses": [
     {
@@ -373,6 +380,10 @@
    ]
   },
   {
+   "status": "known in literature",
+   "prior_art": [
+    "arXiv:2405.00146, \"Averting multi-qubit burst errors in surface code magic state factories\": studies cosmic-ray and TLS burst errors in magic-state factories directly."
+   ],
    "id": "QC-6",
    "priority": "low",
    "title": "Do radiation bursts correlate failures inside magic-state factories?",
@@ -384,7 +395,6 @@
     "Run Deepen with the novelty review on this entry.",
     "Search for radiation effects on distillation factories."
    ],
-   "status": "open",
    "claim_status": "UNVERIFIED_HYPOTHESIS",
    "hypotheses": [
     {

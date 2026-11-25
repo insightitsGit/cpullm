@@ -6,16 +6,16 @@ Created 2026-11-25 from a Frontier and Deepen run over 155 arXiv quant-ph papers
 
 | ID | Priority | Lead | Status |
 |---|---|---|---|
-| [QC-1](#qc-1) | high | Do barren-plateau mitigations also remove the exponential cost of gradient-free optimizers? | open |
+| [QC-1](#qc-1) | high | Do barren-plateau mitigations also remove the exponential cost of gradient-free optimizers? | partly known in literature |
 | [QC-2](#qc-2) | medium | Do two barren-plateau mitigations combine (chemical initialization × mid-circuit measurements)? | open |
 | [QC-3](#qc-3) | medium | How much of the cosmic-ray penalty can correlation-aware decoding recover? | open |
 | [QC-4](#qc-4) | medium | Is error mitigation useful only where classical simulation is already easy? | open |
 | [QC-5](#qc-5) | low | Distillation speed versus circuit error in magic-state factories | open |
-| [QC-6](#qc-6) | low | Do radiation bursts correlate failures inside magic-state factories? | open |
+| [QC-6](#qc-6) | low | Do radiation bursts correlate failures inside magic-state factories? | known in literature |
 
 ## QC-1
 
-**Do barren-plateau mitigations also remove the exponential cost of gradient-free optimizers?** · priority high · status open
+**Do barren-plateau mitigations also remove the exponential cost of gradient-free optimizers?** · priority high · status partly known in literature
 
 Barren plateaus make even gradient-free optimizers scale exponentially (2011.12245). Three papers report mitigations for gradients. No paper in the knowledge base tests whether those mitigations also cut the shot cost of gradient-free optimizers.
 
@@ -35,6 +35,10 @@ Barren plateaus make even gradient-free optimizers scale exponentially (2011.122
   - [arxiv-2511-13408-p0002](https://arxiv.org/abs/2511.13408): “Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers.”
   - [arxiv-2011-12245-p0037](https://arxiv.org/abs/2011.12245): “This is consistent with our main result, and demonstrates that barren plateaus can lead to exponential scaling even for gradient-free optimizers.”
   - Deepen: not run yet
+
+**Prior art found outside the knowledge base**
+
+- arXiv:2505.05249, "Quantum Surrogate-Driven Image Classifier: A Gradient-Free Approach to Avoid Barren Plateaus": combines a gradient-free method with mid-circuit measurement and reset to avoid barren plateaus. It does not measure how a gradient-free optimizer's shot cost scales with qubit count under each mitigation, so the scaling question may remain open.
 
 **Caveats**
 
@@ -138,7 +142,7 @@ Too rapid distillation discards magic states (2407.07394); a faulty magic state 
 
 ## QC-6
 
-**Do radiation bursts correlate failures inside magic-state factories?** · priority low · status open
+**Do radiation bursts correlate failures inside magic-state factories?** · priority low · status known in literature
 
 Cosmic rays cause correlated errors (2402.03208); faulty magic states cause circuit errors (1905.06903). If a burst hits a factory, many distilled states could fail together.
 
@@ -147,6 +151,10 @@ Cosmic rays cause correlated errors (2402.03208); faulty magic states cause circ
   - [arxiv-2402-03208-p0002](https://arxiv.org/abs/2402.03208): “Cosmic rays caused correlated errors at a rate of 1/(10 min), accounting for 17pm1% of all such events.”
   - [arxiv-1905-06903-p0011](https://arxiv.org/abs/1905.06903): “The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].”
   - Deepen: not run yet
+
+**Prior art found outside the knowledge base**
+
+- arXiv:2405.00146, "Averting multi-qubit burst errors in surface code magic state factories": studies cosmic-ray and TLS burst errors in magic-state factories directly.
 
 **Caveats**
 

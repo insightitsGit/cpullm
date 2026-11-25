@@ -6,7 +6,8 @@ Citations, scores, falsification tests and Deepen results are copied from the ru
 import glob, json, pathlib, sys
 
 LEADS = [
-    dict(id='QC-1', priority='high', title='Do barren-plateau mitigations also remove the exponential cost of gradient-free optimizers?',
+    dict(id='QC-1', priority='high', status='partly known in literature',
+         prior_art=['arXiv:2505.05249, "Quantum Surrogate-Driven Image Classifier: A Gradient-Free Approach to Avoid Barren Plateaus": combines a gradient-free method with mid-circuit measurement and reset to avoid barren plateaus. It does not measure how a gradient-free optimizer\'s shot cost scales with qubit count under each mitigation, so the scaling question may remain open.'], title='Do barren-plateau mitigations also remove the exponential cost of gradient-free optimizers?',
          frontier=['mid - circuit measurements may reduce exponential scaling for gradient free optimizers',
                    'chemical initialization may reduce exponential scaling for gradient free optimizers',
                    'MPQC may reduce exponential scaling for gradient free optimizers'],
@@ -46,7 +47,8 @@ LEADS = [
          why='Too rapid distillation discards magic states (2407.07394); a faulty magic state causes a circuit error with probability equal to its infidelity (1905.06903).',
          caveats=['A speed/fidelity trade-off is known in outline; the chain mixes "discarded" with "faulty" states (composition requires review).'],
          next_steps=['Read 2407.07394 for how discarded states are handled; the link to output error may not hold if discarded states are never used.']),
-    dict(id='QC-6', priority='low', title='Do radiation bursts correlate failures inside magic-state factories?',
+    dict(id='QC-6', priority='low', status='known in literature',
+         prior_art=['arXiv:2405.00146, "Averting multi-qubit burst errors in surface code magic state factories": studies cosmic-ray and TLS burst errors in magic-state factories directly.'], title='Do radiation bursts correlate failures inside magic-state factories?',
          frontier=['Cosmic rays and faulty magic state may jointly drive correlated errors'],
          why='Cosmic rays cause correlated errors (2402.03208); faulty magic states cause circuit errors (1905.06903). '
              'If a burst hits a factory, many distilled states could fail together.',
@@ -93,7 +95,7 @@ def main():
 
     leads = []
     for lead in LEADS:
-        lead = dict(lead, status='open', claim_status='UNVERIFIED_HYPOTHESIS', hypotheses=[])
+        lead = dict({'status': 'open', 'prior_art': []}, **lead, claim_status='UNVERIFIED_HYPOTHESIS', hypotheses=[])
         for prefix in lead.pop('frontier', []):
             text = next(t for t in entries if t.startswith(prefix))
             topic, rank, h = entries[text]
@@ -147,6 +149,8 @@ def main():
                     md += [f"  - Test plan ({dp['test_design']}): vary {dp['vary']}, measure {dp['measure']}. Fails if: {dp['fails_if']}"]
             else:
                 md += ['  - Deepen: not run yet']
+        if l['prior_art']:
+            md += ['', '**Prior art found outside the knowledge base**', ''] + [f'- {a}' for a in l['prior_art']]
         md += ['', '**Caveats**', ''] + [f'- {c}' for c in l['caveats']]
         md += ['', '**Next steps**', ''] + [f'{i}. {s}' for i, s in enumerate(l['next_steps'], 1)]
     md += ['', '## Coverage gaps', '',
