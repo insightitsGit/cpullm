@@ -88,8 +88,9 @@ def validate_frontier_option(option):
         return None
     if option is True:
         return dict(topic=None, limits=FrontierLimits(), deepen_top=DEEPEN_TOP)
-    if not isinstance(option, dict) or set(option) - {'topic', 'limits', 'deepen_top'}:
-        raise ValueError('frontier must be a boolean or an object with optional topic, limits and deepen_top')
+    if not isinstance(option, dict) or set(option) - {'topic', 'limits', 'deepen_top', 'screen', 'axiom_sources'}:
+        raise ValueError('frontier must be a boolean or an object with optional topic, limits, deepen_top, screen '
+                         'and axiom_sources')
     deepen_top = option.get('deepen_top', DEEPEN_TOP)
     if type(deepen_top) is not int or not 0 <= deepen_top <= 10:
         raise ValueError('frontier.deepen_top must be an integer from 0 to 10')
@@ -99,7 +100,41 @@ def validate_frontier_option(option):
     limits = option.get('limits', {})
     if not isinstance(limits, dict) or set(limits) - set(FrontierLimits.__dataclass_fields__):
         raise ValueError('unknown frontier limit')
-    return dict(topic=topic, limits=FrontierLimits(**limits), deepen_top=deepen_top)
+    return dict(topic=topic, limits=FrontierLimits(**limits), deepen_top=deepen_top,
+                screen=validate_screen(option.get('screen')), axiom_sources=validate_axiom_sources(option.get('axiom_sources')))
+
+
+SCREEN_SHORTLIST = 15
+GENERIC_CHUNK_SHARE = 0.08      # an off-topic anchor in at least this share of chunks marks a generic entry
+GENERIC_RELEVANCE_KEEP = 0.8    # ... unless the entry is this relevant to the topic
+CHECK_RESERVE = 0.2             # share of max_seconds kept for leading checks when any are requested
+
+
+def validate_screen(value):
+    """None (off), or dict(shortlist=n) for n in 5..30."""
+    if value is None or value is False:
+        return None
+    if value is True:
+        return dict(shortlist=SCREEN_SHORTLIST)
+    if isinstance(value, dict) and set(value) <= {'shortlist'}:
+        n = value.get('shortlist', SCREEN_SHORTLIST)
+        if type(n) is int and 5 <= n <= 30:
+            return dict(shortlist=n)
+    raise ValueError('frontier.screen must be true or {"shortlist": 5..30}')
+
+
+def validate_axiom_sources(value):
+    """Source prefixes holding background knowledge (reviews, textbooks); a bounded list of short strings."""
+    if value is None:
+        return ()
+    if (not isinstance(value, (list, tuple)) or len(value) > 50
+            or not all(isinstance(v, str) and 0 < len(v.strip()) <= 120 for v in value)):
+        raise ValueError('axiom_sources must be a list of at most 50 source prefixes')
+    return tuple(v.strip() for v in value)
+
+
+def is_axiom(document_id, prefixes):
+    return bool(prefixes) and any(source_of(document_id).startswith(p) or document_id.startswith(p) for p in prefixes)
 
 
 def frontier_seed(message, *, forced=False):
@@ -1165,12 +1200,16 @@ def source_support(paths):
     return round(1.0 - missing, 3)
 
 
-def novelty(text, edges, reading):
-    """0.5 x (1 - largest overlap with one premise) + 0.3 x document spread + 0.2 x separation."""
+def novelty(text, edges, reading, axiom_sources=()):
+    """0.5 x (1 - largest overlap with one premise) + 0.3 x document spread + 0.2 x separation.
+
+    Document spread counts only frontier (non-axiom) sources.
+    """
     words = set(_content(_tokens(text)))
     overlap = max((len(words & set(_content(_tokens(p['quote'])))) / len(words)
                    for edge in edges for p in edge.proofs), default=1.0) if words else 1.0
-    documents = len({source_of(p['document_id']) for edge in edges for p in edge.proofs})
+    documents = len({source_of(p['document_id']) for edge in edges for p in edge.proofs
+                     if not is_axiom(p['document_id'], axiom_sources)}) or 1
     spread = min(1.0, (documents - 1) / 2)
     separation = 0.5 if reading.get('co_mentions') else 1.0 if not reading.get('co_chunk') else 0.75
     return round(0.5 * (1.0 - overlap) + 0.3 * spread + 0.2 * separation, 3)
@@ -1299,10 +1338,13 @@ def _similarity(encode, edges, budget=None):
     return similar, len(surfaces)
 
 
-def run_frontier(topic, rows, *, limits=None, clock=time.monotonic, encode=None, deepen_top=0):
+def run_frontier(topic, rows, *, limits=None, clock=time.monotonic, encode=None, deepen_top=0, screen=None,
+                 axiom_sources=()):
     """Pure core: no database, no writes. Returns the ``frontier`` receipt.
 
     ``encode(texts)`` (optional) returns one vector per text and is used to check head-noun bridges.
+    ``screen`` (``validate_screen``) drops generic entries, re-ranks by relevance and novelty, and checks a shortlist
+    with the novelty review. ``axiom_sources`` are background prefixes: a candidate built only from them is dropped.
     """
     limits = limits or FrontierLimits()
     budget = Budget(limits, clock=clock)
@@ -1340,12 +1382,20 @@ def run_frontier(topic, rows, *, limits=None, clock=time.monotonic, encode=None,
     receipt.update(parser=parser_name(), bridge_check='encoder' if similar is not None else 'head_noun',
                    encoded_terms=encoded)
     generated = 0
+    checks = (screen or {}).get('shortlist', deepen_top) if (deepen_top or screen) else 0
+    reserve_at = limits.max_seconds * (1 - CHECK_RESERVE) if checks else None
     if graph.complete:
         try:
             for batch in batches(generate(edges, limits), limits.batch_size, budget):
                 generated += len(batch)
                 for candidate in batch:
                     budget.check()
+                    if reserve_at is not None and budget.clock() - budget.started >= reserve_at:
+                        raise StopSearch('generation_time_reserved')
+                    if axiom_sources and all(is_axiom(p['document_id'], axiom_sources)
+                                             for e in candidate.edges for p in e.proofs):
+                        rejected['pre_thinker:axiom_only'] += 1
+                        continue
                     reading, reason = abductive_check(candidate, similar)
                     if reading is None:
                         rejected['abductive:' + reason] += 1
@@ -1379,7 +1429,7 @@ def run_frontier(topic, rows, *, limits=None, clock=time.monotonic, encode=None,
         best = Candidate(candidate.pattern, paths[0])
         text = hypothesis_text(best, reading)
         scores = dict(source_support=source_support(paths), deductive_relevance=reading['deductive_relevance'],
-                      novelty=novelty(text, best.edges, reading))
+                      novelty=novelty(text, best.edges, reading, axiom_sources))
         citations = _citations(best.edges)
         hypotheses.append(dict(
             id=hashlib.sha256(json.dumps(identity).encode()).hexdigest()[:12], text=text,
@@ -1407,8 +1457,12 @@ def run_frontier(topic, rows, *, limits=None, clock=time.monotonic, encode=None,
             deferred.append(item)
     returned = (first + deferred)[:limit]
     receipt['hub_deferred'] = len(deferred)    # entries moved behind more varied ones (none dropped)
+    focus_stems = set(focus)
+    if screen:
+        returned, receipt['screen'] = _screen(hypotheses, graph, focus_stems, limit, screen)
     receipt['candidate_search_complete'] = stop_reason is None
-    leading = _check_leading(returned[:deepen_top], rows, graph, encode, budget)
+    leading = _check_leading(returned[:checks], rows, graph, encode, budget, **({'novelty': True} if screen else {}))
+    receipt['topic_match'] = _topic_match(returned, graph, focus_stems)
     receipt['leading_check'] = leading
     receipt['deepened'] = leading['checked']
     if not leading['complete'] and stop_reason is None:
@@ -1426,7 +1480,51 @@ def run_frontier(topic, rows, *, limits=None, clock=time.monotonic, encode=None,
     return receipt
 
 
-def _check_leading(items, rows, graph, encode, budget):
+def _terms_of(item):
+    return [*item['anchors'], *item.get('via', [])]
+
+
+def _on_topic(term, focus_stems):
+    return bool(set(_content(_tokens(term))) & focus_stems)
+
+
+def _screen(hypotheses, graph, focus_stems, limit, options):
+    """Drop generic entries, then rank by 0.6 x relevance + 0.4 x novelty (ID breaks ties)."""
+    total = max(graph.chunk_count, 1)
+    dropped, kept = [], []
+    for item in hypotheses:
+        terms = _terms_of(item)
+        off_topic = [t for t in terms if not _on_topic(t, focus_stems)]
+        shares = [len(graph.term_chunks(term_key(t))) / total for t in off_topic]
+        # Generic: no term names the topic, or an off-topic term is spread across the corpus; a highly relevant
+        # entry is kept either way.
+        generic = ((len(off_topic) == len(terms) or any(share >= GENERIC_CHUNK_SHARE for share in shares))
+                   and item['scores']['deductive_relevance'] < GENERIC_RELEVANCE_KEEP)
+        (dropped if generic else kept).append(item)
+    kept.sort(key=lambda h: (-(0.6 * h['scores']['deductive_relevance'] + 0.4 * h['scores']['novelty']), h['id']))
+    return kept[:limit], dict(applied=True, shortlist=options['shortlist'], dropped_generic=len(dropped),
+                              dropped_ids=[h['id'] for h in dropped][:200],
+                              rank='0.6 x deductive_relevance + 0.4 x novelty',
+                              generic_rule=f'no term names the topic, or an off-topic term appears in at least '
+                                           f'{GENERIC_CHUNK_SHARE:.0%} of chunks; and relevance below '
+                                           f'{GENERIC_RELEVANCE_KEEP}')
+
+
+def _topic_match(returned, graph, focus_stems):
+    matched = set().union(*(graph.chunk_postings.get(s, set()) for s in focus_stems)) if focus_stems else set()
+    on = [h for h in returned if any(_on_topic(t, focus_stems) for t in _terms_of(h))]
+    share = round(len(on) / len(returned), 2) if returned else None
+    result = dict(focus_terms=sorted(focus_stems), matched_chunks=len(matched), on_topic_share=share,
+                  drift_warning=None)
+    if returned and share < 0.3:
+        common = Counter(t for h in returned for t in h['anchors']).most_common(5)
+        result['drift_warning'] = dict(
+            most_frequent_terms=[t for t, _ in common],
+            advice='Few entries mention the topic terms; rephrase the topic the way the field does.')
+    return result
+
+
+def _check_leading(items, rows, graph, encode, budget, novelty=False):
     """Check leading entries using the parent's ledger and complete snapshot graph."""
     result = dict(requested=len(items), checked=0, complete=True, stop_reason=None)
     if not items:
@@ -1438,11 +1536,14 @@ def _check_leading(items, rows, graph, encode, budget):
         sentences = _Sentences(rows, budget)
         for item in items:
             budget.check()
-            receipt = run_deepen(item, rows, graph=graph, similar=similar, sentences=sentences, budget=budget)
+            request = {'hypothesis': item, 'novelty': True} if novelty else item
+            receipt = run_deepen(request, rows, graph=graph, similar=similar, sentences=sentences, budget=budget)
             item['check'] = dict(verdict=receipt['verdict'], lead_status=receipt['lead_status'],
                 incomplete=receipt['incomplete'],
                 direction_check=receipt['direction_check'],
                 composition=receipt['composition'], plan_readiness=receipt['test_plan']['readiness'],
+                design=receipt['test_plan']['design'],
+                novelty_kb=receipt['novelty_review']['kb_status'],
                 links=[dict(source=l['source'], target=l['target'], status=l['status'],
                             counter=l['counter'][:2]) for l in receipt['links']])
             if receipt['incomplete']:
@@ -1484,6 +1585,15 @@ def format_reply(receipt):
             lines.extend(f'  - [{c["document_id"]}] {c["quote"]}' for l in check['links'] for c in l['counter'])
         lines.append(f'Scores: source support {scores["source_support"]:.2f}, deductive relevance '
                      f'{scores["deductive_relevance"]:.2f}, novelty {scores["novelty"]:.2f}.')
+    screen = receipt.get('screen')
+    if screen:
+        lines.insert(2, f'Screened: {screen["dropped_generic"]} generic entries dropped; ranked by {screen["rank"]}; '
+                        f'the first {screen["shortlist"]} are checked with Deepen and its novelty review.')
+    drift = (receipt.get('topic_match') or {}).get('drift_warning')
+    if drift:
+        lines.append(f'\nTopic drift warning: only {receipt["topic_match"]["on_topic_share"]:.0%} of entries mention '
+                     'the topic terms. Most frequent terms: ' + ', '.join(drift['most_frequent_terms']) +
+                     '. Rephrase the topic the way the field does.')
     if receipt.get('shortage'):
         shortage = receipt['shortage']
         lines.append(f'\nOnly {shortage["returned"]} hypotheses survived the filters (target at least '
@@ -1537,7 +1647,8 @@ def execute_frontier(app, message, topic, *, options=None, caller=None, as_of=No
                       dict(base, status='partial', incomplete=True, stop_reason='snapshot_unavailable'))
     pipeline = getattr(app.index, 'pipeline', None)
     receipt = run_frontier(topic, rows, limits=options['limits'], deepen_top=options.get('deepen_top', DEEPEN_TOP),
-                           encode=getattr(pipeline, 'encode_texts', None))
+                           encode=getattr(pipeline, 'encode_texts', None), screen=options.get('screen'),
+                           axiom_sources=options.get('axiom_sources') or tuple(getattr(app, 'axiom_sources', ()) or ()))
     receipt['snapshot'] = dict(as_of=when, chunk_count=len(rows))
     if receipt['status'] == 'insufficient_evidence' and not receipt['hypotheses']:
         text = format_reply(receipt) + '\nNo candidate survived the filters.'

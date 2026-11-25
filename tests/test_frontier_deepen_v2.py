@@ -185,3 +185,68 @@ def test_a_user_type_overrides_the_lexicon():
     receipt = run_deepen({'hypothesis': 'low weight Pauli operators and samples may jointly constrain error mitigation.',
                           'definitions': {'low weight Pauli operators': {'type': 'intervention'}}}, rows)
     assert receipt['test_plan']['design'] == '2x2 factorial'
+
+
+# ------------------------------------------------------------------ 6-8, 11. screen, drift, reserve, axiom sources
+
+from cpu_llm.frontier import FrontierLimits, validate_frontier_option  # noqa: E402
+
+_UP = ['wafer', 'lithography', 'packaging', 'substrate', 'cooling', 'transformer', 'turbine', 'permit']
+_DOWN = ['training', 'inference', 'serving', 'research', 'deployment', 'evaluation']
+
+
+def hub_corpus():
+    texts = [f'{name.title()} supply limits accelerator capacity.' for name in _UP]
+    texts += [f'Accelerator capacity drives {name} throughput.' for name in _DOWN]
+    texts += ['Accelerator capacity drives overall performance.'] * 1
+    texts += [f'Performance matters for {name} teams.' for name in _UP]
+    return rows_of(*texts)
+
+
+def test_screen_drops_generic_entries_and_reranks():
+    rows = hub_corpus()
+    plain = run_frontier('wafer supply', rows)
+    screened = run_frontier('wafer supply', rows, screen={'shortlist': 5}, deepen_top=0)
+    info = screened['screen']
+    assert info['applied'] and info['dropped_generic'] >= 1
+    assert set(info['dropped_ids']) & {h['id'] for h in plain['hypotheses']}
+    keys = [0.6 * h['scores']['deductive_relevance'] + 0.4 * h['scores']['novelty'] for h in screened['hypotheses']]
+    assert keys == sorted(keys, reverse=True)
+    checked = [h['check'] for h in screened['hypotheses'] if h.get('check')]
+    assert len(checked) == 5 and all(c['novelty_kb'] != 'not_requested' for c in checked)
+
+
+def test_screen_option_is_validated():
+    assert validate_frontier_option({'screen': True})['screen'] == {'shortlist': 15}
+    assert validate_frontier_option({'screen': {'shortlist': 8}})['screen'] == {'shortlist': 8}
+    with pytest.raises(ValueError):
+        validate_frontier_option({'screen': {'shortlist': 99}})
+    assert validate_frontier_option(True).get('screen') is None
+
+
+def test_topic_match_reports_drift():
+    rows = hub_corpus()
+    receipt = run_frontier('accelerator capacity', rows)
+    assert receipt['topic_match']['on_topic_share'] is not None
+    drifted = run_frontier('wafer throughput', rows)
+    match = drifted['topic_match']
+    assert set(match) >= {'focus_terms', 'matched_chunks', 'on_topic_share', 'drift_warning'}
+
+
+def test_generation_stops_early_to_leave_time_for_checks():
+    def run(deepen_top):
+        ticks = iter(range(100_000))
+        return run_frontier('accelerator capacity', hub_corpus(), deepen_top=deepen_top,
+                            limits=FrontierLimits(max_seconds=40), clock=lambda: next(ticks) * 0.1)
+    reserved = run(2)
+    assert reserved['stop_reason'] == 'generation_time_reserved' and not reserved['candidate_search_complete']
+    assert run(0)['candidate_search_complete']     # no checks requested: no reserve
+
+
+def test_axiom_only_candidates_are_dropped():
+    rows = rows_of('HBM supply constrains memory bandwidth.', 'Memory bandwidth drives inference throughput.',
+                   prefix='review') + rows_of('Inference throughput drives serving revenue.', prefix='paper')
+    with_axioms = run_frontier('memory bandwidth', rows, axiom_sources=('review',))
+    assert with_axioms['candidates_rejected'].get('pre_thinker:axiom_only', 0) >= 1
+    for h in with_axioms['hypotheses']:
+        assert any(not c['document_id'].startswith('review') for c in h['citations'])
