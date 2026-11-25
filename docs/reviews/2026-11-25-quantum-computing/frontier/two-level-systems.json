@@ -1,0 +1,1146 @@
+{
+ "prompt": "Frontier: two-level systems.",
+ "seconds": 11.36,
+ "answer_status": "hypotheses",
+ "frontier": {
+  "schema": "frontier-v1",
+  "triggered": true,
+  "topic": "two-level systems",
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "limits": {
+   "max_rounds": 1000,
+   "max_candidates": 200000,
+   "max_edges": 50000,
+   "max_bytes": 67108864,
+   "max_seconds": 60.0,
+   "batch_size": 256,
+   "max_path_edges": 2,
+   "max_results": 50,
+   "min_results": 10
+  },
+  "topic_terms": [
+   "two-level",
+   "system"
+  ],
+  "focus_terms": [
+   "two-level",
+   "system"
+  ],
+  "chunk_count": 3369,
+  "candidate_search_complete": true,
+  "deepened": 5,
+  "leading_check": {
+   "requested": 5,
+   "checked": 5,
+   "complete": true,
+   "stop_reason": null
+  },
+  "parser": "en_core_web_lg",
+  "bridge_check": "encoder",
+  "encoded_terms": 19,
+  "hub_deferred": 8,
+  "status": "hypotheses",
+  "hypotheses": [
+   {
+    "id": "42c4f18839ad",
+    "text": "dimension of DLA and non Clifford gates may move together because both depend on system size.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "dimension of DLA",
+     "non Clifford gates",
+     "system size"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2105-14377-p0049",
+     "arxiv-2609-39734-p0025"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2105-14377-p0049",
+      "quote": "For instance, when the system is controllable, dim(g) = d2 − 1 = 22n − 1, and thus the dimension of the DLA is exponentially growing with the system size n.",
+      "start": 0,
+      "end": 156,
+      "chunk_sha256": "bac377f13c3a698ff337e9be9e654e6924532df04e54f9eca5f014e0a7ab02fd",
+      "relation": "increases",
+      "subject": "system size",
+      "object": "dimension of DLA",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2609-39734-p0025",
+      "quote": "Stabilizer decompositions provide efficient simulation when the number of non-Clifford gates grows at most logarithmically with system size [14, 15].",
+      "start": 209,
+      "end": 358,
+      "chunk_sha256": "bddd8a80d664709ba8bd306b762c0d249c92a79d1819c8d3ca48d9698117bf15",
+      "relation": "increases",
+      "subject": "system size",
+      "object": "non Clifford gates",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.575,
+     "novelty": 0.668
+    },
+    "falsification_test": "Track dimension of DLA and non Clifford gates across periods where system size changes and where it does not. The hypothesis fails if they co-vary just as strongly when system size is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "system size",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "common_driver",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [],
+      "qualifications": [
+       {
+        "link": 0,
+        "citation": {
+         "document_id": "arxiv-2105-14377-p0049",
+         "quote": "For instance, when the system is controllable, dim(g) = d2 − 1 = 22n − 1, and thus the dimension of the DLA is exponentially growing with the system size n.",
+         "start": 0,
+         "end": 156,
+         "chunk_sha256": "bac377f13c3a698ff337e9be9e654e6924532df04e54f9eca5f014e0a7ab02fd",
+         "relation": "increases",
+         "subject": "system size",
+         "object": "dimension of DLA",
+         "hedged": false
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       },
+       {
+        "link": 1,
+        "citation": {
+         "document_id": "arxiv-2609-39734-p0025",
+         "quote": "Stabilizer decompositions provide efficient simulation when the number of non-Clifford gates grows at most logarithmically with system size [14, 15].",
+         "start": 209,
+         "end": 358,
+         "chunk_sha256": "bddd8a80d664709ba8bd306b762c0d249c92a79d1819c8d3ca48d9698117bf15",
+         "relation": "increases",
+         "subject": "system size",
+         "object": "non Clifford gates",
+         "hedged": false
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       }
+      ],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "system size",
+       "target": "dimension of DLA",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "system size",
+       "target": "non Clifford gates",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "d380dc4b2fe9",
+    "text": "relative position of magic thresholds and dimension of DLA may move together because both depend on system size.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "relative position of magic thresholds",
+     "dimension of DLA",
+     "system size"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2609-39734-p0039",
+     "arxiv-2105-14377-p0049"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2609-39734-p0039",
+      "quote": "Thus, the relative position of the magic and sampling thresholds is determined by the system size and the sampling tolerance.",
+      "start": 637,
+      "end": 762,
+      "chunk_sha256": "91e41903cd89a23ae5e1578d4e07cf99ebb72c5303247ed2d136a486e6275bcf",
+      "relation": "constrains",
+      "subject": "system size",
+      "object": "relative position of magic thresholds",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2105-14377-p0049",
+      "quote": "For instance, when the system is controllable, dim(g) = d2 − 1 = 22n − 1, and thus the dimension of the DLA is exponentially growing with the system size n.",
+      "start": 0,
+      "end": 156,
+      "chunk_sha256": "bac377f13c3a698ff337e9be9e654e6924532df04e54f9eca5f014e0a7ab02fd",
+      "relation": "increases",
+      "subject": "system size",
+      "object": "dimension of DLA",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.567,
+     "novelty": 0.6
+    },
+    "falsification_test": "Track relative position of magic thresholds and dimension of DLA across periods where system size changes and where it does not. The hypothesis fails if they co-vary just as strongly when system size is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "system size",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "common_driver",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [],
+      "qualifications": [
+       {
+        "link": 1,
+        "citation": {
+         "document_id": "arxiv-2105-14377-p0049",
+         "quote": "For instance, when the system is controllable, dim(g) = d2 − 1 = 22n − 1, and thus the dimension of the DLA is exponentially growing with the system size n.",
+         "start": 0,
+         "end": 156,
+         "chunk_sha256": "bac377f13c3a698ff337e9be9e654e6924532df04e54f9eca5f014e0a7ab02fd",
+         "relation": "increases",
+         "subject": "system size",
+         "object": "dimension of DLA",
+         "hedged": false
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       }
+      ],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "system size",
+       "target": "relative position of magic thresholds",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "system size",
+       "target": "dimension of DLA",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "3ddf8977a9da",
+    "text": "chemical initialization and mid - circuit measurements may jointly constrain barren plateaus, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "chemical initialization",
+     "mid - circuit measurements",
+     "barren plateaus"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2609-22729-p0002",
+     "arxiv-2406-14285-p0059"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2609-22729-p0002",
+      "quote": "In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.",
+      "start": 936,
+      "end": 1357,
+      "chunk_sha256": "c14a4d47645a2e6ff3c26ec8fe1bfa93681d2ad322463bb69604f75e3789fdf4",
+      "relation": "decreases",
+      "subject": "chemical initialization",
+      "object": "barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2406-14285-p0059",
+      "quote": "therefore, mid-circuit measurements, circuit pretraining, entanglement regularization to add terms to the cost function, and initial partitioning play on the entanglement entropy to better mitigate barren plateaus",
+      "start": 493,
+      "end": 706,
+      "chunk_sha256": "6d841bff052354ea4562410baa2c53f48560a3bd6a4dd123121c90cdf9900c28",
+      "relation": "decreases",
+      "subject": "mid - circuit measurements",
+      "object": "barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.546,
+     "novelty": 0.696
+    },
+    "falsification_test": "Relieve chemical initialization alone while measuring barren plateaus. The hypothesis fails if barren plateaus keeps improving without mid - circuit measurements becoming the binding limit, or if relieving mid - circuit measurements alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "barren plateaus",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "co_constrain",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "conditional",
+      "bridges": [],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "untested",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "chemical initialization",
+       "target": "barren plateaus",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "mid - circuit measurements",
+       "target": "barren plateaus",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "3a5348e904d2",
+    "text": "mid - circuit measurements and MPQC may jointly constrain barren plateaus, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "mid - circuit measurements",
+     "MPQC",
+     "barren plateaus"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2406-14285-p0059",
+     "arxiv-2511-13408-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2406-14285-p0059",
+      "quote": "therefore, mid-circuit measurements, circuit pretraining, entanglement regularization to add terms to the cost function, and initial partitioning play on the entanglement entropy to better mitigate barren plateaus",
+      "start": 493,
+      "end": 706,
+      "chunk_sha256": "6d841bff052354ea4562410baa2c53f48560a3bd6a4dd123121c90cdf9900c28",
+      "relation": "decreases",
+      "subject": "mid - circuit measurements",
+      "object": "barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2511-13408-p0002",
+      "quote": "Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers.",
+      "start": 1215,
+      "end": 1384,
+      "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130",
+      "relation": "decreases",
+      "subject": "MPQC",
+      "object": "barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.546,
+     "novelty": 0.683
+    },
+    "falsification_test": "Relieve mid - circuit measurements alone while measuring barren plateaus. The hypothesis fails if barren plateaus keeps improving without MPQC becoming the binding limit, or if relieving MPQC alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "barren plateaus",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "co_constrain",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "conditional",
+      "bridges": [],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "untested",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "mid - circuit measurements",
+       "target": "barren plateaus",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "MPQC",
+       "target": "barren plateaus",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "32fd673b25f2",
+    "text": "chemical initialization and MPQC may jointly constrain barren plateaus, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "chemical initialization",
+     "MPQC",
+     "barren plateaus"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2609-22729-p0002",
+     "arxiv-2511-13408-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2609-22729-p0002",
+      "quote": "In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.",
+      "start": 936,
+      "end": 1357,
+      "chunk_sha256": "c14a4d47645a2e6ff3c26ec8fe1bfa93681d2ad322463bb69604f75e3789fdf4",
+      "relation": "decreases",
+      "subject": "chemical initialization",
+      "object": "barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2511-13408-p0002",
+      "quote": "Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers.",
+      "start": 1215,
+      "end": 1384,
+      "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130",
+      "relation": "decreases",
+      "subject": "MPQC",
+      "object": "barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.539,
+     "novelty": 0.668
+    },
+    "falsification_test": "Relieve chemical initialization alone while measuring barren plateaus. The hypothesis fails if barren plateaus keeps improving without MPQC becoming the binding limit, or if relieving MPQC alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "barren plateaus",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "co_constrain",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "conditional",
+      "bridges": [],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "untested",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "chemical initialization",
+       "target": "barren plateaus",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "MPQC",
+       "target": "barren plateaus",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "1c05388a80bb",
+    "text": "geometry and particles may interact in their effect on latter.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "geometry",
+     "particles",
+     "latter"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2510-06324-p0042",
+     "arxiv-2409-06636-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2510-06324-p0042",
+      "quote": "More generally, we also expect the threshold for approximate Markovianity to differ from the percolation threshold, since the latter depends only on geometry.",
+      "start": 1502,
+      "end": 1660,
+      "chunk_sha256": "9095ae20f4c19f8a37be8a83b497da14ffe0f363c3ddd979f649fc3c29c10b7e",
+      "relation": "constrains",
+      "subject": "geometry",
+      "object": "latter",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2409-06636-p0004",
+      "quote": "The latter, of course, grows exponentially with the number of particles in the system.",
+      "start": 545,
+      "end": 631,
+      "chunk_sha256": "a8f99e5022b9a9932dd8731714a9647e7fe74e60aa95a159e5d2f541b67c1b99",
+      "relation": "increases",
+      "subject": "particles",
+      "object": "latter",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.406,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary geometry and particles separately and together. The hypothesis fails if the joint change in latter equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "latter"
+   },
+   {
+    "id": "4fe8cb6f1aa4",
+    "text": "radioactive contaminants may increase latter through particles.",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "radioactive contaminants",
+     "latter"
+    ],
+    "via": [
+     "particles"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-13460-p0008",
+     "arxiv-2409-06636-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-13460-p0008",
+      "quote": "These particles can be emitted by radioactive contaminants in materials that form the qubit package (e.g., ceramic interposer PCBs, connectors, and dust) [24, 25, 33, 34] or by radon emanated from qubit package materials [34], and are a well known and challenging background to mitigate in rare-event particle",
+      "start": 346,
+      "end": 655,
+      "chunk_sha256": "39a1f0f2385d34c75770a4410d45e83dcc76d9cb8106d6c9a6a33eec1958b5af",
+      "relation": "causes",
+      "subject": "radioactive contaminants",
+      "object": "particles",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2409-06636-p0004",
+      "quote": "The latter, of course, grows exponentially with the number of particles in the system.",
+      "start": 545,
+      "end": 631,
+      "chunk_sha256": "a8f99e5022b9a9932dd8731714a9647e7fe74e60aa95a159e5d2f541b67c1b99",
+      "relation": "increases",
+      "subject": "particles",
+      "object": "latter",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.552,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where radioactive contaminants differs while other inputs are matched. The hypothesis fails if latter does not rise with radioactive contaminants, or if fixing particles removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "particle"
+   },
+   {
+    "id": "64d012e82489",
+    "text": "Gains in barren plateaus from dimension of qudits may be offset by chemical initialization.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "chemical initialization",
+     "dimension of qudits",
+     "barren plateaus"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2609-22729-p0002",
+     "arxiv-2405-08190-p0001"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2609-22729-p0002",
+      "quote": "In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.",
+      "start": 936,
+      "end": 1357,
+      "chunk_sha256": "c14a4d47645a2e6ff3c26ec8fe1bfa93681d2ad322463bb69604f75e3789fdf4",
+      "relation": "decreases",
+      "subject": "chemical initialization",
+      "object": "barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2405-08190-p0001",
+      "quote": "# Barren plateaus are amplified by the dimension of qudits",
+      "start": 0,
+      "end": 58,
+      "chunk_sha256": "29194b755d37a4267deb3748588cba74de919e575cd2fb4954b47227e460372e",
+      "relation": "increases",
+      "subject": "dimension of qudits",
+      "object": "Barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.5,
+     "novelty": 0.6
+    },
+    "falsification_test": "Measure barren plateaus where both chemical initialization and dimension of qudits vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "barren plateaus"
+   },
+   {
+    "id": "82f0201b6050",
+    "text": "Gains in Barren plateaus from dimension of qudits may be offset by MPQC.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "dimension of qudits",
+     "MPQC",
+     "Barren plateaus"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-08190-p0001",
+     "arxiv-2511-13408-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-08190-p0001",
+      "quote": "# Barren plateaus are amplified by the dimension of qudits",
+      "start": 0,
+      "end": 58,
+      "chunk_sha256": "29194b755d37a4267deb3748588cba74de919e575cd2fb4954b47227e460372e",
+      "relation": "increases",
+      "subject": "dimension of qudits",
+      "object": "Barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2511-13408-p0002",
+      "quote": "Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers.",
+      "start": 1215,
+      "end": 1384,
+      "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130",
+      "relation": "decreases",
+      "subject": "MPQC",
+      "object": "barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.5,
+     "novelty": 0.564
+    },
+    "falsification_test": "Measure Barren plateaus where both dimension of qudits and MPQC vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "barren plateaus"
+   },
+   {
+    "id": "2cdaecccb58f",
+    "text": "Gains in barren plateaus from issues may be offset by MPQC.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "issues",
+     "MPQC",
+     "barren plateaus"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2011-12245-p0004",
+     "arxiv-2511-13408-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2011-12245-p0004",
+      "quote": "Various issues lead to barren plateaus, such as deep ansatzes that lack structure [19, 21, 31], global cost functions [20, 21], high levels of noise [22, 32], scrambling target unitaries [24], and large entanglement [28, 29].",
+      "start": 348,
+      "end": 573,
+      "chunk_sha256": "29029f30dfea4c2fb2c2b7b3e28275cfa74df5f6d2ffdb0e5c95caff55cde7af",
+      "relation": "causes",
+      "subject": "issues",
+      "object": "barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2511-13408-p0002",
+      "quote": "Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers.",
+      "start": 1215,
+      "end": 1384,
+      "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130",
+      "relation": "decreases",
+      "subject": "MPQC",
+      "object": "barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.486,
+     "novelty": 0.6
+    },
+    "falsification_test": "Measure barren plateaus where both issues and MPQC vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "barren plateaus"
+   },
+   {
+    "id": "6ff6735839c4",
+    "text": "Gains in barren plateaus from issues may be offset by chemical initialization.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "chemical initialization",
+     "issues",
+     "barren plateaus"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2609-22729-p0002",
+     "arxiv-2011-12245-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2609-22729-p0002",
+      "quote": "In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.",
+      "start": 936,
+      "end": 1357,
+      "chunk_sha256": "c14a4d47645a2e6ff3c26ec8fe1bfa93681d2ad322463bb69604f75e3789fdf4",
+      "relation": "decreases",
+      "subject": "chemical initialization",
+      "object": "barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2011-12245-p0004",
+      "quote": "Various issues lead to barren plateaus, such as deep ansatzes that lack structure [19, 21, 31], global cost functions [20, 21], high levels of noise [22, 32], scrambling target unitaries [24], and large entanglement [28, 29].",
+      "start": 348,
+      "end": 573,
+      "chunk_sha256": "29029f30dfea4c2fb2c2b7b3e28275cfa74df5f6d2ffdb0e5c95caff55cde7af",
+      "relation": "causes",
+      "subject": "issues",
+      "object": "barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.486,
+     "novelty": 0.564
+    },
+    "falsification_test": "Measure barren plateaus where both chemical initialization and issues vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "barren plateaus"
+   },
+   {
+    "id": "7da3b79bc28e",
+    "text": "MPQC may reduce exponential scaling for gradient free optimizers through barren plateaus.",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "MPQC",
+     "exponential scaling for gradient free optimizers"
+    ],
+    "via": [
+     "barren plateaus"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2511-13408-p0002",
+     "arxiv-2011-12245-p0037"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2511-13408-p0002",
+      "quote": "Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers.",
+      "start": 1215,
+      "end": 1384,
+      "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130",
+      "relation": "decreases",
+      "subject": "MPQC",
+      "object": "barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2011-12245-p0037",
+      "quote": "This is consistent with our main result, and demonstrates that barren plateaus can lead to exponential scaling even for gradient-free optimizers.",
+      "start": 279,
+      "end": 424,
+      "chunk_sha256": "89fec55c9a7516fd6cd804475155f3c1455aa6f3a07487cbf5921eec616003d1",
+      "relation": "causes",
+      "subject": "barren plateaus",
+      "object": "exponential scaling for gradient free optimizers",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.614,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where MPQC differs while other inputs are matched. The hypothesis fails if exponential scaling for gradient free optimizers does not fall with MPQC, or if fixing barren plateaus removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "barren plateaus"
+   },
+   {
+    "id": "0ec63721d1ec",
+    "text": "chemical initialization may reduce exponential scaling for gradient free optimizers through barren plateaus.",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "chemical initialization",
+     "exponential scaling for gradient free optimizers"
+    ],
+    "via": [
+     "barren plateaus"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2609-22729-p0002",
+     "arxiv-2011-12245-p0037"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2609-22729-p0002",
+      "quote": "In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.",
+      "start": 936,
+      "end": 1357,
+      "chunk_sha256": "c14a4d47645a2e6ff3c26ec8fe1bfa93681d2ad322463bb69604f75e3789fdf4",
+      "relation": "decreases",
+      "subject": "chemical initialization",
+      "object": "barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2011-12245-p0037",
+      "quote": "This is consistent with our main result, and demonstrates that barren plateaus can lead to exponential scaling even for gradient-free optimizers.",
+      "start": 279,
+      "end": 424,
+      "chunk_sha256": "89fec55c9a7516fd6cd804475155f3c1455aa6f3a07487cbf5921eec616003d1",
+      "relation": "causes",
+      "subject": "barren plateaus",
+      "object": "exponential scaling for gradient free optimizers",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.614,
+     "novelty": 0.577
+    },
+    "falsification_test": "Compare settings where chemical initialization differs while other inputs are matched. The hypothesis fails if exponential scaling for gradient free optimizers does not fall with chemical initialization, or if fixing barren plateaus removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "barren plateaus"
+   },
+   {
+    "id": "f539a7299edf",
+    "text": "barren plateaus and degree of controllability of system may interact in their effect on exponential scaling for gradient free optimizers.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "barren plateaus",
+     "degree of controllability of system",
+     "exponential scaling for gradient free optimizers"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2011-12245-p0037",
+     "arxiv-2105-14377-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2011-12245-p0037",
+      "quote": "This is consistent with our main result, and demonstrates that barren plateaus can lead to exponential scaling even for gradient-free optimizers.",
+      "start": 279,
+      "end": 424,
+      "chunk_sha256": "89fec55c9a7516fd6cd804475155f3c1455aa6f3a07487cbf5921eec616003d1",
+      "relation": "causes",
+      "subject": "barren plateaus",
+      "object": "exponential scaling for gradient free optimizers",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2105-14377-p0002",
+      "quote": "Specifically, we show that the gradient scaling of the VQA depends on the degree of controllability of the system, and hence can be diagnosed through the dynamical Lie algebra g obtained from the generators of the ansatz.",
+      "start": 1378,
+      "end": 1599,
+      "chunk_sha256": "a1a787270543a3e877ae1a254cca847fe4488ba4637ef60e206c72e29851f775",
+      "relation": "constrains",
+      "subject": "degree of controllability of system",
+      "object": "gradient scaling of VQA",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.526,
+     "novelty": 0.592
+    },
+    "falsification_test": "Vary barren plateaus and degree of controllability of system separately and together. The hypothesis fails if the joint change in exponential scaling for gradient free optimizers equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "exponential scaling for gradient free optimizer"
+   },
+   {
+    "id": "095de5786bdc",
+    "text": "platforms may reduce barren plateaus through issue.",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "platforms",
+     "barren plateaus"
+    ],
+    "via": [
+     "issue"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-16176-p0004",
+     "arxiv-2011-12245-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-16176-p0004",
+      "quote": "Alternatively, platforms that allow for physical movement of qubits, such as neutral atom and photons, or those with longrange interactions like ion-trapped systems, could also mitigate this issue.",
+      "start": 1766,
+      "end": 1963,
+      "chunk_sha256": "4de79d3e9f2dbc59c8319a8326b6b88c498f458dd9593669c44ff9c288988e7b",
+      "relation": "decreases",
+      "subject": "platforms",
+      "object": "issue",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2011-12245-p0004",
+      "quote": "Various issues lead to barren plateaus, such as deep ansatzes that lack structure [19, 21, 31], global cost functions [20, 21], high levels of noise [22, 32], scrambling target unitaries [24], and large entanglement [28, 29].",
+      "start": 348,
+      "end": 573,
+      "chunk_sha256": "29029f30dfea4c2fb2c2b7b3e28275cfa74df5f6d2ffdb0e5c95caff55cde7af",
+      "relation": "causes",
+      "subject": "issues",
+      "object": "barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.494,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where platforms differs while other inputs are matched. The hypothesis fails if barren plateaus does not fall with platforms, or if fixing issue removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "issue"
+   }
+  ],
+  "survivors": 15,
+  "candidates_generated": 147,
+  "candidates_passed": {
+   "abductive": 146,
+   "deductive": 146,
+   "pre_thinker": 15
+  },
+  "candidates_rejected": {
+   "abductive:no_explanatory_relation": 1,
+   "pre_thinker:circular": 1,
+   "pre_thinker:malformed": 126,
+   "pre_thinker:restates_source": 1,
+   "pre_thinker:single_source": 3
+  },
+  "relation_edges": 996,
+  "scoped_edges": 69,
+  "budget_used": {
+   "rounds": 1,
+   "candidates": 147,
+   "edges": 1042,
+   "bytes": 501120,
+   "seconds": 11.312
+  },
+  "incomplete": false,
+  "stop_reason": null,
+  "shortage": null,
+  "snapshot": {
+   "as_of": 1795594664,
+   "chunk_count": 3369
+  }
+ },
+ "reply": "Frontier hypotheses for two-level systems. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 147. Passed abductive check: 146; deductive check: 146; pre-thinker validation: 15.\n\n1. dimension of DLA and non Clifford gates may move together because both depend on system size.\n[arxiv-2105-14377-p0049] For instance, when the system is controllable, dim(g) = d2 − 1 = 22n − 1, and thus the dimension of the DLA is exponentially growing with the system size n.\n[arxiv-2609-39734-p0025] Stabilizer decompositions provide efficient simulation when the number of non-Clifford gates grows at most logarithmically with system size [14, 15].\nFalsification test: Track dimension of DLA and non Clifford gates across periods where system size changes and where it does not. The hypothesis fails if they co-vary just as strongly when system size is held fixed.\nDeepen check: all links supported (system size -> dimension of DLA: supported, system size -> non Clifford gates: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.67.\n\n2. relative position of magic thresholds and dimension of DLA may move together because both depend on system size.\n[arxiv-2609-39734-p0039] Thus, the relative position of the magic and sampling thresholds is determined by the system size and the sampling tolerance.\n[arxiv-2105-14377-p0049] For instance, when the system is controllable, dim(g) = d2 − 1 = 22n − 1, and thus the dimension of the DLA is exponentially growing with the system size n.\nFalsification test: Track relative position of magic thresholds and dimension of DLA across periods where system size changes and where it does not. The hypothesis fails if they co-vary just as strongly when system size is held fixed.\nDeepen check: all links supported (system size -> relative position of magic thresholds: supported, system size -> dimension of DLA: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.60.\n\n3. chemical initialization and mid - circuit measurements may jointly constrain barren plateaus, so relieving one may shift the bottleneck to the other.\n[arxiv-2609-22729-p0002] In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.\n[arxiv-2406-14285-p0059] therefore, mid-circuit measurements, circuit pretraining, entanglement regularization to add terms to the cost function, and initial partitioning play on the entanglement entropy to better mitigate barren plateaus\nFalsification test: Relieve chemical initialization alone while measuring barren plateaus. The hypothesis fails if barren plateaus keeps improving without mid - circuit measurements becoming the binding limit, or if relieving mid - circuit measurements alone has no effect.\nDeepen check: all links supported (chemical initialization -> barren plateaus: supported, mid - circuit measurements -> barren plateaus: supported).\nComposition: conditional; plan readiness: needs input.\nScores: source support 0.80, deductive relevance 0.55, novelty 0.70.\n\n4. mid - circuit measurements and MPQC may jointly constrain barren plateaus, so relieving one may shift the bottleneck to the other.\n[arxiv-2406-14285-p0059] therefore, mid-circuit measurements, circuit pretraining, entanglement regularization to add terms to the cost function, and initial partitioning play on the entanglement entropy to better mitigate barren plateaus\n[arxiv-2511-13408-p0002] Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers.\nFalsification test: Relieve mid - circuit measurements alone while measuring barren plateaus. The hypothesis fails if barren plateaus keeps improving without MPQC becoming the binding limit, or if relieving MPQC alone has no effect.\nDeepen check: all links supported (mid - circuit measurements -> barren plateaus: supported, MPQC -> barren plateaus: supported).\nComposition: conditional; plan readiness: needs input.\nScores: source support 0.80, deductive relevance 0.55, novelty 0.68.\n\n5. chemical initialization and MPQC may jointly constrain barren plateaus, so relieving one may shift the bottleneck to the other.\n[arxiv-2609-22729-p0002] In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.\n[arxiv-2511-13408-p0002] Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers.\nFalsification test: Relieve chemical initialization alone while measuring barren plateaus. The hypothesis fails if barren plateaus keeps improving without MPQC becoming the binding limit, or if relieving MPQC alone has no effect.\nDeepen check: all links supported (chemical initialization -> barren plateaus: supported, MPQC -> barren plateaus: supported).\nComposition: conditional; plan readiness: needs input.\nScores: source support 0.80, deductive relevance 0.54, novelty 0.67.\n\n6. geometry and particles may interact in their effect on latter.\n[arxiv-2510-06324-p0042] More generally, we also expect the threshold for approximate Markovianity to differ from the percolation threshold, since the latter depends only on geometry.\n[arxiv-2409-06636-p0004] The latter, of course, grows exponentially with the number of particles in the system.\nFalsification test: Vary geometry and particles separately and together. The hypothesis fails if the joint change in latter equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.41, novelty 0.60.\n\n7. radioactive contaminants may increase latter through particles.\n[arxiv-2603-13460-p0008] These particles can be emitted by radioactive contaminants in materials that form the qubit package (e.g., ceramic interposer PCBs, connectors, and dust) [24, 25, 33, 34] or by radon emanated from qubit package materials [34], and are a well known and challenging background to mitigate in rare-event particle\n[arxiv-2409-06636-p0004] The latter, of course, grows exponentially with the number of particles in the system.\nFalsification test: Compare settings where radioactive contaminants differs while other inputs are matched. The hypothesis fails if latter does not rise with radioactive contaminants, or if fixing particles removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.55, novelty 0.60.\n\n8. Gains in barren plateaus from dimension of qudits may be offset by chemical initialization.\n[arxiv-2609-22729-p0002] In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.\n[arxiv-2405-08190-p0001] # Barren plateaus are amplified by the dimension of qudits\nFalsification test: Measure barren plateaus where both chemical initialization and dimension of qudits vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.50, novelty 0.60.\n\n9. Gains in Barren plateaus from dimension of qudits may be offset by MPQC.\n[arxiv-2405-08190-p0001] # Barren plateaus are amplified by the dimension of qudits\n[arxiv-2511-13408-p0002] Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers.\nFalsification test: Measure Barren plateaus where both dimension of qudits and MPQC vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.50, novelty 0.56.\n\n10. Gains in barren plateaus from issues may be offset by MPQC.\n[arxiv-2011-12245-p0004] Various issues lead to barren plateaus, such as deep ansatzes that lack structure [19, 21, 31], global cost functions [20, 21], high levels of noise [22, 32], scrambling target unitaries [24], and large entanglement [28, 29].\n[arxiv-2511-13408-p0002] Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers.\nFalsification test: Measure barren plateaus where both issues and MPQC vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.49, novelty 0.60.\n\n11. Gains in barren plateaus from issues may be offset by chemical initialization.\n[arxiv-2609-22729-p0002] In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.\n[arxiv-2011-12245-p0004] Various issues lead to barren plateaus, such as deep ansatzes that lack structure [19, 21, 31], global cost functions [20, 21], high levels of noise [22, 32], scrambling target unitaries [24], and large entanglement [28, 29].\nFalsification test: Measure barren plateaus where both chemical initialization and issues vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.49, novelty 0.56.\n\n12. MPQC may reduce exponential scaling for gradient free optimizers through barren plateaus.\n[arxiv-2511-13408-p0002] Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers.\n[arxiv-2011-12245-p0037] This is consistent with our main result, and demonstrates that barren plateaus can lead to exponential scaling even for gradient-free optimizers.\nFalsification test: Compare settings where MPQC differs while other inputs are matched. The hypothesis fails if exponential scaling for gradient free optimizers does not fall with MPQC, or if fixing barren plateaus removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.61, novelty 0.60.\n\n13. chemical initialization may reduce exponential scaling for gradient free optimizers through barren plateaus.\n[arxiv-2609-22729-p0002] In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.\n[arxiv-2011-12245-p0037] This is consistent with our main result, and demonstrates that barren plateaus can lead to exponential scaling even for gradient-free optimizers.\nFalsification test: Compare settings where chemical initialization differs while other inputs are matched. The hypothesis fails if exponential scaling for gradient free optimizers does not fall with chemical initialization, or if fixing barren plateaus removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.61, novelty 0.58.\n\n14. barren plateaus and degree of controllability of system may interact in their effect on exponential scaling for gradient free optimizers.\n[arxiv-2011-12245-p0037] This is consistent with our main result, and demonstrates that barren plateaus can lead to exponential scaling even for gradient-free optimizers.\n[arxiv-2105-14377-p0002] Specifically, we show that the gradient scaling of the VQA depends on the degree of controllability of the system, and hence can be diagnosed through the dynamical Lie algebra g obtained from the generators of the ansatz.\nFalsification test: Vary barren plateaus and degree of controllability of system separately and together. The hypothesis fails if the joint change in exponential scaling for gradient free optimizers equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.53, novelty 0.59.\n\n15. platforms may reduce barren plateaus through issue.\n[arxiv-2407-16176-p0004] Alternatively, platforms that allow for physical movement of qubits, such as neutral atom and photons, or those with longrange interactions like ion-trapped systems, could also mitigate this issue.\n[arxiv-2011-12245-p0004] Various issues lead to barren plateaus, such as deep ansatzes that lack structure [19, 21, 31], global cost functions [20, 21], high levels of noise [22, 32], scrambling target unitaries [24], and large entanglement [28, 29].\nFalsification test: Compare settings where platforms differs while other inputs are matched. The hypothesis fails if barren plateaus does not fall with platforms, or if fixing issue removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.49, novelty 0.60.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

@@ -1,0 +1,786 @@
+{
+ "kind": "seed",
+ "topic": "fault-tolerant quantum computation",
+ "hypothesis": {
+  "id": "fca0e8a06f94",
+  "text": "circuit depth for noise models and qubit count may jointly drive sampling cost, and their effects may compound.",
+  "pattern": "convergent",
+  "relation": "jointly_drive",
+  "anchors": [
+   "circuit depth for noise models",
+   "qubit count",
+   "sampling cost"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2208-09178-p0002",
+   "arxiv-2208-09385-p0002",
+   "arxiv-2208-09385-p0004"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2208-09178-p0002",
+    "quote": "The results imply that the sampling cost required for a wide class of protocols to mitigate errors must grow exponentially with the circuit depth for various noise models, revealing the fundamental obstacles in the scalability of useful noisy near-term quantum devices.",
+    "start": 1449,
+    "end": 1718,
+    "chunk_sha256": "f6da52aed0ba56986b72f4b040adeb7b0e0ef8bb4c40419d8d2f10788552bee5",
+    "relation": "increases",
+    "subject": "circuit depth for noise models",
+    "object": "sampling cost",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2208-09385-p0002",
+    "quote": "Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.",
+    "start": 1125,
+    "end": 1241,
+    "chunk_sha256": "133876183918ad42ee680678cb2b9a17d2df6ebe8aa0cb141e08e1099bc2c4ab",
+    "relation": "increases",
+    "subject": "qubit count",
+    "object": "cost",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2208-09385-p0004",
+    "quote": "Furthermore, for random layered circuits under local noise, we show that the cost grows exponentially also with the qubit count n (Theorem 2).",
+    "start": 1443,
+    "end": 1585,
+    "chunk_sha256": "c91469f6a3edc015984795ac2f1e8a82cdaf9911acfb29cf1b8970530a26e0b7",
+    "relation": "increases",
+    "subject": "qubit count",
+    "object": "cost",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.96,
+   "deductive_relevance": 0.421,
+   "novelty": 0.55
+  },
+  "falsification_test": "Vary circuit depth for noise models and qubit count separately and together. The hypothesis fails if the joint change in sampling cost equals the sum of the separate changes.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 2,
+  "rule_verdict": null,
+  "hub": "sampling cost",
+  "check": {
+   "verdict": "all_links_supported",
+   "incomplete": false,
+   "direction_check": {
+    "requested": "jointly_drive",
+    "status": "unspecified",
+    "observed": []
+   },
+   "composition": {
+    "status": "requires_review",
+    "bridges": [
+     {
+      "link": 0,
+      "requested": "circuit depth for noise models",
+      "source_term": "circuit depth",
+      "citation": {
+       "document_id": "arxiv-2208-09385-p0079",
+       "quote": "By using the convergence of the relative entropy, they showed for generic noisy layered circuits that the sampling cost of QEM grows exponentially with the circuit depth.",
+       "start": 2804,
+       "end": 2974,
+       "chunk_sha256": "9e22ba71c4a87daa68ef79dec6da6e15a9205dde29fc891316fdbef92b1f5792",
+       "relation": "increases",
+       "subject": "circuit depth",
+       "object": "sampling cost of QEM",
+       "hedged": false
+      },
+      "status": "requires_review",
+      "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+     },
+     {
+      "link": 0,
+      "requested": "sampling cost",
+      "source_term": "sampling cost of QEM",
+      "citation": {
+       "document_id": "arxiv-2208-09385-p0079",
+       "quote": "By using the convergence of the relative entropy, they showed for generic noisy layered circuits that the sampling cost of QEM grows exponentially with the circuit depth.",
+       "start": 2804,
+       "end": 2974,
+       "chunk_sha256": "9e22ba71c4a87daa68ef79dec6da6e15a9205dde29fc891316fdbef92b1f5792",
+       "relation": "increases",
+       "subject": "circuit depth",
+       "object": "sampling cost of QEM",
+       "hedged": false
+      },
+      "status": "requires_review",
+      "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+     },
+     {
+      "link": 1,
+      "requested": "sampling cost",
+      "source_term": "cost",
+      "citation": {
+       "document_id": "arxiv-2208-09385-p0002",
+       "quote": "Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.",
+       "start": 1125,
+       "end": 1241,
+       "chunk_sha256": "133876183918ad42ee680678cb2b9a17d2df6ebe8aa0cb141e08e1099bc2c4ab",
+       "relation": "increases",
+       "subject": "qubit count",
+       "object": "cost",
+       "hedged": false
+      },
+      "status": "requires_review",
+      "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+     },
+     {
+      "link": 1,
+      "requested": "sampling cost",
+      "source_term": "cost of QEM",
+      "citation": {
+       "document_id": "arxiv-2208-09385-p0076",
+       "quote": "First, these results indicate the exponential decay of the quantum Fisher information matrix with respect to qubit count, meaning that the cost of QEM grows exponentially with qubit count.",
+       "start": 168,
+       "end": 356,
+       "chunk_sha256": "e588dd20846f6e548b31da15f2d812bb12344005bb191a28cc58f02f5ac2c655",
+       "relation": "increases",
+       "subject": "qubit count",
+       "object": "cost of QEM",
+       "hedged": false
+      },
+      "status": "requires_review",
+      "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+     }
+    ],
+    "qualifications": [],
+    "source_contexts": [],
+    "scope_differences": [],
+    "context_coverage": "not_recorded",
+    "interaction": {
+     "status": "untested",
+     "reason": "Individual effects do not establish a joint interaction."
+    },
+    "assumptions": [
+     "Source terms denote compatible quantities and settings.",
+     "Composed source relationships are not causal identification."
+    ],
+    "scientific_validity": "not_established"
+   },
+   "plan_readiness": "needs_input",
+   "links": [
+    {
+     "source": "circuit depth for noise models",
+     "target": "sampling cost",
+     "status": "supported",
+     "counter": []
+    },
+    {
+     "source": "qubit count",
+     "target": "sampling cost",
+     "status": "supported",
+     "counter": []
+    }
+   ]
+  }
+ },
+ "seconds": 9.68,
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "convergent",
+  "terms": {
+   "a": "circuit depth for noise models",
+   "b": "qubit count",
+   "c": "sampling cost"
+  },
+  "path_nodes": null,
+  "links": [
+   {
+    "source": "circuit depth for noise models",
+    "target": "sampling cost",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2208-09178-p0002",
+      "quote": "The results imply that the sampling cost required for a wide class of protocols to mitigate errors must grow exponentially with the circuit depth for various noise models, revealing the fundamental obstacles in the scalability of useful noisy near-term quantum devices.",
+      "start": 1449,
+      "end": 1718,
+      "chunk_sha256": "f6da52aed0ba56986b72f4b040adeb7b0e0ef8bb4c40419d8d2f10788552bee5",
+      "relation": "increases",
+      "subject": "circuit depth for noise models",
+      "object": "sampling cost",
+      "hedged": false
+     },
+     {
+      "document_id": "arxiv-2208-09385-p0079",
+      "quote": "By using the convergence of the relative entropy, they showed for generic noisy layered circuits that the sampling cost of QEM grows exponentially with the circuit depth.",
+      "start": 2804,
+      "end": 2974,
+      "chunk_sha256": "9e22ba71c4a87daa68ef79dec6da6e15a9205dde29fc891316fdbef92b1f5792",
+      "relation": "increases",
+      "subject": "circuit depth",
+      "object": "sampling cost of QEM",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2208-09178-p0002",
+      "quote": "The results imply that the sampling cost required for a wide class of protocols to mitigate errors must grow exponentially with the circuit depth for various noise models, revealing the fundamental obstacles in the scalability of useful noisy near-term quantum devices.",
+      "start": 1449,
+      "end": 1718,
+      "chunk_sha256": "f6da52aed0ba56986b72f4b040adeb7b0e0ef8bb4c40419d8d2f10788552bee5"
+     }
+    ],
+    "support_count": 2,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   },
+   {
+    "source": "qubit count",
+    "target": "sampling cost",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2208-09385-p0002",
+      "quote": "Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.",
+      "start": 1125,
+      "end": 1241,
+      "chunk_sha256": "133876183918ad42ee680678cb2b9a17d2df6ebe8aa0cb141e08e1099bc2c4ab",
+      "relation": "increases",
+      "subject": "qubit count",
+      "object": "cost",
+      "hedged": false
+     },
+     {
+      "document_id": "arxiv-2208-09385-p0076",
+      "quote": "First, these results indicate the exponential decay of the quantum Fisher information matrix with respect to qubit count, meaning that the cost of QEM grows exponentially with qubit count.",
+      "start": 168,
+      "end": 356,
+      "chunk_sha256": "e588dd20846f6e548b31da15f2d812bb12344005bb191a28cc58f02f5ac2c655",
+      "relation": "increases",
+      "subject": "qubit count",
+      "object": "cost of QEM",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 2,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   }
+  ],
+  "expected_relation": "jointly_drive",
+  "direction_check": {
+   "requested": "jointly_drive",
+   "status": "unspecified",
+   "observed": []
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-2208-09178-p0031",
+    "quote": "In Appendix D, we compare the bound in Theorem 1 to the sampling cost for several error-mitigation methods, showing that our bound can provide nontrivial lower bounds with the gap being the factor of 3 to 6.",
+    "start": 632,
+    "end": 839,
+    "chunk_sha256": "30df11079f9c96835a6b25b5e839c80cb7b5e28d9315bdb10599932b3f309e9a",
+    "measures": [
+     "sampling cost"
+    ]
+   },
+   {
+    "document_id": "arxiv-2504-12091-p0002",
+    "quote": "Numerical experiments on random circuit sampling and 2D Ising Hamiltonian simulation demonstrate that our scheme significantly reduces execution time, while incurring little or no additional spatial overhead, compared to sequential Pauli-based computation, a conventional computation scheme, and scales favorably with increasing qubit count.",
+    "start": 906,
+    "end": 1247,
+    "chunk_sha256": "a0bcfdc389e98e6fdc0be498263c32d506ea2c093a6ef67e34a951f71cc63ba9",
+    "measures": [
+     "qubit count"
+    ]
+   },
+   {
+    "document_id": "arxiv-2610-22315-p0002",
+    "quote": "We simulate Bravyi--Haah distillation with up to 100 output magic states at a cost that does not grow exponentially in the number of outputs, and achieve state-of-the-art sampling times for distance-5 magic state cultivation on both color codes and RP2 surface codes.",
+    "start": 736,
+    "end": 1003,
+    "chunk_sha256": "fc2b497ee7a91dc6a021aef1ada0799ed4ec294b8f4fe8f0e58b5692d173c188",
+    "measures": [
+     "sampling cost"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "circuit size",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2208-09178-p0002",
+     "quote": "Various prominent quantum error mitigation methods face this problem, where sampling cost grows exponentially with circuit size [4–8].",
+     "start": 3281,
+     "end": 3415,
+     "chunk_sha256": "f6da52aed0ba56986b72f4b040adeb7b0e0ef8bb4c40419d8d2f10788552bee5",
+     "relation": "increases",
+     "subject": "circuit size",
+     "object": "sampling cost",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "circuit structure",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2609-39734-p0026",
+     "quote": "Like tensor-network contraction, its cost is determined entirely by the circuit structure, in this case the non-Clifford gate count, and is independent of the noise model and the output state.",
+     "start": 29,
+     "end": 221,
+     "chunk_sha256": "0d709c904a6f42551af690d72074a3f926ef6d8853243434a96d1b6f8b79b2e9",
+     "relation": "constrains",
+     "subject": "circuit structure",
+     "object": "cost",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "degree distribution",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2609-39734-p0011",
+     "quote": "For matchgate circuits, we show that classical simulation cost is determined by the degree distribution instead of a scalar dynamical diagnostic.",
+     "start": 461,
+     "end": 606,
+     "chunk_sha256": "a7a63dd39f1b2da552019ef420aa972b3ca53155cf146f1fb130f5dc36260817",
+     "relation": "constrains",
+     "subject": "degree distribution",
+     "object": "classical simulation cost",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "distillation protocol",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2407-07394-p0027",
+     "quote": "The time cost of a T gate depends on the distillation protocol, but in our simulation,",
+     "start": 155,
+     "end": 241,
+     "chunk_sha256": "d1ff42806c0b74af7489c69100b7fa3477e9f093c672744e8a14ca1d64a97e6b",
+     "relation": "constrains",
+     "subject": "distillation protocol",
+     "object": "time cost of T gate",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Dynamic pipelines",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2509-24402-p0002",
+     "quote": "Dynamic pipelines reduce the qubit cost by 16%-70% for large-scale quantum applications and achieve average reductions of 26%-37% in qubit-time volume on generated distillation benchmarks compared to state-of-the-art static architectures.",
+     "start": 946,
+     "end": 1184,
+     "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+     "relation": "decreases",
+     "subject": "Dynamic pipelines",
+     "object": "qubit cost",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "factories",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2407-07394-p0039",
+     "quote": "This also shows that adding factories reduced the scheduled time cost and hence the total time cost, whereas the relative run-time delay was almost constant.",
+     "start": 448,
+     "end": 605,
+     "chunk_sha256": "3774d7250cf22cbe36ed301423e474623d4a69394d813c9d0b74ed47d372ace1",
+     "relation": "decreases",
+     "subject": "factories",
+     "object": "scheduled time cost",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 0,
+     "requested": "circuit depth for noise models",
+     "source_term": "circuit depth",
+     "citation": {
+      "document_id": "arxiv-2208-09385-p0079",
+      "quote": "By using the convergence of the relative entropy, they showed for generic noisy layered circuits that the sampling cost of QEM grows exponentially with the circuit depth.",
+      "start": 2804,
+      "end": 2974,
+      "chunk_sha256": "9e22ba71c4a87daa68ef79dec6da6e15a9205dde29fc891316fdbef92b1f5792",
+      "relation": "increases",
+      "subject": "circuit depth",
+      "object": "sampling cost of QEM",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 0,
+     "requested": "sampling cost",
+     "source_term": "sampling cost of QEM",
+     "citation": {
+      "document_id": "arxiv-2208-09385-p0079",
+      "quote": "By using the convergence of the relative entropy, they showed for generic noisy layered circuits that the sampling cost of QEM grows exponentially with the circuit depth.",
+      "start": 2804,
+      "end": 2974,
+      "chunk_sha256": "9e22ba71c4a87daa68ef79dec6da6e15a9205dde29fc891316fdbef92b1f5792",
+      "relation": "increases",
+      "subject": "circuit depth",
+      "object": "sampling cost of QEM",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 1,
+     "requested": "sampling cost",
+     "source_term": "cost",
+     "citation": {
+      "document_id": "arxiv-2208-09385-p0002",
+      "quote": "Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.",
+      "start": 1125,
+      "end": 1241,
+      "chunk_sha256": "133876183918ad42ee680678cb2b9a17d2df6ebe8aa0cb141e08e1099bc2c4ab",
+      "relation": "increases",
+      "subject": "qubit count",
+      "object": "cost",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 1,
+     "requested": "sampling cost",
+     "source_term": "cost of QEM",
+     "citation": {
+      "document_id": "arxiv-2208-09385-p0076",
+      "quote": "First, these results indicate the exponential decay of the quantum Fisher information matrix with respect to qubit count, meaning that the cost of QEM grows exponentially with qubit count.",
+      "start": 168,
+      "end": 356,
+      "chunk_sha256": "e588dd20846f6e548b31da15f2d812bb12344005bb191a28cc58f02f5ac2c655",
+      "relation": "increases",
+      "subject": "qubit count",
+      "object": "cost of QEM",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "untested",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "f0e8148f05f30620",
+    "kind": "variable",
+    "term": "circuit depth for noise models",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for circuit depth for noise models."
+   },
+   {
+    "id": "7bc0d6299236b318",
+    "kind": "variable",
+    "term": "circuit depth for noise models",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for circuit depth for noise models."
+   },
+   {
+    "id": "c0cf7f7ef5639030",
+    "kind": "variable",
+    "term": "qubit count",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for qubit count."
+   },
+   {
+    "id": "7bd2383711aa5207",
+    "kind": "variable",
+    "term": "qubit count",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for qubit count."
+   },
+   {
+    "id": "947e342561dbcf55",
+    "kind": "variable",
+    "term": "sampling cost",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for sampling cost."
+   },
+   {
+    "id": "f57b59afbb1e8ecf",
+    "kind": "variable",
+    "term": "sampling cost",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for sampling cost."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "2x2 factorial",
+   "manipulate": [
+    "circuit depth for noise models",
+    "qubit count"
+   ],
+   "measure": [
+    "sampling cost"
+   ],
+   "mediator": null,
+   "controls": [
+    "circuit size",
+    "circuit structure",
+    "degree distribution",
+    "distillation protocol",
+    "Dynamic pipelines",
+    "factories"
+   ],
+   "steps": [
+    "Run all four combinations of low and high circuit depth for noise models and qubit count; measure sampling cost.",
+    "Review candidate controls (circuit size, circuit structure, degree distribution, distillation protocol, Dynamic pipelines, factories) for timing, feasibility and causal role before adjustment.",
+    "Compare the joint effect with the sum of the separate effects."
+   ],
+   "fails_if": "A precisely measured absence of an interaction challenges compounding in sampling cost; it does not refute individual effects of circuit depth for noise models or qubit count. Predefine a meaningful effect threshold.",
+   "variables": [
+    {
+     "term": "circuit depth for noise models",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "qubit count",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2110-10794-p0043",
+       "quote": "Such a magic-state distillation scheme can be implemented using ∼ 15000 physical qubits where we do not count the qubits needed for stabilizer measurements.",
+       "start": 655,
+       "end": 811,
+       "chunk_sha256": "ec1930d8b517d49c5028401fe7b2b74bbcd93db1b87cfc1bc36e6a0234920083",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2512-13908-p0056",
+       "quote": "In order to facilitate the removal and addition of qubit degrees of freedom from a circuit, we convert all measurement operations to destructive measurements followed by creative resets, which reduce or increase the qubit count by one, respectively.",
+       "start": 0,
+       "end": 249,
+       "chunk_sha256": "9f04ca4d0faacde216336b087a8391cf5cf26c1b5bbfbf4ac14ccebfd9c59997",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "sampling cost",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2208-09385-p0004",
+       "quote": "For example, the sampling cost for constructing an unbiased estimator for noiseless quantum states from measurements in noisy quantum states can be bounded using the quantum Fisher information [37].",
+       "start": 273,
+       "end": 471,
+       "chunk_sha256": "c91469f6a3edc015984795ac2f1e8a82cdaf9911acfb29cf1b8970530a26e0b7",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2504-12864-p0002",
+       "quote": "We provide rigorous analyses of bias and cost, showing that the cost of measuring the parameter and sampling errors is low -- comparable to the cost of the computation itself.",
+       "start": 620,
+       "end": 795,
+       "chunk_sha256": "d489621add0ea1406b2348f7c8d25111ce5ee1c0aacd162f5a6eb3a640315cf4",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "circuit depth for noise models",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "circuit depth for noise models",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "qubit count",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "qubit count",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "sampling cost",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "sampling cost",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "interaction_test": {
+    "contrast": "Y11 - Y10 - Y01 + Y00",
+    "assumptions": "Additive outcome scale, matched conditions and defined interventions.",
+    "interpretation": "A zero interaction contrast challenges compounding, not the individual effects."
+   }
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 9.538
+  },
+  "snapshot": {
+   "as_of": 1795594784,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: circuit depth for noise models and qubit count may jointly drive sampling cost, and their effects may compound.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unspecified.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: circuit depth versus circuit depth for noise models.\n  Review meaning: sampling cost of QEM versus sampling cost.\n  Review meaning: cost versus sampling cost.\n  Review meaning: cost of QEM versus sampling cost.\n\nLink circuit depth for noise models -> sampling cost: supported (2 supporting, 0 contrary).\n  + [arxiv-2208-09178-p0002] The results imply that the sampling cost required for a wide class of protocols to mitigate errors must grow exponentially with the circuit depth for various noise models, revealing the fundamental obstacles in the scalability of useful noisy near-term quantum devices.\n  + [arxiv-2208-09385-p0079] By using the convergence of the relative entropy, they showed for generic noisy layered circuits that the sampling cost of QEM grows exponentially with the circuit depth.\n\nLink qubit count -> sampling cost: supported (2 supporting, 0 contrary).\n  + [arxiv-2208-09385-p0002] Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.\n  + [arxiv-2208-09385-p0076] First, these results indicate the exponential decay of the quantum Fisher information matrix with respect to qubit count, meaning that the cost of QEM grows exponentially with qubit count.\n\nExisting setups that measure one of its terms:\n  [arxiv-2208-09178-p0031] In Appendix D, we compare the bound in Theorem 1 to the sampling cost for several error-mitigation methods, showing that our bound can provide nontrivial lower bounds with the gap being the factor of 3 to 6.\n  [arxiv-2504-12091-p0002] Numerical experiments on random circuit sampling and 2D Ising Hamiltonian simulation demonstrate that our scheme significantly reduces execution time, while incurring little or no additional spatial overhead, compared to sequential Pauli-based computation, a conventional computation scheme, and scales favorably with increasing qubit count.\n  [arxiv-2610-22315-p0002] We simulate Bravyi--Haah distillation with up to 100 output magic states at a cost that does not grow exponentially in the number of outputs, and achieve state-of-the-art sampling times for distance-5 magic state cultivation on both color codes and RP2 surface codes.\n\nCandidate controls (review before adjustment):\n  circuit size: outcome_predictor [arxiv-2208-09178-p0002]\n  circuit structure: outcome_predictor [arxiv-2609-39734-p0026]\n  degree distribution: outcome_predictor [arxiv-2609-39734-p0011]\n  distillation protocol: outcome_predictor [arxiv-2407-07394-p0027]\n  Dynamic pipelines: outcome_predictor [arxiv-2509-24402-p0002]\n  factories: outcome_predictor [arxiv-2407-07394-p0039]\n\nTest plan (2x2 factorial):\n  1. Run all four combinations of low and high circuit depth for noise models and qubit count; measure sampling cost.\n  2. Review candidate controls (circuit size, circuit structure, degree distribution, distillation protocol, Dynamic pipelines, factories) for timing, feasibility and causal role before adjustment.\n  3. Compare the joint effect with the sum of the separate effects.\n  Fails if: A precisely measured absence of an interaction challenges compounding in sampling cost; it does not refute individual effects of circuit depth for noise models or qubit count. Predefine a meaningful effect threshold.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for circuit depth for noise models.\n  Required: feasible intervention or justified observational design for circuit depth for noise models.\n  Required: intervention levels for qubit count.\n  Required: feasible intervention or justified observational design for qubit count.\n  Required: measurement procedure for sampling cost.\n  Required: unit or explicit categorical scale for sampling cost.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

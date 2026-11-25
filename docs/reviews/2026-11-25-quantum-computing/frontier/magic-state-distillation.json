@@ -1,0 +1,3365 @@
+{
+ "prompt": "Frontier: magic state distillation.",
+ "seconds": 12.97,
+ "answer_status": "hypotheses",
+ "frontier": {
+  "schema": "frontier-v1",
+  "triggered": true,
+  "topic": "magic state distillation",
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "limits": {
+   "max_rounds": 1000,
+   "max_candidates": 200000,
+   "max_edges": 50000,
+   "max_bytes": 67108864,
+   "max_seconds": 60.0,
+   "batch_size": 256,
+   "max_path_edges": 2,
+   "max_results": 50,
+   "min_results": 10
+  },
+  "topic_terms": [
+   "magic",
+   "state",
+   "distillation"
+  ],
+  "focus_terms": [
+   "magic",
+   "state",
+   "distillation"
+  ],
+  "chunk_count": 3369,
+  "candidate_search_complete": true,
+  "deepened": 5,
+  "leading_check": {
+   "requested": 5,
+   "checked": 5,
+   "complete": true,
+   "stop_reason": null
+  },
+  "parser": "en_core_web_lg",
+  "bridge_check": "encoder",
+  "encoded_terms": 218,
+  "hub_deferred": 490,
+  "status": "hypotheses",
+  "hypotheses": [
+   {
+    "id": "bf52411c876e",
+    "text": "magic state distillation factory may increase second pulse through fewer higher fidelity states (read as superconducting state).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "magic state distillation factory",
+     "second pulse"
+    ],
+    "via": [
+     "fewer higher fidelity states (read as superconducting state)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2509-24402-p0002",
+     "arxiv-2610-20132-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2509-24402-p0002",
+      "quote": "A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.",
+      "start": 311,
+      "end": 435,
+      "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+      "relation": "causes",
+      "subject": "magic state distillation factory",
+      "object": "fewer higher fidelity states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-20132-p0002",
+      "quote": "The mechanism by which the superconducting state produces the second pulse is not yet understood.",
+      "start": 1701,
+      "end": 1798,
+      "chunk_sha256": "ff8e50d626238325449b9c299fd1ea576640140085fa7b93de4476d44924581e",
+      "relation": "causes",
+      "subject": "superconducting state",
+      "object": "second pulse",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.96,
+     "deductive_relevance": 0.822,
+     "novelty": 0.658
+    },
+    "falsification_test": "Compare settings where magic state distillation factory differs while other inputs are matched. The hypothesis fails if second pulse does not rise with magic state distillation factory, or if fixing fewer higher fidelity states (read as superconducting state) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "fewer higher fidelity state",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "increases",
+      "status": "consistent",
+      "observed": [
+       "increases"
+      ],
+      "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 0,
+        "requested": "fewer higher fidelity states",
+        "source_term": "low fidelity input magic states",
+        "citation": {
+         "document_id": "arxiv-2509-24402-p0002",
+         "quote": "A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.",
+         "start": 311,
+         "end": 435,
+         "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+         "relation": "increases",
+         "subject": "magic state distillation factory",
+         "object": "low fidelity input magic states",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "fewer higher fidelity states",
+        "source_term": "superconducting state",
+        "citation": {
+         "document_id": "arxiv-2610-20132-p0002",
+         "quote": "The mechanism by which the superconducting state produces the second pulse is not yet understood.",
+         "start": 1701,
+         "end": 1798,
+         "chunk_sha256": "ff8e50d626238325449b9c299fd1ea576640140085fa7b93de4476d44924581e",
+         "relation": "causes",
+         "subject": "superconducting state",
+         "object": "second pulse",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "magic state distillation factory",
+       "target": "fewer higher fidelity states",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "fewer higher fidelity states",
+       "target": "second pulse",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "e788f70d75c8",
+    "text": "magic state distillation factory may increase error of circuit outcome through fewer higher fidelity states (read as faulty magic state).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "magic state distillation factory",
+     "error of circuit outcome"
+    ],
+    "via": [
+     "fewer higher fidelity states (read as faulty magic state)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2509-24402-p0002",
+     "arxiv-1905-06903-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2509-24402-p0002",
+      "quote": "A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.",
+      "start": 311,
+      "end": 435,
+      "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+      "relation": "causes",
+      "subject": "magic state distillation factory",
+      "object": "fewer higher fidelity states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0011",
+      "quote": "The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].",
+      "start": 63,
+      "end": 240,
+      "chunk_sha256": "47d20465e0fd13b2d631fbdf22bced01bbc3f0774694297fc46f174b447e7ddf",
+      "relation": "causes",
+      "subject": "faulty magic state",
+      "object": "error of circuit outcome",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.96,
+     "deductive_relevance": 0.798,
+     "novelty": 0.636
+    },
+    "falsification_test": "Compare settings where magic state distillation factory differs while other inputs are matched. The hypothesis fails if error of circuit outcome does not rise with magic state distillation factory, or if fixing fewer higher fidelity states (read as faulty magic state) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "fewer higher fidelity state",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "increases",
+      "status": "consistent",
+      "observed": [
+       "increases"
+      ],
+      "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 0,
+        "requested": "fewer higher fidelity states",
+        "source_term": "low fidelity input magic states",
+        "citation": {
+         "document_id": "arxiv-2509-24402-p0002",
+         "quote": "A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.",
+         "start": 311,
+         "end": 435,
+         "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+         "relation": "increases",
+         "subject": "magic state distillation factory",
+         "object": "low fidelity input magic states",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "fewer higher fidelity states",
+        "source_term": "faulty magic state",
+        "citation": {
+         "document_id": "arxiv-1905-06903-p0011",
+         "quote": "The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].",
+         "start": 63,
+         "end": 240,
+         "chunk_sha256": "47d20465e0fd13b2d631fbdf22bced01bbc3f0774694297fc46f174b447e7ddf",
+         "relation": "causes",
+         "subject": "faulty magic state",
+         "object": "error of circuit outcome",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "magic state distillation factory",
+       "target": "fewer higher fidelity states",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "fewer higher fidelity states",
+       "target": "error of circuit outcome",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "d962508da555",
+    "text": "magic state distillation factory may increase measurement averages through fewer higher fidelity states (read as measuring along the prepared state).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "magic state distillation factory",
+     "measurement averages"
+    ],
+    "via": [
+     "fewer higher fidelity states (read as measuring along the prepared state)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2509-24402-p0002",
+     "arxiv-2512-13908-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2509-24402-p0002",
+      "quote": "A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.",
+      "start": 311,
+      "end": 435,
+      "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+      "relation": "causes",
+      "subject": "magic state distillation factory",
+      "object": "fewer higher fidelity states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2512-13908-p0011",
+      "quote": "Second, KT reduces the projection noise compared to standard tomography: measuring along the prepared state also results in measurement averages close to zero, reducing the variance in the binomial distribution.",
+      "start": 231,
+      "end": 442,
+      "chunk_sha256": "ecae496e0d2cfd2d06ebe70f0bbf948abb23913a7f6167bb9ad86f484f763d67",
+      "relation": "causes",
+      "subject": "measuring along the prepared state",
+      "object": "measurement averages",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.96,
+     "deductive_relevance": 0.788,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where magic state distillation factory differs while other inputs are matched. The hypothesis fails if measurement averages does not rise with magic state distillation factory, or if fixing fewer higher fidelity states (read as measuring along the prepared state) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "fewer higher fidelity state",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "increases",
+      "status": "consistent",
+      "observed": [
+       "increases"
+      ],
+      "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 0,
+        "requested": "fewer higher fidelity states",
+        "source_term": "low fidelity input magic states",
+        "citation": {
+         "document_id": "arxiv-2509-24402-p0002",
+         "quote": "A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.",
+         "start": 311,
+         "end": 435,
+         "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+         "relation": "increases",
+         "subject": "magic state distillation factory",
+         "object": "low fidelity input magic states",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "fewer higher fidelity states",
+        "source_term": "measuring along the prepared state",
+        "citation": {
+         "document_id": "arxiv-2512-13908-p0011",
+         "quote": "Second, KT reduces the projection noise compared to standard tomography: measuring along the prepared state also results in measurement averages close to zero, reducing the variance in the binomial distribution.",
+         "start": 231,
+         "end": 442,
+         "chunk_sha256": "ecae496e0d2cfd2d06ebe70f0bbf948abb23913a7f6167bb9ad86f484f763d67",
+         "relation": "causes",
+         "subject": "measuring along the prepared state",
+         "object": "measurement averages",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "magic state distillation factory",
+       "target": "fewer higher fidelity states",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "fewer higher fidelity states",
+       "target": "measurement averages",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "864f730f0e13",
+    "text": "class of VQAs and error may jointly constrain initial state, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "class of VQAs",
+     "error",
+     "initial state"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-05332-p0013",
+     "arxiv-2508-08246-p0054"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-05332-p0013",
+      "quote": "The class of VQAs we consider here restricts the initial state ρ to be a stabilizer state, the observable O to be a sum of poly(n) Pauli stings O = P i ciPi with real coefficients ci, and the circuit U (φφφ) to consist only of the constant Clifford gates and parametric Pauli rotation gates e−ıPk φk /2.",
+      "start": 0,
+      "end": 303,
+      "chunk_sha256": "00217a3822671968b26cb8b4fbe92787040b60d7eddd063479b70337ec1327a7",
+      "relation": "constrains",
+      "subject": "class of VQAs",
+      "object": "initial state",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2508-08246-p0054",
+      "quote": "In other words, the syndrome state |sE ⟩ is independent of the logical state and only depends on the error E. We now consider the case of a more general error superoperator E (not necessarily CPTP).",
+      "start": 64,
+      "end": 262,
+      "chunk_sha256": "a096f6dcf27613b546432fc959f58d9baaae9ddb659d5687beb5a99ab425911d",
+      "relation": "constrains",
+      "subject": "error",
+      "object": "syndrome state",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.96,
+     "deductive_relevance": 0.463,
+     "novelty": 0.618
+    },
+    "falsification_test": "Relieve class of VQAs alone while measuring initial state. The hypothesis fails if initial state keeps improving without error becoming the binding limit, or if relieving error alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "initial state",
+    "check": {
+     "verdict": "contested",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "co_constrain",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 1,
+        "requested": "initial state",
+        "source_term": "syndrome state",
+        "citation": {
+         "document_id": "arxiv-2508-08246-p0054",
+         "quote": "In other words, the syndrome state |sE ⟩ is independent of the logical state and only depends on the error E. We now consider the case of a more general error superoperator E (not necessarily CPTP).",
+         "start": 64,
+         "end": 262,
+         "chunk_sha256": "a096f6dcf27613b546432fc959f58d9baaae9ddb659d5687beb5a99ab425911d",
+         "relation": "constrains",
+         "subject": "error",
+         "object": "syndrome state",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "error",
+        "source_term": "input error",
+        "citation": {
+         "document_id": "arxiv-2508-08246-p0063",
+         "quote": "In particular, the logical output state may depend on the input error in a highly non-trivial way.",
+         "start": 48,
+         "end": 146,
+         "chunk_sha256": "ae44ef3bf68adff95e0ca407a6b31edb4ebdd615c1f96744de8e378a5311b446",
+         "relation": "constrains",
+         "subject": "input error",
+         "object": "logical output state",
+         "hedged": true
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "initial state",
+        "source_term": "logical output state",
+        "citation": {
+         "document_id": "arxiv-2508-08246-p0063",
+         "quote": "In particular, the logical output state may depend on the input error in a highly non-trivial way.",
+         "start": 48,
+         "end": 146,
+         "chunk_sha256": "ae44ef3bf68adff95e0ca407a6b31edb4ebdd615c1f96744de8e378a5311b446",
+         "relation": "constrains",
+         "subject": "input error",
+         "object": "logical output state",
+         "hedged": true
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "initial state",
+        "source_term": "state",
+        "citation": {
+         "document_id": "arxiv-2208-09385-p0078",
+         "quote": "For the numerical simulation performed to obtain the cost of generalized subspace expansion [21], we optimize parameter c1 and c2 so that the error mitigated state (c1I/2n + c2E ′(ρ))(c1I/2n + c2E ′(ρ))† = |c1|2/4nI + Re(c1c∗ 2)/2n−1E ′(ρ) + |c2|2E ′(ρ)2 reaches the noiseless state",
+         "start": 585,
+         "end": 867,
+         "chunk_sha256": "adf28b1f99ac4aea11c404b94a040c315b7f9e7029e52e231e0bcfe46416c2e1",
+         "relation": "decreases",
+         "subject": "error",
+         "object": "state",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [
+       {
+        "link": 0,
+        "citation": {
+         "document_id": "arxiv-2405-05332-p0013",
+         "quote": "The class of VQAs we consider here restricts the initial state ρ to be a stabilizer state, the observable O to be a sum of poly(n) Pauli stings O = P i ciPi with real coefficients ci, and the circuit U (φφφ) to consist only of the constant Clifford gates and parametric Pauli rotation gates e−ıPk φk /2.",
+         "start": 0,
+         "end": 303,
+         "chunk_sha256": "00217a3822671968b26cb8b4fbe92787040b60d7eddd063479b70337ec1327a7",
+         "relation": "constrains",
+         "subject": "class of VQAs",
+         "object": "initial state",
+         "hedged": false
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       },
+       {
+        "link": 1,
+        "citation": {
+         "document_id": "arxiv-2508-08246-p0054",
+         "quote": "In other words, the syndrome state |sE ⟩ is independent of the logical state and only depends on the error E. We now consider the case of a more general error superoperator E (not necessarily CPTP).",
+         "start": 64,
+         "end": 262,
+         "chunk_sha256": "a096f6dcf27613b546432fc959f58d9baaae9ddb659d5687beb5a99ab425911d",
+         "relation": "constrains",
+         "subject": "error",
+         "object": "syndrome state",
+         "hedged": false
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       },
+       {
+        "link": 1,
+        "citation": {
+         "document_id": "arxiv-2508-08246-p0063",
+         "quote": "In particular, the logical output state may depend on the input error in a highly non-trivial way.",
+         "start": 48,
+         "end": 146,
+         "chunk_sha256": "ae44ef3bf68adff95e0ca407a6b31edb4ebdd615c1f96744de8e378a5311b446",
+         "relation": "constrains",
+         "subject": "input error",
+         "object": "logical output state",
+         "hedged": true
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       }
+      ],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "untested",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "class of VQAs",
+       "target": "initial state",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "error",
+       "target": "initial state",
+       "status": "contested",
+       "counter": [
+        {
+         "document_id": "arxiv-2208-09385-p0078",
+         "quote": "For the numerical simulation performed to obtain the cost of generalized subspace expansion [21], we optimize parameter c1 and c2 so that the error mitigated state (c1I/2n + c2E ′(ρ))(c1I/2n + c2E ′(ρ))† = |c1|2/4nI + Re(c1c∗ 2)/2n−1E ′(ρ) + |c2|2E ′(ρ)2 reaches the noiseless state",
+         "start": 585,
+         "end": 867,
+         "chunk_sha256": "adf28b1f99ac4aea11c404b94a040c315b7f9e7029e52e231e0bcfe46416c2e1",
+         "relation": "decreases",
+         "subject": "error",
+         "object": "state",
+         "hedged": false
+        }
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "id": "28a218524d40",
+    "text": "pipelining may constrain low fidelity input magic states through magic state factory (read as magic state distillation factory).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "pipelining",
+     "low fidelity input magic states"
+    ],
+    "via": [
+     "magic state factory (read as magic state distillation factory)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-07394-p0031",
+     "arxiv-2509-24402-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-07394-p0031",
+      "quote": "Our magic state factory relies heavily on pipelining, and to work efficiently, it needs to store partially completed calculations performed in the previous round of distillation.",
+      "start": 129,
+      "end": 307,
+      "chunk_sha256": "1b2b0b01797ed5a3b312a90fa935c12caaa05aba93f582303b8d235506233eba",
+      "relation": "constrains",
+      "subject": "pipelining",
+      "object": "magic state factory",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2509-24402-p0002",
+      "quote": "A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.",
+      "start": 311,
+      "end": 435,
+      "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+      "relation": "increases",
+      "subject": "magic state distillation factory",
+      "object": "low fidelity input magic states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.857,
+     "novelty": 0.623
+    },
+    "falsification_test": "Compare settings where pipelining differs while other inputs are matched. The hypothesis fails if low fidelity input magic states does not stay bounded with pipelining, or if fixing magic state factory (read as magic state distillation factory) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "magic state factory",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "constrains",
+      "status": "consistent",
+      "observed": [
+       "constrains"
+      ],
+      "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 1,
+        "requested": "magic state factory",
+        "source_term": "magic state distillation factory",
+        "citation": {
+         "document_id": "arxiv-2509-24402-p0002",
+         "quote": "A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.",
+         "start": 311,
+         "end": 435,
+         "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+         "relation": "increases",
+         "subject": "magic state distillation factory",
+         "object": "low fidelity input magic states",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "magic state factory",
+        "source_term": "magic state distillation factory",
+        "citation": {
+         "document_id": "arxiv-2509-24402-p0002",
+         "quote": "A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.",
+         "start": 311,
+         "end": 435,
+         "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+         "relation": "causes",
+         "subject": "magic state distillation factory",
+         "object": "fewer higher fidelity states",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "low fidelity input magic states",
+        "source_term": "fewer higher fidelity states",
+        "citation": {
+         "document_id": "arxiv-2509-24402-p0002",
+         "quote": "A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.",
+         "start": 311,
+         "end": 435,
+         "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+         "relation": "causes",
+         "subject": "magic state distillation factory",
+         "object": "fewer higher fidelity states",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "pipelining",
+       "target": "magic state factory",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "magic state factory",
+       "target": "low fidelity input magic states",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "1807b3734c6f",
+    "text": "rapid distillation speed may increase error of circuit outcome through discarded magic states (read as faulty magic state).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "rapid distillation speed",
+     "error of circuit outcome"
+    ],
+    "via": [
+     "discarded magic states (read as faulty magic state)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-07394-p0024",
+     "arxiv-1905-06903-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-07394-p0024",
+      "quote": "Finally, a too rapid distillation speed leads to discarded magic states.",
+      "start": 1282,
+      "end": 1354,
+      "chunk_sha256": "e0a47cd12b6b6fb4a3ca4008194b9e22bbba02721a35c69304fd26647b4ec2c1",
+      "relation": "causes",
+      "subject": "rapid distillation speed",
+      "object": "discarded magic states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0011",
+      "quote": "The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].",
+      "start": 63,
+      "end": 240,
+      "chunk_sha256": "47d20465e0fd13b2d631fbdf22bced01bbc3f0774694297fc46f174b447e7ddf",
+      "relation": "causes",
+      "subject": "faulty magic state",
+      "object": "error of circuit outcome",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.852,
+     "novelty": 0.619
+    },
+    "falsification_test": "Compare settings where rapid distillation speed differs while other inputs are matched. The hypothesis fails if error of circuit outcome does not rise with rapid distillation speed, or if fixing discarded magic states (read as faulty magic state) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "discarded magic state"
+   },
+   {
+    "id": "094284bd31b5",
+    "text": "distillation pipelines may increase universal quantum through magic states.",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "distillation pipelines",
+     "universal quantum"
+    ],
+    "via": [
+     "magic states"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2509-24402-p0002",
+     "arxiv-2503-05003-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2509-24402-p0002",
+      "quote": "Observing that distillation pipelines consume magic states in a burst-then-steady pattern, we develop dynamic factory scheduling and resource allocation techniques that go beyond existing static pipeline organizations.",
+      "start": 727,
+      "end": 945,
+      "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+      "relation": "increases",
+      "subject": "distillation pipelines",
+      "object": "magic states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2503-05003-p0006",
+      "quote": "powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.",
+      "start": 276,
+      "end": 879,
+      "chunk_sha256": "896909438bda7e68db9428d19a58db42cd14f57dd68d35741e45af24adf3ff74",
+      "relation": "increases",
+      "subject": "magic states",
+      "object": "universal quantum",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.846,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where distillation pipelines differs while other inputs are matched. The hypothesis fails if universal quantum does not rise with distillation pipelines, or if fixing magic states removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "magic state"
+   },
+   {
+    "id": "7cf181f2dad7",
+    "text": "rapid distillation speed may increase universal quantum through discarded magic states (read as magic states).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "rapid distillation speed",
+     "universal quantum"
+    ],
+    "via": [
+     "discarded magic states (read as magic states)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-07394-p0024",
+     "arxiv-2503-05003-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-07394-p0024",
+      "quote": "Finally, a too rapid distillation speed leads to discarded magic states.",
+      "start": 1282,
+      "end": 1354,
+      "chunk_sha256": "e0a47cd12b6b6fb4a3ca4008194b9e22bbba02721a35c69304fd26647b4ec2c1",
+      "relation": "causes",
+      "subject": "rapid distillation speed",
+      "object": "discarded magic states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2503-05003-p0006",
+      "quote": "powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.",
+      "start": 276,
+      "end": 879,
+      "chunk_sha256": "896909438bda7e68db9428d19a58db42cd14f57dd68d35741e45af24adf3ff74",
+      "relation": "increases",
+      "subject": "magic states",
+      "object": "universal quantum",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.837,
+     "novelty": 0.577
+    },
+    "falsification_test": "Compare settings where rapid distillation speed differs while other inputs are matched. The hypothesis fails if universal quantum does not rise with rapid distillation speed, or if fixing discarded magic states (read as magic states) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "discarded magic state"
+   },
+   {
+    "id": "48a8ad366ee6",
+    "text": "distillation pipelines may increase error of circuit outcome through magic states (read as faulty magic state).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "distillation pipelines",
+     "error of circuit outcome"
+    ],
+    "via": [
+     "magic states (read as faulty magic state)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2509-24402-p0002",
+     "arxiv-1905-06903-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2509-24402-p0002",
+      "quote": "Observing that distillation pipelines consume magic states in a burst-then-steady pattern, we develop dynamic factory scheduling and resource allocation techniques that go beyond existing static pipeline organizations.",
+      "start": 727,
+      "end": 945,
+      "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+      "relation": "increases",
+      "subject": "distillation pipelines",
+      "object": "magic states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0011",
+      "quote": "The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].",
+      "start": 63,
+      "end": 240,
+      "chunk_sha256": "47d20465e0fd13b2d631fbdf22bced01bbc3f0774694297fc46f174b447e7ddf",
+      "relation": "causes",
+      "subject": "faulty magic state",
+      "object": "error of circuit outcome",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.82,
+     "novelty": 0.577
+    },
+    "falsification_test": "Compare settings where distillation pipelines differs while other inputs are matched. The hypothesis fails if error of circuit outcome does not rise with distillation pipelines, or if fixing magic states (read as faulty magic state) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "magic state"
+   },
+   {
+    "id": "110021b81b6a",
+    "text": "rapid distillation speed may increase second pulse through discarded magic states (read as superconducting state).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "rapid distillation speed",
+     "second pulse"
+    ],
+    "via": [
+     "discarded magic states (read as superconducting state)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-07394-p0024",
+     "arxiv-2610-20132-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-07394-p0024",
+      "quote": "Finally, a too rapid distillation speed leads to discarded magic states.",
+      "start": 1282,
+      "end": 1354,
+      "chunk_sha256": "e0a47cd12b6b6fb4a3ca4008194b9e22bbba02721a35c69304fd26647b4ec2c1",
+      "relation": "causes",
+      "subject": "rapid distillation speed",
+      "object": "discarded magic states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-20132-p0002",
+      "quote": "The mechanism by which the superconducting state produces the second pulse is not yet understood.",
+      "start": 1701,
+      "end": 1798,
+      "chunk_sha256": "ff8e50d626238325449b9c299fd1ea576640140085fa7b93de4476d44924581e",
+      "relation": "causes",
+      "subject": "superconducting state",
+      "object": "second pulse",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.815,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where rapid distillation speed differs while other inputs are matched. The hypothesis fails if second pulse does not rise with rapid distillation speed, or if fixing discarded magic states (read as superconducting state) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "discarded magic state"
+   },
+   {
+    "id": "4db4079a80e9",
+    "text": "FTQC programs may increase universal quantum through magic states.",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "FTQC programs",
+     "universal quantum"
+    ],
+    "via": [
+     "magic states"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-07394-p0003",
+     "arxiv-2407-07394-p0020",
+     "arxiv-2503-05003-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-07394-p0003",
+      "quote": "FTQC programs consume many magic states, and magic state distillation is one of the major bottlenecks of FTQC.",
+      "start": 1476,
+      "end": 1586,
+      "chunk_sha256": "ed0549cfb12a3302c36868790e23d8ed84db0186a765730700a09c23fc72f40f",
+      "relation": "increases",
+      "subject": "FTQC programs",
+      "object": "magic states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-07394-p0020",
+      "quote": "We believe that this scenario is generic when a quantum program is highly parallelized, and this problem requires attention given that FTQC programs consume many magic states during computation.",
+      "start": 220,
+      "end": 414,
+      "chunk_sha256": "0caef474d62ea27453cc370f5a5613e5ca967abf79c109fd8a8fd413ed23322e",
+      "relation": "increases",
+      "subject": "FTQC programs",
+      "object": "magic states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2503-05003-p0006",
+      "quote": "powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.",
+      "start": 276,
+      "end": 879,
+      "chunk_sha256": "896909438bda7e68db9428d19a58db42cd14f57dd68d35741e45af24adf3ff74",
+      "relation": "increases",
+      "subject": "magic states",
+      "object": "universal quantum",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.805,
+     "novelty": 0.488
+    },
+    "falsification_test": "Compare settings where FTQC programs differs while other inputs are matched. The hypothesis fails if universal quantum does not rise with FTQC programs, or if fixing magic states removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "magic state"
+   },
+   {
+    "id": "24d546c049d0",
+    "text": "Gains in qubit cost from Magic state distillation failures may be offset by Dynamic pipelines.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "Dynamic pipelines",
+     "Magic state distillation failures",
+     "qubit cost"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2509-24402-p0002",
+     "arxiv-2407-07394-p0020"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2509-24402-p0002",
+      "quote": "Dynamic pipelines reduce the qubit cost by 16%-70% for large-scale quantum applications and achieve average reductions of 26%-37% in qubit-time volume on generated distillation benchmarks compared to state-of-the-art static architectures.",
+      "start": 946,
+      "end": 1184,
+      "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+      "relation": "decreases",
+      "subject": "Dynamic pipelines",
+      "object": "qubit cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-07394-p0020",
+      "quote": "Magic state distillation failures increase the time cost at run-time; hence, we call it the run-time delay.",
+      "start": 2744,
+      "end": 2851,
+      "chunk_sha256": "0caef474d62ea27453cc370f5a5613e5ca967abf79c109fd8a8fd413ed23322e",
+      "relation": "increases",
+      "subject": "Magic state distillation failures",
+      "object": "time cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.768,
+     "novelty": 0.6
+    },
+    "falsification_test": "Measure qubit cost where both Dynamic pipelines and Magic state distillation failures vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "qubit cost"
+   },
+   {
+    "id": "a396c94f633a",
+    "text": "injected non - Clifford resource and Magic state distillation failures may interact in their effect on corresponding cost.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "injected non - Clifford resource",
+     "Magic state distillation failures",
+     "corresponding cost"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2609-39734-p0025",
+     "arxiv-2407-07394-p0020"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2609-39734-p0025",
+      "quote": "The corresponding cost depends on the injected non-Clifford resource rather than on the noisy output state itself.",
+      "start": 359,
+      "end": 473,
+      "chunk_sha256": "bddd8a80d664709ba8bd306b762c0d249c92a79d1819c8d3ca48d9698117bf15",
+      "relation": "constrains",
+      "subject": "injected non - Clifford resource",
+      "object": "corresponding cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-07394-p0020",
+      "quote": "Magic state distillation failures increase the time cost at run-time; hence, we call it the run-time delay.",
+      "start": 2744,
+      "end": 2851,
+      "chunk_sha256": "0caef474d62ea27453cc370f5a5613e5ca967abf79c109fd8a8fd413ed23322e",
+      "relation": "increases",
+      "subject": "Magic state distillation failures",
+      "object": "time cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.753,
+     "novelty": 0.642
+    },
+    "falsification_test": "Vary injected non - Clifford resource and Magic state distillation failures separately and together. The hypothesis fails if the joint change in corresponding cost equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "corresponding cost"
+   },
+   {
+    "id": "1e66e7734395",
+    "text": "circuit depth and Magic state distillation failures may jointly drive sampling cost of QEM, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "circuit depth",
+     "Magic state distillation failures",
+     "sampling cost of QEM"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2208-09385-p0079",
+     "arxiv-2407-07394-p0020"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2208-09385-p0079",
+      "quote": "By using the convergence of the relative entropy, they showed for generic noisy layered circuits that the sampling cost of QEM grows exponentially with the circuit depth.",
+      "start": 2804,
+      "end": 2974,
+      "chunk_sha256": "9e22ba71c4a87daa68ef79dec6da6e15a9205dde29fc891316fdbef92b1f5792",
+      "relation": "increases",
+      "subject": "circuit depth",
+      "object": "sampling cost of QEM",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-07394-p0020",
+      "quote": "Magic state distillation failures increase the time cost at run-time; hence, we call it the run-time delay.",
+      "start": 2744,
+      "end": 2851,
+      "chunk_sha256": "0caef474d62ea27453cc370f5a5613e5ca967abf79c109fd8a8fd413ed23322e",
+      "relation": "increases",
+      "subject": "Magic state distillation failures",
+      "object": "time cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.749,
+     "novelty": 0.608
+    },
+    "falsification_test": "Vary circuit depth and Magic state distillation failures separately and together. The hypothesis fails if the joint change in sampling cost of QEM equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "sampling cost of qem"
+   },
+   {
+    "id": "6cb408c3982b",
+    "text": "increasing qubit count may increase preparation of magic state through scheme.",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "increasing qubit count",
+     "preparation of magic state"
+    ],
+    "via": [
+     "scheme"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2504-12091-p0002",
+     "arxiv-2507-12511-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2504-12091-p0002",
+      "quote": "Numerical experiments on random circuit sampling and 2D Ising Hamiltonian simulation demonstrate that our scheme significantly reduces execution time, while incurring little or no additional spatial overhead, compared to sequential Pauli-based computation, a conventional computation scheme, and scales favorably with increasing qubit count.",
+      "start": 906,
+      "end": 1247,
+      "chunk_sha256": "a0bcfdc389e98e6fdc0be498263c32d506ea2c093a6ef67e34a951f71cc63ba9",
+      "relation": "increases",
+      "subject": "increasing qubit count",
+      "object": "scheme",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2507-12511-p0002",
+      "quote": "By leveraging the noise bias, our scheme enables the preparation of a magic state with a logical error rate of 3 times 10-7, using only 53 qubits and 5.5 error correction rounds, under a noise bias of eta gtrsim 5 times 106 and a phase-flip noise rate of 0.1%.",
+      "start": 354,
+      "end": 614,
+      "chunk_sha256": "8299ab8968e968302dbfc0bda28f03d5ead9bf1f7220bc34fbd3c9ffb6edbcec",
+      "relation": "increases",
+      "subject": "scheme",
+      "object": "preparation of magic state",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.738,
+     "novelty": 0.522
+    },
+    "falsification_test": "Compare settings where increasing qubit count differs while other inputs are matched. The hypothesis fails if preparation of magic state does not rise with increasing qubit count, or if fixing scheme removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "scheme"
+   },
+   {
+    "id": "bf5154b6833a",
+    "text": "using qutrits rather than qubits may increase unavoidable computational overhead through substantial reduction (read as reduction).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "using qutrits rather than qubits",
+     "unavoidable computational overhead"
+    ],
+    "via": [
+     "substantial reduction (read as reduction)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2403-06228-p0002",
+     "arxiv-2208-09178-p0034"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2403-06228-p0002",
+      "quote": "Low Overhead Qutrit Magic State Distillation Shiroman Prakash1 and Tanay Saha1,2 1Department of Physics and Computer Science, Dayalbagh Educational Institute, Agra-282005, India 2Present Address: Department of Mathematics, Simon Fraser University, Burnaby, B.C., Canada We show that using qutrits rather than qubits leads to a substantial reduction in the overhead cost associated with an approach to fault-tolerant quantum computing known as magic state distillation.",
+      "start": 0,
+      "end": 468,
+      "chunk_sha256": "268c107d13cd09d5e1ae7ef7b9015614a605ade0db8fa2669a80427bdadcf092",
+      "relation": "causes",
+      "subject": "using qutrits rather than qubits",
+      "object": "substantial reduction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2208-09178-p0034",
+      "quote": "Our results formalize the idea that the reduction in the state distinguishability caused by noise and error-mitigation processes leads to the unavoidable computational overhead in quantum error mitigation.",
+      "start": 450,
+      "end": 655,
+      "chunk_sha256": "4e07730ac3ceee6fbdae3b566c5197b7768550cd682963ac3869c475c299e610",
+      "relation": "causes",
+      "subject": "reduction",
+      "object": "unavoidable computational overhead",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.713,
+     "novelty": 0.577
+    },
+    "falsification_test": "Compare settings where using qutrits rather than qubits differs while other inputs are matched. The hypothesis fails if unavoidable computational overhead does not rise with using qutrits rather than qubits, or if fixing substantial reduction (read as reduction) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "substantial reduction"
+   },
+   {
+    "id": "8f2061b9be17",
+    "text": "- local connectivity1 may constrain preparation of magic state through scheme.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "- local connectivity1",
+     "preparation of magic state"
+    ],
+    "via": [
+     "scheme"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1811-00566-p0008",
+     "arxiv-2507-12511-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1811-00566-p0008",
+      "quote": "The scheme we numerically analyze in this work does require code concatenation for distances d > 3 and thus requires non-local connectivity1.",
+      "start": 1587,
+      "end": 1728,
+      "chunk_sha256": "49b4fc43f820fcf89566217833ecbfe8398bb5eb55dff2e9e7bc96c766fddd76",
+      "relation": "constrains",
+      "subject": "- local connectivity1",
+      "object": "scheme",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2507-12511-p0002",
+      "quote": "By leveraging the noise bias, our scheme enables the preparation of a magic state with a logical error rate of 3 times 10-7, using only 53 qubits and 5.5 error correction rounds, under a noise bias of eta gtrsim 5 times 106 and a phase-flip noise rate of 0.1%.",
+      "start": 354,
+      "end": 614,
+      "chunk_sha256": "8299ab8968e968302dbfc0bda28f03d5ead9bf1f7220bc34fbd3c9ffb6edbcec",
+      "relation": "increases",
+      "subject": "scheme",
+      "object": "preparation of magic state",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.693,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where - local connectivity1 differs while other inputs are matched. The hypothesis fails if preparation of magic state does not stay bounded with - local connectivity1, or if fixing scheme removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "scheme"
+   },
+   {
+    "id": "19298cc3a386",
+    "text": "circuit and distillation pipelines may jointly drive distorted state, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "circuit",
+     "distillation pipelines",
+     "distorted state"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2208-09178-p0047",
+     "arxiv-2509-24402-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2208-09178-p0047",
+      "quote": "Each distorted state (nth copy depicted in the figure) is produced by a circuit with L layers U1,...,UL followed by a local depolarizing noise with noise strength at least γ, i.e., γn,l,m ≥ γ,∀n,l,m.",
+      "start": 8,
+      "end": 207,
+      "chunk_sha256": "ff6c219b203713c183f84636d0f231f78e9677089d1f20f7de1cbea8375d98e6",
+      "relation": "causes",
+      "subject": "circuit",
+      "object": "distorted state",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2509-24402-p0002",
+      "quote": "Observing that distillation pipelines consume magic states in a burst-then-steady pattern, we develop dynamic factory scheduling and resource allocation techniques that go beyond existing static pipeline organizations.",
+      "start": 727,
+      "end": 945,
+      "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+      "relation": "increases",
+      "subject": "distillation pipelines",
+      "object": "magic states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.678,
+     "novelty": 0.633
+    },
+    "falsification_test": "Vary circuit and distillation pipelines separately and together. The hypothesis fails if the joint change in distorted state equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "distorted state"
+   },
+   {
+    "id": "59d1bbc9f7e5",
+    "text": "Concatenate codes may reduce substantial reduction through qubits (read as using qutrits rather than qubits).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "Concatenate codes",
+     "substantial reduction"
+    ],
+    "via": [
+     "qubits (read as using qutrits rather than qubits)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-09606-p0001",
+     "arxiv-2403-06228-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-09606-p0001",
+      "quote": "# Concatenate codes, save qubits",
+      "start": 0,
+      "end": 32,
+      "chunk_sha256": "0082487bb16e6cc529e2176f6290628c2ab03b91336a73138a4bf2b2be696d96",
+      "relation": "decreases",
+      "subject": "Concatenate codes",
+      "object": "qubits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2403-06228-p0002",
+      "quote": "Low Overhead Qutrit Magic State Distillation Shiroman Prakash1 and Tanay Saha1,2 1Department of Physics and Computer Science, Dayalbagh Educational Institute, Agra-282005, India 2Present Address: Department of Mathematics, Simon Fraser University, Burnaby, B.C., Canada We show that using qutrits rather than qubits leads to a substantial reduction in the overhead cost associated with an approach to fault-tolerant quantum computing known as magic state distillation.",
+      "start": 0,
+      "end": 468,
+      "chunk_sha256": "268c107d13cd09d5e1ae7ef7b9015614a605ade0db8fa2669a80427bdadcf092",
+      "relation": "causes",
+      "subject": "using qutrits rather than qubits",
+      "object": "substantial reduction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.677,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where Concatenate codes differs while other inputs are matched. The hypothesis fails if substantial reduction does not fall with Concatenate codes, or if fixing qubits (read as using qutrits rather than qubits) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "qubit"
+   },
+   {
+    "id": "e2bea455d233",
+    "text": "preparation of large cat state ancillas may constrain preparation of magic state through scheme.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "preparation of large cat state ancillas",
+     "preparation of magic state"
+    ],
+    "via": [
+     "scheme"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1811-00566-p0008",
+     "arxiv-2507-12511-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1811-00566-p0008",
+      "quote": "However, the scheme proposed by AGP requires the preparation and verification of large cat state ancillas to perform the logical measurements.",
+      "start": 2262,
+      "end": 2404,
+      "chunk_sha256": "49b4fc43f820fcf89566217833ecbfe8398bb5eb55dff2e9e7bc96c766fddd76",
+      "relation": "constrains",
+      "subject": "preparation of large cat state ancillas",
+      "object": "scheme",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2507-12511-p0002",
+      "quote": "By leveraging the noise bias, our scheme enables the preparation of a magic state with a logical error rate of 3 times 10-7, using only 53 qubits and 5.5 error correction rounds, under a noise bias of eta gtrsim 5 times 106 and a phase-flip noise rate of 0.1%.",
+      "start": 354,
+      "end": 614,
+      "chunk_sha256": "8299ab8968e968302dbfc0bda28f03d5ead9bf1f7220bc34fbd3c9ffb6edbcec",
+      "relation": "increases",
+      "subject": "scheme",
+      "object": "preparation of magic state",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.679,
+     "novelty": 0.467
+    },
+    "falsification_test": "Compare settings where preparation of large cat state ancillas differs while other inputs are matched. The hypothesis fails if preparation of magic state does not stay bounded with preparation of large cat state ancillas, or if fixing scheme removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "scheme"
+   },
+   {
+    "id": "50415e812698",
+    "text": "pooling may reduce substantial reduction through qubits (read as using qutrits rather than qubits).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "pooling",
+     "substantial reduction"
+    ],
+    "via": [
+     "qubits (read as using qutrits rather than qubits)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-07394-p0006",
+     "arxiv-2403-06228-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-07394-p0006",
+      "quote": "We also observed that pooling reduced the number of qubits required for distillation by 45% without increasing the time cost.",
+      "start": 408,
+      "end": 533,
+      "chunk_sha256": "6e34bbb4e95d74193a156ce09db80096c9cf0f5fdbe39c7bf08ef1d55a1d43d9",
+      "relation": "decreases",
+      "subject": "pooling",
+      "object": "qubits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2403-06228-p0002",
+      "quote": "Low Overhead Qutrit Magic State Distillation Shiroman Prakash1 and Tanay Saha1,2 1Department of Physics and Computer Science, Dayalbagh Educational Institute, Agra-282005, India 2Present Address: Department of Mathematics, Simon Fraser University, Burnaby, B.C., Canada We show that using qutrits rather than qubits leads to a substantial reduction in the overhead cost associated with an approach to fault-tolerant quantum computing known as magic state distillation.",
+      "start": 0,
+      "end": 468,
+      "chunk_sha256": "268c107d13cd09d5e1ae7ef7b9015614a605ade0db8fa2669a80427bdadcf092",
+      "relation": "causes",
+      "subject": "using qutrits rather than qubits",
+      "object": "substantial reduction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.668,
+     "novelty": 0.522
+    },
+    "falsification_test": "Compare settings where pooling differs while other inputs are matched. The hypothesis fails if substantial reduction does not fall with pooling, or if fixing qubits (read as using qutrits rather than qubits) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "qubit"
+   },
+   {
+    "id": "c252f104a21c",
+    "text": "Magic state distillation and qubits may interact in their effect on universal fault tolerant quantum computation.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "Magic state distillation",
+     "qubits",
+     "universal fault tolerant quantum computation"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2507-12511-p0002",
+     "arxiv-1905-06903-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2507-12511-p0002",
+      "quote": "Magic state distillation enables universal fault-tolerant quantum computation by implementing non-Clifford gates via the preparation of high-fidelity magic states.",
+      "start": 0,
+      "end": 163,
+      "chunk_sha256": "8299ab8968e968302dbfc0bda28f03d5ead9bf1f7220bc34fbd3c9ffb6edbcec",
+      "relation": "increases",
+      "subject": "Magic state distillation",
+      "object": "universal fault tolerant quantum computation",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0002",
+      "quote": "While the smallest classically intractable quantum computations require ∼100 qubits, Accepted in Quantum 2019-10-30, click title to verify 2 Figure 2: A sequence of 16 π/8 rotations on 5 qubits that is non-trivially equivalent to the identity.",
+      "start": 2822,
+      "end": 3065,
+      "chunk_sha256": "ddfce22f1244560baa491ef8a8983625514b98d736149ecdc969f994d7f3fb9f",
+      "relation": "constrains",
+      "subject": "qubits",
+      "object": "smallest intractable quantum computations",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.658,
+     "novelty": 0.527
+    },
+    "falsification_test": "Vary Magic state distillation and qubits separately and together. The hypothesis fails if the joint change in universal fault tolerant quantum computation equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "universal fault tolerant quantum computation"
+   },
+   {
+    "id": "c680df71609d",
+    "text": "ability of scheme and Recent advances may jointly constrain overhead, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "ability of scheme",
+     "Recent advances",
+     "overhead"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2503-05003-p0019",
+     "arxiv-2504-12091-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2503-05003-p0019",
+      "quote": "The ability of our scheme to directly measure logical Y terms in parallel significantly reduces the overhead in preparation of such logical ancillary states as compared to Ref.",
+      "start": 1351,
+      "end": 1527,
+      "chunk_sha256": "7f981fd76e1d56f01a5aa6ee4fe8036ca0d05b9379abda6fc3b8c0ee11a4190a",
+      "relation": "decreases",
+      "subject": "ability of scheme",
+      "object": "overhead",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2504-12091-p0002",
+      "quote": "Recent advances in magic state distillation have significantly reduced the overhead, enabling the simultaneous preparation of many magic states.",
+      "start": 316,
+      "end": 460,
+      "chunk_sha256": "a0bcfdc389e98e6fdc0be498263c32d506ea2c093a6ef67e34a951f71cc63ba9",
+      "relation": "decreases",
+      "subject": "Recent advances",
+      "object": "overhead",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.641,
+     "novelty": 0.714
+    },
+    "falsification_test": "Relieve ability of scheme alone while measuring overhead. The hypothesis fails if overhead keeps improving without Recent advances becoming the binding limit, or if relieving Recent advances alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "overhead"
+   },
+   {
+    "id": "57a4a1116bcd",
+    "text": "circuit and FTQC programs may jointly drive distorted state, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "circuit",
+     "FTQC programs",
+     "distorted state"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2208-09178-p0047",
+     "arxiv-2407-07394-p0003",
+     "arxiv-2407-07394-p0020"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2208-09178-p0047",
+      "quote": "Each distorted state (nth copy depicted in the figure) is produced by a circuit with L layers U1,...,UL followed by a local depolarizing noise with noise strength at least γ, i.e., γn,l,m ≥ γ,∀n,l,m.",
+      "start": 8,
+      "end": 207,
+      "chunk_sha256": "ff6c219b203713c183f84636d0f231f78e9677089d1f20f7de1cbea8375d98e6",
+      "relation": "causes",
+      "subject": "circuit",
+      "object": "distorted state",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-07394-p0003",
+      "quote": "FTQC programs consume many magic states, and magic state distillation is one of the major bottlenecks of FTQC.",
+      "start": 1476,
+      "end": 1586,
+      "chunk_sha256": "ed0549cfb12a3302c36868790e23d8ed84db0186a765730700a09c23fc72f40f",
+      "relation": "increases",
+      "subject": "FTQC programs",
+      "object": "magic states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-07394-p0020",
+      "quote": "We believe that this scenario is generic when a quantum program is highly parallelized, and this problem requires attention given that FTQC programs consume many magic states during computation.",
+      "start": 220,
+      "end": 414,
+      "chunk_sha256": "0caef474d62ea27453cc370f5a5613e5ca967abf79c109fd8a8fd413ed23322e",
+      "relation": "increases",
+      "subject": "FTQC programs",
+      "object": "magic states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.632,
+     "novelty": 0.633
+    },
+    "falsification_test": "Vary circuit and FTQC programs separately and together. The hypothesis fails if the joint change in distorted state equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "distorted state"
+   },
+   {
+    "id": "74c9ad9a97e2",
+    "text": "Cosmic rays and faulty magic state may jointly drive correlated errors, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "Cosmic rays",
+     "faulty magic state",
+     "correlated errors"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-03208-p0002",
+     "arxiv-1905-06903-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-03208-p0002",
+      "quote": "Cosmic rays caused correlated errors at a rate of 1/(10 min), accounting for 17pm1% of all such events.",
+      "start": 637,
+      "end": 740,
+      "chunk_sha256": "cf6f8c168197d2b4428e077deb9fb2bf91c7a48f06b9653e72ddb00a4fd06767",
+      "relation": "causes",
+      "subject": "Cosmic rays",
+      "object": "correlated errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0011",
+      "quote": "The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].",
+      "start": 63,
+      "end": 240,
+      "chunk_sha256": "47d20465e0fd13b2d631fbdf22bced01bbc3f0774694297fc46f174b447e7ddf",
+      "relation": "causes",
+      "subject": "faulty magic state",
+      "object": "error of circuit outcome",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.621,
+     "novelty": 0.668
+    },
+    "falsification_test": "Vary Cosmic rays and faulty magic state separately and together. The hypothesis fails if the joint change in correlated errors equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "correlated error"
+   },
+   {
+    "id": "f6802be9d183",
+    "text": "theavailabilityofnoisyintermediate scalequantum(NISQ)devices and overhead may move together because both depend on Recent advances.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "theavailabilityofnoisyintermediate scalequantum(NISQ)devices",
+     "overhead",
+     "Recent advances"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2109-04457-p0004",
+     "arxiv-2504-12091-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2109-04457-p0004",
+      "quote": "Recent advances in quantum technologies have resulted in theavailabilityofnoisyintermediate-scalequantum(NISQ)devices,promisingadvantagesofquantuminformationprocessing by controlling tens to hundreds of qubits [1, 2].",
+      "start": 0,
+      "end": 217,
+      "chunk_sha256": "ae3efdeac42cbbe236df7d8d49a186ea3255a71c4b6f0691e2cee7c45895d1d8",
+      "relation": "causes",
+      "subject": "Recent advances",
+      "object": "theavailabilityofnoisyintermediate scalequantum(NISQ)devices",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2504-12091-p0002",
+      "quote": "Recent advances in magic state distillation have significantly reduced the overhead, enabling the simultaneous preparation of many magic states.",
+      "start": 316,
+      "end": 460,
+      "chunk_sha256": "a0bcfdc389e98e6fdc0be498263c32d506ea2c093a6ef67e34a951f71cc63ba9",
+      "relation": "decreases",
+      "subject": "Recent advances",
+      "object": "overhead",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.619,
+     "novelty": 0.668
+    },
+    "falsification_test": "Track theavailabilityofnoisyintermediate scalequantum(NISQ)devices and overhead across periods where Recent advances changes and where it does not. The hypothesis fails if they co-vary just as strongly when Recent advances is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "recent advance"
+   },
+   {
+    "id": "90130797f783",
+    "text": "class of VQAs and FTQC programs may interact in their effect on initial state.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "class of VQAs",
+     "FTQC programs",
+     "initial state"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-05332-p0013",
+     "arxiv-2407-07394-p0003",
+     "arxiv-2407-07394-p0020"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-05332-p0013",
+      "quote": "The class of VQAs we consider here restricts the initial state ρ to be a stabilizer state, the observable O to be a sum of poly(n) Pauli stings O = P i ciPi with real coefficients ci, and the circuit U (φφφ) to consist only of the constant Clifford gates and parametric Pauli rotation gates e−ıPk φk /2.",
+      "start": 0,
+      "end": 303,
+      "chunk_sha256": "00217a3822671968b26cb8b4fbe92787040b60d7eddd063479b70337ec1327a7",
+      "relation": "constrains",
+      "subject": "class of VQAs",
+      "object": "initial state",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-07394-p0003",
+      "quote": "FTQC programs consume many magic states, and magic state distillation is one of the major bottlenecks of FTQC.",
+      "start": 1476,
+      "end": 1586,
+      "chunk_sha256": "ed0549cfb12a3302c36868790e23d8ed84db0186a765730700a09c23fc72f40f",
+      "relation": "increases",
+      "subject": "FTQC programs",
+      "object": "magic states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-07394-p0020",
+      "quote": "We believe that this scenario is generic when a quantum program is highly parallelized, and this problem requires attention given that FTQC programs consume many magic states during computation.",
+      "start": 220,
+      "end": 414,
+      "chunk_sha256": "0caef474d62ea27453cc370f5a5613e5ca967abf79c109fd8a8fd413ed23322e",
+      "relation": "increases",
+      "subject": "FTQC programs",
+      "object": "magic states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.609,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary class of VQAs and FTQC programs separately and together. The hypothesis fails if the joint change in initial state equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "initial state"
+   },
+   {
+    "id": "1559119bb9e5",
+    "text": "higher level state occupations may increase Z error of output qubit through correlated errors (read as error).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "higher level state occupations",
+     "Z error of output qubit"
+    ],
+    "via": [
+     "correlated errors (read as error)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2102-06131-p0014",
+     "arxiv-1905-06903-p0030"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2102-06131-p0014",
+      "quote": "This result also raises the question how higher level state occupations that naturally arise during the stabilizer codes lead to correlated errors.",
+      "start": 224,
+      "end": 371,
+      "chunk_sha256": "e1002b8f1bdd6e2c19379902101e8ebcd9ef475423de2b680ac5d1d78fddb669",
+      "relation": "causes",
+      "subject": "higher level state occupations",
+      "object": "correlated errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0030",
+      "quote": "Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.",
+      "start": 1046,
+      "end": 1197,
+      "chunk_sha256": "187a5c07eae620effb533bcf4dd2bb0733b5aa3f84c500d61c49da77b79995c5",
+      "relation": "causes",
+      "subject": "error",
+      "object": "Z error of output qubit",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.607,
+     "novelty": 0.577
+    },
+    "falsification_test": "Compare settings where higher level state occupations differs while other inputs are matched. The hypothesis fails if Z error of output qubit does not rise with higher level state occupations, or if fixing correlated errors (read as error) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "correlated error"
+   },
+   {
+    "id": "ea96b55bae31",
+    "text": "higher level state occupations may increase incorrect interpretation of lattice surgery measurement through correlated errors (read as error).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "higher level state occupations",
+     "incorrect interpretation of lattice surgery measurement"
+    ],
+    "via": [
+     "correlated errors (read as error)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2102-06131-p0014",
+     "arxiv-1905-06903-p0031"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2102-06131-p0014",
+      "quote": "This result also raises the question how higher level state occupations that naturally arise during the stabilizer codes lead to correlated errors.",
+      "start": 224,
+      "end": 371,
+      "chunk_sha256": "e1002b8f1bdd6e2c19379902101e8ebcd9ef475423de2b680ac5d1d78fddb669",
+      "relation": "causes",
+      "subject": "higher level state occupations",
+      "object": "correlated errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0031",
+      "quote": "Such an error leads to an incorrect interpretation of the lattice-surgery measurement outcome.",
+      "start": 855,
+      "end": 949,
+      "chunk_sha256": "6124c6e208db39796f45a8908ba1fef190335fd9c0061ecb4a5e49e37363f1f4",
+      "relation": "causes",
+      "subject": "error",
+      "object": "incorrect interpretation of lattice surgery measurement",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.597,
+     "novelty": 0.636
+    },
+    "falsification_test": "Compare settings where higher level state occupations differs while other inputs are matched. The hypothesis fails if incorrect interpretation of lattice surgery measurement does not rise with higher level state occupations, or if fixing correlated errors (read as error) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "correlated error"
+   },
+   {
+    "id": "98ac6681df8b",
+    "text": "Gains in state error from faulty magic state may be offset by cultivation circuit.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "cultivation circuit",
+     "faulty magic state",
+     "state error"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2512-13908-p0010",
+     "arxiv-1905-06903-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2512-13908-p0010",
+      "quote": "Then the cultivation circuit projects the state to the X = Z line (right Bloch sphere, red arrow), and reduces the state error (red clouds).",
+      "start": 160,
+      "end": 300,
+      "chunk_sha256": "37262bc09e60fdad96efd34a518e058be9cd79f7b6d94c153bef8714897c1f82",
+      "relation": "decreases",
+      "subject": "cultivation circuit",
+      "object": "state error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0011",
+      "quote": "The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].",
+      "start": 63,
+      "end": 240,
+      "chunk_sha256": "47d20465e0fd13b2d631fbdf22bced01bbc3f0774694297fc46f174b447e7ddf",
+      "relation": "causes",
+      "subject": "faulty magic state",
+      "object": "error of circuit outcome",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.602,
+     "novelty": 0.538
+    },
+    "falsification_test": "Measure state error where both cultivation circuit and faulty magic state vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "state error"
+   },
+   {
+    "id": "f24cd38582b6",
+    "text": "addition of reset may affect duration of non - trivial magic through rate.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "addition of reset",
+     "duration of non - trivial magic"
+    ],
+    "via": [
+     "rate"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2102-06131-p0022",
+     "arxiv-2609-39734-p0036"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2102-06131-p0022",
+      "quote": "We observe the logical performance stabilizing to values of Λbit > 1, and that the addition of reset improves both the stable performance and rate with which the code approaches stability.",
+      "start": 0,
+      "end": 188,
+      "chunk_sha256": "68cc52adf5a8515200c8445c8b2aaab9165e3ae52badc8764ad60e41039761b8",
+      "relation": "increases",
+      "subject": "addition of reset",
+      "object": "rate",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2609-39734-p0036",
+      "quote": "The duration of the non-trivial magic window depends on the rate at which local depolarising noise increases the state’s 2-R ́enyi entropy (equivalently, decreases Tr(ρ2)).",
+      "start": 292,
+      "end": 464,
+      "chunk_sha256": "1e8fb08ee391d7ad8b9dfd2c00f990f158a2d4ad3354935586e6c9096162fc9a",
+      "relation": "constrains",
+      "subject": "rate",
+      "object": "duration of non - trivial magic",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.585,
+     "novelty": 0.683
+    },
+    "falsification_test": "Compare settings where addition of reset differs while other inputs are matched. The hypothesis fails if duration of non - trivial magic does not change with addition of reset, or if fixing rate removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "rate"
+   },
+   {
+    "id": "0c5c089cf843",
+    "text": "Gains in error from faulty magic state may be offset by Cultivation.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "Cultivation",
+     "faulty magic state",
+     "error"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2512-13908-p0002",
+     "arxiv-1905-06903-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2512-13908-p0002",
+      "quote": "Cultivation reduces the error by a factor of 40, with a state fidelity of 0.9999(1) (retaining 8% of attempts).",
+      "start": 659,
+      "end": 770,
+      "chunk_sha256": "85a99549516d12374e46f736e12e64c9d3821633fb29b4914050cecaa0cab105",
+      "relation": "decreases",
+      "subject": "Cultivation",
+      "object": "error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0011",
+      "quote": "The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].",
+      "start": 63,
+      "end": 240,
+      "chunk_sha256": "47d20465e0fd13b2d631fbdf22bced01bbc3f0774694297fc46f174b447e7ddf",
+      "relation": "causes",
+      "subject": "faulty magic state",
+      "object": "error of circuit outcome",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.584,
+     "novelty": 0.564
+    },
+    "falsification_test": "Measure error where both Cultivation and faulty magic state vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "error"
+   },
+   {
+    "id": "448fbae4136b",
+    "text": "Gains in overhead from reduction may be offset by Recent advances.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "Recent advances",
+     "reduction",
+     "overhead"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2504-12091-p0002",
+     "arxiv-2208-09178-p0034"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2504-12091-p0002",
+      "quote": "Recent advances in magic state distillation have significantly reduced the overhead, enabling the simultaneous preparation of many magic states.",
+      "start": 316,
+      "end": 460,
+      "chunk_sha256": "a0bcfdc389e98e6fdc0be498263c32d506ea2c093a6ef67e34a951f71cc63ba9",
+      "relation": "decreases",
+      "subject": "Recent advances",
+      "object": "overhead",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2208-09178-p0034",
+      "quote": "Our results formalize the idea that the reduction in the state distinguishability caused by noise and error-mitigation processes leads to the unavoidable computational overhead in quantum error mitigation.",
+      "start": 450,
+      "end": 655,
+      "chunk_sha256": "4e07730ac3ceee6fbdae3b566c5197b7768550cd682963ac3869c475c299e610",
+      "relation": "causes",
+      "subject": "reduction",
+      "object": "unavoidable computational overhead",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.567,
+     "novelty": 0.6
+    },
+    "falsification_test": "Measure overhead where both Recent advances and reduction vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "overhead"
+   },
+   {
+    "id": "6a36cde038d6",
+    "text": "Dynamic pipelines and injected non - Clifford resource may jointly constrain qubit cost, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "Dynamic pipelines",
+     "injected non - Clifford resource",
+     "qubit cost"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2509-24402-p0002",
+     "arxiv-2609-39734-p0025"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2509-24402-p0002",
+      "quote": "Dynamic pipelines reduce the qubit cost by 16%-70% for large-scale quantum applications and achieve average reductions of 26%-37% in qubit-time volume on generated distillation benchmarks compared to state-of-the-art static architectures.",
+      "start": 946,
+      "end": 1184,
+      "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+      "relation": "decreases",
+      "subject": "Dynamic pipelines",
+      "object": "qubit cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2609-39734-p0025",
+      "quote": "The corresponding cost depends on the injected non-Clifford resource rather than on the noisy output state itself.",
+      "start": 359,
+      "end": 473,
+      "chunk_sha256": "bddd8a80d664709ba8bd306b762c0d249c92a79d1819c8d3ca48d9698117bf15",
+      "relation": "constrains",
+      "subject": "injected non - Clifford resource",
+      "object": "corresponding cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.565,
+     "novelty": 0.707
+    },
+    "falsification_test": "Relieve Dynamic pipelines alone while measuring qubit cost. The hypothesis fails if qubit cost keeps improving without injected non - Clifford resource becoming the binding limit, or if relieving injected non - Clifford resource alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "qubit cost"
+   },
+   {
+    "id": "4af32929d213",
+    "text": "class of VQAs may constrain variance of cost function through initial state (read as input state).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "class of VQAs",
+     "variance of cost function"
+    ],
+    "via": [
+     "initial state (read as input state)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-05332-p0013",
+     "arxiv-2105-14377-p0048"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-05332-p0013",
+      "quote": "The class of VQAs we consider here restricts the initial state ρ to be a stabilizer state, the observable O to be a sum of poly(n) Pauli stings O = P i ciPi with real coefficients ci, and the circuit U (φφφ) to consist only of the constant Clifford gates and parametric Pauli rotation gates e−ıPk φk /2.",
+      "start": 0,
+      "end": 303,
+      "chunk_sha256": "00217a3822671968b26cb8b4fbe92787040b60d7eddd063479b70337ec1327a7",
+      "relation": "constrains",
+      "subject": "class of VQAs",
+      "object": "initial state",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2105-14377-p0048",
+      "quote": "Proposition 3 shows that the variance of the cost function again depends on the input state |m⟩, which is a similar result to the one obtained in Theorem 2.",
+      "start": 45,
+      "end": 201,
+      "chunk_sha256": "ea0ff2742d858099a21af5c22bddeca6ce556d581256b1a0f285d753905ffff3",
+      "relation": "constrains",
+      "subject": "input state",
+      "object": "variance of cost function",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.556,
+     "novelty": 0.623
+    },
+    "falsification_test": "Compare settings where class of VQAs differs while other inputs are matched. The hypothesis fails if variance of cost function does not stay bounded with class of VQAs, or if fixing initial state (read as input state) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "initial state"
+   },
+   {
+    "id": "613987cd68e8",
+    "text": "KT may increase quest for universal superconducting quantum computing through projection noise (read as noise).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "KT",
+     "quest for universal superconducting quantum computing"
+    ],
+    "via": [
+     "projection noise (read as noise)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2512-13908-p0011",
+     "arxiv-2506-16834-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2512-13908-p0011",
+      "quote": "Second, KT reduces the projection noise compared to standard tomography: measuring along the prepared state also results in measurement averages close to zero, reducing the variance in the binomial distribution.",
+      "start": 231,
+      "end": 442,
+      "chunk_sha256": "ecae496e0d2cfd2d06ebe70f0bbf948abb23913a7f6167bb9ad86f484f763d67",
+      "relation": "decreases",
+      "subject": "KT",
+      "object": "projection noise",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2506-16834-p0002",
+      "quote": "The quest for universal superconducting quantum computing is hindered by noise and errors.",
+      "start": 0,
+      "end": 90,
+      "chunk_sha256": "f00ea1f3cc2f45ac601d96232db5605c9d65a2e5d5885b815aa9ce7d37b648be",
+      "relation": "decreases",
+      "subject": "noise",
+      "object": "quest for universal superconducting quantum computing",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.546,
+     "novelty": 0.577
+    },
+    "falsification_test": "Compare settings where KT differs while other inputs are matched. The hypothesis fails if quest for universal superconducting quantum computing does not rise with KT, or if fixing projection noise (read as noise) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "projection noise"
+   },
+   {
+    "id": "4bc7e3e281b1",
+    "text": "KT may increase ppth of code through projection noise (read as noise).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "KT",
+     "ppth of code"
+    ],
+    "via": [
+     "projection noise (read as noise)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2512-13908-p0011",
+     "arxiv-2212-11632-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2512-13908-p0011",
+      "quote": "Second, KT reduces the projection noise compared to standard tomography: measuring along the prepared state also results in measurement averages close to zero, reducing the variance in the binomial distribution.",
+      "start": 231,
+      "end": 442,
+      "chunk_sha256": "ecae496e0d2cfd2d06ebe70f0bbf948abb23913a7f6167bb9ad86f484f763d67",
+      "relation": "decreases",
+      "subject": "KT",
+      "object": "projection noise",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2212-11632-p0022",
+      "quote": "noise reduces the ppth of the code by 3.6% for a rotated planar code of distance-7 under a noise channel produced by the T1 and T2 values from the Google chip [10] to 98.5% in the case of the distance-3 rotated planar code with the data of the the Aspen-M-2 qubits [23].",
+      "start": 2127,
+      "end": 2397,
+      "chunk_sha256": "d60906dc6f9f266597b523cdf1893e830335da7efe5fbaf343d9adbea1b91abc",
+      "relation": "decreases",
+      "subject": "noise",
+      "object": "ppth of code",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.54,
+     "novelty": 0.663
+    },
+    "falsification_test": "Compare settings where KT differs while other inputs are matched. The hypothesis fails if ppth of code does not rise with KT, or if fixing projection noise (read as noise) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "projection noise"
+   },
+   {
+    "id": "91da2c24ec11",
+    "text": "circuit and footprint may jointly drive distorted state, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "circuit",
+     "footprint",
+     "distorted state"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2208-09178-p0047",
+     "arxiv-1905-06903-p0048"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2208-09178-p0047",
+      "quote": "Each distorted state (nth copy depicted in the figure) is produced by a circuit with L layers U1,...,UL followed by a local depolarizing noise with noise strength at least γ, i.e., γn,l,m ≥ γ,∀n,l,m.",
+      "start": 8,
+      "end": 207,
+      "chunk_sha256": "ff6c219b203713c183f84636d0f231f78e9677089d1f20f7de1cbea8375d98e6",
+      "relation": "causes",
+      "subject": "circuit",
+      "object": "distorted state",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0048",
+      "quote": "footprint (15-to-1)9,3,3 protocol produces magic states with pout = 1.5×10−9 using 762 qubits.",
+      "start": 216,
+      "end": 310,
+      "chunk_sha256": "dd94c5ba18fa1aeca7fa3ceaaf62a34aef00c9a5ab262beb8576dc16de3c66f1",
+      "relation": "causes",
+      "subject": "footprint",
+      "object": "magic states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.537,
+     "novelty": 0.613
+    },
+    "falsification_test": "Vary circuit and footprint separately and together. The hypothesis fails if the joint change in distorted state equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "distorted state"
+   },
+   {
+    "id": "20a6633a3e37",
+    "text": "Cultivation may increase quest for universal superconducting quantum computing through error.",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "Cultivation",
+     "quest for universal superconducting quantum computing"
+    ],
+    "via": [
+     "error"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2512-13908-p0002",
+     "arxiv-2506-16834-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2512-13908-p0002",
+      "quote": "Cultivation reduces the error by a factor of 40, with a state fidelity of 0.9999(1) (retaining 8% of attempts).",
+      "start": 659,
+      "end": 770,
+      "chunk_sha256": "85a99549516d12374e46f736e12e64c9d3821633fb29b4914050cecaa0cab105",
+      "relation": "decreases",
+      "subject": "Cultivation",
+      "object": "error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2506-16834-p0002",
+      "quote": "The quest for universal superconducting quantum computing is hindered by noise and errors.",
+      "start": 0,
+      "end": 90,
+      "chunk_sha256": "f00ea1f3cc2f45ac601d96232db5605c9d65a2e5d5885b815aa9ce7d37b648be",
+      "relation": "decreases",
+      "subject": "errors",
+      "object": "quest for universal superconducting quantum computing",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.54,
+     "novelty": 0.517
+    },
+    "falsification_test": "Compare settings where Cultivation differs while other inputs are matched. The hypothesis fails if quest for universal superconducting quantum computing does not rise with Cultivation, or if fixing error removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "error"
+   },
+   {
+    "id": "fad6bfe0e43b",
+    "text": "circuit structure and Dynamic pipelines may jointly constrain cost, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "circuit structure",
+     "Dynamic pipelines",
+     "cost"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2609-39734-p0026",
+     "arxiv-2509-24402-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2609-39734-p0026",
+      "quote": "Like tensor-network contraction, its cost is determined entirely by the circuit structure, in this case the non-Clifford gate count, and is independent of the noise model and the output state.",
+      "start": 29,
+      "end": 221,
+      "chunk_sha256": "0d709c904a6f42551af690d72074a3f926ef6d8853243434a96d1b6f8b79b2e9",
+      "relation": "constrains",
+      "subject": "circuit structure",
+      "object": "cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2509-24402-p0002",
+      "quote": "Dynamic pipelines reduce the qubit cost by 16%-70% for large-scale quantum applications and achieve average reductions of 26%-37% in qubit-time volume on generated distillation benchmarks compared to state-of-the-art static architectures.",
+      "start": 946,
+      "end": 1184,
+      "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+      "relation": "decreases",
+      "subject": "Dynamic pipelines",
+      "object": "qubit cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.514,
+     "novelty": 0.714
+    },
+    "falsification_test": "Relieve circuit structure alone while measuring cost. The hypothesis fails if cost keeps improving without Dynamic pipelines becoming the binding limit, or if relieving Dynamic pipelines alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "cost"
+   },
+   {
+    "id": "9a1fca924042",
+    "text": "attention and construction may jointly constrain problem, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "attention",
+     "construction",
+     "problem"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-07394-p0020",
+     "arxiv-2402-13863-p0039"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-07394-p0020",
+      "quote": "We believe that this scenario is generic when a quantum program is highly parallelized, and this problem requires attention given that FTQC programs consume many magic states during computation.",
+      "start": 220,
+      "end": 414,
+      "chunk_sha256": "0caef474d62ea27453cc370f5a5613e5ca967abf79c109fd8a8fd413ed23322e",
+      "relation": "constrains",
+      "subject": "attention",
+      "object": "problem",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2402-13863-p0039",
+      "quote": "Our construction reduces the problem of finding a parallel routing scheme on PL × PL × P4L to the 2D case by applying Lemma 2.4 to different floors.",
+      "start": 665,
+      "end": 813,
+      "chunk_sha256": "57fc3b013d29dc0f95c554a1903923c0a5b92c924676a6c0891fcb983fd64357",
+      "relation": "decreases",
+      "subject": "construction",
+      "object": "problem",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.508,
+     "novelty": 0.689
+    },
+    "falsification_test": "Relieve attention alone while measuring problem. The hypothesis fails if problem keeps improving without construction becoming the binding limit, or if relieving construction alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "problem"
+   },
+   {
+    "id": "4e9e2a533b43",
+    "text": "cultivation circuit may reduce Z error of output qubit through state error (read as error).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "cultivation circuit",
+     "Z error of output qubit"
+    ],
+    "via": [
+     "state error (read as error)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2512-13908-p0010",
+     "arxiv-1905-06903-p0030"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2512-13908-p0010",
+      "quote": "Then the cultivation circuit projects the state to the X = Z line (right Bloch sphere, red arrow), and reduces the state error (red clouds).",
+      "start": 160,
+      "end": 300,
+      "chunk_sha256": "37262bc09e60fdad96efd34a518e058be9cd79f7b6d94c153bef8714897c1f82",
+      "relation": "decreases",
+      "subject": "cultivation circuit",
+      "object": "state error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0030",
+      "quote": "Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.",
+      "start": 1046,
+      "end": 1197,
+      "chunk_sha256": "187a5c07eae620effb533bcf4dd2bb0733b5aa3f84c500d61c49da77b79995c5",
+      "relation": "causes",
+      "subject": "error",
+      "object": "Z error of output qubit",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.509,
+     "novelty": 0.572
+    },
+    "falsification_test": "Compare settings where cultivation circuit differs while other inputs are matched. The hypothesis fails if Z error of output qubit does not fall with cultivation circuit, or if fixing state error (read as error) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "state error"
+   },
+   {
+    "id": "3a5348e904d2",
+    "text": "mid - circuit measurements and MPQC may jointly constrain barren plateaus, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "mid - circuit measurements",
+     "MPQC",
+     "barren plateaus"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2406-14285-p0059",
+     "arxiv-2511-13408-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2406-14285-p0059",
+      "quote": "therefore, mid-circuit measurements, circuit pretraining, entanglement regularization to add terms to the cost function, and initial partitioning play on the entanglement entropy to better mitigate barren plateaus",
+      "start": 493,
+      "end": 706,
+      "chunk_sha256": "6d841bff052354ea4562410baa2c53f48560a3bd6a4dd123121c90cdf9900c28",
+      "relation": "decreases",
+      "subject": "mid - circuit measurements",
+      "object": "barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2511-13408-p0002",
+      "quote": "Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers.",
+      "start": 1215,
+      "end": 1384,
+      "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130",
+      "relation": "decreases",
+      "subject": "MPQC",
+      "object": "barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.5,
+     "novelty": 0.683
+    },
+    "falsification_test": "Relieve mid - circuit measurements alone while measuring barren plateaus. The hypothesis fails if barren plateaus keeps improving without MPQC becoming the binding limit, or if relieving MPQC alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "barren plateaus"
+   },
+   {
+    "id": "f3c5c1c402e1",
+    "text": "injected non - Clifford resource and run time delay may interact in their effect on corresponding cost.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "injected non - Clifford resource",
+     "run time delay",
+     "corresponding cost"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2609-39734-p0025",
+     "arxiv-2407-07394-p0021"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2609-39734-p0025",
+      "quote": "The corresponding cost depends on the injected non-Clifford resource rather than on the noisy output state itself.",
+      "start": 359,
+      "end": 473,
+      "chunk_sha256": "bddd8a80d664709ba8bd306b762c0d249c92a79d1819c8d3ca48d9698117bf15",
+      "relation": "constrains",
+      "subject": "injected non - Clifford resource",
+      "object": "corresponding cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-07394-p0021",
+      "quote": "In this case the run-time delay effectively doubles the distillation time cost.",
+      "start": 1448,
+      "end": 1527,
+      "chunk_sha256": "5f0e6488c10036198f49e6f4791b4d2ec670b99265401125a8819053f53a1513",
+      "relation": "increases",
+      "subject": "run time delay",
+      "object": "distillation time cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.499,
+     "novelty": 0.668
+    },
+    "falsification_test": "Vary injected non - Clifford resource and run time delay separately and together. The hypothesis fails if the joint change in corresponding cost equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "corresponding cost"
+   },
+   {
+    "id": "938d229e120c",
+    "text": "cultivation circuit may reduce incorrect interpretation of lattice surgery measurement through state error (read as error).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "cultivation circuit",
+     "incorrect interpretation of lattice surgery measurement"
+    ],
+    "via": [
+     "state error (read as error)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2512-13908-p0010",
+     "arxiv-1905-06903-p0031"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2512-13908-p0010",
+      "quote": "Then the cultivation circuit projects the state to the X = Z line (right Bloch sphere, red arrow), and reduces the state error (red clouds).",
+      "start": 160,
+      "end": 300,
+      "chunk_sha256": "37262bc09e60fdad96efd34a518e058be9cd79f7b6d94c153bef8714897c1f82",
+      "relation": "decreases",
+      "subject": "cultivation circuit",
+      "object": "state error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0031",
+      "quote": "Such an error leads to an incorrect interpretation of the lattice-surgery measurement outcome.",
+      "start": 855,
+      "end": 949,
+      "chunk_sha256": "6124c6e208db39796f45a8908ba1fef190335fd9c0061ecb4a5e49e37363f1f4",
+      "relation": "causes",
+      "subject": "error",
+      "object": "incorrect interpretation of lattice surgery measurement",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.5,
+     "novelty": 0.642
+    },
+    "falsification_test": "Compare settings where cultivation circuit differs while other inputs are matched. The hypothesis fails if incorrect interpretation of lattice surgery measurement does not fall with cultivation circuit, or if fixing state error (read as error) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "state error"
+   },
+   {
+    "id": "32fd673b25f2",
+    "text": "chemical initialization and MPQC may jointly constrain barren plateaus, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "chemical initialization",
+     "MPQC",
+     "barren plateaus"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2609-22729-p0002",
+     "arxiv-2511-13408-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2609-22729-p0002",
+      "quote": "In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.",
+      "start": 936,
+      "end": 1357,
+      "chunk_sha256": "c14a4d47645a2e6ff3c26ec8fe1bfa93681d2ad322463bb69604f75e3789fdf4",
+      "relation": "decreases",
+      "subject": "chemical initialization",
+      "object": "barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2511-13408-p0002",
+      "quote": "Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers.",
+      "start": 1215,
+      "end": 1384,
+      "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130",
+      "relation": "decreases",
+      "subject": "MPQC",
+      "object": "barren plateaus",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.494,
+     "novelty": 0.668
+    },
+    "falsification_test": "Relieve chemical initialization alone while measuring barren plateaus. The hypothesis fails if barren plateaus keeps improving without MPQC becoming the binding limit, or if relieving MPQC alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "barren plateaus"
+   },
+   {
+    "id": "913475fa7e2c",
+    "text": "cultivation and powerful decoder may move together because both depend on color code.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "cultivation",
+     "powerful decoder",
+     "color code"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2512-13908-p0014",
+     "arxiv-2503-05003-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2512-13908-p0014",
+      "quote": "GRAFTING TO A SURFACE CODE The surface code boasts a high threshold, matchable decoders, and well-developed dropout approaches [2, 11– 14], but the color code supports cultivation through its transversal single-qubit Clifford gates [1].",
+      "start": 648,
+      "end": 884,
+      "chunk_sha256": "daaef38d6b8b9039f13a6f04c9ea4a36d0baddadc16e28ed5dcb5b2ed356299f",
+      "relation": "supports",
+      "subject": "color code",
+      "object": "cultivation",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2503-05003-p0006",
+      "quote": "powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.",
+      "start": 276,
+      "end": 879,
+      "chunk_sha256": "896909438bda7e68db9428d19a58db42cd14f57dd68d35741e45af24adf3ff74",
+      "relation": "constrains",
+      "subject": "quantum code",
+      "object": "powerful decoder",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.495,
+     "novelty": 0.628
+    },
+    "falsification_test": "Track cultivation and powerful decoder across periods where color code changes and where it does not. The hypothesis fails if they co-vary just as strongly when color code is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "color code"
+   },
+   {
+    "id": "cff92e961879",
+    "text": "input state may contribute to second pulse through identical states (read as superconducting state).",
+    "pattern": "chain",
+    "relation": "causes",
+    "anchors": [
+     "input state",
+     "second pulse"
+    ],
+    "via": [
+     "identical states (read as superconducting state)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2202-12052-p0023",
+     "arxiv-2610-20132-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2202-12052-p0023",
+      "quote": "We remind the reader that since the input state is a tensor product of identical states, we have thatt = tIM .",
+      "start": 420,
+      "end": 530,
+      "chunk_sha256": "c5583190c665a62224550f89011bee76b50d58c225ce75260e9377a99c107d69",
+      "relation": "is_a",
+      "subject": "input state",
+      "object": "identical states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-20132-p0002",
+      "quote": "The mechanism by which the superconducting state produces the second pulse is not yet understood.",
+      "start": 1701,
+      "end": 1798,
+      "chunk_sha256": "ff8e50d626238325449b9c299fd1ea576640140085fa7b93de4476d44924581e",
+      "relation": "causes",
+      "subject": "superconducting state",
+      "object": "second pulse",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.487,
+     "novelty": 0.628
+    },
+    "falsification_test": "Compare settings where input state differs while other inputs are matched. The hypothesis fails if second pulse does not rise with input state, or if fixing identical states (read as superconducting state) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "identical state"
+   },
+   {
+    "id": "d380dc4b2fe9",
+    "text": "relative position of magic thresholds and dimension of DLA may move together because both depend on system size.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "relative position of magic thresholds",
+     "dimension of DLA",
+     "system size"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2609-39734-p0039",
+     "arxiv-2105-14377-p0049"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2609-39734-p0039",
+      "quote": "Thus, the relative position of the magic and sampling thresholds is determined by the system size and the sampling tolerance.",
+      "start": 637,
+      "end": 762,
+      "chunk_sha256": "91e41903cd89a23ae5e1578d4e07cf99ebb72c5303247ed2d136a486e6275bcf",
+      "relation": "constrains",
+      "subject": "system size",
+      "object": "relative position of magic thresholds",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2105-14377-p0049",
+      "quote": "For instance, when the system is controllable, dim(g) = d2 − 1 = 22n − 1, and thus the dimension of the DLA is exponentially growing with the system size n.",
+      "start": 0,
+      "end": 156,
+      "chunk_sha256": "bac377f13c3a698ff337e9be9e654e6924532df04e54f9eca5f014e0a7ab02fd",
+      "relation": "increases",
+      "subject": "system size",
+      "object": "dimension of DLA",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.494,
+     "novelty": 0.6
+    },
+    "falsification_test": "Track relative position of magic thresholds and dimension of DLA across periods where system size changes and where it does not. The hypothesis fails if they co-vary just as strongly when system size is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "system size"
+   },
+   {
+    "id": "6d69c6ebe8b5",
+    "text": "KT may affect dynamical diagnostics through projection noise (read as noise).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "KT",
+     "dynamical diagnostics"
+    ],
+    "via": [
+     "projection noise (read as noise)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2512-13908-p0011",
+     "arxiv-2609-39734-p0045"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2512-13908-p0011",
+      "quote": "Second, KT reduces the projection noise compared to standard tomography: measuring along the prepared state also results in measurement averages close to zero, reducing the variance in the binomial distribution.",
+      "start": 231,
+      "end": 442,
+      "chunk_sha256": "ecae496e0d2cfd2d06ebe70f0bbf948abb23913a7f6167bb9ad86f484f763d67",
+      "relation": "decreases",
+      "subject": "KT",
+      "object": "projection noise",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2609-39734-p0045",
+      "quote": "It does, however, give closed forms that show how the dynamical diagnostics (mixed-state magic, the inverse participation ratio (IPR)) depend on depth, doping and noise.",
+      "start": 765,
+      "end": 934,
+      "chunk_sha256": "5d3d7cdbd74c28f46d890286d861b899290cca7b6eb0dc98b30dac4e3004eacc",
+      "relation": "constrains",
+      "subject": "noise",
+      "object": "dynamical diagnostics",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.478,
+     "novelty": 0.663
+    },
+    "falsification_test": "Compare settings where KT differs while other inputs are matched. The hypothesis fails if dynamical diagnostics does not change with KT, or if fixing projection noise (read as noise) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "projection noise"
+   }
+  ],
+  "survivors": 586,
+  "candidates_generated": 2076,
+  "candidates_passed": {
+   "abductive": 1794,
+   "deductive": 1793,
+   "pre_thinker": 603
+  },
+  "candidates_rejected": {
+   "abductive:incoherent_composition": 21,
+   "abductive:no_explanatory_relation": 50,
+   "abductive:unrelated_bridge": 211,
+   "deductive:conclusion_contradicted": 1,
+   "pre_thinker:circular": 162,
+   "pre_thinker:malformed": 936,
+   "pre_thinker:restates_source": 21,
+   "pre_thinker:single_source": 71
+  },
+  "relation_edges": 996,
+  "scoped_edges": 279,
+  "budget_used": {
+   "rounds": 9,
+   "candidates": 2076,
+   "edges": 1042,
+   "bytes": 1013973,
+   "seconds": 12.909
+  },
+  "incomplete": false,
+  "stop_reason": null,
+  "shortage": null,
+  "snapshot": {
+   "as_of": 1795594688,
+   "chunk_count": 3369
+  }
+ },
+ "reply": "Frontier hypotheses for magic state distillation. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 2076. Passed abductive check: 1794; deductive check: 1793; pre-thinker validation: 603.\n\n1. magic state distillation factory may increase second pulse through fewer higher fidelity states (read as superconducting state).\n[arxiv-2509-24402-p0002] A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.\n[arxiv-2610-20132-p0002] The mechanism by which the superconducting state produces the second pulse is not yet understood.\nFalsification test: Compare settings where magic state distillation factory differs while other inputs are matched. The hypothesis fails if second pulse does not rise with magic state distillation factory, or if fixing fewer higher fidelity states (read as superconducting state) removes no part of the effect.\nDeepen check: all links supported (magic state distillation factory -> fewer higher fidelity states: supported, fewer higher fidelity states -> second pulse: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.96, deductive relevance 0.82, novelty 0.66.\n\n2. magic state distillation factory may increase error of circuit outcome through fewer higher fidelity states (read as faulty magic state).\n[arxiv-2509-24402-p0002] A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.\n[arxiv-1905-06903-p0011] The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].\nFalsification test: Compare settings where magic state distillation factory differs while other inputs are matched. The hypothesis fails if error of circuit outcome does not rise with magic state distillation factory, or if fixing fewer higher fidelity states (read as faulty magic state) removes no part of the effect.\nDeepen check: all links supported (magic state distillation factory -> fewer higher fidelity states: supported, fewer higher fidelity states -> error of circuit outcome: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.96, deductive relevance 0.80, novelty 0.64.\n\n3. magic state distillation factory may increase measurement averages through fewer higher fidelity states (read as measuring along the prepared state).\n[arxiv-2509-24402-p0002] A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.\n[arxiv-2512-13908-p0011] Second, KT reduces the projection noise compared to standard tomography: measuring along the prepared state also results in measurement averages close to zero, reducing the variance in the binomial distribution.\nFalsification test: Compare settings where magic state distillation factory differs while other inputs are matched. The hypothesis fails if measurement averages does not rise with magic state distillation factory, or if fixing fewer higher fidelity states (read as measuring along the prepared state) removes no part of the effect.\nDeepen check: all links supported (magic state distillation factory -> fewer higher fidelity states: supported, fewer higher fidelity states -> measurement averages: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.96, deductive relevance 0.79, novelty 0.60.\n\n4. class of VQAs and error may jointly constrain initial state, so relieving one may shift the bottleneck to the other.\n[arxiv-2405-05332-p0013] The class of VQAs we consider here restricts the initial state ρ to be a stabilizer state, the observable O to be a sum of poly(n) Pauli stings O = P i ciPi with real coefficients ci, and the circuit U (φφφ) to consist only of the constant Clifford gates and parametric Pauli rotation gates e−ıPk φk /2.\n[arxiv-2508-08246-p0054] In other words, the syndrome state |sE ⟩ is independent of the logical state and only depends on the error E. We now consider the case of a more general error superoperator E (not necessarily CPTP).\nFalsification test: Relieve class of VQAs alone while measuring initial state. The hypothesis fails if initial state keeps improving without error becoming the binding limit, or if relieving error alone has no effect.\nWarning, contested: contested (class of VQAs -> initial state: supported, error -> initial state: contested).\nComposition: requires review; plan readiness: needs input.\n  - [arxiv-2208-09385-p0078] For the numerical simulation performed to obtain the cost of generalized subspace expansion [21], we optimize parameter c1 and c2 so that the error mitigated state (c1I/2n + c2E ′(ρ))(c1I/2n + c2E ′(ρ))† = |c1|2/4nI + Re(c1c∗ 2)/2n−1E ′(ρ) + |c2|2E ′(ρ)2 reaches the noiseless state\nScores: source support 0.96, deductive relevance 0.46, novelty 0.62.\n\n5. pipelining may constrain low fidelity input magic states through magic state factory (read as magic state distillation factory).\n[arxiv-2407-07394-p0031] Our magic state factory relies heavily on pipelining, and to work efficiently, it needs to store partially completed calculations performed in the previous round of distillation.\n[arxiv-2509-24402-p0002] A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.\nFalsification test: Compare settings where pipelining differs while other inputs are matched. The hypothesis fails if low fidelity input magic states does not stay bounded with pipelining, or if fixing magic state factory (read as magic state distillation factory) removes no part of the effect.\nDeepen check: all links supported (pipelining -> magic state factory: supported, magic state factory -> low fidelity input magic states: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.80, deductive relevance 0.86, novelty 0.62.\n\n6. rapid distillation speed may increase error of circuit outcome through discarded magic states (read as faulty magic state).\n[arxiv-2407-07394-p0024] Finally, a too rapid distillation speed leads to discarded magic states.\n[arxiv-1905-06903-p0011] The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].\nFalsification test: Compare settings where rapid distillation speed differs while other inputs are matched. The hypothesis fails if error of circuit outcome does not rise with rapid distillation speed, or if fixing discarded magic states (read as faulty magic state) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.85, novelty 0.62.\n\n7. distillation pipelines may increase universal quantum through magic states.\n[arxiv-2509-24402-p0002] Observing that distillation pipelines consume magic states in a burst-then-steady pattern, we develop dynamic factory scheduling and resource allocation techniques that go beyond existing static pipeline organizations.\n[arxiv-2503-05003-p0006] powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.\nFalsification test: Compare settings where distillation pipelines differs while other inputs are matched. The hypothesis fails if universal quantum does not rise with distillation pipelines, or if fixing magic states removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.85, novelty 0.60.\n\n8. rapid distillation speed may increase universal quantum through discarded magic states (read as magic states).\n[arxiv-2407-07394-p0024] Finally, a too rapid distillation speed leads to discarded magic states.\n[arxiv-2503-05003-p0006] powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.\nFalsification test: Compare settings where rapid distillation speed differs while other inputs are matched. The hypothesis fails if universal quantum does not rise with rapid distillation speed, or if fixing discarded magic states (read as magic states) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.84, novelty 0.58.\n\n9. distillation pipelines may increase error of circuit outcome through magic states (read as faulty magic state).\n[arxiv-2509-24402-p0002] Observing that distillation pipelines consume magic states in a burst-then-steady pattern, we develop dynamic factory scheduling and resource allocation techniques that go beyond existing static pipeline organizations.\n[arxiv-1905-06903-p0011] The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].\nFalsification test: Compare settings where distillation pipelines differs while other inputs are matched. The hypothesis fails if error of circuit outcome does not rise with distillation pipelines, or if fixing magic states (read as faulty magic state) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.82, novelty 0.58.\n\n10. rapid distillation speed may increase second pulse through discarded magic states (read as superconducting state).\n[arxiv-2407-07394-p0024] Finally, a too rapid distillation speed leads to discarded magic states.\n[arxiv-2610-20132-p0002] The mechanism by which the superconducting state produces the second pulse is not yet understood.\nFalsification test: Compare settings where rapid distillation speed differs while other inputs are matched. The hypothesis fails if second pulse does not rise with rapid distillation speed, or if fixing discarded magic states (read as superconducting state) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.81, novelty 0.60.\n\n11. FTQC programs may increase universal quantum through magic states.\n[arxiv-2407-07394-p0003] FTQC programs consume many magic states, and magic state distillation is one of the major bottlenecks of FTQC.\n[arxiv-2407-07394-p0020] We believe that this scenario is generic when a quantum program is highly parallelized, and this problem requires attention given that FTQC programs consume many magic states during computation.\n[arxiv-2503-05003-p0006] powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.\nFalsification test: Compare settings where FTQC programs differs while other inputs are matched. The hypothesis fails if universal quantum does not rise with FTQC programs, or if fixing magic states removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.81, novelty 0.49.\n\n12. Gains in qubit cost from Magic state distillation failures may be offset by Dynamic pipelines.\n[arxiv-2509-24402-p0002] Dynamic pipelines reduce the qubit cost by 16%-70% for large-scale quantum applications and achieve average reductions of 26%-37% in qubit-time volume on generated distillation benchmarks compared to state-of-the-art static architectures.\n[arxiv-2407-07394-p0020] Magic state distillation failures increase the time cost at run-time; hence, we call it the run-time delay.\nFalsification test: Measure qubit cost where both Dynamic pipelines and Magic state distillation failures vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.77, novelty 0.60.\n\n13. injected non - Clifford resource and Magic state distillation failures may interact in their effect on corresponding cost.\n[arxiv-2609-39734-p0025] The corresponding cost depends on the injected non-Clifford resource rather than on the noisy output state itself.\n[arxiv-2407-07394-p0020] Magic state distillation failures increase the time cost at run-time; hence, we call it the run-time delay.\nFalsification test: Vary injected non - Clifford resource and Magic state distillation failures separately and together. The hypothesis fails if the joint change in corresponding cost equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.75, novelty 0.64.\n\n14. circuit depth and Magic state distillation failures may jointly drive sampling cost of QEM, and their effects may compound.\n[arxiv-2208-09385-p0079] By using the convergence of the relative entropy, they showed for generic noisy layered circuits that the sampling cost of QEM grows exponentially with the circuit depth.\n[arxiv-2407-07394-p0020] Magic state distillation failures increase the time cost at run-time; hence, we call it the run-time delay.\nFalsification test: Vary circuit depth and Magic state distillation failures separately and together. The hypothesis fails if the joint change in sampling cost of QEM equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.75, novelty 0.61.\n\n15. increasing qubit count may increase preparation of magic state through scheme.\n[arxiv-2504-12091-p0002] Numerical experiments on random circuit sampling and 2D Ising Hamiltonian simulation demonstrate that our scheme significantly reduces execution time, while incurring little or no additional spatial overhead, compared to sequential Pauli-based computation, a conventional computation scheme, and scales favorably with increasing qubit count.\n[arxiv-2507-12511-p0002] By leveraging the noise bias, our scheme enables the preparation of a magic state with a logical error rate of 3 times 10-7, using only 53 qubits and 5.5 error correction rounds, under a noise bias of eta gtrsim 5 times 106 and a phase-flip noise rate of 0.1%.\nFalsification test: Compare settings where increasing qubit count differs while other inputs are matched. The hypothesis fails if preparation of magic state does not rise with increasing qubit count, or if fixing scheme removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.74, novelty 0.52.\n\n16. using qutrits rather than qubits may increase unavoidable computational overhead through substantial reduction (read as reduction).\n[arxiv-2403-06228-p0002] Low Overhead Qutrit Magic State Distillation Shiroman Prakash1 and Tanay Saha1,2 1Department of Physics and Computer Science, Dayalbagh Educational Institute, Agra-282005, India 2Present Address: Department of Mathematics, Simon Fraser University, Burnaby, B.C., Canada We show that using qutrits rather than qubits leads to a substantial reduction in the overhead cost associated with an approach to fault-tolerant quantum computing known as magic state distillation.\n[arxiv-2208-09178-p0034] Our results formalize the idea that the reduction in the state distinguishability caused by noise and error-mitigation processes leads to the unavoidable computational overhead in quantum error mitigation.\nFalsification test: Compare settings where using qutrits rather than qubits differs while other inputs are matched. The hypothesis fails if unavoidable computational overhead does not rise with using qutrits rather than qubits, or if fixing substantial reduction (read as reduction) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.71, novelty 0.58.\n\n17. - local connectivity1 may constrain preparation of magic state through scheme.\n[arxiv-1811-00566-p0008] The scheme we numerically analyze in this work does require code concatenation for distances d > 3 and thus requires non-local connectivity1.\n[arxiv-2507-12511-p0002] By leveraging the noise bias, our scheme enables the preparation of a magic state with a logical error rate of 3 times 10-7, using only 53 qubits and 5.5 error correction rounds, under a noise bias of eta gtrsim 5 times 106 and a phase-flip noise rate of 0.1%.\nFalsification test: Compare settings where - local connectivity1 differs while other inputs are matched. The hypothesis fails if preparation of magic state does not stay bounded with - local connectivity1, or if fixing scheme removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.69, novelty 0.60.\n\n18. circuit and distillation pipelines may jointly drive distorted state, and their effects may compound.\n[arxiv-2208-09178-p0047] Each distorted state (nth copy depicted in the figure) is produced by a circuit with L layers U1,...,UL followed by a local depolarizing noise with noise strength at least γ, i.e., γn,l,m ≥ γ,∀n,l,m.\n[arxiv-2509-24402-p0002] Observing that distillation pipelines consume magic states in a burst-then-steady pattern, we develop dynamic factory scheduling and resource allocation techniques that go beyond existing static pipeline organizations.\nFalsification test: Vary circuit and distillation pipelines separately and together. The hypothesis fails if the joint change in distorted state equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.68, novelty 0.63.\n\n19. Concatenate codes may reduce substantial reduction through qubits (read as using qutrits rather than qubits).\n[arxiv-2402-09606-p0001] # Concatenate codes, save qubits\n[arxiv-2403-06228-p0002] Low Overhead Qutrit Magic State Distillation Shiroman Prakash1 and Tanay Saha1,2 1Department of Physics and Computer Science, Dayalbagh Educational Institute, Agra-282005, India 2Present Address: Department of Mathematics, Simon Fraser University, Burnaby, B.C., Canada We show that using qutrits rather than qubits leads to a substantial reduction in the overhead cost associated with an approach to fault-tolerant quantum computing known as magic state distillation.\nFalsification test: Compare settings where Concatenate codes differs while other inputs are matched. The hypothesis fails if substantial reduction does not fall with Concatenate codes, or if fixing qubits (read as using qutrits rather than qubits) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.68, novelty 0.60.\n\n20. preparation of large cat state ancillas may constrain preparation of magic state through scheme.\n[arxiv-1811-00566-p0008] However, the scheme proposed by AGP requires the preparation and verification of large cat state ancillas to perform the logical measurements.\n[arxiv-2507-12511-p0002] By leveraging the noise bias, our scheme enables the preparation of a magic state with a logical error rate of 3 times 10-7, using only 53 qubits and 5.5 error correction rounds, under a noise bias of eta gtrsim 5 times 106 and a phase-flip noise rate of 0.1%.\nFalsification test: Compare settings where preparation of large cat state ancillas differs while other inputs are matched. The hypothesis fails if preparation of magic state does not stay bounded with preparation of large cat state ancillas, or if fixing scheme removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.68, novelty 0.47.\n\n21. pooling may reduce substantial reduction through qubits (read as using qutrits rather than qubits).\n[arxiv-2407-07394-p0006] We also observed that pooling reduced the number of qubits required for distillation by 45% without increasing the time cost.\n[arxiv-2403-06228-p0002] Low Overhead Qutrit Magic State Distillation Shiroman Prakash1 and Tanay Saha1,2 1Department of Physics and Computer Science, Dayalbagh Educational Institute, Agra-282005, India 2Present Address: Department of Mathematics, Simon Fraser University, Burnaby, B.C., Canada We show that using qutrits rather than qubits leads to a substantial reduction in the overhead cost associated with an approach to fault-tolerant quantum computing known as magic state distillation.\nFalsification test: Compare settings where pooling differs while other inputs are matched. The hypothesis fails if substantial reduction does not fall with pooling, or if fixing qubits (read as using qutrits rather than qubits) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.52.\n\n22. Magic state distillation and qubits may interact in their effect on universal fault tolerant quantum computation.\n[arxiv-2507-12511-p0002] Magic state distillation enables universal fault-tolerant quantum computation by implementing non-Clifford gates via the preparation of high-fidelity magic states.\n[arxiv-1905-06903-p0002] While the smallest classically intractable quantum computations require ∼100 qubits, Accepted in Quantum 2019-10-30, click title to verify 2 Figure 2: A sequence of 16 π/8 rotations on 5 qubits that is non-trivially equivalent to the identity.\nFalsification test: Vary Magic state distillation and qubits separately and together. The hypothesis fails if the joint change in universal fault tolerant quantum computation equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.66, novelty 0.53.\n\n23. ability of scheme and Recent advances may jointly constrain overhead, so relieving one may shift the bottleneck to the other.\n[arxiv-2503-05003-p0019] The ability of our scheme to directly measure logical Y terms in parallel significantly reduces the overhead in preparation of such logical ancillary states as compared to Ref.\n[arxiv-2504-12091-p0002] Recent advances in magic state distillation have significantly reduced the overhead, enabling the simultaneous preparation of many magic states.\nFalsification test: Relieve ability of scheme alone while measuring overhead. The hypothesis fails if overhead keeps improving without Recent advances becoming the binding limit, or if relieving Recent advances alone has no effect.\nScores: source support 0.80, deductive relevance 0.64, novelty 0.71.\n\n24. circuit and FTQC programs may jointly drive distorted state, and their effects may compound.\n[arxiv-2208-09178-p0047] Each distorted state (nth copy depicted in the figure) is produced by a circuit with L layers U1,...,UL followed by a local depolarizing noise with noise strength at least γ, i.e., γn,l,m ≥ γ,∀n,l,m.\n[arxiv-2407-07394-p0003] FTQC programs consume many magic states, and magic state distillation is one of the major bottlenecks of FTQC.\n[arxiv-2407-07394-p0020] We believe that this scenario is generic when a quantum program is highly parallelized, and this problem requires attention given that FTQC programs consume many magic states during computation.\nFalsification test: Vary circuit and FTQC programs separately and together. The hypothesis fails if the joint change in distorted state equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.63, novelty 0.63.\n\n25. Cosmic rays and faulty magic state may jointly drive correlated errors, and their effects may compound.\n[arxiv-2402-03208-p0002] Cosmic rays caused correlated errors at a rate of 1/(10 min), accounting for 17pm1% of all such events.\n[arxiv-1905-06903-p0011] The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].\nFalsification test: Vary Cosmic rays and faulty magic state separately and together. The hypothesis fails if the joint change in correlated errors equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.67.\n\n26. theavailabilityofnoisyintermediate scalequantum(NISQ)devices and overhead may move together because both depend on Recent advances.\n[arxiv-2109-04457-p0004] Recent advances in quantum technologies have resulted in theavailabilityofnoisyintermediate-scalequantum(NISQ)devices,promisingadvantagesofquantuminformationprocessing by controlling tens to hundreds of qubits [1, 2].\n[arxiv-2504-12091-p0002] Recent advances in magic state distillation have significantly reduced the overhead, enabling the simultaneous preparation of many magic states.\nFalsification test: Track theavailabilityofnoisyintermediate scalequantum(NISQ)devices and overhead across periods where Recent advances changes and where it does not. The hypothesis fails if they co-vary just as strongly when Recent advances is held fixed.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.67.\n\n27. class of VQAs and FTQC programs may interact in their effect on initial state.\n[arxiv-2405-05332-p0013] The class of VQAs we consider here restricts the initial state ρ to be a stabilizer state, the observable O to be a sum of poly(n) Pauli stings O = P i ciPi with real coefficients ci, and the circuit U (φφφ) to consist only of the constant Clifford gates and parametric Pauli rotation gates e−ıPk φk /2.\n[arxiv-2407-07394-p0003] FTQC programs consume many magic states, and magic state distillation is one of the major bottlenecks of FTQC.\n[arxiv-2407-07394-p0020] We believe that this scenario is generic when a quantum program is highly parallelized, and this problem requires attention given that FTQC programs consume many magic states during computation.\nFalsification test: Vary class of VQAs and FTQC programs separately and together. The hypothesis fails if the joint change in initial state equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.61, novelty 0.60.\n\n28. higher level state occupations may increase Z error of output qubit through correlated errors (read as error).\n[arxiv-2102-06131-p0014] This result also raises the question how higher level state occupations that naturally arise during the stabilizer codes lead to correlated errors.\n[arxiv-1905-06903-p0030] Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.\nFalsification test: Compare settings where higher level state occupations differs while other inputs are matched. The hypothesis fails if Z error of output qubit does not rise with higher level state occupations, or if fixing correlated errors (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.61, novelty 0.58.\n\n29. higher level state occupations may increase incorrect interpretation of lattice surgery measurement through correlated errors (read as error).\n[arxiv-2102-06131-p0014] This result also raises the question how higher level state occupations that naturally arise during the stabilizer codes lead to correlated errors.\n[arxiv-1905-06903-p0031] Such an error leads to an incorrect interpretation of the lattice-surgery measurement outcome.\nFalsification test: Compare settings where higher level state occupations differs while other inputs are matched. The hypothesis fails if incorrect interpretation of lattice surgery measurement does not rise with higher level state occupations, or if fixing correlated errors (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.64.\n\n30. Gains in state error from faulty magic state may be offset by cultivation circuit.\n[arxiv-2512-13908-p0010] Then the cultivation circuit projects the state to the X = Z line (right Bloch sphere, red arrow), and reduces the state error (red clouds).\n[arxiv-1905-06903-p0011] The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].\nFalsification test: Measure state error where both cultivation circuit and faulty magic state vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.54.\n\n31. addition of reset may affect duration of non - trivial magic through rate.\n[arxiv-2102-06131-p0022] We observe the logical performance stabilizing to values of Λbit > 1, and that the addition of reset improves both the stable performance and rate with which the code approaches stability.\n[arxiv-2609-39734-p0036] The duration of the non-trivial magic window depends on the rate at which local depolarising noise increases the state’s 2-R ́enyi entropy (equivalently, decreases Tr(ρ2)).\nFalsification test: Compare settings where addition of reset differs while other inputs are matched. The hypothesis fails if duration of non - trivial magic does not change with addition of reset, or if fixing rate removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.58, novelty 0.68.\n\n32. Gains in error from faulty magic state may be offset by Cultivation.\n[arxiv-2512-13908-p0002] Cultivation reduces the error by a factor of 40, with a state fidelity of 0.9999(1) (retaining 8% of attempts).\n[arxiv-1905-06903-p0011] The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].\nFalsification test: Measure error where both Cultivation and faulty magic state vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.58, novelty 0.56.\n\n33. Gains in overhead from reduction may be offset by Recent advances.\n[arxiv-2504-12091-p0002] Recent advances in magic state distillation have significantly reduced the overhead, enabling the simultaneous preparation of many magic states.\n[arxiv-2208-09178-p0034] Our results formalize the idea that the reduction in the state distinguishability caused by noise and error-mitigation processes leads to the unavoidable computational overhead in quantum error mitigation.\nFalsification test: Measure overhead where both Recent advances and reduction vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.60.\n\n34. Dynamic pipelines and injected non - Clifford resource may jointly constrain qubit cost, so relieving one may shift the bottleneck to the other.\n[arxiv-2509-24402-p0002] Dynamic pipelines reduce the qubit cost by 16%-70% for large-scale quantum applications and achieve average reductions of 26%-37% in qubit-time volume on generated distillation benchmarks compared to state-of-the-art static architectures.\n[arxiv-2609-39734-p0025] The corresponding cost depends on the injected non-Clifford resource rather than on the noisy output state itself.\nFalsification test: Relieve Dynamic pipelines alone while measuring qubit cost. The hypothesis fails if qubit cost keeps improving without injected non - Clifford resource becoming the binding limit, or if relieving injected non - Clifford resource alone has no effect.\nScores: source support 0.80, deductive relevance 0.56, novelty 0.71.\n\n35. class of VQAs may constrain variance of cost function through initial state (read as input state).\n[arxiv-2405-05332-p0013] The class of VQAs we consider here restricts the initial state ρ to be a stabilizer state, the observable O to be a sum of poly(n) Pauli stings O = P i ciPi with real coefficients ci, and the circuit U (φφφ) to consist only of the constant Clifford gates and parametric Pauli rotation gates e−ıPk φk /2.\n[arxiv-2105-14377-p0048] Proposition 3 shows that the variance of the cost function again depends on the input state |m⟩, which is a similar result to the one obtained in Theorem 2.\nFalsification test: Compare settings where class of VQAs differs while other inputs are matched. The hypothesis fails if variance of cost function does not stay bounded with class of VQAs, or if fixing initial state (read as input state) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.56, novelty 0.62.\n\n36. KT may increase quest for universal superconducting quantum computing through projection noise (read as noise).\n[arxiv-2512-13908-p0011] Second, KT reduces the projection noise compared to standard tomography: measuring along the prepared state also results in measurement averages close to zero, reducing the variance in the binomial distribution.\n[arxiv-2506-16834-p0002] The quest for universal superconducting quantum computing is hindered by noise and errors.\nFalsification test: Compare settings where KT differs while other inputs are matched. The hypothesis fails if quest for universal superconducting quantum computing does not rise with KT, or if fixing projection noise (read as noise) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.55, novelty 0.58.\n\n37. KT may increase ppth of code through projection noise (read as noise).\n[arxiv-2512-13908-p0011] Second, KT reduces the projection noise compared to standard tomography: measuring along the prepared state also results in measurement averages close to zero, reducing the variance in the binomial distribution.\n[arxiv-2212-11632-p0022] noise reduces the ppth of the code by 3.6% for a rotated planar code of distance-7 under a noise channel produced by the T1 and T2 values from the Google chip [10] to 98.5% in the case of the distance-3 rotated planar code with the data of the the Aspen-M-2 qubits [23].\nFalsification test: Compare settings where KT differs while other inputs are matched. The hypothesis fails if ppth of code does not rise with KT, or if fixing projection noise (read as noise) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.54, novelty 0.66.\n\n38. circuit and footprint may jointly drive distorted state, and their effects may compound.\n[arxiv-2208-09178-p0047] Each distorted state (nth copy depicted in the figure) is produced by a circuit with L layers U1,...,UL followed by a local depolarizing noise with noise strength at least γ, i.e., γn,l,m ≥ γ,∀n,l,m.\n[arxiv-1905-06903-p0048] footprint (15-to-1)9,3,3 protocol produces magic states with pout = 1.5×10−9 using 762 qubits.\nFalsification test: Vary circuit and footprint separately and together. The hypothesis fails if the joint change in distorted state equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.54, novelty 0.61.\n\n39. Cultivation may increase quest for universal superconducting quantum computing through error.\n[arxiv-2512-13908-p0002] Cultivation reduces the error by a factor of 40, with a state fidelity of 0.9999(1) (retaining 8% of attempts).\n[arxiv-2506-16834-p0002] The quest for universal superconducting quantum computing is hindered by noise and errors.\nFalsification test: Compare settings where Cultivation differs while other inputs are matched. The hypothesis fails if quest for universal superconducting quantum computing does not rise with Cultivation, or if fixing error removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.54, novelty 0.52.\n\n40. circuit structure and Dynamic pipelines may jointly constrain cost, so relieving one may shift the bottleneck to the other.\n[arxiv-2609-39734-p0026] Like tensor-network contraction, its cost is determined entirely by the circuit structure, in this case the non-Clifford gate count, and is independent of the noise model and the output state.\n[arxiv-2509-24402-p0002] Dynamic pipelines reduce the qubit cost by 16%-70% for large-scale quantum applications and achieve average reductions of 26%-37% in qubit-time volume on generated distillation benchmarks compared to state-of-the-art static architectures.\nFalsification test: Relieve circuit structure alone while measuring cost. The hypothesis fails if cost keeps improving without Dynamic pipelines becoming the binding limit, or if relieving Dynamic pipelines alone has no effect.\nScores: source support 0.80, deductive relevance 0.51, novelty 0.71.\n\n41. attention and construction may jointly constrain problem, so relieving one may shift the bottleneck to the other.\n[arxiv-2407-07394-p0020] We believe that this scenario is generic when a quantum program is highly parallelized, and this problem requires attention given that FTQC programs consume many magic states during computation.\n[arxiv-2402-13863-p0039] Our construction reduces the problem of finding a parallel routing scheme on PL × PL × P4L to the 2D case by applying Lemma 2.4 to different floors.\nFalsification test: Relieve attention alone while measuring problem. The hypothesis fails if problem keeps improving without construction becoming the binding limit, or if relieving construction alone has no effect.\nScores: source support 0.80, deductive relevance 0.51, novelty 0.69.\n\n42. cultivation circuit may reduce Z error of output qubit through state error (read as error).\n[arxiv-2512-13908-p0010] Then the cultivation circuit projects the state to the X = Z line (right Bloch sphere, red arrow), and reduces the state error (red clouds).\n[arxiv-1905-06903-p0030] Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.\nFalsification test: Compare settings where cultivation circuit differs while other inputs are matched. The hypothesis fails if Z error of output qubit does not fall with cultivation circuit, or if fixing state error (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.51, novelty 0.57.\n\n43. mid - circuit measurements and MPQC may jointly constrain barren plateaus, so relieving one may shift the bottleneck to the other.\n[arxiv-2406-14285-p0059] therefore, mid-circuit measurements, circuit pretraining, entanglement regularization to add terms to the cost function, and initial partitioning play on the entanglement entropy to better mitigate barren plateaus\n[arxiv-2511-13408-p0002] Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers.\nFalsification test: Relieve mid - circuit measurements alone while measuring barren plateaus. The hypothesis fails if barren plateaus keeps improving without MPQC becoming the binding limit, or if relieving MPQC alone has no effect.\nScores: source support 0.80, deductive relevance 0.50, novelty 0.68.\n\n44. injected non - Clifford resource and run time delay may interact in their effect on corresponding cost.\n[arxiv-2609-39734-p0025] The corresponding cost depends on the injected non-Clifford resource rather than on the noisy output state itself.\n[arxiv-2407-07394-p0021] In this case the run-time delay effectively doubles the distillation time cost.\nFalsification test: Vary injected non - Clifford resource and run time delay separately and together. The hypothesis fails if the joint change in corresponding cost equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.50, novelty 0.67.\n\n45. cultivation circuit may reduce incorrect interpretation of lattice surgery measurement through state error (read as error).\n[arxiv-2512-13908-p0010] Then the cultivation circuit projects the state to the X = Z line (right Bloch sphere, red arrow), and reduces the state error (red clouds).\n[arxiv-1905-06903-p0031] Such an error leads to an incorrect interpretation of the lattice-surgery measurement outcome.\nFalsification test: Compare settings where cultivation circuit differs while other inputs are matched. The hypothesis fails if incorrect interpretation of lattice surgery measurement does not fall with cultivation circuit, or if fixing state error (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.50, novelty 0.64.\n\n46. chemical initialization and MPQC may jointly constrain barren plateaus, so relieving one may shift the bottleneck to the other.\n[arxiv-2609-22729-p0002] In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.\n[arxiv-2511-13408-p0002] Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers.\nFalsification test: Relieve chemical initialization alone while measuring barren plateaus. The hypothesis fails if barren plateaus keeps improving without MPQC becoming the binding limit, or if relieving MPQC alone has no effect.\nScores: source support 0.80, deductive relevance 0.49, novelty 0.67.\n\n47. cultivation and powerful decoder may move together because both depend on color code.\n[arxiv-2512-13908-p0014] GRAFTING TO A SURFACE CODE The surface code boasts a high threshold, matchable decoders, and well-developed dropout approaches [2, 11– 14], but the color code supports cultivation through its transversal single-qubit Clifford gates [1].\n[arxiv-2503-05003-p0006] powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.\nFalsification test: Track cultivation and powerful decoder across periods where color code changes and where it does not. The hypothesis fails if they co-vary just as strongly when color code is held fixed.\nScores: source support 0.80, deductive relevance 0.49, novelty 0.63.\n\n48. input state may contribute to second pulse through identical states (read as superconducting state).\n[arxiv-2202-12052-p0023] We remind the reader that since the input state is a tensor product of identical states, we have thatt = tIM .\n[arxiv-2610-20132-p0002] The mechanism by which the superconducting state produces the second pulse is not yet understood.\nFalsification test: Compare settings where input state differs while other inputs are matched. The hypothesis fails if second pulse does not rise with input state, or if fixing identical states (read as superconducting state) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.49, novelty 0.63.\n\n49. relative position of magic thresholds and dimension of DLA may move together because both depend on system size.\n[arxiv-2609-39734-p0039] Thus, the relative position of the magic and sampling thresholds is determined by the system size and the sampling tolerance.\n[arxiv-2105-14377-p0049] For instance, when the system is controllable, dim(g) = d2 − 1 = 22n − 1, and thus the dimension of the DLA is exponentially growing with the system size n.\nFalsification test: Track relative position of magic thresholds and dimension of DLA across periods where system size changes and where it does not. The hypothesis fails if they co-vary just as strongly when system size is held fixed.\nScores: source support 0.80, deductive relevance 0.49, novelty 0.60.\n\n50. KT may affect dynamical diagnostics through projection noise (read as noise).\n[arxiv-2512-13908-p0011] Second, KT reduces the projection noise compared to standard tomography: measuring along the prepared state also results in measurement averages close to zero, reducing the variance in the binomial distribution.\n[arxiv-2609-39734-p0045] It does, however, give closed forms that show how the dynamical diagnostics (mixed-state magic, the inverse participation ratio (IPR)) depend on depth, doping and noise.\nFalsification test: Compare settings where KT differs while other inputs are matched. The hypothesis fails if dynamical diagnostics does not change with KT, or if fixing projection noise (read as noise) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.48, novelty 0.66.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

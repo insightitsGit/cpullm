@@ -1,0 +1,3290 @@
+{
+ "prompt": "Frontier: quantum LDPC codes.",
+ "seconds": 15.12,
+ "answer_status": "hypotheses",
+ "frontier": {
+  "schema": "frontier-v1",
+  "triggered": true,
+  "topic": "quantum LDPC codes",
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "limits": {
+   "max_rounds": 1000,
+   "max_candidates": 200000,
+   "max_edges": 50000,
+   "max_bytes": 67108864,
+   "max_seconds": 60.0,
+   "batch_size": 256,
+   "max_path_edges": 2,
+   "max_results": 50,
+   "min_results": 10
+  },
+  "topic_terms": [
+   "quantum",
+   "ldpc",
+   "code"
+  ],
+  "focus_terms": [
+   "quantum",
+   "ldpc",
+   "code"
+  ],
+  "chunk_count": 3369,
+  "candidate_search_complete": true,
+  "deepened": 5,
+  "leading_check": {
+   "requested": 5,
+   "checked": 5,
+   "complete": true,
+   "stop_reason": null
+  },
+  "parser": "en_core_web_lg",
+  "bridge_check": "encoder",
+  "encoded_terms": 390,
+  "hub_deferred": 502,
+  "status": "hypotheses",
+  "hypotheses": [
+   {
+    "id": "0e93f13b7c82",
+    "text": "BPs and ppth of code may move together because both depend on noise.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "BPs",
+     "ppth of code",
+     "noise"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2102-01828-p0004",
+     "arxiv-2212-11632-p0022"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2102-01828-p0004",
+      "quote": "And the noise from quantum hardware also causes BPs, which are called noiseinduced BPs [25].",
+      "start": 1248,
+      "end": 1340,
+      "chunk_sha256": "f0ee03acb14522445f49dca9e14ba28fa35aef173ff0a282d62b693ce286aa04",
+      "relation": "causes",
+      "subject": "noise",
+      "object": "BPs",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2212-11632-p0022",
+      "quote": "noise reduces the ppth of the code by 3.6% for a rotated planar code of distance-7 under a noise channel produced by the T1 and T2 values from the Google chip [10] to 98.5% in the case of the distance-3 rotated planar code with the data of the the Aspen-M-2 qubits [23].",
+      "start": 2127,
+      "end": 2397,
+      "chunk_sha256": "d60906dc6f9f266597b523cdf1893e830335da7efe5fbaf343d9adbea1b91abc",
+      "relation": "decreases",
+      "subject": "noise",
+      "object": "ppth of code",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.96,
+     "deductive_relevance": 0.545,
+     "novelty": 0.663
+    },
+    "falsification_test": "Track BPs and ppth of code across periods where noise changes and where it does not. The hypothesis fails if they co-vary just as strongly when noise is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "noise",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "common_driver",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 0,
+        "requested": "noise",
+        "source_term": "strong noise",
+        "citation": {
+         "document_id": "arxiv-2405-05332-p0011",
+         "quote": "Sufficiently strong noise also generically leads to BPs [48–51].",
+         "start": 9,
+         "end": 73,
+         "chunk_sha256": "eed34e9a40d50ff38c45389354876de468a96ab0a84da70e4ef72a153dfa6460",
+         "relation": "causes",
+         "subject": "strong noise",
+         "object": "BPs",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [
+       {
+        "link": 1,
+        "citation": {
+         "document_id": "arxiv-2212-11632-p0022",
+         "quote": "noise reduces the ppth of the code by 3.6% for a rotated planar code of distance-7 under a noise channel produced by the T1 and T2 values from the Google chip [10] to 98.5% in the case of the distance-3 rotated planar code with the data of the the Aspen-M-2 qubits [23].",
+         "start": 2127,
+         "end": 2397,
+         "chunk_sha256": "d60906dc6f9f266597b523cdf1893e830335da7efe5fbaf343d9adbea1b91abc",
+         "relation": "decreases",
+         "subject": "noise",
+         "object": "ppth of code",
+         "hedged": false
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       }
+      ],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "noise",
+       "target": "BPs",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "noise",
+       "target": "ppth of code",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "586872b08b4a",
+    "text": "BPs and quest for universal superconducting quantum computing may move together because both depend on noise.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "BPs",
+     "quest for universal superconducting quantum computing",
+     "noise"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2102-01828-p0004",
+     "arxiv-2506-16834-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2102-01828-p0004",
+      "quote": "And the noise from quantum hardware also causes BPs, which are called noiseinduced BPs [25].",
+      "start": 1248,
+      "end": 1340,
+      "chunk_sha256": "f0ee03acb14522445f49dca9e14ba28fa35aef173ff0a282d62b693ce286aa04",
+      "relation": "causes",
+      "subject": "noise",
+      "object": "BPs",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2506-16834-p0002",
+      "quote": "The quest for universal superconducting quantum computing is hindered by noise and errors.",
+      "start": 0,
+      "end": 90,
+      "chunk_sha256": "f00ea1f3cc2f45ac601d96232db5605c9d65a2e5d5885b815aa9ce7d37b648be",
+      "relation": "decreases",
+      "subject": "noise",
+      "object": "quest for universal superconducting quantum computing",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.96,
+     "deductive_relevance": 0.467,
+     "novelty": 0.577
+    },
+    "falsification_test": "Track BPs and quest for universal superconducting quantum computing across periods where noise changes and where it does not. The hypothesis fails if they co-vary just as strongly when noise is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "noise",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "common_driver",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 0,
+        "requested": "noise",
+        "source_term": "strong noise",
+        "citation": {
+         "document_id": "arxiv-2405-05332-p0011",
+         "quote": "Sufficiently strong noise also generically leads to BPs [48–51].",
+         "start": 9,
+         "end": 73,
+         "chunk_sha256": "eed34e9a40d50ff38c45389354876de468a96ab0a84da70e4ef72a153dfa6460",
+         "relation": "causes",
+         "subject": "strong noise",
+         "object": "BPs",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "noise",
+       "target": "BPs",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "noise",
+       "target": "quest for universal superconducting quantum computing",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "d7a565132c31",
+    "text": "Gains in qubit cost from qubit count may be offset by Dynamic pipelines.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "Dynamic pipelines",
+     "qubit count",
+     "qubit cost"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2509-24402-p0002",
+     "arxiv-2208-09385-p0002",
+     "arxiv-2208-09385-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2509-24402-p0002",
+      "quote": "Dynamic pipelines reduce the qubit cost by 16%-70% for large-scale quantum applications and achieve average reductions of 26%-37% in qubit-time volume on generated distillation benchmarks compared to state-of-the-art static architectures.",
+      "start": 946,
+      "end": 1184,
+      "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+      "relation": "decreases",
+      "subject": "Dynamic pipelines",
+      "object": "qubit cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2208-09385-p0002",
+      "quote": "Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.",
+      "start": 1125,
+      "end": 1241,
+      "chunk_sha256": "133876183918ad42ee680678cb2b9a17d2df6ebe8aa0cb141e08e1099bc2c4ab",
+      "relation": "increases",
+      "subject": "qubit count",
+      "object": "cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2208-09385-p0004",
+      "quote": "Furthermore, for random layered circuits under local noise, we show that the cost grows exponentially also with the qubit count n (Theorem 2).",
+      "start": 1443,
+      "end": 1585,
+      "chunk_sha256": "c91469f6a3edc015984795ac2f1e8a82cdaf9911acfb29cf1b8970530a26e0b7",
+      "relation": "increases",
+      "subject": "qubit count",
+      "object": "cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.96,
+     "deductive_relevance": 0.426,
+     "novelty": 0.564
+    },
+    "falsification_test": "Measure qubit cost where both Dynamic pipelines and qubit count vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "qubit cost",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "offset",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 1,
+        "requested": "qubit cost",
+        "source_term": "cost",
+        "citation": {
+         "document_id": "arxiv-2208-09385-p0002",
+         "quote": "Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.",
+         "start": 1125,
+         "end": 1241,
+         "chunk_sha256": "133876183918ad42ee680678cb2b9a17d2df6ebe8aa0cb141e08e1099bc2c4ab",
+         "relation": "increases",
+         "subject": "qubit count",
+         "object": "cost",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "qubit cost",
+        "source_term": "cost of QEM",
+        "citation": {
+         "document_id": "arxiv-2208-09385-p0076",
+         "quote": "First, these results indicate the exponential decay of the quantum Fisher information matrix with respect to qubit count, meaning that the cost of QEM grows exponentially with qubit count.",
+         "start": 168,
+         "end": 356,
+         "chunk_sha256": "e588dd20846f6e548b31da15f2d812bb12344005bb191a28cc58f02f5ac2c655",
+         "relation": "increases",
+         "subject": "qubit count",
+         "object": "cost of QEM",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [
+       {
+        "link": 0,
+        "citation": {
+         "document_id": "arxiv-2509-24402-p0002",
+         "quote": "Dynamic pipelines reduce the qubit cost by 16%-70% for large-scale quantum applications and achieve average reductions of 26%-37% in qubit-time volume on generated distillation benchmarks compared to state-of-the-art static architectures.",
+         "start": 946,
+         "end": 1184,
+         "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+         "relation": "decreases",
+         "subject": "Dynamic pipelines",
+         "object": "qubit cost",
+         "hedged": false
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       }
+      ],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "untested",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "Dynamic pipelines",
+       "target": "qubit cost",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "qubit count",
+       "target": "qubit cost",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "fca0e8a06f94",
+    "text": "circuit depth for noise models and qubit count may jointly drive sampling cost, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "circuit depth for noise models",
+     "qubit count",
+     "sampling cost"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2208-09178-p0002",
+     "arxiv-2208-09385-p0002",
+     "arxiv-2208-09385-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2208-09178-p0002",
+      "quote": "The results imply that the sampling cost required for a wide class of protocols to mitigate errors must grow exponentially with the circuit depth for various noise models, revealing the fundamental obstacles in the scalability of useful noisy near-term quantum devices.",
+      "start": 1449,
+      "end": 1718,
+      "chunk_sha256": "f6da52aed0ba56986b72f4b040adeb7b0e0ef8bb4c40419d8d2f10788552bee5",
+      "relation": "increases",
+      "subject": "circuit depth for noise models",
+      "object": "sampling cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2208-09385-p0002",
+      "quote": "Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.",
+      "start": 1125,
+      "end": 1241,
+      "chunk_sha256": "133876183918ad42ee680678cb2b9a17d2df6ebe8aa0cb141e08e1099bc2c4ab",
+      "relation": "increases",
+      "subject": "qubit count",
+      "object": "cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2208-09385-p0004",
+      "quote": "Furthermore, for random layered circuits under local noise, we show that the cost grows exponentially also with the qubit count n (Theorem 2).",
+      "start": 1443,
+      "end": 1585,
+      "chunk_sha256": "c91469f6a3edc015984795ac2f1e8a82cdaf9911acfb29cf1b8970530a26e0b7",
+      "relation": "increases",
+      "subject": "qubit count",
+      "object": "cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.96,
+     "deductive_relevance": 0.421,
+     "novelty": 0.55
+    },
+    "falsification_test": "Vary circuit depth for noise models and qubit count separately and together. The hypothesis fails if the joint change in sampling cost equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "sampling cost",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "jointly_drive",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 0,
+        "requested": "circuit depth for noise models",
+        "source_term": "circuit depth",
+        "citation": {
+         "document_id": "arxiv-2208-09385-p0079",
+         "quote": "By using the convergence of the relative entropy, they showed for generic noisy layered circuits that the sampling cost of QEM grows exponentially with the circuit depth.",
+         "start": 2804,
+         "end": 2974,
+         "chunk_sha256": "9e22ba71c4a87daa68ef79dec6da6e15a9205dde29fc891316fdbef92b1f5792",
+         "relation": "increases",
+         "subject": "circuit depth",
+         "object": "sampling cost of QEM",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 0,
+        "requested": "sampling cost",
+        "source_term": "sampling cost of QEM",
+        "citation": {
+         "document_id": "arxiv-2208-09385-p0079",
+         "quote": "By using the convergence of the relative entropy, they showed for generic noisy layered circuits that the sampling cost of QEM grows exponentially with the circuit depth.",
+         "start": 2804,
+         "end": 2974,
+         "chunk_sha256": "9e22ba71c4a87daa68ef79dec6da6e15a9205dde29fc891316fdbef92b1f5792",
+         "relation": "increases",
+         "subject": "circuit depth",
+         "object": "sampling cost of QEM",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "sampling cost",
+        "source_term": "cost",
+        "citation": {
+         "document_id": "arxiv-2208-09385-p0002",
+         "quote": "Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.",
+         "start": 1125,
+         "end": 1241,
+         "chunk_sha256": "133876183918ad42ee680678cb2b9a17d2df6ebe8aa0cb141e08e1099bc2c4ab",
+         "relation": "increases",
+         "subject": "qubit count",
+         "object": "cost",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "sampling cost",
+        "source_term": "cost of QEM",
+        "citation": {
+         "document_id": "arxiv-2208-09385-p0076",
+         "quote": "First, these results indicate the exponential decay of the quantum Fisher information matrix with respect to qubit count, meaning that the cost of QEM grows exponentially with qubit count.",
+         "start": 168,
+         "end": 356,
+         "chunk_sha256": "e588dd20846f6e548b31da15f2d812bb12344005bb191a28cc58f02f5ac2c655",
+         "relation": "increases",
+         "subject": "qubit count",
+         "object": "cost of QEM",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "untested",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "circuit depth for noise models",
+       "target": "sampling cost",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "qubit count",
+       "target": "sampling cost",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "73067a6d5973",
+    "text": "circuit size and qubit count may jointly drive sampling cost, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "circuit size",
+     "qubit count",
+     "sampling cost"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2208-09178-p0002",
+     "arxiv-2208-09385-p0002",
+     "arxiv-2208-09385-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2208-09178-p0002",
+      "quote": "Various prominent quantum error mitigation methods face this problem, where sampling cost grows exponentially with circuit size [4–8].",
+      "start": 3281,
+      "end": 3415,
+      "chunk_sha256": "f6da52aed0ba56986b72f4b040adeb7b0e0ef8bb4c40419d8d2f10788552bee5",
+      "relation": "increases",
+      "subject": "circuit size",
+      "object": "sampling cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2208-09385-p0002",
+      "quote": "Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.",
+      "start": 1125,
+      "end": 1241,
+      "chunk_sha256": "133876183918ad42ee680678cb2b9a17d2df6ebe8aa0cb141e08e1099bc2c4ab",
+      "relation": "increases",
+      "subject": "qubit count",
+      "object": "cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2208-09385-p0004",
+      "quote": "Furthermore, for random layered circuits under local noise, we show that the cost grows exponentially also with the qubit count n (Theorem 2).",
+      "start": 1443,
+      "end": 1585,
+      "chunk_sha256": "c91469f6a3edc015984795ac2f1e8a82cdaf9911acfb29cf1b8970530a26e0b7",
+      "relation": "increases",
+      "subject": "qubit count",
+      "object": "cost",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.96,
+     "deductive_relevance": 0.411,
+     "novelty": 0.65
+    },
+    "falsification_test": "Vary circuit size and qubit count separately and together. The hypothesis fails if the joint change in sampling cost equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "sampling cost",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "jointly_drive",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 1,
+        "requested": "sampling cost",
+        "source_term": "cost",
+        "citation": {
+         "document_id": "arxiv-2208-09385-p0002",
+         "quote": "Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.",
+         "start": 1125,
+         "end": 1241,
+         "chunk_sha256": "133876183918ad42ee680678cb2b9a17d2df6ebe8aa0cb141e08e1099bc2c4ab",
+         "relation": "increases",
+         "subject": "qubit count",
+         "object": "cost",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "sampling cost",
+        "source_term": "cost of QEM",
+        "citation": {
+         "document_id": "arxiv-2208-09385-p0076",
+         "quote": "First, these results indicate the exponential decay of the quantum Fisher information matrix with respect to qubit count, meaning that the cost of QEM grows exponentially with qubit count.",
+         "start": 168,
+         "end": 356,
+         "chunk_sha256": "e588dd20846f6e548b31da15f2d812bb12344005bb191a28cc58f02f5ac2c655",
+         "relation": "increases",
+         "subject": "qubit count",
+         "object": "cost of QEM",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "untested",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "circuit size",
+       "target": "sampling cost",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "qubit count",
+       "target": "sampling cost",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "693a2e484909",
+    "text": "weight four parity checks may constrain Tothebestofour knowledge through codes.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "weight four parity checks",
+     "Tothebestofour knowledge"
+    ],
+    "via": [
+     "codes"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2507-09690-p0002",
+     "arxiv-2403-06228-p0028"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2507-09690-p0002",
+      "quote": "Our codes are approximately twice as efficient as comparable surface codes, yet require only weight-four parity checks, which simplifies experimental realization compared to other quantum LDPC codes.",
+      "start": 814,
+      "end": 1013,
+      "chunk_sha256": "29111f32bb93ccca05ebcd58d29523770c1e19e9056332d4dcb1d1b895e37f78",
+      "relation": "constrains",
+      "subject": "weight four parity checks",
+      "object": "codes",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2403-06228-p0028",
+      "quote": "Tothebestofour knowledge, to get a comparable yield parameter, one requires a code with ∼ 1000 qubits, using triorthogonal codes constructed from punctured binary Reed-Muller",
+      "start": 795,
+      "end": 969,
+      "chunk_sha256": "89e6a8375adaa56014921a8f32e04174d9bf3d2d9c1eacb07707e855ae61b745",
+      "relation": "constrains",
+      "subject": "code",
+      "object": "Tothebestofour knowledge",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.837,
+     "novelty": 0.683
+    },
+    "falsification_test": "Compare settings where weight four parity checks differs while other inputs are matched. The hypothesis fails if Tothebestofour knowledge does not stay bounded with weight four parity checks, or if fixing codes removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "code"
+   },
+   {
+    "id": "154e08ddebd0",
+    "text": "physical qubit counts may constrain powerful decoder through qLDPC codes (read as quantum code).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "physical qubit counts",
+     "powerful decoder"
+    ],
+    "via": [
+     "qLDPC codes (read as quantum code)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2607-27644-p0016",
+     "arxiv-2503-05003-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2607-27644-p0016",
+      "quote": "On one hand, the qLDPC codes in both these works require physical qubit counts in the thousands, whereas our codes (other than ZSZ-LP-775) stay under a thousand.",
+      "start": 1408,
+      "end": 1569,
+      "chunk_sha256": "a7a6ca7bc2ec77358e4119e32fe532730f2a718a2da2ee1f6c80034d8156614a",
+      "relation": "constrains",
+      "subject": "physical qubit counts",
+      "object": "qLDPC codes",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2503-05003-p0006",
+      "quote": "powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.",
+      "start": 276,
+      "end": 879,
+      "chunk_sha256": "896909438bda7e68db9428d19a58db42cd14f57dd68d35741e45af24adf3ff74",
+      "relation": "constrains",
+      "subject": "quantum code",
+      "object": "powerful decoder",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.828,
+     "novelty": 0.623
+    },
+    "falsification_test": "Compare settings where physical qubit counts differs while other inputs are matched. The hypothesis fails if powerful decoder does not stay bounded with physical qubit counts, or if fixing qLDPC codes (read as quantum code) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "qldpc code"
+   },
+   {
+    "id": "ac849fd70f7b",
+    "text": "size of planar code may constrain smallest intractable quantum computations through data qubits (read as qubits).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "size of planar code",
+     "smallest intractable quantum computations"
+    ],
+    "via": [
+     "data qubits (read as qubits)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2212-11632-p0007",
+     "arxiv-1905-06903-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2212-11632-p0007",
+      "quote": "Thus, the number of data qubits is restricted by the size of the planar code via the relation n = d2 +(d − 1)2, where n is the number of data qubits, and d is the distance of the planar code.",
+      "start": 1026,
+      "end": 1217,
+      "chunk_sha256": "084994ecb7fd91b2128651ecf90572eb2791fa763f30f6bfb2b082f655cc7cef",
+      "relation": "constrains",
+      "subject": "size of planar code",
+      "object": "data qubits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0002",
+      "quote": "While the smallest classically intractable quantum computations require ∼100 qubits, Accepted in Quantum 2019-10-30, click title to verify 2 Figure 2: A sequence of 16 π/8 rotations on 5 qubits that is non-trivially equivalent to the identity.",
+      "start": 2822,
+      "end": 3065,
+      "chunk_sha256": "ddfce22f1244560baa491ef8a8983625514b98d736149ecdc969f994d7f3fb9f",
+      "relation": "constrains",
+      "subject": "qubits",
+      "object": "smallest intractable quantum computations",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.767,
+     "novelty": 0.642
+    },
+    "falsification_test": "Compare settings where size of planar code differs while other inputs are matched. The hypothesis fails if smallest intractable quantum computations does not stay bounded with size of planar code, or if fixing data qubits (read as qubits) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "data qubit"
+   },
+   {
+    "id": "11fed4fd616a",
+    "text": "logical error rate requirement and powerful decoder may move together because both depend on larger repetition code.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "logical error rate requirement",
+     "powerful decoder",
+     "larger repetition code"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2607-16166-p0051",
+     "arxiv-2503-05003-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2607-16166-p0051",
+      "quote": "The logical error rate requirement requires a larger repetition code to meet the target - in Table V we see that the smallest code meeting the LER target is m = 11 and this matches the value found for the EDM protocol in [17].",
+      "start": 0,
+      "end": 226,
+      "chunk_sha256": "1da6a9d6a480575846aab68c2022bb50fa75358ed00af56934818201ba3cbe12",
+      "relation": "constrains",
+      "subject": "larger repetition code",
+      "object": "logical error rate requirement",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2503-05003-p0006",
+      "quote": "powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.",
+      "start": 276,
+      "end": 879,
+      "chunk_sha256": "896909438bda7e68db9428d19a58db42cd14f57dd68d35741e45af24adf3ff74",
+      "relation": "constrains",
+      "subject": "quantum code",
+      "object": "powerful decoder",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.748,
+     "novelty": 0.581
+    },
+    "falsification_test": "Track logical error rate requirement and powerful decoder across periods where larger repetition code changes and where it does not. The hypothesis fails if they co-vary just as strongly when larger repetition code is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "larger repetition code"
+   },
+   {
+    "id": "4db4079a80e9",
+    "text": "FTQC programs may increase universal quantum through magic states.",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "FTQC programs",
+     "universal quantum"
+    ],
+    "via": [
+     "magic states"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-07394-p0003",
+     "arxiv-2407-07394-p0020",
+     "arxiv-2503-05003-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-07394-p0003",
+      "quote": "FTQC programs consume many magic states, and magic state distillation is one of the major bottlenecks of FTQC.",
+      "start": 1476,
+      "end": 1586,
+      "chunk_sha256": "ed0549cfb12a3302c36868790e23d8ed84db0186a765730700a09c23fc72f40f",
+      "relation": "increases",
+      "subject": "FTQC programs",
+      "object": "magic states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-07394-p0020",
+      "quote": "We believe that this scenario is generic when a quantum program is highly parallelized, and this problem requires attention given that FTQC programs consume many magic states during computation.",
+      "start": 220,
+      "end": 414,
+      "chunk_sha256": "0caef474d62ea27453cc370f5a5613e5ca967abf79c109fd8a8fd413ed23322e",
+      "relation": "increases",
+      "subject": "FTQC programs",
+      "object": "magic states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2503-05003-p0006",
+      "quote": "powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.",
+      "start": 276,
+      "end": 879,
+      "chunk_sha256": "896909438bda7e68db9428d19a58db42cd14f57dd68d35741e45af24adf3ff74",
+      "relation": "increases",
+      "subject": "magic states",
+      "object": "universal quantum",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.748,
+     "novelty": 0.488
+    },
+    "falsification_test": "Compare settings where FTQC programs differs while other inputs are matched. The hypothesis fails if universal quantum does not rise with FTQC programs, or if fixing magic states removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "magic state"
+   },
+   {
+    "id": "094284bd31b5",
+    "text": "distillation pipelines may increase universal quantum through magic states.",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "distillation pipelines",
+     "universal quantum"
+    ],
+    "via": [
+     "magic states"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2509-24402-p0002",
+     "arxiv-2503-05003-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2509-24402-p0002",
+      "quote": "Observing that distillation pipelines consume magic states in a burst-then-steady pattern, we develop dynamic factory scheduling and resource allocation techniques that go beyond existing static pipeline organizations.",
+      "start": 727,
+      "end": 945,
+      "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+      "relation": "increases",
+      "subject": "distillation pipelines",
+      "object": "magic states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2503-05003-p0006",
+      "quote": "powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.",
+      "start": 276,
+      "end": 879,
+      "chunk_sha256": "896909438bda7e68db9428d19a58db42cd14f57dd68d35741e45af24adf3ff74",
+      "relation": "increases",
+      "subject": "magic states",
+      "object": "universal quantum",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.733,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where distillation pipelines differs while other inputs are matched. The hypothesis fails if universal quantum does not rise with distillation pipelines, or if fixing magic states removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "magic state"
+   },
+   {
+    "id": "190bcbfc0b06",
+    "text": "long range interactions may increase substantial reduction through logical qubits (read as using qutrits rather than qubits).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "long range interactions",
+     "substantial reduction"
+    ],
+    "via": [
+     "logical qubits (read as using qutrits rather than qubits)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2110-10794-p0002",
+     "arxiv-2403-06228-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2110-10794-p0002",
+      "quote": "We present a scheme for low-overhead fault-tolerant quantum computation based on quantum low-density parity-check (LDPC) codes, where long-range interactions enable many logical qubits to be encoded with a modest number of physical qubits.",
+      "start": 474,
+      "end": 713,
+      "chunk_sha256": "c6957f4fcf5cc2bd4843b82dc453c8c52fe18318b5dcc35257994cdb17837f55",
+      "relation": "increases",
+      "subject": "long range interactions",
+      "object": "logical qubits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2403-06228-p0002",
+      "quote": "Low Overhead Qutrit Magic State Distillation Shiroman Prakash1 and Tanay Saha1,2 1Department of Physics and Computer Science, Dayalbagh Educational Institute, Agra-282005, India 2Present Address: Department of Mathematics, Simon Fraser University, Burnaby, B.C., Canada We show that using qutrits rather than qubits leads to a substantial reduction in the overhead cost associated with an approach to fault-tolerant quantum computing known as magic state distillation.",
+      "start": 0,
+      "end": 468,
+      "chunk_sha256": "268c107d13cd09d5e1ae7ef7b9015614a605ade0db8fa2669a80427bdadcf092",
+      "relation": "causes",
+      "subject": "using qutrits rather than qubits",
+      "object": "substantial reduction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.713,
+     "novelty": 0.642
+    },
+    "falsification_test": "Compare settings where long range interactions differs while other inputs are matched. The hypothesis fails if substantial reduction does not rise with long range interactions, or if fixing logical qubits (read as using qutrits rather than qubits) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "logical qubit"
+   },
+   {
+    "id": "888433200fa7",
+    "text": "former and powerful decoder may move together because both depend on involved codes.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "former",
+     "powerful decoder",
+     "involved codes"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2607-27644-p0010",
+     "arxiv-2503-05003-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2607-27644-p0010",
+      "quote": "Current approaches include methods based on code homomorphisms [HJOY23, XZZ+25] and code surgery [CKBB22, WY26, CHRY25, SJOY26, HCWY25, ZJX25, CHWY25, YCH+26]; the former requires the involved codes to have some shared structure, whereas the latter is more general purpose.",
+      "start": 1118,
+      "end": 1391,
+      "chunk_sha256": "fe017d7931a6177f99a80ee89858ccc91bda8060021236a3dad60f3165a868c4",
+      "relation": "constrains",
+      "subject": "involved codes",
+      "object": "former",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2503-05003-p0006",
+      "quote": "powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.",
+      "start": 276,
+      "end": 879,
+      "chunk_sha256": "896909438bda7e68db9428d19a58db42cd14f57dd68d35741e45af24adf3ff74",
+      "relation": "constrains",
+      "subject": "quantum code",
+      "object": "powerful decoder",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.713,
+     "novelty": 0.628
+    },
+    "falsification_test": "Track former and powerful decoder across periods where involved codes changes and where it does not. The hypothesis fails if they co-vary just as strongly when involved codes is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "involved code"
+   },
+   {
+    "id": "9cb4c3f8fc82",
+    "text": "filter may increase overlap through seepage rate (read as rate of code).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "filter",
+     "overlap"
+    ],
+    "via": [
+     "seepage rate (read as rate of code)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2411-04101-p0002",
+     "arxiv-2503-05003-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2411-04101-p0002",
+      "quote": "We demonstrate the operation of the filter as leakage reduction unit in a mock-up of a single-qubit quantum error correcting cycle, showing that the filter increases the seepage rate back to the qubit subspace.",
+      "start": 1374,
+      "end": 1584,
+      "chunk_sha256": "52fad84cd82e9361f64580091c447e97b87450049801732735a1805d7ac201d2",
+      "relation": "increases",
+      "subject": "filter",
+      "object": "seepage rate",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2503-05003-p0011",
+      "quote": "This obstacle is present because, generically, the logical operators to be measured in a high-rate LDPC code overlap substantially on data qubits as in Figure 2(b), with the overlap growing with the rate and distance of the code.",
+      "start": 960,
+      "end": 1189,
+      "chunk_sha256": "4b9fbb52eccfa89747ad24cefa346c47eb567a17ed685a40ec22171f5cc10e44",
+      "relation": "increases",
+      "subject": "rate of code",
+      "object": "overlap",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.702,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where filter differs while other inputs are matched. The hypothesis fails if overlap does not rise with filter, or if fixing seepage rate (read as rate of code) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "seepage rate"
+   },
+   {
+    "id": "e2172e8ada8a",
+    "text": "development of mitigation strategies may constrain Realizing the full potential of quantum through Robust quantum error correction (read as quantum error correction).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "development of mitigation strategies",
+     "Realizing the full potential of quantum"
+    ],
+    "via": [
+     "Robust quantum error correction (read as quantum error correction)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2012-06029-p0002",
+     "arxiv-2203-04948-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2012-06029-p0002",
+      "quote": "Robust quantum error correction will require the development of mitigation strategies to protect multiqubit arrays from correlated errors due to particle impacts.",
+      "start": 1137,
+      "end": 1299,
+      "chunk_sha256": "2416eef56868246d3a1f013edcafe079fe1a62c1b2f505c3d76f7a364aba6f80",
+      "relation": "constrains",
+      "subject": "development of mitigation strategies",
+      "object": "Robust quantum error correction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2203-04948-p0002",
+      "quote": "Realizing the full potential of quantum computation requires quantum error correction (QEC), with most recent breakthrough demonstrations of QEC using the surface code.",
+      "start": 0,
+      "end": 168,
+      "chunk_sha256": "19904cb0c0e005b0c7282e57731f762d14e4a5507688bd1e45a3bb9dbaecb6c1",
+      "relation": "constrains",
+      "subject": "quantum error correction",
+      "object": "Realizing the full potential of quantum",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.704,
+     "novelty": 0.581
+    },
+    "falsification_test": "Compare settings where development of mitigation strategies differs while other inputs are matched. The hypothesis fails if Realizing the full potential of quantum does not stay bounded with development of mitigation strategies, or if fixing Robust quantum error correction (read as quantum error correction) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "robust quantum error correction"
+   },
+   {
+    "id": "ef77af90ae26",
+    "text": "footprint may increase universal quantum through magic states.",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "footprint",
+     "universal quantum"
+    ],
+    "via": [
+     "magic states"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1905-06903-p0048",
+     "arxiv-2503-05003-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1905-06903-p0048",
+      "quote": "footprint (15-to-1)9,3,3 protocol produces magic states with pout = 1.5×10−9 using 762 qubits.",
+      "start": 216,
+      "end": 310,
+      "chunk_sha256": "dd94c5ba18fa1aeca7fa3ceaaf62a34aef00c9a5ab262beb8576dc16de3c66f1",
+      "relation": "causes",
+      "subject": "footprint",
+      "object": "magic states",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2503-05003-p0006",
+      "quote": "powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.",
+      "start": 276,
+      "end": 879,
+      "chunk_sha256": "896909438bda7e68db9428d19a58db42cd14f57dd68d35741e45af24adf3ff74",
+      "relation": "increases",
+      "subject": "magic states",
+      "object": "universal quantum",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.702,
+     "novelty": 0.514
+    },
+    "falsification_test": "Compare settings where footprint differs while other inputs are matched. The hypothesis fails if universal quantum does not rise with footprint, or if fixing magic states removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "magic state"
+   },
+   {
+    "id": "b01ffc4b4be5",
+    "text": "long range interactions may increase shots through logical qubits (read as qubits).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "long range interactions",
+     "shots"
+    ],
+    "via": [
+     "logical qubits (read as qubits)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2110-10794-p0002",
+     "arxiv-2011-12245-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2110-10794-p0002",
+      "quote": "We present a scheme for low-overhead fault-tolerant quantum computation based on quantum low-density parity-check (LDPC) codes, where long-range interactions enable many logical qubits to be encoded with a modest number of physical qubits.",
+      "start": 474,
+      "end": 713,
+      "chunk_sha256": "c6957f4fcf5cc2bd4843b82dc453c8c52fe18318b5dcc35257994cdb17837f55",
+      "relation": "increases",
+      "subject": "long range interactions",
+      "object": "logical qubits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2011-12245-p0002",
+      "quote": "We numerically confirm this by training a parameterized quantum circuit in a barren plateau landscape with several gradientfree optimizers (Nelder-Mead, Powell, and COBYLA algorithms), and show that the number of shots required in the optimization grows exponentially with the number of qubits.",
+      "start": 1256,
+      "end": 1550,
+      "chunk_sha256": "25d08861f570956660596db04409263f9ac04b4a170523910cf7077f44cca0aa",
+      "relation": "increases",
+      "subject": "qubits",
+      "object": "shots",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.694,
+     "novelty": 0.683
+    },
+    "falsification_test": "Compare settings where long range interactions differs while other inputs are matched. The hypothesis fails if shots does not rise with long range interactions, or if fixing logical qubits (read as qubits) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "logical qubit"
+   },
+   {
+    "id": "a47f124e6824",
+    "text": "long range interactions may affect smallest intractable quantum computations through logical qubits (read as qubits).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "long range interactions",
+     "smallest intractable quantum computations"
+    ],
+    "via": [
+     "logical qubits (read as qubits)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2110-10794-p0002",
+     "arxiv-1905-06903-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2110-10794-p0002",
+      "quote": "We present a scheme for low-overhead fault-tolerant quantum computation based on quantum low-density parity-check (LDPC) codes, where long-range interactions enable many logical qubits to be encoded with a modest number of physical qubits.",
+      "start": 474,
+      "end": 713,
+      "chunk_sha256": "c6957f4fcf5cc2bd4843b82dc453c8c52fe18318b5dcc35257994cdb17837f55",
+      "relation": "increases",
+      "subject": "long range interactions",
+      "object": "logical qubits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0002",
+      "quote": "While the smallest classically intractable quantum computations require ∼100 qubits, Accepted in Quantum 2019-10-30, click title to verify 2 Figure 2: A sequence of 16 π/8 rotations on 5 qubits that is non-trivially equivalent to the identity.",
+      "start": 2822,
+      "end": 3065,
+      "chunk_sha256": "ddfce22f1244560baa491ef8a8983625514b98d736149ecdc969f994d7f3fb9f",
+      "relation": "constrains",
+      "subject": "qubits",
+      "object": "smallest intractable quantum computations",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.687,
+     "novelty": 0.642
+    },
+    "falsification_test": "Compare settings where long range interactions differs while other inputs are matched. The hypothesis fails if smallest intractable quantum computations does not change with long range interactions, or if fixing logical qubits (read as qubits) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "logical qubit"
+   },
+   {
+    "id": "db92626e36da",
+    "text": "Erasure conversion for singlet triplet spin and higher level state occupations may jointly drive high performance shuttling based quantum error, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "Erasure conversion for singlet triplet spin",
+     "higher level state occupations",
+     "high performance shuttling based quantum error"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-10461-p0001",
+     "arxiv-2102-06131-p0014"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-10461-p0001",
+      "quote": "# Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction",
+      "start": 0,
+      "end": 118,
+      "chunk_sha256": "55cf0c7e46e3cab8e23fefc5e4e3220d8c293ce09fc1a0510e0816e8d99f3d05",
+      "relation": "increases",
+      "subject": "Erasure conversion for singlet triplet spin",
+      "object": "high performance shuttling based quantum error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2102-06131-p0014",
+      "quote": "This result also raises the question how higher level state occupations that naturally arise during the stabilizer codes lead to correlated errors.",
+      "start": 224,
+      "end": 371,
+      "chunk_sha256": "e1002b8f1bdd6e2c19379902101e8ebcd9ef475423de2b680ac5d1d78fddb669",
+      "relation": "causes",
+      "subject": "higher level state occupations",
+      "object": "correlated errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.663,
+     "novelty": 0.718
+    },
+    "falsification_test": "Vary Erasure conversion for singlet triplet spin and higher level state occupations separately and together. The hypothesis fails if the joint change in high performance shuttling based quantum error equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "high performance shuttling based quantum error"
+   },
+   {
+    "id": "a9474b08d127",
+    "text": "Transversal gates may constrain degrees of freedom through fault tolerant gate (read as random local quantum gates).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "Transversal gates",
+     "degrees of freedom"
+    ],
+    "via": [
+     "fault tolerant gate (read as random local quantum gates)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2204-10812-p0002",
+     "arxiv-2406-14285-p0015"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2204-10812-p0002",
+      "quote": "Transversal gates are the simplest type of fault-tolerant gate, but the potential of transversal gates on LDPC codes has hitherto been largely neglected.",
+      "start": 763,
+      "end": 916,
+      "chunk_sha256": "bf80813634a37fbf4d6603fbc2534adc4c08ef0fe3f64e7a27ff18c5dca0866f",
+      "relation": "is_a",
+      "subject": "Transversal gates",
+      "object": "fault tolerant gate",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2406-14285-p0015",
+      "quote": "In previous sections, we noted the circular unitary ensemble was equipped with the haar measure; notably, for unitaries to be truly haar random involves a large amount of degrees of freedom making the simulation unphysical; more physical is the random circuit model where random local quantum gates constrain the degrees of freedom due to local interactions that model graph connectivity, leading to more efficient use of local gates and qubits [34].",
+      "start": 741,
+      "end": 1191,
+      "chunk_sha256": "f9c890d3e4f0193ff4fd0a01592ddb53b096c5cb78394c76b6ebce6ec6fcf3fc",
+      "relation": "constrains",
+      "subject": "random local quantum gates",
+      "object": "degrees of freedom",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.655,
+     "novelty": 0.558
+    },
+    "falsification_test": "Compare settings where Transversal gates differs while other inputs are matched. The hypothesis fails if degrees of freedom does not stay bounded with Transversal gates, or if fixing fault tolerant gate (read as random local quantum gates) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "fault tolerant gate"
+   },
+   {
+    "id": "63654cb21ef7",
+    "text": "Tanner graph of HGP code may constrain strategies through two bipartite input graphs (read as Tanner graphs).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "Tanner graph of HGP code",
+     "strategies"
+    ],
+    "via": [
+     "two bipartite input graphs (read as Tanner graphs)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2109-14609-p0008",
+     "arxiv-2103-08049-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2109-14609-p0008",
+      "quote": "(a) The Tanner graph of a HGP code is the Cartesian product of two bipartite input graphs.",
+      "start": 10,
+      "end": 100,
+      "chunk_sha256": "1673d887e1703c88cd40fb86185271b21634b0980ca9f75e51e030ba45c2b9c0",
+      "relation": "is_a",
+      "subject": "Tanner graph of HGP code",
+      "object": "two bipartite input graphs",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2103-08049-p0004",
+      "quote": "These strategies rely on Tanner graphs with large expansion are are therefore unlikely to perform well with toric codes or with quantum LDPC codes with moderate expansion.",
+      "start": 2092,
+      "end": 2263,
+      "chunk_sha256": "9befe85e4b0bc1cb70df89c059933341085282a2adbe01c2dfd89ffbe256e019",
+      "relation": "constrains",
+      "subject": "Tanner graphs",
+      "object": "strategies",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.664,
+     "novelty": 0.532
+    },
+    "falsification_test": "Compare settings where Tanner graph of HGP code differs while other inputs are matched. The hypothesis fails if strategies does not stay bounded with Tanner graph of HGP code, or if fixing two bipartite input graphs (read as Tanner graphs) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "two bipartite input graph"
+   },
+   {
+    "id": "59d1bbc9f7e5",
+    "text": "Concatenate codes may reduce substantial reduction through qubits (read as using qutrits rather than qubits).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "Concatenate codes",
+     "substantial reduction"
+    ],
+    "via": [
+     "qubits (read as using qutrits rather than qubits)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-09606-p0001",
+     "arxiv-2403-06228-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-09606-p0001",
+      "quote": "# Concatenate codes, save qubits",
+      "start": 0,
+      "end": 32,
+      "chunk_sha256": "0082487bb16e6cc529e2176f6290628c2ab03b91336a73138a4bf2b2be696d96",
+      "relation": "decreases",
+      "subject": "Concatenate codes",
+      "object": "qubits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2403-06228-p0002",
+      "quote": "Low Overhead Qutrit Magic State Distillation Shiroman Prakash1 and Tanay Saha1,2 1Department of Physics and Computer Science, Dayalbagh Educational Institute, Agra-282005, India 2Present Address: Department of Mathematics, Simon Fraser University, Burnaby, B.C., Canada We show that using qutrits rather than qubits leads to a substantial reduction in the overhead cost associated with an approach to fault-tolerant quantum computing known as magic state distillation.",
+      "start": 0,
+      "end": 468,
+      "chunk_sha256": "268c107d13cd09d5e1ae7ef7b9015614a605ade0db8fa2669a80427bdadcf092",
+      "relation": "causes",
+      "subject": "using qutrits rather than qubits",
+      "object": "substantial reduction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.647,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where Concatenate codes differs while other inputs are matched. The hypothesis fails if substantial reduction does not fall with Concatenate codes, or if fixing qubits (read as using qutrits rather than qubits) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "qubit"
+   },
+   {
+    "id": "b73fb755038a",
+    "text": "Concatenate codes may reduce shots through qubits.",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "Concatenate codes",
+     "shots"
+    ],
+    "via": [
+     "qubits"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-09606-p0001",
+     "arxiv-2011-12245-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-09606-p0001",
+      "quote": "# Concatenate codes, save qubits",
+      "start": 0,
+      "end": 32,
+      "chunk_sha256": "0082487bb16e6cc529e2176f6290628c2ab03b91336a73138a4bf2b2be696d96",
+      "relation": "decreases",
+      "subject": "Concatenate codes",
+      "object": "qubits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2011-12245-p0002",
+      "quote": "We numerically confirm this by training a parameterized quantum circuit in a barren plateau landscape with several gradientfree optimizers (Nelder-Mead, Powell, and COBYLA algorithms), and show that the number of shots required in the optimization grows exponentially with the number of qubits.",
+      "start": 1256,
+      "end": 1550,
+      "chunk_sha256": "25d08861f570956660596db04409263f9ac04b4a170523910cf7077f44cca0aa",
+      "relation": "increases",
+      "subject": "qubits",
+      "object": "shots",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.65,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where Concatenate codes differs while other inputs are matched. The hypothesis fails if shots does not fall with Concatenate codes, or if fixing qubits removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "qubit"
+   },
+   {
+    "id": "a186c4f936bc",
+    "text": "addition of reset may increase overlap through rate (read as rate of code).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "addition of reset",
+     "overlap"
+    ],
+    "via": [
+     "rate (read as rate of code)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2102-06131-p0022",
+     "arxiv-2503-05003-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2102-06131-p0022",
+      "quote": "We observe the logical performance stabilizing to values of Λbit > 1, and that the addition of reset improves both the stable performance and rate with which the code approaches stability.",
+      "start": 0,
+      "end": 188,
+      "chunk_sha256": "68cc52adf5a8515200c8445c8b2aaab9165e3ae52badc8764ad60e41039761b8",
+      "relation": "increases",
+      "subject": "addition of reset",
+      "object": "rate",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2503-05003-p0011",
+      "quote": "This obstacle is present because, generically, the logical operators to be measured in a high-rate LDPC code overlap substantially on data qubits as in Figure 2(b), with the overlap growing with the rate and distance of the code.",
+      "start": 960,
+      "end": 1189,
+      "chunk_sha256": "4b9fbb52eccfa89747ad24cefa346c47eb567a17ed685a40ec22171f5cc10e44",
+      "relation": "increases",
+      "subject": "rate of code",
+      "object": "overlap",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.639,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where addition of reset differs while other inputs are matched. The hypothesis fails if overlap does not rise with addition of reset, or if fixing rate (read as rate of code) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "rate"
+   },
+   {
+    "id": "f1edaaeae774",
+    "text": "Concatenate codes may affect smallest intractable quantum computations through qubits.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "Concatenate codes",
+     "smallest intractable quantum computations"
+    ],
+    "via": [
+     "qubits"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-09606-p0001",
+     "arxiv-1905-06903-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-09606-p0001",
+      "quote": "# Concatenate codes, save qubits",
+      "start": 0,
+      "end": 32,
+      "chunk_sha256": "0082487bb16e6cc529e2176f6290628c2ab03b91336a73138a4bf2b2be696d96",
+      "relation": "decreases",
+      "subject": "Concatenate codes",
+      "object": "qubits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0002",
+      "quote": "While the smallest classically intractable quantum computations require ∼100 qubits, Accepted in Quantum 2019-10-30, click title to verify 2 Figure 2: A sequence of 16 π/8 rotations on 5 qubits that is non-trivially equivalent to the identity.",
+      "start": 2822,
+      "end": 3065,
+      "chunk_sha256": "ddfce22f1244560baa491ef8a8983625514b98d736149ecdc969f994d7f3fb9f",
+      "relation": "constrains",
+      "subject": "qubits",
+      "object": "smallest intractable quantum computations",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.639,
+     "novelty": 0.572
+    },
+    "falsification_test": "Compare settings where Concatenate codes differs while other inputs are matched. The hypothesis fails if smallest intractable quantum computations does not change with Concatenate codes, or if fixing qubits removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "qubit"
+   },
+   {
+    "id": "1526a2b9e3b3",
+    "text": "ppth of code and quest for universal superconducting quantum computing may move together because both depend on noise.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "ppth of code",
+     "quest for universal superconducting quantum computing",
+     "noise"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2212-11632-p0022",
+     "arxiv-2506-16834-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2212-11632-p0022",
+      "quote": "noise reduces the ppth of the code by 3.6% for a rotated planar code of distance-7 under a noise channel produced by the T1 and T2 values from the Google chip [10] to 98.5% in the case of the distance-3 rotated planar code with the data of the the Aspen-M-2 qubits [23].",
+      "start": 2127,
+      "end": 2397,
+      "chunk_sha256": "d60906dc6f9f266597b523cdf1893e830335da7efe5fbaf343d9adbea1b91abc",
+      "relation": "decreases",
+      "subject": "noise",
+      "object": "ppth of code",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2506-16834-p0002",
+      "quote": "The quest for universal superconducting quantum computing is hindered by noise and errors.",
+      "start": 0,
+      "end": 90,
+      "chunk_sha256": "f00ea1f3cc2f45ac601d96232db5605c9d65a2e5d5885b815aa9ce7d37b648be",
+      "relation": "decreases",
+      "subject": "noise",
+      "object": "quest for universal superconducting quantum computing",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.632,
+     "novelty": 0.6
+    },
+    "falsification_test": "Track ppth of code and quest for universal superconducting quantum computing across periods where noise changes and where it does not. The hypothesis fails if they co-vary just as strongly when noise is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "noise"
+   },
+   {
+    "id": "95d544bb8c70",
+    "text": "Erasure and higher level state occupations may jointly drive high performance shuttling based quantum error, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "Erasure",
+     "higher level state occupations",
+     "high performance shuttling based quantum error"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-10461-p0002",
+     "arxiv-2102-06131-p0014"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-10461-p0002",
+      "quote": "Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction Adam Siegel1, 2, ∗ and Simon Benjamin1, 2 1Quantum Motion, 9 Sterling Way, London N7 9HJ, United Kingdom 2Department of Materials, University of Oxford, Parks Road, Oxford OX1 3PH, United Kingdom",
+      "start": 0,
+      "end": 312,
+      "chunk_sha256": "b77a82404b90606a45af786e79808049fd266cf7267c7d62e43d2f2b6e26cf52",
+      "relation": "increases",
+      "subject": "Erasure",
+      "object": "high performance shuttling based quantum error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2102-06131-p0014",
+      "quote": "This result also raises the question how higher level state occupations that naturally arise during the stabilizer codes lead to correlated errors.",
+      "start": 224,
+      "end": 371,
+      "chunk_sha256": "e1002b8f1bdd6e2c19379902101e8ebcd9ef475423de2b680ac5d1d78fddb669",
+      "relation": "causes",
+      "subject": "higher level state occupations",
+      "object": "correlated errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.62,
+     "novelty": 0.683
+    },
+    "falsification_test": "Vary Erasure and higher level state occupations separately and together. The hypothesis fails if the joint change in high performance shuttling based quantum error equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "high performance shuttling based quantum error"
+   },
+   {
+    "id": "2d097d723b03",
+    "text": "comparison of cost function values and Tanner graphs may jointly constrain strategies, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "comparison of cost function values",
+     "Tanner graphs",
+     "strategies"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2011-12245-p0038",
+     "arxiv-2103-08049-p0004"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2011-12245-p0038",
+      "quote": "However, we emphasize that all such strategies at minimum require the comparison of cost function values at different points and thus are subject to our scaling analysis.",
+      "start": 439,
+      "end": 609,
+      "chunk_sha256": "d9792d361ce5740faf8f2333290444734362277254c5b85f09168d2b46fd8d14",
+      "relation": "constrains",
+      "subject": "comparison of cost function values",
+      "object": "strategies",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2103-08049-p0004",
+      "quote": "These strategies rely on Tanner graphs with large expansion are are therefore unlikely to perform well with toric codes or with quantum LDPC codes with moderate expansion.",
+      "start": 2092,
+      "end": 2263,
+      "chunk_sha256": "9befe85e4b0bc1cb70df89c059933341085282a2adbe01c2dfd89ffbe256e019",
+      "relation": "constrains",
+      "subject": "Tanner graphs",
+      "object": "strategies",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.623,
+     "novelty": 0.658
+    },
+    "falsification_test": "Relieve comparison of cost function values alone while measuring strategies. The hypothesis fails if strategies keeps improving without Tanner graphs becoming the binding limit, or if relieving Tanner graphs alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "strategy"
+   },
+   {
+    "id": "fff94dfbad5a",
+    "text": "Gottesman construction of fault tolerant schemes may support d shortest two qubit chains through Finding codes (read as rotated code).",
+    "pattern": "chain",
+    "relation": "supports",
+    "anchors": [
+     "Gottesman construction of fault tolerant schemes",
+     "d shortest two qubit chains"
+    ],
+    "via": [
+     "Finding codes (read as rotated code)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1711-08351-p0002",
+     "arxiv-2208-02191-p0043"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1711-08351-p0002",
+      "quote": "Finding codes with these properties is also motivated by Gottesman's construction of fault tolerant schemes with constant space overhead.",
+      "start": 434,
+      "end": 571,
+      "chunk_sha256": "a7a9942774ab998d1ef31507d9cf419130e566919725d79ea37cfe9a3fcbb67c",
+      "relation": "supports",
+      "subject": "Gottesman construction of fault tolerant schemes",
+      "object": "Finding codes",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2208-02191-p0043",
+      "quote": "A similar, but opposite effect takes place when correlated errors are present in the system: Local two-qubit errors form highly-degenerate shortestpath logical operators in the non-rotated code, while the rotated code only supports d shortest two-qubit chains, see Fig. 7.",
+      "start": 1170,
+      "end": 1442,
+      "chunk_sha256": "b5c4825e6251abe6673614a6bf0f67ba6b34be6fda22749c30de3041aadec8c9",
+      "relation": "supports",
+      "subject": "rotated code",
+      "object": "d shortest two qubit chains",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.624,
+     "novelty": 0.617
+    },
+    "falsification_test": "Construct a coherent case where Gottesman construction of fault tolerant schemes is accepted. The hypothesis fails if d shortest two qubit chains still fails in that case, or if the argument does not need Finding codes (read as rotated code).",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "finding code"
+   },
+   {
+    "id": "f269696b0c96",
+    "text": "high energy event intensity and performance of error correcting code may move together because both depend on quantum circuit structure.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "high energy event intensity",
+     "performance of error correcting code",
+     "quantum circuit structure"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2506-16834-p0020",
+     "arxiv-2208-02191-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2506-16834-p0020",
+      "quote": "From this, it follows that the high energy event’s intensity depends on the quantum circuit’s structure, the architecture of the quantum",
+      "start": 729,
+      "end": 865,
+      "chunk_sha256": "3f38c99faabe10eb1cc4093b2b80a447b9564e3fc46774462d21eb27ed64ac2e",
+      "relation": "constrains",
+      "subject": "quantum circuit structure",
+      "object": "high energy event intensity",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2208-02191-p0003",
+      "quote": "In particular, the performance of an error correcting code heavily depends on the structure of noise affecting the physical constituents.",
+      "start": 1631,
+      "end": 1768,
+      "chunk_sha256": "5ec97b7081aea9f76b20b8fa5828ae2977c2d76f5d4feab47a991a72412c33ed",
+      "relation": "constrains",
+      "subject": "structure of noise",
+      "object": "performance of error correcting code",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.617,
+     "novelty": 0.583
+    },
+    "falsification_test": "Track high energy event intensity and performance of error correcting code across periods where quantum circuit structure changes and where it does not. The hypothesis fails if they co-vary just as strongly when quantum circuit structure is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "quantum circuit structure"
+   },
+   {
+    "id": "1cf0e8d4c969",
+    "text": "size of planar code may constrain exponential small limitation of variance through data qubits (read as qubits).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "size of planar code",
+     "exponential small limitation of variance"
+    ],
+    "via": [
+     "data qubits (read as qubits)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2212-11632-p0007",
+     "arxiv-2102-01828-p0037"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2212-11632-p0007",
+      "quote": "Thus, the number of data qubits is restricted by the size of the planar code via the relation n = d2 +(d − 1)2, where n is the number of data qubits, and d is the distance of the planar code.",
+      "start": 1026,
+      "end": 1217,
+      "chunk_sha256": "084994ecb7fd91b2128651ecf90572eb2791fa763f30f6bfb2b082f655cc7cef",
+      "relation": "constrains",
+      "subject": "size of planar code",
+      "object": "data qubits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2102-01828-p0037",
+      "quote": "That is, the number of qubits n determines an exponential small limitation of the variance in Eq.",
+      "start": 30,
+      "end": 127,
+      "chunk_sha256": "b0ca3ac63cd10e1ffe89aff044f80cd0afbd855c5289691791f4368269ab2a09",
+      "relation": "constrains",
+      "subject": "qubits",
+      "object": "exponential small limitation of variance",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.609,
+     "novelty": 0.642
+    },
+    "falsification_test": "Compare settings where size of planar code differs while other inputs are matched. The hypothesis fails if exponential small limitation of variance does not stay bounded with size of planar code, or if fixing data qubits (read as qubits) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "data qubit"
+   },
+   {
+    "id": "e9e8907b6c24",
+    "text": "size of planar code may constrain substantial reduction through data qubits (read as using qutrits rather than qubits).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "size of planar code",
+     "substantial reduction"
+    ],
+    "via": [
+     "data qubits (read as using qutrits rather than qubits)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2212-11632-p0007",
+     "arxiv-2403-06228-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2212-11632-p0007",
+      "quote": "Thus, the number of data qubits is restricted by the size of the planar code via the relation n = d2 +(d − 1)2, where n is the number of data qubits, and d is the distance of the planar code.",
+      "start": 1026,
+      "end": 1217,
+      "chunk_sha256": "084994ecb7fd91b2128651ecf90572eb2791fa763f30f6bfb2b082f655cc7cef",
+      "relation": "constrains",
+      "subject": "size of planar code",
+      "object": "data qubits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2403-06228-p0002",
+      "quote": "Low Overhead Qutrit Magic State Distillation Shiroman Prakash1 and Tanay Saha1,2 1Department of Physics and Computer Science, Dayalbagh Educational Institute, Agra-282005, India 2Present Address: Department of Mathematics, Simon Fraser University, Burnaby, B.C., Canada We show that using qutrits rather than qubits leads to a substantial reduction in the overhead cost associated with an approach to fault-tolerant quantum computing known as magic state distillation.",
+      "start": 0,
+      "end": 468,
+      "chunk_sha256": "268c107d13cd09d5e1ae7ef7b9015614a605ade0db8fa2669a80427bdadcf092",
+      "relation": "causes",
+      "subject": "using qutrits rather than qubits",
+      "object": "substantial reduction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.613,
+     "novelty": 0.642
+    },
+    "falsification_test": "Compare settings where size of planar code differs while other inputs are matched. The hypothesis fails if substantial reduction does not stay bounded with size of planar code, or if fixing data qubits (read as using qutrits rather than qubits) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "data qubit"
+   },
+   {
+    "id": "a658f49a8366",
+    "text": "cubic lattice and weight four parity checks may interact in their effect on code.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "cubic lattice",
+     "weight four parity checks",
+     "code"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2103-08049-p0005",
+     "arxiv-2507-09690-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2103-08049-p0005",
+      "quote": "Instead, it moves the syndrome in a fixed direction of the cubic lattice supporting the code.",
+      "start": 89,
+      "end": 182,
+      "chunk_sha256": "12b36f4f95d7f74d4934834b60488a46f601512be0a56fa1475590712e697905",
+      "relation": "supports",
+      "subject": "cubic lattice",
+      "object": "code",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2507-09690-p0002",
+      "quote": "Our codes are approximately twice as efficient as comparable surface codes, yet require only weight-four parity checks, which simplifies experimental realization compared to other quantum LDPC codes.",
+      "start": 814,
+      "end": 1013,
+      "chunk_sha256": "29111f32bb93ccca05ebcd58d29523770c1e19e9056332d4dcb1d1b895e37f78",
+      "relation": "constrains",
+      "subject": "weight four parity checks",
+      "object": "codes",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.601,
+     "novelty": 0.683
+    },
+    "falsification_test": "Vary cubic lattice and weight four parity checks separately and together. The hypothesis fails if the joint change in code equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "code"
+   },
+   {
+    "id": "ebe9680973a3",
+    "text": "Bout and successful implementation of quantum error correction may move together because both depend on input output bad error.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "Bout",
+     "successful implementation of quantum error correction",
+     "input output bad error"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2508-08246-p0059",
+     "arxiv-2305-02591-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2508-08246-p0059",
+      "quote": "We use the circuit input/output definitions (input/output bad error supports Bin and Bout, etc.) from Definition 4.7 extended to the environment circuit in the trivial way by assigning trivial code types to all edges of the environment",
+      "start": 151,
+      "end": 386,
+      "chunk_sha256": "26d31cfb6d0d0e8947bdafb7f6599b6727fc2f2218eb34cd3d14dc21e3872559",
+      "relation": "supports",
+      "subject": "input output bad error",
+      "object": "Bout",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2305-02591-p0002",
+      "quote": "Moreover, successful implementation of quantum error correction requires negligible correlated errors among qubits.",
+      "start": 281,
+      "end": 396,
+      "chunk_sha256": "1607437329dc8f833dcba913f7936fb877405eff95e6b3b8627b07e8cfe600dd",
+      "relation": "constrains",
+      "subject": "negligible correlated errors",
+      "object": "successful implementation of quantum error correction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.602,
+     "novelty": 0.658
+    },
+    "falsification_test": "Track Bout and successful implementation of quantum error correction across periods where input output bad error changes and where it does not. The hypothesis fails if they co-vary just as strongly when input output bad error is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "input output bad error"
+   },
+   {
+    "id": "1da915f00d2c",
+    "text": "cubic lattice may support d shortest two qubit chains through code (read as rotated code).",
+    "pattern": "chain",
+    "relation": "supports",
+    "anchors": [
+     "cubic lattice",
+     "d shortest two qubit chains"
+    ],
+    "via": [
+     "code (read as rotated code)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2103-08049-p0005",
+     "arxiv-2208-02191-p0043"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2103-08049-p0005",
+      "quote": "Instead, it moves the syndrome in a fixed direction of the cubic lattice supporting the code.",
+      "start": 89,
+      "end": 182,
+      "chunk_sha256": "12b36f4f95d7f74d4934834b60488a46f601512be0a56fa1475590712e697905",
+      "relation": "supports",
+      "subject": "cubic lattice",
+      "object": "code",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2208-02191-p0043",
+      "quote": "A similar, but opposite effect takes place when correlated errors are present in the system: Local two-qubit errors form highly-degenerate shortestpath logical operators in the non-rotated code, while the rotated code only supports d shortest two-qubit chains, see Fig. 7.",
+      "start": 1170,
+      "end": 1442,
+      "chunk_sha256": "b5c4825e6251abe6673614a6bf0f67ba6b34be6fda22749c30de3041aadec8c9",
+      "relation": "supports",
+      "subject": "rotated code",
+      "object": "d shortest two qubit chains",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.605,
+     "novelty": 0.623
+    },
+    "falsification_test": "Construct a coherent case where cubic lattice is accepted. The hypothesis fails if d shortest two qubit chains still fails in that case, or if the argument does not need code (read as rotated code).",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "code"
+   },
+   {
+    "id": "806a0b9001af",
+    "text": "physical qubit counts may constrain Tothebestofour knowledge through qLDPC codes (read as code).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "physical qubit counts",
+     "Tothebestofour knowledge"
+    ],
+    "via": [
+     "qLDPC codes (read as code)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2607-27644-p0016",
+     "arxiv-2403-06228-p0028"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2607-27644-p0016",
+      "quote": "On one hand, the qLDPC codes in both these works require physical qubit counts in the thousands, whereas our codes (other than ZSZ-LP-775) stay under a thousand.",
+      "start": 1408,
+      "end": 1569,
+      "chunk_sha256": "a7a6ca7bc2ec77358e4119e32fe532730f2a718a2da2ee1f6c80034d8156614a",
+      "relation": "constrains",
+      "subject": "physical qubit counts",
+      "object": "qLDPC codes",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2403-06228-p0028",
+      "quote": "Tothebestofour knowledge, to get a comparable yield parameter, one requires a code with ∼ 1000 qubits, using triorthogonal codes constructed from punctured binary Reed-Muller",
+      "start": 795,
+      "end": 969,
+      "chunk_sha256": "89e6a8375adaa56014921a8f32e04174d9bf3d2d9c1eacb07707e855ae61b745",
+      "relation": "constrains",
+      "subject": "code",
+      "object": "Tothebestofour knowledge",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.596,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where physical qubit counts differs while other inputs are matched. The hypothesis fails if Tothebestofour knowledge does not stay bounded with physical qubit counts, or if fixing qLDPC codes (read as code) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "qldpc code"
+   },
+   {
+    "id": "20a6633a3e37",
+    "text": "Cultivation may increase quest for universal superconducting quantum computing through error.",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "Cultivation",
+     "quest for universal superconducting quantum computing"
+    ],
+    "via": [
+     "error"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2512-13908-p0002",
+     "arxiv-2506-16834-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2512-13908-p0002",
+      "quote": "Cultivation reduces the error by a factor of 40, with a state fidelity of 0.9999(1) (retaining 8% of attempts).",
+      "start": 659,
+      "end": 770,
+      "chunk_sha256": "85a99549516d12374e46f736e12e64c9d3821633fb29b4914050cecaa0cab105",
+      "relation": "decreases",
+      "subject": "Cultivation",
+      "object": "error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2506-16834-p0002",
+      "quote": "The quest for universal superconducting quantum computing is hindered by noise and errors.",
+      "start": 0,
+      "end": 90,
+      "chunk_sha256": "f00ea1f3cc2f45ac601d96232db5605c9d65a2e5d5885b815aa9ce7d37b648be",
+      "relation": "decreases",
+      "subject": "errors",
+      "object": "quest for universal superconducting quantum computing",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.6,
+     "novelty": 0.517
+    },
+    "falsification_test": "Compare settings where Cultivation differs while other inputs are matched. The hypothesis fails if quest for universal superconducting quantum computing does not rise with Cultivation, or if fixing error removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "error"
+   },
+   {
+    "id": "2e222bd44074",
+    "text": "Bin and successful implementation of quantum error correction may move together because both depend on input output bad error.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "Bin",
+     "successful implementation of quantum error correction",
+     "input output bad error"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2508-08246-p0059",
+     "arxiv-2305-02591-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2508-08246-p0059",
+      "quote": "We use the circuit input/output definitions (input/output bad error supports Bin and Bout, etc.) from Definition 4.7 extended to the environment circuit in the trivial way by assigning trivial code types to all edges of the environment",
+      "start": 151,
+      "end": 386,
+      "chunk_sha256": "26d31cfb6d0d0e8947bdafb7f6599b6727fc2f2218eb34cd3d14dc21e3872559",
+      "relation": "supports",
+      "subject": "input output bad error",
+      "object": "Bin",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2305-02591-p0002",
+      "quote": "Moreover, successful implementation of quantum error correction requires negligible correlated errors among qubits.",
+      "start": 281,
+      "end": 396,
+      "chunk_sha256": "1607437329dc8f833dcba913f7936fb877405eff95e6b3b8627b07e8cfe600dd",
+      "relation": "constrains",
+      "subject": "negligible correlated errors",
+      "object": "successful implementation of quantum error correction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.594,
+     "novelty": 0.658
+    },
+    "falsification_test": "Track Bin and successful implementation of quantum error correction across periods where input output bad error changes and where it does not. The hypothesis fails if they co-vary just as strongly when input output bad error is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "input output bad error"
+   },
+   {
+    "id": "f42180517ef8",
+    "text": "negligible correlated errors may constrain experimental quantum advantage demonstrations through successful implementation of quantum error correction (read as noisy implementations).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "negligible correlated errors",
+     "experimental quantum advantage demonstrations"
+    ],
+    "via": [
+     "successful implementation of quantum error correction (read as noisy implementations)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2305-02591-p0002",
+     "arxiv-2609-39734-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2305-02591-p0002",
+      "quote": "Moreover, successful implementation of quantum error correction requires negligible correlated errors among qubits.",
+      "start": 281,
+      "end": 396,
+      "chunk_sha256": "1607437329dc8f833dcba913f7936fb877405eff95e6b3b8627b07e8cfe600dd",
+      "relation": "constrains",
+      "subject": "negligible correlated errors",
+      "object": "successful implementation of quantum error correction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2609-39734-p0006",
+      "quote": "Since experimental quantum advantage demonstrations rely on noisy implementations, additional evidence is needed to connect experimentally observed dynamics to classical simulation complexity.",
+      "start": 753,
+      "end": 945,
+      "chunk_sha256": "5f9ebef66c4e0f2cd5b7d6b02619028b1a03b3d9ca2b9343b0ade1d214a548f8",
+      "relation": "constrains",
+      "subject": "noisy implementations",
+      "object": "experimental quantum advantage demonstrations",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.586,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where negligible correlated errors differs while other inputs are matched. The hypothesis fails if experimental quantum advantage demonstrations does not stay bounded with negligible correlated errors, or if fixing successful implementation of quantum error correction (read as noisy implementations) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "successful implementation of quantum error correction"
+   },
+   {
+    "id": "11107a8fd623",
+    "text": "correlated errors may reduce overlap through logical error rate (read as rate of code).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "correlated errors",
+     "overlap"
+    ],
+    "via": [
+     "logical error rate (read as rate of code)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-16176-p0047",
+     "arxiv-2503-05003-p0011"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-16176-p0047",
+      "quote": "However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.",
+      "start": 802,
+      "end": 968,
+      "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c",
+      "relation": "decreases",
+      "subject": "correlated errors",
+      "object": "logical error rate",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2503-05003-p0011",
+      "quote": "This obstacle is present because, generically, the logical operators to be measured in a high-rate LDPC code overlap substantially on data qubits as in Figure 2(b), with the overlap growing with the rate and distance of the code.",
+      "start": 960,
+      "end": 1189,
+      "chunk_sha256": "4b9fbb52eccfa89747ad24cefa346c47eb567a17ed685a40ec22171f5cc10e44",
+      "relation": "increases",
+      "subject": "rate of code",
+      "object": "overlap",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.594,
+     "novelty": 0.572
+    },
+    "falsification_test": "Compare settings where correlated errors differs while other inputs are matched. The hypothesis fails if overlap does not fall with correlated errors, or if fixing logical error rate (read as rate of code) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "logical error rate"
+   },
+   {
+    "id": "71fe536e3148",
+    "text": "Tanner graphs may constrain reduction of qubit through strategies.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "Tanner graphs",
+     "reduction of qubit"
+    ],
+    "via": [
+     "strategies"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2103-08049-p0004",
+     "arxiv-2009-14226-p0012"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2103-08049-p0004",
+      "quote": "These strategies rely on Tanner graphs with large expansion are are therefore unlikely to perform well with toric codes or with quantum LDPC codes with moderate expansion.",
+      "start": 2092,
+      "end": 2263,
+      "chunk_sha256": "9befe85e4b0bc1cb70df89c059933341085282a2adbe01c2dfd89ffbe256e019",
+      "relation": "constrains",
+      "subject": "Tanner graphs",
+      "object": "strategies",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2009-14226-p0012",
+      "quote": "Overall, this strategy leads to a significant reduction of the qubit overhead required to achieve a given minimum distance as shown in Figure 2.",
+      "start": 349,
+      "end": 493,
+      "chunk_sha256": "0c649b966aa48051fd99bb5499f9f1253802f42dadab7bfdc963230eb1170200",
+      "relation": "causes",
+      "subject": "strategy",
+      "object": "reduction of qubit",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.577,
+     "novelty": 0.636
+    },
+    "falsification_test": "Compare settings where Tanner graphs differs while other inputs are matched. The hypothesis fails if reduction of qubit does not stay bounded with Tanner graphs, or if fixing strategies removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "strategy"
+   },
+   {
+    "id": "92fd57e9ff11",
+    "text": "limiting the non locality may constrain logical error rate of encoded qubits through attainable distances (read as code distance).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "limiting the non locality",
+     "logical error rate of encoded qubits"
+    ],
+    "via": [
+     "attainable distances (read as code distance)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2110-10794-p0045",
+     "arxiv-1905-06903-p0017"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2110-10794-p0045",
+      "quote": "It has been shown that there is a connection between the distance of the code and the connectivity [26, 47], and that limiting the non locality will limit the attainable distances [66].",
+      "start": 3237,
+      "end": 3422,
+      "chunk_sha256": "3eb8661badc8c8be50276d796ec5bdd45282daa3d8f84796acce83a06d4cf751",
+      "relation": "constrains",
+      "subject": "limiting the non locality",
+      "object": "attainable distances",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0017",
+      "quote": "The code distance determines the logical error rate of the encoded qubits, which also depends on the underlying error model.",
+      "start": 0,
+      "end": 124,
+      "chunk_sha256": "5860b349d244950333ad40662d87e8421c1a463a6f78b3f969b9bf6b8680b21b",
+      "relation": "constrains",
+      "subject": "code distance",
+      "object": "logical error rate of encoded qubits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.583,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where limiting the non locality differs while other inputs are matched. The hypothesis fails if logical error rate of encoded qubits does not stay bounded with limiting the non locality, or if fixing attainable distances (read as code distance) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "attainable distance"
+   },
+   {
+    "id": "2eb235cbce97",
+    "text": "Gains in high performance shuttling based quantum error from Erasure conversion for singlet triplet spin may be offset by less than 10 mEh.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "Erasure conversion for singlet triplet spin",
+     "less than 10 mEh",
+     "high performance shuttling based quantum error"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-10461-p0001",
+     "arxiv-2511-21236-p0043"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-10461-p0001",
+      "quote": "# Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction",
+      "start": 0,
+      "end": 118,
+      "chunk_sha256": "55cf0c7e46e3cab8e23fefc5e4e3220d8c293ce09fc1a0510e0816e8d99f3d05",
+      "relation": "increases",
+      "subject": "Erasure conversion for singlet triplet spin",
+      "object": "high performance shuttling based quantum error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2511-21236-p0043",
+      "quote": "We observe that the effect of using REM alone is minor compared to M0 and tiled M0, so we only show it for LiH in the SI where the energy errors are reduced by less than 10 mEh.",
+      "start": 1811,
+      "end": 1988,
+      "chunk_sha256": "274b94f27cefe0e8e2eadfb1e4b9e771c1ced2ec116f04a358c0596ef5063f90",
+      "relation": "decreases",
+      "subject": "less than 10 mEh",
+      "object": "energy errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.57,
+     "novelty": 0.671
+    },
+    "falsification_test": "Measure high performance shuttling based quantum error where both Erasure conversion for singlet triplet spin and less than 10 mEh vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "high performance shuttling based quantum error"
+   },
+   {
+    "id": "df38e9804a8c",
+    "text": "code blocks and wide range of applications may move together because both depend on algorithm.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "code blocks",
+     "wide range of applications",
+     "algorithm"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2407-16176-p0037",
+     "arxiv-2511-13408-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2407-16176-p0037",
+      "quote": "Given that the number of code blocks grows exponentially with the number of concatenation, the algorithm executed on the CPU exhibits O(exp(poly(l))) time complexity.",
+      "start": 701,
+      "end": 867,
+      "chunk_sha256": "9d221d3cc0c805a882bc79caa18ee728c62bb021c55f08eab3ed10b283624427",
+      "relation": "increases",
+      "subject": "algorithm",
+      "object": "code blocks",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2511-13408-p0002",
+      "quote": "Quantum algorithms based on parameterized quantum circuits (PQCs) have enabled a wide range of applications on near-term quantum devices.",
+      "start": 0,
+      "end": 137,
+      "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130",
+      "relation": "increases",
+      "subject": "Quantum algorithms",
+      "object": "wide range of applications",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.568,
+     "novelty": 0.65
+    },
+    "falsification_test": "Track code blocks and wide range of applications across periods where algorithm changes and where it does not. The hypothesis fails if they co-vary just as strongly when algorithm is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "algorithm"
+   },
+   {
+    "id": "b792b85d2409",
+    "text": "physical qubit counts may constrain logical error rate requirement through qLDPC codes (read as larger repetition code).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "physical qubit counts",
+     "logical error rate requirement"
+    ],
+    "via": [
+     "qLDPC codes (read as larger repetition code)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2607-27644-p0016",
+     "arxiv-2607-16166-p0051"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2607-27644-p0016",
+      "quote": "On one hand, the qLDPC codes in both these works require physical qubit counts in the thousands, whereas our codes (other than ZSZ-LP-775) stay under a thousand.",
+      "start": 1408,
+      "end": 1569,
+      "chunk_sha256": "a7a6ca7bc2ec77358e4119e32fe532730f2a718a2da2ee1f6c80034d8156614a",
+      "relation": "constrains",
+      "subject": "physical qubit counts",
+      "object": "qLDPC codes",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2607-16166-p0051",
+      "quote": "The logical error rate requirement requires a larger repetition code to meet the target - in Table V we see that the smallest code meeting the LER target is m = 11 and this matches the value found for the EDM protocol in [17].",
+      "start": 0,
+      "end": 226,
+      "chunk_sha256": "1da6a9d6a480575846aab68c2022bb50fa75358ed00af56934818201ba3cbe12",
+      "relation": "constrains",
+      "subject": "larger repetition code",
+      "object": "logical error rate requirement",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.569,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where physical qubit counts differs while other inputs are matched. The hypothesis fails if logical error rate requirement does not stay bounded with physical qubit counts, or if fixing qLDPC codes (read as larger repetition code) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "qldpc code"
+   },
+   {
+    "id": "de734376e777",
+    "text": "performance of error correcting code and Characterization of underlying geometry may move together because both depend on structure of noise.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "performance of error correcting code",
+     "Characterization of underlying geometry",
+     "structure of noise"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2208-02191-p0003",
+     "arxiv-2406-14285-p0044"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2208-02191-p0003",
+      "quote": "In particular, the performance of an error correcting code heavily depends on the structure of noise affecting the physical constituents.",
+      "start": 1631,
+      "end": 1768,
+      "chunk_sha256": "5ec97b7081aea9f76b20b8fa5828ae2977c2d76f5d4feab47a991a72412c33ed",
+      "relation": "constrains",
+      "subject": "structure of noise",
+      "object": "performance of error correcting code",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2406-14285-p0044",
+      "quote": "Characterization of the underlying geometry depend on the underlying circuit structure to formally reparameterize the quantum state for both the degrees of freedom one observer has access to for a given entangled state and the amount of entanglement shared between qubits [65].",
+      "start": 208,
+      "end": 485,
+      "chunk_sha256": "29ccc6b64f522f4f883a6f0b9e3de4c1ccf60f8d7fdd5fcd550eb3ddc149c8a1",
+      "relation": "constrains",
+      "subject": "underlying circuit structure",
+      "object": "Characterization of underlying geometry",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.567,
+     "novelty": 0.581
+    },
+    "falsification_test": "Track performance of error correcting code and Characterization of underlying geometry across periods where structure of noise changes and where it does not. The hypothesis fails if they co-vary just as strongly when structure of noise is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "structure of noise"
+   },
+   {
+    "id": "92dba82adc8b",
+    "text": "Gottesman construction of fault tolerant schemes may support cultivation through Finding codes (read as color code).",
+    "pattern": "chain",
+    "relation": "supports",
+    "anchors": [
+     "Gottesman construction of fault tolerant schemes",
+     "cultivation"
+    ],
+    "via": [
+     "Finding codes (read as color code)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1711-08351-p0002",
+     "arxiv-2512-13908-p0014"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1711-08351-p0002",
+      "quote": "Finding codes with these properties is also motivated by Gottesman's construction of fault tolerant schemes with constant space overhead.",
+      "start": 434,
+      "end": 571,
+      "chunk_sha256": "a7a9942774ab998d1ef31507d9cf419130e566919725d79ea37cfe9a3fcbb67c",
+      "relation": "supports",
+      "subject": "Gottesman construction of fault tolerant schemes",
+      "object": "Finding codes",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2512-13908-p0014",
+      "quote": "GRAFTING TO A SURFACE CODE The surface code boasts a high threshold, matchable decoders, and well-developed dropout approaches [2, 11– 14], but the color code supports cultivation through its transversal single-qubit Clifford gates [1].",
+      "start": 648,
+      "end": 884,
+      "chunk_sha256": "daaef38d6b8b9039f13a6f04c9ea4a36d0baddadc16e28ed5dcb5b2ed356299f",
+      "relation": "supports",
+      "subject": "color code",
+      "object": "cultivation",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.571,
+     "novelty": 0.558
+    },
+    "falsification_test": "Construct a coherent case where Gottesman construction of fault tolerant schemes is accepted. The hypothesis fails if cultivation still fails in that case, or if the argument does not need Finding codes (read as color code).",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "finding code"
+   },
+   {
+    "id": "da00c18ed3d2",
+    "text": "product constructions may increase vanishing of probability through code properties (read as property).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "product constructions",
+     "vanishing of probability"
+    ],
+    "via": [
+     "code properties (read as property)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2607-27644-p0017",
+     "arxiv-2309-06740-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2607-27644-p0017",
+      "quote": "At the same time, product constructions enable code properties, such as logical bases, to be inherited from smaller classical seed codes that are simpler to analyze.",
+      "start": 2015,
+      "end": 2180,
+      "chunk_sha256": "4f49ebeed7ad3e5697ec273a0c693bb34f4620ab2fce7818a5e89d70bbd93108",
+      "relation": "increases",
+      "subject": "product constructions",
+      "object": "code properties",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2309-06740-p0002",
+      "quote": "Throughout theory and numerical experiments, we introduce that this property leads to the vanishing of a probability and an expectation formed by parameterized quantum circuits.",
+      "start": 281,
+      "end": 458,
+      "chunk_sha256": "4d6e7bc6979d78a2aa36c7471de2ef9b2e3da460cf1ace75c752a2ed1cf060b2",
+      "relation": "causes",
+      "subject": "property",
+      "object": "vanishing of probability",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.562,
+     "novelty": 0.628
+    },
+    "falsification_test": "Compare settings where product constructions differs while other inputs are matched. The hypothesis fails if vanishing of probability does not rise with product constructions, or if fixing code properties (read as property) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "code property"
+   },
+   {
+    "id": "73b3129298a0",
+    "text": "code distance may constrain duration of non - trivial magic through logical error rate of encoded qubits (read as rate).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "code distance",
+     "duration of non - trivial magic"
+    ],
+    "via": [
+     "logical error rate of encoded qubits (read as rate)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1905-06903-p0017",
+     "arxiv-2609-39734-p0036"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1905-06903-p0017",
+      "quote": "The code distance determines the logical error rate of the encoded qubits, which also depends on the underlying error model.",
+      "start": 0,
+      "end": 124,
+      "chunk_sha256": "5860b349d244950333ad40662d87e8421c1a463a6f78b3f969b9bf6b8680b21b",
+      "relation": "constrains",
+      "subject": "code distance",
+      "object": "logical error rate of encoded qubits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2609-39734-p0036",
+      "quote": "The duration of the non-trivial magic window depends on the rate at which local depolarising noise increases the state’s 2-R ́enyi entropy (equivalently, decreases Tr(ρ2)).",
+      "start": 292,
+      "end": 464,
+      "chunk_sha256": "1e8fb08ee391d7ad8b9dfd2c00f990f158a2d4ad3354935586e6c9096162fc9a",
+      "relation": "constrains",
+      "subject": "rate",
+      "object": "duration of non - trivial magic",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.557,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where code distance differs while other inputs are matched. The hypothesis fails if duration of non - trivial magic does not stay bounded with code distance, or if fixing logical error rate of encoded qubits (read as rate) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "logical error rate of encoded qubit"
+   },
+   {
+    "id": "082c35cca6e2",
+    "text": "theoretical innovations may affect accuracy of quantum simulation through spatial overhead (read as sampling overheads).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "theoretical innovations",
+     "accuracy of quantum simulation"
+    ],
+    "via": [
+     "spatial overhead (read as sampling overheads)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2607-27644-p0009",
+     "arxiv-2606-20441-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2607-27644-p0009",
+      "quote": "On the other front, theoretical innovations in constant-rate quantum low-density parity-check (qLDPC) codes [TZ14, BE21b, DLV24] have also reduced the spatial overhead to a constant [Got14, FGL20, TKY26, ZZL26], with the current stateof-the-art scheme also achieving a (nearly) logarithmic time overhead [NP25], thus bridging the gap with classical fault tolerance [vN56].",
+      "start": 338,
+      "end": 710,
+      "chunk_sha256": "71d871ea1244ba72872525c034746d54525cac74c9e084c581d8239f3283cce0",
+      "relation": "decreases",
+      "subject": "theoretical innovations",
+      "object": "spatial overhead",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2606-20441-p0002",
+      "quote": "Despite advances in scale and quality, the accuracy of quantum simulation is ultimately limited by error rates and sampling overheads.",
+      "start": 117,
+      "end": 251,
+      "chunk_sha256": "8ca6e234cdda8b0a6665870fab1793df042c53ba3883bd757f5a8d5815b2893e",
+      "relation": "constrains",
+      "subject": "sampling overheads",
+      "object": "accuracy of quantum simulation",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.548,
+     "novelty": 0.623
+    },
+    "falsification_test": "Compare settings where theoretical innovations differs while other inputs are matched. The hypothesis fails if accuracy of quantum simulation does not change with theoretical innovations, or if fixing spatial overhead (read as sampling overheads) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "spatial overhead"
+   }
+  ],
+  "survivors": 664,
+  "candidates_generated": 2547,
+  "candidates_passed": {
+   "abductive": 1932,
+   "deductive": 1932,
+   "pre_thinker": 673
+  },
+  "candidates_rejected": {
+   "abductive:incoherent_composition": 12,
+   "abductive:no_explanatory_relation": 40,
+   "abductive:unrelated_bridge": 563,
+   "pre_thinker:circular": 85,
+   "pre_thinker:malformed": 1089,
+   "pre_thinker:restates_source": 19,
+   "pre_thinker:single_source": 66
+  },
+  "relation_edges": 996,
+  "scoped_edges": 447,
+  "budget_used": {
+   "rounds": 10,
+   "candidates": 2547,
+   "edges": 1042,
+   "bytes": 1084811,
+   "seconds": 15.061
+  },
+  "incomplete": false,
+  "stop_reason": null,
+  "shortage": null,
+  "snapshot": {
+   "as_of": 1795594727,
+   "chunk_count": 3369
+  }
+ },
+ "reply": "Frontier hypotheses for quantum LDPC codes. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 2547. Passed abductive check: 1932; deductive check: 1932; pre-thinker validation: 673.\n\n1. BPs and ppth of code may move together because both depend on noise.\n[arxiv-2102-01828-p0004] And the noise from quantum hardware also causes BPs, which are called noiseinduced BPs [25].\n[arxiv-2212-11632-p0022] noise reduces the ppth of the code by 3.6% for a rotated planar code of distance-7 under a noise channel produced by the T1 and T2 values from the Google chip [10] to 98.5% in the case of the distance-3 rotated planar code with the data of the the Aspen-M-2 qubits [23].\nFalsification test: Track BPs and ppth of code across periods where noise changes and where it does not. The hypothesis fails if they co-vary just as strongly when noise is held fixed.\nDeepen check: all links supported (noise -> BPs: supported, noise -> ppth of code: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.96, deductive relevance 0.55, novelty 0.66.\n\n2. BPs and quest for universal superconducting quantum computing may move together because both depend on noise.\n[arxiv-2102-01828-p0004] And the noise from quantum hardware also causes BPs, which are called noiseinduced BPs [25].\n[arxiv-2506-16834-p0002] The quest for universal superconducting quantum computing is hindered by noise and errors.\nFalsification test: Track BPs and quest for universal superconducting quantum computing across periods where noise changes and where it does not. The hypothesis fails if they co-vary just as strongly when noise is held fixed.\nDeepen check: all links supported (noise -> BPs: supported, noise -> quest for universal superconducting quantum computing: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.96, deductive relevance 0.47, novelty 0.58.\n\n3. Gains in qubit cost from qubit count may be offset by Dynamic pipelines.\n[arxiv-2509-24402-p0002] Dynamic pipelines reduce the qubit cost by 16%-70% for large-scale quantum applications and achieve average reductions of 26%-37% in qubit-time volume on generated distillation benchmarks compared to state-of-the-art static architectures.\n[arxiv-2208-09385-p0002] Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.\n[arxiv-2208-09385-p0004] Furthermore, for random layered circuits under local noise, we show that the cost grows exponentially also with the qubit count n (Theorem 2).\nFalsification test: Measure qubit cost where both Dynamic pipelines and qubit count vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nDeepen check: all links supported (Dynamic pipelines -> qubit cost: supported, qubit count -> qubit cost: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.96, deductive relevance 0.43, novelty 0.56.\n\n4. circuit depth for noise models and qubit count may jointly drive sampling cost, and their effects may compound.\n[arxiv-2208-09178-p0002] The results imply that the sampling cost required for a wide class of protocols to mitigate errors must grow exponentially with the circuit depth for various noise models, revealing the fundamental obstacles in the scalability of useful noisy near-term quantum devices.\n[arxiv-2208-09385-p0002] Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.\n[arxiv-2208-09385-p0004] Furthermore, for random layered circuits under local noise, we show that the cost grows exponentially also with the qubit count n (Theorem 2).\nFalsification test: Vary circuit depth for noise models and qubit count separately and together. The hypothesis fails if the joint change in sampling cost equals the sum of the separate changes.\nDeepen check: all links supported (circuit depth for noise models -> sampling cost: supported, qubit count -> sampling cost: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.96, deductive relevance 0.42, novelty 0.55.\n\n5. circuit size and qubit count may jointly drive sampling cost, and their effects may compound.\n[arxiv-2208-09178-p0002] Various prominent quantum error mitigation methods face this problem, where sampling cost grows exponentially with circuit size [4–8].\n[arxiv-2208-09385-p0002] Moreover, we prove for random circuits with local noise that the cost grows exponentially also with the qubit count.\n[arxiv-2208-09385-p0004] Furthermore, for random layered circuits under local noise, we show that the cost grows exponentially also with the qubit count n (Theorem 2).\nFalsification test: Vary circuit size and qubit count separately and together. The hypothesis fails if the joint change in sampling cost equals the sum of the separate changes.\nDeepen check: all links supported (circuit size -> sampling cost: supported, qubit count -> sampling cost: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.96, deductive relevance 0.41, novelty 0.65.\n\n6. weight four parity checks may constrain Tothebestofour knowledge through codes.\n[arxiv-2507-09690-p0002] Our codes are approximately twice as efficient as comparable surface codes, yet require only weight-four parity checks, which simplifies experimental realization compared to other quantum LDPC codes.\n[arxiv-2403-06228-p0028] Tothebestofour knowledge, to get a comparable yield parameter, one requires a code with ∼ 1000 qubits, using triorthogonal codes constructed from punctured binary Reed-Muller\nFalsification test: Compare settings where weight four parity checks differs while other inputs are matched. The hypothesis fails if Tothebestofour knowledge does not stay bounded with weight four parity checks, or if fixing codes removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.84, novelty 0.68.\n\n7. physical qubit counts may constrain powerful decoder through qLDPC codes (read as quantum code).\n[arxiv-2607-27644-p0016] On one hand, the qLDPC codes in both these works require physical qubit counts in the thousands, whereas our codes (other than ZSZ-LP-775) stay under a thousand.\n[arxiv-2503-05003-p0006] powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.\nFalsification test: Compare settings where physical qubit counts differs while other inputs are matched. The hypothesis fails if powerful decoder does not stay bounded with physical qubit counts, or if fixing qLDPC codes (read as quantum code) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.83, novelty 0.62.\n\n8. size of planar code may constrain smallest intractable quantum computations through data qubits (read as qubits).\n[arxiv-2212-11632-p0007] Thus, the number of data qubits is restricted by the size of the planar code via the relation n = d2 +(d − 1)2, where n is the number of data qubits, and d is the distance of the planar code.\n[arxiv-1905-06903-p0002] While the smallest classically intractable quantum computations require ∼100 qubits, Accepted in Quantum 2019-10-30, click title to verify 2 Figure 2: A sequence of 16 π/8 rotations on 5 qubits that is non-trivially equivalent to the identity.\nFalsification test: Compare settings where size of planar code differs while other inputs are matched. The hypothesis fails if smallest intractable quantum computations does not stay bounded with size of planar code, or if fixing data qubits (read as qubits) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.77, novelty 0.64.\n\n9. logical error rate requirement and powerful decoder may move together because both depend on larger repetition code.\n[arxiv-2607-16166-p0051] The logical error rate requirement requires a larger repetition code to meet the target - in Table V we see that the smallest code meeting the LER target is m = 11 and this matches the value found for the EDM protocol in [17].\n[arxiv-2503-05003-p0006] powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.\nFalsification test: Track logical error rate requirement and powerful decoder across periods where larger repetition code changes and where it does not. The hypothesis fails if they co-vary just as strongly when larger repetition code is held fixed.\nScores: source support 0.80, deductive relevance 0.75, novelty 0.58.\n\n10. FTQC programs may increase universal quantum through magic states.\n[arxiv-2407-07394-p0003] FTQC programs consume many magic states, and magic state distillation is one of the major bottlenecks of FTQC.\n[arxiv-2407-07394-p0020] We believe that this scenario is generic when a quantum program is highly parallelized, and this problem requires attention given that FTQC programs consume many magic states during computation.\n[arxiv-2503-05003-p0006] powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.\nFalsification test: Compare settings where FTQC programs differs while other inputs are matched. The hypothesis fails if universal quantum does not rise with FTQC programs, or if fixing magic states removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.75, novelty 0.49.\n\n11. distillation pipelines may increase universal quantum through magic states.\n[arxiv-2509-24402-p0002] Observing that distillation pipelines consume magic states in a burst-then-steady pattern, we develop dynamic factory scheduling and resource allocation techniques that go beyond existing static pipeline organizations.\n[arxiv-2503-05003-p0006] powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.\nFalsification test: Compare settings where distillation pipelines differs while other inputs are matched. The hypothesis fails if universal quantum does not rise with distillation pipelines, or if fixing magic states removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.73, novelty 0.60.\n\n12. long range interactions may increase substantial reduction through logical qubits (read as using qutrits rather than qubits).\n[arxiv-2110-10794-p0002] We present a scheme for low-overhead fault-tolerant quantum computation based on quantum low-density parity-check (LDPC) codes, where long-range interactions enable many logical qubits to be encoded with a modest number of physical qubits.\n[arxiv-2403-06228-p0002] Low Overhead Qutrit Magic State Distillation Shiroman Prakash1 and Tanay Saha1,2 1Department of Physics and Computer Science, Dayalbagh Educational Institute, Agra-282005, India 2Present Address: Department of Mathematics, Simon Fraser University, Burnaby, B.C., Canada We show that using qutrits rather than qubits leads to a substantial reduction in the overhead cost associated with an approach to fault-tolerant quantum computing known as magic state distillation.\nFalsification test: Compare settings where long range interactions differs while other inputs are matched. The hypothesis fails if substantial reduction does not rise with long range interactions, or if fixing logical qubits (read as using qutrits rather than qubits) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.71, novelty 0.64.\n\n13. former and powerful decoder may move together because both depend on involved codes.\n[arxiv-2607-27644-p0010] Current approaches include methods based on code homomorphisms [HJOY23, XZZ+25] and code surgery [CKBB22, WY26, CHRY25, SJOY26, HCWY25, ZJX25, CHWY25, YCH+26]; the former requires the involved codes to have some shared structure, whereas the latter is more general purpose.\n[arxiv-2503-05003-p0006] powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.\nFalsification test: Track former and powerful decoder across periods where involved codes changes and where it does not. The hypothesis fails if they co-vary just as strongly when involved codes is held fixed.\nScores: source support 0.80, deductive relevance 0.71, novelty 0.63.\n\n14. filter may increase overlap through seepage rate (read as rate of code).\n[arxiv-2411-04101-p0002] We demonstrate the operation of the filter as leakage reduction unit in a mock-up of a single-qubit quantum error correcting cycle, showing that the filter increases the seepage rate back to the qubit subspace.\n[arxiv-2503-05003-p0011] This obstacle is present because, generically, the logical operators to be measured in a high-rate LDPC code overlap substantially on data qubits as in Figure 2(b), with the overlap growing with the rate and distance of the code.\nFalsification test: Compare settings where filter differs while other inputs are matched. The hypothesis fails if overlap does not rise with filter, or if fixing seepage rate (read as rate of code) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.70, novelty 0.60.\n\n15. development of mitigation strategies may constrain Realizing the full potential of quantum through Robust quantum error correction (read as quantum error correction).\n[arxiv-2012-06029-p0002] Robust quantum error correction will require the development of mitigation strategies to protect multiqubit arrays from correlated errors due to particle impacts.\n[arxiv-2203-04948-p0002] Realizing the full potential of quantum computation requires quantum error correction (QEC), with most recent breakthrough demonstrations of QEC using the surface code.\nFalsification test: Compare settings where development of mitigation strategies differs while other inputs are matched. The hypothesis fails if Realizing the full potential of quantum does not stay bounded with development of mitigation strategies, or if fixing Robust quantum error correction (read as quantum error correction) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.70, novelty 0.58.\n\n16. footprint may increase universal quantum through magic states.\n[arxiv-1905-06903-p0048] footprint (15-to-1)9,3,3 protocol produces magic states with pout = 1.5×10−9 using 762 qubits.\n[arxiv-2503-05003-p0006] powerful decoder, but cannot be universal by the Eastin-Knill theorem [31], and also require a quantum code to have particular structure.1 Homomorphic measurements and generalised code surgery (also known as LDPC code surgery or simply code surgery) are both techniques that perform logical Pauli measurements on logical qubits, which makes them well-suited to Pauli-based computation [33] where Pauli measurements and magic states together enable universal quantum computation.2 Nonetheless, homomorphic logical measurements are, thus far, restricted to topological codes and homological product codes.\nFalsification test: Compare settings where footprint differs while other inputs are matched. The hypothesis fails if universal quantum does not rise with footprint, or if fixing magic states removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.70, novelty 0.51.\n\n17. long range interactions may increase shots through logical qubits (read as qubits).\n[arxiv-2110-10794-p0002] We present a scheme for low-overhead fault-tolerant quantum computation based on quantum low-density parity-check (LDPC) codes, where long-range interactions enable many logical qubits to be encoded with a modest number of physical qubits.\n[arxiv-2011-12245-p0002] We numerically confirm this by training a parameterized quantum circuit in a barren plateau landscape with several gradientfree optimizers (Nelder-Mead, Powell, and COBYLA algorithms), and show that the number of shots required in the optimization grows exponentially with the number of qubits.\nFalsification test: Compare settings where long range interactions differs while other inputs are matched. The hypothesis fails if shots does not rise with long range interactions, or if fixing logical qubits (read as qubits) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.69, novelty 0.68.\n\n18. long range interactions may affect smallest intractable quantum computations through logical qubits (read as qubits).\n[arxiv-2110-10794-p0002] We present a scheme for low-overhead fault-tolerant quantum computation based on quantum low-density parity-check (LDPC) codes, where long-range interactions enable many logical qubits to be encoded with a modest number of physical qubits.\n[arxiv-1905-06903-p0002] While the smallest classically intractable quantum computations require ∼100 qubits, Accepted in Quantum 2019-10-30, click title to verify 2 Figure 2: A sequence of 16 π/8 rotations on 5 qubits that is non-trivially equivalent to the identity.\nFalsification test: Compare settings where long range interactions differs while other inputs are matched. The hypothesis fails if smallest intractable quantum computations does not change with long range interactions, or if fixing logical qubits (read as qubits) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.69, novelty 0.64.\n\n19. Erasure conversion for singlet triplet spin and higher level state occupations may jointly drive high performance shuttling based quantum error, and their effects may compound.\n[arxiv-2601-10461-p0001] # Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction\n[arxiv-2102-06131-p0014] This result also raises the question how higher level state occupations that naturally arise during the stabilizer codes lead to correlated errors.\nFalsification test: Vary Erasure conversion for singlet triplet spin and higher level state occupations separately and together. The hypothesis fails if the joint change in high performance shuttling based quantum error equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.66, novelty 0.72.\n\n20. Transversal gates may constrain degrees of freedom through fault tolerant gate (read as random local quantum gates).\n[arxiv-2204-10812-p0002] Transversal gates are the simplest type of fault-tolerant gate, but the potential of transversal gates on LDPC codes has hitherto been largely neglected.\n[arxiv-2406-14285-p0015] In previous sections, we noted the circular unitary ensemble was equipped with the haar measure; notably, for unitaries to be truly haar random involves a large amount of degrees of freedom making the simulation unphysical; more physical is the random circuit model where random local quantum gates constrain the degrees of freedom due to local interactions that model graph connectivity, leading to more efficient use of local gates and qubits [34].\nFalsification test: Compare settings where Transversal gates differs while other inputs are matched. The hypothesis fails if degrees of freedom does not stay bounded with Transversal gates, or if fixing fault tolerant gate (read as random local quantum gates) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.66, novelty 0.56.\n\n21. Tanner graph of HGP code may constrain strategies through two bipartite input graphs (read as Tanner graphs).\n[arxiv-2109-14609-p0008] (a) The Tanner graph of a HGP code is the Cartesian product of two bipartite input graphs.\n[arxiv-2103-08049-p0004] These strategies rely on Tanner graphs with large expansion are are therefore unlikely to perform well with toric codes or with quantum LDPC codes with moderate expansion.\nFalsification test: Compare settings where Tanner graph of HGP code differs while other inputs are matched. The hypothesis fails if strategies does not stay bounded with Tanner graph of HGP code, or if fixing two bipartite input graphs (read as Tanner graphs) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.66, novelty 0.53.\n\n22. Concatenate codes may reduce substantial reduction through qubits (read as using qutrits rather than qubits).\n[arxiv-2402-09606-p0001] # Concatenate codes, save qubits\n[arxiv-2403-06228-p0002] Low Overhead Qutrit Magic State Distillation Shiroman Prakash1 and Tanay Saha1,2 1Department of Physics and Computer Science, Dayalbagh Educational Institute, Agra-282005, India 2Present Address: Department of Mathematics, Simon Fraser University, Burnaby, B.C., Canada We show that using qutrits rather than qubits leads to a substantial reduction in the overhead cost associated with an approach to fault-tolerant quantum computing known as magic state distillation.\nFalsification test: Compare settings where Concatenate codes differs while other inputs are matched. The hypothesis fails if substantial reduction does not fall with Concatenate codes, or if fixing qubits (read as using qutrits rather than qubits) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.65, novelty 0.60.\n\n23. Concatenate codes may reduce shots through qubits.\n[arxiv-2402-09606-p0001] # Concatenate codes, save qubits\n[arxiv-2011-12245-p0002] We numerically confirm this by training a parameterized quantum circuit in a barren plateau landscape with several gradientfree optimizers (Nelder-Mead, Powell, and COBYLA algorithms), and show that the number of shots required in the optimization grows exponentially with the number of qubits.\nFalsification test: Compare settings where Concatenate codes differs while other inputs are matched. The hypothesis fails if shots does not fall with Concatenate codes, or if fixing qubits removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.65, novelty 0.60.\n\n24. addition of reset may increase overlap through rate (read as rate of code).\n[arxiv-2102-06131-p0022] We observe the logical performance stabilizing to values of Λbit > 1, and that the addition of reset improves both the stable performance and rate with which the code approaches stability.\n[arxiv-2503-05003-p0011] This obstacle is present because, generically, the logical operators to be measured in a high-rate LDPC code overlap substantially on data qubits as in Figure 2(b), with the overlap growing with the rate and distance of the code.\nFalsification test: Compare settings where addition of reset differs while other inputs are matched. The hypothesis fails if overlap does not rise with addition of reset, or if fixing rate (read as rate of code) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.64, novelty 0.60.\n\n25. Concatenate codes may affect smallest intractable quantum computations through qubits.\n[arxiv-2402-09606-p0001] # Concatenate codes, save qubits\n[arxiv-1905-06903-p0002] While the smallest classically intractable quantum computations require ∼100 qubits, Accepted in Quantum 2019-10-30, click title to verify 2 Figure 2: A sequence of 16 π/8 rotations on 5 qubits that is non-trivially equivalent to the identity.\nFalsification test: Compare settings where Concatenate codes differs while other inputs are matched. The hypothesis fails if smallest intractable quantum computations does not change with Concatenate codes, or if fixing qubits removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.64, novelty 0.57.\n\n26. ppth of code and quest for universal superconducting quantum computing may move together because both depend on noise.\n[arxiv-2212-11632-p0022] noise reduces the ppth of the code by 3.6% for a rotated planar code of distance-7 under a noise channel produced by the T1 and T2 values from the Google chip [10] to 98.5% in the case of the distance-3 rotated planar code with the data of the the Aspen-M-2 qubits [23].\n[arxiv-2506-16834-p0002] The quest for universal superconducting quantum computing is hindered by noise and errors.\nFalsification test: Track ppth of code and quest for universal superconducting quantum computing across periods where noise changes and where it does not. The hypothesis fails if they co-vary just as strongly when noise is held fixed.\nScores: source support 0.80, deductive relevance 0.63, novelty 0.60.\n\n27. Erasure and higher level state occupations may jointly drive high performance shuttling based quantum error, and their effects may compound.\n[arxiv-2601-10461-p0002] Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction Adam Siegel1, 2, ∗ and Simon Benjamin1, 2 1Quantum Motion, 9 Sterling Way, London N7 9HJ, United Kingdom 2Department of Materials, University of Oxford, Parks Road, Oxford OX1 3PH, United Kingdom\n[arxiv-2102-06131-p0014] This result also raises the question how higher level state occupations that naturally arise during the stabilizer codes lead to correlated errors.\nFalsification test: Vary Erasure and higher level state occupations separately and together. The hypothesis fails if the joint change in high performance shuttling based quantum error equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.68.\n\n28. comparison of cost function values and Tanner graphs may jointly constrain strategies, so relieving one may shift the bottleneck to the other.\n[arxiv-2011-12245-p0038] However, we emphasize that all such strategies at minimum require the comparison of cost function values at different points and thus are subject to our scaling analysis.\n[arxiv-2103-08049-p0004] These strategies rely on Tanner graphs with large expansion are are therefore unlikely to perform well with toric codes or with quantum LDPC codes with moderate expansion.\nFalsification test: Relieve comparison of cost function values alone while measuring strategies. The hypothesis fails if strategies keeps improving without Tanner graphs becoming the binding limit, or if relieving Tanner graphs alone has no effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.66.\n\n29. Gottesman construction of fault tolerant schemes may support d shortest two qubit chains through Finding codes (read as rotated code).\n[arxiv-1711-08351-p0002] Finding codes with these properties is also motivated by Gottesman's construction of fault tolerant schemes with constant space overhead.\n[arxiv-2208-02191-p0043] A similar, but opposite effect takes place when correlated errors are present in the system: Local two-qubit errors form highly-degenerate shortestpath logical operators in the non-rotated code, while the rotated code only supports d shortest two-qubit chains, see Fig. 7.\nFalsification test: Construct a coherent case where Gottesman construction of fault tolerant schemes is accepted. The hypothesis fails if d shortest two qubit chains still fails in that case, or if the argument does not need Finding codes (read as rotated code).\nScores: source support 0.80, deductive relevance 0.62, novelty 0.62.\n\n30. high energy event intensity and performance of error correcting code may move together because both depend on quantum circuit structure.\n[arxiv-2506-16834-p0020] From this, it follows that the high energy event’s intensity depends on the quantum circuit’s structure, the architecture of the quantum\n[arxiv-2208-02191-p0003] In particular, the performance of an error correcting code heavily depends on the structure of noise affecting the physical constituents.\nFalsification test: Track high energy event intensity and performance of error correcting code across periods where quantum circuit structure changes and where it does not. The hypothesis fails if they co-vary just as strongly when quantum circuit structure is held fixed.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.58.\n\n31. size of planar code may constrain exponential small limitation of variance through data qubits (read as qubits).\n[arxiv-2212-11632-p0007] Thus, the number of data qubits is restricted by the size of the planar code via the relation n = d2 +(d − 1)2, where n is the number of data qubits, and d is the distance of the planar code.\n[arxiv-2102-01828-p0037] That is, the number of qubits n determines an exponential small limitation of the variance in Eq.\nFalsification test: Compare settings where size of planar code differs while other inputs are matched. The hypothesis fails if exponential small limitation of variance does not stay bounded with size of planar code, or if fixing data qubits (read as qubits) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.61, novelty 0.64.\n\n32. size of planar code may constrain substantial reduction through data qubits (read as using qutrits rather than qubits).\n[arxiv-2212-11632-p0007] Thus, the number of data qubits is restricted by the size of the planar code via the relation n = d2 +(d − 1)2, where n is the number of data qubits, and d is the distance of the planar code.\n[arxiv-2403-06228-p0002] Low Overhead Qutrit Magic State Distillation Shiroman Prakash1 and Tanay Saha1,2 1Department of Physics and Computer Science, Dayalbagh Educational Institute, Agra-282005, India 2Present Address: Department of Mathematics, Simon Fraser University, Burnaby, B.C., Canada We show that using qutrits rather than qubits leads to a substantial reduction in the overhead cost associated with an approach to fault-tolerant quantum computing known as magic state distillation.\nFalsification test: Compare settings where size of planar code differs while other inputs are matched. The hypothesis fails if substantial reduction does not stay bounded with size of planar code, or if fixing data qubits (read as using qutrits rather than qubits) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.61, novelty 0.64.\n\n33. cubic lattice and weight four parity checks may interact in their effect on code.\n[arxiv-2103-08049-p0005] Instead, it moves the syndrome in a fixed direction of the cubic lattice supporting the code.\n[arxiv-2507-09690-p0002] Our codes are approximately twice as efficient as comparable surface codes, yet require only weight-four parity checks, which simplifies experimental realization compared to other quantum LDPC codes.\nFalsification test: Vary cubic lattice and weight four parity checks separately and together. The hypothesis fails if the joint change in code equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.68.\n\n34. Bout and successful implementation of quantum error correction may move together because both depend on input output bad error.\n[arxiv-2508-08246-p0059] We use the circuit input/output definitions (input/output bad error supports Bin and Bout, etc.) from Definition 4.7 extended to the environment circuit in the trivial way by assigning trivial code types to all edges of the environment\n[arxiv-2305-02591-p0002] Moreover, successful implementation of quantum error correction requires negligible correlated errors among qubits.\nFalsification test: Track Bout and successful implementation of quantum error correction across periods where input output bad error changes and where it does not. The hypothesis fails if they co-vary just as strongly when input output bad error is held fixed.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.66.\n\n35. cubic lattice may support d shortest two qubit chains through code (read as rotated code).\n[arxiv-2103-08049-p0005] Instead, it moves the syndrome in a fixed direction of the cubic lattice supporting the code.\n[arxiv-2208-02191-p0043] A similar, but opposite effect takes place when correlated errors are present in the system: Local two-qubit errors form highly-degenerate shortestpath logical operators in the non-rotated code, while the rotated code only supports d shortest two-qubit chains, see Fig. 7.\nFalsification test: Construct a coherent case where cubic lattice is accepted. The hypothesis fails if d shortest two qubit chains still fails in that case, or if the argument does not need code (read as rotated code).\nScores: source support 0.80, deductive relevance 0.60, novelty 0.62.\n\n36. physical qubit counts may constrain Tothebestofour knowledge through qLDPC codes (read as code).\n[arxiv-2607-27644-p0016] On one hand, the qLDPC codes in both these works require physical qubit counts in the thousands, whereas our codes (other than ZSZ-LP-775) stay under a thousand.\n[arxiv-2403-06228-p0028] Tothebestofour knowledge, to get a comparable yield parameter, one requires a code with ∼ 1000 qubits, using triorthogonal codes constructed from punctured binary Reed-Muller\nFalsification test: Compare settings where physical qubit counts differs while other inputs are matched. The hypothesis fails if Tothebestofour knowledge does not stay bounded with physical qubit counts, or if fixing qLDPC codes (read as code) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.60.\n\n37. Cultivation may increase quest for universal superconducting quantum computing through error.\n[arxiv-2512-13908-p0002] Cultivation reduces the error by a factor of 40, with a state fidelity of 0.9999(1) (retaining 8% of attempts).\n[arxiv-2506-16834-p0002] The quest for universal superconducting quantum computing is hindered by noise and errors.\nFalsification test: Compare settings where Cultivation differs while other inputs are matched. The hypothesis fails if quest for universal superconducting quantum computing does not rise with Cultivation, or if fixing error removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.52.\n\n38. Bin and successful implementation of quantum error correction may move together because both depend on input output bad error.\n[arxiv-2508-08246-p0059] We use the circuit input/output definitions (input/output bad error supports Bin and Bout, etc.) from Definition 4.7 extended to the environment circuit in the trivial way by assigning trivial code types to all edges of the environment\n[arxiv-2305-02591-p0002] Moreover, successful implementation of quantum error correction requires negligible correlated errors among qubits.\nFalsification test: Track Bin and successful implementation of quantum error correction across periods where input output bad error changes and where it does not. The hypothesis fails if they co-vary just as strongly when input output bad error is held fixed.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.66.\n\n39. negligible correlated errors may constrain experimental quantum advantage demonstrations through successful implementation of quantum error correction (read as noisy implementations).\n[arxiv-2305-02591-p0002] Moreover, successful implementation of quantum error correction requires negligible correlated errors among qubits.\n[arxiv-2609-39734-p0006] Since experimental quantum advantage demonstrations rely on noisy implementations, additional evidence is needed to connect experimentally observed dynamics to classical simulation complexity.\nFalsification test: Compare settings where negligible correlated errors differs while other inputs are matched. The hypothesis fails if experimental quantum advantage demonstrations does not stay bounded with negligible correlated errors, or if fixing successful implementation of quantum error correction (read as noisy implementations) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.60.\n\n40. correlated errors may reduce overlap through logical error rate (read as rate of code).\n[arxiv-2407-16176-p0047] However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.\n[arxiv-2503-05003-p0011] This obstacle is present because, generically, the logical operators to be measured in a high-rate LDPC code overlap substantially on data qubits as in Figure 2(b), with the overlap growing with the rate and distance of the code.\nFalsification test: Compare settings where correlated errors differs while other inputs are matched. The hypothesis fails if overlap does not fall with correlated errors, or if fixing logical error rate (read as rate of code) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.57.\n\n41. Tanner graphs may constrain reduction of qubit through strategies.\n[arxiv-2103-08049-p0004] These strategies rely on Tanner graphs with large expansion are are therefore unlikely to perform well with toric codes or with quantum LDPC codes with moderate expansion.\n[arxiv-2009-14226-p0012] Overall, this strategy leads to a significant reduction of the qubit overhead required to achieve a given minimum distance as shown in Figure 2.\nFalsification test: Compare settings where Tanner graphs differs while other inputs are matched. The hypothesis fails if reduction of qubit does not stay bounded with Tanner graphs, or if fixing strategies removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.58, novelty 0.64.\n\n42. limiting the non locality may constrain logical error rate of encoded qubits through attainable distances (read as code distance).\n[arxiv-2110-10794-p0045] It has been shown that there is a connection between the distance of the code and the connectivity [26, 47], and that limiting the non locality will limit the attainable distances [66].\n[arxiv-1905-06903-p0017] The code distance determines the logical error rate of the encoded qubits, which also depends on the underlying error model.\nFalsification test: Compare settings where limiting the non locality differs while other inputs are matched. The hypothesis fails if logical error rate of encoded qubits does not stay bounded with limiting the non locality, or if fixing attainable distances (read as code distance) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.58, novelty 0.60.\n\n43. Gains in high performance shuttling based quantum error from Erasure conversion for singlet triplet spin may be offset by less than 10 mEh.\n[arxiv-2601-10461-p0001] # Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction\n[arxiv-2511-21236-p0043] We observe that the effect of using REM alone is minor compared to M0 and tiled M0, so we only show it for LiH in the SI where the energy errors are reduced by less than 10 mEh.\nFalsification test: Measure high performance shuttling based quantum error where both Erasure conversion for singlet triplet spin and less than 10 mEh vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.67.\n\n44. code blocks and wide range of applications may move together because both depend on algorithm.\n[arxiv-2407-16176-p0037] Given that the number of code blocks grows exponentially with the number of concatenation, the algorithm executed on the CPU exhibits O(exp(poly(l))) time complexity.\n[arxiv-2511-13408-p0002] Quantum algorithms based on parameterized quantum circuits (PQCs) have enabled a wide range of applications on near-term quantum devices.\nFalsification test: Track code blocks and wide range of applications across periods where algorithm changes and where it does not. The hypothesis fails if they co-vary just as strongly when algorithm is held fixed.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.65.\n\n45. physical qubit counts may constrain logical error rate requirement through qLDPC codes (read as larger repetition code).\n[arxiv-2607-27644-p0016] On one hand, the qLDPC codes in both these works require physical qubit counts in the thousands, whereas our codes (other than ZSZ-LP-775) stay under a thousand.\n[arxiv-2607-16166-p0051] The logical error rate requirement requires a larger repetition code to meet the target - in Table V we see that the smallest code meeting the LER target is m = 11 and this matches the value found for the EDM protocol in [17].\nFalsification test: Compare settings where physical qubit counts differs while other inputs are matched. The hypothesis fails if logical error rate requirement does not stay bounded with physical qubit counts, or if fixing qLDPC codes (read as larger repetition code) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.60.\n\n46. performance of error correcting code and Characterization of underlying geometry may move together because both depend on structure of noise.\n[arxiv-2208-02191-p0003] In particular, the performance of an error correcting code heavily depends on the structure of noise affecting the physical constituents.\n[arxiv-2406-14285-p0044] Characterization of the underlying geometry depend on the underlying circuit structure to formally reparameterize the quantum state for both the degrees of freedom one observer has access to for a given entangled state and the amount of entanglement shared between qubits [65].\nFalsification test: Track performance of error correcting code and Characterization of underlying geometry across periods where structure of noise changes and where it does not. The hypothesis fails if they co-vary just as strongly when structure of noise is held fixed.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.58.\n\n47. Gottesman construction of fault tolerant schemes may support cultivation through Finding codes (read as color code).\n[arxiv-1711-08351-p0002] Finding codes with these properties is also motivated by Gottesman's construction of fault tolerant schemes with constant space overhead.\n[arxiv-2512-13908-p0014] GRAFTING TO A SURFACE CODE The surface code boasts a high threshold, matchable decoders, and well-developed dropout approaches [2, 11– 14], but the color code supports cultivation through its transversal single-qubit Clifford gates [1].\nFalsification test: Construct a coherent case where Gottesman construction of fault tolerant schemes is accepted. The hypothesis fails if cultivation still fails in that case, or if the argument does not need Finding codes (read as color code).\nScores: source support 0.80, deductive relevance 0.57, novelty 0.56.\n\n48. product constructions may increase vanishing of probability through code properties (read as property).\n[arxiv-2607-27644-p0017] At the same time, product constructions enable code properties, such as logical bases, to be inherited from smaller classical seed codes that are simpler to analyze.\n[arxiv-2309-06740-p0002] Throughout theory and numerical experiments, we introduce that this property leads to the vanishing of a probability and an expectation formed by parameterized quantum circuits.\nFalsification test: Compare settings where product constructions differs while other inputs are matched. The hypothesis fails if vanishing of probability does not rise with product constructions, or if fixing code properties (read as property) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.56, novelty 0.63.\n\n49. code distance may constrain duration of non - trivial magic through logical error rate of encoded qubits (read as rate).\n[arxiv-1905-06903-p0017] The code distance determines the logical error rate of the encoded qubits, which also depends on the underlying error model.\n[arxiv-2609-39734-p0036] The duration of the non-trivial magic window depends on the rate at which local depolarising noise increases the state’s 2-R ́enyi entropy (equivalently, decreases Tr(ρ2)).\nFalsification test: Compare settings where code distance differs while other inputs are matched. The hypothesis fails if duration of non - trivial magic does not stay bounded with code distance, or if fixing logical error rate of encoded qubits (read as rate) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.56, novelty 0.60.\n\n50. theoretical innovations may affect accuracy of quantum simulation through spatial overhead (read as sampling overheads).\n[arxiv-2607-27644-p0009] On the other front, theoretical innovations in constant-rate quantum low-density parity-check (qLDPC) codes [TZ14, BE21b, DLV24] have also reduced the spatial overhead to a constant [Got14, FGL20, TKY26, ZZL26], with the current stateof-the-art scheme also achieving a (nearly) logarithmic time overhead [NP25], thus bridging the gap with classical fault tolerance [vN56].\n[arxiv-2606-20441-p0002] Despite advances in scale and quality, the accuracy of quantum simulation is ultimately limited by error rates and sampling overheads.\nFalsification test: Compare settings where theoretical innovations differs while other inputs are matched. The hypothesis fails if accuracy of quantum simulation does not change with theoretical innovations, or if fixing spatial overhead (read as sampling overheads) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.55, novelty 0.62.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

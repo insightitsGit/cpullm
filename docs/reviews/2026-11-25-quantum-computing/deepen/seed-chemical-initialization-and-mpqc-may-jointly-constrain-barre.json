@@ -1,0 +1,574 @@
+{
+ "kind": "seed",
+ "topic": "barren plateaus",
+ "hypothesis": {
+  "id": "32fd673b25f2",
+  "text": "chemical initialization and MPQC may jointly constrain barren plateaus, so relieving one may shift the bottleneck to the other.",
+  "pattern": "convergent",
+  "relation": "co_constrain",
+  "anchors": [
+   "chemical initialization",
+   "MPQC",
+   "barren plateaus"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2609-22729-p0002",
+   "arxiv-2511-13408-p0002"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2609-22729-p0002",
+    "quote": "In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.",
+    "start": 936,
+    "end": 1357,
+    "chunk_sha256": "c14a4d47645a2e6ff3c26ec8fe1bfa93681d2ad322463bb69604f75e3789fdf4",
+    "relation": "decreases",
+    "subject": "chemical initialization",
+    "object": "barren plateaus",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2511-13408-p0002",
+    "quote": "Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers.",
+    "start": 1215,
+    "end": 1384,
+    "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130",
+    "relation": "decreases",
+    "subject": "MPQC",
+    "object": "barren plateaus",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.853,
+   "novelty": 0.668
+  },
+  "falsification_test": "Relieve chemical initialization alone while measuring barren plateaus. The hypothesis fails if barren plateaus keeps improving without MPQC becoming the binding limit, or if relieving MPQC alone has no effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "barren plateaus",
+  "check": {
+   "verdict": "all_links_supported",
+   "incomplete": false,
+   "direction_check": {
+    "requested": "co_constrain",
+    "status": "unspecified",
+    "observed": []
+   },
+   "composition": {
+    "status": "conditional",
+    "bridges": [],
+    "qualifications": [],
+    "source_contexts": [],
+    "scope_differences": [],
+    "context_coverage": "not_recorded",
+    "interaction": {
+     "status": "untested",
+     "reason": "Individual effects do not establish a joint interaction."
+    },
+    "assumptions": [
+     "Source terms denote compatible quantities and settings.",
+     "Composed source relationships are not causal identification."
+    ],
+    "scientific_validity": "not_established"
+   },
+   "plan_readiness": "needs_input",
+   "links": [
+    {
+     "source": "chemical initialization",
+     "target": "barren plateaus",
+     "status": "supported",
+     "counter": []
+    },
+    {
+     "source": "MPQC",
+     "target": "barren plateaus",
+     "status": "supported",
+     "counter": []
+    }
+   ]
+  }
+ },
+ "seconds": 8.37,
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "convergent",
+  "terms": {
+   "a": "chemical initialization",
+   "b": "MPQC",
+   "c": "barren plateaus"
+  },
+  "path_nodes": null,
+  "links": [
+   {
+    "source": "chemical initialization",
+    "target": "barren plateaus",
+    "expected_relation": "decreases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2609-22729-p0002",
+      "quote": "In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.",
+      "start": 936,
+      "end": 1357,
+      "chunk_sha256": "c14a4d47645a2e6ff3c26ec8fe1bfa93681d2ad322463bb69604f75e3789fdf4",
+      "relation": "decreases",
+      "subject": "chemical initialization",
+      "object": "barren plateaus",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2609-22729-p0002",
+      "quote": "In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.",
+      "start": 936,
+      "end": 1357,
+      "chunk_sha256": "c14a4d47645a2e6ff3c26ec8fe1bfa93681d2ad322463bb69604f75e3789fdf4"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "decreases"
+    ]
+   },
+   {
+    "source": "MPQC",
+    "target": "barren plateaus",
+    "expected_relation": "decreases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2511-13408-p0002",
+      "quote": "Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers.",
+      "start": 1215,
+      "end": 1384,
+      "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130",
+      "relation": "decreases",
+      "subject": "MPQC",
+      "object": "barren plateaus",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2511-13408-p0002",
+      "quote": "Specifically, our approach achieves this by inserting a layer of easily implementable quantum channels into the original PQC, each channel requiring only one ancilla qubit and four additional gates, yielding a modified PQC (MPQC) that is provably at least as expressive as the original PQC and, under mild assumptions, is guaranteed to be free from barren plateaus.",
+      "start": 544,
+      "end": 909,
+      "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130"
+     },
+     {
+      "document_id": "arxiv-2511-13408-p0002",
+      "quote": "Importantly, the absence of barren plateaus in MPQCs is robust against realistic noise, making our approach directly applicable to near-term quantum hardware.",
+      "start": 1056,
+      "end": 1214,
+      "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130"
+     },
+     {
+      "document_id": "arxiv-2511-13408-p0002",
+      "quote": "Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers.",
+      "start": 1215,
+      "end": 1384,
+      "chunk_sha256": "5b427663f193d4e94892cba758352a88d721c40aaea34289b844f2d73259f130"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "decreases"
+    ]
+   }
+  ],
+  "expected_relation": "co_constrain",
+  "direction_check": {
+   "requested": "co_constrain",
+   "status": "unspecified",
+   "observed": []
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-2609-22729-p0002",
+    "quote": "In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.",
+    "start": 936,
+    "end": 1357,
+    "chunk_sha256": "c14a4d47645a2e6ff3c26ec8fe1bfa93681d2ad322463bb69604f75e3789fdf4",
+    "measures": [
+     "chemical initialization",
+     "barren plateaus"
+    ]
+   },
+   {
+    "document_id": "arxiv-2311-18090-p0002",
+    "quote": "This result is corroborated by numerical experiments carried out on synthetic problems as well as on instances of the Max-Cut problem, which show that our method performs better than plain simulated annealing when large barren plateaus are present in the domain.",
+    "start": 1264,
+    "end": 1526,
+    "chunk_sha256": "8be0d0d0b21360ed53651648b4c00a33820d649db7800ff46574e1b3b185908b",
+    "measures": [
+     "barren plateaus"
+    ]
+   },
+   {
+    "document_id": "arxiv-2311-18090-p0008",
+    "quote": "IV we showcase an application of our Fleming-Viot inspired algorithm for a synthetic problem with varying percentages of barren plateaus in the parameter landscape, as well as an application to a Quantum Approximation Optimization Algorithm (QAOA, a special case of VQA) for an instance of the Max-Cut problem on a graph with 8 nodes.",
+    "start": 944,
+    "end": 1278,
+    "chunk_sha256": "a142ca7a7819d3e42c1ebfff90122d9c0e51b6aa46bd4238bf7e03058a4d56ec",
+    "measures": [
+     "barren plateaus"
+    ]
+   },
+   {
+    "document_id": "arxiv-2311-18090-p0024",
+    "quote": "(i) two-dimensional synthetic functions generated with a predefined percentage of barren plateaus; (ii) the Max-Cut problem approximated by a noiseless twodimensional quantum circuit.",
+    "start": 0,
+    "end": 183,
+    "chunk_sha256": "27e144e3b4e7f5f20556be11d4c0ecbd03f4f841fd53c016828a98fe008deeb2",
+    "measures": [
+     "barren plateaus"
+    ]
+   },
+   {
+    "document_id": "arxiv-2311-18090-p0027",
+    "quote": "Each synthetic experiment is defined by an expected percentage of barren plateaus in the optimization landscape whose domain is set as the two-dimensional rectangular area [0, 1] × [0, 1].",
+    "start": 0,
+    "end": 188,
+    "chunk_sha256": "f3d33fcb1676db3d836c080c6eb3db835c048dae5372a53dd014fdfad1dd6fd4",
+    "measures": [
+     "barren plateaus"
+    ]
+   },
+   {
+    "document_id": "arxiv-2311-18090-p0027",
+    "quote": "The precise definition of these three barren levels is given in Section IV-C. Each accepted1 synthetic function is classified into one of these barren levels based on the actual percentage of barren plateaus present in the function, estimated as described in App.",
+    "start": 709,
+    "end": 972,
+    "chunk_sha256": "f3d33fcb1676db3d836c080c6eb3db835c048dae5372a53dd014fdfad1dd6fd4",
+    "measures": [
+     "barren plateaus"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "dimension of qudits",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2405-08190-p0001",
+     "quote": "# Barren plateaus are amplified by the dimension of qudits",
+     "start": 0,
+     "end": 58,
+     "chunk_sha256": "29194b755d37a4267deb3748588cba74de919e575cd2fb4954b47227e460372e",
+     "relation": "increases",
+     "subject": "dimension of qudits",
+     "object": "Barren plateaus",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "issues",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2011-12245-p0004",
+     "quote": "Various issues lead to barren plateaus, such as deep ansatzes that lack structure [19, 21, 31], global cost functions [20, 21], high levels of noise [22, 32], scrambling target unitaries [24], and large entanglement [28, 29].",
+     "start": 348,
+     "end": 573,
+     "chunk_sha256": "29029f30dfea4c2fb2c2b7b3e28275cfa74df5f6d2ffdb0e5c95caff55cde7af",
+     "relation": "causes",
+     "subject": "issues",
+     "object": "barren plateaus",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "mid - circuit measurements",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2406-14285-p0059",
+     "quote": "therefore, mid-circuit measurements, circuit pretraining, entanglement regularization to add terms to the cost function, and initial partitioning play on the entanglement entropy to better mitigate barren plateaus",
+     "start": 493,
+     "end": 706,
+     "chunk_sha256": "6d841bff052354ea4562410baa2c53f48560a3bd6a4dd123121c90cdf9900c28",
+     "relation": "decreases",
+     "subject": "mid - circuit measurements",
+     "object": "barren plateaus",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "conditional",
+   "bridges": [],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "untested",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "6efb6a707d0f961e",
+    "kind": "variable",
+    "term": "chemical initialization",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for chemical initialization."
+   },
+   {
+    "id": "699e37045e6b3a25",
+    "kind": "variable",
+    "term": "chemical initialization",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for chemical initialization."
+   },
+   {
+    "id": "5039c70730fef61e",
+    "kind": "variable",
+    "term": "MPQC",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for MPQC."
+   },
+   {
+    "id": "247ce38c11034c9d",
+    "kind": "variable",
+    "term": "MPQC",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for MPQC."
+   },
+   {
+    "id": "fa933691e17e3be1",
+    "kind": "variable",
+    "term": "barren plateaus",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for barren plateaus."
+   },
+   {
+    "id": "c0d74ee78d8deadf",
+    "kind": "variable",
+    "term": "barren plateaus",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for barren plateaus."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "2x2 factorial",
+   "manipulate": [
+    "chemical initialization",
+    "MPQC"
+   ],
+   "measure": [
+    "barren plateaus"
+   ],
+   "mediator": null,
+   "controls": [
+    "dimension of qudits",
+    "issues",
+    "mid - circuit measurements"
+   ],
+   "steps": [
+    "Run all four combinations of low and high chemical initialization and MPQC; measure barren plateaus.",
+    "Review candidate controls (dimension of qudits, issues, mid - circuit measurements) for timing, feasibility and causal role before adjustment.",
+    "Compare the joint effect with the sum of the separate effects."
+   ],
+   "fails_if": "A precisely measured absence of an interaction challenges compounding in barren plateaus; it does not refute individual effects of chemical initialization or MPQC. Predefine a meaningful effect threshold.",
+   "variables": [
+    {
+     "term": "chemical initialization",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "MPQC",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "barren plateaus",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2406-14285-p0016",
+       "quote": "The more expressive a circuit, the closer its distribution resembles a haar measure; however, largely expressive circuits lend themselves to being prone to barren plateaus [37, 38].",
+       "start": 718,
+       "end": 899,
+       "chunk_sha256": "5e41c684f5222378707fdea47fd13dc6ca8f2be7e2a0cd4b3acfac4a8818c207",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2406-14285-p0058",
+       "quote": "Weak Barren Plateaus In connection with PQCs, it is a question of interest then how measurement perturb the entanglement of the system.",
+       "start": 0,
+       "end": 135,
+       "chunk_sha256": "d280dde0a2f6bcb463dda89e8b432a4ffe9b21df3e48fcefa022cf33b1c71315",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2406-14285-p0059",
+       "quote": "therefore, mid-circuit measurements, circuit pretraining, entanglement regularization to add terms to the cost function, and initial partitioning play on the entanglement entropy to better mitigate barren plateaus",
+       "start": 493,
+       "end": 706,
+       "chunk_sha256": "6d841bff052354ea4562410baa2c53f48560a3bd6a4dd123121c90cdf9900c28",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "chemical initialization",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "chemical initialization",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "MPQC",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "MPQC",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "barren plateaus",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "barren plateaus",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "interaction_test": {
+    "contrast": "Y11 - Y10 - Y01 + Y00",
+    "assumptions": "Additive outcome scale, matched conditions and defined interventions.",
+    "interpretation": "A zero interaction contrast challenges compounding, not the individual effects."
+   }
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 8.273
+  },
+  "snapshot": {
+   "as_of": 1795594838,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: chemical initialization and MPQC may jointly constrain barren plateaus, so relieving one may shift the bottleneck to the other.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unspecified.\nComposition assessment: conditional. Component support does not establish a joint effect or causal validity.\n\nLink chemical initialization -> barren plateaus: supported (1 supporting, 0 contrary).\n  + [arxiv-2609-22729-p0002] In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.\n\nLink MPQC -> barren plateaus: supported (1 supporting, 0 contrary).\n  + [arxiv-2511-13408-p0002] Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers.\n\nExisting setups that measure one of its terms:\n  [arxiv-2609-22729-p0002] In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.\n  [arxiv-2311-18090-p0002] This result is corroborated by numerical experiments carried out on synthetic problems as well as on instances of the Max-Cut problem, which show that our method performs better than plain simulated annealing when large barren plateaus are present in the domain.\n  [arxiv-2311-18090-p0008] IV we showcase an application of our Fleming-Viot inspired algorithm for a synthetic problem with varying percentages of barren plateaus in the parameter landscape, as well as an application to a Quantum Approximation Optimization Algorithm (QAOA, a special case of VQA) for an instance of the Max-Cut problem on a graph with 8 nodes.\n  [arxiv-2311-18090-p0024] (i) two-dimensional synthetic functions generated with a predefined percentage of barren plateaus; (ii) the Max-Cut problem approximated by a noiseless twodimensional quantum circuit.\n\nCandidate controls (review before adjustment):\n  dimension of qudits: outcome_predictor [arxiv-2405-08190-p0001]\n  issues: outcome_predictor [arxiv-2011-12245-p0004]\n  mid - circuit measurements: outcome_predictor [arxiv-2406-14285-p0059]\n\nTest plan (2x2 factorial):\n  1. Run all four combinations of low and high chemical initialization and MPQC; measure barren plateaus.\n  2. Review candidate controls (dimension of qudits, issues, mid - circuit measurements) for timing, feasibility and causal role before adjustment.\n  3. Compare the joint effect with the sum of the separate effects.\n  Fails if: A precisely measured absence of an interaction challenges compounding in barren plateaus; it does not refute individual effects of chemical initialization or MPQC. Predefine a meaningful effect threshold.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for chemical initialization.\n  Required: feasible intervention or justified observational design for chemical initialization.\n  Required: intervention levels for MPQC.\n  Required: feasible intervention or justified observational design for MPQC.\n  Required: measurement procedure for barren plateaus.\n  Required: unit or explicit categorical scale for barren plateaus.\n  Required: replicates.\n  Required: acceptance_criterion.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

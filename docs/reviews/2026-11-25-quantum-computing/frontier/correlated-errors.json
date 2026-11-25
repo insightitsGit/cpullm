@@ -1,0 +1,3253 @@
+{
+ "prompt": "Frontier: correlated errors.",
+ "seconds": 13.34,
+ "answer_status": "hypotheses",
+ "frontier": {
+  "schema": "frontier-v1",
+  "triggered": true,
+  "topic": "correlated errors",
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "limits": {
+   "max_rounds": 1000,
+   "max_candidates": 200000,
+   "max_edges": 50000,
+   "max_bytes": 67108864,
+   "max_seconds": 60.0,
+   "batch_size": 256,
+   "max_path_edges": 2,
+   "max_results": 50,
+   "min_results": 10
+  },
+  "topic_terms": [
+   "correlated",
+   "error"
+  ],
+  "focus_terms": [
+   "correlated",
+   "error"
+  ],
+  "chunk_count": 3369,
+  "candidate_search_complete": true,
+  "deepened": 5,
+  "leading_check": {
+   "requested": 5,
+   "checked": 5,
+   "complete": true,
+   "stop_reason": null
+  },
+  "parser": "en_core_web_lg",
+  "bridge_check": "encoder",
+  "encoded_terms": 262,
+  "hub_deferred": 838,
+  "status": "hypotheses",
+  "hypotheses": [
+   {
+    "id": "f8b0d78009b6",
+    "text": "definition may increase performance through coset probability of error (read as physical error probability).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "definition",
+     "performance"
+    ],
+    "via": [
+     "coset probability of error (read as physical error probability)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2309-10331-p0031",
+     "arxiv-2212-11632-p0020"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2309-10331-p0031",
+      "quote": "The difference between definitions 1 and 2 is that definition 1 maximizes the probability of the error found while definition 2 maximizes the coset probability of the error found.",
+      "start": 615,
+      "end": 794,
+      "chunk_sha256": "66932de024586bbb671bca0dabb45136f456b49c0519a99ac4a96bf679726023",
+      "relation": "increases",
+      "subject": "definition",
+      "object": "coset probability of error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2212-11632-p0020",
+      "quote": "Over the depolarizing channel (pX = pY = pZ = p/3) the performance of the code has been benchmarked through the probability threshold (pth), that is, the physical error probability at which increasing the distance of the code does improve its performance.",
+      "start": 127,
+      "end": 382,
+      "chunk_sha256": "0f534921050ebf2166d63ddabe3ad53d3582c3a29aa7f1a32b33d15335065fea",
+      "relation": "increases",
+      "subject": "physical error probability",
+      "object": "performance",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.96,
+     "deductive_relevance": 0.536,
+     "novelty": 0.522
+    },
+    "falsification_test": "Compare settings where definition differs while other inputs are matched. The hypothesis fails if performance does not rise with definition, or if fixing coset probability of error (read as physical error probability) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "coset probability of error",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "increases",
+      "status": "consistent",
+      "observed": [
+       "increases"
+      ],
+      "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 0,
+        "requested": "coset probability of error",
+        "source_term": "probability of error",
+        "citation": {
+         "document_id": "arxiv-2309-10331-p0031",
+         "quote": "The difference between definitions 1 and 2 is that definition 1 maximizes the probability of the error found while definition 2 maximizes the coset probability of the error found.",
+         "start": 615,
+         "end": 794,
+         "chunk_sha256": "66932de024586bbb671bca0dabb45136f456b49c0519a99ac4a96bf679726023",
+         "relation": "increases",
+         "subject": "definition",
+         "object": "probability of error",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "coset probability of error",
+        "source_term": "physical error probability",
+        "citation": {
+         "document_id": "arxiv-2212-11632-p0020",
+         "quote": "Over the depolarizing channel (pX = pY = pZ = p/3) the performance of the code has been benchmarked through the probability threshold (pth), that is, the physical error probability at which increasing the distance of the code does improve its performance.",
+         "start": 127,
+         "end": 382,
+         "chunk_sha256": "0f534921050ebf2166d63ddabe3ad53d3582c3a29aa7f1a32b33d15335065fea",
+         "relation": "increases",
+         "subject": "physical error probability",
+         "object": "performance",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "definition",
+       "target": "coset probability of error",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "coset probability of error",
+       "target": "performance",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "864f730f0e13",
+    "text": "class of VQAs and error may jointly constrain initial state, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "class of VQAs",
+     "error",
+     "initial state"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-05332-p0013",
+     "arxiv-2508-08246-p0054"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-05332-p0013",
+      "quote": "The class of VQAs we consider here restricts the initial state ρ to be a stabilizer state, the observable O to be a sum of poly(n) Pauli stings O = P i ciPi with real coefficients ci, and the circuit U (φφφ) to consist only of the constant Clifford gates and parametric Pauli rotation gates e−ıPk φk /2.",
+      "start": 0,
+      "end": 303,
+      "chunk_sha256": "00217a3822671968b26cb8b4fbe92787040b60d7eddd063479b70337ec1327a7",
+      "relation": "constrains",
+      "subject": "class of VQAs",
+      "object": "initial state",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2508-08246-p0054",
+      "quote": "In other words, the syndrome state |sE ⟩ is independent of the logical state and only depends on the error E. We now consider the case of a more general error superoperator E (not necessarily CPTP).",
+      "start": 64,
+      "end": 262,
+      "chunk_sha256": "a096f6dcf27613b546432fc959f58d9baaae9ddb659d5687beb5a99ab425911d",
+      "relation": "constrains",
+      "subject": "error",
+      "object": "syndrome state",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.96,
+     "deductive_relevance": 0.528,
+     "novelty": 0.618
+    },
+    "falsification_test": "Relieve class of VQAs alone while measuring initial state. The hypothesis fails if initial state keeps improving without error becoming the binding limit, or if relieving error alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 2,
+    "rule_verdict": null,
+    "hub": "initial state",
+    "check": {
+     "verdict": "contested",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "co_constrain",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 1,
+        "requested": "initial state",
+        "source_term": "syndrome state",
+        "citation": {
+         "document_id": "arxiv-2508-08246-p0054",
+         "quote": "In other words, the syndrome state |sE ⟩ is independent of the logical state and only depends on the error E. We now consider the case of a more general error superoperator E (not necessarily CPTP).",
+         "start": 64,
+         "end": 262,
+         "chunk_sha256": "a096f6dcf27613b546432fc959f58d9baaae9ddb659d5687beb5a99ab425911d",
+         "relation": "constrains",
+         "subject": "error",
+         "object": "syndrome state",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "error",
+        "source_term": "input error",
+        "citation": {
+         "document_id": "arxiv-2508-08246-p0063",
+         "quote": "In particular, the logical output state may depend on the input error in a highly non-trivial way.",
+         "start": 48,
+         "end": 146,
+         "chunk_sha256": "ae44ef3bf68adff95e0ca407a6b31edb4ebdd615c1f96744de8e378a5311b446",
+         "relation": "constrains",
+         "subject": "input error",
+         "object": "logical output state",
+         "hedged": true
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "initial state",
+        "source_term": "logical output state",
+        "citation": {
+         "document_id": "arxiv-2508-08246-p0063",
+         "quote": "In particular, the logical output state may depend on the input error in a highly non-trivial way.",
+         "start": 48,
+         "end": 146,
+         "chunk_sha256": "ae44ef3bf68adff95e0ca407a6b31edb4ebdd615c1f96744de8e378a5311b446",
+         "relation": "constrains",
+         "subject": "input error",
+         "object": "logical output state",
+         "hedged": true
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       },
+       {
+        "link": 1,
+        "requested": "initial state",
+        "source_term": "state",
+        "citation": {
+         "document_id": "arxiv-2208-09385-p0078",
+         "quote": "For the numerical simulation performed to obtain the cost of generalized subspace expansion [21], we optimize parameter c1 and c2 so that the error mitigated state (c1I/2n + c2E ′(ρ))(c1I/2n + c2E ′(ρ))† = |c1|2/4nI + Re(c1c∗ 2)/2n−1E ′(ρ) + |c2|2E ′(ρ)2 reaches the noiseless state",
+         "start": 585,
+         "end": 867,
+         "chunk_sha256": "adf28b1f99ac4aea11c404b94a040c315b7f9e7029e52e231e0bcfe46416c2e1",
+         "relation": "decreases",
+         "subject": "error",
+         "object": "state",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [
+       {
+        "link": 0,
+        "citation": {
+         "document_id": "arxiv-2405-05332-p0013",
+         "quote": "The class of VQAs we consider here restricts the initial state ρ to be a stabilizer state, the observable O to be a sum of poly(n) Pauli stings O = P i ciPi with real coefficients ci, and the circuit U (φφφ) to consist only of the constant Clifford gates and parametric Pauli rotation gates e−ıPk φk /2.",
+         "start": 0,
+         "end": 303,
+         "chunk_sha256": "00217a3822671968b26cb8b4fbe92787040b60d7eddd063479b70337ec1327a7",
+         "relation": "constrains",
+         "subject": "class of VQAs",
+         "object": "initial state",
+         "hedged": false
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       },
+       {
+        "link": 1,
+        "citation": {
+         "document_id": "arxiv-2508-08246-p0054",
+         "quote": "In other words, the syndrome state |sE ⟩ is independent of the logical state and only depends on the error E. We now consider the case of a more general error superoperator E (not necessarily CPTP).",
+         "start": 64,
+         "end": 262,
+         "chunk_sha256": "a096f6dcf27613b546432fc959f58d9baaae9ddb659d5687beb5a99ab425911d",
+         "relation": "constrains",
+         "subject": "error",
+         "object": "syndrome state",
+         "hedged": false
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       },
+       {
+        "link": 1,
+        "citation": {
+         "document_id": "arxiv-2508-08246-p0063",
+         "quote": "In particular, the logical output state may depend on the input error in a highly non-trivial way.",
+         "start": 48,
+         "end": 146,
+         "chunk_sha256": "ae44ef3bf68adff95e0ca407a6b31edb4ebdd615c1f96744de8e378a5311b446",
+         "relation": "constrains",
+         "subject": "input error",
+         "object": "logical output state",
+         "hedged": true
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       }
+      ],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "untested",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "class of VQAs",
+       "target": "initial state",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "error",
+       "target": "initial state",
+       "status": "contested",
+       "counter": [
+        {
+         "document_id": "arxiv-2208-09385-p0078",
+         "quote": "For the numerical simulation performed to obtain the cost of generalized subspace expansion [21], we optimize parameter c1 and c2 so that the error mitigated state (c1I/2n + c2E ′(ρ))(c1I/2n + c2E ′(ρ))† = |c1|2/4nI + Re(c1c∗ 2)/2n−1E ′(ρ) + |c2|2E ′(ρ)2 reaches the noiseless state",
+         "start": 585,
+         "end": 867,
+         "chunk_sha256": "adf28b1f99ac4aea11c404b94a040c315b7f9e7029e52e231e0bcfe46416c2e1",
+         "relation": "decreases",
+         "subject": "error",
+         "object": "state",
+         "hedged": false
+        }
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "id": "3162a7fbba6d",
+    "text": "reset and S. Bravyi may jointly constrain leakage induced long time correlated errors, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "reset",
+     "S. Bravyi",
+     "leakage induced long time correlated errors"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2102-06131-p0023",
+     "arxiv-2208-09385-p0034"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2102-06131-p0023",
+      "quote": "We show that reset mitigates leakage-induced long-time correlated errors and significantly improves logical error suppression.",
+      "start": 148,
+      "end": 274,
+      "chunk_sha256": "3f1fc374a9e34a7abb920d6f071d09be99f0e3d2fb6a993ff9bfdf1648a32362",
+      "relation": "decreases",
+      "subject": "reset",
+      "object": "leakage induced long time correlated errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2208-09385-p0034",
+      "quote": "[44] S. Bravyi, S. Sheldon, A. Kandala, D. C. Mckay, and J. M. Gambetta, Mitigating measurement errors in multiqubit experiments, arXiv preprint arXiv:2006.14044",
+      "start": 254,
+      "end": 415,
+      "chunk_sha256": "a89fc5e8a103080191835f576d9ae9221525676637f5211a77cd946c21e47cae",
+      "relation": "decreases",
+      "subject": "S. Bravyi",
+      "object": "measurement errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.864,
+     "novelty": 0.743
+    },
+    "falsification_test": "Relieve reset alone while measuring leakage induced long time correlated errors. The hypothesis fails if leakage induced long time correlated errors keeps improving without S. Bravyi becoming the binding limit, or if relieving S. Bravyi alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "leakage induced long time correlated error",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "co_constrain",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 1,
+        "requested": "leakage induced long time correlated errors",
+        "source_term": "measurement errors",
+        "citation": {
+         "document_id": "arxiv-2208-09385-p0034",
+         "quote": "[44] S. Bravyi, S. Sheldon, A. Kandala, D. C. Mckay, and J. M. Gambetta, Mitigating measurement errors in multiqubit experiments, arXiv preprint arXiv:2006.14044",
+         "start": 254,
+         "end": 415,
+         "chunk_sha256": "a89fc5e8a103080191835f576d9ae9221525676637f5211a77cd946c21e47cae",
+         "relation": "decreases",
+         "subject": "S. Bravyi",
+         "object": "measurement errors",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "untested",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "reset",
+       "target": "leakage induced long time correlated errors",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "S. Bravyi",
+       "target": "leakage induced long time correlated errors",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "93ab27a94752",
+    "text": "Erasure conversion for singlet triplet spin may increase error threshold through high performance shuttling based quantum error (read as correlated errors).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "Erasure conversion for singlet triplet spin",
+     "error threshold"
+    ],
+    "via": [
+     "high performance shuttling based quantum error (read as correlated errors)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-10461-p0001",
+     "arxiv-2407-16176-p0047"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-10461-p0001",
+      "quote": "# Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction",
+      "start": 0,
+      "end": 118,
+      "chunk_sha256": "55cf0c7e46e3cab8e23fefc5e4e3220d8c293ce09fc1a0510e0816e8d99f3d05",
+      "relation": "increases",
+      "subject": "Erasure conversion for singlet triplet spin",
+      "object": "high performance shuttling based quantum error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-16176-p0047",
+      "quote": "However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.",
+      "start": 802,
+      "end": 968,
+      "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c",
+      "relation": "increases",
+      "subject": "correlated errors",
+      "object": "error threshold",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.856,
+     "novelty": 0.694
+    },
+    "falsification_test": "Compare settings where Erasure conversion for singlet triplet spin differs while other inputs are matched. The hypothesis fails if error threshold does not rise with Erasure conversion for singlet triplet spin, or if fixing high performance shuttling based quantum error (read as correlated errors) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "high performance shuttling based quantum error",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "increases",
+      "status": "consistent",
+      "observed": [
+       "increases"
+      ],
+      "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 1,
+        "requested": "high performance shuttling based quantum error",
+        "source_term": "correlated errors",
+        "citation": {
+         "document_id": "arxiv-2407-16176-p0047",
+         "quote": "However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.",
+         "start": 802,
+         "end": 968,
+         "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c",
+         "relation": "increases",
+         "subject": "correlated errors",
+         "object": "error threshold",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "Erasure conversion for singlet triplet spin",
+       "target": "high performance shuttling based quantum error",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "high performance shuttling based quantum error",
+       "target": "error threshold",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "2127319dc774",
+    "text": "D. Implications for Future Processors may reduce error threshold through radiation induced errors (read as correlated errors).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "D. Implications for Future Processors",
+     "error threshold"
+    ],
+    "via": [
+     "radiation induced errors (read as correlated errors)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-13460-p0023",
+     "arxiv-2407-16176-p0047"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-13460-p0023",
+      "quote": "D. Implications for Future Processors While JJ GE significantly mitigates radiation-induced errors, qubit arrays protected in this way remain sensitive to radiation that deposits energy on the scale of a few MeV.",
+      "start": 416,
+      "end": 628,
+      "chunk_sha256": "21084cca402c41f5b16ae0915c7ce0bfe6205831ca6fa9e43780f1891b3c9caf",
+      "relation": "decreases",
+      "subject": "D. Implications for Future Processors",
+      "object": "radiation induced errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-16176-p0047",
+      "quote": "However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.",
+      "start": 802,
+      "end": 968,
+      "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c",
+      "relation": "increases",
+      "subject": "correlated errors",
+      "object": "error threshold",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.856,
+     "novelty": 0.623
+    },
+    "falsification_test": "Compare settings where D. Implications for Future Processors differs while other inputs are matched. The hypothesis fails if error threshold does not fall with D. Implications for Future Processors, or if fixing radiation induced errors (read as correlated errors) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "radiation induced error",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "decreases",
+      "status": "consistent",
+      "observed": [
+       "decreases"
+      ],
+      "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 1,
+        "requested": "radiation induced errors",
+        "source_term": "correlated errors",
+        "citation": {
+         "document_id": "arxiv-2407-16176-p0047",
+         "quote": "However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.",
+         "start": 802,
+         "end": 968,
+         "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c",
+         "relation": "increases",
+         "subject": "correlated errors",
+         "object": "error threshold",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "D. Implications for Future Processors",
+       "target": "radiation induced errors",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "radiation induced errors",
+       "target": "error threshold",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "525ba06e5c81",
+    "text": "less than 10 mEh may reduce error threshold through energy errors (read as correlated errors).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "less than 10 mEh",
+     "error threshold"
+    ],
+    "via": [
+     "energy errors (read as correlated errors)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2511-21236-p0043",
+     "arxiv-2407-16176-p0047"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2511-21236-p0043",
+      "quote": "We observe that the effect of using REM alone is minor compared to M0 and tiled M0, so we only show it for LiH in the SI where the energy errors are reduced by less than 10 mEh.",
+      "start": 1811,
+      "end": 1988,
+      "chunk_sha256": "274b94f27cefe0e8e2eadfb1e4b9e771c1ced2ec116f04a358c0596ef5063f90",
+      "relation": "decreases",
+      "subject": "less than 10 mEh",
+      "object": "energy errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-16176-p0047",
+      "quote": "However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.",
+      "start": 802,
+      "end": 968,
+      "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c",
+      "relation": "increases",
+      "subject": "correlated errors",
+      "object": "error threshold",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.856,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where less than 10 mEh differs while other inputs are matched. The hypothesis fails if error threshold does not fall with less than 10 mEh, or if fixing energy errors (read as correlated errors) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "energy error"
+   },
+   {
+    "id": "5367f8263728",
+    "text": "Erasure conversion for singlet triplet spin may reduce logical error rate through high performance shuttling based quantum error (read as correlated errors).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "Erasure conversion for singlet triplet spin",
+     "logical error rate"
+    ],
+    "via": [
+     "high performance shuttling based quantum error (read as correlated errors)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-10461-p0001",
+     "arxiv-2407-16176-p0047"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-10461-p0001",
+      "quote": "# Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction",
+      "start": 0,
+      "end": 118,
+      "chunk_sha256": "55cf0c7e46e3cab8e23fefc5e4e3220d8c293ce09fc1a0510e0816e8d99f3d05",
+      "relation": "increases",
+      "subject": "Erasure conversion for singlet triplet spin",
+      "object": "high performance shuttling based quantum error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-16176-p0047",
+      "quote": "However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.",
+      "start": 802,
+      "end": 968,
+      "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c",
+      "relation": "decreases",
+      "subject": "correlated errors",
+      "object": "logical error rate",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.853,
+     "novelty": 0.703
+    },
+    "falsification_test": "Compare settings where Erasure conversion for singlet triplet spin differs while other inputs are matched. The hypothesis fails if logical error rate does not fall with Erasure conversion for singlet triplet spin, or if fixing high performance shuttling based quantum error (read as correlated errors) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "high performance shuttling based quantum error"
+   },
+   {
+    "id": "04f4e1142cb6",
+    "text": "D. Implications for Future Processors may increase logical error rate through radiation induced errors (read as correlated errors).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "D. Implications for Future Processors",
+     "logical error rate"
+    ],
+    "via": [
+     "radiation induced errors (read as correlated errors)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-13460-p0023",
+     "arxiv-2407-16176-p0047"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-13460-p0023",
+      "quote": "D. Implications for Future Processors While JJ GE significantly mitigates radiation-induced errors, qubit arrays protected in this way remain sensitive to radiation that deposits energy on the scale of a few MeV.",
+      "start": 416,
+      "end": 628,
+      "chunk_sha256": "21084cca402c41f5b16ae0915c7ce0bfe6205831ca6fa9e43780f1891b3c9caf",
+      "relation": "decreases",
+      "subject": "D. Implications for Future Processors",
+      "object": "radiation induced errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-16176-p0047",
+      "quote": "However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.",
+      "start": 802,
+      "end": 968,
+      "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c",
+      "relation": "decreases",
+      "subject": "correlated errors",
+      "object": "logical error rate",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.853,
+     "novelty": 0.642
+    },
+    "falsification_test": "Compare settings where D. Implications for Future Processors differs while other inputs are matched. The hypothesis fails if logical error rate does not rise with D. Implications for Future Processors, or if fixing radiation induced errors (read as correlated errors) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "radiation induced error"
+   },
+   {
+    "id": "7c9f2f845785",
+    "text": "S. Bravyi may increase logical error rate through measurement errors (read as correlated errors).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "S. Bravyi",
+     "logical error rate"
+    ],
+    "via": [
+     "measurement errors (read as correlated errors)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2208-09385-p0034",
+     "arxiv-2407-16176-p0047"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2208-09385-p0034",
+      "quote": "[44] S. Bravyi, S. Sheldon, A. Kandala, D. C. Mckay, and J. M. Gambetta, Mitigating measurement errors in multiqubit experiments, arXiv preprint arXiv:2006.14044",
+      "start": 254,
+      "end": 415,
+      "chunk_sha256": "a89fc5e8a103080191835f576d9ae9221525676637f5211a77cd946c21e47cae",
+      "relation": "decreases",
+      "subject": "S. Bravyi",
+      "object": "measurement errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-16176-p0047",
+      "quote": "However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.",
+      "start": 802,
+      "end": 968,
+      "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c",
+      "relation": "decreases",
+      "subject": "correlated errors",
+      "object": "logical error rate",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.853,
+     "novelty": 0.572
+    },
+    "falsification_test": "Compare settings where S. Bravyi differs while other inputs are matched. The hypothesis fails if logical error rate does not rise with S. Bravyi, or if fixing measurement errors (read as correlated errors) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "measurement error"
+   },
+   {
+    "id": "f0bacfb4ada5",
+    "text": "successful implementation of quantum error correction and Pauli X for ST qubit may move together because both depend on negligible correlated errors.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "successful implementation of quantum error correction",
+     "Pauli X for ST qubit",
+     "negligible correlated errors"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2305-02591-p0002",
+     "arxiv-2601-10461-p0025"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2305-02591-p0002",
+      "quote": "Moreover, successful implementation of quantum error correction requires negligible correlated errors among qubits.",
+      "start": 281,
+      "end": 396,
+      "chunk_sha256": "1607437329dc8f833dcba913f7936fb877405eff95e6b3b8627b07e8cfe600dd",
+      "relation": "constrains",
+      "subject": "negligible correlated errors",
+      "object": "successful implementation of quantum error correction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2601-10461-p0025",
+      "quote": "However, a Pauli X for an ST qubit requires an X and/or a Y error on both spins of the same pair (as per Table I).",
+      "start": 452,
+      "end": 566,
+      "chunk_sha256": "d29589217143bd628674bbc8f1ab7f272a9bb2365e4fae88fa2e8e3cf9a0a12f",
+      "relation": "constrains",
+      "subject": "Y error",
+      "object": "Pauli X for ST qubit",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.854,
+     "novelty": 0.564
+    },
+    "falsification_test": "Track successful implementation of quantum error correction and Pauli X for ST qubit across periods where negligible correlated errors changes and where it does not. The hypothesis fails if they co-vary just as strongly when negligible correlated errors is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "negligible correlated error"
+   },
+   {
+    "id": "1559119bb9e5",
+    "text": "higher level state occupations may increase Z error of output qubit through correlated errors (read as error).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "higher level state occupations",
+     "Z error of output qubit"
+    ],
+    "via": [
+     "correlated errors (read as error)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2102-06131-p0014",
+     "arxiv-1905-06903-p0030"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2102-06131-p0014",
+      "quote": "This result also raises the question how higher level state occupations that naturally arise during the stabilizer codes lead to correlated errors.",
+      "start": 224,
+      "end": 371,
+      "chunk_sha256": "e1002b8f1bdd6e2c19379902101e8ebcd9ef475423de2b680ac5d1d78fddb669",
+      "relation": "causes",
+      "subject": "higher level state occupations",
+      "object": "correlated errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0030",
+      "quote": "Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.",
+      "start": 1046,
+      "end": 1197,
+      "chunk_sha256": "187a5c07eae620effb533bcf4dd2bb0733b5aa3f84c500d61c49da77b79995c5",
+      "relation": "causes",
+      "subject": "error",
+      "object": "Z error of output qubit",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.837,
+     "novelty": 0.577
+    },
+    "falsification_test": "Compare settings where higher level state occupations differs while other inputs are matched. The hypothesis fails if Z error of output qubit does not rise with higher level state occupations, or if fixing correlated errors (read as error) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "correlated error"
+   },
+   {
+    "id": "e2172e8ada8a",
+    "text": "development of mitigation strategies may constrain Realizing the full potential of quantum through Robust quantum error correction (read as quantum error correction).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "development of mitigation strategies",
+     "Realizing the full potential of quantum"
+    ],
+    "via": [
+     "Robust quantum error correction (read as quantum error correction)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2012-06029-p0002",
+     "arxiv-2203-04948-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2012-06029-p0002",
+      "quote": "Robust quantum error correction will require the development of mitigation strategies to protect multiqubit arrays from correlated errors due to particle impacts.",
+      "start": 1137,
+      "end": 1299,
+      "chunk_sha256": "2416eef56868246d3a1f013edcafe079fe1a62c1b2f505c3d76f7a364aba6f80",
+      "relation": "constrains",
+      "subject": "development of mitigation strategies",
+      "object": "Robust quantum error correction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2203-04948-p0002",
+      "quote": "Realizing the full potential of quantum computation requires quantum error correction (QEC), with most recent breakthrough demonstrations of QEC using the surface code.",
+      "start": 0,
+      "end": 168,
+      "chunk_sha256": "19904cb0c0e005b0c7282e57731f762d14e4a5507688bd1e45a3bb9dbaecb6c1",
+      "relation": "constrains",
+      "subject": "quantum error correction",
+      "object": "Realizing the full potential of quantum",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.83,
+     "novelty": 0.581
+    },
+    "falsification_test": "Compare settings where development of mitigation strategies differs while other inputs are matched. The hypothesis fails if Realizing the full potential of quantum does not stay bounded with development of mitigation strategies, or if fixing Robust quantum error correction (read as quantum error correction) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "robust quantum error correction"
+   },
+   {
+    "id": "c7cfec410806",
+    "text": "Gains in correlated errors from higher level state occupations may be offset by S. Bravyi.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "higher level state occupations",
+     "S. Bravyi",
+     "correlated errors"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2102-06131-p0014",
+     "arxiv-2208-09385-p0034"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2102-06131-p0014",
+      "quote": "This result also raises the question how higher level state occupations that naturally arise during the stabilizer codes lead to correlated errors.",
+      "start": 224,
+      "end": 371,
+      "chunk_sha256": "e1002b8f1bdd6e2c19379902101e8ebcd9ef475423de2b680ac5d1d78fddb669",
+      "relation": "causes",
+      "subject": "higher level state occupations",
+      "object": "correlated errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2208-09385-p0034",
+      "quote": "[44] S. Bravyi, S. Sheldon, A. Kandala, D. C. Mckay, and J. M. Gambetta, Mitigating measurement errors in multiqubit experiments, arXiv preprint arXiv:2006.14044",
+      "start": 254,
+      "end": 415,
+      "chunk_sha256": "a89fc5e8a103080191835f576d9ae9221525676637f5211a77cd946c21e47cae",
+      "relation": "decreases",
+      "subject": "S. Bravyi",
+      "object": "measurement errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.826,
+     "novelty": 0.517
+    },
+    "falsification_test": "Measure correlated errors where both higher level state occupations and S. Bravyi vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "correlated error"
+   },
+   {
+    "id": "e8f6c613c41a",
+    "text": "Gains in correlated errors from higher level state occupations may be offset by less than 10 mEh.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "higher level state occupations",
+     "less than 10 mEh",
+     "correlated errors"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2102-06131-p0014",
+     "arxiv-2511-21236-p0043"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2102-06131-p0014",
+      "quote": "This result also raises the question how higher level state occupations that naturally arise during the stabilizer codes lead to correlated errors.",
+      "start": 224,
+      "end": 371,
+      "chunk_sha256": "e1002b8f1bdd6e2c19379902101e8ebcd9ef475423de2b680ac5d1d78fddb669",
+      "relation": "causes",
+      "subject": "higher level state occupations",
+      "object": "correlated errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2511-21236-p0043",
+      "quote": "We observe that the effect of using REM alone is minor compared to M0 and tiled M0, so we only show it for LiH in the SI where the energy errors are reduced by less than 10 mEh.",
+      "start": 1811,
+      "end": 1988,
+      "chunk_sha256": "274b94f27cefe0e8e2eadfb1e4b9e771c1ced2ec116f04a358c0596ef5063f90",
+      "relation": "decreases",
+      "subject": "less than 10 mEh",
+      "object": "energy errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.826,
+     "novelty": 0.517
+    },
+    "falsification_test": "Measure correlated errors where both higher level state occupations and less than 10 mEh vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "correlated error"
+   },
+   {
+    "id": "9ab6792f4863",
+    "text": "Erasure conversion for singlet triplet spin may affect successful implementation of quantum error correction through high performance shuttling based quantum error (read as negligible correlated errors).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "Erasure conversion for singlet triplet spin",
+     "successful implementation of quantum error correction"
+    ],
+    "via": [
+     "high performance shuttling based quantum error (read as negligible correlated errors)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-10461-p0001",
+     "arxiv-2305-02591-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-10461-p0001",
+      "quote": "# Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction",
+      "start": 0,
+      "end": 118,
+      "chunk_sha256": "55cf0c7e46e3cab8e23fefc5e4e3220d8c293ce09fc1a0510e0816e8d99f3d05",
+      "relation": "increases",
+      "subject": "Erasure conversion for singlet triplet spin",
+      "object": "high performance shuttling based quantum error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2305-02591-p0002",
+      "quote": "Moreover, successful implementation of quantum error correction requires negligible correlated errors among qubits.",
+      "start": 281,
+      "end": 396,
+      "chunk_sha256": "1607437329dc8f833dcba913f7936fb877405eff95e6b3b8627b07e8cfe600dd",
+      "relation": "constrains",
+      "subject": "negligible correlated errors",
+      "object": "successful implementation of quantum error correction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.818,
+     "novelty": 0.666
+    },
+    "falsification_test": "Compare settings where Erasure conversion for singlet triplet spin differs while other inputs are matched. The hypothesis fails if successful implementation of quantum error correction does not change with Erasure conversion for singlet triplet spin, or if fixing high performance shuttling based quantum error (read as negligible correlated errors) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "high performance shuttling based quantum error"
+   },
+   {
+    "id": "ebe9680973a3",
+    "text": "Bout and successful implementation of quantum error correction may move together because both depend on input output bad error.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "Bout",
+     "successful implementation of quantum error correction",
+     "input output bad error"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2508-08246-p0059",
+     "arxiv-2305-02591-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2508-08246-p0059",
+      "quote": "We use the circuit input/output definitions (input/output bad error supports Bin and Bout, etc.) from Definition 4.7 extended to the environment circuit in the trivial way by assigning trivial code types to all edges of the environment",
+      "start": 151,
+      "end": 386,
+      "chunk_sha256": "26d31cfb6d0d0e8947bdafb7f6599b6727fc2f2218eb34cd3d14dc21e3872559",
+      "relation": "supports",
+      "subject": "input output bad error",
+      "object": "Bout",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2305-02591-p0002",
+      "quote": "Moreover, successful implementation of quantum error correction requires negligible correlated errors among qubits.",
+      "start": 281,
+      "end": 396,
+      "chunk_sha256": "1607437329dc8f833dcba913f7936fb877405eff95e6b3b8627b07e8cfe600dd",
+      "relation": "constrains",
+      "subject": "negligible correlated errors",
+      "object": "successful implementation of quantum error correction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.82,
+     "novelty": 0.658
+    },
+    "falsification_test": "Track Bout and successful implementation of quantum error correction across periods where input output bad error changes and where it does not. The hypothesis fails if they co-vary just as strongly when input output bad error is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "input output bad error"
+   },
+   {
+    "id": "594511e06075",
+    "text": "Gains in leakage induced long time correlated errors from rotations may be offset by reset.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "reset",
+     "rotations",
+     "leakage induced long time correlated errors"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2102-06131-p0023",
+     "arxiv-1905-06903-p0009"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2102-06131-p0023",
+      "quote": "We show that reset mitigates leakage-induced long-time correlated errors and significantly improves logical error suppression.",
+      "start": 148,
+      "end": 274,
+      "chunk_sha256": "3f1fc374a9e34a7abb920d6f071d09be99f0e3d2fb6a993ff9bfdf1648a32362",
+      "relation": "decreases",
+      "subject": "reset",
+      "object": "leakage induced long time correlated errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0009",
+      "quote": "However, some combinations of three faulty gates, e.g., rotations 5, 11 and 14, will cause a Z Pauli error on the output state, but will not trigger any flipped X measurement outcomes.",
+      "start": 440,
+      "end": 624,
+      "chunk_sha256": "6bd5e5e28895b50b990ca1df7c2f10b5df6eb6c7d0ab0d8d9cfcaedea7a43f9d",
+      "relation": "causes",
+      "subject": "rotations",
+      "object": "Z Pauli error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.778,
+     "novelty": 0.65
+    },
+    "falsification_test": "Measure leakage induced long time correlated errors where both reset and rotations vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "leakage induced long time correlated error"
+   },
+   {
+    "id": "73593813d64d",
+    "text": "reset may reduce Z error of output qubit through leakage induced long time correlated errors (read as error).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "reset",
+     "Z error of output qubit"
+    ],
+    "via": [
+     "leakage induced long time correlated errors (read as error)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2102-06131-p0023",
+     "arxiv-1905-06903-p0030"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2102-06131-p0023",
+      "quote": "We show that reset mitigates leakage-induced long-time correlated errors and significantly improves logical error suppression.",
+      "start": 148,
+      "end": 274,
+      "chunk_sha256": "3f1fc374a9e34a7abb920d6f071d09be99f0e3d2fb6a993ff9bfdf1648a32362",
+      "relation": "decreases",
+      "subject": "reset",
+      "object": "leakage induced long time correlated errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0030",
+      "quote": "Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.",
+      "start": 1046,
+      "end": 1197,
+      "chunk_sha256": "187a5c07eae620effb533bcf4dd2bb0733b5aa3f84c500d61c49da77b79995c5",
+      "relation": "causes",
+      "subject": "error",
+      "object": "Z error of output qubit",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.764,
+     "novelty": 0.725
+    },
+    "falsification_test": "Compare settings where reset differs while other inputs are matched. The hypothesis fails if Z error of output qubit does not fall with reset, or if fixing leakage induced long time correlated errors (read as error) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "leakage induced long time correlated error"
+   },
+   {
+    "id": "0882e9543ea6",
+    "text": "Gains in radiation induced errors from Ionizing radiation may be offset by D. Implications for Future Processors.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "D. Implications for Future Processors",
+     "Ionizing radiation",
+     "radiation induced errors"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-13460-p0023",
+     "arxiv-2610-20132-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-13460-p0023",
+      "quote": "D. Implications for Future Processors While JJ GE significantly mitigates radiation-induced errors, qubit arrays protected in this way remain sensitive to radiation that deposits energy on the scale of a few MeV.",
+      "start": 416,
+      "end": 628,
+      "chunk_sha256": "21084cca402c41f5b16ae0915c7ce0bfe6205831ca6fa9e43780f1891b3c9caf",
+      "relation": "decreases",
+      "subject": "D. Implications for Future Processors",
+      "object": "radiation induced errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-20132-p0002",
+      "quote": "Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.",
+      "start": 0,
+      "end": 124,
+      "chunk_sha256": "ff8e50d626238325449b9c299fd1ea576640140085fa7b93de4476d44924581e",
+      "relation": "causes",
+      "subject": "Ionizing radiation",
+      "object": "correlated errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.758,
+     "novelty": 0.572
+    },
+    "falsification_test": "Measure radiation induced errors where both D. Implications for Future Processors and Ionizing radiation vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "radiation induced error"
+   },
+   {
+    "id": "d2837b7b57bc",
+    "text": "development of mitigation strategies may constrain Quantum computing through Robust quantum error correction (read as quantum error correction for high fidelity).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "development of mitigation strategies",
+     "Quantum computing"
+    ],
+    "via": [
+     "Robust quantum error correction (read as quantum error correction for high fidelity)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2012-06029-p0002",
+     "arxiv-2511-06124-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2012-06029-p0002",
+      "quote": "Robust quantum error correction will require the development of mitigation strategies to protect multiqubit arrays from correlated errors due to particle impacts.",
+      "start": 1137,
+      "end": 1299,
+      "chunk_sha256": "2416eef56868246d3a1f013edcafe079fe1a62c1b2f505c3d76f7a364aba6f80",
+      "relation": "constrains",
+      "subject": "development of mitigation strategies",
+      "object": "Robust quantum error correction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2511-06124-p0002",
+      "quote": "Quantum computing relies on quantum error correction for high-fidelity logical operations, but scaling to achieve near-term quantum utility is highly resource-intensive.",
+      "start": 0,
+      "end": 169,
+      "chunk_sha256": "edc5ad2abf1397ab0aa8baad23703d22b3aaf7acd23b3bfcfb116ed8901e76cb",
+      "relation": "constrains",
+      "subject": "quantum error correction for high fidelity",
+      "object": "Quantum computing",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.736,
+     "novelty": 0.581
+    },
+    "falsification_test": "Compare settings where development of mitigation strategies differs while other inputs are matched. The hypothesis fails if Quantum computing does not stay bounded with development of mitigation strategies, or if fixing Robust quantum error correction (read as quantum error correction for high fidelity) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "robust quantum error correction"
+   },
+   {
+    "id": "114d9c4bc442",
+    "text": "development of mitigation strategies may constrain Quantum computers through Robust quantum error correction (read as quantum error correction).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "development of mitigation strategies",
+     "Quantum computers"
+    ],
+    "via": [
+     "Robust quantum error correction (read as quantum error correction)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2012-06029-p0002",
+     "arxiv-2309-07060-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2012-06029-p0002",
+      "quote": "Robust quantum error correction will require the development of mitigation strategies to protect multiqubit arrays from correlated errors due to particle impacts.",
+      "start": 1137,
+      "end": 1299,
+      "chunk_sha256": "2416eef56868246d3a1f013edcafe079fe1a62c1b2f505c3d76f7a364aba6f80",
+      "relation": "constrains",
+      "subject": "development of mitigation strategies",
+      "object": "Robust quantum error correction",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2309-07060-p0002",
+      "quote": "Quantum computers will require quantum error correction to reach the low error rates necessary for solving problems that surpass the capabilities of conventional computers.",
+      "start": 0,
+      "end": 172,
+      "chunk_sha256": "8784e3615eb872cdb5c38c7b0ebf742c54cba2178003a8de866ceb6e2ebe16bc",
+      "relation": "constrains",
+      "subject": "quantum error correction",
+      "object": "Quantum computers",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.736,
+     "novelty": 0.482
+    },
+    "falsification_test": "Compare settings where development of mitigation strategies differs while other inputs are matched. The hypothesis fails if Quantum computers does not stay bounded with development of mitigation strategies, or if fixing Robust quantum error correction (read as quantum error correction) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "robust quantum error correction"
+   },
+   {
+    "id": "f4895cb83e3f",
+    "text": "less than 10 mEh and Recent experiments may jointly constrain energy errors, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "less than 10 mEh",
+     "Recent experiments",
+     "energy errors"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2511-21236-p0043",
+     "arxiv-2603-13460-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2511-21236-p0043",
+      "quote": "We observe that the effect of using REM alone is minor compared to M0 and tiled M0, so we only show it for LiH in the SI where the energy errors are reduced by less than 10 mEh.",
+      "start": 1811,
+      "end": 1988,
+      "chunk_sha256": "274b94f27cefe0e8e2eadfb1e4b9e771c1ced2ec116f04a358c0596ef5063f90",
+      "relation": "decreases",
+      "subject": "less than 10 mEh",
+      "object": "energy errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2603-13460-p0003",
+      "quote": "Recent experiments reduced correlated errors by making the difference in superconducting gap energy across the JJ larger than the qubit transition energy.",
+      "start": 287,
+      "end": 441,
+      "chunk_sha256": "9314264383ade6665563324516105b15bcc1259258cb3b8d271b4c4b176e87ef",
+      "relation": "decreases",
+      "subject": "Recent experiments",
+      "object": "correlated errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.735,
+     "novelty": 0.668
+    },
+    "falsification_test": "Relieve less than 10 mEh alone while measuring energy errors. The hypothesis fails if energy errors keeps improving without Recent experiments becoming the binding limit, or if relieving Recent experiments alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "energy error"
+   },
+   {
+    "id": "2af0e51801bd",
+    "text": "error string and Ionizing radiation may jointly drive Z error, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "error string",
+     "Ionizing radiation",
+     "Z error"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1905-06903-p0030",
+     "arxiv-2610-20132-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1905-06903-p0030",
+      "quote": "For instance, the error string highlighted in red and labeled ‘(2)’ in Fig. 9 is topologically equivalent to error string ‘(1)’, and therefore causes a Z error on qubit 1.",
+      "start": 751,
+      "end": 922,
+      "chunk_sha256": "187a5c07eae620effb533bcf4dd2bb0733b5aa3f84c500d61c49da77b79995c5",
+      "relation": "causes",
+      "subject": "error string",
+      "object": "Z error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-20132-p0002",
+      "quote": "Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.",
+      "start": 0,
+      "end": 124,
+      "chunk_sha256": "ff8e50d626238325449b9c299fd1ea576640140085fa7b93de4476d44924581e",
+      "relation": "causes",
+      "subject": "Ionizing radiation",
+      "object": "correlated errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.73,
+     "novelty": 0.663
+    },
+    "falsification_test": "Vary error string and Ionizing radiation separately and together. The hypothesis fails if the joint change in Z error equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "z error"
+   },
+   {
+    "id": "c121d7c4c21f",
+    "text": "logical error rate requirement and d shortest two qubit chains may move together because both depend on larger repetition code.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "logical error rate requirement",
+     "d shortest two qubit chains",
+     "larger repetition code"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2607-16166-p0051",
+     "arxiv-2208-02191-p0043"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2607-16166-p0051",
+      "quote": "The logical error rate requirement requires a larger repetition code to meet the target - in Table V we see that the smallest code meeting the LER target is m = 11 and this matches the value found for the EDM protocol in [17].",
+      "start": 0,
+      "end": 226,
+      "chunk_sha256": "1da6a9d6a480575846aab68c2022bb50fa75358ed00af56934818201ba3cbe12",
+      "relation": "constrains",
+      "subject": "larger repetition code",
+      "object": "logical error rate requirement",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2208-02191-p0043",
+      "quote": "A similar, but opposite effect takes place when correlated errors are present in the system: Local two-qubit errors form highly-degenerate shortestpath logical operators in the non-rotated code, while the rotated code only supports d shortest two-qubit chains, see Fig. 7.",
+      "start": 1170,
+      "end": 1442,
+      "chunk_sha256": "b5c4825e6251abe6673614a6bf0f67ba6b34be6fda22749c30de3041aadec8c9",
+      "relation": "supports",
+      "subject": "rotated code",
+      "object": "d shortest two qubit chains",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.735,
+     "novelty": 0.617
+    },
+    "falsification_test": "Track logical error rate requirement and d shortest two qubit chains across periods where larger repetition code changes and where it does not. The hypothesis fails if they co-vary just as strongly when larger repetition code is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "larger repetition code"
+   },
+   {
+    "id": "3bf93e8c0038",
+    "text": "Gains in Z error from error string may be offset by Recent experiments.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "error string",
+     "Recent experiments",
+     "Z error"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1905-06903-p0030",
+     "arxiv-2603-13460-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1905-06903-p0030",
+      "quote": "For instance, the error string highlighted in red and labeled ‘(2)’ in Fig. 9 is topologically equivalent to error string ‘(1)’, and therefore causes a Z error on qubit 1.",
+      "start": 751,
+      "end": 922,
+      "chunk_sha256": "187a5c07eae620effb533bcf4dd2bb0733b5aa3f84c500d61c49da77b79995c5",
+      "relation": "causes",
+      "subject": "error string",
+      "object": "Z error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2603-13460-p0003",
+      "quote": "Recent experiments reduced correlated errors by making the difference in superconducting gap energy across the JJ larger than the qubit transition energy.",
+      "start": 287,
+      "end": 441,
+      "chunk_sha256": "9314264383ade6665563324516105b15bcc1259258cb3b8d271b4c4b176e87ef",
+      "relation": "decreases",
+      "subject": "Recent experiments",
+      "object": "correlated errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.721,
+     "novelty": 0.6
+    },
+    "falsification_test": "Measure Z error where both error string and Recent experiments vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "z error"
+   },
+   {
+    "id": "aff89608458b",
+    "text": "faulty magic state and Ionizing radiation may jointly drive error of circuit outcome, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "faulty magic state",
+     "Ionizing radiation",
+     "error of circuit outcome"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1905-06903-p0011",
+     "arxiv-2610-20132-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1905-06903-p0011",
+      "quote": "The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].",
+      "start": 63,
+      "end": 240,
+      "chunk_sha256": "47d20465e0fd13b2d631fbdf22bced01bbc3f0774694297fc46f174b447e7ddf",
+      "relation": "causes",
+      "subject": "faulty magic state",
+      "object": "error of circuit outcome",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2610-20132-p0002",
+      "quote": "Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.",
+      "start": 0,
+      "end": 124,
+      "chunk_sha256": "ff8e50d626238325449b9c299fd1ea576640140085fa7b93de4476d44924581e",
+      "relation": "causes",
+      "subject": "Ionizing radiation",
+      "object": "correlated errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.699,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary faulty magic state and Ionizing radiation separately and together. The hypothesis fails if the joint change in error of circuit outcome equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "error of circuit outcome"
+   },
+   {
+    "id": "54cbd99e3df4",
+    "text": "problem inspired ansatzes may constrain error mitigation protocol through space.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "problem inspired ansatzes",
+     "error mitigation protocol"
+    ],
+    "via": [
+     "space"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2105-14377-p0006",
+     "arxiv-2510-10905-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2105-14377-p0006",
+      "quote": "Here, the intuition is that problem-inspired ansatzes constrain the space explored during the optimization to a space that either contains the solution to the problem, or that at least contains a good approximation to the solution, while maintaining a low",
+      "start": 802,
+      "end": 1057,
+      "chunk_sha256": "3ff4a57d3636af04843940520eefac1b3c96e0d63c38dbbb88e6c75080e6d767",
+      "relation": "constrains",
+      "subject": "problem inspired ansatzes",
+      "object": "space",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2510-10905-p0002",
+      "quote": "This comes at the cost of exponential circuit depth, however, and leads us to conjecture that any error mitigation protocol with (sub-)polynomial sample complexity requires exponential time and/or space, even when logical qubits are utilized as a resource.",
+      "start": 1158,
+      "end": 1414,
+      "chunk_sha256": "7736598e555a32ac2234abd55729fc1537d14a76bc975b0b3e00614734b2172d",
+      "relation": "constrains",
+      "subject": "space",
+      "object": "error mitigation protocol",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.687,
+     "novelty": 0.628
+    },
+    "falsification_test": "Compare settings where problem inspired ansatzes differs while other inputs are matched. The hypothesis fails if error mitigation protocol does not stay bounded with problem inspired ansatzes, or if fixing space removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "space"
+   },
+   {
+    "id": "f26fe46212e9",
+    "text": "Gains in error of circuit outcome from faulty magic state may be offset by Recent experiments.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "faulty magic state",
+     "Recent experiments",
+     "error of circuit outcome"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1905-06903-p0011",
+     "arxiv-2603-13460-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1905-06903-p0011",
+      "quote": "The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].",
+      "start": 63,
+      "end": 240,
+      "chunk_sha256": "47d20465e0fd13b2d631fbdf22bced01bbc3f0774694297fc46f174b447e7ddf",
+      "relation": "causes",
+      "subject": "faulty magic state",
+      "object": "error of circuit outcome",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2603-13460-p0003",
+      "quote": "Recent experiments reduced correlated errors by making the difference in superconducting gap energy across the JJ larger than the qubit transition energy.",
+      "start": 287,
+      "end": 441,
+      "chunk_sha256": "9314264383ade6665563324516105b15bcc1259258cb3b8d271b4c4b176e87ef",
+      "relation": "decreases",
+      "subject": "Recent experiments",
+      "object": "correlated errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.69,
+     "novelty": 0.55
+    },
+    "falsification_test": "Measure error of circuit outcome where both faulty magic state and Recent experiments vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "error of circuit outcome"
+   },
+   {
+    "id": "cd97350d0401",
+    "text": "QP population may increase Z error of output qubit through relaxation errors (read as error).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "QP population",
+     "Z error of output qubit"
+    ],
+    "via": [
+     "relaxation errors (read as error)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-13460-p0010",
+     "arxiv-1905-06903-p0030"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-13460-p0010",
+      "quote": "It was hypothesized that since relaxation errors are driven by the QP population in the relatively low gap M2 layer, the QP dynamics differ between the qubit capacitor and the ground plane.",
+      "start": 1084,
+      "end": 1273,
+      "chunk_sha256": "ea76a8d916b3557bba70eb1075b012a15dde2c82c3bcf5f407ee2e1b7fdbb80d",
+      "relation": "increases",
+      "subject": "QP population",
+      "object": "relaxation errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0030",
+      "quote": "Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.",
+      "start": 1046,
+      "end": 1197,
+      "chunk_sha256": "187a5c07eae620effb533bcf4dd2bb0733b5aa3f84c500d61c49da77b79995c5",
+      "relation": "causes",
+      "subject": "error",
+      "object": "Z error of output qubit",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.677,
+     "novelty": 0.572
+    },
+    "falsification_test": "Compare settings where QP population differs while other inputs are matched. The hypothesis fails if Z error of output qubit does not rise with QP population, or if fixing relaxation errors (read as error) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "relaxation error"
+   },
+   {
+    "id": "20a6633a3e37",
+    "text": "Cultivation may increase quest for universal superconducting quantum computing through error.",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "Cultivation",
+     "quest for universal superconducting quantum computing"
+    ],
+    "via": [
+     "error"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2512-13908-p0002",
+     "arxiv-2506-16834-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2512-13908-p0002",
+      "quote": "Cultivation reduces the error by a factor of 40, with a state fidelity of 0.9999(1) (retaining 8% of attempts).",
+      "start": 659,
+      "end": 770,
+      "chunk_sha256": "85a99549516d12374e46f736e12e64c9d3821633fb29b4914050cecaa0cab105",
+      "relation": "decreases",
+      "subject": "Cultivation",
+      "object": "error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2506-16834-p0002",
+      "quote": "The quest for universal superconducting quantum computing is hindered by noise and errors.",
+      "start": 0,
+      "end": 90,
+      "chunk_sha256": "f00ea1f3cc2f45ac601d96232db5605c9d65a2e5d5885b815aa9ce7d37b648be",
+      "relation": "decreases",
+      "subject": "errors",
+      "object": "quest for universal superconducting quantum computing",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.675,
+     "novelty": 0.517
+    },
+    "falsification_test": "Compare settings where Cultivation differs while other inputs are matched. The hypothesis fails if quest for universal superconducting quantum computing does not rise with Cultivation, or if fixing error removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "error"
+   },
+   {
+    "id": "e5f540567e1d",
+    "text": "ZNE may increase quest for universal superconducting quantum computing through errors.",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "ZNE",
+     "quest for universal superconducting quantum computing"
+    ],
+    "via": [
+     "errors"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2607-25746-p0004",
+     "arxiv-2506-16834-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2607-25746-p0004",
+      "quote": "ZNE mitigates errors by evaluating a circuit at several amplified noise levels and then extrapolating the resulting estimates to the zero-noise limit.",
+      "start": 89,
+      "end": 239,
+      "chunk_sha256": "6d4304b1774645303c361b654b34fafd366c3661574ac80d34df7149af2f040e",
+      "relation": "decreases",
+      "subject": "ZNE",
+      "object": "errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2506-16834-p0002",
+      "quote": "The quest for universal superconducting quantum computing is hindered by noise and errors.",
+      "start": 0,
+      "end": 90,
+      "chunk_sha256": "f00ea1f3cc2f45ac601d96232db5605c9d65a2e5d5885b815aa9ce7d37b648be",
+      "relation": "decreases",
+      "subject": "errors",
+      "object": "quest for universal superconducting quantum computing",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.679,
+     "novelty": 0.517
+    },
+    "falsification_test": "Compare settings where ZNE differs while other inputs are matched. The hypothesis fails if quest for universal superconducting quantum computing does not rise with ZNE, or if fixing errors removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "error"
+   },
+   {
+    "id": "0d538cc759fd",
+    "text": "QP population may increase incorrect interpretation of lattice surgery measurement through relaxation errors (read as error).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "QP population",
+     "incorrect interpretation of lattice surgery measurement"
+    ],
+    "via": [
+     "relaxation errors (read as error)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-13460-p0010",
+     "arxiv-1905-06903-p0031"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-13460-p0010",
+      "quote": "It was hypothesized that since relaxation errors are driven by the QP population in the relatively low gap M2 layer, the QP dynamics differ between the qubit capacitor and the ground plane.",
+      "start": 1084,
+      "end": 1273,
+      "chunk_sha256": "ea76a8d916b3557bba70eb1075b012a15dde2c82c3bcf5f407ee2e1b7fdbb80d",
+      "relation": "increases",
+      "subject": "QP population",
+      "object": "relaxation errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0031",
+      "quote": "Such an error leads to an incorrect interpretation of the lattice-surgery measurement outcome.",
+      "start": 855,
+      "end": 949,
+      "chunk_sha256": "6124c6e208db39796f45a8908ba1fef190335fd9c0061ecb4a5e49e37363f1f4",
+      "relation": "causes",
+      "subject": "error",
+      "object": "incorrect interpretation of lattice surgery measurement",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.665,
+     "novelty": 0.683
+    },
+    "falsification_test": "Compare settings where QP population differs while other inputs are matched. The hypothesis fails if incorrect interpretation of lattice surgery measurement does not rise with QP population, or if fixing relaxation errors (read as error) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "relaxation error"
+   },
+   {
+    "id": "6dad6e30fc3f",
+    "text": "decoding problem and Y error may jointly constrain HZ X, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "decoding problem",
+     "Y error",
+     "HZ X"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2411-08177-p0012",
+     "arxiv-2601-10461-p0025"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2411-08177-p0012",
+      "quote": "The decoding problem reduces to solving: sX = HZ eT X , sZ = HX eT Z , (5) where HX and HZ are the parity-check matrices corresponding to the X- and Z-stabilizers, and eX and eZ are the error vectors for X- and Z-type errors, respectively.",
+      "start": 1285,
+      "end": 1524,
+      "chunk_sha256": "ba7a9cd1b332602783fd27d96c2097383f88147647dfab16c8e2a3f2c4635727",
+      "relation": "decreases",
+      "subject": "decoding problem",
+      "object": "HZ X",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2601-10461-p0025",
+      "quote": "However, a Pauli X for an ST qubit requires an X and/or a Y error on both spins of the same pair (as per Table I).",
+      "start": 452,
+      "end": 566,
+      "chunk_sha256": "d29589217143bd628674bbc8f1ab7f272a9bb2365e4fae88fa2e8e3cf9a0a12f",
+      "relation": "constrains",
+      "subject": "Y error",
+      "object": "Pauli X for ST qubit",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.635,
+     "novelty": 0.65
+    },
+    "falsification_test": "Relieve decoding problem alone while measuring HZ X. The hypothesis fails if HZ X keeps improving without Y error becoming the binding limit, or if relieving Y error alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "hz x"
+   },
+   {
+    "id": "938d229e120c",
+    "text": "cultivation circuit may reduce incorrect interpretation of lattice surgery measurement through state error (read as error).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "cultivation circuit",
+     "incorrect interpretation of lattice surgery measurement"
+    ],
+    "via": [
+     "state error (read as error)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2512-13908-p0010",
+     "arxiv-1905-06903-p0031"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2512-13908-p0010",
+      "quote": "Then the cultivation circuit projects the state to the X = Z line (right Bloch sphere, red arrow), and reduces the state error (red clouds).",
+      "start": 160,
+      "end": 300,
+      "chunk_sha256": "37262bc09e60fdad96efd34a518e058be9cd79f7b6d94c153bef8714897c1f82",
+      "relation": "decreases",
+      "subject": "cultivation circuit",
+      "object": "state error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0031",
+      "quote": "Such an error leads to an incorrect interpretation of the lattice-surgery measurement outcome.",
+      "start": 855,
+      "end": 949,
+      "chunk_sha256": "6124c6e208db39796f45a8908ba1fef190335fd9c0061ecb4a5e49e37363f1f4",
+      "relation": "causes",
+      "subject": "error",
+      "object": "incorrect interpretation of lattice surgery measurement",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.636,
+     "novelty": 0.642
+    },
+    "falsification_test": "Compare settings where cultivation circuit differs while other inputs are matched. The hypothesis fails if incorrect interpretation of lattice surgery measurement does not fall with cultivation circuit, or if fixing state error (read as error) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "state error"
+   },
+   {
+    "id": "393c194a7ebd",
+    "text": "- local connectivity1 may constrain leakage errors through scheme (read as leakage correction schemes).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "- local connectivity1",
+     "leakage errors"
+    ],
+    "via": [
+     "scheme (read as leakage correction schemes)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1811-00566-p0008",
+     "arxiv-1904-10378-p0028"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1811-00566-p0008",
+      "quote": "The scheme we numerically analyze in this work does require code concatenation for distances d > 3 and thus requires non-local connectivity1.",
+      "start": 1587,
+      "end": 1728,
+      "chunk_sha256": "49b4fc43f820fcf89566217833ecbfe8398bb5eb55dff2e9e7bc96c766fddd76",
+      "relation": "constrains",
+      "subject": "- local connectivity1",
+      "object": "scheme",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1904-10378-p0028",
+      "quote": "Without the use of mediators, leakage errors apply directly to the qubit dots and require leakage correction schemes to be applied.",
+      "start": 380,
+      "end": 511,
+      "chunk_sha256": "159cd662dc4c660ca4806ef54cc7e01147e587f8e9c15df84b38cfd2da57e99e",
+      "relation": "constrains",
+      "subject": "leakage correction schemes",
+      "object": "leakage errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.643,
+     "novelty": 0.628
+    },
+    "falsification_test": "Compare settings where - local connectivity1 differs while other inputs are matched. The hypothesis fails if leakage errors does not stay bounded with - local connectivity1, or if fixing scheme (read as leakage correction schemes) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "scheme"
+   },
+   {
+    "id": "3f5f8599f905",
+    "text": "QP population may increase majority of error through relaxation errors (read as computational error).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "QP population",
+     "majority of error"
+    ],
+    "via": [
+     "relaxation errors (read as computational error)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2603-13460-p0010",
+     "arxiv-2102-06131-p0051"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2603-13460-p0010",
+      "quote": "It was hypothesized that since relaxation errors are driven by the QP population in the relatively low gap M2 layer, the QP dynamics differ between the qubit capacitor and the ground plane.",
+      "start": 1084,
+      "end": 1273,
+      "chunk_sha256": "ea76a8d916b3557bba70eb1075b012a15dde2c82c3bcf5f407ee2e1b7fdbb80d",
+      "relation": "increases",
+      "subject": "QP population",
+      "object": "relaxation errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2102-06131-p0051",
+      "quote": "We see that computational error accounts for the majority of error in all cases.",
+      "start": 218,
+      "end": 298,
+      "chunk_sha256": "1914de678321b8b58d9a70889c28521d6f6b557b1ea17aa91cbb628f63c994c7",
+      "relation": "causes",
+      "subject": "computational error",
+      "object": "majority of error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.642,
+     "novelty": 0.628
+    },
+    "falsification_test": "Compare settings where QP population differs while other inputs are matched. The hypothesis fails if majority of error does not rise with QP population, or if fixing relaxation errors (read as computational error) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "relaxation error"
+   },
+   {
+    "id": "214344109004",
+    "text": "error analysis of protocols may reduce unwanted effect of noise through two level 15 protocols (read as protocols).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "error analysis of protocols",
+     "unwanted effect of noise"
+    ],
+    "via": [
+     "two level 15 protocols (read as protocols)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1905-06903-p0042",
+     "arxiv-2210-11505-p0008"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1905-06903-p0042",
+      "quote": "The error analysis of protocols labeled as (15-to-1)nL1 dX ,dZ ,dm × (20-to-4)dX2 ,dZ2 ,dm2 is identical to two-level 15-to-1 protocols, albeit with a different space and time cost, and the extra step of dividing the space-time cost and output error by four.",
+      "start": 825,
+      "end": 1083,
+      "chunk_sha256": "dd2f66ab1a7543d4848b743414c0e1b33813364038747abc13ca053ab647d781",
+      "relation": "alias_of",
+      "subject": "error analysis of protocols",
+      "object": "two level 15 protocols",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2210-11505-p0008",
+      "quote": "Such protocols reduce the unwanted effect of noise on a quantum circuit by measuring it and classically post-processing the results (see Fig. 3).",
+      "start": 934,
+      "end": 1079,
+      "chunk_sha256": "c59398419acb0b91a30d55449232a9f754fb415763067450dd2f34e4feea976b",
+      "relation": "decreases",
+      "subject": "protocols",
+      "object": "unwanted effect of noise",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.642,
+     "novelty": 0.623
+    },
+    "falsification_test": "Compare settings where error analysis of protocols differs while other inputs are matched. The hypothesis fails if unwanted effect of noise does not fall with error analysis of protocols, or if fixing two level 15 protocols (read as protocols) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "two level 15 protocol"
+   },
+   {
+    "id": "96be157f262a",
+    "text": "preparation of large cat state ancillas may constrain leakage errors through scheme (read as leakage correction schemes).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "preparation of large cat state ancillas",
+     "leakage errors"
+    ],
+    "via": [
+     "scheme (read as leakage correction schemes)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1811-00566-p0008",
+     "arxiv-1904-10378-p0028"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1811-00566-p0008",
+      "quote": "However, the scheme proposed by AGP requires the preparation and verification of large cat state ancillas to perform the logical measurements.",
+      "start": 2262,
+      "end": 2404,
+      "chunk_sha256": "49b4fc43f820fcf89566217833ecbfe8398bb5eb55dff2e9e7bc96c766fddd76",
+      "relation": "constrains",
+      "subject": "preparation of large cat state ancillas",
+      "object": "scheme",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1904-10378-p0028",
+      "quote": "Without the use of mediators, leakage errors apply directly to the qubit dots and require leakage correction schemes to be applied.",
+      "start": 380,
+      "end": 511,
+      "chunk_sha256": "159cd662dc4c660ca4806ef54cc7e01147e587f8e9c15df84b38cfd2da57e99e",
+      "relation": "constrains",
+      "subject": "leakage correction schemes",
+      "object": "leakage errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.63,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where preparation of large cat state ancillas differs while other inputs are matched. The hypothesis fails if leakage errors does not stay bounded with preparation of large cat state ancillas, or if fixing scheme (read as leakage correction schemes) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "scheme"
+   },
+   {
+    "id": "89bc025b8086",
+    "text": "faulty magic state may increase majority of error through error of circuit outcome (read as computational error).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "faulty magic state",
+     "majority of error"
+    ],
+    "via": [
+     "error of circuit outcome (read as computational error)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1905-06903-p0011",
+     "arxiv-2102-06131-p0051"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1905-06903-p0011",
+      "quote": "The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].",
+      "start": 63,
+      "end": 240,
+      "chunk_sha256": "47d20465e0fd13b2d631fbdf22bced01bbc3f0774694297fc46f174b447e7ddf",
+      "relation": "causes",
+      "subject": "faulty magic state",
+      "object": "error of circuit outcome",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2102-06131-p0051",
+      "quote": "We see that computational error accounts for the majority of error in all cases.",
+      "start": 218,
+      "end": 298,
+      "chunk_sha256": "1914de678321b8b58d9a70889c28521d6f6b557b1ea17aa91cbb628f63c994c7",
+      "relation": "causes",
+      "subject": "computational error",
+      "object": "majority of error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.626,
+     "novelty": 0.577
+    },
+    "falsification_test": "Compare settings where faulty magic state differs while other inputs are matched. The hypothesis fails if majority of error does not rise with faulty magic state, or if fixing error of circuit outcome (read as computational error) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "error of circuit outcome"
+   },
+   {
+    "id": "4909c4999ad9",
+    "text": "non may constrain leakage errors through scheme (read as leakage correction schemes).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "non",
+     "leakage errors"
+    ],
+    "via": [
+     "scheme (read as leakage correction schemes)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1811-00566-p0008",
+     "arxiv-1904-10378-p0028"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1811-00566-p0008",
+      "quote": "The scheme we numerically analyze in this work does require code concatenation for distances d > 3 and thus requires non-local connectivity1.",
+      "start": 1587,
+      "end": 1728,
+      "chunk_sha256": "49b4fc43f820fcf89566217833ecbfe8398bb5eb55dff2e9e7bc96c766fddd76",
+      "relation": "constrains",
+      "subject": "non",
+      "object": "scheme",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1904-10378-p0028",
+      "quote": "Without the use of mediators, leakage errors apply directly to the qubit dots and require leakage correction schemes to be applied.",
+      "start": 380,
+      "end": 511,
+      "chunk_sha256": "159cd662dc4c660ca4806ef54cc7e01147e587f8e9c15df84b38cfd2da57e99e",
+      "relation": "constrains",
+      "subject": "leakage correction schemes",
+      "object": "leakage errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.618,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where non differs while other inputs are matched. The hypothesis fails if leakage errors does not stay bounded with non, or if fixing scheme (read as leakage correction schemes) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "scheme"
+   },
+   {
+    "id": "449539337239",
+    "text": "uniformity of sampling may constrain coset probability of error through definition.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "uniformity of sampling",
+     "coset probability of error"
+    ],
+    "via": [
+     "definition"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2505-08758-p0013",
+     "arxiv-2309-10331-p0031"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2505-08758-p0013",
+      "quote": "This definition, however, still requires uniformity of sampling from the Clifford group.",
+      "start": 0,
+      "end": 88,
+      "chunk_sha256": "d72dc7ecefb7f4ea1ee092e594d821f9b1db9abc605ccb8d761bc153e72e4c4a",
+      "relation": "constrains",
+      "subject": "uniformity of sampling",
+      "object": "definition",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2309-10331-p0031",
+      "quote": "The difference between definitions 1 and 2 is that definition 1 maximizes the probability of the error found while definition 2 maximizes the coset probability of the error found.",
+      "start": 615,
+      "end": 794,
+      "chunk_sha256": "66932de024586bbb671bca0dabb45136f456b49c0519a99ac4a96bf679726023",
+      "relation": "increases",
+      "subject": "definition",
+      "object": "coset probability of error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.609,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where uniformity of sampling differs while other inputs are matched. The hypothesis fails if coset probability of error does not stay bounded with uniformity of sampling, or if fixing definition removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "definition"
+   },
+   {
+    "id": "a35978507cb3",
+    "text": "error estimate may reduce unwanted effect of noise through ordinary 15 protocol (read as protocols).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "error estimate",
+     "unwanted effect of noise"
+    ],
+    "via": [
+     "ordinary 15 protocol (read as protocols)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1905-06903-p0047",
+     "arxiv-2210-11505-p0008"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1905-06903-p0047",
+      "quote": "The error estimate is identical to the ordinary 15-to-1 protocol.",
+      "start": 638,
+      "end": 703,
+      "chunk_sha256": "85ea385ab837aabe7ab72f9725a3ec1cd3bf181db81634013b4269388299f6bb",
+      "relation": "alias_of",
+      "subject": "error estimate",
+      "object": "ordinary 15 protocol",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2210-11505-p0008",
+      "quote": "Such protocols reduce the unwanted effect of noise on a quantum circuit by measuring it and classically post-processing the results (see Fig. 3).",
+      "start": 934,
+      "end": 1079,
+      "chunk_sha256": "c59398419acb0b91a30d55449232a9f754fb415763067450dd2f34e4feea976b",
+      "relation": "decreases",
+      "subject": "protocols",
+      "object": "unwanted effect of noise",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.61,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where error estimate differs while other inputs are matched. The hypothesis fails if unwanted effect of noise does not fall with error estimate, or if fixing ordinary 15 protocol (read as protocols) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "ordinary 15 protocol"
+   },
+   {
+    "id": "d40a0c1848cc",
+    "text": "cultivation circuit may reduce majority of error through state error (read as computational error).",
+    "pattern": "chain",
+    "relation": "decreases",
+    "anchors": [
+     "cultivation circuit",
+     "majority of error"
+    ],
+    "via": [
+     "state error (read as computational error)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2512-13908-p0010",
+     "arxiv-2102-06131-p0051"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2512-13908-p0010",
+      "quote": "Then the cultivation circuit projects the state to the X = Z line (right Bloch sphere, red arrow), and reduces the state error (red clouds).",
+      "start": 160,
+      "end": 300,
+      "chunk_sha256": "37262bc09e60fdad96efd34a518e058be9cd79f7b6d94c153bef8714897c1f82",
+      "relation": "decreases",
+      "subject": "cultivation circuit",
+      "object": "state error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2102-06131-p0051",
+      "quote": "We see that computational error accounts for the majority of error in all cases.",
+      "start": 218,
+      "end": 298,
+      "chunk_sha256": "1914de678321b8b58d9a70889c28521d6f6b557b1ea17aa91cbb628f63c994c7",
+      "relation": "causes",
+      "subject": "computational error",
+      "object": "majority of error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.612,
+     "novelty": 0.572
+    },
+    "falsification_test": "Compare settings where cultivation circuit differs while other inputs are matched. The hypothesis fails if majority of error does not fall with cultivation circuit, or if fixing state error (read as computational error) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "state error"
+   },
+   {
+    "id": "e5a2b2a46754",
+    "text": "residual exchange interaction may increase performance through expected error probability (read as physical error probability).",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "residual exchange interaction",
+     "performance"
+    ],
+    "via": [
+     "expected error probability (read as physical error probability)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1904-10378-p0017",
+     "arxiv-2212-11632-p0020"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1904-10378-p0017",
+      "quote": "This level of residual exchange interaction leads to an expected error probability (Joff Jon ≈ 10−4) well below the threshold of the surface codes and hence ignored in our discussion.",
+      "start": 1045,
+      "end": 1228,
+      "chunk_sha256": "e4fbdcfbac43cbdb237dc2eb2f21c2c10f9ce70c28c2f10be83632163684e771",
+      "relation": "causes",
+      "subject": "residual exchange interaction",
+      "object": "expected error probability",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2212-11632-p0020",
+      "quote": "Over the depolarizing channel (pX = pY = pZ = p/3) the performance of the code has been benchmarked through the probability threshold (pth), that is, the physical error probability at which increasing the distance of the code does improve its performance.",
+      "start": 127,
+      "end": 382,
+      "chunk_sha256": "0f534921050ebf2166d63ddabe3ad53d3582c3a29aa7f1a32b33d15335065fea",
+      "relation": "increases",
+      "subject": "physical error probability",
+      "object": "performance",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.596,
+     "novelty": 0.577
+    },
+    "falsification_test": "Compare settings where residual exchange interaction differs while other inputs are matched. The hypothesis fails if performance does not rise with residual exchange interaction, or if fixing expected error probability (read as physical error probability) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "expected error probability"
+   },
+   {
+    "id": "ba6b16579ca7",
+    "text": "cultivation and d shortest two qubit chains may stand or fall together because both rest on color code.",
+    "pattern": "divergent",
+    "relation": "common_ground",
+    "anchors": [
+     "cultivation",
+     "d shortest two qubit chains",
+     "color code"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2512-13908-p0014",
+     "arxiv-2208-02191-p0043"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2512-13908-p0014",
+      "quote": "GRAFTING TO A SURFACE CODE The surface code boasts a high threshold, matchable decoders, and well-developed dropout approaches [2, 11– 14], but the color code supports cultivation through its transversal single-qubit Clifford gates [1].",
+      "start": 648,
+      "end": 884,
+      "chunk_sha256": "daaef38d6b8b9039f13a6f04c9ea4a36d0baddadc16e28ed5dcb5b2ed356299f",
+      "relation": "supports",
+      "subject": "color code",
+      "object": "cultivation",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2208-02191-p0043",
+      "quote": "A similar, but opposite effect takes place when correlated errors are present in the system: Local two-qubit errors form highly-degenerate shortestpath logical operators in the non-rotated code, while the rotated code only supports d shortest two-qubit chains, see Fig. 7.",
+      "start": 1170,
+      "end": 1442,
+      "chunk_sha256": "b5c4825e6251abe6673614a6bf0f67ba6b34be6fda22749c30de3041aadec8c9",
+      "relation": "supports",
+      "subject": "rotated code",
+      "object": "d shortest two qubit chains",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.595,
+     "novelty": 0.725
+    },
+    "falsification_test": "Find a position that keeps cultivation and rejects d shortest two qubit chains, or the reverse, without giving up color code. The hypothesis fails if such a position is coherent.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "color code"
+   },
+   {
+    "id": "03dbc18b9ffc",
+    "text": "Bin and Pauli X for ST qubit may move together because both depend on input output bad error.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "Bin",
+     "Pauli X for ST qubit",
+     "input output bad error"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2508-08246-p0059",
+     "arxiv-2601-10461-p0025"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2508-08246-p0059",
+      "quote": "We use the circuit input/output definitions (input/output bad error supports Bin and Bout, etc.) from Definition 4.7 extended to the environment circuit in the trivial way by assigning trivial code types to all edges of the environment",
+      "start": 151,
+      "end": 386,
+      "chunk_sha256": "26d31cfb6d0d0e8947bdafb7f6599b6727fc2f2218eb34cd3d14dc21e3872559",
+      "relation": "supports",
+      "subject": "input output bad error",
+      "object": "Bin",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2601-10461-p0025",
+      "quote": "However, a Pauli X for an ST qubit requires an X and/or a Y error on both spins of the same pair (as per Table I).",
+      "start": 452,
+      "end": 566,
+      "chunk_sha256": "d29589217143bd628674bbc8f1ab7f272a9bb2365e4fae88fa2e8e3cf9a0a12f",
+      "relation": "constrains",
+      "subject": "Y error",
+      "object": "Pauli X for ST qubit",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.586,
+     "novelty": 0.642
+    },
+    "falsification_test": "Track Bin and Pauli X for ST qubit across periods where input output bad error changes and where it does not. The hypothesis fails if they co-vary just as strongly when input output bad error is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "input output bad error"
+   },
+   {
+    "id": "f9ce7dbd6911",
+    "text": "Bout and Pauli X for ST qubit may move together because both depend on input output bad error.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "Bout",
+     "Pauli X for ST qubit",
+     "input output bad error"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2508-08246-p0059",
+     "arxiv-2601-10461-p0025"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2508-08246-p0059",
+      "quote": "We use the circuit input/output definitions (input/output bad error supports Bin and Bout, etc.) from Definition 4.7 extended to the environment circuit in the trivial way by assigning trivial code types to all edges of the environment",
+      "start": 151,
+      "end": 386,
+      "chunk_sha256": "26d31cfb6d0d0e8947bdafb7f6599b6727fc2f2218eb34cd3d14dc21e3872559",
+      "relation": "supports",
+      "subject": "input output bad error",
+      "object": "Bout",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2601-10461-p0025",
+      "quote": "However, a Pauli X for an ST qubit requires an X and/or a Y error on both spins of the same pair (as per Table I).",
+      "start": 452,
+      "end": 566,
+      "chunk_sha256": "d29589217143bd628674bbc8f1ab7f272a9bb2365e4fae88fa2e8e3cf9a0a12f",
+      "relation": "constrains",
+      "subject": "Y error",
+      "object": "Pauli X for ST qubit",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.594,
+     "novelty": 0.642
+    },
+    "falsification_test": "Track Bout and Pauli X for ST qubit across periods where input output bad error changes and where it does not. The hypothesis fails if they co-vary just as strongly when input output bad error is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "input output bad error"
+   },
+   {
+    "id": "a0598d71e6a0",
+    "text": "mapping may constrain Z error strings through lattice decoding for color code (read as incorrect decoding of X syndrome).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "mapping",
+     "Z error strings"
+    ],
+    "via": [
+     "lattice decoding for color code (read as incorrect decoding of X syndrome)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2511-13192-p0021",
+     "arxiv-1905-06903-p0030"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2511-13192-p0021",
+      "quote": "II D. This mapping transforms the independent X/Z decoding for the surface code against depolarizing error into the independent Rb/Rg restricted lattice decoding for the color code against two-qubit bit-flip error (i.e., the restricted decoder), illustrated in Fig. 2(a).",
+      "start": 753,
+      "end": 1024,
+      "chunk_sha256": "497e6673e2350f3b241aad88f31a9a90eb4e2bd3a7b7c3742863f5e7e2363f71",
+      "relation": "constrains",
+      "subject": "mapping",
+      "object": "lattice decoding for color code",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0030",
+      "quote": "The incorrect decoding of the X syndrome in the ancilla region causes Z error strings connecting the X boundaries in the ancilla region.",
+      "start": 507,
+      "end": 643,
+      "chunk_sha256": "187a5c07eae620effb533bcf4dd2bb0733b5aa3f84c500d61c49da77b79995c5",
+      "relation": "causes",
+      "subject": "incorrect decoding of X syndrome",
+      "object": "Z error strings",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.592,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where mapping differs while other inputs are matched. The hypothesis fails if Z error strings does not stay bounded with mapping, or if fixing lattice decoding for color code (read as incorrect decoding of X syndrome) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "lattice decoding for color code"
+   },
+   {
+    "id": "2032a9c6586d",
+    "text": "code distance and minimum weight failure mechanisms may jointly constrain logical error rate of encoded qubits, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "code distance",
+     "minimum weight failure mechanisms",
+     "logical error rate of encoded qubits"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1905-06903-p0017",
+     "arxiv-2511-13192-p0027"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1905-06903-p0017",
+      "quote": "The code distance determines the logical error rate of the encoded qubits, which also depends on the underlying error model.",
+      "start": 0,
+      "end": 124,
+      "chunk_sha256": "5860b349d244950333ad40662d87e8421c1a463a6f78b3f969b9bf6b8680b21b",
+      "relation": "constrains",
+      "subject": "code distance",
+      "object": "logical error rate of encoded qubits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2511-13192-p0027",
+      "quote": "In the regime of asymptotically low physical error rates, the logical error rate is mainly determined by the number of minimum-weight failure mechanisms Pfail ∼ Nfail pm(1 − p)n−m ∼ Nfail pm (4) where Nfail is the number of minimum-weight (m) error configurations leading to a logical failure.",
+      "start": 0,
+      "end": 293,
+      "chunk_sha256": "77014e29080acae5525c7dfb22a0fbc3b3cb83d5ce170074796668521c90b009",
+      "relation": "constrains",
+      "subject": "minimum weight failure mechanisms",
+      "object": "logical error rate",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.585,
+     "novelty": 0.644
+    },
+    "falsification_test": "Relieve code distance alone while measuring logical error rate of encoded qubits. The hypothesis fails if logical error rate of encoded qubits keeps improving without minimum weight failure mechanisms becoming the binding limit, or if relieving minimum weight failure mechanisms alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "logical error rate of encoded qubit"
+   },
+   {
+    "id": "8bde847838e0",
+    "text": "uniformity of sampling may constrain probability of error through definition.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "uniformity of sampling",
+     "probability of error"
+    ],
+    "via": [
+     "definition"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2505-08758-p0013",
+     "arxiv-2309-10331-p0031"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2505-08758-p0013",
+      "quote": "This definition, however, still requires uniformity of sampling from the Clifford group.",
+      "start": 0,
+      "end": 88,
+      "chunk_sha256": "d72dc7ecefb7f4ea1ee092e594d821f9b1db9abc605ccb8d761bc153e72e4c4a",
+      "relation": "constrains",
+      "subject": "uniformity of sampling",
+      "object": "definition",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2309-10331-p0031",
+      "quote": "The difference between definitions 1 and 2 is that definition 1 maximizes the probability of the error found while definition 2 maximizes the coset probability of the error found.",
+      "start": 615,
+      "end": 794,
+      "chunk_sha256": "66932de024586bbb671bca0dabb45136f456b49c0519a99ac4a96bf679726023",
+      "relation": "increases",
+      "subject": "definition",
+      "object": "probability of error",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.566,
+     "novelty": 0.636
+    },
+    "falsification_test": "Compare settings where uniformity of sampling differs while other inputs are matched. The hypothesis fails if probability of error does not stay bounded with uniformity of sampling, or if fixing definition removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "definition"
+   }
+  ],
+  "survivors": 967,
+  "candidates_generated": 3475,
+  "candidates_passed": {
+   "abductive": 2461,
+   "deductive": 2458,
+   "pre_thinker": 969
+  },
+  "candidates_rejected": {
+   "abductive:incoherent_composition": 39,
+   "abductive:no_explanatory_relation": 55,
+   "abductive:unrelated_bridge": 920,
+   "deductive:conclusion_contradicted": 3,
+   "pre_thinker:circular": 305,
+   "pre_thinker:malformed": 1082,
+   "pre_thinker:restates_source": 27,
+   "pre_thinker:single_source": 75
+  },
+  "relation_edges": 996,
+  "scoped_edges": 315,
+  "budget_used": {
+   "rounds": 14,
+   "candidates": 3475,
+   "edges": 1042,
+   "bytes": 1315284,
+   "seconds": 13.273
+  },
+  "incomplete": false,
+  "stop_reason": null,
+  "shortage": null,
+  "snapshot": {
+   "as_of": 1795594701,
+   "chunk_count": 3369
+  }
+ },
+ "reply": "Frontier hypotheses for correlated errors. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 3475. Passed abductive check: 2461; deductive check: 2458; pre-thinker validation: 969.\n\n1. definition may increase performance through coset probability of error (read as physical error probability).\n[arxiv-2309-10331-p0031] The difference between definitions 1 and 2 is that definition 1 maximizes the probability of the error found while definition 2 maximizes the coset probability of the error found.\n[arxiv-2212-11632-p0020] Over the depolarizing channel (pX = pY = pZ = p/3) the performance of the code has been benchmarked through the probability threshold (pth), that is, the physical error probability at which increasing the distance of the code does improve its performance.\nFalsification test: Compare settings where definition differs while other inputs are matched. The hypothesis fails if performance does not rise with definition, or if fixing coset probability of error (read as physical error probability) removes no part of the effect.\nDeepen check: all links supported (definition -> coset probability of error: supported, coset probability of error -> performance: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.96, deductive relevance 0.54, novelty 0.52.\n\n2. class of VQAs and error may jointly constrain initial state, so relieving one may shift the bottleneck to the other.\n[arxiv-2405-05332-p0013] The class of VQAs we consider here restricts the initial state ρ to be a stabilizer state, the observable O to be a sum of poly(n) Pauli stings O = P i ciPi with real coefficients ci, and the circuit U (φφφ) to consist only of the constant Clifford gates and parametric Pauli rotation gates e−ıPk φk /2.\n[arxiv-2508-08246-p0054] In other words, the syndrome state |sE ⟩ is independent of the logical state and only depends on the error E. We now consider the case of a more general error superoperator E (not necessarily CPTP).\nFalsification test: Relieve class of VQAs alone while measuring initial state. The hypothesis fails if initial state keeps improving without error becoming the binding limit, or if relieving error alone has no effect.\nWarning, contested: contested (class of VQAs -> initial state: supported, error -> initial state: contested).\nComposition: requires review; plan readiness: needs input.\n  - [arxiv-2208-09385-p0078] For the numerical simulation performed to obtain the cost of generalized subspace expansion [21], we optimize parameter c1 and c2 so that the error mitigated state (c1I/2n + c2E ′(ρ))(c1I/2n + c2E ′(ρ))† = |c1|2/4nI + Re(c1c∗ 2)/2n−1E ′(ρ) + |c2|2E ′(ρ)2 reaches the noiseless state\nScores: source support 0.96, deductive relevance 0.53, novelty 0.62.\n\n3. reset and S. Bravyi may jointly constrain leakage induced long time correlated errors, so relieving one may shift the bottleneck to the other.\n[arxiv-2102-06131-p0023] We show that reset mitigates leakage-induced long-time correlated errors and significantly improves logical error suppression.\n[arxiv-2208-09385-p0034] [44] S. Bravyi, S. Sheldon, A. Kandala, D. C. Mckay, and J. M. Gambetta, Mitigating measurement errors in multiqubit experiments, arXiv preprint arXiv:2006.14044\nFalsification test: Relieve reset alone while measuring leakage induced long time correlated errors. The hypothesis fails if leakage induced long time correlated errors keeps improving without S. Bravyi becoming the binding limit, or if relieving S. Bravyi alone has no effect.\nDeepen check: all links supported (reset -> leakage induced long time correlated errors: supported, S. Bravyi -> leakage induced long time correlated errors: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.80, deductive relevance 0.86, novelty 0.74.\n\n4. Erasure conversion for singlet triplet spin may increase error threshold through high performance shuttling based quantum error (read as correlated errors).\n[arxiv-2601-10461-p0001] # Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction\n[arxiv-2407-16176-p0047] However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.\nFalsification test: Compare settings where Erasure conversion for singlet triplet spin differs while other inputs are matched. The hypothesis fails if error threshold does not rise with Erasure conversion for singlet triplet spin, or if fixing high performance shuttling based quantum error (read as correlated errors) removes no part of the effect.\nDeepen check: all links supported (Erasure conversion for singlet triplet spin -> high performance shuttling based quantum error: supported, high performance shuttling based quantum error -> error threshold: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.80, deductive relevance 0.86, novelty 0.69.\n\n5. D. Implications for Future Processors may reduce error threshold through radiation induced errors (read as correlated errors).\n[arxiv-2603-13460-p0023] D. Implications for Future Processors While JJ GE significantly mitigates radiation-induced errors, qubit arrays protected in this way remain sensitive to radiation that deposits energy on the scale of a few MeV.\n[arxiv-2407-16176-p0047] However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.\nFalsification test: Compare settings where D. Implications for Future Processors differs while other inputs are matched. The hypothesis fails if error threshold does not fall with D. Implications for Future Processors, or if fixing radiation induced errors (read as correlated errors) removes no part of the effect.\nDeepen check: all links supported (D. Implications for Future Processors -> radiation induced errors: supported, radiation induced errors -> error threshold: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.80, deductive relevance 0.86, novelty 0.62.\n\n6. less than 10 mEh may reduce error threshold through energy errors (read as correlated errors).\n[arxiv-2511-21236-p0043] We observe that the effect of using REM alone is minor compared to M0 and tiled M0, so we only show it for LiH in the SI where the energy errors are reduced by less than 10 mEh.\n[arxiv-2407-16176-p0047] However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.\nFalsification test: Compare settings where less than 10 mEh differs while other inputs are matched. The hypothesis fails if error threshold does not fall with less than 10 mEh, or if fixing energy errors (read as correlated errors) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.86, novelty 0.60.\n\n7. Erasure conversion for singlet triplet spin may reduce logical error rate through high performance shuttling based quantum error (read as correlated errors).\n[arxiv-2601-10461-p0001] # Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction\n[arxiv-2407-16176-p0047] However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.\nFalsification test: Compare settings where Erasure conversion for singlet triplet spin differs while other inputs are matched. The hypothesis fails if logical error rate does not fall with Erasure conversion for singlet triplet spin, or if fixing high performance shuttling based quantum error (read as correlated errors) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.85, novelty 0.70.\n\n8. D. Implications for Future Processors may increase logical error rate through radiation induced errors (read as correlated errors).\n[arxiv-2603-13460-p0023] D. Implications for Future Processors While JJ GE significantly mitigates radiation-induced errors, qubit arrays protected in this way remain sensitive to radiation that deposits energy on the scale of a few MeV.\n[arxiv-2407-16176-p0047] However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.\nFalsification test: Compare settings where D. Implications for Future Processors differs while other inputs are matched. The hypothesis fails if logical error rate does not rise with D. Implications for Future Processors, or if fixing radiation induced errors (read as correlated errors) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.85, novelty 0.64.\n\n9. S. Bravyi may increase logical error rate through measurement errors (read as correlated errors).\n[arxiv-2208-09385-p0034] [44] S. Bravyi, S. Sheldon, A. Kandala, D. C. Mckay, and J. M. Gambetta, Mitigating measurement errors in multiqubit experiments, arXiv preprint arXiv:2006.14044\n[arxiv-2407-16176-p0047] However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.\nFalsification test: Compare settings where S. Bravyi differs while other inputs are matched. The hypothesis fails if logical error rate does not rise with S. Bravyi, or if fixing measurement errors (read as correlated errors) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.85, novelty 0.57.\n\n10. successful implementation of quantum error correction and Pauli X for ST qubit may move together because both depend on negligible correlated errors.\n[arxiv-2305-02591-p0002] Moreover, successful implementation of quantum error correction requires negligible correlated errors among qubits.\n[arxiv-2601-10461-p0025] However, a Pauli X for an ST qubit requires an X and/or a Y error on both spins of the same pair (as per Table I).\nFalsification test: Track successful implementation of quantum error correction and Pauli X for ST qubit across periods where negligible correlated errors changes and where it does not. The hypothesis fails if they co-vary just as strongly when negligible correlated errors is held fixed.\nScores: source support 0.80, deductive relevance 0.85, novelty 0.56.\n\n11. higher level state occupations may increase Z error of output qubit through correlated errors (read as error).\n[arxiv-2102-06131-p0014] This result also raises the question how higher level state occupations that naturally arise during the stabilizer codes lead to correlated errors.\n[arxiv-1905-06903-p0030] Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.\nFalsification test: Compare settings where higher level state occupations differs while other inputs are matched. The hypothesis fails if Z error of output qubit does not rise with higher level state occupations, or if fixing correlated errors (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.84, novelty 0.58.\n\n12. development of mitigation strategies may constrain Realizing the full potential of quantum through Robust quantum error correction (read as quantum error correction).\n[arxiv-2012-06029-p0002] Robust quantum error correction will require the development of mitigation strategies to protect multiqubit arrays from correlated errors due to particle impacts.\n[arxiv-2203-04948-p0002] Realizing the full potential of quantum computation requires quantum error correction (QEC), with most recent breakthrough demonstrations of QEC using the surface code.\nFalsification test: Compare settings where development of mitigation strategies differs while other inputs are matched. The hypothesis fails if Realizing the full potential of quantum does not stay bounded with development of mitigation strategies, or if fixing Robust quantum error correction (read as quantum error correction) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.83, novelty 0.58.\n\n13. Gains in correlated errors from higher level state occupations may be offset by S. Bravyi.\n[arxiv-2102-06131-p0014] This result also raises the question how higher level state occupations that naturally arise during the stabilizer codes lead to correlated errors.\n[arxiv-2208-09385-p0034] [44] S. Bravyi, S. Sheldon, A. Kandala, D. C. Mckay, and J. M. Gambetta, Mitigating measurement errors in multiqubit experiments, arXiv preprint arXiv:2006.14044\nFalsification test: Measure correlated errors where both higher level state occupations and S. Bravyi vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.83, novelty 0.52.\n\n14. Gains in correlated errors from higher level state occupations may be offset by less than 10 mEh.\n[arxiv-2102-06131-p0014] This result also raises the question how higher level state occupations that naturally arise during the stabilizer codes lead to correlated errors.\n[arxiv-2511-21236-p0043] We observe that the effect of using REM alone is minor compared to M0 and tiled M0, so we only show it for LiH in the SI where the energy errors are reduced by less than 10 mEh.\nFalsification test: Measure correlated errors where both higher level state occupations and less than 10 mEh vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.83, novelty 0.52.\n\n15. Erasure conversion for singlet triplet spin may affect successful implementation of quantum error correction through high performance shuttling based quantum error (read as negligible correlated errors).\n[arxiv-2601-10461-p0001] # Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction\n[arxiv-2305-02591-p0002] Moreover, successful implementation of quantum error correction requires negligible correlated errors among qubits.\nFalsification test: Compare settings where Erasure conversion for singlet triplet spin differs while other inputs are matched. The hypothesis fails if successful implementation of quantum error correction does not change with Erasure conversion for singlet triplet spin, or if fixing high performance shuttling based quantum error (read as negligible correlated errors) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.82, novelty 0.67.\n\n16. Bout and successful implementation of quantum error correction may move together because both depend on input output bad error.\n[arxiv-2508-08246-p0059] We use the circuit input/output definitions (input/output bad error supports Bin and Bout, etc.) from Definition 4.7 extended to the environment circuit in the trivial way by assigning trivial code types to all edges of the environment\n[arxiv-2305-02591-p0002] Moreover, successful implementation of quantum error correction requires negligible correlated errors among qubits.\nFalsification test: Track Bout and successful implementation of quantum error correction across periods where input output bad error changes and where it does not. The hypothesis fails if they co-vary just as strongly when input output bad error is held fixed.\nScores: source support 0.80, deductive relevance 0.82, novelty 0.66.\n\n17. Gains in leakage induced long time correlated errors from rotations may be offset by reset.\n[arxiv-2102-06131-p0023] We show that reset mitigates leakage-induced long-time correlated errors and significantly improves logical error suppression.\n[arxiv-1905-06903-p0009] However, some combinations of three faulty gates, e.g., rotations 5, 11 and 14, will cause a Z Pauli error on the output state, but will not trigger any flipped X measurement outcomes.\nFalsification test: Measure leakage induced long time correlated errors where both reset and rotations vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.78, novelty 0.65.\n\n18. reset may reduce Z error of output qubit through leakage induced long time correlated errors (read as error).\n[arxiv-2102-06131-p0023] We show that reset mitigates leakage-induced long-time correlated errors and significantly improves logical error suppression.\n[arxiv-1905-06903-p0030] Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.\nFalsification test: Compare settings where reset differs while other inputs are matched. The hypothesis fails if Z error of output qubit does not fall with reset, or if fixing leakage induced long time correlated errors (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.76, novelty 0.72.\n\n19. Gains in radiation induced errors from Ionizing radiation may be offset by D. Implications for Future Processors.\n[arxiv-2603-13460-p0023] D. Implications for Future Processors While JJ GE significantly mitigates radiation-induced errors, qubit arrays protected in this way remain sensitive to radiation that deposits energy on the scale of a few MeV.\n[arxiv-2610-20132-p0002] Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.\nFalsification test: Measure radiation induced errors where both D. Implications for Future Processors and Ionizing radiation vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.76, novelty 0.57.\n\n20. development of mitigation strategies may constrain Quantum computing through Robust quantum error correction (read as quantum error correction for high fidelity).\n[arxiv-2012-06029-p0002] Robust quantum error correction will require the development of mitigation strategies to protect multiqubit arrays from correlated errors due to particle impacts.\n[arxiv-2511-06124-p0002] Quantum computing relies on quantum error correction for high-fidelity logical operations, but scaling to achieve near-term quantum utility is highly resource-intensive.\nFalsification test: Compare settings where development of mitigation strategies differs while other inputs are matched. The hypothesis fails if Quantum computing does not stay bounded with development of mitigation strategies, or if fixing Robust quantum error correction (read as quantum error correction for high fidelity) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.74, novelty 0.58.\n\n21. development of mitigation strategies may constrain Quantum computers through Robust quantum error correction (read as quantum error correction).\n[arxiv-2012-06029-p0002] Robust quantum error correction will require the development of mitigation strategies to protect multiqubit arrays from correlated errors due to particle impacts.\n[arxiv-2309-07060-p0002] Quantum computers will require quantum error correction to reach the low error rates necessary for solving problems that surpass the capabilities of conventional computers.\nFalsification test: Compare settings where development of mitigation strategies differs while other inputs are matched. The hypothesis fails if Quantum computers does not stay bounded with development of mitigation strategies, or if fixing Robust quantum error correction (read as quantum error correction) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.74, novelty 0.48.\n\n22. less than 10 mEh and Recent experiments may jointly constrain energy errors, so relieving one may shift the bottleneck to the other.\n[arxiv-2511-21236-p0043] We observe that the effect of using REM alone is minor compared to M0 and tiled M0, so we only show it for LiH in the SI where the energy errors are reduced by less than 10 mEh.\n[arxiv-2603-13460-p0003] Recent experiments reduced correlated errors by making the difference in superconducting gap energy across the JJ larger than the qubit transition energy.\nFalsification test: Relieve less than 10 mEh alone while measuring energy errors. The hypothesis fails if energy errors keeps improving without Recent experiments becoming the binding limit, or if relieving Recent experiments alone has no effect.\nScores: source support 0.80, deductive relevance 0.73, novelty 0.67.\n\n23. error string and Ionizing radiation may jointly drive Z error, and their effects may compound.\n[arxiv-1905-06903-p0030] For instance, the error string highlighted in red and labeled ‘(2)’ in Fig. 9 is topologically equivalent to error string ‘(1)’, and therefore causes a Z error on qubit 1.\n[arxiv-2610-20132-p0002] Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.\nFalsification test: Vary error string and Ionizing radiation separately and together. The hypothesis fails if the joint change in Z error equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.73, novelty 0.66.\n\n24. logical error rate requirement and d shortest two qubit chains may move together because both depend on larger repetition code.\n[arxiv-2607-16166-p0051] The logical error rate requirement requires a larger repetition code to meet the target - in Table V we see that the smallest code meeting the LER target is m = 11 and this matches the value found for the EDM protocol in [17].\n[arxiv-2208-02191-p0043] A similar, but opposite effect takes place when correlated errors are present in the system: Local two-qubit errors form highly-degenerate shortestpath logical operators in the non-rotated code, while the rotated code only supports d shortest two-qubit chains, see Fig. 7.\nFalsification test: Track logical error rate requirement and d shortest two qubit chains across periods where larger repetition code changes and where it does not. The hypothesis fails if they co-vary just as strongly when larger repetition code is held fixed.\nScores: source support 0.80, deductive relevance 0.73, novelty 0.62.\n\n25. Gains in Z error from error string may be offset by Recent experiments.\n[arxiv-1905-06903-p0030] For instance, the error string highlighted in red and labeled ‘(2)’ in Fig. 9 is topologically equivalent to error string ‘(1)’, and therefore causes a Z error on qubit 1.\n[arxiv-2603-13460-p0003] Recent experiments reduced correlated errors by making the difference in superconducting gap energy across the JJ larger than the qubit transition energy.\nFalsification test: Measure Z error where both error string and Recent experiments vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.72, novelty 0.60.\n\n26. faulty magic state and Ionizing radiation may jointly drive error of circuit outcome, and their effects may compound.\n[arxiv-1905-06903-p0011] The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].\n[arxiv-2610-20132-p0002] Ionizing radiation produces correlated errors in superconducting qubits, posing some challenges to quantum error correction.\nFalsification test: Vary faulty magic state and Ionizing radiation separately and together. The hypothesis fails if the joint change in error of circuit outcome equals the sum of the separate changes.\nScores: source support 0.80, deductive relevance 0.70, novelty 0.60.\n\n27. problem inspired ansatzes may constrain error mitigation protocol through space.\n[arxiv-2105-14377-p0006] Here, the intuition is that problem-inspired ansatzes constrain the space explored during the optimization to a space that either contains the solution to the problem, or that at least contains a good approximation to the solution, while maintaining a low\n[arxiv-2510-10905-p0002] This comes at the cost of exponential circuit depth, however, and leads us to conjecture that any error mitigation protocol with (sub-)polynomial sample complexity requires exponential time and/or space, even when logical qubits are utilized as a resource.\nFalsification test: Compare settings where problem inspired ansatzes differs while other inputs are matched. The hypothesis fails if error mitigation protocol does not stay bounded with problem inspired ansatzes, or if fixing space removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.69, novelty 0.63.\n\n28. Gains in error of circuit outcome from faulty magic state may be offset by Recent experiments.\n[arxiv-1905-06903-p0011] The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].\n[arxiv-2603-13460-p0003] Recent experiments reduced correlated errors by making the difference in superconducting gap energy across the JJ larger than the qubit transition energy.\nFalsification test: Measure error of circuit outcome where both faulty magic state and Recent experiments vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.80, deductive relevance 0.69, novelty 0.55.\n\n29. QP population may increase Z error of output qubit through relaxation errors (read as error).\n[arxiv-2603-13460-p0010] It was hypothesized that since relaxation errors are driven by the QP population in the relatively low gap M2 layer, the QP dynamics differ between the qubit capacitor and the ground plane.\n[arxiv-1905-06903-p0030] Still, as a simplified pessimistic estimate, we will assume that any such error directly contributes to the Z error of the output qubit, i.e., qubit 1.\nFalsification test: Compare settings where QP population differs while other inputs are matched. The hypothesis fails if Z error of output qubit does not rise with QP population, or if fixing relaxation errors (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.68, novelty 0.57.\n\n30. Cultivation may increase quest for universal superconducting quantum computing through error.\n[arxiv-2512-13908-p0002] Cultivation reduces the error by a factor of 40, with a state fidelity of 0.9999(1) (retaining 8% of attempts).\n[arxiv-2506-16834-p0002] The quest for universal superconducting quantum computing is hindered by noise and errors.\nFalsification test: Compare settings where Cultivation differs while other inputs are matched. The hypothesis fails if quest for universal superconducting quantum computing does not rise with Cultivation, or if fixing error removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.68, novelty 0.52.\n\n31. ZNE may increase quest for universal superconducting quantum computing through errors.\n[arxiv-2607-25746-p0004] ZNE mitigates errors by evaluating a circuit at several amplified noise levels and then extrapolating the resulting estimates to the zero-noise limit.\n[arxiv-2506-16834-p0002] The quest for universal superconducting quantum computing is hindered by noise and errors.\nFalsification test: Compare settings where ZNE differs while other inputs are matched. The hypothesis fails if quest for universal superconducting quantum computing does not rise with ZNE, or if fixing errors removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.68, novelty 0.52.\n\n32. QP population may increase incorrect interpretation of lattice surgery measurement through relaxation errors (read as error).\n[arxiv-2603-13460-p0010] It was hypothesized that since relaxation errors are driven by the QP population in the relatively low gap M2 layer, the QP dynamics differ between the qubit capacitor and the ground plane.\n[arxiv-1905-06903-p0031] Such an error leads to an incorrect interpretation of the lattice-surgery measurement outcome.\nFalsification test: Compare settings where QP population differs while other inputs are matched. The hypothesis fails if incorrect interpretation of lattice surgery measurement does not rise with QP population, or if fixing relaxation errors (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.67, novelty 0.68.\n\n33. decoding problem and Y error may jointly constrain HZ X, so relieving one may shift the bottleneck to the other.\n[arxiv-2411-08177-p0012] The decoding problem reduces to solving: sX = HZ eT X , sZ = HX eT Z , (5) where HX and HZ are the parity-check matrices corresponding to the X- and Z-stabilizers, and eX and eZ are the error vectors for X- and Z-type errors, respectively.\n[arxiv-2601-10461-p0025] However, a Pauli X for an ST qubit requires an X and/or a Y error on both spins of the same pair (as per Table I).\nFalsification test: Relieve decoding problem alone while measuring HZ X. The hypothesis fails if HZ X keeps improving without Y error becoming the binding limit, or if relieving Y error alone has no effect.\nScores: source support 0.80, deductive relevance 0.64, novelty 0.65.\n\n34. cultivation circuit may reduce incorrect interpretation of lattice surgery measurement through state error (read as error).\n[arxiv-2512-13908-p0010] Then the cultivation circuit projects the state to the X = Z line (right Bloch sphere, red arrow), and reduces the state error (red clouds).\n[arxiv-1905-06903-p0031] Such an error leads to an incorrect interpretation of the lattice-surgery measurement outcome.\nFalsification test: Compare settings where cultivation circuit differs while other inputs are matched. The hypothesis fails if incorrect interpretation of lattice surgery measurement does not fall with cultivation circuit, or if fixing state error (read as error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.64, novelty 0.64.\n\n35. - local connectivity1 may constrain leakage errors through scheme (read as leakage correction schemes).\n[arxiv-1811-00566-p0008] The scheme we numerically analyze in this work does require code concatenation for distances d > 3 and thus requires non-local connectivity1.\n[arxiv-1904-10378-p0028] Without the use of mediators, leakage errors apply directly to the qubit dots and require leakage correction schemes to be applied.\nFalsification test: Compare settings where - local connectivity1 differs while other inputs are matched. The hypothesis fails if leakage errors does not stay bounded with - local connectivity1, or if fixing scheme (read as leakage correction schemes) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.64, novelty 0.63.\n\n36. QP population may increase majority of error through relaxation errors (read as computational error).\n[arxiv-2603-13460-p0010] It was hypothesized that since relaxation errors are driven by the QP population in the relatively low gap M2 layer, the QP dynamics differ between the qubit capacitor and the ground plane.\n[arxiv-2102-06131-p0051] We see that computational error accounts for the majority of error in all cases.\nFalsification test: Compare settings where QP population differs while other inputs are matched. The hypothesis fails if majority of error does not rise with QP population, or if fixing relaxation errors (read as computational error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.64, novelty 0.63.\n\n37. error analysis of protocols may reduce unwanted effect of noise through two level 15 protocols (read as protocols).\n[arxiv-1905-06903-p0042] The error analysis of protocols labeled as (15-to-1)nL1 dX ,dZ ,dm × (20-to-4)dX2 ,dZ2 ,dm2 is identical to two-level 15-to-1 protocols, albeit with a different space and time cost, and the extra step of dividing the space-time cost and output error by four.\n[arxiv-2210-11505-p0008] Such protocols reduce the unwanted effect of noise on a quantum circuit by measuring it and classically post-processing the results (see Fig. 3).\nFalsification test: Compare settings where error analysis of protocols differs while other inputs are matched. The hypothesis fails if unwanted effect of noise does not fall with error analysis of protocols, or if fixing two level 15 protocols (read as protocols) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.64, novelty 0.62.\n\n38. preparation of large cat state ancillas may constrain leakage errors through scheme (read as leakage correction schemes).\n[arxiv-1811-00566-p0008] However, the scheme proposed by AGP requires the preparation and verification of large cat state ancillas to perform the logical measurements.\n[arxiv-1904-10378-p0028] Without the use of mediators, leakage errors apply directly to the qubit dots and require leakage correction schemes to be applied.\nFalsification test: Compare settings where preparation of large cat state ancillas differs while other inputs are matched. The hypothesis fails if leakage errors does not stay bounded with preparation of large cat state ancillas, or if fixing scheme (read as leakage correction schemes) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.63, novelty 0.60.\n\n39. faulty magic state may increase majority of error through error of circuit outcome (read as computational error).\n[arxiv-1905-06903-p0011] The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30].\n[arxiv-2102-06131-p0051] We see that computational error accounts for the majority of error in all cases.\nFalsification test: Compare settings where faulty magic state differs while other inputs are matched. The hypothesis fails if majority of error does not rise with faulty magic state, or if fixing error of circuit outcome (read as computational error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.63, novelty 0.58.\n\n40. non may constrain leakage errors through scheme (read as leakage correction schemes).\n[arxiv-1811-00566-p0008] The scheme we numerically analyze in this work does require code concatenation for distances d > 3 and thus requires non-local connectivity1.\n[arxiv-1904-10378-p0028] Without the use of mediators, leakage errors apply directly to the qubit dots and require leakage correction schemes to be applied.\nFalsification test: Compare settings where non differs while other inputs are matched. The hypothesis fails if leakage errors does not stay bounded with non, or if fixing scheme (read as leakage correction schemes) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.62, novelty 0.60.\n\n41. uniformity of sampling may constrain coset probability of error through definition.\n[arxiv-2505-08758-p0013] This definition, however, still requires uniformity of sampling from the Clifford group.\n[arxiv-2309-10331-p0031] The difference between definitions 1 and 2 is that definition 1 maximizes the probability of the error found while definition 2 maximizes the coset probability of the error found.\nFalsification test: Compare settings where uniformity of sampling differs while other inputs are matched. The hypothesis fails if coset probability of error does not stay bounded with uniformity of sampling, or if fixing definition removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.61, novelty 0.60.\n\n42. error estimate may reduce unwanted effect of noise through ordinary 15 protocol (read as protocols).\n[arxiv-1905-06903-p0047] The error estimate is identical to the ordinary 15-to-1 protocol.\n[arxiv-2210-11505-p0008] Such protocols reduce the unwanted effect of noise on a quantum circuit by measuring it and classically post-processing the results (see Fig. 3).\nFalsification test: Compare settings where error estimate differs while other inputs are matched. The hypothesis fails if unwanted effect of noise does not fall with error estimate, or if fixing ordinary 15 protocol (read as protocols) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.61, novelty 0.60.\n\n43. cultivation circuit may reduce majority of error through state error (read as computational error).\n[arxiv-2512-13908-p0010] Then the cultivation circuit projects the state to the X = Z line (right Bloch sphere, red arrow), and reduces the state error (red clouds).\n[arxiv-2102-06131-p0051] We see that computational error accounts for the majority of error in all cases.\nFalsification test: Compare settings where cultivation circuit differs while other inputs are matched. The hypothesis fails if majority of error does not fall with cultivation circuit, or if fixing state error (read as computational error) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.61, novelty 0.57.\n\n44. residual exchange interaction may increase performance through expected error probability (read as physical error probability).\n[arxiv-1904-10378-p0017] This level of residual exchange interaction leads to an expected error probability (Joff Jon ≈ 10−4) well below the threshold of the surface codes and hence ignored in our discussion.\n[arxiv-2212-11632-p0020] Over the depolarizing channel (pX = pY = pZ = p/3) the performance of the code has been benchmarked through the probability threshold (pth), that is, the physical error probability at which increasing the distance of the code does improve its performance.\nFalsification test: Compare settings where residual exchange interaction differs while other inputs are matched. The hypothesis fails if performance does not rise with residual exchange interaction, or if fixing expected error probability (read as physical error probability) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.60, novelty 0.58.\n\n45. cultivation and d shortest two qubit chains may stand or fall together because both rest on color code.\n[arxiv-2512-13908-p0014] GRAFTING TO A SURFACE CODE The surface code boasts a high threshold, matchable decoders, and well-developed dropout approaches [2, 11– 14], but the color code supports cultivation through its transversal single-qubit Clifford gates [1].\n[arxiv-2208-02191-p0043] A similar, but opposite effect takes place when correlated errors are present in the system: Local two-qubit errors form highly-degenerate shortestpath logical operators in the non-rotated code, while the rotated code only supports d shortest two-qubit chains, see Fig. 7.\nFalsification test: Find a position that keeps cultivation and rejects d shortest two qubit chains, or the reverse, without giving up color code. The hypothesis fails if such a position is coherent.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.72.\n\n46. Bin and Pauli X for ST qubit may move together because both depend on input output bad error.\n[arxiv-2508-08246-p0059] We use the circuit input/output definitions (input/output bad error supports Bin and Bout, etc.) from Definition 4.7 extended to the environment circuit in the trivial way by assigning trivial code types to all edges of the environment\n[arxiv-2601-10461-p0025] However, a Pauli X for an ST qubit requires an X and/or a Y error on both spins of the same pair (as per Table I).\nFalsification test: Track Bin and Pauli X for ST qubit across periods where input output bad error changes and where it does not. The hypothesis fails if they co-vary just as strongly when input output bad error is held fixed.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.64.\n\n47. Bout and Pauli X for ST qubit may move together because both depend on input output bad error.\n[arxiv-2508-08246-p0059] We use the circuit input/output definitions (input/output bad error supports Bin and Bout, etc.) from Definition 4.7 extended to the environment circuit in the trivial way by assigning trivial code types to all edges of the environment\n[arxiv-2601-10461-p0025] However, a Pauli X for an ST qubit requires an X and/or a Y error on both spins of the same pair (as per Table I).\nFalsification test: Track Bout and Pauli X for ST qubit across periods where input output bad error changes and where it does not. The hypothesis fails if they co-vary just as strongly when input output bad error is held fixed.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.64.\n\n48. mapping may constrain Z error strings through lattice decoding for color code (read as incorrect decoding of X syndrome).\n[arxiv-2511-13192-p0021] II D. This mapping transforms the independent X/Z decoding for the surface code against depolarizing error into the independent Rb/Rg restricted lattice decoding for the color code against two-qubit bit-flip error (i.e., the restricted decoder), illustrated in Fig. 2(a).\n[arxiv-1905-06903-p0030] The incorrect decoding of the X syndrome in the ancilla region causes Z error strings connecting the X boundaries in the ancilla region.\nFalsification test: Compare settings where mapping differs while other inputs are matched. The hypothesis fails if Z error strings does not stay bounded with mapping, or if fixing lattice decoding for color code (read as incorrect decoding of X syndrome) removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.59, novelty 0.60.\n\n49. code distance and minimum weight failure mechanisms may jointly constrain logical error rate of encoded qubits, so relieving one may shift the bottleneck to the other.\n[arxiv-1905-06903-p0017] The code distance determines the logical error rate of the encoded qubits, which also depends on the underlying error model.\n[arxiv-2511-13192-p0027] In the regime of asymptotically low physical error rates, the logical error rate is mainly determined by the number of minimum-weight failure mechanisms Pfail ∼ Nfail pm(1 − p)n−m ∼ Nfail pm (4) where Nfail is the number of minimum-weight (m) error configurations leading to a logical failure.\nFalsification test: Relieve code distance alone while measuring logical error rate of encoded qubits. The hypothesis fails if logical error rate of encoded qubits keeps improving without minimum weight failure mechanisms becoming the binding limit, or if relieving minimum weight failure mechanisms alone has no effect.\nScores: source support 0.80, deductive relevance 0.58, novelty 0.64.\n\n50. uniformity of sampling may constrain probability of error through definition.\n[arxiv-2505-08758-p0013] This definition, however, still requires uniformity of sampling from the Clifford group.\n[arxiv-2309-10331-p0031] The difference between definitions 1 and 2 is that definition 1 maximizes the probability of the error found while definition 2 maximizes the coset probability of the error found.\nFalsification test: Compare settings where uniformity of sampling differs while other inputs are matched. The hypothesis fails if probability of error does not stay bounded with uniformity of sampling, or if fixing definition removes no part of the effect.\nScores: source support 0.80, deductive relevance 0.57, novelty 0.64.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

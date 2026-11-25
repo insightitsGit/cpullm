@@ -1,0 +1,1490 @@
+{
+ "prompt": "Frontier: leakage.",
+ "seconds": 12.56,
+ "answer_status": "hypotheses",
+ "frontier": {
+  "schema": "frontier-v1",
+  "triggered": true,
+  "topic": "leakage",
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "limits": {
+   "max_rounds": 1000,
+   "max_candidates": 200000,
+   "max_edges": 50000,
+   "max_bytes": 67108864,
+   "max_seconds": 60.0,
+   "batch_size": 256,
+   "max_path_edges": 2,
+   "max_results": 50,
+   "min_results": 10
+  },
+  "topic_terms": [
+   "leakage"
+  ],
+  "focus_terms": [
+   "leakage"
+  ],
+  "chunk_count": 3369,
+  "candidate_search_complete": true,
+  "deepened": 5,
+  "leading_check": {
+   "requested": 5,
+   "checked": 5,
+   "complete": true,
+   "stop_reason": null
+  },
+  "parser": "en_core_web_lg",
+  "bridge_check": "encoder",
+  "encoded_terms": 21,
+  "hub_deferred": 7,
+  "status": "hypotheses",
+  "hypotheses": [
+   {
+    "id": "484278cc2cd4",
+    "text": "LRU may affect detection fidelity through leakage (read as state leakage).",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "LRU",
+     "detection fidelity"
+    ],
+    "via": [
+     "leakage (read as state leakage)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2302-09876-p0002",
+     "arxiv-2402-18868-p0003"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2302-09876-p0002",
+      "quote": "This LRU effectively reduces leakage in the second- and third-excited transmon states with up to 99% efficacy in 220~mathrmns, with minimum impact on the qubit subspace.",
+      "start": 309,
+      "end": 478,
+      "chunk_sha256": "6604e353a0dec2e010788f373f1865fcb4b2f2a031d00ec98942ba5ad3a35ba0",
+      "relation": "decreases",
+      "subject": "LRU",
+      "object": "leakage",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2402-18868-p0003",
+      "quote": "For promising trapped ion qubits, however, the detection fidelity is inherently limited by state leakage.",
+      "start": 157,
+      "end": 262,
+      "chunk_sha256": "351467c21d48c2f9cf932da253365e794f47dbffc0f0c271ef7bffc031378092",
+      "relation": "constrains",
+      "subject": "state leakage",
+      "object": "detection fidelity",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.8,
+     "deductive_relevance": 0.757,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where LRU differs while other inputs are matched. The hypothesis fails if detection fidelity does not change with LRU, or if fixing leakage (read as state leakage) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "leakage",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "affects",
+      "status": "consistent",
+      "observed": [
+       "affects"
+      ],
+      "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 1,
+        "requested": "leakage",
+        "source_term": "state leakage",
+        "citation": {
+         "document_id": "arxiv-2402-18868-p0003",
+         "quote": "For promising trapped ion qubits, however, the detection fidelity is inherently limited by state leakage.",
+         "start": 157,
+         "end": 262,
+         "chunk_sha256": "351467c21d48c2f9cf932da253365e794f47dbffc0f0c271ef7bffc031378092",
+         "relation": "constrains",
+         "subject": "state leakage",
+         "object": "detection fidelity",
+         "hedged": false
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "LRU",
+       "target": "leakage",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "leakage",
+       "target": "detection fidelity",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "83e91e2d7558",
+    "text": "class of VQAs may constrain ratio of leakage through initial state.",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "class of VQAs",
+     "ratio of leakage"
+    ],
+    "via": [
+     "initial state"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-05332-p0013",
+     "arxiv-2102-06131-p0052"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-05332-p0013",
+      "quote": "The class of VQAs we consider here restricts the initial state ρ to be a stabilizer state, the observable O to be a sum of poly(n) Pauli stings O = P i ciPi with real coefficients ci, and the circuit U (φφφ) to consist only of the constant Clifford gates and parametric Pauli rotation gates e−ıPk φk /2.",
+      "start": 0,
+      "end": 303,
+      "chunk_sha256": "00217a3822671968b26cb8b4fbe92787040b60d7eddd063479b70337ec1327a7",
+      "relation": "constrains",
+      "subject": "class of VQAs",
+      "object": "initial state",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2102-06131-p0052",
+      "quote": "For short swap and hold lengths, we can see that the ratio of leakage to computational error depends on the initial state, with higher states producing more leakage error as expected.",
+      "start": 86,
+      "end": 269,
+      "chunk_sha256": "85515c1d95a1871584bee9b6d97c101a6cadd51081605db8bd8f7e670e7a694b",
+      "relation": "constrains",
+      "subject": "initial state",
+      "object": "ratio of leakage",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.912,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where class of VQAs differs while other inputs are matched. The hypothesis fails if ratio of leakage does not stay bounded with class of VQAs, or if fixing initial state removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "initial state",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "constrains",
+      "status": "consistent",
+      "observed": [
+       "constrains"
+      ],
+      "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [],
+      "qualifications": [
+       {
+        "link": 0,
+        "citation": {
+         "document_id": "arxiv-2405-05332-p0013",
+         "quote": "The class of VQAs we consider here restricts the initial state ρ to be a stabilizer state, the observable O to be a sum of poly(n) Pauli stings O = P i ciPi with real coefficients ci, and the circuit U (φφφ) to consist only of the constant Clifford gates and parametric Pauli rotation gates e−ıPk φk /2.",
+         "start": 0,
+         "end": 303,
+         "chunk_sha256": "00217a3822671968b26cb8b4fbe92787040b60d7eddd063479b70337ec1327a7",
+         "relation": "constrains",
+         "subject": "class of VQAs",
+         "object": "initial state",
+         "hedged": false
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       },
+       {
+        "link": 1,
+        "citation": {
+         "document_id": "arxiv-2102-06131-p0052",
+         "quote": "For short swap and hold lengths, we can see that the ratio of leakage to computational error depends on the initial state, with higher states producing more leakage error as expected.",
+         "start": 86,
+         "end": 269,
+         "chunk_sha256": "85515c1d95a1871584bee9b6d97c101a6cadd51081605db8bd8f7e670e7a694b",
+         "relation": "constrains",
+         "subject": "initial state",
+         "object": "ratio of leakage",
+         "hedged": true
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       }
+      ],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "class of VQAs",
+       "target": "initial state",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "initial state",
+       "target": "ratio of leakage",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "bd9689785a91",
+    "text": "false detection of leakage events and low frequency phase noise may jointly constrain performance, so relieving one may shift the bottleneck to the other.",
+    "pattern": "convergent",
+    "relation": "co_constrain",
+    "anchors": [
+     "false detection of leakage events",
+     "low frequency phase noise",
+     "performance"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-10461-p0043",
+     "arxiv-2512-13908-p0054"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-10461-p0043",
+      "quote": "As for the XZZX scheme, it seems that the performance is partially limited by the false detection of leakage events (since they cannot be pair-matched as in the CSS case, due to the use of CNOTs).",
+      "start": 211,
+      "end": 407,
+      "chunk_sha256": "a1fd9db25fd3f4b0055710ab13fb2223117ea62c805a9ad4a1110a135bbebcf8",
+      "relation": "constrains",
+      "subject": "false detection of leakage events",
+      "object": "performance",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2512-13908-p0054",
+      "quote": "The results suggest that without echos, our performance is dominated by low-frequency phase noise.",
+      "start": 275,
+      "end": 373,
+      "chunk_sha256": "a908c2a46e9e62e4bb878f3607819cb50209cd95719d4320694659fd9c54f137",
+      "relation": "constrains",
+      "subject": "low frequency phase noise",
+      "object": "performance",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.827,
+     "novelty": 0.683
+    },
+    "falsification_test": "Relieve false detection of leakage events alone while measuring performance. The hypothesis fails if performance keeps improving without low frequency phase noise becoming the binding limit, or if relieving low frequency phase noise alone has no effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "performance",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "co_constrain",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [],
+      "qualifications": [
+       {
+        "link": 0,
+        "citation": {
+         "document_id": "arxiv-2601-10461-p0043",
+         "quote": "As for the XZZX scheme, it seems that the performance is partially limited by the false detection of leakage events (since they cannot be pair-matched as in the CSS case, due to the use of CNOTs).",
+         "start": 211,
+         "end": 407,
+         "chunk_sha256": "a1fd9db25fd3f4b0055710ab13fb2223117ea62c805a9ad4a1110a135bbebcf8",
+         "relation": "constrains",
+         "subject": "false detection of leakage events",
+         "object": "performance",
+         "hedged": true
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       },
+       {
+        "link": 1,
+        "citation": {
+         "document_id": "arxiv-2512-13908-p0054",
+         "quote": "The results suggest that without echos, our performance is dominated by low-frequency phase noise.",
+         "start": 275,
+         "end": 373,
+         "chunk_sha256": "a908c2a46e9e62e4bb878f3607819cb50209cd95719d4320694659fd9c54f137",
+         "relation": "constrains",
+         "subject": "low frequency phase noise",
+         "object": "performance",
+         "hedged": true
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       }
+      ],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "untested",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "false detection of leakage events",
+       "target": "performance",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "low frequency phase noise",
+       "target": "performance",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "832ac15409e5",
+    "text": "Gains in leakage from resonant couplings may be offset by LRU.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "LRU",
+     "resonant couplings",
+     "leakage"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2302-09876-p0002",
+     "arxiv-2402-18868-p0005"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2302-09876-p0002",
+      "quote": "This LRU effectively reduces leakage in the second- and third-excited transmon states with up to 99% efficacy in 220~mathrmns, with minimum impact on the qubit subspace.",
+      "start": 309,
+      "end": 478,
+      "chunk_sha256": "6604e353a0dec2e010788f373f1865fcb4b2f2a031d00ec98942ba5ad3a35ba0",
+      "relation": "decreases",
+      "subject": "LRU",
+      "object": "leakage",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2402-18868-p0005",
+      "quote": "However, off-resonant couplings between undesired levels can cause qubit state leakage during the detection process, representing one of the main errors in measuring ion qubits.",
+      "start": 343,
+      "end": 520,
+      "chunk_sha256": "89b1aa11b18f3d876deeedac54049378c1b840355541822d76650e02a87641b5",
+      "relation": "causes",
+      "subject": "resonant couplings",
+      "object": "qubit state leakage",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.801,
+     "novelty": 0.683
+    },
+    "falsification_test": "Measure leakage where both LRU and resonant couplings vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "leakage",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "offset",
+      "status": "unspecified",
+      "observed": []
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 1,
+        "requested": "leakage",
+        "source_term": "qubit state leakage",
+        "citation": {
+         "document_id": "arxiv-2402-18868-p0005",
+         "quote": "However, off-resonant couplings between undesired levels can cause qubit state leakage during the detection process, representing one of the main errors in measuring ion qubits.",
+         "start": 343,
+         "end": 520,
+         "chunk_sha256": "89b1aa11b18f3d876deeedac54049378c1b840355541822d76650e02a87641b5",
+         "relation": "causes",
+         "subject": "resonant couplings",
+         "object": "qubit state leakage",
+         "hedged": true
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [
+       {
+        "link": 1,
+        "citation": {
+         "document_id": "arxiv-2402-18868-p0005",
+         "quote": "However, off-resonant couplings between undesired levels can cause qubit state leakage during the detection process, representing one of the main errors in measuring ion qubits.",
+         "start": 343,
+         "end": 520,
+         "chunk_sha256": "89b1aa11b18f3d876deeedac54049378c1b840355541822d76650e02a87641b5",
+         "relation": "causes",
+         "subject": "resonant couplings",
+         "object": "qubit state leakage",
+         "hedged": true
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       }
+      ],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "untested",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "LRU",
+       "target": "leakage",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "resonant couplings",
+       "target": "leakage",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "bf110f0a3417",
+    "text": "class of VQAs may constrain leakage error through initial state (read as higher states).",
+    "pattern": "chain",
+    "relation": "constrains",
+    "anchors": [
+     "class of VQAs",
+     "leakage error"
+    ],
+    "via": [
+     "initial state (read as higher states)"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2405-05332-p0013",
+     "arxiv-2102-06131-p0052"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2405-05332-p0013",
+      "quote": "The class of VQAs we consider here restricts the initial state ρ to be a stabilizer state, the observable O to be a sum of poly(n) Pauli stings O = P i ciPi with real coefficients ci, and the circuit U (φφφ) to consist only of the constant Clifford gates and parametric Pauli rotation gates e−ıPk φk /2.",
+      "start": 0,
+      "end": 303,
+      "chunk_sha256": "00217a3822671968b26cb8b4fbe92787040b60d7eddd063479b70337ec1327a7",
+      "relation": "constrains",
+      "subject": "class of VQAs",
+      "object": "initial state",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2102-06131-p0052",
+      "quote": "For short swap and hold lengths, we can see that the ratio of leakage to computational error depends on the initial state, with higher states producing more leakage error as expected.",
+      "start": 86,
+      "end": 269,
+      "chunk_sha256": "85515c1d95a1871584bee9b6d97c101a6cadd51081605db8bd8f7e670e7a694b",
+      "relation": "causes",
+      "subject": "higher states",
+      "object": "leakage error",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.758,
+     "novelty": 0.55
+    },
+    "falsification_test": "Compare settings where class of VQAs differs while other inputs are matched. The hypothesis fails if leakage error does not stay bounded with class of VQAs, or if fixing initial state (read as higher states) removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": "INSUFFICIENT_SUPPORT",
+    "hub": "initial state",
+    "check": {
+     "verdict": "all_links_supported",
+     "incomplete": false,
+     "direction_check": {
+      "requested": "constrains",
+      "status": "consistent",
+      "observed": [
+       "constrains"
+      ],
+      "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+     },
+     "composition": {
+      "status": "requires_review",
+      "bridges": [
+       {
+        "link": 1,
+        "requested": "initial state",
+        "source_term": "higher states",
+        "citation": {
+         "document_id": "arxiv-2102-06131-p0052",
+         "quote": "For short swap and hold lengths, we can see that the ratio of leakage to computational error depends on the initial state, with higher states producing more leakage error as expected.",
+         "start": 86,
+         "end": 269,
+         "chunk_sha256": "85515c1d95a1871584bee9b6d97c101a6cadd51081605db8bd8f7e670e7a694b",
+         "relation": "causes",
+         "subject": "higher states",
+         "object": "leakage error",
+         "hedged": true
+        },
+        "status": "requires_review",
+        "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+       }
+      ],
+      "qualifications": [
+       {
+        "link": 0,
+        "citation": {
+         "document_id": "arxiv-2405-05332-p0013",
+         "quote": "The class of VQAs we consider here restricts the initial state ρ to be a stabilizer state, the observable O to be a sum of poly(n) Pauli stings O = P i ciPi with real coefficients ci, and the circuit U (φφφ) to consist only of the constant Clifford gates and parametric Pauli rotation gates e−ıPk φk /2.",
+         "start": 0,
+         "end": 303,
+         "chunk_sha256": "00217a3822671968b26cb8b4fbe92787040b60d7eddd063479b70337ec1327a7",
+         "relation": "constrains",
+         "subject": "class of VQAs",
+         "object": "initial state",
+         "hedged": false
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       },
+       {
+        "link": 1,
+        "citation": {
+         "document_id": "arxiv-2102-06131-p0052",
+         "quote": "For short swap and hold lengths, we can see that the ratio of leakage to computational error depends on the initial state, with higher states producing more leakage error as expected.",
+         "start": 86,
+         "end": 269,
+         "chunk_sha256": "85515c1d95a1871584bee9b6d97c101a6cadd51081605db8bd8f7e670e7a694b",
+         "relation": "causes",
+         "subject": "higher states",
+         "object": "leakage error",
+         "hedged": true
+        },
+        "instruction": "Retain this full qualified statement; do not treat it as universal."
+       }
+      ],
+      "source_contexts": [],
+      "scope_differences": [],
+      "context_coverage": "not_recorded",
+      "interaction": {
+       "status": "not_applicable",
+       "reason": "Individual effects do not establish a joint interaction."
+      },
+      "assumptions": [
+       "Source terms denote compatible quantities and settings.",
+       "Composed source relationships are not causal identification."
+      ],
+      "scientific_validity": "not_established"
+     },
+     "plan_readiness": "needs_input",
+     "links": [
+      {
+       "source": "class of VQAs",
+       "target": "initial state",
+       "status": "supported",
+       "counter": []
+      },
+      {
+       "source": "initial state",
+       "target": "leakage error",
+       "status": "supported",
+       "counter": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "4cc9c633b6c8",
+    "text": "changing the decoding objective from physical and false detection of leakage events may interact in their effect on performance.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "changing the decoding objective from physical",
+     "false detection of leakage events",
+     "performance"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2608-27682-p0006",
+     "arxiv-2601-10461-p0043"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2608-27682-p0006",
+      "quote": "Numerical results show that changing the decoding objective from physical to logical substantially improves the performance over standalone NBP.",
+      "start": 812,
+      "end": 956,
+      "chunk_sha256": "5db9a224704a5f3b3faec7841b4e9f3820d4b6df97871c1a7b7716ff6c4c749e",
+      "relation": "increases",
+      "subject": "changing the decoding objective from physical",
+      "object": "performance",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2601-10461-p0043",
+      "quote": "As for the XZZX scheme, it seems that the performance is partially limited by the false detection of leakage events (since they cannot be pair-matched as in the CSS case, due to the use of CNOTs).",
+      "start": 211,
+      "end": 407,
+      "chunk_sha256": "a1fd9db25fd3f4b0055710ab13fb2223117ea62c805a9ad4a1110a135bbebcf8",
+      "relation": "constrains",
+      "subject": "false detection of leakage events",
+      "object": "performance",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.744,
+     "novelty": 0.623
+    },
+    "falsification_test": "Vary changing the decoding objective from physical and false detection of leakage events separately and together. The hypothesis fails if the joint change in performance equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "performance"
+   },
+   {
+    "id": "cf71b84cc577",
+    "text": "false detection of leakage events and proposed AQFT algorithm may interact in their effect on performance.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "false detection of leakage events",
+     "proposed AQFT algorithm",
+     "performance"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-10461-p0043",
+     "arxiv-2506-15760-p0015"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-10461-p0043",
+      "quote": "As for the XZZX scheme, it seems that the performance is partially limited by the false detection of leakage events (since they cannot be pair-matched as in the CSS case, due to the use of CNOTs).",
+      "start": 211,
+      "end": 407,
+      "chunk_sha256": "a1fd9db25fd3f4b0055710ab13fb2223117ea62c805a9ad4a1110a135bbebcf8",
+      "relation": "constrains",
+      "subject": "false detection of leakage events",
+      "object": "performance",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2506-15760-p0015",
+      "quote": "The proposed AQFT algorithm improves performance in addition to exponential speedups for QFT computation.",
+      "start": 217,
+      "end": 322,
+      "chunk_sha256": "140ab9187de3348064bf783695e382b50a3608e319e70f2ba78b6ae99aff5e9a",
+      "relation": "increases",
+      "subject": "proposed AQFT algorithm",
+      "object": "performance",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.744,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary false detection of leakage events and proposed AQFT algorithm separately and together. The hypothesis fails if the joint change in performance equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "performance"
+   },
+   {
+    "id": "7d2853df2536",
+    "text": "higher states and leakage correction schemes may interact in their effect on leakage error.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "higher states",
+     "leakage correction schemes",
+     "leakage error"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2102-06131-p0052",
+     "arxiv-1904-10378-p0028"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2102-06131-p0052",
+      "quote": "For short swap and hold lengths, we can see that the ratio of leakage to computational error depends on the initial state, with higher states producing more leakage error as expected.",
+      "start": 86,
+      "end": 269,
+      "chunk_sha256": "85515c1d95a1871584bee9b6d97c101a6cadd51081605db8bd8f7e670e7a694b",
+      "relation": "causes",
+      "subject": "higher states",
+      "object": "leakage error",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1904-10378-p0028",
+      "quote": "Without the use of mediators, leakage errors apply directly to the qubit dots and require leakage correction schemes to be applied.",
+      "start": 380,
+      "end": 511,
+      "chunk_sha256": "159cd662dc4c660ca4806ef54cc7e01147e587f8e9c15df84b38cfd2da57e99e",
+      "relation": "constrains",
+      "subject": "leakage correction schemes",
+      "object": "leakage errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.705,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary higher states and leakage correction schemes separately and together. The hypothesis fails if the joint change in leakage error equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "leakage error"
+   },
+   {
+    "id": "999f599eeb9a",
+    "text": "imperfect CZs may increase shots through qubits.",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "imperfect CZs",
+     "shots"
+    ],
+    "via": [
+     "qubits"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-10461-p0036",
+     "arxiv-2011-12245-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-10461-p0036",
+      "quote": "III C, we crucially used the fact that imperfect H gates cannot generate leakage, and that imperfect CZs can only cause both qubits they are acting on to leak at the same time.",
+      "start": 316,
+      "end": 492,
+      "chunk_sha256": "74b7bb60213992a2caf1d3a5802e56ef7fbb90526e6c30b725533f23243df33f",
+      "relation": "causes",
+      "subject": "imperfect CZs",
+      "object": "qubits",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2011-12245-p0002",
+      "quote": "We numerically confirm this by training a parameterized quantum circuit in a barren plateau landscape with several gradientfree optimizers (Nelder-Mead, Powell, and COBYLA algorithms), and show that the number of shots required in the optimization grows exponentially with the number of qubits.",
+      "start": 1256,
+      "end": 1550,
+      "chunk_sha256": "25d08861f570956660596db04409263f9ac04b4a170523910cf7077f44cca0aa",
+      "relation": "increases",
+      "subject": "qubits",
+      "object": "shots",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.68,
+     "novelty": 0.6
+    },
+    "falsification_test": "Compare settings where imperfect CZs differs while other inputs are matched. The hypothesis fails if shots does not rise with imperfect CZs, or if fixing qubits removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "qubit"
+   },
+   {
+    "id": "23954b4f706d",
+    "text": "imperfect CZs may increase algorithm through qubits.",
+    "pattern": "chain",
+    "relation": "increases",
+    "anchors": [
+     "imperfect CZs",
+     "algorithm"
+    ],
+    "via": [
+     "qubits"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-10461-p0036",
+     "arxiv-2311-05680-p0028"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-10461-p0036",
+      "quote": "III C, we crucially used the fact that imperfect H gates cannot generate leakage, and that imperfect CZs can only cause both qubits they are acting on to leak at the same time.",
+      "start": 316,
+      "end": 492,
+      "chunk_sha256": "74b7bb60213992a2caf1d3a5802e56ef7fbb90526e6c30b725533f23243df33f",
+      "relation": "causes",
+      "subject": "imperfect CZs",
+      "object": "qubits",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2311-05680-p0028",
+      "quote": "To better understand how the algorithm scales with the number of qubits we study the problem of fitting a multi-dimensional function.",
+      "start": 2024,
+      "end": 2157,
+      "chunk_sha256": "202e5f2e56285df14ca22eb717050905e3b4b049bfad204986823218790c70da",
+      "relation": "increases",
+      "subject": "qubits",
+      "object": "algorithm",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.648,
+     "novelty": 0.55
+    },
+    "falsification_test": "Compare settings where imperfect CZs differs while other inputs are matched. The hypothesis fails if algorithm does not rise with imperfect CZs, or if fixing qubits removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "qubit"
+   },
+   {
+    "id": "107f89b9e226",
+    "text": "imperfect CZs and ultra - short pulses may jointly drive qubits, and their effects may compound.",
+    "pattern": "convergent",
+    "relation": "jointly_drive",
+    "anchors": [
+     "imperfect CZs",
+     "ultra - short pulses",
+     "qubits"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-10461-p0036",
+     "arxiv-2206-08695-p0044"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-10461-p0036",
+      "quote": "III C, we crucially used the fact that imperfect H gates cannot generate leakage, and that imperfect CZs can only cause both qubits they are acting on to leak at the same time.",
+      "start": 316,
+      "end": 492,
+      "chunk_sha256": "74b7bb60213992a2caf1d3a5802e56ef7fbb90526e6c30b725533f23243df33f",
+      "relation": "causes",
+      "subject": "imperfect CZs",
+      "object": "qubits",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2206-08695-p0044",
+      "quote": "The qubit is driven by ultra-short pulses with the length of 8-12 ns, and the period of pulses is 40 us.",
+      "start": 145,
+      "end": 249,
+      "chunk_sha256": "e73c6f7190df7fd9a3cd889ce369ba80f282867b65449238be30ad20320fcd94",
+      "relation": "increases",
+      "subject": "ultra - short pulses",
+      "object": "qubit",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.632,
+     "novelty": 0.7
+    },
+    "falsification_test": "Vary imperfect CZs and ultra - short pulses separately and together. The hypothesis fails if the joint change in qubits equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "qubit"
+   },
+   {
+    "id": "41f0b4a212f6",
+    "text": "schemes and leakage induced long time correlated errors may move together because both depend on reset.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "schemes",
+     "leakage induced long time correlated errors",
+     "reset"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-1904-10378-p0028",
+     "arxiv-2102-06131-p0023"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-1904-10378-p0028",
+      "quote": "As discussed in Appendix D, such schemes would introduce large qubit/runtime overheads [71, 73], limitsonthechoiceofdata/ancillaqubits[72]and/or require extra components for charge detection or reset introduced within a potentially dense qubit array.",
+      "start": 512,
+      "end": 762,
+      "chunk_sha256": "159cd662dc4c660ca4806ef54cc7e01147e587f8e9c15df84b38cfd2da57e99e",
+      "relation": "constrains",
+      "subject": "reset",
+      "object": "schemes",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2102-06131-p0023",
+      "quote": "We show that reset mitigates leakage-induced long-time correlated errors and significantly improves logical error suppression.",
+      "start": 148,
+      "end": 274,
+      "chunk_sha256": "3f1fc374a9e34a7abb920d6f071d09be99f0e3d2fb6a993ff9bfdf1648a32362",
+      "relation": "decreases",
+      "subject": "reset",
+      "object": "leakage induced long time correlated errors",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.507,
+     "novelty": 0.725
+    },
+    "falsification_test": "Track schemes and leakage induced long time correlated errors across periods where reset changes and where it does not. The hypothesis fails if they co-vary just as strongly when reset is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "reset"
+   },
+   {
+    "id": "e7ef107ed297",
+    "text": "expressive power of VQAs and performance may move together because both depend on leakage noise.",
+    "pattern": "divergent",
+    "relation": "common_driver",
+    "anchors": [
+     "expressive power of VQAs",
+     "performance",
+     "leakage noise"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2208-05378-p0002",
+     "arxiv-2512-13908-p0054"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2208-05378-p0002",
+      "quote": "Here, we consider a typical scenario with the widely used hardware-efficient ansatz and the emergence of leakage in two-qubit gates, observing that leakage noise generally reduces the expressive power of VQAs.",
+      "start": 1261,
+      "end": 1470,
+      "chunk_sha256": "1542a0b3c1cc131a383107b202370db80acd5bee684a7ba9b6edf42d88543815",
+      "relation": "decreases",
+      "subject": "leakage noise",
+      "object": "expressive power of VQAs",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2512-13908-p0054",
+      "quote": "The results suggest that without echos, our performance is dominated by low-frequency phase noise.",
+      "start": 275,
+      "end": 373,
+      "chunk_sha256": "a908c2a46e9e62e4bb878f3607819cb50209cd95719d4320694659fd9c54f137",
+      "relation": "constrains",
+      "subject": "low frequency phase noise",
+      "object": "performance",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.742,
+     "novelty": 0.55
+    },
+    "falsification_test": "Track expressive power of VQAs and performance across periods where leakage noise changes and where it does not. The hypothesis fails if they co-vary just as strongly when leakage noise is held fixed.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "leakage noise"
+   },
+   {
+    "id": "e488a17b3169",
+    "text": "false detection of leakage events and physical error probability may interact in their effect on performance.",
+    "pattern": "convergent",
+    "relation": "jointly_affect",
+    "anchors": [
+     "false detection of leakage events",
+     "physical error probability",
+     "performance"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-10461-p0043",
+     "arxiv-2212-11632-p0020"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-10461-p0043",
+      "quote": "As for the XZZX scheme, it seems that the performance is partially limited by the false detection of leakage events (since they cannot be pair-matched as in the CSS case, due to the use of CNOTs).",
+      "start": 211,
+      "end": 407,
+      "chunk_sha256": "a1fd9db25fd3f4b0055710ab13fb2223117ea62c805a9ad4a1110a135bbebcf8",
+      "relation": "constrains",
+      "subject": "false detection of leakage events",
+      "object": "performance",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2212-11632-p0020",
+      "quote": "Over the depolarizing channel (pX = pY = pZ = p/3) the performance of the code has been benchmarked through the probability threshold (pth), that is, the physical error probability at which increasing the distance of the code does improve its performance.",
+      "start": 127,
+      "end": 382,
+      "chunk_sha256": "0f534921050ebf2166d63ddabe3ad53d3582c3a29aa7f1a32b33d15335065fea",
+      "relation": "increases",
+      "subject": "physical error probability",
+      "object": "performance",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.704,
+     "novelty": 0.6
+    },
+    "falsification_test": "Vary false detection of leakage events and physical error probability separately and together. The hypothesis fails if the joint change in performance equals the sum of the separate changes.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "performance"
+   },
+   {
+    "id": "b14ff1f84a54",
+    "text": "imperfect CZs may affect smallest intractable quantum computations through qubits.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "imperfect CZs",
+     "smallest intractable quantum computations"
+    ],
+    "via": [
+     "qubits"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-10461-p0036",
+     "arxiv-1905-06903-p0002"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-10461-p0036",
+      "quote": "III C, we crucially used the fact that imperfect H gates cannot generate leakage, and that imperfect CZs can only cause both qubits they are acting on to leak at the same time.",
+      "start": 316,
+      "end": 492,
+      "chunk_sha256": "74b7bb60213992a2caf1d3a5802e56ef7fbb90526e6c30b725533f23243df33f",
+      "relation": "causes",
+      "subject": "imperfect CZs",
+      "object": "qubits",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-1905-06903-p0002",
+      "quote": "While the smallest classically intractable quantum computations require ∼100 qubits, Accepted in Quantum 2019-10-30, click title to verify 2 Figure 2: A sequence of 16 π/8 rotations on 5 qubits that is non-trivially equivalent to the identity.",
+      "start": 2822,
+      "end": 3065,
+      "chunk_sha256": "ddfce22f1244560baa491ef8a8983625514b98d736149ecdc969f994d7f3fb9f",
+      "relation": "constrains",
+      "subject": "qubits",
+      "object": "smallest intractable quantum computations",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.628,
+     "novelty": 0.572
+    },
+    "falsification_test": "Compare settings where imperfect CZs differs while other inputs are matched. The hypothesis fails if smallest intractable quantum computations does not change with imperfect CZs, or if fixing qubits removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "qubit"
+   },
+   {
+    "id": "eeaa15ebdf77",
+    "text": "imperfect CZs may affect exponential small limitation of variance through qubits.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "imperfect CZs",
+     "exponential small limitation of variance"
+    ],
+    "via": [
+     "qubits"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-10461-p0036",
+     "arxiv-2102-01828-p0037"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-10461-p0036",
+      "quote": "III C, we crucially used the fact that imperfect H gates cannot generate leakage, and that imperfect CZs can only cause both qubits they are acting on to leak at the same time.",
+      "start": 316,
+      "end": 492,
+      "chunk_sha256": "74b7bb60213992a2caf1d3a5802e56ef7fbb90526e6c30b725533f23243df33f",
+      "relation": "causes",
+      "subject": "imperfect CZs",
+      "object": "qubits",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2102-01828-p0037",
+      "quote": "That is, the number of qubits n determines an exponential small limitation of the variance in Eq.",
+      "start": 30,
+      "end": 127,
+      "chunk_sha256": "b0ca3ac63cd10e1ffe89aff044f80cd0afbd855c5289691791f4368269ab2a09",
+      "relation": "constrains",
+      "subject": "qubits",
+      "object": "exponential small limitation of variance",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.628,
+     "novelty": 0.572
+    },
+    "falsification_test": "Compare settings where imperfect CZs differs while other inputs are matched. The hypothesis fails if exponential small limitation of variance does not change with imperfect CZs, or if fixing qubits removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "qubit"
+   },
+   {
+    "id": "5a950272550a",
+    "text": "imperfect CZs may affect Devised sticking through qubits.",
+    "pattern": "chain",
+    "relation": "affects",
+    "anchors": [
+     "imperfect CZs",
+     "Devised sticking"
+    ],
+    "via": [
+     "qubits"
+    ],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-10461-p0036",
+     "arxiv-2503-05003-p0012"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-10461-p0036",
+      "quote": "III C, we crucially used the fact that imperfect H gates cannot generate leakage, and that imperfect CZs can only cause both qubits they are acting on to leak at the same time.",
+      "start": 316,
+      "end": 492,
+      "chunk_sha256": "74b7bb60213992a2caf1d3a5802e56ef7fbb90526e6c30b725533f23243df33f",
+      "relation": "causes",
+      "subject": "imperfect CZs",
+      "object": "qubits",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2503-05003-p0012",
+      "quote": "Devised sticking, on the other hand, measures all logical operators in a region of the code at once using the CKBB scheme, but requires additional checks and qubits to avoid measuring unwanted logical operators.",
+      "start": 459,
+      "end": 670,
+      "chunk_sha256": "575eac41f2b7f823731528c829c82613e74c2e95763302063011e02ad53caccc",
+      "relation": "constrains",
+      "subject": "qubits",
+      "object": "Devised sticking",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.621,
+     "novelty": 0.636
+    },
+    "falsification_test": "Compare settings where imperfect CZs differs while other inputs are matched. The hypothesis fails if Devised sticking does not change with imperfect CZs, or if fixing qubits removes no part of the effect.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "qubit"
+   },
+   {
+    "id": "9d850a6ec868",
+    "text": "Gains in qubits from imperfect CZs may be offset by Concatenate codes.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "Concatenate codes",
+     "imperfect CZs",
+     "qubits"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2402-09606-p0001",
+     "arxiv-2601-10461-p0036"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2402-09606-p0001",
+      "quote": "# Concatenate codes, save qubits",
+      "start": 0,
+      "end": 32,
+      "chunk_sha256": "0082487bb16e6cc529e2176f6290628c2ab03b91336a73138a4bf2b2be696d96",
+      "relation": "decreases",
+      "subject": "Concatenate codes",
+      "object": "qubits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2601-10461-p0036",
+      "quote": "III C, we crucially used the fact that imperfect H gates cannot generate leakage, and that imperfect CZs can only cause both qubits they are acting on to leak at the same time.",
+      "start": 316,
+      "end": 492,
+      "chunk_sha256": "74b7bb60213992a2caf1d3a5802e56ef7fbb90526e6c30b725533f23243df33f",
+      "relation": "causes",
+      "subject": "imperfect CZs",
+      "object": "qubits",
+      "hedged": true,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.609,
+     "novelty": 0.636
+    },
+    "falsification_test": "Measure qubits where both Concatenate codes and imperfect CZs vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "qubit"
+   },
+   {
+    "id": "6469be47d2cd",
+    "text": "Gains in qubits from imperfect CZs may be offset by pooling.",
+    "pattern": "convergent",
+    "relation": "offset",
+    "anchors": [
+     "imperfect CZs",
+     "pooling",
+     "qubits"
+    ],
+    "via": [],
+    "claim_status": "UNVERIFIED_HYPOTHESIS",
+    "promotion": "blocked",
+    "source_ids": [
+     "arxiv-2601-10461-p0036",
+     "arxiv-2407-07394-p0006"
+    ],
+    "citations": [
+     {
+      "document_id": "arxiv-2601-10461-p0036",
+      "quote": "III C, we crucially used the fact that imperfect H gates cannot generate leakage, and that imperfect CZs can only cause both qubits they are acting on to leak at the same time.",
+      "start": 316,
+      "end": 492,
+      "chunk_sha256": "74b7bb60213992a2caf1d3a5802e56ef7fbb90526e6c30b725533f23243df33f",
+      "relation": "causes",
+      "subject": "imperfect CZs",
+      "object": "qubits",
+      "hedged": true,
+      "origin": "dependency_parse"
+     },
+     {
+      "document_id": "arxiv-2407-07394-p0006",
+      "quote": "We also observed that pooling reduced the number of qubits required for distillation by 45% without increasing the time cost.",
+      "start": 408,
+      "end": 533,
+      "chunk_sha256": "6e34bbb4e95d74193a156ce09db80096c9cf0f5fdbe39c7bf08ef1d55a1d43d9",
+      "relation": "decreases",
+      "subject": "pooling",
+      "object": "qubits",
+      "hedged": false,
+      "origin": "dependency_parse"
+     }
+    ],
+    "scores": {
+     "source_support": 0.55,
+     "deductive_relevance": 0.603,
+     "novelty": 0.6
+    },
+    "falsification_test": "Measure qubits where both imperfect CZs and pooling vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+    "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+    "supporting_paths": 1,
+    "rule_verdict": null,
+    "hub": "qubit"
+   }
+  ],
+  "survivors": 19,
+  "candidates_generated": 42,
+  "candidates_passed": {
+   "abductive": 40,
+   "deductive": 40,
+   "pre_thinker": 19
+  },
+  "candidates_rejected": {
+   "abductive:unrelated_bridge": 2,
+   "pre_thinker:malformed": 15,
+   "pre_thinker:single_source": 6
+  },
+  "relation_edges": 996,
+  "scoped_edges": 42,
+  "budget_used": {
+   "rounds": 1,
+   "candidates": 42,
+   "edges": 1042,
+   "bytes": 503545,
+   "seconds": 12.506
+  },
+  "incomplete": false,
+  "stop_reason": null,
+  "shortage": null,
+  "snapshot": {
+   "as_of": 1795594714,
+   "chunk_count": 3369
+  }
+ },
+ "reply": "Frontier hypotheses for leakage. Each one is an unverified hypothesis built from relations across the authorized sources; none is stated by a single source.\nCandidates generated: 42. Passed abductive check: 40; deductive check: 40; pre-thinker validation: 19.\n\n1. LRU may affect detection fidelity through leakage (read as state leakage).\n[arxiv-2302-09876-p0002] This LRU effectively reduces leakage in the second- and third-excited transmon states with up to 99% efficacy in 220~mathrmns, with minimum impact on the qubit subspace.\n[arxiv-2402-18868-p0003] For promising trapped ion qubits, however, the detection fidelity is inherently limited by state leakage.\nFalsification test: Compare settings where LRU differs while other inputs are matched. The hypothesis fails if detection fidelity does not change with LRU, or if fixing leakage (read as state leakage) removes no part of the effect.\nDeepen check: all links supported (LRU -> leakage: supported, leakage -> detection fidelity: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.80, deductive relevance 0.76, novelty 0.60.\n\n2. class of VQAs may constrain ratio of leakage through initial state.\n[arxiv-2405-05332-p0013] The class of VQAs we consider here restricts the initial state ρ to be a stabilizer state, the observable O to be a sum of poly(n) Pauli stings O = P i ciPi with real coefficients ci, and the circuit U (φφφ) to consist only of the constant Clifford gates and parametric Pauli rotation gates e−ıPk φk /2.\n[arxiv-2102-06131-p0052] For short swap and hold lengths, we can see that the ratio of leakage to computational error depends on the initial state, with higher states producing more leakage error as expected.\nFalsification test: Compare settings where class of VQAs differs while other inputs are matched. The hypothesis fails if ratio of leakage does not stay bounded with class of VQAs, or if fixing initial state removes no part of the effect.\nDeepen check: all links supported (class of VQAs -> initial state: supported, initial state -> ratio of leakage: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.55, deductive relevance 0.91, novelty 0.60.\n\n3. false detection of leakage events and low frequency phase noise may jointly constrain performance, so relieving one may shift the bottleneck to the other.\n[arxiv-2601-10461-p0043] As for the XZZX scheme, it seems that the performance is partially limited by the false detection of leakage events (since they cannot be pair-matched as in the CSS case, due to the use of CNOTs).\n[arxiv-2512-13908-p0054] The results suggest that without echos, our performance is dominated by low-frequency phase noise.\nFalsification test: Relieve false detection of leakage events alone while measuring performance. The hypothesis fails if performance keeps improving without low frequency phase noise becoming the binding limit, or if relieving low frequency phase noise alone has no effect.\nDeepen check: all links supported (false detection of leakage events -> performance: supported, low frequency phase noise -> performance: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.55, deductive relevance 0.83, novelty 0.68.\n\n4. Gains in leakage from resonant couplings may be offset by LRU.\n[arxiv-2302-09876-p0002] This LRU effectively reduces leakage in the second- and third-excited transmon states with up to 99% efficacy in 220~mathrmns, with minimum impact on the qubit subspace.\n[arxiv-2402-18868-p0005] However, off-resonant couplings between undesired levels can cause qubit state leakage during the detection process, representing one of the main errors in measuring ion qubits.\nFalsification test: Measure leakage where both LRU and resonant couplings vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nDeepen check: all links supported (LRU -> leakage: supported, resonant couplings -> leakage: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.55, deductive relevance 0.80, novelty 0.68.\n\n5. class of VQAs may constrain leakage error through initial state (read as higher states).\n[arxiv-2405-05332-p0013] The class of VQAs we consider here restricts the initial state ρ to be a stabilizer state, the observable O to be a sum of poly(n) Pauli stings O = P i ciPi with real coefficients ci, and the circuit U (φφφ) to consist only of the constant Clifford gates and parametric Pauli rotation gates e−ıPk φk /2.\n[arxiv-2102-06131-p0052] For short swap and hold lengths, we can see that the ratio of leakage to computational error depends on the initial state, with higher states producing more leakage error as expected.\nFalsification test: Compare settings where class of VQAs differs while other inputs are matched. The hypothesis fails if leakage error does not stay bounded with class of VQAs, or if fixing initial state (read as higher states) removes no part of the effect.\nDeepen check: all links supported (class of VQAs -> initial state: supported, initial state -> leakage error: supported).\nComposition: requires review; plan readiness: needs input.\nScores: source support 0.55, deductive relevance 0.76, novelty 0.55.\n\n6. changing the decoding objective from physical and false detection of leakage events may interact in their effect on performance.\n[arxiv-2608-27682-p0006] Numerical results show that changing the decoding objective from physical to logical substantially improves the performance over standalone NBP.\n[arxiv-2601-10461-p0043] As for the XZZX scheme, it seems that the performance is partially limited by the false detection of leakage events (since they cannot be pair-matched as in the CSS case, due to the use of CNOTs).\nFalsification test: Vary changing the decoding objective from physical and false detection of leakage events separately and together. The hypothesis fails if the joint change in performance equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.74, novelty 0.62.\n\n7. false detection of leakage events and proposed AQFT algorithm may interact in their effect on performance.\n[arxiv-2601-10461-p0043] As for the XZZX scheme, it seems that the performance is partially limited by the false detection of leakage events (since they cannot be pair-matched as in the CSS case, due to the use of CNOTs).\n[arxiv-2506-15760-p0015] The proposed AQFT algorithm improves performance in addition to exponential speedups for QFT computation.\nFalsification test: Vary false detection of leakage events and proposed AQFT algorithm separately and together. The hypothesis fails if the joint change in performance equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.74, novelty 0.60.\n\n8. higher states and leakage correction schemes may interact in their effect on leakage error.\n[arxiv-2102-06131-p0052] For short swap and hold lengths, we can see that the ratio of leakage to computational error depends on the initial state, with higher states producing more leakage error as expected.\n[arxiv-1904-10378-p0028] Without the use of mediators, leakage errors apply directly to the qubit dots and require leakage correction schemes to be applied.\nFalsification test: Vary higher states and leakage correction schemes separately and together. The hypothesis fails if the joint change in leakage error equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.70, novelty 0.60.\n\n9. imperfect CZs may increase shots through qubits.\n[arxiv-2601-10461-p0036] III C, we crucially used the fact that imperfect H gates cannot generate leakage, and that imperfect CZs can only cause both qubits they are acting on to leak at the same time.\n[arxiv-2011-12245-p0002] We numerically confirm this by training a parameterized quantum circuit in a barren plateau landscape with several gradientfree optimizers (Nelder-Mead, Powell, and COBYLA algorithms), and show that the number of shots required in the optimization grows exponentially with the number of qubits.\nFalsification test: Compare settings where imperfect CZs differs while other inputs are matched. The hypothesis fails if shots does not rise with imperfect CZs, or if fixing qubits removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.68, novelty 0.60.\n\n10. imperfect CZs may increase algorithm through qubits.\n[arxiv-2601-10461-p0036] III C, we crucially used the fact that imperfect H gates cannot generate leakage, and that imperfect CZs can only cause both qubits they are acting on to leak at the same time.\n[arxiv-2311-05680-p0028] To better understand how the algorithm scales with the number of qubits we study the problem of fitting a multi-dimensional function.\nFalsification test: Compare settings where imperfect CZs differs while other inputs are matched. The hypothesis fails if algorithm does not rise with imperfect CZs, or if fixing qubits removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.65, novelty 0.55.\n\n11. imperfect CZs and ultra - short pulses may jointly drive qubits, and their effects may compound.\n[arxiv-2601-10461-p0036] III C, we crucially used the fact that imperfect H gates cannot generate leakage, and that imperfect CZs can only cause both qubits they are acting on to leak at the same time.\n[arxiv-2206-08695-p0044] The qubit is driven by ultra-short pulses with the length of 8-12 ns, and the period of pulses is 40 us.\nFalsification test: Vary imperfect CZs and ultra - short pulses separately and together. The hypothesis fails if the joint change in qubits equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.63, novelty 0.70.\n\n12. schemes and leakage induced long time correlated errors may move together because both depend on reset.\n[arxiv-1904-10378-p0028] As discussed in Appendix D, such schemes would introduce large qubit/runtime overheads [71, 73], limitsonthechoiceofdata/ancillaqubits[72]and/or require extra components for charge detection or reset introduced within a potentially dense qubit array.\n[arxiv-2102-06131-p0023] We show that reset mitigates leakage-induced long-time correlated errors and significantly improves logical error suppression.\nFalsification test: Track schemes and leakage induced long time correlated errors across periods where reset changes and where it does not. The hypothesis fails if they co-vary just as strongly when reset is held fixed.\nScores: source support 0.55, deductive relevance 0.51, novelty 0.72.\n\n13. expressive power of VQAs and performance may move together because both depend on leakage noise.\n[arxiv-2208-05378-p0002] Here, we consider a typical scenario with the widely used hardware-efficient ansatz and the emergence of leakage in two-qubit gates, observing that leakage noise generally reduces the expressive power of VQAs.\n[arxiv-2512-13908-p0054] The results suggest that without echos, our performance is dominated by low-frequency phase noise.\nFalsification test: Track expressive power of VQAs and performance across periods where leakage noise changes and where it does not. The hypothesis fails if they co-vary just as strongly when leakage noise is held fixed.\nScores: source support 0.55, deductive relevance 0.74, novelty 0.55.\n\n14. false detection of leakage events and physical error probability may interact in their effect on performance.\n[arxiv-2601-10461-p0043] As for the XZZX scheme, it seems that the performance is partially limited by the false detection of leakage events (since they cannot be pair-matched as in the CSS case, due to the use of CNOTs).\n[arxiv-2212-11632-p0020] Over the depolarizing channel (pX = pY = pZ = p/3) the performance of the code has been benchmarked through the probability threshold (pth), that is, the physical error probability at which increasing the distance of the code does improve its performance.\nFalsification test: Vary false detection of leakage events and physical error probability separately and together. The hypothesis fails if the joint change in performance equals the sum of the separate changes.\nScores: source support 0.55, deductive relevance 0.70, novelty 0.60.\n\n15. imperfect CZs may affect smallest intractable quantum computations through qubits.\n[arxiv-2601-10461-p0036] III C, we crucially used the fact that imperfect H gates cannot generate leakage, and that imperfect CZs can only cause both qubits they are acting on to leak at the same time.\n[arxiv-1905-06903-p0002] While the smallest classically intractable quantum computations require ∼100 qubits, Accepted in Quantum 2019-10-30, click title to verify 2 Figure 2: A sequence of 16 π/8 rotations on 5 qubits that is non-trivially equivalent to the identity.\nFalsification test: Compare settings where imperfect CZs differs while other inputs are matched. The hypothesis fails if smallest intractable quantum computations does not change with imperfect CZs, or if fixing qubits removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.63, novelty 0.57.\n\n16. imperfect CZs may affect exponential small limitation of variance through qubits.\n[arxiv-2601-10461-p0036] III C, we crucially used the fact that imperfect H gates cannot generate leakage, and that imperfect CZs can only cause both qubits they are acting on to leak at the same time.\n[arxiv-2102-01828-p0037] That is, the number of qubits n determines an exponential small limitation of the variance in Eq.\nFalsification test: Compare settings where imperfect CZs differs while other inputs are matched. The hypothesis fails if exponential small limitation of variance does not change with imperfect CZs, or if fixing qubits removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.63, novelty 0.57.\n\n17. imperfect CZs may affect Devised sticking through qubits.\n[arxiv-2601-10461-p0036] III C, we crucially used the fact that imperfect H gates cannot generate leakage, and that imperfect CZs can only cause both qubits they are acting on to leak at the same time.\n[arxiv-2503-05003-p0012] Devised sticking, on the other hand, measures all logical operators in a region of the code at once using the CKBB scheme, but requires additional checks and qubits to avoid measuring unwanted logical operators.\nFalsification test: Compare settings where imperfect CZs differs while other inputs are matched. The hypothesis fails if Devised sticking does not change with imperfect CZs, or if fixing qubits removes no part of the effect.\nScores: source support 0.55, deductive relevance 0.62, novelty 0.64.\n\n18. Gains in qubits from imperfect CZs may be offset by Concatenate codes.\n[arxiv-2402-09606-p0001] # Concatenate codes, save qubits\n[arxiv-2601-10461-p0036] III C, we crucially used the fact that imperfect H gates cannot generate leakage, and that imperfect CZs can only cause both qubits they are acting on to leak at the same time.\nFalsification test: Measure qubits where both Concatenate codes and imperfect CZs vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.55, deductive relevance 0.61, novelty 0.64.\n\n19. Gains in qubits from imperfect CZs may be offset by pooling.\n[arxiv-2601-10461-p0036] III C, we crucially used the fact that imperfect H gates cannot generate leakage, and that imperfect CZs can only cause both qubits they are acting on to leak at the same time.\n[arxiv-2407-07394-p0006] We also observed that pooling reduced the number of qubits required for distillation by 45% without increasing the time cost.\nFalsification test: Measure qubits where both imperfect CZs and pooling vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.\nScores: source support 0.55, deductive relevance 0.60, novelty 0.60.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}
