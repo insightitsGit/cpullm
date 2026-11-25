@@ -1,0 +1,546 @@
+{
+ "schema": "research-leads-v1",
+ "domain": "quantum computing",
+ "created": "2026-11-25",
+ "knowledge_base": {
+  "namespace": "quantum_computing",
+  "fixtures": "tests/fixtures/quantum_computing",
+  "papers": 155,
+  "full_text": 58,
+  "chunks": 3369
+ },
+ "engine": "cpu-llm 1.16.0 (main 17a1315), parser en_core_web_lg, encoder all-mpnet-base-v2",
+ "review": "docs/reviews/2026-11-25-quantum-computing/report.md",
+ "note": "Every lead is an UNVERIFIED_HYPOTHESIS. Novelty was checked only against this knowledge base.",
+ "leads": [
+  {
+   "id": "QC-1",
+   "priority": "high",
+   "title": "Do barren-plateau mitigations also remove the exponential cost of gradient-free optimizers?",
+   "why": "Barren plateaus make even gradient-free optimizers scale exponentially (2011.12245). Three papers report mitigations for gradients. No paper in the knowledge base tests whether those mitigations also cut the shot cost of gradient-free optimizers.",
+   "caveats": [
+    "Barren-plateau-free models are often classically simulable (Cerezo et al., arXiv:2312.09121, not in this knowledge base); check whether each mitigated regime is.",
+    "Mitigations were shown for specific settings (chemistry VQE, thermal-state PQCs); results may not transfer."
+   ],
+   "next_steps": [
+    "Search the literature for gradient-free optimizers combined with each mitigation.",
+    "Simulate 4–12 qubit circuits with and without each mitigation; measure cost-function variance and the shots a gradient-free optimizer (e.g. Nelder–Mead, COBYLA) needs to reach a fixed accuracy, versus qubit count.",
+    "Fit exponential vs polynomial scaling; the hypothesis fails if the shot count still grows exponentially with the mitigation."
+   ],
+   "status": "open",
+   "claim_status": "UNVERIFIED_HYPOTHESIS",
+   "hypotheses": [
+    {
+     "text": "mid - circuit measurements may reduce exponential scaling for gradient free optimizers through barren plateaus.",
+     "frontier_id": "ee1ba9bf0cbf",
+     "topic": "barren plateaus",
+     "rank": 23,
+     "scores": {
+      "source_support": 0.55,
+      "deductive_relevance": 0.975,
+      "novelty": 0.642
+     },
+     "citations": [
+      {
+       "document_id": "arxiv-2406-14285-p0059",
+       "url": "https://arxiv.org/abs/2406.14285",
+       "quote": "therefore, mid-circuit measurements, circuit pretraining, entanglement regularization to add terms to the cost function, and initial partitioning play on the entanglement entropy to better mitigate barren plateaus"
+      },
+      {
+       "document_id": "arxiv-2011-12245-p0037",
+       "url": "https://arxiv.org/abs/2011.12245",
+       "quote": "This is consistent with our main result, and demonstrates that barren plateaus can lead to exponential scaling even for gradient-free optimizers."
+      }
+     ],
+     "falsification_test": "Compare settings where mid - circuit measurements differs while other inputs are matched. The hypothesis fails if exponential scaling for gradient free optimizers does not fall with mid - circuit measurements, or if fixing barren plateaus removes no part of the effect.",
+     "deepen": {
+      "verdict": "all_links_supported",
+      "links": [
+       "supported",
+       "supported"
+      ],
+      "composition": "requires_review",
+      "novelty_kb": "no_overlap_found_in_snapshot",
+      "test_design": "mediation",
+      "vary": [
+       "mid - circuit measurements"
+      ],
+      "measure": [
+       "exponential scaling for gradient free optimizers"
+      ],
+      "fails_if": "exponential scaling for gradient free optimizers does not change when mid - circuit measurements varies with the controls fixed, or holding barren plateaus fixed leaves the effect unchanged.",
+      "confounders": [
+       "degree of controllability of system",
+       "precision",
+       "surviving Pauli path"
+      ]
+     }
+    },
+    {
+     "text": "chemical initialization may reduce exponential scaling for gradient free optimizers through barren plateaus.",
+     "frontier_id": "0ec63721d1ec",
+     "topic": "barren plateaus",
+     "rank": 25,
+     "scores": {
+      "source_support": 0.55,
+      "deductive_relevance": 0.958,
+      "novelty": 0.577
+     },
+     "citations": [
+      {
+       "document_id": "arxiv-2609-22729-p0002",
+       "url": "https://arxiv.org/abs/2609.22729",
+       "quote": "In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies."
+      },
+      {
+       "document_id": "arxiv-2011-12245-p0037",
+       "url": "https://arxiv.org/abs/2011.12245",
+       "quote": "This is consistent with our main result, and demonstrates that barren plateaus can lead to exponential scaling even for gradient-free optimizers."
+      }
+     ],
+     "falsification_test": "Compare settings where chemical initialization differs while other inputs are matched. The hypothesis fails if exponential scaling for gradient free optimizers does not fall with chemical initialization, or if fixing barren plateaus removes no part of the effect.",
+     "deepen": null
+    },
+    {
+     "text": "MPQC may reduce exponential scaling for gradient free optimizers through barren plateaus.",
+     "frontier_id": "7da3b79bc28e",
+     "topic": "barren plateaus",
+     "rank": 24,
+     "scores": {
+      "source_support": 0.55,
+      "deductive_relevance": 0.958,
+      "novelty": 0.6
+     },
+     "citations": [
+      {
+       "document_id": "arxiv-2511-13408-p0002",
+       "url": "https://arxiv.org/abs/2511.13408",
+       "quote": "Numerical simulations demonstrate that MPQC effectively eliminates barren plateaus in PQCs for preparing thermal states of systems with up to 100 qubits and 2400 layers."
+      },
+      {
+       "document_id": "arxiv-2011-12245-p0037",
+       "url": "https://arxiv.org/abs/2011.12245",
+       "quote": "This is consistent with our main result, and demonstrates that barren plateaus can lead to exponential scaling even for gradient-free optimizers."
+      }
+     ],
+     "falsification_test": "Compare settings where MPQC differs while other inputs are matched. The hypothesis fails if exponential scaling for gradient free optimizers does not fall with MPQC, or if fixing barren plateaus removes no part of the effect.",
+     "deepen": null
+    }
+   ]
+  },
+  {
+   "id": "QC-2",
+   "priority": "medium",
+   "title": "Do two barren-plateau mitigations combine (chemical initialization × mid-circuit measurements)?",
+   "why": "Each mitigation is reported separately (2609.22729, 2406.14285); none of the 155 papers combines them. Deepen rated the composition conditional and proposed a 2×2 factorial.",
+   "caveats": [
+    "The same classical-simulability caveat as QC-1.",
+    "Interaction may be absent; a null result does not refute either effect alone."
+   ],
+   "next_steps": [
+    "Run the 2×2 simulation: neither, each alone, both; measure gradient variance versus system size.",
+    "Predefine an effect threshold for \"interaction\"."
+   ],
+   "status": "open",
+   "claim_status": "UNVERIFIED_HYPOTHESIS",
+   "hypotheses": [
+    {
+     "text": "chemical initialization and mid - circuit measurements may jointly constrain barren plateaus, so relieving one may shift the bottleneck to the other.",
+     "frontier_id": "3ddf8977a9da",
+     "topic": "barren plateaus",
+     "rank": 1,
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.864,
+      "novelty": 0.696
+     },
+     "citations": [
+      {
+       "document_id": "arxiv-2609-22729-p0002",
+       "url": "https://arxiv.org/abs/2609.22729",
+       "quote": "In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies."
+      },
+      {
+       "document_id": "arxiv-2406-14285-p0059",
+       "url": "https://arxiv.org/abs/2406.14285",
+       "quote": "therefore, mid-circuit measurements, circuit pretraining, entanglement regularization to add terms to the cost function, and initial partitioning play on the entanglement entropy to better mitigate barren plateaus"
+      }
+     ],
+     "falsification_test": "Relieve chemical initialization alone while measuring barren plateaus. The hypothesis fails if barren plateaus keeps improving without mid - circuit measurements becoming the binding limit, or if relieving mid - circuit measurements alone has no effect.",
+     "deepen": {
+      "verdict": "all_links_supported",
+      "links": [
+       "supported",
+       "supported"
+      ],
+      "composition": "conditional",
+      "novelty_kb": "no_overlap_found_in_snapshot",
+      "test_design": "2x2 factorial",
+      "vary": [
+       "chemical initialization",
+       "mid - circuit measurements"
+      ],
+      "measure": [
+       "barren plateaus"
+      ],
+      "fails_if": "A precisely measured absence of an interaction challenges compounding in barren plateaus; it does not refute individual effects of chemical initialization or mid - circuit measurements. Predefine a meaningful effect threshold.",
+      "confounders": [
+       "dimension of qudits",
+       "issues",
+       "MPQC"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "QC-3",
+   "priority": "medium",
+   "title": "How much of the cosmic-ray penalty can correlation-aware decoding recover?",
+   "why": "Deepen marked this open problem contested: cosmic rays cause correlated errors at about 1/(10 min) (2402.03208), while accounting for correlated errors in decoding raises the threshold in concatenated codes (2407.16176). The conflict is partly a meaning slip (\"taking into account\" correlations), but it points at a quantitative question.",
+   "caveats": [
+    "This is a known research direction, not a new discovery.",
+    "Radiation events are bursts that can exceed what decoders can model."
+   ],
+   "next_steps": [
+    "Review the literature on radiation-aware and correlation-aware decoders.",
+    "Simulate a surface code with injected radiation-like bursts; compare a standard decoder with one given the burst model."
+   ],
+   "status": "open",
+   "claim_status": "UNVERIFIED_HYPOTHESIS",
+   "hypotheses": [
+    {
+     "text": "Cosmic rays may reduce the error threshold through correlated errors.",
+     "source": "open problem phrased for Deepen",
+     "citations": [
+      {
+       "document_id": "arxiv-2402-03208-p0002",
+       "url": "https://arxiv.org/abs/2402.03208",
+       "quote": "Cosmic rays caused correlated errors at a rate of 1/(10 min), accounting for 17pm1% of all such events."
+      },
+      {
+       "document_id": "arxiv-2407-16176-p0047",
+       "url": "https://arxiv.org/abs/2407.16176",
+       "quote": "However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold."
+      }
+     ],
+     "deepen": {
+      "verdict": "contested",
+      "links": [
+       "supported",
+       "supported"
+      ],
+      "composition": "incompatible_direction",
+      "novelty_kb": "no_overlap_found_in_snapshot",
+      "test_design": "mediation",
+      "vary": [
+       "Cosmic rays"
+      ],
+      "measure": [
+       "the error threshold"
+      ],
+      "fails_if": "the error threshold does not change when Cosmic rays varies with the controls fixed, or holding correlated errors fixed leaves the effect unchanged.",
+      "confounders": []
+     }
+    }
+   ]
+  },
+  {
+   "id": "QC-4",
+   "priority": "medium",
+   "title": "Is error mitigation useful only where classical simulation is already easy?",
+   "why": "Recoverable observables must be dominated by low-weight Pauli operators, which are easy to simulate classically (2607.25746), and mitigation needs superpolynomially many samples even at low depth (2210.11505). Together they suggest a squeeze: the regime where mitigation is cheap may overlap the regime where it is unnecessary.",
+   "caveats": [
+    "Both papers are about worst-case or asymptotic bounds; practical instances may fall outside them.",
+    "Likely discussed in the field already."
+   ],
+   "next_steps": [
+    "Check whether a paper states the trade-off directly.",
+    "For a benchmark family, map observable weight versus mitigation sample cost versus classical simulation cost."
+   ],
+   "status": "open",
+   "claim_status": "UNVERIFIED_HYPOTHESIS",
+   "hypotheses": [
+    {
+     "text": "low weight Pauli operators and samples may jointly constrain error mitigation, so relieving one may shift the bottleneck to the other.",
+     "frontier_id": "801cef0c64c7",
+     "topic": "error mitigation",
+     "rank": 8,
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.757,
+      "novelty": 0.696
+     },
+     "citations": [
+      {
+       "document_id": "arxiv-2607-25746-p0061",
+       "url": "https://arxiv.org/abs/2607.25746",
+       "quote": "Intuitively, this is because observables whose ideal expectation values are recoverable via error mitigation must be dominated by low-weight Pauli operators, which are simultaneously easy to simulate classically."
+      },
+      {
+       "document_id": "arxiv-2210-11505-p0016",
+       "url": "https://arxiv.org/abs/2210.11505",
+       "quote": "By picking, e.g., the parameter s = Ω(n/ log2(n)), we see that even at the low depth D = poly log log(n), error mitigation already requires superpolynomially-many samples."
+      }
+     ],
+     "falsification_test": "Relieve low weight Pauli operators alone while measuring error mitigation. The hypothesis fails if error mitigation keeps improving without samples becoming the binding limit, or if relieving samples alone has no effect.",
+     "deepen": {
+      "verdict": "all_links_supported",
+      "links": [
+       "supported",
+       "supported"
+      ],
+      "composition": "conditional",
+      "novelty_kb": "no_overlap_found_in_snapshot",
+      "test_design": "2x2 factorial",
+      "vary": [
+       "low weight Pauli operators",
+       "samples"
+      ],
+      "measure": [
+       "error mitigation"
+      ],
+      "fails_if": "A precisely measured absence of an interaction challenges compounding in error mitigation; it does not refute individual effects of low weight Pauli operators or samples. Predefine a meaningful effect threshold.",
+      "confounders": [
+       "size of devices"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "QC-5",
+   "priority": "low",
+   "title": "Distillation speed versus circuit error in magic-state factories",
+   "why": "Too rapid distillation discards magic states (2407.07394); a faulty magic state causes a circuit error with probability equal to its infidelity (1905.06903).",
+   "caveats": [
+    "A speed/fidelity trade-off is known in outline; the chain mixes \"discarded\" with \"faulty\" states (composition requires review)."
+   ],
+   "next_steps": [
+    "Read 2407.07394 for how discarded states are handled; the link to output error may not hold if discarded states are never used."
+   ],
+   "status": "open",
+   "claim_status": "UNVERIFIED_HYPOTHESIS",
+   "hypotheses": [
+    {
+     "text": "rapid distillation speed may increase error of circuit outcome through discarded magic states (read as faulty magic state).",
+     "frontier_id": "1807b3734c6f",
+     "topic": "magic state distillation",
+     "rank": 6,
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.852,
+      "novelty": 0.619
+     },
+     "citations": [
+      {
+       "document_id": "arxiv-2407-07394-p0024",
+       "url": "https://arxiv.org/abs/2407.07394",
+       "quote": "Finally, a too rapid distillation speed leads to discarded magic states."
+      },
+      {
+       "document_id": "arxiv-1905-06903-p0011",
+       "url": "https://arxiv.org/abs/1905.06903",
+       "quote": "The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30]."
+      }
+     ],
+     "falsification_test": "Compare settings where rapid distillation speed differs while other inputs are matched. The hypothesis fails if error of circuit outcome does not rise with rapid distillation speed, or if fixing discarded magic states (read as faulty magic state) removes no part of the effect.",
+     "deepen": {
+      "verdict": "all_links_supported",
+      "links": [
+       "supported",
+       "supported"
+      ],
+      "composition": "requires_review",
+      "novelty_kb": "no_overlap_found_in_snapshot",
+      "test_design": "mediation",
+      "vary": [
+       "rapid distillation speed"
+      ],
+      "measure": [
+       "error of circuit outcome"
+      ],
+      "fails_if": "error of circuit outcome does not change when rapid distillation speed varies with the controls fixed, or holding discarded magic states fixed leaves the effect unchanged.",
+      "confounders": [
+       "CNOT gate",
+       "Cosmic rays",
+       "Cultivation",
+       "cultivation circuit",
+       "D. Implications for Future Processors"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "QC-6",
+   "priority": "low",
+   "title": "Do radiation bursts correlate failures inside magic-state factories?",
+   "why": "Cosmic rays cause correlated errors (2402.03208); faulty magic states cause circuit errors (1905.06903). If a burst hits a factory, many distilled states could fail together.",
+   "caveats": [
+    "Speculative; not checked with Deepen. The two sources study different systems."
+   ],
+   "next_steps": [
+    "Run Deepen with the novelty review on this entry.",
+    "Search for radiation effects on distillation factories."
+   ],
+   "status": "open",
+   "claim_status": "UNVERIFIED_HYPOTHESIS",
+   "hypotheses": [
+    {
+     "text": "Cosmic rays and faulty magic state may jointly drive correlated errors, and their effects may compound.",
+     "frontier_id": "74c9ad9a97e2",
+     "topic": "magic state distillation",
+     "rank": 25,
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.621,
+      "novelty": 0.668
+     },
+     "citations": [
+      {
+       "document_id": "arxiv-2402-03208-p0002",
+       "url": "https://arxiv.org/abs/2402.03208",
+       "quote": "Cosmic rays caused correlated errors at a rate of 1/(10 min), accounting for 17pm1% of all such events."
+      },
+      {
+       "document_id": "arxiv-1905-06903-p0011",
+       "url": "https://arxiv.org/abs/1905.06903",
+       "quote": "The infidelity corresponds to the probability that a faulty magic state that is used to perform a gate in a quantum circuit will lead to an error of this circuit’s outcome [30]."
+      }
+     ],
+     "falsification_test": "Vary Cosmic rays and faulty magic state separately and together. The hypothesis fails if the joint change in correlated errors equals the sum of the separate changes.",
+     "deepen": null
+    }
+   ]
+  }
+ ],
+ "coverage_gaps": [
+  {
+   "hypothesis": "Noise may reduce quantum advantage through classical simulation.",
+   "deepen": {
+    "verdict": "unsupported",
+    "links": [
+     "weak",
+     "weak"
+    ],
+    "composition": "insufficient_evidence",
+    "novelty_kb": "potential_overlap",
+    "test_design": "mediation",
+    "vary": [
+     "Noise"
+    ],
+    "measure": [
+     "quantum advantage"
+    ],
+    "fails_if": "quantum advantage does not change when Noise varies with the controls fixed, or holding classical simulation fixed leaves the effect unchanged.",
+    "confounders": []
+   }
+  },
+  {
+   "hypothesis": "Barren plateaus may constrain variational quantum algorithms through classical simulability.",
+   "deepen": {
+    "verdict": "unsupported",
+    "links": [
+     "weak",
+     "missing"
+    ],
+    "composition": "insufficient_evidence",
+    "novelty_kb": "no_overlap_found_in_snapshot",
+    "test_design": "mediation",
+    "vary": [
+     "Barren plateaus"
+    ],
+    "measure": [
+     "variational quantum algorithms"
+    ],
+    "fails_if": "variational quantum algorithms does not change when Barren plateaus varies with the controls fixed, or holding classical simulability fixed leaves the effect unchanged.",
+    "confounders": []
+   }
+  },
+  {
+   "hypothesis": "Circuit size may increase error mitigation cost through sampling overhead.",
+   "deepen": {
+    "verdict": "unsupported",
+    "links": [
+     "weak",
+     "missing"
+    ],
+    "composition": "insufficient_evidence",
+    "novelty_kb": "no_overlap_found_in_snapshot",
+    "test_design": "mediation",
+    "vary": [
+     "Circuit size"
+    ],
+    "measure": [
+     "error mitigation cost"
+    ],
+    "fails_if": "error mitigation cost does not change when Circuit size varies with the controls fixed, or holding sampling overhead fixed leaves the effect unchanged.",
+    "confounders": []
+   }
+  },
+  {
+   "hypothesis": "Quantum LDPC codes may reduce qubit overhead through encoding rate.",
+   "deepen": {
+    "verdict": "unsupported",
+    "links": [
+     "weak",
+     "weak"
+    ],
+    "composition": "insufficient_evidence",
+    "novelty_kb": "potential_overlap",
+    "test_design": "mediation",
+    "vary": [
+     "Quantum LDPC codes"
+    ],
+    "measure": [
+     "qubit overhead"
+    ],
+    "fails_if": "qubit overhead does not change when Quantum LDPC codes varies with the controls fixed, or holding encoding rate fixed leaves the effect unchanged.",
+    "confounders": []
+   }
+  },
+  {
+   "hypothesis": "Quantum LDPC codes may increase decoder complexity through long-range connectivity.",
+   "deepen": {
+    "verdict": "unsupported",
+    "links": [
+     "missing",
+     "missing"
+    ],
+    "composition": "insufficient_evidence",
+    "novelty_kb": "no_overlap_found_in_snapshot",
+    "test_design": "mediation",
+    "vary": [
+     "Quantum LDPC codes"
+    ],
+    "measure": [
+     "decoder complexity"
+    ],
+    "fails_if": "decoder complexity does not change when Quantum LDPC codes varies with the controls fixed, or holding long-range connectivity fixed leaves the effect unchanged.",
+    "confounders": []
+   }
+  },
+  {
+   "hypothesis": "Two-level system defects may reduce qubit coherence through dielectric loss.",
+   "deepen": {
+    "verdict": "unsupported",
+    "links": [
+     "missing",
+     "weak"
+    ],
+    "composition": "insufficient_evidence",
+    "novelty_kb": "no_overlap_found_in_snapshot",
+    "test_design": "mediation",
+    "vary": [
+     "Two-level system defects"
+    ],
+    "measure": [
+     "qubit coherence"
+    ],
+    "fails_if": "qubit coherence does not change when Two-level system defects varies with the controls fixed, or holding dielectric loss fixed leaves the effect unchanged.",
+    "confounders": []
+   }
+  }
+ ]
+}
