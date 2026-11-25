@@ -1,0 +1,3 @@
+# Scaling and renormalization in fault-tolerant quantum computers
+
+This work is concerned with phrasing the concepts of fault-tolerant quantum computation within the framework of disordered systems, Bernoulli site percolation in particular. We show how the so-called "threshold theorems" on the possibility of fault-tolerant quantum computation with constant error rate can be cast as a renormalization (coarse-graining) of the site percolation process describing the occurrence of errors during computation. We also use percolation techniques to derive a trade-off between the complexity overhead of the fault-tolerant circuit and the threshold error rate.
