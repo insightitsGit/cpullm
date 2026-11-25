@@ -288,6 +288,46 @@ def _link_evidence(graph, sentences, source, target, similar, expected, budget=N
                 exact_observed_relations=sorted({item['relation'] for item in genuine_support + genuine_counter}))
 
 
+SHORT_SOURCE_CHUNKS = 2      # a source this short is likely an abstract only
+GAP_MIN_DOCUMENTS = 3
+
+
+def _coverage(links, rows, sentences, budget=None):
+    """Mark weak or missing links whose terms the snapshot barely covers (a coverage gap, not counter-evidence)."""
+    from collections import Counter
+    from cpu_llm.frontier import source_of
+    sizes = Counter(source_of(row['document_id']) for row in rows)
+    for link in links:
+        if budget: budget.check()
+        if link['status'] not in {'weak', 'missing'}:
+            continue
+        found = {}
+        for term in (link['source'], link['target']):
+            found[term] = {source_of(row['document_id']) for _, row, _ in sentences.with_terms([term], at_least=1)}
+        union = found[link['source']] | found[link['target']]
+        short = sum(sizes[doc] <= SHORT_SOURCE_CHUNKS for doc in union) / len(union) if union else 1.0
+        gap = not link['counter'] and (min(len(found[link['source']]), len(found[link['target']])) < GAP_MIN_DOCUMENTS
+                                       or short > 0.5)
+        link['coverage'] = dict(source_documents=len(found[link['source']]),
+                                target_documents=len(found[link['target']]),
+                                short_source_share=round(short, 2), gap=gap)
+
+
+def _suggested_procedures(plan, setups, hints):
+    """Cited setups and measurement hints that name each planned variable; suggestions, never definitions."""
+    terms = list(dict.fromkeys(plan['manipulate'] + plan['measure'] + list(plan.get('mediators') or [])))
+    found = {}
+    for term in terms:
+        items = [dict(document_id=s['document_id'], quote=s['quote'], source='existing_setup')
+                 for s in setups if term in s.get('measures', [])]
+        items += [dict(document_id=h['document_id'], quote=h['quote'], source='measurement_hint')
+                  for h in hints.get(term_key(term), [])]
+        unique = list({item['quote']: item for item in items}.values())[:3]
+        if unique:
+            found[term] = [dict(item, qualification='suggested_not_validated') for item in unique]
+    return found
+
+
 def _confounders(graph, outcome, exclude, similar, budget=None):
     """Other causes of the outcome stated in the sources."""
     found, seen = [], set()
@@ -400,6 +440,7 @@ def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, simila
             budget.check()
             kind = spec.expected[index]
             links.append(_link_evidence(graph, sentences, source, target, similar, kind, budget))
+        _coverage(links, rows, sentences, budget)
         direction = _direction_assessment(spec, links, budget)
         if direction['status'] in {'contradicted', 'contested'}:
             exact = _direction_assessment(spec, links, budget, 'exact_observed_relations')
@@ -448,13 +489,22 @@ def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, simila
             plan['mediator'] = None  # use the full ordered mediator list
             plan['steps'][-1] = ('Repeat with each mediator held fixed or blocked in turn ('
                                 + ' -> '.join(spec.via) + ') to test every proposed link.')
+    plan['suggested_procedures'] = _suggested_procedures(plan, setups, hints)
+    actions = research_actions(composition, plan, novelty)
+    gaps = [link for link in links if link.get('coverage', {}).get('gap')]
+    if gaps:
+        terms = list(dict.fromkeys(t for link in gaps for t in (link['source'], link['target'])))
+        actions.insert(0, dict(id='add_sources', kind='coverage', terms=terms,
+                               instruction='Add full-text sources that discuss ' + ', '.join(terms) +
+                                           '; the snapshot barely covers them, so the verdict reflects coverage, '
+                                           'not evidence against the hypothesis.'))
     return dict(schema=SCHEMA, triggered=True, claim_status=CLAIM_STATUS, promotion='blocked', index_write=False,
                 potentially_nondeterministic=True, pattern=pattern, terms=dict(a=a, b=b, c=c),
                 path_nodes=[a, *spec.via, c] if pattern == 'chain' else None, links=links,
                 expected_relation=spec.relation, direction_check=direction,
                 verdict=verdict, lead_status=status, predictions=predictions, setups=setups, confounders=confounders,
                 composition=composition, novelty_review=novelty,
-                research_actions=research_actions(composition, plan, novelty),
+                research_actions=actions,
                 test_plan=plan, relation_edges=len(graph.edges) if graph is not None else 0,
                 bridge_check='encoder' if similar is not None else 'head_noun', encoded_terms=encoded,
                 graph_reused=graph_reused, incomplete=bool(incomplete),
@@ -494,6 +544,12 @@ def format_reply(receipt, text):
     if receipt['predictions']:
         lines.append('\nSource predictions naming two or more of its terms:')
         lines.extend(f'  [{p["document_id"]}] {p["quote"]}' for p in receipt['predictions'][:4])
+    for link in receipt['links']:
+        coverage = link.get('coverage')
+        if coverage and coverage['gap']:
+            lines.append(f'\nCoverage gap on {link["source"]} -> {link["target"]}: {coverage["source_documents"]} and '
+                         f'{coverage["target_documents"]} documents mention the terms; '
+                         f'{round(coverage["short_source_share"] * 100)}% of them are abstract-length.')
     if receipt['setups']:
         lines.append('\nExisting setups that measure one of its terms:')
         lines.extend(f'  [{s["document_id"]}] {s["quote"]}' for s in receipt['setups'][:4])
@@ -506,6 +562,8 @@ def format_reply(receipt, text):
     if plan.get('fails_if'):
         lines.append(f'  Fails if: {plan["fails_if"]}')
     lines.append('Plan readiness: ' + plan['readiness'].replace('_', ' ') + '; experiment not executed.')
+    for term, items in plan.get('suggested_procedures', {}).items():
+        lines.append(f'  Suggested procedure for {term} (not validated): [{items[0]["document_id"]}] {items[0]["quote"]}')
     for variable in plan['variables']:
         if variable['definition']:
             lines.append(f'  User-supplied definition for {variable["term"]}: {variable["definition"]}')

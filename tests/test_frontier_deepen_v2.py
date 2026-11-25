@@ -121,3 +121,26 @@ def test_frontier_checks_carry_the_lead_status():
     receipt = run_frontier('memory bandwidth', rows, deepen_top=3)
     checked = [h['check'] for h in receipt['hypotheses'] if h.get('check')]
     assert checked and all(c['lead_status'] for c in checked)
+
+
+# ------------------------------------------------------------------ 3-4. coverage gaps and suggested procedures
+
+def test_thin_coverage_is_reported_as_a_coverage_gap():
+    rows = rows_of('Two-level system defects are common in superconducting qubits.',
+                   'Dielectric loss limits qubit coherence.')
+    receipt = run_deepen('Two-level system defects may reduce qubit coherence through dielectric loss.', rows)
+    assert receipt['verdict'] in {'partly_supported', 'unsupported'}
+    gap = receipt['links'][0]['coverage']
+    assert gap['gap'] and gap['short_source_share'] == 1.0
+    assert receipt['lead_status'] == 'coverage_gap'
+    assert receipt['research_actions'][0]['id'] == 'add_sources'
+
+
+def test_setups_become_cited_suggestions_without_changing_readiness():
+    rows = rows_of('Memory bandwidth increases inference throughput.',
+                   'Inference throughput increases serving revenue.',
+                   'We measured inference throughput on a synthetic benchmark across batch sizes.')
+    receipt = run_deepen(CHAIN, rows)
+    suggestions = receipt['test_plan']['suggested_procedures']
+    assert suggestions['inference throughput'][0]['qualification'] == 'suggested_not_validated'
+    assert receipt['test_plan']['readiness'] == 'needs_input'
