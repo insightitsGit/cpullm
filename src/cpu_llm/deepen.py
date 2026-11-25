@@ -276,6 +276,9 @@ def _endpoint_match(key, surface, requested, similar):
     """'exact' when the normalized terms agree, 'similar' at high encoder cosine, otherwise 'bridged'."""
     if key == term_key(requested):
         return 'exact'
+    from cpu_llm.frontier import _contains
+    if key and _contains(key, term_key(requested)):
+        return 'contained'        # the same quantity with added modifiers ("faster memory bandwidth")
     if similar is not None and surface:
         score = similar(surface, requested)
         if score is not None and score >= SAME_TERM_SIMILARITY:
@@ -286,14 +289,18 @@ def _endpoint_match(key, surface, requested, similar):
 def _match(citation, source, target, similar):
     left = _endpoint_match(term_key(citation.get('subject') or ''), citation.get('subject'), source, similar)
     right = _endpoint_match(term_key(citation.get('object') or ''), citation.get('object'), target, similar)
-    return 'bridged' if 'bridged' in (left, right) else 'similar' if 'similar' in (left, right) else 'exact'
+    for level in ('bridged', 'similar', 'contained'):
+        if level in (left, right):
+            return level
+    return 'exact'
 
 
 def _link_evidence(graph, sentences, source, target, similar, expected, budget=None):
     """Supporting edges, counter-evidence and co-mentions for one link.
 
-    Every citation records ``endpoint_match``: whether its endpoints are the requested terms (``exact``), close
-    in meaning (``similar``) or only joined through a bridge (``bridged``). A link whose only contrary evidence is
+    Every citation records ``endpoint_match``: whether its endpoints are the requested terms (``exact``), the same
+    terms with added modifiers (``contained``), close in meaning (``similar``) or only joined through a bridge
+    (``bridged``). A link whose only contrary evidence is
     bridged is a ``bridge_mismatch``, not a contest.
     """
     s_term, t_term = _Term(term_key(source), source), _Term(term_key(target), target)
@@ -503,7 +510,7 @@ def _direction_assessment(spec, links, budget, field='observed_relations'):
 
 
 def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, similar=None, sentences=None, budget=None,
-               literature_reviewer=None):
+               literature_reviewer=None, axiom_sources=()):
     """Pure source-bound analysis. Children share the parent's ledger, never reset it."""
     from cpu_llm.deepen_review import (request_options, assess_composition, classify_controls,
                                       operationalize, novelty_review, research_actions, measurement_hints)
@@ -538,6 +545,12 @@ def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, simila
             kind = spec.expected[index]
             links.append(_link_evidence(graph, sentences, source, target, similar, kind, budget))
         _coverage(links, rows, sentences, budget)
+        axioms = tuple(options['axiom_sources']) or tuple(axiom_sources)
+        if axioms:
+            from cpu_llm.frontier import is_axiom
+            for link in links:
+                for item in link['support'] + link['counter']:
+                    item['tier'] = 'axiom' if is_axiom(item['document_id'], axioms) else 'frontier'
         direction = _direction_assessment(spec, links, budget)
         if direction['status'] in {'contradicted', 'contested'}:
             exact = _direction_assessment(spec, links, budget, 'exact_observed_relations')
@@ -728,7 +741,8 @@ def execute_deepen(app, message, hypothesis, *, caller=None, as_of=None, strict=
     pipeline = getattr(app.index, 'pipeline', None)
     try:
         receipt = run_deepen(hypothesis, rows, encode=getattr(pipeline, 'encode_texts', None),
-                             literature_reviewer=getattr(app, 'literature_reviewer', None))
+                             literature_reviewer=getattr(app, 'literature_reviewer', None),
+                             axiom_sources=tuple(getattr(app, 'axiom_sources', ()) or ()))
     except StopSearch as exc:
         return result('partial', f'The Deepen evidence search stopped: {exc}.')
     receipt['snapshot'] = dict(as_of=when, chunk_count=len(rows))

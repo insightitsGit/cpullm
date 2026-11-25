@@ -23,9 +23,12 @@ def _text(value, name, cap=1000):
 
 def request_options(value):
     """Unwrap a new options envelope without changing old hypothesis-object semantics."""
-    options = dict(definitions={}, protocol={}, novelty=False, external_review=False)
+    options = dict(definitions={}, protocol={}, novelty=False, external_review=False, axiom_sources=())
     if not isinstance(value, dict) or 'hypothesis' not in value:
         return value, options
+    if 'axiom_sources' in value:
+        from cpu_llm.frontier import validate_axiom_sources
+        options['axiom_sources'] = validate_axiom_sources(value['axiom_sources'])
     if set(value) - {'hypothesis', *options}:
         raise ValueError('Unknown Deepen research option.')
     for key in ('novelty', 'external_review'):
@@ -108,7 +111,7 @@ def assess_composition(spec, links, rows, direction, budget):
                         status='requires_review', kind='modifier' if contained else 'meaning',
                         reason=('Changed endpoint modifiers; check the direction and scope they imply.' if contained
                                 else 'Different terms joined by similarity; similarity is not identity.')))
-    scope_differences = []
+    scope_differences = scale_warnings(links, budget)
     for field in sorted(_CONTEXT):
         budget.check()
         values = sorted({s['context'][field] for s in scopes if field in s['context']})
@@ -128,6 +131,53 @@ def assess_composition(spec, links, rows, direction, budget):
                 assumptions=['Source terms denote compatible quantities and settings.',
                              'Composed source relationships are not causal identification.'],
                 scientific_validity='not_established')
+
+
+_TIME_UNITS = (('ns', -9), ('nanosecond', -9), ('µs', -6), ('us', -6), ('microsecond', -6), ('ms', -3),
+               ('millisecond', -3), ('s', 0), ('sec', 0), ('second', 0), ('min', 1.78), ('minute', 1.78),
+               ('h', 3.56), ('hour', 3.56), ('day', 4.94))
+_TIME = re.compile(r'(?:\b\d+(?:\.\d+)?\s*|\b(?:per|one|a|each|every)\s+|/\s*\(?\s*\d*\s*)(' +
+                   '|'.join(sorted((re.escape(u) for u, _ in _TIME_UNITS), key=len, reverse=True)) + r')s?\b', re.I)
+_LEVELS = (('device', r'device|chip|fabricat\w*|substrate|material|junction|resonator|wafer|hardware|dielectric'),
+           ('gate', r'gate|pulse|two-qubit|single-qubit|cnot|cz|readout'),
+           ('code', r'code|syndrome|decod\w*|logical|stabili[sz]er|threshold|distance'),
+           ('algorithm', r'algorithm|ansatz|variational|vqe|qaoa|optimi[sz]er|training|application'))
+
+
+def _time_scale(quote):
+    exponents = dict(_TIME_UNITS)
+    found = [exponents[m[1].lower().rstrip('s')] if m[1].lower().rstrip('s') in exponents else exponents.get(m[1].lower())
+             for m in _TIME.finditer(quote)]
+    return [f for f in found if f is not None]
+
+
+def _level(quote):
+    hits = [(len(re.findall(rf'\b(?:{pattern})\b', quote, re.I)), index, name)
+            for index, (name, pattern) in enumerate(_LEVELS)]
+    best = max(hits)
+    return (best[1], best[2]) if best[0] and [h[0] for h in hits].count(best[0]) == 1 else None
+
+
+def scale_warnings(links, budget=None):
+    """Warn when adjacent links cite sentences at time scales 1,000x apart or two abstraction levels apart."""
+    warnings = []
+    quotes = [next((c['quote'] for c in link['support'] if c.get('endpoint_match') != 'bridged'),
+                   link['support'][0]['quote'] if link['support'] else None) for link in links]
+    for left, right in zip(quotes, quotes[1:]):
+        if budget: budget.check()
+        if not left or not right:
+            continue
+        a, b = _time_scale(left), _time_scale(right)
+        if a and b and abs(max(a) - min(b)) >= 3 and abs(min(a) - max(b)) >= 3:
+            warnings.append(dict(field='time_scale', values=[left[:200], right[:200]],
+                                 reason='Adjacent links cite time scales at least 1,000x apart; state how an effect '
+                                        'at one scale carries to the other.'))
+        la, lb = _level(left), _level(right)
+        if la and lb and abs(la[0] - lb[0]) >= 2:
+            warnings.append(dict(field='abstraction_level', values=[la[1], lb[1]],
+                                 reason='Adjacent links describe different levels (for example device and algorithm); '
+                                        'state the mechanism that connects them.'))
+    return warnings
 
 
 def classify_controls(items, spec, graph, budget):

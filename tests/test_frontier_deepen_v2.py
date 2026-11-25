@@ -350,3 +350,23 @@ def test_external_review_needs_a_registered_reviewer():
     receipt = run_deepen({'hypothesis': 'Cosmic rays may increase correlated errors.', 'novelty': True,
                           'external_review': True}, rows)
     assert receipt['novelty_review']['prior_art_status'] == 'not_configured'
+
+
+# ------------------------------------------------------------------ 11-12. axiom tier, scale warnings
+
+def test_deepen_labels_axiom_citations():
+    rows = rows_of('Memory bandwidth increases inference throughput.', prefix='review') + rows_of(
+        'Inference throughput increases serving revenue.', prefix='paper')
+    receipt = run_deepen({'hypothesis': CHAIN, 'axiom_sources': ['review']}, rows)
+    tiers = {c['document_id'].split('-')[0][:6]: c['tier'] for link in receipt['links'] for c in link['support']}
+    assert tiers == {'review': 'axiom', 'paper1': 'frontier'}
+
+
+def test_scale_and_level_jumps_are_warned_not_rejected():
+    rows = rows_of('Fabrication defects in the chip substrate increase gate errors within 10 ns.',
+                   'Gate errors increase variational algorithm training cost over 5 hours of optimizer runs.')
+    receipt = run_deepen('Fabrication defects may increase variational algorithm training cost through gate errors.',
+                         rows)
+    fields = {d['field'] for d in receipt['composition']['scope_differences']}
+    assert 'time_scale' in fields
+    assert receipt['verdict'] != 'unsupported'
