@@ -1,0 +1,540 @@
+{
+ "kind": "seed",
+ "topic": "magic state distillation",
+ "hypothesis": {
+  "id": "d962508da555",
+  "text": "magic state distillation factory may increase measurement averages through fewer higher fidelity states (read as measuring along the prepared state).",
+  "pattern": "chain",
+  "relation": "increases",
+  "anchors": [
+   "magic state distillation factory",
+   "measurement averages"
+  ],
+  "via": [
+   "fewer higher fidelity states (read as measuring along the prepared state)"
+  ],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2509-24402-p0002",
+   "arxiv-2512-13908-p0011"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2509-24402-p0002",
+    "quote": "A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.",
+    "start": 311,
+    "end": 435,
+    "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+    "relation": "causes",
+    "subject": "magic state distillation factory",
+    "object": "fewer higher fidelity states",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2512-13908-p0011",
+    "quote": "Second, KT reduces the projection noise compared to standard tomography: measuring along the prepared state also results in measurement averages close to zero, reducing the variance in the binomial distribution.",
+    "start": 231,
+    "end": 442,
+    "chunk_sha256": "ecae496e0d2cfd2d06ebe70f0bbf948abb23913a7f6167bb9ad86f484f763d67",
+    "relation": "causes",
+    "subject": "measuring along the prepared state",
+    "object": "measurement averages",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.96,
+   "deductive_relevance": 0.788,
+   "novelty": 0.6
+  },
+  "falsification_test": "Compare settings where magic state distillation factory differs while other inputs are matched. The hypothesis fails if measurement averages does not rise with magic state distillation factory, or if fixing fewer higher fidelity states (read as measuring along the prepared state) removes no part of the effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 2,
+  "rule_verdict": null,
+  "hub": "fewer higher fidelity state",
+  "check": {
+   "verdict": "all_links_supported",
+   "incomplete": false,
+   "direction_check": {
+    "requested": "increases",
+    "status": "consistent",
+    "observed": [
+     "increases"
+    ],
+    "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+   },
+   "composition": {
+    "status": "requires_review",
+    "bridges": [
+     {
+      "link": 0,
+      "requested": "fewer higher fidelity states",
+      "source_term": "low fidelity input magic states",
+      "citation": {
+       "document_id": "arxiv-2509-24402-p0002",
+       "quote": "A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.",
+       "start": 311,
+       "end": 435,
+       "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+       "relation": "increases",
+       "subject": "magic state distillation factory",
+       "object": "low fidelity input magic states",
+       "hedged": false
+      },
+      "status": "requires_review",
+      "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+     },
+     {
+      "link": 1,
+      "requested": "fewer higher fidelity states",
+      "source_term": "measuring along the prepared state",
+      "citation": {
+       "document_id": "arxiv-2512-13908-p0011",
+       "quote": "Second, KT reduces the projection noise compared to standard tomography: measuring along the prepared state also results in measurement averages close to zero, reducing the variance in the binomial distribution.",
+       "start": 231,
+       "end": 442,
+       "chunk_sha256": "ecae496e0d2cfd2d06ebe70f0bbf948abb23913a7f6167bb9ad86f484f763d67",
+       "relation": "causes",
+       "subject": "measuring along the prepared state",
+       "object": "measurement averages",
+       "hedged": false
+      },
+      "status": "requires_review",
+      "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+     }
+    ],
+    "qualifications": [],
+    "source_contexts": [],
+    "scope_differences": [],
+    "context_coverage": "not_recorded",
+    "interaction": {
+     "status": "not_applicable",
+     "reason": "Individual effects do not establish a joint interaction."
+    },
+    "assumptions": [
+     "Source terms denote compatible quantities and settings.",
+     "Composed source relationships are not causal identification."
+    ],
+    "scientific_validity": "not_established"
+   },
+   "plan_readiness": "needs_input",
+   "links": [
+    {
+     "source": "magic state distillation factory",
+     "target": "fewer higher fidelity states",
+     "status": "supported",
+     "counter": []
+    },
+    {
+     "source": "fewer higher fidelity states",
+     "target": "measurement averages",
+     "status": "supported",
+     "counter": []
+    }
+   ]
+  }
+ },
+ "seconds": 8.42,
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "magic state distillation factory",
+   "b": "fewer higher fidelity states",
+   "c": "measurement averages"
+  },
+  "path_nodes": [
+   "magic state distillation factory",
+   "fewer higher fidelity states",
+   "measurement averages"
+  ],
+  "links": [
+   {
+    "source": "magic state distillation factory",
+    "target": "fewer higher fidelity states",
+    "expected_relation": "causes",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2509-24402-p0002",
+      "quote": "A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.",
+      "start": 311,
+      "end": 435,
+      "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+      "relation": "increases",
+      "subject": "magic state distillation factory",
+      "object": "low fidelity input magic states",
+      "hedged": false
+     },
+     {
+      "document_id": "arxiv-2509-24402-p0002",
+      "quote": "A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.",
+      "start": 311,
+      "end": 435,
+      "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+      "relation": "causes",
+      "subject": "magic state distillation factory",
+      "object": "fewer higher fidelity states",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 2,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "causes",
+     "increases"
+    ]
+   },
+   {
+    "source": "fewer higher fidelity states",
+    "target": "measurement averages",
+    "expected_relation": "causes",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2512-13908-p0011",
+      "quote": "Second, KT reduces the projection noise compared to standard tomography: measuring along the prepared state also results in measurement averages close to zero, reducing the variance in the binomial distribution.",
+      "start": 231,
+      "end": 442,
+      "chunk_sha256": "ecae496e0d2cfd2d06ebe70f0bbf948abb23913a7f6167bb9ad86f484f763d67",
+      "relation": "causes",
+      "subject": "measuring along the prepared state",
+      "object": "measurement averages",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "causes"
+    ]
+   }
+  ],
+  "expected_relation": "increases",
+  "direction_check": {
+   "requested": "increases",
+   "status": "consistent",
+   "observed": [
+    "increases"
+   ],
+   "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-2607-16166-p0057",
+    "quote": "To verify the truncated MECM protocol, we simulate all errors e with weight wt(e) ≤ 7 and check that the logical error rate of the protocol is at the target logical error rate ε = 10−10 and the average number of catbased measurements.",
+    "start": 0,
+    "end": 234,
+    "chunk_sha256": "a918d05c49fefef84b33ce7c3154e3fbadddf3688d7595f92e04180637dcccad",
+    "measures": [
+     "measurement averages"
+    ]
+   }
+  ],
+  "confounders": [],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 0,
+     "requested": "fewer higher fidelity states",
+     "source_term": "low fidelity input magic states",
+     "citation": {
+      "document_id": "arxiv-2509-24402-p0002",
+      "quote": "A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.",
+      "start": 311,
+      "end": 435,
+      "chunk_sha256": "d21d710ff8ca85cd227053b1f8bf379ed2abfa4eb70a67057a6a6f807456e6b9",
+      "relation": "increases",
+      "subject": "magic state distillation factory",
+      "object": "low fidelity input magic states",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 1,
+     "requested": "fewer higher fidelity states",
+     "source_term": "measuring along the prepared state",
+     "citation": {
+      "document_id": "arxiv-2512-13908-p0011",
+      "quote": "Second, KT reduces the projection noise compared to standard tomography: measuring along the prepared state also results in measurement averages close to zero, reducing the variance in the binomial distribution.",
+      "start": 231,
+      "end": 442,
+      "chunk_sha256": "ecae496e0d2cfd2d06ebe70f0bbf948abb23913a7f6167bb9ad86f484f763d67",
+      "relation": "causes",
+      "subject": "measuring along the prepared state",
+      "object": "measurement averages",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "5f12c73abbda9543",
+    "kind": "variable",
+    "term": "magic state distillation factory",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for magic state distillation factory."
+   },
+   {
+    "id": "6340d824bfa9bc9f",
+    "kind": "variable",
+    "term": "magic state distillation factory",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for magic state distillation factory."
+   },
+   {
+    "id": "132a6fa14b39db34",
+    "kind": "variable",
+    "term": "measurement averages",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for measurement averages."
+   },
+   {
+    "id": "139ebd32a6a6e429",
+    "kind": "variable",
+    "term": "measurement averages",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for measurement averages."
+   },
+   {
+    "id": "194d1501e83bd9f2",
+    "kind": "variable",
+    "term": "fewer higher fidelity states",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for fewer higher fidelity states."
+   },
+   {
+    "id": "dd6bc474648468c4",
+    "kind": "variable",
+    "term": "fewer higher fidelity states",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for fewer higher fidelity states."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "magic state distillation factory"
+   ],
+   "measure": [
+    "measurement averages"
+   ],
+   "mediator": "fewer higher fidelity states",
+   "controls": [],
+   "steps": [
+    "Vary magic state distillation factory across matched settings and measure measurement averages.",
+    "No additional outcome cause was extracted; this does not establish absence of confounding.",
+    "Repeat with fewer higher fidelity states held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "measurement averages does not change when magic state distillation factory varies with the controls fixed, or holding fewer higher fidelity states fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "magic state distillation factory",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "measurement averages",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2510-06324-p0020",
+       "quote": "PABC − PAB PC|B 1 ≤ poly(n)·exp(−lA,C /ξ), (5) where E[·] denotes taking average over the choice of C. Using the notion of Markov length, we say a measurement distribution P is approximately Markovian if it has",
+       "start": 0,
+       "end": 210,
+       "chunk_sha256": "307695511465621429d29332fc3d4bc38d32319f95a56ff04d40e7b0d1c3f659",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2512-13908-p0011",
+       "quote": "Second, KT reduces the projection noise compared to standard tomography: measuring along the prepared state also results in measurement averages close to zero, reducing the variance in the binomial distribution.",
+       "start": 231,
+       "end": 442,
+       "chunk_sha256": "ecae496e0d2cfd2d06ebe70f0bbf948abb23913a7f6167bb9ad86f484f763d67",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2602-22117-p0025",
+       "quote": "In contrast, QTLS obtained from the fractional frequency shifts is also affected by far-off-resonant TLS, therefore, it yields a better measurement of the average TLS ensemble distribution and a lower variance [50].",
+       "start": 275,
+       "end": 490,
+       "chunk_sha256": "45bacf64853a1ca1d79b6806f68e7e13bccc2e05b32a1bfebd620941b872ace9",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "fewer higher fidelity states",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "magic state distillation factory",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "magic state distillation factory",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "measurement averages",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "measurement averages",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "fewer higher fidelity states",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "fewer higher fidelity states",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "fewer higher fidelity states"
+   ]
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 8.297
+  },
+  "snapshot": {
+   "as_of": 1795594966,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: magic state distillation factory may increase measurement averages through fewer higher fidelity states (read as measuring along the prepared state).\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: consistent.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: low fidelity input magic states versus fewer higher fidelity states.\n  Review meaning: measuring along the prepared state versus fewer higher fidelity states.\n\nLink magic state distillation factory -> fewer higher fidelity states: supported (2 supporting, 0 contrary).\n  + [arxiv-2509-24402-p0002] A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.\n  + [arxiv-2509-24402-p0002] A magic state distillation factory consumes many low-fidelity input magic states and produces fewer, higher-fidelity states.\n\nLink fewer higher fidelity states -> measurement averages: supported (1 supporting, 0 contrary).\n  + [arxiv-2512-13908-p0011] Second, KT reduces the projection noise compared to standard tomography: measuring along the prepared state also results in measurement averages close to zero, reducing the variance in the binomial distribution.\n\nExisting setups that measure one of its terms:\n  [arxiv-2607-16166-p0057] To verify the truncated MECM protocol, we simulate all errors e with weight wt(e) ≤ 7 and check that the logical error rate of the protocol is at the target logical error rate ε = 10−10 and the average number of catbased measurements.\n\nTest plan (mediation):\n  1. Vary magic state distillation factory across matched settings and measure measurement averages.\n  2. No additional outcome cause was extracted; this does not establish absence of confounding.\n  3. Repeat with fewer higher fidelity states held fixed or blocked to test whether it carries the effect.\n  Fails if: measurement averages does not change when magic state distillation factory varies with the controls fixed, or holding fewer higher fidelity states fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for magic state distillation factory.\n  Required: feasible intervention or justified observational design for magic state distillation factory.\n  Required: measurement procedure for measurement averages.\n  Required: unit or explicit categorical scale for measurement averages.\n  Required: measurement procedure for fewer higher fidelity states.\n  Required: unit or explicit categorical scale for fewer higher fidelity states.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

@@ -1,0 +1,573 @@
+{
+ "kind": "seed",
+ "topic": "two-level systems",
+ "hypothesis": {
+  "id": "d380dc4b2fe9",
+  "text": "relative position of magic thresholds and dimension of DLA may move together because both depend on system size.",
+  "pattern": "divergent",
+  "relation": "common_driver",
+  "anchors": [
+   "relative position of magic thresholds",
+   "dimension of DLA",
+   "system size"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2609-39734-p0039",
+   "arxiv-2105-14377-p0049"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2609-39734-p0039",
+    "quote": "Thus, the relative position of the magic and sampling thresholds is determined by the system size and the sampling tolerance.",
+    "start": 637,
+    "end": 762,
+    "chunk_sha256": "91e41903cd89a23ae5e1578d4e07cf99ebb72c5303247ed2d136a486e6275bcf",
+    "relation": "constrains",
+    "subject": "system size",
+    "object": "relative position of magic thresholds",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2105-14377-p0049",
+    "quote": "For instance, when the system is controllable, dim(g) = d2 − 1 = 22n − 1, and thus the dimension of the DLA is exponentially growing with the system size n.",
+    "start": 0,
+    "end": 156,
+    "chunk_sha256": "bac377f13c3a698ff337e9be9e654e6924532df04e54f9eca5f014e0a7ab02fd",
+    "relation": "increases",
+    "subject": "system size",
+    "object": "dimension of DLA",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.567,
+   "novelty": 0.6
+  },
+  "falsification_test": "Track relative position of magic thresholds and dimension of DLA across periods where system size changes and where it does not. The hypothesis fails if they co-vary just as strongly when system size is held fixed.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "system size",
+  "check": {
+   "verdict": "all_links_supported",
+   "incomplete": false,
+   "direction_check": {
+    "requested": "common_driver",
+    "status": "unspecified",
+    "observed": []
+   },
+   "composition": {
+    "status": "requires_review",
+    "bridges": [],
+    "qualifications": [
+     {
+      "link": 1,
+      "citation": {
+       "document_id": "arxiv-2105-14377-p0049",
+       "quote": "For instance, when the system is controllable, dim(g) = d2 − 1 = 22n − 1, and thus the dimension of the DLA is exponentially growing with the system size n.",
+       "start": 0,
+       "end": 156,
+       "chunk_sha256": "bac377f13c3a698ff337e9be9e654e6924532df04e54f9eca5f014e0a7ab02fd",
+       "relation": "increases",
+       "subject": "system size",
+       "object": "dimension of DLA",
+       "hedged": false
+      },
+      "instruction": "Retain this full qualified statement; do not treat it as universal."
+     }
+    ],
+    "source_contexts": [],
+    "scope_differences": [],
+    "context_coverage": "not_recorded",
+    "interaction": {
+     "status": "not_applicable",
+     "reason": "Individual effects do not establish a joint interaction."
+    },
+    "assumptions": [
+     "Source terms denote compatible quantities and settings.",
+     "Composed source relationships are not causal identification."
+    ],
+    "scientific_validity": "not_established"
+   },
+   "plan_readiness": "needs_input",
+   "links": [
+    {
+     "source": "system size",
+     "target": "relative position of magic thresholds",
+     "status": "supported",
+     "counter": []
+    },
+    {
+     "source": "system size",
+     "target": "dimension of DLA",
+     "status": "supported",
+     "counter": []
+    }
+   ]
+  }
+ },
+ "seconds": 8.72,
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "divergent",
+  "terms": {
+   "a": "relative position of magic thresholds",
+   "b": "dimension of DLA",
+   "c": "system size"
+  },
+  "path_nodes": null,
+  "links": [
+   {
+    "source": "system size",
+    "target": "relative position of magic thresholds",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2609-39734-p0039",
+      "quote": "Thus, the relative position of the magic and sampling thresholds is determined by the system size and the sampling tolerance.",
+      "start": 637,
+      "end": 762,
+      "chunk_sha256": "91e41903cd89a23ae5e1578d4e07cf99ebb72c5303247ed2d136a486e6275bcf",
+      "relation": "constrains",
+      "subject": "system size",
+      "object": "relative position of magic thresholds",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2609-39734-p0039",
+      "quote": "Thus, the relative position of the magic and sampling thresholds is determined by the system size and the sampling tolerance.",
+      "start": 637,
+      "end": 762,
+      "chunk_sha256": "91e41903cd89a23ae5e1578d4e07cf99ebb72c5303247ed2d136a486e6275bcf"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   },
+   {
+    "source": "system size",
+    "target": "dimension of DLA",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2105-14377-p0049",
+      "quote": "For instance, when the system is controllable, dim(g) = d2 − 1 = 22n − 1, and thus the dimension of the DLA is exponentially growing with the system size n.",
+      "start": 0,
+      "end": 156,
+      "chunk_sha256": "bac377f13c3a698ff337e9be9e654e6924532df04e54f9eca5f014e0a7ab02fd",
+      "relation": "increases",
+      "subject": "system size",
+      "object": "dimension of DLA",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2105-14377-p0049",
+      "quote": "For instance, when the system is controllable, dim(g) = d2 − 1 = 22n − 1, and thus the dimension of the DLA is exponentially growing with the system size n.",
+      "start": 0,
+      "end": 156,
+      "chunk_sha256": "bac377f13c3a698ff337e9be9e654e6924532df04e54f9eca5f014e0a7ab02fd"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   }
+  ],
+  "expected_relation": "common_driver",
+  "direction_check": {
+   "requested": "common_driver",
+   "status": "unspecified",
+   "observed": []
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-2208-05378-p0004",
+    "quote": "Next, based on the assumption of the leakage occurrence during two-qubit gates, the most typical leakage noise in superconducting quantum computing, we conduct numerical experiments to benchmark the impact of leakage error on applications of data fitting and data classification when using the widely used hardware-efficient ansatz, with varying the system size, circuit depth, and leakage probability.",
+    "start": 553,
+    "end": 955,
+    "chunk_sha256": "fcf45fa8cdd72cf63eb7109c79d92725aaa5a55ddfba43b99ca47d736b5bfb6d",
+    "measures": [
+     "system size"
+    ]
+   },
+   {
+    "document_id": "arxiv-2208-05378-p0016",
+    "quote": "Eventually, there are only three hyperparameters in our experiments: the system size n, the depth of the circuit d, and the leakage probability L. In all the experiments below, we take uniformly random initial parameters at the start of training.",
+    "start": 958,
+    "end": 1204,
+    "chunk_sha256": "6f5894dc7ebc43e9a8f58ed1a08c86b3b7a5b578ced615668f3fcb4ce0ab41e2",
+    "measures": [
+     "system size"
+    ]
+   },
+   {
+    "document_id": "arxiv-2511-21236-p0056",
+    "quote": "In quantum experiments and noisy simulations, we have demonstrated the ability of tiled M0 to reliably improve ground state energy calculations with the tUPS Ansatz for molecular systems varying in size between 4 and 12 qubits with up to 299 CZ gates in the Ansatz.",
+    "start": 595,
+    "end": 860,
+    "chunk_sha256": "2872ecee9c36e92dd2f93621b29d3e9630b4c95632e3469e4ba1fd19140febca",
+    "measures": [
+     "system size"
+    ]
+   },
+   {
+    "document_id": "arxiv-2609-22729-p0002",
+    "quote": "In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.",
+    "start": 936,
+    "end": 1357,
+    "chunk_sha256": "c14a4d47645a2e6ff3c26ec8fe1bfa93681d2ad322463bb69604f75e3789fdf4",
+    "measures": [
+     "system size"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "sampling tolerance",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2609-39734-p0039",
+     "quote": "Thus, the relative position of the magic and sampling thresholds is determined by the system size and the sampling tolerance.",
+     "start": 637,
+     "end": 762,
+     "chunk_sha256": "91e41903cd89a23ae5e1578d4e07cf99ebb72c5303247ed2d136a486e6275bcf",
+     "relation": "constrains",
+     "subject": "sampling tolerance",
+     "object": "relative position of magic thresholds",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "noise",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2510-06324-p0004",
+     "quote": "Often, these classical simulation algorithms exploit the presence of noise in NISQ devices: noise can drive the measurement distribution toward trivial forms [26], or reduce the effective Hilbert space dimension [27, 28], thereby enabling efficient classical simulation.",
+     "start": 1046,
+     "end": 1316,
+     "chunk_sha256": "5c8efa733077d9161f61292705573b8c1686c4ac36f73cef6973666681f8419b",
+     "relation": "decreases",
+     "subject": "noise",
+     "object": "effective Hilbert space dimension",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "rounds",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2608-27682-p0052",
+     "quote": "The difference becomes more pronounced under multi-round measurement models, where the posterior LLRs are produced for every qubit and measurement round, causing the classifier input dimension to grow with the number of rounds.",
+     "start": 305,
+     "end": 532,
+     "chunk_sha256": "6e5fe95023b96e3abd3cfcfd2b9cf8da6e87731ed7c70f842cf4622b6994f23c",
+     "relation": "increases",
+     "subject": "rounds",
+     "object": "classifier input dimension",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [],
+   "qualifications": [
+    {
+     "link": 1,
+     "citation": {
+      "document_id": "arxiv-2105-14377-p0049",
+      "quote": "For instance, when the system is controllable, dim(g) = d2 − 1 = 22n − 1, and thus the dimension of the DLA is exponentially growing with the system size n.",
+      "start": 0,
+      "end": 156,
+      "chunk_sha256": "bac377f13c3a698ff337e9be9e654e6924532df04e54f9eca5f014e0a7ab02fd",
+      "relation": "increases",
+      "subject": "system size",
+      "object": "dimension of DLA",
+      "hedged": false
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    }
+   ],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "qualification_review",
+    "kind": "scope",
+    "instruction": "Restrict the proposal to the cited conditions and quantifiers."
+   },
+   {
+    "id": "09aecd786b2fa7db",
+    "kind": "variable",
+    "term": "system size",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for system size."
+   },
+   {
+    "id": "a027324b049a1856",
+    "kind": "variable",
+    "term": "system size",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for system size."
+   },
+   {
+    "id": "518134e83788a439",
+    "kind": "variable",
+    "term": "relative position of magic thresholds",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for relative position of magic thresholds."
+   },
+   {
+    "id": "7101c893f78735bf",
+    "kind": "variable",
+    "term": "relative position of magic thresholds",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for relative position of magic thresholds."
+   },
+   {
+    "id": "d186833be2b849ba",
+    "kind": "variable",
+    "term": "dimension of DLA",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for dimension of DLA."
+   },
+   {
+    "id": "2eefd980507c6177",
+    "kind": "variable",
+    "term": "dimension of DLA",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for dimension of DLA."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "common cause",
+   "manipulate": [
+    "system size"
+   ],
+   "measure": [
+    "relative position of magic thresholds",
+    "dimension of DLA"
+   ],
+   "mediator": null,
+   "controls": [
+    "sampling tolerance",
+    "noise",
+    "rounds"
+   ],
+   "steps": [
+    "Vary system size and measure relative position of magic thresholds and dimension of DLA.",
+    "Review candidate controls (sampling tolerance, noise, rounds) for timing, feasibility and causal role before adjustment.",
+    "Check whether relative position of magic thresholds and dimension of DLA still co-vary when system size is held fixed."
+   ],
+   "fails_if": "relative position of magic thresholds and dimension of DLA co-vary just as strongly when system size is held fixed, or system size moves neither.",
+   "variables": [
+    {
+     "term": "system size",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2110-10794-p0007",
+       "quote": "For a given level of parallelism and given error correcting code we require nanc physical qubits to create the ancilla systems used in logical measurement, and ndata is the size of the code used to store the logical information.",
+       "start": 1262,
+       "end": 1490,
+       "chunk_sha256": "d7b313c5b05ac59f1565accae51c7cc0a39e1e6e519e254fc8f63f1039188f63",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2110-10794-p0041",
+       "quote": "In the asymptotic limit, each row or column contains Θ(√n) physical qubits and O(√n) logical operators and so for a d = O(√n) hypergraph product code a single ancilla system of size O(n) can be to used to measure Pauli operators with logical weight O(√n).",
+       "start": 105,
+       "end": 360,
+       "chunk_sha256": "b26357ddceeea9e2850f368bff3576534bd01ebc6274f54f1dc23e4e28f45c39",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "relative position of magic thresholds",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "dimension of DLA",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "system size",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "system size",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "relative position of magic thresholds",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "relative position of magic thresholds",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "dimension of DLA",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "dimension of DLA",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established"
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 8.631
+  },
+  "snapshot": {
+   "as_of": 1795594908,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: relative position of magic thresholds and dimension of DLA may move together because both depend on system size.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unspecified.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Retain qualification [arxiv-2105-14377-p0049]: For instance, when the system is controllable, dim(g) = d2 − 1 = 22n − 1, and thus the dimension of the DLA is exponentially growing with the system size n.\n\nLink system size -> relative position of magic thresholds: supported (1 supporting, 0 contrary).\n  + [arxiv-2609-39734-p0039] Thus, the relative position of the magic and sampling thresholds is determined by the system size and the sampling tolerance.\n\nLink system size -> dimension of DLA: supported (1 supporting, 0 contrary).\n  + [arxiv-2105-14377-p0049] For instance, when the system is controllable, dim(g) = d2 − 1 = 22n − 1, and thus the dimension of the DLA is exponentially growing with the system size n.\n\nExisting setups that measure one of its terms:\n  [arxiv-2208-05378-p0004] Next, based on the assumption of the leakage occurrence during two-qubit gates, the most typical leakage noise in superconducting quantum computing, we conduct numerical experiments to benchmark the impact of leakage error on applications of data fitting and data classification when using the widely used hardware-efficient ansatz, with varying the system size, circuit depth, and leakage probability.\n  [arxiv-2208-05378-p0016] Eventually, there are only three hyperparameters in our experiments: the system size n, the depth of the circuit d, and the leakage probability L. In all the experiments below, we take uniformly random initial parameters at the start of training.\n  [arxiv-2511-21236-p0056] In quantum experiments and noisy simulations, we have demonstrated the ability of tiled M0 to reliably improve ground state energy calculations with the tUPS Ansatz for molecular systems varying in size between 4 and 12 qubits with up to 299 CZ gates in the Ansatz.\n  [arxiv-2609-22729-p0002] In the benchmarks considered here, chemically initialized starting points and variational trajectories show polynomial decay of local gradient variance with system size instead of the exponential BP-like decay observed for random controls, indicating that chemical initialization mitigates barren plateaus in the local optimization regions and highlights the trainability advantage of chemically motivated VQE strategies.\n\nCandidate controls (review before adjustment):\n  sampling tolerance: outcome_predictor [arxiv-2609-39734-p0039]\n  noise: outcome_predictor [arxiv-2510-06324-p0004]\n  rounds: outcome_predictor [arxiv-2608-27682-p0052]\n\nTest plan (common cause):\n  1. Vary system size and measure relative position of magic thresholds and dimension of DLA.\n  2. Review candidate controls (sampling tolerance, noise, rounds) for timing, feasibility and causal role before adjustment.\n  3. Check whether relative position of magic thresholds and dimension of DLA still co-vary when system size is held fixed.\n  Fails if: relative position of magic thresholds and dimension of DLA co-vary just as strongly when system size is held fixed, or system size moves neither.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for system size.\n  Required: feasible intervention or justified observational design for system size.\n  Required: measurement procedure for relative position of magic thresholds.\n  Required: unit or explicit categorical scale for relative position of magic thresholds.\n  Required: measurement procedure for dimension of DLA.\n  Required: unit or explicit categorical scale for dimension of DLA.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

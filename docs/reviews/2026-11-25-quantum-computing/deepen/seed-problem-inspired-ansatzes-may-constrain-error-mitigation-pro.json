@@ -1,0 +1,546 @@
+{
+ "kind": "seed",
+ "topic": "error mitigation",
+ "hypothesis": {
+  "id": "54cbd99e3df4",
+  "text": "problem inspired ansatzes may constrain error mitigation protocol through space.",
+  "pattern": "chain",
+  "relation": "constrains",
+  "anchors": [
+   "problem inspired ansatzes",
+   "error mitigation protocol"
+  ],
+  "via": [
+   "space"
+  ],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2105-14377-p0006",
+   "arxiv-2510-10905-p0002"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2105-14377-p0006",
+    "quote": "Here, the intuition is that problem-inspired ansatzes constrain the space explored during the optimization to a space that either contains the solution to the problem, or that at least contains a good approximation to the solution, while maintaining a low",
+    "start": 802,
+    "end": 1057,
+    "chunk_sha256": "3ff4a57d3636af04843940520eefac1b3c96e0d63c38dbbb88e6c75080e6d767",
+    "relation": "constrains",
+    "subject": "problem inspired ansatzes",
+    "object": "space",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2510-10905-p0002",
+    "quote": "This comes at the cost of exponential circuit depth, however, and leads us to conjecture that any error mitigation protocol with (sub-)polynomial sample complexity requires exponential time and/or space, even when logical qubits are utilized as a resource.",
+    "start": 1158,
+    "end": 1414,
+    "chunk_sha256": "7736598e555a32ac2234abd55729fc1537d14a76bc975b0b3e00614734b2172d",
+    "relation": "constrains",
+    "subject": "space",
+    "object": "error mitigation protocol",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.916,
+   "novelty": 0.628
+  },
+  "falsification_test": "Compare settings where problem inspired ansatzes differs while other inputs are matched. The hypothesis fails if error mitigation protocol does not stay bounded with problem inspired ansatzes, or if fixing space removes no part of the effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+  "supporting_paths": 1,
+  "rule_verdict": "INSUFFICIENT_SUPPORT",
+  "hub": "space",
+  "check": {
+   "verdict": "all_links_supported",
+   "incomplete": false,
+   "direction_check": {
+    "requested": "constrains",
+    "status": "consistent",
+    "observed": [
+     "constrains"
+    ],
+    "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+   },
+   "composition": {
+    "status": "requires_review",
+    "bridges": [],
+    "qualifications": [
+     {
+      "link": 1,
+      "citation": {
+       "document_id": "arxiv-2510-10905-p0002",
+       "quote": "This comes at the cost of exponential circuit depth, however, and leads us to conjecture that any error mitigation protocol with (sub-)polynomial sample complexity requires exponential time and/or space, even when logical qubits are utilized as a resource.",
+       "start": 1158,
+       "end": 1414,
+       "chunk_sha256": "7736598e555a32ac2234abd55729fc1537d14a76bc975b0b3e00614734b2172d",
+       "relation": "constrains",
+       "subject": "space",
+       "object": "error mitigation protocol",
+       "hedged": false
+      },
+      "instruction": "Retain this full qualified statement; do not treat it as universal."
+     }
+    ],
+    "source_contexts": [],
+    "scope_differences": [],
+    "context_coverage": "not_recorded",
+    "interaction": {
+     "status": "not_applicable",
+     "reason": "Individual effects do not establish a joint interaction."
+    },
+    "assumptions": [
+     "Source terms denote compatible quantities and settings.",
+     "Composed source relationships are not causal identification."
+    ],
+    "scientific_validity": "not_established"
+   },
+   "plan_readiness": "needs_input",
+   "links": [
+    {
+     "source": "problem inspired ansatzes",
+     "target": "space",
+     "status": "supported",
+     "counter": []
+    },
+    {
+     "source": "space",
+     "target": "error mitigation protocol",
+     "status": "supported",
+     "counter": []
+    }
+   ]
+  }
+ },
+ "seconds": 9.29,
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "problem inspired ansatzes",
+   "b": "space",
+   "c": "error mitigation protocol"
+  },
+  "path_nodes": [
+   "problem inspired ansatzes",
+   "space",
+   "error mitigation protocol"
+  ],
+  "links": [
+   {
+    "source": "problem inspired ansatzes",
+    "target": "space",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2105-14377-p0006",
+      "quote": "Here, the intuition is that problem-inspired ansatzes constrain the space explored during the optimization to a space that either contains the solution to the problem, or that at least contains a good approximation to the solution, while maintaining a low",
+      "start": 802,
+      "end": 1057,
+      "chunk_sha256": "3ff4a57d3636af04843940520eefac1b3c96e0d63c38dbbb88e6c75080e6d767",
+      "relation": "constrains",
+      "subject": "problem inspired ansatzes",
+      "object": "space",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   },
+   {
+    "source": "space",
+    "target": "error mitigation protocol",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2510-10905-p0002",
+      "quote": "This comes at the cost of exponential circuit depth, however, and leads us to conjecture that any error mitigation protocol with (sub-)polynomial sample complexity requires exponential time and/or space, even when logical qubits are utilized as a resource.",
+      "start": 1158,
+      "end": 1414,
+      "chunk_sha256": "7736598e555a32ac2234abd55729fc1537d14a76bc975b0b3e00614734b2172d",
+      "relation": "constrains",
+      "subject": "space",
+      "object": "error mitigation protocol",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2510-10905-p0002",
+      "quote": "This comes at the cost of exponential circuit depth, however, and leads us to conjecture that any error mitigation protocol with (sub-)polynomial sample complexity requires exponential time and/or space, even when logical qubits are utilized as a resource.",
+      "start": 1158,
+      "end": 1414,
+      "chunk_sha256": "7736598e555a32ac2234abd55729fc1537d14a76bc975b0b3e00614734b2172d"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   }
+  ],
+  "expected_relation": "constrains",
+  "direction_check": {
+   "requested": "constrains",
+   "status": "consistent",
+   "observed": [
+    "constrains"
+   ],
+   "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-2308-13291-p0038",
+    "quote": "Using a phase space method based on the negativity of the relevant quasi-probability distributions, we have established a sufficient condition for the efficient classical simulation of generic quantum (linear) optical experiments affected by loss and thermal noise.",
+    "start": 0,
+    "end": 265,
+    "chunk_sha256": "2ab09d24d71ce4ec74a00b549732dbc6fe0c5a3ae8ee13dadd22ca911071df37",
+    "measures": [
+     "space"
+    ]
+   },
+   {
+    "document_id": "arxiv-2402-09606-p0002",
+    "quote": "Here we construct a new fault-tolerant protocol to meet these requirements simultaneously based on more recent progress on the techniques for concatenated codes rather than quantum LDPC codes, achieving a constant space overhead, a high threshold, and flexibility in modular architecture designs.",
+    "start": 748,
+    "end": 1044,
+    "chunk_sha256": "2130abf18396b5d64c0c74261d65a0696cb5fcd01d594d39918df33928ceaf4d",
+    "measures": [
+     "space"
+    ]
+   },
+   {
+    "document_id": "arxiv-2511-21236-p0051",
+    "quote": "Finally, we tested tiled M0 on a large system for current NISQ device capabilities: benzene with a (6, 6) active space, corresponding to 12 qubits, and 287 − 299 CZ gates in the 1layer tUPS Ansatz.",
+    "start": 0,
+    "end": 197,
+    "chunk_sha256": "99ed0ad426f43e7a85af319275cb6d0c97859ca3e2009a3cf8786cbd24f8dc30",
+    "measures": [
+     "space"
+    ]
+   },
+   {
+    "document_id": "arxiv-2511-21236-p0054",
+    "quote": "To get an idea of how stable the noise might have been during our experiments, we performed two tests that each lasted 1 hour and 10 minutes on ibm fez, where we repeatedly executed the 1-layer tUPS circuit for H2O with a (4, 4) active space.",
+    "start": 182,
+    "end": 424,
+    "chunk_sha256": "a65bf6e9142d59015144ea297f765faad9b0e02e579d8f33c5c331dec44ffe07",
+    "measures": [
+     "space"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "samples",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2208-09178-p0034",
+     "quote": "We then showed that error-mitigation protocols with certain intermediate operations and an arbitrary trailing process require the number of samples that grows exponentially with the circuit depth to mitigate various types of noise.",
+     "start": 656,
+     "end": 887,
+     "chunk_sha256": "4e07730ac3ceee6fbdae3b566c5197b7768550cd682963ac3869c475c299e610",
+     "relation": "constrains",
+     "subject": "samples",
+     "object": "error mitigation protocols",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [],
+   "qualifications": [
+    {
+     "link": 1,
+     "citation": {
+      "document_id": "arxiv-2510-10905-p0002",
+      "quote": "This comes at the cost of exponential circuit depth, however, and leads us to conjecture that any error mitigation protocol with (sub-)polynomial sample complexity requires exponential time and/or space, even when logical qubits are utilized as a resource.",
+      "start": 1158,
+      "end": 1414,
+      "chunk_sha256": "7736598e555a32ac2234abd55729fc1537d14a76bc975b0b3e00614734b2172d",
+      "relation": "constrains",
+      "subject": "space",
+      "object": "error mitigation protocol",
+      "hedged": false
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    }
+   ],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "qualification_review",
+    "kind": "scope",
+    "instruction": "Restrict the proposal to the cited conditions and quantifiers."
+   },
+   {
+    "id": "28403ee08dce7c15",
+    "kind": "variable",
+    "term": "problem inspired ansatzes",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for problem inspired ansatzes."
+   },
+   {
+    "id": "a29090d6f9e1796c",
+    "kind": "variable",
+    "term": "problem inspired ansatzes",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for problem inspired ansatzes."
+   },
+   {
+    "id": "e87536028758d1e2",
+    "kind": "variable",
+    "term": "error mitigation protocol",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for error mitigation protocol."
+   },
+   {
+    "id": "accda38cad04bbd3",
+    "kind": "variable",
+    "term": "error mitigation protocol",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for error mitigation protocol."
+   },
+   {
+    "id": "41e5ed07afa9266d",
+    "kind": "variable",
+    "term": "space",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for space."
+   },
+   {
+    "id": "e0eb5533cf744579",
+    "kind": "variable",
+    "term": "space",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for space."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "problem inspired ansatzes"
+   ],
+   "measure": [
+    "error mitigation protocol"
+   ],
+   "mediator": "space",
+   "controls": [
+    "samples"
+   ],
+   "steps": [
+    "Vary problem inspired ansatzes across matched settings and measure error mitigation protocol.",
+    "Review candidate controls (samples) for timing, feasibility and causal role before adjustment.",
+    "Repeat with space held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "error mitigation protocol does not change when problem inspired ansatzes varies with the controls fixed, or holding space fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "problem inspired ansatzes",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "error mitigation protocol",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "space",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1904-10378-p0002",
+       "quote": "Our use of an elongated mediator dots creates spaces throughout the quantum dot array for charge reservoirs, measuring devices and control gates, providing the scalability in",
+       "start": 2048,
+       "end": 2222,
+       "chunk_sha256": "306ed3544d6b8949561c487e9a5ed9208dac7137d0d6c0ae365ad7ee4d96da4a",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1904-10378-p0045",
+       "quote": "Besides adding tolerance towards leakage errors, the elongated mediator dots in our structure also relax the density of the qubit dots, offering more space in-plane for the essential measuringdevices, chargereservoirsandclassicalcontrol lines, and facilitating fabrication using (e.g.) CMOS technology [12].",
+       "start": 1909,
+       "end": 2216,
+       "chunk_sha256": "15962a7fab61fb2fbf5e9376f2c7b7f46328873e8d85f2d568639591161522c2",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1905-06903-p0002",
+       "quote": "Each protocol is characterized by the space cost in terms of physical qubits (including ancilla qubits) and the time cost in terms of code cycles, where a code cycle corresponds to measuring all surface-code check operators exactly once.",
+       "start": 2058,
+       "end": 2295,
+       "chunk_sha256": "ddfce22f1244560baa491ef8a8983625514b98d736149ecdc969f994d7f3fb9f",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "problem inspired ansatzes",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "problem inspired ansatzes",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "error mitigation protocol",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "error mitigation protocol",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "space",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "space",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "space"
+   ]
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 9.204
+  },
+  "snapshot": {
+   "as_of": 1795594891,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: problem inspired ansatzes may constrain error mitigation protocol through space.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: consistent.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Retain qualification [arxiv-2510-10905-p0002]: This comes at the cost of exponential circuit depth, however, and leads us to conjecture that any error mitigation protocol with (sub-)polynomial sample complexity requires exponential time and/or space, even when logical qubits are utilized as a resource.\n\nLink problem inspired ansatzes -> space: supported (1 supporting, 0 contrary).\n  + [arxiv-2105-14377-p0006] Here, the intuition is that problem-inspired ansatzes constrain the space explored during the optimization to a space that either contains the solution to the problem, or that at least contains a good approximation to the solution, while maintaining a low\n\nLink space -> error mitigation protocol: supported (1 supporting, 0 contrary).\n  + [arxiv-2510-10905-p0002] This comes at the cost of exponential circuit depth, however, and leads us to conjecture that any error mitigation protocol with (sub-)polynomial sample complexity requires exponential time and/or space, even when logical qubits are utilized as a resource.\n\nExisting setups that measure one of its terms:\n  [arxiv-2308-13291-p0038] Using a phase space method based on the negativity of the relevant quasi-probability distributions, we have established a sufficient condition for the efficient classical simulation of generic quantum (linear) optical experiments affected by loss and thermal noise.\n  [arxiv-2402-09606-p0002] Here we construct a new fault-tolerant protocol to meet these requirements simultaneously based on more recent progress on the techniques for concatenated codes rather than quantum LDPC codes, achieving a constant space overhead, a high threshold, and flexibility in modular architecture designs.\n  [arxiv-2511-21236-p0051] Finally, we tested tiled M0 on a large system for current NISQ device capabilities: benzene with a (6, 6) active space, corresponding to 12 qubits, and 287 − 299 CZ gates in the 1layer tUPS Ansatz.\n  [arxiv-2511-21236-p0054] To get an idea of how stable the noise might have been during our experiments, we performed two tests that each lasted 1 hour and 10 minutes on ibm fez, where we repeatedly executed the 1-layer tUPS circuit for H2O with a (4, 4) active space.\n\nCandidate controls (review before adjustment):\n  samples: outcome_predictor [arxiv-2208-09178-p0034]\n\nTest plan (mediation):\n  1. Vary problem inspired ansatzes across matched settings and measure error mitigation protocol.\n  2. Review candidate controls (samples) for timing, feasibility and causal role before adjustment.\n  3. Repeat with space held fixed or blocked to test whether it carries the effect.\n  Fails if: error mitigation protocol does not change when problem inspired ansatzes varies with the controls fixed, or holding space fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for problem inspired ansatzes.\n  Required: feasible intervention or justified observational design for problem inspired ansatzes.\n  Required: measurement procedure for error mitigation protocol.\n  Required: unit or explicit categorical scale for error mitigation protocol.\n  Required: measurement procedure for space.\n  Required: unit or explicit categorical scale for space.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

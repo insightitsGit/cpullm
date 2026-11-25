@@ -1,0 +1,503 @@
+{
+ "kind": "open_problem",
+ "hypothesis": "Leakage may increase logical error rates through correlated errors.",
+ "seconds": 8.68,
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "Leakage",
+   "b": "correlated errors",
+   "c": "logical error rates"
+  },
+  "path_nodes": [
+   "Leakage",
+   "correlated errors",
+   "logical error rates"
+  ],
+  "links": [
+   {
+    "source": "Leakage",
+    "target": "correlated errors",
+    "expected_relation": null,
+    "status": "weak",
+    "support": [],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2102-06131-p0003",
+      "quote": "Particularly for superconducting transmon qubits, this leakage opens a path to errors that are correlated in space and time.",
+      "start": 306,
+      "end": 430,
+      "chunk_sha256": "591b0bdd0ef0fa06184f2861ac064e8f518a04b9c113748c8302f78f9b439b3b"
+     },
+     {
+      "document_id": "arxiv-2102-06131-p0023",
+      "quote": "While optimizing gates and readout to have minimal leakage is a necessary strategy, the correlated nature of the error that leakage induces makes reset protocols critical for",
+      "start": 275,
+      "end": 449,
+      "chunk_sha256": "3f1fc374a9e34a7abb920d6f071d09be99f0e3d2fb6a993ff9bfdf1648a32362"
+     }
+    ],
+    "support_count": 0,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": []
+   },
+   {
+    "source": "correlated errors",
+    "target": "logical error rates",
+    "expected_relation": null,
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2407-16176-p0047",
+      "quote": "However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.",
+      "start": 802,
+      "end": 968,
+      "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c",
+      "relation": "decreases",
+      "subject": "correlated errors",
+      "object": "logical error rate",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2407-16176-p0046",
+      "quote": "To investigate the effect of correlated errors, we compare the logical error rates in the absence and presence of correlated errors.",
+      "start": 0,
+      "end": 132,
+      "chunk_sha256": "c331ce8d8cb87bfb432a8db5843d025fb36e1c388a644043bb1ec57617dbbb9c"
+     },
+     {
+      "document_id": "arxiv-2407-16176-p0047",
+      "quote": "We compare the logical error rates derived from assuming the absence and presence of correlated errors, as shown in Fig. 10.",
+      "start": 448,
+      "end": 572,
+      "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c"
+     },
+     {
+      "document_id": "arxiv-2407-16176-p0047",
+      "quote": "However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.",
+      "start": 802,
+      "end": 968,
+      "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "decreases"
+    ]
+   }
+  ],
+  "expected_relation": "increases",
+  "direction_check": {
+   "requested": "increases",
+   "status": "unresolved",
+   "observed": []
+  },
+  "verdict": "partly_supported",
+  "predictions": [
+   {
+    "document_id": "arxiv-2506-16834-p0045",
+    "quote": "Moreover, we deepened our answer to RQ2 by considering the post-decoding logical error rates of a set of Rotated Surface codes on a shared quantum chip, noticing how their logical error rate is correlated to their respective distance from the impact point, hinting at how radiation-induced faults might propagate across logical qubits.",
+    "start": 672,
+    "end": 1007,
+    "chunk_sha256": "ba9717fca4aa1a410e65af376ba963d1f4ba92a436a08a996a1d6360a5321d48",
+    "qualification": "source_prediction"
+   }
+  ],
+  "setups": [
+   {
+    "document_id": "arxiv-2407-16176-p0046",
+    "quote": "To investigate the effect of correlated errors, we compare the logical error rates in the absence and presence of correlated errors.",
+    "start": 0,
+    "end": 132,
+    "chunk_sha256": "c331ce8d8cb87bfb432a8db5843d025fb36e1c388a644043bb1ec57617dbbb9c",
+    "measures": [
+     "correlated errors",
+     "logical error rates"
+    ]
+   },
+   {
+    "document_id": "arxiv-2407-16176-p0047",
+    "quote": "We compare the logical error rates derived from assuming the absence and presence of correlated errors, as shown in Fig. 10.",
+    "start": 448,
+    "end": 572,
+    "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c",
+    "measures": [
+     "correlated errors",
+     "logical error rates"
+    ]
+   },
+   {
+    "document_id": "arxiv-1412-7010-p0002",
+    "quote": "Furthermore we construct explicit leakage reduction units that need, in the ideal setup, as few as three manipulation steps.",
+    "start": 379,
+    "end": 503,
+    "chunk_sha256": "cb0d6222a255361d1f52b063bea503a39ae721c581db1cb7c0ebae8177730c51",
+    "measures": [
+     "Leakage"
+    ]
+   },
+   {
+    "document_id": "arxiv-2102-06131-p0003",
+    "quote": "We benchmark the reset gate using the bit-flip error correction code [5] and measure growth and removal of leakage in-situ.",
+    "start": 2590,
+    "end": 2713,
+    "chunk_sha256": "591b0bdd0ef0fa06184f2861ac064e8f518a04b9c113748c8302f78f9b439b3b",
+    "measures": [
+     "Leakage"
+    ]
+   },
+   {
+    "document_id": "arxiv-2102-06131-p0035",
+    "quote": "[19] V. Negirneac, H. Ali, N. Muthusubramanian, F. Battistel, R. Sagastizabal, M. S. Moreira, J. F. Marques, W. Vlothuizen, M. Beekman, N. Haider, A. Bruno, and L. DiCarlo, High-fidelity controlled-z gate with maximal intermediate leakage operating at the speed limit in a superconducting quantum processor (2020),",
+    "start": 0,
+    "end": 314,
+    "chunk_sha256": "137a61bab3ae8d5ce9ebea54028ec4b10019b6f856e7b95b3e5a50b79ab5669c",
+    "measures": [
+     "Leakage"
+    ]
+   },
+   {
+    "document_id": "arxiv-2102-06131-p0054",
+    "quote": "In Fig. 3 of the main text, we measure the growth of leakage with rounds k during the bit-flip code using a readout similar to that shown in Fig. S4.",
+    "start": 0,
+    "end": 149,
+    "chunk_sha256": "46601e5917e6b8557cd2d0d206023d44c81f64cb5aad0be03f4bff9940fe3aa4",
+    "measures": [
+     "Leakage"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "minimum weight failure mechanisms",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2511-13192-p0027",
+     "quote": "In the regime of asymptotically low physical error rates, the logical error rate is mainly determined by the number of minimum-weight failure mechanisms Pfail ∼ Nfail pm(1 − p)n−m ∼ Nfail pm (4) where Nfail is the number of minimum-weight (m) error configurations leading to a logical failure.",
+     "start": 0,
+     "end": 293,
+     "chunk_sha256": "77014e29080acae5525c7dfb22a0fbc3b3cb83d5ce170074796668521c90b009",
+     "relation": "constrains",
+     "subject": "minimum weight failure mechanisms",
+     "object": "logical error rate",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "insufficient_evidence",
+   "bridges": [],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "9014d769081b81cb",
+    "kind": "variable",
+    "term": "Leakage",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for Leakage."
+   },
+   {
+    "id": "b7ea0c77918f9b7c",
+    "kind": "variable",
+    "term": "Leakage",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for Leakage."
+   },
+   {
+    "id": "ac84507fa24e7336",
+    "kind": "variable",
+    "term": "logical error rates",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for logical error rates."
+   },
+   {
+    "id": "255e1072bd64978d",
+    "kind": "variable",
+    "term": "logical error rates",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for logical error rates."
+   },
+   {
+    "id": "50a36ed644fa727e",
+    "kind": "variable",
+    "term": "correlated errors",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for correlated errors."
+   },
+   {
+    "id": "970107871cf6364a",
+    "kind": "variable",
+    "term": "correlated errors",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for correlated errors."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "Leakage"
+   ],
+   "measure": [
+    "logical error rates"
+   ],
+   "mediator": "correlated errors",
+   "controls": [
+    "minimum weight failure mechanisms"
+   ],
+   "steps": [
+    "Vary Leakage across matched settings and measure logical error rates.",
+    "Review candidate controls (minimum weight failure mechanisms) for timing, feasibility and causal role before adjustment.",
+    "Repeat with correlated errors held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "logical error rates does not change when Leakage varies with the controls fixed, or holding correlated errors fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "Leakage",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1412-7010-p0002",
+       "quote": "Our study shows that leakage errors can be corrected without the need of measurements and at the cost of only a few additional ancilla qubits and gate operations compared to standard quantum error correction codes.",
+       "start": 504,
+       "end": 718,
+       "chunk_sha256": "cb0d6222a255361d1f52b063bea503a39ae721c581db1cb7c0ebae8177730c51",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1509-05470-p0001",
+       "quote": "# Measuring and Suppressing Quantum State Leakage in a Superconducting Qubit",
+       "start": 0,
+       "end": 76,
+       "chunk_sha256": "df4feb408bba8c5a61f0d6de6310c52b07f24d2b741a0c49bc5965a64895650f",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1509-05470-p0002",
+       "quote": "To quantify leakage errors, we use randomized benchmarking in conjunction with measurement of the leakage population.",
+       "start": 169,
+       "end": 286,
+       "chunk_sha256": "46201165cc7dee1b5b2a6e23564de372da5aeb75ff2f06d59cafacaefd12967b",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "logical error rates",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1905-06903-p0043",
+       "quote": "If the logical error rate of surface codes can be maintained at pL(pphys,d) even in the presence of coherent errors, and the only effect of coherent errors is to under- or over-rotate the physical T gate used in faulty T measurements, then one can argue that the effect of coherent errors is not too significant.",
+       "start": 249,
+       "end": 561,
+       "chunk_sha256": "31b9d52f5dd2c55a9d2b8a7caa9d277d58bef9b6803f03519b1d40fc9fb4dc76",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2505-13599-p0035",
+       "quote": "Hence, if in the final measurements of some algorithm, the final outcome is some xor of final measurements, it is advisable to include this as an observable in the generating set to minimize its logical error rate, see the numerical evidence for this choice of decoding in Section IVD2.",
+       "start": 1524,
+       "end": 1810,
+       "chunk_sha256": "e2d7afc774f08cf770bf5f71a016d933f304833f1044310642af4e49e7cc13c3",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2506-16834-p0006",
+       "quote": "We measure its effectiveness at dealing with syndrome measurements corrupted by radiation, and we observe how the logical error rate of separate logical qubits correlates with their position on the quantum chip.",
+       "start": 1427,
+       "end": 1638,
+       "chunk_sha256": "6f5f1d5925a36ececb40afc688fd064c275f39f5e636caebeb569b7949837d79",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "correlated errors",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2305-02591-p0001",
+       "quote": "# Mechanically Induced Correlated Errors on Superconducting Qubits with Relaxation Times Exceeding 0.4 Milliseconds",
+       "start": 0,
+       "end": 115,
+       "chunk_sha256": "be6985438b474355d2b502fdcbca2ab0d4693330bd691ddc9015e0cf2b8b23df",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2402-03208-p0002",
+       "quote": "Here, we directly measured the cosmic-ray contribution to spatiotemporally correlated qubit errors.",
+       "start": 360,
+       "end": 459,
+       "chunk_sha256": "cf6f8c168197d2b4428e077deb9fb2bf91c7a48f06b9653e72ddb00a4fd06767",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2603-13460-p0003",
+       "quote": "For electrons from a pulsed linear accelerator, we observe temporally correlated T1 and T2 errors, this measurement is insensitive to spatial correlations.",
+       "start": 814,
+       "end": 969,
+       "chunk_sha256": "9314264383ade6665563324516105b15bcc1259258cb3b8d271b4c4b176e87ef",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "Leakage",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "Leakage",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "logical error rates",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "logical error rates",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "correlated errors",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "correlated errors",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "correlated errors"
+   ]
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 8.577
+  },
+  "snapshot": {
+   "as_of": 1795595235,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: Leakage may increase logical error rates through correlated errors.\nOverall: partly supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unresolved.\nComposition assessment: insufficient evidence. Component support does not establish a joint effect or causal validity.\n\nLink Leakage -> correlated errors: weak (0 supporting, 0 contrary).\n  ~ [arxiv-2102-06131-p0003] Particularly for superconducting transmon qubits, this leakage opens a path to errors that are correlated in space and time.\n  ~ [arxiv-2102-06131-p0023] While optimizing gates and readout to have minimal leakage is a necessary strategy, the correlated nature of the error that leakage induces makes reset protocols critical for\n\nLink correlated errors -> logical error rates: supported (1 supporting, 0 contrary).\n  + [arxiv-2407-16176-p0047] However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.\n\nSource predictions naming two or more of its terms:\n  [arxiv-2506-16834-p0045] Moreover, we deepened our answer to RQ2 by considering the post-decoding logical error rates of a set of Rotated Surface codes on a shared quantum chip, noticing how their logical error rate is correlated to their respective distance from the impact point, hinting at how radiation-induced faults might propagate across logical qubits.\n\nExisting setups that measure one of its terms:\n  [arxiv-2407-16176-p0046] To investigate the effect of correlated errors, we compare the logical error rates in the absence and presence of correlated errors.\n  [arxiv-2407-16176-p0047] We compare the logical error rates derived from assuming the absence and presence of correlated errors, as shown in Fig. 10.\n  [arxiv-1412-7010-p0002] Furthermore we construct explicit leakage reduction units that need, in the ideal setup, as few as three manipulation steps.\n  [arxiv-2102-06131-p0003] We benchmark the reset gate using the bit-flip error correction code [5] and measure growth and removal of leakage in-situ.\n\nCandidate controls (review before adjustment):\n  minimum weight failure mechanisms: outcome_predictor [arxiv-2511-13192-p0027]\n\nTest plan (mediation):\n  1. Vary Leakage across matched settings and measure logical error rates.\n  2. Review candidate controls (minimum weight failure mechanisms) for timing, feasibility and causal role before adjustment.\n  3. Repeat with correlated errors held fixed or blocked to test whether it carries the effect.\n  Fails if: logical error rates does not change when Leakage varies with the controls fixed, or holding correlated errors fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for Leakage.\n  Required: feasible intervention or justified observational design for Leakage.\n  Required: measurement procedure for logical error rates.\n  Required: unit or explicit categorical scale for logical error rates.\n  Required: measurement procedure for correlated errors.\n  Required: unit or explicit categorical scale for correlated errors.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

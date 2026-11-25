@@ -1,0 +1,721 @@
+{
+ "kind": "seed",
+ "topic": "correlated errors",
+ "hypothesis": {
+  "id": "f8b0d78009b6",
+  "text": "definition may increase performance through coset probability of error (read as physical error probability).",
+  "pattern": "chain",
+  "relation": "increases",
+  "anchors": [
+   "definition",
+   "performance"
+  ],
+  "via": [
+   "coset probability of error (read as physical error probability)"
+  ],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2309-10331-p0031",
+   "arxiv-2212-11632-p0020"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2309-10331-p0031",
+    "quote": "The difference between definitions 1 and 2 is that definition 1 maximizes the probability of the error found while definition 2 maximizes the coset probability of the error found.",
+    "start": 615,
+    "end": 794,
+    "chunk_sha256": "66932de024586bbb671bca0dabb45136f456b49c0519a99ac4a96bf679726023",
+    "relation": "increases",
+    "subject": "definition",
+    "object": "coset probability of error",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2212-11632-p0020",
+    "quote": "Over the depolarizing channel (pX = pY = pZ = p/3) the performance of the code has been benchmarked through the probability threshold (pth), that is, the physical error probability at which increasing the distance of the code does improve its performance.",
+    "start": 127,
+    "end": 382,
+    "chunk_sha256": "0f534921050ebf2166d63ddabe3ad53d3582c3a29aa7f1a32b33d15335065fea",
+    "relation": "increases",
+    "subject": "physical error probability",
+    "object": "performance",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.96,
+   "deductive_relevance": 0.536,
+   "novelty": 0.522
+  },
+  "falsification_test": "Compare settings where definition differs while other inputs are matched. The hypothesis fails if performance does not rise with definition, or if fixing coset probability of error (read as physical error probability) removes no part of the effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 2,
+  "rule_verdict": null,
+  "hub": "coset probability of error",
+  "check": {
+   "verdict": "all_links_supported",
+   "incomplete": false,
+   "direction_check": {
+    "requested": "increases",
+    "status": "consistent",
+    "observed": [
+     "increases"
+    ],
+    "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+   },
+   "composition": {
+    "status": "requires_review",
+    "bridges": [
+     {
+      "link": 0,
+      "requested": "coset probability of error",
+      "source_term": "probability of error",
+      "citation": {
+       "document_id": "arxiv-2309-10331-p0031",
+       "quote": "The difference between definitions 1 and 2 is that definition 1 maximizes the probability of the error found while definition 2 maximizes the coset probability of the error found.",
+       "start": 615,
+       "end": 794,
+       "chunk_sha256": "66932de024586bbb671bca0dabb45136f456b49c0519a99ac4a96bf679726023",
+       "relation": "increases",
+       "subject": "definition",
+       "object": "probability of error",
+       "hedged": false
+      },
+      "status": "requires_review",
+      "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+     },
+     {
+      "link": 1,
+      "requested": "coset probability of error",
+      "source_term": "physical error probability",
+      "citation": {
+       "document_id": "arxiv-2212-11632-p0020",
+       "quote": "Over the depolarizing channel (pX = pY = pZ = p/3) the performance of the code has been benchmarked through the probability threshold (pth), that is, the physical error probability at which increasing the distance of the code does improve its performance.",
+       "start": 127,
+       "end": 382,
+       "chunk_sha256": "0f534921050ebf2166d63ddabe3ad53d3582c3a29aa7f1a32b33d15335065fea",
+       "relation": "increases",
+       "subject": "physical error probability",
+       "object": "performance",
+       "hedged": false
+      },
+      "status": "requires_review",
+      "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+     }
+    ],
+    "qualifications": [],
+    "source_contexts": [],
+    "scope_differences": [],
+    "context_coverage": "not_recorded",
+    "interaction": {
+     "status": "not_applicable",
+     "reason": "Individual effects do not establish a joint interaction."
+    },
+    "assumptions": [
+     "Source terms denote compatible quantities and settings.",
+     "Composed source relationships are not causal identification."
+    ],
+    "scientific_validity": "not_established"
+   },
+   "plan_readiness": "needs_input",
+   "links": [
+    {
+     "source": "definition",
+     "target": "coset probability of error",
+     "status": "supported",
+     "counter": []
+    },
+    {
+     "source": "coset probability of error",
+     "target": "performance",
+     "status": "supported",
+     "counter": []
+    }
+   ]
+  }
+ },
+ "seconds": 7.86,
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "definition",
+   "b": "coset probability of error",
+   "c": "performance"
+  },
+  "path_nodes": [
+   "definition",
+   "coset probability of error",
+   "performance"
+  ],
+  "links": [
+   {
+    "source": "definition",
+    "target": "coset probability of error",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2309-10331-p0031",
+      "quote": "The difference between definitions 1 and 2 is that definition 1 maximizes the probability of the error found while definition 2 maximizes the coset probability of the error found.",
+      "start": 615,
+      "end": 794,
+      "chunk_sha256": "66932de024586bbb671bca0dabb45136f456b49c0519a99ac4a96bf679726023",
+      "relation": "increases",
+      "subject": "definition",
+      "object": "probability of error",
+      "hedged": false
+     },
+     {
+      "document_id": "arxiv-2309-10331-p0031",
+      "quote": "The difference between definitions 1 and 2 is that definition 1 maximizes the probability of the error found while definition 2 maximizes the coset probability of the error found.",
+      "start": 615,
+      "end": 794,
+      "chunk_sha256": "66932de024586bbb671bca0dabb45136f456b49c0519a99ac4a96bf679726023",
+      "relation": "increases",
+      "subject": "definition",
+      "object": "coset probability of error",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2309-10331-p0031",
+      "quote": "The difference between definitions 1 and 2 is that definition 1 maximizes the probability of the error found while definition 2 maximizes the coset probability of the error found.",
+      "start": 615,
+      "end": 794,
+      "chunk_sha256": "66932de024586bbb671bca0dabb45136f456b49c0519a99ac4a96bf679726023"
+     }
+    ],
+    "support_count": 2,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   },
+   {
+    "source": "coset probability of error",
+    "target": "performance",
+    "expected_relation": "increases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2212-11632-p0020",
+      "quote": "Over the depolarizing channel (pX = pY = pZ = p/3) the performance of the code has been benchmarked through the probability threshold (pth), that is, the physical error probability at which increasing the distance of the code does improve its performance.",
+      "start": 127,
+      "end": 382,
+      "chunk_sha256": "0f534921050ebf2166d63ddabe3ad53d3582c3a29aa7f1a32b33d15335065fea",
+      "relation": "increases",
+      "subject": "physical error probability",
+      "object": "performance",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2212-11632-p0012",
+      "quote": "For higher physical error probabilities, the most likely Pauli sequence no longer belongs to the stabilizer coset with highest probability, and so the performance will deteriorate until reaching the probability threshold (pth): the physical error probability at which increasing the distance of the code no longer",
+      "start": 196,
+      "end": 509,
+      "chunk_sha256": "d556eab88bb9e6bd02310092b6904414c0bdb91be647acb39d96699c4574c2c5"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   }
+  ],
+  "expected_relation": "increases",
+  "direction_check": {
+   "requested": "increases",
+   "status": "consistent",
+   "observed": [
+    "increases"
+   ],
+   "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-1901-10847-p0002",
+    "quote": "We tested the decoding performance under depolarizing noise with noiseless error syndrome measurements for the rotated surface code and compared against the Blossom algorithm and a neural network based decoder.",
+    "start": 737,
+    "end": 947,
+    "chunk_sha256": "32fcdd3ab39e5c821d6cd13e1971c2f211cce64118b67525e7ffae5cb3469100",
+    "measures": [
+     "performance"
+    ]
+   },
+   {
+    "document_id": "arxiv-1905-06903-p0028",
+    "quote": "In any case, the specific choice of faulty-T measurement protocol (or state-injection protocol) will not matter for the distillation protocols that we construct in the following sections, which is why the more sophisticated T -measurement protocols are discussed in Appendix A. Moreover, we show in Appendix A that, for many relevant distillation protocols, a higher error rate for faulty T measurements has only a small effect on the performance of the distillation protocols, even if the error rate of faulty T measurements is assumed to be higher by an order of magnitude, 10pphys instead of pphys.",
+    "start": 1243,
+    "end": 1844,
+    "chunk_sha256": "ad449b166e2860416ea082c98322cb8cc76fdd4f7be25b65ba31edf8f74a43b3",
+    "measures": [
+     "performance"
+    ]
+   },
+   {
+    "document_id": "arxiv-2009-14226-p0022",
+    "quote": "To illustrate further the advantage of augmented codes, we compare numerically the performance of toric codes and their product with a [[4, 2, 2]] code.",
+    "start": 752,
+    "end": 904,
+    "chunk_sha256": "891befc8e47fac96589c676bee4be2114ac77d4817db8b105a90205fc3caffcc",
+    "measures": [
+     "performance"
+    ]
+   },
+   {
+    "document_id": "arxiv-2102-06131-p0003",
+    "quote": "We test its performance with the bit-flip stabilizer code, a simplified version of the surface code for quantum error correction.",
+    "start": 544,
+    "end": 673,
+    "chunk_sha256": "591b0bdd0ef0fa06184f2861ac064e8f518a04b9c113748c8302f78f9b439b3b",
+    "measures": [
+     "performance"
+    ]
+   },
+   {
+    "document_id": "arxiv-2103-08049-p0066",
+    "quote": "We compared numerically the performance of our Union-Find decoder the BP decoder.",
+    "start": 1203,
+    "end": 1284,
+    "chunk_sha256": "fb4d933038182e2debf507a09e4ec9cd4a71a34c158df4f77664817d5143a449",
+    "measures": [
+     "performance"
+    ]
+   },
+   {
+    "document_id": "arxiv-2109-04457-p0006",
+    "quote": "We introduce maximum estimator spread as a universal benchmark for error-mitigation performance — a quantity that tells us how many extra runs of a NISQ device guarantee that outputs are within some desired accuracy threshold.",
+    "start": 242,
+    "end": 468,
+    "chunk_sha256": "7863cf9c0586a625835fbcbd3e8b06151c80a1ccaef473517454c296a91e193b",
+    "measures": [
+     "performance"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "changing the decoding objective from physical",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2608-27682-p0006",
+     "quote": "Numerical results show that changing the decoding objective from physical to logical substantially improves the performance over standalone NBP.",
+     "start": 812,
+     "end": 956,
+     "chunk_sha256": "5db9a224704a5f3b3faec7841b4e9f3820d4b6df97871c1a7b7716ff6c4c749e",
+     "relation": "increases",
+     "subject": "changing the decoding objective from physical",
+     "object": "performance",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "false detection of leakage events",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2601-10461-p0043",
+     "quote": "As for the XZZX scheme, it seems that the performance is partially limited by the false detection of leakage events (since they cannot be pair-matched as in the CSS case, due to the use of CNOTs).",
+     "start": 211,
+     "end": 407,
+     "chunk_sha256": "a1fd9db25fd3f4b0055710ab13fb2223117ea62c805a9ad4a1110a135bbebcf8",
+     "relation": "constrains",
+     "subject": "false detection of leakage events",
+     "object": "performance",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "low frequency phase noise",
+    "relation": "constrains",
+    "citation": {
+     "document_id": "arxiv-2512-13908-p0054",
+     "quote": "The results suggest that without echos, our performance is dominated by low-frequency phase noise.",
+     "start": 275,
+     "end": 373,
+     "chunk_sha256": "a908c2a46e9e62e4bb878f3607819cb50209cd95719d4320694659fd9c54f137",
+     "relation": "constrains",
+     "subject": "low frequency phase noise",
+     "object": "performance",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "proposed AQFT algorithm",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2506-15760-p0015",
+     "quote": "The proposed AQFT algorithm improves performance in addition to exponential speedups for QFT computation.",
+     "start": 217,
+     "end": 322,
+     "chunk_sha256": "140ab9187de3348064bf783695e382b50a3608e319e70f2ba78b6ae99aff5e9a",
+     "relation": "increases",
+     "subject": "proposed AQFT algorithm",
+     "object": "performance",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 0,
+     "requested": "coset probability of error",
+     "source_term": "probability of error",
+     "citation": {
+      "document_id": "arxiv-2309-10331-p0031",
+      "quote": "The difference between definitions 1 and 2 is that definition 1 maximizes the probability of the error found while definition 2 maximizes the coset probability of the error found.",
+      "start": 615,
+      "end": 794,
+      "chunk_sha256": "66932de024586bbb671bca0dabb45136f456b49c0519a99ac4a96bf679726023",
+      "relation": "increases",
+      "subject": "definition",
+      "object": "probability of error",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    },
+    {
+     "link": 1,
+     "requested": "coset probability of error",
+     "source_term": "physical error probability",
+     "citation": {
+      "document_id": "arxiv-2212-11632-p0020",
+      "quote": "Over the depolarizing channel (pX = pY = pZ = p/3) the performance of the code has been benchmarked through the probability threshold (pth), that is, the physical error probability at which increasing the distance of the code does improve its performance.",
+      "start": 127,
+      "end": 382,
+      "chunk_sha256": "0f534921050ebf2166d63ddabe3ad53d3582c3a29aa7f1a32b33d15335065fea",
+      "relation": "increases",
+      "subject": "physical error probability",
+      "object": "performance",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "2bf451b94b0a4580",
+    "kind": "variable",
+    "term": "definition",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for definition."
+   },
+   {
+    "id": "aa9362dfa86c2c6a",
+    "kind": "variable",
+    "term": "definition",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for definition."
+   },
+   {
+    "id": "f68beb6f229b9d03",
+    "kind": "variable",
+    "term": "performance",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for performance."
+   },
+   {
+    "id": "eadc7c64b4644473",
+    "kind": "variable",
+    "term": "performance",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for performance."
+   },
+   {
+    "id": "8d8cd8840cc7f95b",
+    "kind": "variable",
+    "term": "coset probability of error",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for coset probability of error."
+   },
+   {
+    "id": "a3c53a1514f1139a",
+    "kind": "variable",
+    "term": "coset probability of error",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for coset probability of error."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "definition"
+   ],
+   "measure": [
+    "performance"
+   ],
+   "mediator": "coset probability of error",
+   "controls": [
+    "changing the decoding objective from physical",
+    "false detection of leakage events",
+    "low frequency phase noise",
+    "proposed AQFT algorithm"
+   ],
+   "steps": [
+    "Vary definition across matched settings and measure performance.",
+    "Review candidate controls (changing the decoding objective from physical, false detection of leakage events, low frequency phase noise, proposed AQFT algorithm) for timing, feasibility and causal role before adjustment.",
+    "Repeat with coset probability of error held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "performance does not change when definition varies with the controls fixed, or holding coset probability of error fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "definition",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2402-13863-p0047",
+       "quote": "2.3 Definition of a general adaptive quantum circuit The following notion will be useful: By a general adaptive quantum circuit Q (sometimes simply referredtoasaprotocol)wemeanonewhichiscomposedsingle-qubitstatepreparations, one-and two-qubit unitaries, and single-qubit measurements.",
+       "start": 0,
+       "end": 284,
+       "chunk_sha256": "dcdebf5df27b4e12ae381b4f365c5e4caa24808c79d4fb13585cbabce95623d3",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2406-14285-p0018",
+       "quote": "2-Design From the definition of t-designs from II G, it is sufficient to construct a 2-design for an operationally equivalent action of sampling from the Haar measure for the space U (N ).",
+       "start": 578,
+       "end": 766,
+       "chunk_sha256": "38a9c37c6d4fa46a732ac3a834b02e3290381dc73d068d2780eedb8198196d98",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2406-14285-p0058",
+       "quote": "[77] showed formalized the definition of a weak barren plateau using the second reyni entropy defined as:",
+       "start": 243,
+       "end": 348,
+       "chunk_sha256": "d280dde0a2f6bcb463dda89e8b432a4ffe9b21df3e48fcefa022cf33b1c71315",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "performance",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1901-10847-p0002",
+       "quote": "We tested the decoding performance under depolarizing noise with noiseless error syndrome measurements for the rotated surface code and compared against the Blossom algorithm and a neural network based decoder.",
+       "start": 737,
+       "end": 947,
+       "chunk_sha256": "32fcdd3ab39e5c821d6cd13e1971c2f211cce64118b67525e7ffae5cb3469100",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1905-06903-p0028",
+       "quote": "In any case, the specific choice of faulty-T measurement protocol (or state-injection protocol) will not matter for the distillation protocols that we construct in the following sections, which is why the more sophisticated T -measurement protocols are discussed in Appendix A. Moreover, we show in Appendix A that, for many relevant distillation protocols, a higher error rate for faulty T measurements has only a small effect on the performance of the distillation protocols, even if the error rate of faulty T measurements is assumed to be higher by an order of magnitude, 10pphys instead of pphys.",
+       "start": 1243,
+       "end": 1844,
+       "chunk_sha256": "ad449b166e2860416ea082c98322cb8cc76fdd4f7be25b65ba31edf8f74a43b3",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2102-06131-p0003",
+       "quote": "However, the fundamental operations, such as single-qubit gates [14, 15], entangling gates [16–20], and measurement [21] are known to populate non-computational levels, creating a demand for a reset protocol [22–27] that can remove leakage population from these higher states without adversely impacting performance in a large scale system.",
+       "start": 1261,
+       "end": 1601,
+       "chunk_sha256": "591b0bdd0ef0fa06184f2861ac064e8f518a04b9c113748c8302f78f9b439b3b",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "coset probability of error",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2309-10331-p0014",
+       "quote": "Here the approximation measures are the probability of the error found (for Corollary 1) and the coset probability of the coset",
+       "start": 134,
+       "end": 261,
+       "chunk_sha256": "7f9c6ce6ac804a47d81d1827a69d37a62780dfb91a065fe301d6f0e17b5ee08e",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "definition",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "definition",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "performance",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "performance",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "coset probability of error",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "coset probability of error",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "coset probability of error"
+   ]
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 7.755
+  },
+  "snapshot": {
+   "as_of": 1795594975,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: definition may increase performance through coset probability of error (read as physical error probability).\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: consistent.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: probability of error versus coset probability of error.\n  Review meaning: physical error probability versus coset probability of error.\n\nLink definition -> coset probability of error: supported (2 supporting, 0 contrary).\n  + [arxiv-2309-10331-p0031] The difference between definitions 1 and 2 is that definition 1 maximizes the probability of the error found while definition 2 maximizes the coset probability of the error found.\n  + [arxiv-2309-10331-p0031] The difference between definitions 1 and 2 is that definition 1 maximizes the probability of the error found while definition 2 maximizes the coset probability of the error found.\n\nLink coset probability of error -> performance: supported (1 supporting, 0 contrary).\n  + [arxiv-2212-11632-p0020] Over the depolarizing channel (pX = pY = pZ = p/3) the performance of the code has been benchmarked through the probability threshold (pth), that is, the physical error probability at which increasing the distance of the code does improve its performance.\n\nExisting setups that measure one of its terms:\n  [arxiv-1901-10847-p0002] We tested the decoding performance under depolarizing noise with noiseless error syndrome measurements for the rotated surface code and compared against the Blossom algorithm and a neural network based decoder.\n  [arxiv-1905-06903-p0028] In any case, the specific choice of faulty-T measurement protocol (or state-injection protocol) will not matter for the distillation protocols that we construct in the following sections, which is why the more sophisticated T -measurement protocols are discussed in Appendix A. Moreover, we show in Appendix A that, for many relevant distillation protocols, a higher error rate for faulty T measurements has only a small effect on the performance of the distillation protocols, even if the error rate of faulty T measurements is assumed to be higher by an order of magnitude, 10pphys instead of pphys.\n  [arxiv-2009-14226-p0022] To illustrate further the advantage of augmented codes, we compare numerically the performance of toric codes and their product with a [[4, 2, 2]] code.\n  [arxiv-2102-06131-p0003] We test its performance with the bit-flip stabilizer code, a simplified version of the surface code for quantum error correction.\n\nCandidate controls (review before adjustment):\n  changing the decoding objective from physical: outcome_predictor [arxiv-2608-27682-p0006]\n  false detection of leakage events: outcome_predictor [arxiv-2601-10461-p0043]\n  low frequency phase noise: outcome_predictor [arxiv-2512-13908-p0054]\n  proposed AQFT algorithm: outcome_predictor [arxiv-2506-15760-p0015]\n\nTest plan (mediation):\n  1. Vary definition across matched settings and measure performance.\n  2. Review candidate controls (changing the decoding objective from physical, false detection of leakage events, low frequency phase noise, proposed AQFT algorithm) for timing, feasibility and causal role before adjustment.\n  3. Repeat with coset probability of error held fixed or blocked to test whether it carries the effect.\n  Fails if: performance does not change when definition varies with the controls fixed, or holding coset probability of error fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for definition.\n  Required: feasible intervention or justified observational design for definition.\n  Required: measurement procedure for performance.\n  Required: unit or explicit categorical scale for performance.\n  Required: measurement procedure for coset probability of error.\n  Required: unit or explicit categorical scale for coset probability of error.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

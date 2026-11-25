@@ -1,0 +1,635 @@
+{
+ "kind": "seed",
+ "topic": "correlated errors",
+ "hypothesis": {
+  "id": "3162a7fbba6d",
+  "text": "reset and S. Bravyi may jointly constrain leakage induced long time correlated errors, so relieving one may shift the bottleneck to the other.",
+  "pattern": "convergent",
+  "relation": "co_constrain",
+  "anchors": [
+   "reset",
+   "S. Bravyi",
+   "leakage induced long time correlated errors"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2102-06131-p0023",
+   "arxiv-2208-09385-p0034"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2102-06131-p0023",
+    "quote": "We show that reset mitigates leakage-induced long-time correlated errors and significantly improves logical error suppression.",
+    "start": 148,
+    "end": 274,
+    "chunk_sha256": "3f1fc374a9e34a7abb920d6f071d09be99f0e3d2fb6a993ff9bfdf1648a32362",
+    "relation": "decreases",
+    "subject": "reset",
+    "object": "leakage induced long time correlated errors",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2208-09385-p0034",
+    "quote": "[44] S. Bravyi, S. Sheldon, A. Kandala, D. C. Mckay, and J. M. Gambetta, Mitigating measurement errors in multiqubit experiments, arXiv preprint arXiv:2006.14044",
+    "start": 254,
+    "end": 415,
+    "chunk_sha256": "a89fc5e8a103080191835f576d9ae9221525676637f5211a77cd946c21e47cae",
+    "relation": "decreases",
+    "subject": "S. Bravyi",
+    "object": "measurement errors",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.8,
+   "deductive_relevance": 0.864,
+   "novelty": 0.743
+  },
+  "falsification_test": "Relieve reset alone while measuring leakage induced long time correlated errors. The hypothesis fails if leakage induced long time correlated errors keeps improving without S. Bravyi becoming the binding limit, or if relieving S. Bravyi alone has no effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term. It also assumes that terms with the same head noun name the same quantity.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "leakage induced long time correlated error",
+  "check": {
+   "verdict": "all_links_supported",
+   "incomplete": false,
+   "direction_check": {
+    "requested": "co_constrain",
+    "status": "unspecified",
+    "observed": []
+   },
+   "composition": {
+    "status": "requires_review",
+    "bridges": [
+     {
+      "link": 1,
+      "requested": "leakage induced long time correlated errors",
+      "source_term": "measurement errors",
+      "citation": {
+       "document_id": "arxiv-2208-09385-p0034",
+       "quote": "[44] S. Bravyi, S. Sheldon, A. Kandala, D. C. Mckay, and J. M. Gambetta, Mitigating measurement errors in multiqubit experiments, arXiv preprint arXiv:2006.14044",
+       "start": 254,
+       "end": 415,
+       "chunk_sha256": "a89fc5e8a103080191835f576d9ae9221525676637f5211a77cd946c21e47cae",
+       "relation": "decreases",
+       "subject": "S. Bravyi",
+       "object": "measurement errors",
+       "hedged": false
+      },
+      "status": "requires_review",
+      "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+     }
+    ],
+    "qualifications": [],
+    "source_contexts": [],
+    "scope_differences": [],
+    "context_coverage": "not_recorded",
+    "interaction": {
+     "status": "untested",
+     "reason": "Individual effects do not establish a joint interaction."
+    },
+    "assumptions": [
+     "Source terms denote compatible quantities and settings.",
+     "Composed source relationships are not causal identification."
+    ],
+    "scientific_validity": "not_established"
+   },
+   "plan_readiness": "needs_input",
+   "links": [
+    {
+     "source": "reset",
+     "target": "leakage induced long time correlated errors",
+     "status": "supported",
+     "counter": []
+    },
+    {
+     "source": "S. Bravyi",
+     "target": "leakage induced long time correlated errors",
+     "status": "supported",
+     "counter": []
+    }
+   ]
+  }
+ },
+ "seconds": 8.2,
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "convergent",
+  "terms": {
+   "a": "reset",
+   "b": "S. Bravyi",
+   "c": "leakage induced long time correlated errors"
+  },
+  "path_nodes": null,
+  "links": [
+   {
+    "source": "reset",
+    "target": "leakage induced long time correlated errors",
+    "expected_relation": "decreases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2102-06131-p0023",
+      "quote": "We show that reset mitigates leakage-induced long-time correlated errors and significantly improves logical error suppression.",
+      "start": 148,
+      "end": 274,
+      "chunk_sha256": "3f1fc374a9e34a7abb920d6f071d09be99f0e3d2fb6a993ff9bfdf1648a32362",
+      "relation": "decreases",
+      "subject": "reset",
+      "object": "leakage induced long time correlated errors",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "decreases"
+    ]
+   },
+   {
+    "source": "S. Bravyi",
+    "target": "leakage induced long time correlated errors",
+    "expected_relation": "decreases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2208-09385-p0034",
+      "quote": "[44] S. Bravyi, S. Sheldon, A. Kandala, D. C. Mckay, and J. M. Gambetta, Mitigating measurement errors in multiqubit experiments, arXiv preprint arXiv:2006.14044",
+      "start": 254,
+      "end": 415,
+      "chunk_sha256": "a89fc5e8a103080191835f576d9ae9221525676637f5211a77cd946c21e47cae",
+      "relation": "decreases",
+      "subject": "S. Bravyi",
+      "object": "measurement errors",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "decreases"
+    ]
+   }
+  ],
+  "expected_relation": "co_constrain",
+  "direction_check": {
+   "requested": "co_constrain",
+   "status": "unspecified",
+   "observed": []
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-2102-06131-p0003",
+    "quote": "We benchmark the reset gate using the bit-flip error correction code [5] and measure growth and removal of leakage in-situ.",
+    "start": 2590,
+    "end": 2713,
+    "chunk_sha256": "591b0bdd0ef0fa06184f2861ac064e8f518a04b9c113748c8302f78f9b439b3b",
+    "measures": [
+     "reset"
+    ]
+   },
+   {
+    "document_id": "arxiv-2102-06131-p0007",
+    "quote": "Reset error versus swap and hold for experiment (d) and theory (e) show a wide range of optimal parameters.",
+    "start": 328,
+    "end": 435,
+    "chunk_sha256": "0ef8162397e80bd2ca1d2c336ccafcb6ad20744a7531aff884e7d9cb088a9f21",
+    "measures": [
+     "reset"
+    ]
+   },
+   {
+    "document_id": "arxiv-2208-09385-p0034",
+    "quote": "[44] S. Bravyi, S. Sheldon, A. Kandala, D. C. Mckay, and J. M. Gambetta, Mitigating measurement errors in multiqubit experiments, arXiv preprint arXiv:2006.14044",
+    "start": 254,
+    "end": 415,
+    "chunk_sha256": "a89fc5e8a103080191835f576d9ae9221525676637f5211a77cd946c21e47cae",
+    "measures": [
+     "S. Bravyi"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "CNOT gate",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2208-02191-p0033",
+     "quote": "Particularly, in the context of surface-code error correction, a CNOT gate between data and ancilla qubits can cause unwanted ZZ error between the data qubit involved in the gate and one of the neighbouring data qubits [39].",
+     "start": 636,
+     "end": 860,
+     "chunk_sha256": "803fde3109cf4f3d3896787e0dfb037da9c0871412fcf31984ed13e2f8f22d70",
+     "relation": "causes",
+     "subject": "CNOT gate",
+     "object": "unwanted ZZ error",
+     "hedged": true
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Cosmic rays",
+    "relation": "causes",
+    "citation": {
+     "document_id": "arxiv-2402-03208-p0002",
+     "quote": "Cosmic rays caused correlated errors at a rate of 1/(10 min), accounting for 17pm1% of all such events.",
+     "start": 637,
+     "end": 740,
+     "chunk_sha256": "cf6f8c168197d2b4428e077deb9fb2bf91c7a48f06b9653e72ddb00a4fd06767",
+     "relation": "causes",
+     "subject": "Cosmic rays",
+     "object": "correlated errors",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Cultivation",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2512-13908-p0002",
+     "quote": "Cultivation reduces the error by a factor of 40, with a state fidelity of 0.9999(1) (retaining 8% of attempts).",
+     "start": 659,
+     "end": 770,
+     "chunk_sha256": "85a99549516d12374e46f736e12e64c9d3821633fb29b4914050cecaa0cab105",
+     "relation": "decreases",
+     "subject": "Cultivation",
+     "object": "error",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "cultivation circuit",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2512-13908-p0010",
+     "quote": "Then the cultivation circuit projects the state to the X = Z line (right Bloch sphere, red arrow), and reduces the state error (red clouds).",
+     "start": 160,
+     "end": 300,
+     "chunk_sha256": "37262bc09e60fdad96efd34a518e058be9cd79f7b6d94c153bef8714897c1f82",
+     "relation": "decreases",
+     "subject": "cultivation circuit",
+     "object": "state error",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "D. Implications for Future Processors",
+    "relation": "decreases",
+    "citation": {
+     "document_id": "arxiv-2603-13460-p0023",
+     "quote": "D. Implications for Future Processors While JJ GE significantly mitigates radiation-induced errors, qubit arrays protected in this way remain sensitive to radiation that deposits energy on the scale of a few MeV.",
+     "start": 416,
+     "end": 628,
+     "chunk_sha256": "21084cca402c41f5b16ae0915c7ce0bfe6205831ca6fa9e43780f1891b3c9caf",
+     "relation": "decreases",
+     "subject": "D. Implications for Future Processors",
+     "object": "radiation induced errors",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "Erasure",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2601-10461-p0002",
+     "quote": "Erasure conversion for singlet-triplet spin qubits enables high-performance shuttling-based quantum error correction Adam Siegel1, 2, ∗ and Simon Benjamin1, 2 1Quantum Motion, 9 Sterling Way, London N7 9HJ, United Kingdom 2Department of Materials, University of Oxford, Parks Road, Oxford OX1 3PH, United Kingdom",
+     "start": 0,
+     "end": 312,
+     "chunk_sha256": "b77a82404b90606a45af786e79808049fd266cf7267c7d62e43d2f2b6e26cf52",
+     "relation": "increases",
+     "subject": "Erasure",
+     "object": "high performance shuttling based quantum error",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 1,
+     "requested": "leakage induced long time correlated errors",
+     "source_term": "measurement errors",
+     "citation": {
+      "document_id": "arxiv-2208-09385-p0034",
+      "quote": "[44] S. Bravyi, S. Sheldon, A. Kandala, D. C. Mckay, and J. M. Gambetta, Mitigating measurement errors in multiqubit experiments, arXiv preprint arXiv:2006.14044",
+      "start": 254,
+      "end": 415,
+      "chunk_sha256": "a89fc5e8a103080191835f576d9ae9221525676637f5211a77cd946c21e47cae",
+      "relation": "decreases",
+      "subject": "S. Bravyi",
+      "object": "measurement errors",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "untested",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "99c3b824da175e7d",
+    "kind": "variable",
+    "term": "reset",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for reset."
+   },
+   {
+    "id": "8efcd7d3de27b823",
+    "kind": "variable",
+    "term": "reset",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for reset."
+   },
+   {
+    "id": "11a39c8850800feb",
+    "kind": "variable",
+    "term": "S. Bravyi",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for S. Bravyi."
+   },
+   {
+    "id": "65d299f63f6014c7",
+    "kind": "variable",
+    "term": "S. Bravyi",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for S. Bravyi."
+   },
+   {
+    "id": "ac1eec0486110d2e",
+    "kind": "variable",
+    "term": "leakage induced long time correlated errors",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for leakage induced long time correlated errors."
+   },
+   {
+    "id": "4eb1d331e3bfe326",
+    "kind": "variable",
+    "term": "leakage induced long time correlated errors",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for leakage induced long time correlated errors."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "2x2 factorial",
+   "manipulate": [
+    "reset",
+    "S. Bravyi"
+   ],
+   "measure": [
+    "leakage induced long time correlated errors"
+   ],
+   "mediator": null,
+   "controls": [
+    "CNOT gate",
+    "Cosmic rays",
+    "Cultivation",
+    "cultivation circuit",
+    "D. Implications for Future Processors",
+    "Erasure"
+   ],
+   "steps": [
+    "Run all four combinations of low and high reset and S. Bravyi; measure leakage induced long time correlated errors.",
+    "Review candidate controls (CNOT gate, Cosmic rays, Cultivation, cultivation circuit, D. Implications for Future Processors, Erasure) for timing, feasibility and causal role before adjustment.",
+    "Compare the joint effect with the sum of the separate effects."
+   ],
+   "fails_if": "A precisely measured absence of an interaction challenges compounding in leakage induced long time correlated errors; it does not refute individual effects of reset or S. Bravyi. Predefine a meaningful effect threshold.",
+   "variables": [
+    {
+     "term": "reset",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1904-10378-p0007",
+       "quote": "We have included elongated mediator dots [22] to provide the basic two-qubit gate operation while increasing the fundamental interqubit spacing to more readily accommodate measuring devices for ancilla readout, and electron reservoirs for initialisation and reset of quantum dots.",
+       "start": 107,
+       "end": 387,
+       "chunk_sha256": "4cd37d06dbf2fbe018b1db4d821b58cd572391e79077f14300b1e482524a0f25",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2102-06131-p0003",
+       "quote": "However, the fundamental operations, such as single-qubit gates [14, 15], entangling gates [16–20], and measurement [21] are known to populate non-computational levels, creating a demand for a reset protocol [22–27] that can remove leakage population from these higher states without adversely impacting performance in a large scale system.",
+       "start": 1261,
+       "end": 1601,
+       "chunk_sha256": "591b0bdd0ef0fa06184f2861ac064e8f518a04b9c113748c8302f78f9b439b3b",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2102-06131-p0003",
+       "quote": "We benchmark the reset gate using the bit-flip error correction code [5] and measure growth and removal of leakage in-situ.",
+       "start": 2590,
+       "end": 2713,
+       "chunk_sha256": "591b0bdd0ef0fa06184f2861ac064e8f518a04b9c113748c8302f78f9b439b3b",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "S. Bravyi",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2208-09385-p0034",
+       "quote": "[44] S. Bravyi, S. Sheldon, A. Kandala, D. C. Mckay, and J. M. Gambetta, Mitigating measurement errors in multiqubit experiments, arXiv preprint arXiv:2006.14044",
+       "start": 254,
+       "end": 415,
+       "chunk_sha256": "a89fc5e8a103080191835f576d9ae9221525676637f5211a77cd946c21e47cae",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "leakage induced long time correlated errors",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "reset",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "reset",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "S. Bravyi",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "S. Bravyi",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "leakage induced long time correlated errors",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "leakage induced long time correlated errors",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "interaction_test": {
+    "contrast": "Y11 - Y10 - Y01 + Y00",
+    "assumptions": "Additive outcome scale, matched conditions and defined interventions.",
+    "interpretation": "A zero interaction contrast challenges compounding, not the individual effects."
+   }
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 8.101
+  },
+  "snapshot": {
+   "as_of": 1795594982,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: reset and S. Bravyi may jointly constrain leakage induced long time correlated errors, so relieving one may shift the bottleneck to the other.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unspecified.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: measurement errors versus leakage induced long time correlated errors.\n\nLink reset -> leakage induced long time correlated errors: supported (1 supporting, 0 contrary).\n  + [arxiv-2102-06131-p0023] We show that reset mitigates leakage-induced long-time correlated errors and significantly improves logical error suppression.\n\nLink S. Bravyi -> leakage induced long time correlated errors: supported (1 supporting, 0 contrary).\n  + [arxiv-2208-09385-p0034] [44] S. Bravyi, S. Sheldon, A. Kandala, D. C. Mckay, and J. M. Gambetta, Mitigating measurement errors in multiqubit experiments, arXiv preprint arXiv:2006.14044\n\nExisting setups that measure one of its terms:\n  [arxiv-2102-06131-p0003] We benchmark the reset gate using the bit-flip error correction code [5] and measure growth and removal of leakage in-situ.\n  [arxiv-2102-06131-p0007] Reset error versus swap and hold for experiment (d) and theory (e) show a wide range of optimal parameters.\n  [arxiv-2208-09385-p0034] [44] S. Bravyi, S. Sheldon, A. Kandala, D. C. Mckay, and J. M. Gambetta, Mitigating measurement errors in multiqubit experiments, arXiv preprint arXiv:2006.14044\n\nCandidate controls (review before adjustment):\n  CNOT gate: outcome_predictor [arxiv-2208-02191-p0033]\n  Cosmic rays: outcome_predictor [arxiv-2402-03208-p0002]\n  Cultivation: outcome_predictor [arxiv-2512-13908-p0002]\n  cultivation circuit: outcome_predictor [arxiv-2512-13908-p0010]\n  D. Implications for Future Processors: outcome_predictor [arxiv-2603-13460-p0023]\n  Erasure: outcome_predictor [arxiv-2601-10461-p0002]\n\nTest plan (2x2 factorial):\n  1. Run all four combinations of low and high reset and S. Bravyi; measure leakage induced long time correlated errors.\n  2. Review candidate controls (CNOT gate, Cosmic rays, Cultivation, cultivation circuit, D. Implications for Future Processors, Erasure) for timing, feasibility and causal role before adjustment.\n  3. Compare the joint effect with the sum of the separate effects.\n  Fails if: A precisely measured absence of an interaction challenges compounding in leakage induced long time correlated errors; it does not refute individual effects of reset or S. Bravyi. Predefine a meaningful effect threshold.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for reset.\n  Required: feasible intervention or justified observational design for reset.\n  Required: intervention levels for S. Bravyi.\n  Required: feasible intervention or justified observational design for S. Bravyi.\n  Required: measurement procedure for leakage induced long time correlated errors.\n  Required: unit or explicit categorical scale for leakage induced long time correlated errors.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

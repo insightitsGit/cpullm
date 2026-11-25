@@ -1,0 +1,607 @@
+{
+ "kind": "seed",
+ "topic": "quantum LDPC codes",
+ "hypothesis": {
+  "id": "0e93f13b7c82",
+  "text": "BPs and ppth of code may move together because both depend on noise.",
+  "pattern": "divergent",
+  "relation": "common_driver",
+  "anchors": [
+   "BPs",
+   "ppth of code",
+   "noise"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2102-01828-p0004",
+   "arxiv-2212-11632-p0022"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2102-01828-p0004",
+    "quote": "And the noise from quantum hardware also causes BPs, which are called noiseinduced BPs [25].",
+    "start": 1248,
+    "end": 1340,
+    "chunk_sha256": "f0ee03acb14522445f49dca9e14ba28fa35aef173ff0a282d62b693ce286aa04",
+    "relation": "causes",
+    "subject": "noise",
+    "object": "BPs",
+    "hedged": false,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2212-11632-p0022",
+    "quote": "noise reduces the ppth of the code by 3.6% for a rotated planar code of distance-7 under a noise channel produced by the T1 and T2 values from the Google chip [10] to 98.5% in the case of the distance-3 rotated planar code with the data of the the Aspen-M-2 qubits [23].",
+    "start": 2127,
+    "end": 2397,
+    "chunk_sha256": "d60906dc6f9f266597b523cdf1893e830335da7efe5fbaf343d9adbea1b91abc",
+    "relation": "decreases",
+    "subject": "noise",
+    "object": "ppth of code",
+    "hedged": false,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.96,
+   "deductive_relevance": 0.545,
+   "novelty": 0.663
+  },
+  "falsification_test": "Track BPs and ppth of code across periods where noise changes and where it does not. The hypothesis fails if they co-vary just as strongly when noise is held fixed.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+  "supporting_paths": 2,
+  "rule_verdict": null,
+  "hub": "noise",
+  "check": {
+   "verdict": "all_links_supported",
+   "incomplete": false,
+   "direction_check": {
+    "requested": "common_driver",
+    "status": "unspecified",
+    "observed": []
+   },
+   "composition": {
+    "status": "requires_review",
+    "bridges": [
+     {
+      "link": 0,
+      "requested": "noise",
+      "source_term": "strong noise",
+      "citation": {
+       "document_id": "arxiv-2405-05332-p0011",
+       "quote": "Sufficiently strong noise also generically leads to BPs [48–51].",
+       "start": 9,
+       "end": 73,
+       "chunk_sha256": "eed34e9a40d50ff38c45389354876de468a96ab0a84da70e4ef72a153dfa6460",
+       "relation": "causes",
+       "subject": "strong noise",
+       "object": "BPs",
+       "hedged": false
+      },
+      "status": "requires_review",
+      "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+     }
+    ],
+    "qualifications": [
+     {
+      "link": 1,
+      "citation": {
+       "document_id": "arxiv-2212-11632-p0022",
+       "quote": "noise reduces the ppth of the code by 3.6% for a rotated planar code of distance-7 under a noise channel produced by the T1 and T2 values from the Google chip [10] to 98.5% in the case of the distance-3 rotated planar code with the data of the the Aspen-M-2 qubits [23].",
+       "start": 2127,
+       "end": 2397,
+       "chunk_sha256": "d60906dc6f9f266597b523cdf1893e830335da7efe5fbaf343d9adbea1b91abc",
+       "relation": "decreases",
+       "subject": "noise",
+       "object": "ppth of code",
+       "hedged": false
+      },
+      "instruction": "Retain this full qualified statement; do not treat it as universal."
+     }
+    ],
+    "source_contexts": [],
+    "scope_differences": [],
+    "context_coverage": "not_recorded",
+    "interaction": {
+     "status": "not_applicable",
+     "reason": "Individual effects do not establish a joint interaction."
+    },
+    "assumptions": [
+     "Source terms denote compatible quantities and settings.",
+     "Composed source relationships are not causal identification."
+    ],
+    "scientific_validity": "not_established"
+   },
+   "plan_readiness": "needs_input",
+   "links": [
+    {
+     "source": "noise",
+     "target": "BPs",
+     "status": "supported",
+     "counter": []
+    },
+    {
+     "source": "noise",
+     "target": "ppth of code",
+     "status": "supported",
+     "counter": []
+    }
+   ]
+  }
+ },
+ "seconds": 7.4,
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "divergent",
+  "terms": {
+   "a": "BPs",
+   "b": "ppth of code",
+   "c": "noise"
+  },
+  "path_nodes": null,
+  "links": [
+   {
+    "source": "noise",
+    "target": "BPs",
+    "expected_relation": "causes",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2102-01828-p0004",
+      "quote": "And the noise from quantum hardware also causes BPs, which are called noiseinduced BPs [25].",
+      "start": 1248,
+      "end": 1340,
+      "chunk_sha256": "f0ee03acb14522445f49dca9e14ba28fa35aef173ff0a282d62b693ce286aa04",
+      "relation": "causes",
+      "subject": "noise",
+      "object": "BPs",
+      "hedged": false
+     },
+     {
+      "document_id": "arxiv-2405-05332-p0011",
+      "quote": "Sufficiently strong noise also generically leads to BPs [48–51].",
+      "start": 9,
+      "end": 73,
+      "chunk_sha256": "eed34e9a40d50ff38c45389354876de468a96ab0a84da70e4ef72a153dfa6460",
+      "relation": "causes",
+      "subject": "strong noise",
+      "object": "BPs",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2102-01828-p0004",
+      "quote": "And the noise from quantum hardware also causes BPs, which are called noiseinduced BPs [25].",
+      "start": 1248,
+      "end": 1340,
+      "chunk_sha256": "f0ee03acb14522445f49dca9e14ba28fa35aef173ff0a282d62b693ce286aa04"
+     },
+     {
+      "document_id": "arxiv-2405-05332-p0011",
+      "quote": "Sufficiently strong noise also generically leads to BPs [48–51].",
+      "start": 9,
+      "end": 73,
+      "chunk_sha256": "eed34e9a40d50ff38c45389354876de468a96ab0a84da70e4ef72a153dfa6460"
+     },
+     {
+      "document_id": "arxiv-2405-05332-p0011",
+      "quote": "Noise-induced BPs are qualitatively different from the rest, as the noise tends to flatten the loss landscape completely, instead of concentrating good solutions in a small parameter",
+      "start": 74,
+      "end": 256,
+      "chunk_sha256": "eed34e9a40d50ff38c45389354876de468a96ab0a84da70e4ef72a153dfa6460"
+     }
+    ],
+    "support_count": 2,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "causes"
+    ]
+   },
+   {
+    "source": "noise",
+    "target": "ppth of code",
+    "expected_relation": "decreases",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2212-11632-p0022",
+      "quote": "noise reduces the ppth of the code by 3.6% for a rotated planar code of distance-7 under a noise channel produced by the T1 and T2 values from the Google chip [10] to 98.5% in the case of the distance-3 rotated planar code with the data of the the Aspen-M-2 qubits [23].",
+      "start": 2127,
+      "end": 2397,
+      "chunk_sha256": "d60906dc6f9f266597b523cdf1893e830335da7efe5fbaf343d9adbea1b91abc",
+      "relation": "decreases",
+      "subject": "noise",
+      "object": "ppth of code",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2212-11632-p0022",
+      "quote": "noise reduces the ppth of the code by 3.6% for a rotated planar code of distance-7 under a noise channel produced by the T1 and T2 values from the Google chip [10] to 98.5% in the case of the distance-3 rotated planar code with the data of the the Aspen-M-2 qubits [23].",
+      "start": 2127,
+      "end": 2397,
+      "chunk_sha256": "d60906dc6f9f266597b523cdf1893e830335da7efe5fbaf343d9adbea1b91abc"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "decreases"
+    ]
+   }
+  ],
+  "expected_relation": "common_driver",
+  "direction_check": {
+   "requested": "common_driver",
+   "status": "unspecified",
+   "observed": []
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-1901-10847-p0002",
+    "quote": "We tested the decoding performance under depolarizing noise with noiseless error syndrome measurements for the rotated surface code and compared against the Blossom algorithm and a neural network based decoder.",
+    "start": 737,
+    "end": 947,
+    "chunk_sha256": "32fcdd3ab39e5c821d6cd13e1971c2f211cce64118b67525e7ffae5cb3469100",
+    "measures": [
+     "noise"
+    ]
+   },
+   {
+    "document_id": "arxiv-2202-12052-p0005",
+    "quote": "In some cases one is able to provide sufficient conditions for efficient classical simulations of Boson sampling experiments that are expressed in form of inequalities that involve the noise parameters at play [14, 15].",
+    "start": 408,
+    "end": 627,
+    "chunk_sha256": "614a6805a11edf545c37146d3f7b7708511dddeca2f9c4a9f680174f15c766e2",
+    "measures": [
+     "noise"
+    ]
+   },
+   {
+    "document_id": "arxiv-2208-02191-p0004",
+    "quote": "We numerically benchmark the performance of the noise-tailored code versus nonoptimized CSS surface codes and demonstrate that (i) the sub-threshold logical error rates are exponentially suppressed as a function of the code distance and (ii) the threshold grows monotonically as noise becomes less uniform across qubits.",
+    "start": 2703,
+    "end": 3023,
+    "chunk_sha256": "d0057b890a7f40b2058e93b4f9dc807b9fdb342d14a15bbf3661c59ab3f09b1c",
+    "measures": [
+     "noise"
+    ]
+   },
+   {
+    "document_id": "arxiv-2208-02191-p0022",
+    "quote": "In Subsections 3.1–3.3, we construct and benchmark Clifforddeformed surface codes locally tailored to efficiently correct non-uniform Pauli noise.",
+    "start": 966,
+    "end": 1112,
+    "chunk_sha256": "351d9baa0f231cad64744657feafcd4373feb622b49e566ea62f51b37da7cc81",
+    "measures": [
+     "noise"
+    ]
+   },
+   {
+    "document_id": "arxiv-2208-02191-p0032",
+    "quote": "Our numerical simulations show that implementing a noise-aware decoder instead of the one based on the Manhattan distance does not noticeably improve error correction capabilities of the code against nonuniform Pauli noise, that is, both threshold and subthreshold scaling are nearly unaffected when we vary σP at a fixed σtot.",
+    "start": 0,
+    "end": 327,
+    "chunk_sha256": "a0f3371825e0d06c0ffe52d6955612a4a82bdfe41fe2d44d995c20708ab4eabc",
+    "measures": [
+     "noise"
+    ]
+   },
+   {
+    "document_id": "arxiv-2208-05378-p0002",
+    "quote": "Furthermore, we benchmark the influence of leakage noise on VQAs in real-world learning tasks.",
+    "start": 1471,
+    "end": 1565,
+    "chunk_sha256": "1542a0b3c1cc131a383107b202370db80acd5bee684a7ba9b6edf42d88543815",
+    "measures": [
+     "noise"
+    ]
+   }
+  ],
+  "confounders": [],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [
+    {
+     "link": 0,
+     "requested": "noise",
+     "source_term": "strong noise",
+     "citation": {
+      "document_id": "arxiv-2405-05332-p0011",
+      "quote": "Sufficiently strong noise also generically leads to BPs [48–51].",
+      "start": 9,
+      "end": 73,
+      "chunk_sha256": "eed34e9a40d50ff38c45389354876de468a96ab0a84da70e4ef72a153dfa6460",
+      "relation": "causes",
+      "subject": "strong noise",
+      "object": "BPs",
+      "hedged": false
+     },
+     "status": "requires_review",
+     "reason": "Changed endpoint modifiers or meaning; similarity is not identity."
+    }
+   ],
+   "qualifications": [
+    {
+     "link": 1,
+     "citation": {
+      "document_id": "arxiv-2212-11632-p0022",
+      "quote": "noise reduces the ppth of the code by 3.6% for a rotated planar code of distance-7 under a noise channel produced by the T1 and T2 values from the Google chip [10] to 98.5% in the case of the distance-3 rotated planar code with the data of the the Aspen-M-2 qubits [23].",
+      "start": 2127,
+      "end": 2397,
+      "chunk_sha256": "d60906dc6f9f266597b523cdf1893e830335da7efe5fbaf343d9adbea1b91abc",
+      "relation": "decreases",
+      "subject": "noise",
+      "object": "ppth of code",
+      "hedged": false
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    }
+   ],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "bridge_review",
+    "kind": "semantic",
+    "instruction": "Resolve the listed endpoint meanings and source-setting differences."
+   },
+   {
+    "id": "qualification_review",
+    "kind": "scope",
+    "instruction": "Restrict the proposal to the cited conditions and quantifiers."
+   },
+   {
+    "id": "011e3ac4d68915b1",
+    "kind": "variable",
+    "term": "noise",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for noise."
+   },
+   {
+    "id": "febb6d3f6cd9f455",
+    "kind": "variable",
+    "term": "noise",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for noise."
+   },
+   {
+    "id": "fa0c9acfbd691b9c",
+    "kind": "variable",
+    "term": "BPs",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for BPs."
+   },
+   {
+    "id": "621dbda29e6accda",
+    "kind": "variable",
+    "term": "BPs",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for BPs."
+   },
+   {
+    "id": "0fcd9eec686297bf",
+    "kind": "variable",
+    "term": "ppth of code",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for ppth of code."
+   },
+   {
+    "id": "7a3a6f757a412545",
+    "kind": "variable",
+    "term": "ppth of code",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for ppth of code."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "common cause",
+   "manipulate": [
+    "noise"
+   ],
+   "measure": [
+    "BPs",
+    "ppth of code"
+   ],
+   "mediator": null,
+   "controls": [],
+   "steps": [
+    "Vary noise and measure BPs and ppth of code.",
+    "No additional outcome cause was extracted; this does not establish absence of confounding.",
+    "Check whether BPs and ppth of code still co-vary when noise is held fixed."
+   ],
+   "fails_if": "BPs and ppth of code co-vary just as strongly when noise is held fixed, or noise moves neither.",
+   "variables": [
+    {
+     "term": "noise",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1901-10847-p0002",
+       "quote": "We tested the decoding performance under depolarizing noise with noiseless error syndrome measurements for the rotated surface code and compared against the Blossom algorithm and a neural network based decoder.",
+       "start": 737,
+       "end": 947,
+       "chunk_sha256": "32fcdd3ab39e5c821d6cd13e1971c2f211cce64118b67525e7ffae5cb3469100",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1904-10378-p0037",
+       "quote": "Its effect on the measured parity can also be considered by flipping the parity result whenever there are asymmetric noise acting on the ancilla spin pairs.",
+       "start": 199,
+       "end": 355,
+       "chunk_sha256": "918c19fbfa373df68a8c3b668f0182aca930d15751c6de9c8680580505d34db5",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1905-06903-p0017",
+       "quote": "Here, we consider circuit-level noise, where each physical gate, state initialization and measurement outcome is affected by a Pauli error with probability pphys.",
+       "start": 125,
+       "end": 287,
+       "chunk_sha256": "5860b349d244950333ad40662d87e8421c1a463a6f78b3f969b9bf6b8680b21b",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "BPs",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "ppth of code",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "noise",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "noise",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "BPs",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "BPs",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "ppth of code",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "ppth of code",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established"
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 7.305
+  },
+  "snapshot": {
+   "as_of": 1795595024,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: BPs and ppth of code may move together because both depend on noise.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unspecified.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Review meaning: strong noise versus noise.\n  Retain qualification [arxiv-2212-11632-p0022]: noise reduces the ppth of the code by 3.6% for a rotated planar code of distance-7 under a noise channel produced by the T1 and T2 values from the Google chip [10] to 98.5% in the case of the distance-3 rotated planar code with the data of the the Aspen-M-2 qubits [23].\n\nLink noise -> BPs: supported (2 supporting, 0 contrary).\n  + [arxiv-2102-01828-p0004] And the noise from quantum hardware also causes BPs, which are called noiseinduced BPs [25].\n  + [arxiv-2405-05332-p0011] Sufficiently strong noise also generically leads to BPs [48–51].\n\nLink noise -> ppth of code: supported (1 supporting, 0 contrary).\n  + [arxiv-2212-11632-p0022] noise reduces the ppth of the code by 3.6% for a rotated planar code of distance-7 under a noise channel produced by the T1 and T2 values from the Google chip [10] to 98.5% in the case of the distance-3 rotated planar code with the data of the the Aspen-M-2 qubits [23].\n\nExisting setups that measure one of its terms:\n  [arxiv-1901-10847-p0002] We tested the decoding performance under depolarizing noise with noiseless error syndrome measurements for the rotated surface code and compared against the Blossom algorithm and a neural network based decoder.\n  [arxiv-2202-12052-p0005] In some cases one is able to provide sufficient conditions for efficient classical simulations of Boson sampling experiments that are expressed in form of inequalities that involve the noise parameters at play [14, 15].\n  [arxiv-2208-02191-p0004] We numerically benchmark the performance of the noise-tailored code versus nonoptimized CSS surface codes and demonstrate that (i) the sub-threshold logical error rates are exponentially suppressed as a function of the code distance and (ii) the threshold grows monotonically as noise becomes less uniform across qubits.\n  [arxiv-2208-02191-p0022] In Subsections 3.1–3.3, we construct and benchmark Clifforddeformed surface codes locally tailored to efficiently correct non-uniform Pauli noise.\n\nTest plan (common cause):\n  1. Vary noise and measure BPs and ppth of code.\n  2. No additional outcome cause was extracted; this does not establish absence of confounding.\n  3. Check whether BPs and ppth of code still co-vary when noise is held fixed.\n  Fails if: BPs and ppth of code co-vary just as strongly when noise is held fixed, or noise moves neither.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for noise.\n  Required: feasible intervention or justified observational design for noise.\n  Required: measurement procedure for BPs.\n  Required: unit or explicit categorical scale for BPs.\n  Required: measurement procedure for ppth of code.\n  Required: unit or explicit categorical scale for ppth of code.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

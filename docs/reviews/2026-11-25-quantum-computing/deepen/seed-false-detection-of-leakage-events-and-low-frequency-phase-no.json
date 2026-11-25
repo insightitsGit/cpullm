@@ -1,0 +1,628 @@
+{
+ "kind": "seed",
+ "topic": "leakage",
+ "hypothesis": {
+  "id": "bd9689785a91",
+  "text": "false detection of leakage events and low frequency phase noise may jointly constrain performance, so relieving one may shift the bottleneck to the other.",
+  "pattern": "convergent",
+  "relation": "co_constrain",
+  "anchors": [
+   "false detection of leakage events",
+   "low frequency phase noise",
+   "performance"
+  ],
+  "via": [],
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "source_ids": [
+   "arxiv-2601-10461-p0043",
+   "arxiv-2512-13908-p0054"
+  ],
+  "citations": [
+   {
+    "document_id": "arxiv-2601-10461-p0043",
+    "quote": "As for the XZZX scheme, it seems that the performance is partially limited by the false detection of leakage events (since they cannot be pair-matched as in the CSS case, due to the use of CNOTs).",
+    "start": 211,
+    "end": 407,
+    "chunk_sha256": "a1fd9db25fd3f4b0055710ab13fb2223117ea62c805a9ad4a1110a135bbebcf8",
+    "relation": "constrains",
+    "subject": "false detection of leakage events",
+    "object": "performance",
+    "hedged": true,
+    "origin": "dependency_parse"
+   },
+   {
+    "document_id": "arxiv-2512-13908-p0054",
+    "quote": "The results suggest that without echos, our performance is dominated by low-frequency phase noise.",
+    "start": 275,
+    "end": 373,
+    "chunk_sha256": "a908c2a46e9e62e4bb878f3607819cb50209cd95719d4320694659fd9c54f137",
+    "relation": "constrains",
+    "subject": "low frequency phase noise",
+    "object": "performance",
+    "hedged": true,
+    "origin": "dependency_parse"
+   }
+  ],
+  "scores": {
+   "source_support": 0.55,
+   "deductive_relevance": 0.827,
+   "novelty": 0.683
+  },
+  "falsification_test": "Relieve false detection of leakage events alone while measuring performance. The hypothesis fails if performance keeps improving without low frequency phase noise becoming the binding limit, or if relieving low frequency phase noise alone has no effect.",
+  "assumptions": "Assumes each cited relation holds in the same setting and that effects carry across the shared term.",
+  "supporting_paths": 1,
+  "rule_verdict": null,
+  "hub": "performance",
+  "check": {
+   "verdict": "all_links_supported",
+   "incomplete": false,
+   "direction_check": {
+    "requested": "co_constrain",
+    "status": "unspecified",
+    "observed": []
+   },
+   "composition": {
+    "status": "requires_review",
+    "bridges": [],
+    "qualifications": [
+     {
+      "link": 0,
+      "citation": {
+       "document_id": "arxiv-2601-10461-p0043",
+       "quote": "As for the XZZX scheme, it seems that the performance is partially limited by the false detection of leakage events (since they cannot be pair-matched as in the CSS case, due to the use of CNOTs).",
+       "start": 211,
+       "end": 407,
+       "chunk_sha256": "a1fd9db25fd3f4b0055710ab13fb2223117ea62c805a9ad4a1110a135bbebcf8",
+       "relation": "constrains",
+       "subject": "false detection of leakage events",
+       "object": "performance",
+       "hedged": true
+      },
+      "instruction": "Retain this full qualified statement; do not treat it as universal."
+     },
+     {
+      "link": 1,
+      "citation": {
+       "document_id": "arxiv-2512-13908-p0054",
+       "quote": "The results suggest that without echos, our performance is dominated by low-frequency phase noise.",
+       "start": 275,
+       "end": 373,
+       "chunk_sha256": "a908c2a46e9e62e4bb878f3607819cb50209cd95719d4320694659fd9c54f137",
+       "relation": "constrains",
+       "subject": "low frequency phase noise",
+       "object": "performance",
+       "hedged": true
+      },
+      "instruction": "Retain this full qualified statement; do not treat it as universal."
+     }
+    ],
+    "source_contexts": [],
+    "scope_differences": [],
+    "context_coverage": "not_recorded",
+    "interaction": {
+     "status": "untested",
+     "reason": "Individual effects do not establish a joint interaction."
+    },
+    "assumptions": [
+     "Source terms denote compatible quantities and settings.",
+     "Composed source relationships are not causal identification."
+    ],
+    "scientific_validity": "not_established"
+   },
+   "plan_readiness": "needs_input",
+   "links": [
+    {
+     "source": "false detection of leakage events",
+     "target": "performance",
+     "status": "supported",
+     "counter": []
+    },
+    {
+     "source": "low frequency phase noise",
+     "target": "performance",
+     "status": "supported",
+     "counter": []
+    }
+   ]
+  }
+ },
+ "seconds": 8.09,
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "convergent",
+  "terms": {
+   "a": "false detection of leakage events",
+   "b": "low frequency phase noise",
+   "c": "performance"
+  },
+  "path_nodes": null,
+  "links": [
+   {
+    "source": "false detection of leakage events",
+    "target": "performance",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2601-10461-p0043",
+      "quote": "As for the XZZX scheme, it seems that the performance is partially limited by the false detection of leakage events (since they cannot be pair-matched as in the CSS case, due to the use of CNOTs).",
+      "start": 211,
+      "end": 407,
+      "chunk_sha256": "a1fd9db25fd3f4b0055710ab13fb2223117ea62c805a9ad4a1110a135bbebcf8",
+      "relation": "constrains",
+      "subject": "false detection of leakage events",
+      "object": "performance",
+      "hedged": true
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2601-10461-p0043",
+      "quote": "As for the XZZX scheme, it seems that the performance is partially limited by the false detection of leakage events (since they cannot be pair-matched as in the CSS case, due to the use of CNOTs).",
+      "start": 211,
+      "end": 407,
+      "chunk_sha256": "a1fd9db25fd3f4b0055710ab13fb2223117ea62c805a9ad4a1110a135bbebcf8"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   },
+   {
+    "source": "low frequency phase noise",
+    "target": "performance",
+    "expected_relation": "constrains",
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2512-13908-p0054",
+      "quote": "The results suggest that without echos, our performance is dominated by low-frequency phase noise.",
+      "start": 275,
+      "end": 373,
+      "chunk_sha256": "a908c2a46e9e62e4bb878f3607819cb50209cd95719d4320694659fd9c54f137",
+      "relation": "constrains",
+      "subject": "low frequency phase noise",
+      "object": "performance",
+      "hedged": true
+     }
+    ],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "constrains"
+    ]
+   }
+  ],
+  "expected_relation": "co_constrain",
+  "direction_check": {
+   "requested": "co_constrain",
+   "status": "unspecified",
+   "observed": []
+  },
+  "verdict": "all_links_supported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-1901-10847-p0002",
+    "quote": "We tested the decoding performance under depolarizing noise with noiseless error syndrome measurements for the rotated surface code and compared against the Blossom algorithm and a neural network based decoder.",
+    "start": 737,
+    "end": 947,
+    "chunk_sha256": "32fcdd3ab39e5c821d6cd13e1971c2f211cce64118b67525e7ffae5cb3469100",
+    "measures": [
+     "performance"
+    ]
+   },
+   {
+    "document_id": "arxiv-1905-06903-p0028",
+    "quote": "In any case, the specific choice of faulty-T measurement protocol (or state-injection protocol) will not matter for the distillation protocols that we construct in the following sections, which is why the more sophisticated T -measurement protocols are discussed in Appendix A. Moreover, we show in Appendix A that, for many relevant distillation protocols, a higher error rate for faulty T measurements has only a small effect on the performance of the distillation protocols, even if the error rate of faulty T measurements is assumed to be higher by an order of magnitude, 10pphys instead of pphys.",
+    "start": 1243,
+    "end": 1844,
+    "chunk_sha256": "ad449b166e2860416ea082c98322cb8cc76fdd4f7be25b65ba31edf8f74a43b3",
+    "measures": [
+     "performance"
+    ]
+   },
+   {
+    "document_id": "arxiv-2009-14226-p0022",
+    "quote": "To illustrate further the advantage of augmented codes, we compare numerically the performance of toric codes and their product with a [[4, 2, 2]] code.",
+    "start": 752,
+    "end": 904,
+    "chunk_sha256": "891befc8e47fac96589c676bee4be2114ac77d4817db8b105a90205fc3caffcc",
+    "measures": [
+     "performance"
+    ]
+   },
+   {
+    "document_id": "arxiv-2102-06131-p0003",
+    "quote": "We test its performance with the bit-flip stabilizer code, a simplified version of the surface code for quantum error correction.",
+    "start": 544,
+    "end": 673,
+    "chunk_sha256": "591b0bdd0ef0fa06184f2861ac064e8f518a04b9c113748c8302f78f9b439b3b",
+    "measures": [
+     "performance"
+    ]
+   },
+   {
+    "document_id": "arxiv-2103-08049-p0066",
+    "quote": "We compared numerically the performance of our Union-Find decoder the BP decoder.",
+    "start": 1203,
+    "end": 1284,
+    "chunk_sha256": "fb4d933038182e2debf507a09e4ec9cd4a71a34c158df4f77664817d5143a449",
+    "measures": [
+     "performance"
+    ]
+   },
+   {
+    "document_id": "arxiv-2109-04457-p0006",
+    "quote": "We introduce maximum estimator spread as a universal benchmark for error-mitigation performance — a quantity that tells us how many extra runs of a NISQ device guarantee that outputs are within some desired accuracy threshold.",
+    "start": 242,
+    "end": 468,
+    "chunk_sha256": "7863cf9c0586a625835fbcbd3e8b06151c80a1ccaef473517454c296a91e193b",
+    "measures": [
+     "performance"
+    ]
+   }
+  ],
+  "confounders": [
+   {
+    "term": "changing the decoding objective from physical",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2608-27682-p0006",
+     "quote": "Numerical results show that changing the decoding objective from physical to logical substantially improves the performance over standalone NBP.",
+     "start": 812,
+     "end": 956,
+     "chunk_sha256": "5db9a224704a5f3b3faec7841b4e9f3820d4b6df97871c1a7b7716ff6c4c749e",
+     "relation": "increases",
+     "subject": "changing the decoding objective from physical",
+     "object": "performance",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "physical error probability",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2212-11632-p0020",
+     "quote": "Over the depolarizing channel (pX = pY = pZ = p/3) the performance of the code has been benchmarked through the probability threshold (pth), that is, the physical error probability at which increasing the distance of the code does improve its performance.",
+     "start": 127,
+     "end": 382,
+     "chunk_sha256": "0f534921050ebf2166d63ddabe3ad53d3582c3a29aa7f1a32b33d15335065fea",
+     "relation": "increases",
+     "subject": "physical error probability",
+     "object": "performance",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   },
+   {
+    "term": "proposed AQFT algorithm",
+    "relation": "increases",
+    "citation": {
+     "document_id": "arxiv-2506-15760-p0015",
+     "quote": "The proposed AQFT algorithm improves performance in addition to exponential speedups for QFT computation.",
+     "start": 217,
+     "end": 322,
+     "chunk_sha256": "140ab9187de3348064bf783695e382b50a3608e319e70f2ba78b6ae99aff5e9a",
+     "relation": "increases",
+     "subject": "proposed AQFT algorithm",
+     "object": "performance",
+     "hedged": false
+    },
+    "role": "outcome_predictor",
+    "recommended_action": "Review before adjustment; not an established confounder.",
+    "exposure_evidence": [],
+    "downstream_evidence": []
+   }
+  ],
+  "composition": {
+   "status": "requires_review",
+   "bridges": [],
+   "qualifications": [
+    {
+     "link": 0,
+     "citation": {
+      "document_id": "arxiv-2601-10461-p0043",
+      "quote": "As for the XZZX scheme, it seems that the performance is partially limited by the false detection of leakage events (since they cannot be pair-matched as in the CSS case, due to the use of CNOTs).",
+      "start": 211,
+      "end": 407,
+      "chunk_sha256": "a1fd9db25fd3f4b0055710ab13fb2223117ea62c805a9ad4a1110a135bbebcf8",
+      "relation": "constrains",
+      "subject": "false detection of leakage events",
+      "object": "performance",
+      "hedged": true
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    },
+    {
+     "link": 1,
+     "citation": {
+      "document_id": "arxiv-2512-13908-p0054",
+      "quote": "The results suggest that without echos, our performance is dominated by low-frequency phase noise.",
+      "start": 275,
+      "end": 373,
+      "chunk_sha256": "a908c2a46e9e62e4bb878f3607819cb50209cd95719d4320694659fd9c54f137",
+      "relation": "constrains",
+      "subject": "low frequency phase noise",
+      "object": "performance",
+      "hedged": true
+     },
+     "instruction": "Retain this full qualified statement; do not treat it as universal."
+    }
+   ],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "untested",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "qualification_review",
+    "kind": "scope",
+    "instruction": "Restrict the proposal to the cited conditions and quantifiers."
+   },
+   {
+    "id": "503f8de499590e07",
+    "kind": "variable",
+    "term": "false detection of leakage events",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for false detection of leakage events."
+   },
+   {
+    "id": "545df5034c357b53",
+    "kind": "variable",
+    "term": "false detection of leakage events",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for false detection of leakage events."
+   },
+   {
+    "id": "9ffd9b4c68396670",
+    "kind": "variable",
+    "term": "low frequency phase noise",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for low frequency phase noise."
+   },
+   {
+    "id": "9890286e3f4089cf",
+    "kind": "variable",
+    "term": "low frequency phase noise",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for low frequency phase noise."
+   },
+   {
+    "id": "f68beb6f229b9d03",
+    "kind": "variable",
+    "term": "performance",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for performance."
+   },
+   {
+    "id": "eadc7c64b4644473",
+    "kind": "variable",
+    "term": "performance",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for performance."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "2x2 factorial",
+   "manipulate": [
+    "false detection of leakage events",
+    "low frequency phase noise"
+   ],
+   "measure": [
+    "performance"
+   ],
+   "mediator": null,
+   "controls": [
+    "changing the decoding objective from physical",
+    "physical error probability",
+    "proposed AQFT algorithm"
+   ],
+   "steps": [
+    "Run all four combinations of low and high false detection of leakage events and low frequency phase noise; measure performance.",
+    "Review candidate controls (changing the decoding objective from physical, physical error probability, proposed AQFT algorithm) for timing, feasibility and causal role before adjustment.",
+    "Compare the joint effect with the sum of the separate effects."
+   ],
+   "fails_if": "A precisely measured absence of an interaction challenges compounding in performance; it does not refute individual effects of false detection of leakage events or low frequency phase noise. Predefine a meaningful effect threshold.",
+   "variables": [
+    {
+     "term": "false detection of leakage events",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "low frequency phase noise",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "performance",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-1901-10847-p0002",
+       "quote": "We tested the decoding performance under depolarizing noise with noiseless error syndrome measurements for the rotated surface code and compared against the Blossom algorithm and a neural network based decoder.",
+       "start": 737,
+       "end": 947,
+       "chunk_sha256": "32fcdd3ab39e5c821d6cd13e1971c2f211cce64118b67525e7ffae5cb3469100",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-1905-06903-p0028",
+       "quote": "In any case, the specific choice of faulty-T measurement protocol (or state-injection protocol) will not matter for the distillation protocols that we construct in the following sections, which is why the more sophisticated T -measurement protocols are discussed in Appendix A. Moreover, we show in Appendix A that, for many relevant distillation protocols, a higher error rate for faulty T measurements has only a small effect on the performance of the distillation protocols, even if the error rate of faulty T measurements is assumed to be higher by an order of magnitude, 10pphys instead of pphys.",
+       "start": 1243,
+       "end": 1844,
+       "chunk_sha256": "ad449b166e2860416ea082c98322cb8cc76fdd4f7be25b65ba31edf8f74a43b3",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2102-06131-p0003",
+       "quote": "However, the fundamental operations, such as single-qubit gates [14, 15], entangling gates [16–20], and measurement [21] are known to populate non-computational levels, creating a demand for a reset protocol [22–27] that can remove leakage population from these higher states without adversely impacting performance in a large scale system.",
+       "start": 1261,
+       "end": 1601,
+       "chunk_sha256": "591b0bdd0ef0fa06184f2861ac064e8f518a04b9c113748c8302f78f9b439b3b",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "false detection of leakage events",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "false detection of leakage events",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "low frequency phase noise",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "low frequency phase noise",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "performance",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "performance",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "interaction_test": {
+    "contrast": "Y11 - Y10 - Y01 + Y00",
+    "assumptions": "Additive outcome scale, matched conditions and defined interventions.",
+    "interpretation": "A zero interaction contrast challenges compounding, not the individual effects."
+   }
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 7.996
+  },
+  "snapshot": {
+   "as_of": 1795595016,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: false detection of leakage events and low frequency phase noise may jointly constrain performance, so relieving one may shift the bottleneck to the other.\nOverall: all links supported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unspecified.\nComposition assessment: requires review. Component support does not establish a joint effect or causal validity.\n  Retain qualification [arxiv-2601-10461-p0043]: As for the XZZX scheme, it seems that the performance is partially limited by the false detection of leakage events (since they cannot be pair-matched as in the CSS case, due to the use of CNOTs).\n  Retain qualification [arxiv-2512-13908-p0054]: The results suggest that without echos, our performance is dominated by low-frequency phase noise.\n\nLink false detection of leakage events -> performance: supported (1 supporting, 0 contrary).\n  + [arxiv-2601-10461-p0043] As for the XZZX scheme, it seems that the performance is partially limited by the false detection of leakage events (since they cannot be pair-matched as in the CSS case, due to the use of CNOTs).\n\nLink low frequency phase noise -> performance: supported (1 supporting, 0 contrary).\n  + [arxiv-2512-13908-p0054] The results suggest that without echos, our performance is dominated by low-frequency phase noise.\n\nExisting setups that measure one of its terms:\n  [arxiv-1901-10847-p0002] We tested the decoding performance under depolarizing noise with noiseless error syndrome measurements for the rotated surface code and compared against the Blossom algorithm and a neural network based decoder.\n  [arxiv-1905-06903-p0028] In any case, the specific choice of faulty-T measurement protocol (or state-injection protocol) will not matter for the distillation protocols that we construct in the following sections, which is why the more sophisticated T -measurement protocols are discussed in Appendix A. Moreover, we show in Appendix A that, for many relevant distillation protocols, a higher error rate for faulty T measurements has only a small effect on the performance of the distillation protocols, even if the error rate of faulty T measurements is assumed to be higher by an order of magnitude, 10pphys instead of pphys.\n  [arxiv-2009-14226-p0022] To illustrate further the advantage of augmented codes, we compare numerically the performance of toric codes and their product with a [[4, 2, 2]] code.\n  [arxiv-2102-06131-p0003] We test its performance with the bit-flip stabilizer code, a simplified version of the surface code for quantum error correction.\n\nCandidate controls (review before adjustment):\n  changing the decoding objective from physical: outcome_predictor [arxiv-2608-27682-p0006]\n  physical error probability: outcome_predictor [arxiv-2212-11632-p0020]\n  proposed AQFT algorithm: outcome_predictor [arxiv-2506-15760-p0015]\n\nTest plan (2x2 factorial):\n  1. Run all four combinations of low and high false detection of leakage events and low frequency phase noise; measure performance.\n  2. Review candidate controls (changing the decoding objective from physical, physical error probability, proposed AQFT algorithm) for timing, feasibility and causal role before adjustment.\n  3. Compare the joint effect with the sum of the separate effects.\n  Fails if: A precisely measured absence of an interaction challenges compounding in performance; it does not refute individual effects of false detection of leakage events or low frequency phase noise. Predefine a meaningful effect threshold.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for false detection of leakage events.\n  Required: feasible intervention or justified observational design for false detection of leakage events.\n  Required: intervention levels for low frequency phase noise.\n  Required: feasible intervention or justified observational design for low frequency phase noise.\n  Required: measurement procedure for performance.\n  Required: unit or explicit categorical scale for performance.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

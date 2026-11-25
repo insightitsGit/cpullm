@@ -1,0 +1,496 @@
+{
+ "kind": "open_problem",
+ "hypothesis": "Cosmic rays may reduce the error threshold through correlated errors.",
+ "seconds": 35.46,
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "Cosmic rays",
+   "b": "correlated errors",
+   "c": "the error threshold"
+  },
+  "path_nodes": [
+   "Cosmic rays",
+   "correlated errors",
+   "the error threshold"
+  ],
+  "links": [
+   {
+    "source": "Cosmic rays",
+    "target": "correlated errors",
+    "expected_relation": null,
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2402-03208-p0002",
+      "quote": "Cosmic rays caused correlated errors at a rate of 1/(10 min), accounting for 17pm1% of all such events.",
+      "start": 637,
+      "end": 740,
+      "chunk_sha256": "cf6f8c168197d2b4428e077deb9fb2bf91c7a48f06b9653e72ddb00a4fd06767",
+      "relation": "causes",
+      "subject": "Cosmic rays",
+      "object": "correlated errors",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2402-03208-p0001",
+      "quote": "# Synchronous Detection of Cosmic Rays and Correlated Errors in Superconducting Qubit Arrays",
+      "start": 0,
+      "end": 92,
+      "chunk_sha256": "cf4966ad682c805abfa8b1e3f7bff1d73eb7c123819d8e30e5699d361400fa7a"
+     },
+     {
+      "document_id": "arxiv-2402-03208-p0002",
+      "quote": "Cosmic rays caused correlated errors at a rate of 1/(10 min), accounting for 17pm1% of all such events.",
+      "start": 637,
+      "end": 740,
+      "chunk_sha256": "cf6f8c168197d2b4428e077deb9fb2bf91c7a48f06b9653e72ddb00a4fd06767"
+     },
+     {
+      "document_id": "arxiv-2603-13460-p0003",
+      "quote": "For α-particles from an 241Am source, we observe T1 errors correlated in space and time, supporting a hypothesis that hadronic cosmic rays are a major contributor to the 10−10 error floor observed in Ref.",
+      "start": 606,
+      "end": 810,
+      "chunk_sha256": "9314264383ade6665563324516105b15bcc1259258cb3b8d271b4c4b176e87ef"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "causes"
+    ]
+   },
+   {
+    "source": "correlated errors",
+    "target": "the error threshold",
+    "expected_relation": null,
+    "status": "supported",
+    "support": [
+     {
+      "document_id": "arxiv-2407-16176-p0047",
+      "quote": "However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.",
+      "start": 802,
+      "end": 968,
+      "chunk_sha256": "ed6641c99e1a6de1916591e22b4744b8b1a0bc02c6ef2aa75b23abda631cf46c",
+      "relation": "increases",
+      "subject": "correlated errors",
+      "object": "error threshold",
+      "hedged": false
+     }
+    ],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2407-16176-p0006",
+      "quote": "II we propose the numerical setup and decoding algorithm, discuss the correlated errors at each level of encoding, and then estimate the error threshold for a quantum memory based on concatenated quantum Hamming codes.",
+      "start": 309,
+      "end": 527,
+      "chunk_sha256": "f7d2e4ffdd1fda45dd1b155756e0fbc4faa14076e8f06b7ff38772ecde3fb13e"
+     },
+     {
+      "document_id": "arxiv-2407-16176-p0029",
+      "quote": "Our comprehensive numerical simulation demonstrates that an error threshold exists, albeit with correlated logical errors at each level of concatenation.",
+      "start": 218,
+      "end": 371,
+      "chunk_sha256": "7cc0f81bd19ffdff83dee3ca34e7eff383ca0685d016c4f206e6afa69e557ffa"
+     },
+     {
+      "document_id": "arxiv-2407-16176-p0042",
+      "quote": "Appendix B: Locally decaying errors When errors are correlated, threshold still exists if the errors are locally decaying [32].",
+      "start": 0,
+      "end": 127,
+      "chunk_sha256": "7d1d9b7b970eed3bc94bc8d3728dc3cdf40d685a672452c423a540fd261e9ea6"
+     }
+    ],
+    "support_count": 1,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": [
+     "increases"
+    ]
+   }
+  ],
+  "expected_relation": "decreases",
+  "direction_check": {
+   "requested": "decreases",
+   "status": "contradicted",
+   "observed": [
+    "increases"
+   ],
+   "assumption": "Cited effects compose across the same setting; this is not empirical validation."
+  },
+  "verdict": "contested",
+  "predictions": [
+   {
+    "document_id": "arxiv-2603-13460-p0003",
+    "quote": "For α-particles from an 241Am source, we observe T1 errors correlated in space and time, supporting a hypothesis that hadronic cosmic rays are a major contributor to the 10−10 error floor observed in Ref.",
+    "start": 606,
+    "end": 810,
+    "chunk_sha256": "9314264383ade6665563324516105b15bcc1259258cb3b8d271b4c4b176e87ef",
+    "qualification": "source_prediction"
+   }
+  ],
+  "setups": [
+   {
+    "document_id": "arxiv-2603-13460-p0008",
+    "quote": "Primarily they address goal 1, informing whether low-rate, high-energy cosmic ray hadrons can be a source of the correlated errors observed in recent QEC experiments [1, 24].",
+    "start": 70,
+    "end": 244,
+    "chunk_sha256": "39a1f0f2385d34c75770a4410d45e83dcc76d9cb8106d6c9a6a33eec1958b5af",
+    "measures": [
+     "Cosmic rays",
+     "correlated errors"
+    ]
+   },
+   {
+    "document_id": "arxiv-2203-04948-p0002",
+    "quote": "Our decoders outperform all other fast decoders in terms of threshold and accuracy, enabling better results in current quantum error correction experiments and opening up new areas for theoretical case studies.",
+    "start": 1544,
+    "end": 1754,
+    "chunk_sha256": "19904cb0c0e005b0c7282e57731f762d14e4a5507688bd1e45a3bb9dbaecb6c1",
+    "measures": [
+     "the error threshold"
+    ]
+   },
+   {
+    "document_id": "arxiv-2208-02191-p0004",
+    "quote": "Recent experiments have proven that such correlated errors have a crucial effect on the efficiency of surface-code quantum error correction [36].",
+    "start": 1628,
+    "end": 1773,
+    "chunk_sha256": "d0057b890a7f40b2058e93b4f9dc807b9fdb342d14a15bbf3661c59ab3f09b1c",
+    "measures": [
+     "correlated errors"
+    ]
+   },
+   {
+    "document_id": "arxiv-2208-02191-p0004",
+    "quote": "We numerically benchmark the performance of the noise-tailored code versus nonoptimized CSS surface codes and demonstrate that (i) the sub-threshold logical error rates are exponentially suppressed as a function of the code distance and (ii) the threshold grows monotonically as noise becomes less uniform across qubits.",
+    "start": 2703,
+    "end": 3023,
+    "chunk_sha256": "d0057b890a7f40b2058e93b4f9dc807b9fdb342d14a15bbf3661c59ab3f09b1c",
+    "measures": [
+     "the error threshold"
+    ]
+   },
+   {
+    "document_id": "arxiv-2208-02191-p0029",
+    "quote": "On the contrary, changing σtot does not affect the error correction capabilities of the codes; both the threshold and sub-threshold scaling remain intact as we vary σtot.",
+    "start": 714,
+    "end": 884,
+    "chunk_sha256": "0dec4d3fa2ae5ce8888f7e1450a800f0409976fb19437da38196d5edaa4dc821",
+    "measures": [
+     "the error threshold"
+    ]
+   },
+   {
+    "document_id": "arxiv-2208-02191-p0032",
+    "quote": "Our numerical simulations show that implementing a noise-aware decoder instead of the one based on the Manhattan distance does not noticeably improve error correction capabilities of the code against nonuniform Pauli noise, that is, both threshold and subthreshold scaling are nearly unaffected when we vary σP at a fixed σtot.",
+    "start": 0,
+    "end": 327,
+    "chunk_sha256": "a0f3371825e0d06c0ffe52d6955612a4a82bdfe41fe2d44d995c20708ab4eabc",
+    "measures": [
+     "the error threshold"
+    ]
+   }
+  ],
+  "confounders": [],
+  "composition": {
+   "status": "incompatible_direction",
+   "bridges": [],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "6517401087a87e73",
+    "kind": "variable",
+    "term": "Cosmic rays",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for Cosmic rays."
+   },
+   {
+    "id": "f1b6648e1f79c7f5",
+    "kind": "variable",
+    "term": "Cosmic rays",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for Cosmic rays."
+   },
+   {
+    "id": "ecac5b53cbda7722",
+    "kind": "variable",
+    "term": "the error threshold",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for the error threshold."
+   },
+   {
+    "id": "7632512a5a160933",
+    "kind": "variable",
+    "term": "the error threshold",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for the error threshold."
+   },
+   {
+    "id": "50a36ed644fa727e",
+    "kind": "variable",
+    "term": "correlated errors",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for correlated errors."
+   },
+   {
+    "id": "970107871cf6364a",
+    "kind": "variable",
+    "term": "correlated errors",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for correlated errors."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "Cosmic rays"
+   ],
+   "measure": [
+    "the error threshold"
+   ],
+   "mediator": "correlated errors",
+   "controls": [],
+   "steps": [
+    "Vary Cosmic rays across matched settings and measure the error threshold.",
+    "No additional outcome cause was extracted; this does not establish absence of confounding.",
+    "Repeat with correlated errors held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "the error threshold does not change when Cosmic rays varies with the controls fixed, or holding correlated errors fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "Cosmic rays",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2402-03208-p0002",
+       "quote": "Our qubits responded to essentially all of the cosmic rays and their secondary particles incident on the chip, consistent with the independently measured arrival flux.",
+       "start": 741,
+       "end": 908,
+       "chunk_sha256": "cf6f8c168197d2b4428e077deb9fb2bf91c7a48f06b9653e72ddb00a4fd06767",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2603-13460-p0045",
+       "quote": "Beyond these high-energy-particle-induced correlated errors, our measurements at CLIQUE show that sub- MeV radiation, such as terrestrial γ-rays and cosmic ray muons, can still cause state transitions in gap-engineered superconducting qubit arrays.",
+       "start": 601,
+       "end": 849,
+       "chunk_sha256": "5a9142abf5b99c9dcaf318d0d532e6f5133173c4479973a8f85ac653ca0b772c",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "the error threshold",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2109-14609-p0002",
+       "quote": "Given a family of codes, we focus on constantdepth stabilizer measurement circuits to avoid a build-up of errors which could spoil any fault-tolerance threshold.",
+       "start": 2628,
+       "end": 2789,
+       "chunk_sha256": "c2e499e901f47c7e2608b8a39bded5af49f3602761204e99df2ab841d893fcbc",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2110-10794-p0007",
+       "quote": "ber is fixed at a small constant value, errors do not spread significantly during measurement of these check operators, which would otherwise affect the threshold of the scheme.",
+       "start": 279,
+       "end": 456,
+       "chunk_sha256": "d7b313c5b05ac59f1565accae51c7cc0a39e1e6e519e254fc8f63f1039188f63",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2208-02191-p0003",
+       "quote": "For a standard Calderbank-Shor-Steane (CSS) surface code in the presence of depolarizing noise and assuming error-free parity measurements, the error threshold is estimated to be around pth ≈ 16% when a perfect-matching algorithm is used for decoding [11–13].",
+       "start": 1029,
+       "end": 1288,
+       "chunk_sha256": "5ec97b7081aea9f76b20b8fa5828ae2977c2d76f5d4feab47a991a72412c33ed",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "correlated errors",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2305-02591-p0001",
+       "quote": "# Mechanically Induced Correlated Errors on Superconducting Qubits with Relaxation Times Exceeding 0.4 Milliseconds",
+       "start": 0,
+       "end": 115,
+       "chunk_sha256": "be6985438b474355d2b502fdcbca2ab0d4693330bd691ddc9015e0cf2b8b23df",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2402-03208-p0002",
+       "quote": "Here, we directly measured the cosmic-ray contribution to spatiotemporally correlated qubit errors.",
+       "start": 360,
+       "end": 459,
+       "chunk_sha256": "cf6f8c168197d2b4428e077deb9fb2bf91c7a48f06b9653e72ddb00a4fd06767",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2603-13460-p0003",
+       "quote": "For electrons from a pulsed linear accelerator, we observe temporally correlated T1 and T2 errors, this measurement is insensitive to spatial correlations.",
+       "start": 814,
+       "end": 969,
+       "chunk_sha256": "9314264383ade6665563324516105b15bcc1259258cb3b8d271b4c4b176e87ef",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "Cosmic rays",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "Cosmic rays",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "the error threshold",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "the error threshold",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "correlated errors",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "correlated errors",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "correlated errors"
+   ]
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 35.314
+  },
+  "snapshot": {
+   "as_of": 1795595155,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: Cosmic rays may reduce the error threshold through correlated errors.\nOverall: contested. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: contradicted.\nComposition assessment: incompatible direction. Component support does not establish a joint effect or causal validity.\n\nLink Cosmic rays -> correlated errors: supported (1 supporting, 0 contrary).\n  + [arxiv-2402-03208-p0002] Cosmic rays caused correlated errors at a rate of 1/(10 min), accounting for 17pm1% of all such events.\n\nLink correlated errors -> the error threshold: supported (1 supporting, 0 contrary).\n  + [arxiv-2407-16176-p0047] However, for higher levels of concatenation, taking into account the correlated errors significantly reduces the logical error rate and increases the error threshold.\n\nSource predictions naming two or more of its terms:\n  [arxiv-2603-13460-p0003] For α-particles from an 241Am source, we observe T1 errors correlated in space and time, supporting a hypothesis that hadronic cosmic rays are a major contributor to the 10−10 error floor observed in Ref.\n\nExisting setups that measure one of its terms:\n  [arxiv-2603-13460-p0008] Primarily they address goal 1, informing whether low-rate, high-energy cosmic ray hadrons can be a source of the correlated errors observed in recent QEC experiments [1, 24].\n  [arxiv-2203-04948-p0002] Our decoders outperform all other fast decoders in terms of threshold and accuracy, enabling better results in current quantum error correction experiments and opening up new areas for theoretical case studies.\n  [arxiv-2208-02191-p0004] Recent experiments have proven that such correlated errors have a crucial effect on the efficiency of surface-code quantum error correction [36].\n  [arxiv-2208-02191-p0004] We numerically benchmark the performance of the noise-tailored code versus nonoptimized CSS surface codes and demonstrate that (i) the sub-threshold logical error rates are exponentially suppressed as a function of the code distance and (ii) the threshold grows monotonically as noise becomes less uniform across qubits.\n\nTest plan (mediation):\n  1. Vary Cosmic rays across matched settings and measure the error threshold.\n  2. No additional outcome cause was extracted; this does not establish absence of confounding.\n  3. Repeat with correlated errors held fixed or blocked to test whether it carries the effect.\n  Fails if: the error threshold does not change when Cosmic rays varies with the controls fixed, or holding correlated errors fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for Cosmic rays.\n  Required: feasible intervention or justified observational design for Cosmic rays.\n  Required: measurement procedure for the error threshold.\n  Required: unit or explicit categorical scale for the error threshold.\n  Required: measurement procedure for correlated errors.\n  Required: unit or explicit categorical scale for correlated errors.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}

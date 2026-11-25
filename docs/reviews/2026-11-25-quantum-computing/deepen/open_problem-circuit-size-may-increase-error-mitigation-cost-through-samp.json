@@ -1,0 +1,376 @@
+{
+ "kind": "open_problem",
+ "hypothesis": "Circuit size may increase error mitigation cost through sampling overhead.",
+ "seconds": 9.1,
+ "answer_status": "deepened",
+ "deepen": {
+  "schema": "deepen-v1",
+  "triggered": true,
+  "claim_status": "UNVERIFIED_HYPOTHESIS",
+  "promotion": "blocked",
+  "index_write": false,
+  "potentially_nondeterministic": true,
+  "pattern": "chain",
+  "terms": {
+   "a": "Circuit size",
+   "b": "sampling overhead",
+   "c": "error mitigation cost"
+  },
+  "path_nodes": [
+   "Circuit size",
+   "sampling overhead",
+   "error mitigation cost"
+  ],
+  "links": [
+   {
+    "source": "Circuit size",
+    "target": "sampling overhead",
+    "expected_relation": null,
+    "status": "weak",
+    "support": [],
+    "counter": [],
+    "co_mentions": [
+     {
+      "document_id": "arxiv-2409-06636-p0029",
+      "quote": "To reduce the sampling overhead, the authors propose a method called the significant-error approach where they truncate the set of optimization parameters (quasi-probabilities) by assuming a Pauli error model consisting only of significant Pauli strings which scale polynomially with the circuit size.",
+      "start": 1060,
+      "end": 1361,
+      "chunk_sha256": "2adfa7af888075852b6e55508c1c4bff79c33cafd67f3593f4225a9725e007c4"
+     }
+    ],
+    "support_count": 0,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": []
+   },
+   {
+    "source": "sampling overhead",
+    "target": "error mitigation cost",
+    "expected_relation": null,
+    "status": "missing",
+    "support": [],
+    "counter": [],
+    "co_mentions": [],
+    "support_count": 0,
+    "counter_count": 0,
+    "negations": [],
+    "observed_relations": []
+   }
+  ],
+  "expected_relation": "increases",
+  "direction_check": {
+   "requested": "increases",
+   "status": "unresolved",
+   "observed": []
+  },
+  "verdict": "unsupported",
+  "predictions": [],
+  "setups": [
+   {
+    "document_id": "arxiv-1811-00566-p0008",
+    "quote": "In this model, we compare the overhead cost of our scheme to a magic state distillation scheme introduced by Meier, Eastin and Knill (MEK), due to its efficiency and small circuit size [26].",
+    "start": 329,
+    "end": 519,
+    "chunk_sha256": "49b4fc43f820fcf89566217833ecbfe8398bb5eb55dff2e9e7bc96c766fddd76",
+    "measures": [
+     "Circuit size"
+    ]
+   },
+   {
+    "document_id": "arxiv-2208-05378-p0004",
+    "quote": "Next, based on the assumption of the leakage occurrence during two-qubit gates, the most typical leakage noise in superconducting quantum computing, we conduct numerical experiments to benchmark the impact of leakage error on applications of data fitting and data classification when using the widely used hardware-efficient ansatz, with varying the system size, circuit depth, and leakage probability.",
+    "start": 553,
+    "end": 955,
+    "chunk_sha256": "fcf45fa8cdd72cf63eb7109c79d92725aaa5a55ddfba43b99ca47d736b5bfb6d",
+    "measures": [
+     "Circuit size"
+    ]
+   },
+   {
+    "document_id": "arxiv-2208-05378-p0016",
+    "quote": "Eventually, there are only three hyperparameters in our experiments: the system size n, the depth of the circuit d, and the leakage probability L. In all the experiments below, we take uniformly random initial parameters at the start of training.",
+    "start": 958,
+    "end": 1204,
+    "chunk_sha256": "6f5894dc7ebc43e9a8f58ed1a08c86b3b7a5b578ced615668f3fcb4ce0ab41e2",
+    "measures": [
+     "Circuit size"
+    ]
+   },
+   {
+    "document_id": "arxiv-2504-12091-p0002",
+    "quote": "Numerical experiments on random circuit sampling and 2D Ising Hamiltonian simulation demonstrate that our scheme significantly reduces execution time, while incurring little or no additional spatial overhead, compared to sequential Pauli-based computation, a conventional computation scheme, and scales favorably with increasing qubit count.",
+    "start": 906,
+    "end": 1247,
+    "chunk_sha256": "a0bcfdc389e98e6fdc0be498263c32d506ea2c093a6ef67e34a951f71cc63ba9",
+    "measures": [
+     "sampling overhead"
+    ]
+   },
+   {
+    "document_id": "arxiv-2607-25746-p0005",
+    "quote": "In our numerical experiments, the reduction in sampling overhead can reach several orders of magnitude in favorable regimes.",
+    "start": 681,
+    "end": 805,
+    "chunk_sha256": "418a012becdd89f1bde59001327e27aae40729a5fdff37b4cc2c274fefe986a6",
+    "measures": [
+     "sampling overhead"
+    ]
+   }
+  ],
+  "confounders": [],
+  "composition": {
+   "status": "insufficient_evidence",
+   "bridges": [],
+   "qualifications": [],
+   "source_contexts": [],
+   "scope_differences": [],
+   "context_coverage": "not_recorded",
+   "interaction": {
+    "status": "not_applicable",
+    "reason": "Individual effects do not establish a joint interaction."
+   },
+   "assumptions": [
+    "Source terms denote compatible quantities and settings.",
+    "Composed source relationships are not causal identification."
+   ],
+   "scientific_validity": "not_established"
+  },
+  "novelty_review": {
+   "requested": true,
+   "kb_status": "no_overlap_found_in_snapshot",
+   "matches": [],
+   "external_status": "not_requested",
+   "external_matches": [],
+   "scientific_novelty": "not_established"
+  },
+  "research_actions": [
+   {
+    "id": "652545f3429987ae",
+    "kind": "variable",
+    "term": "Circuit size",
+    "requirement": "intervention levels",
+    "instruction": "Supply intervention levels for Circuit size."
+   },
+   {
+    "id": "282e6278312a9761",
+    "kind": "variable",
+    "term": "Circuit size",
+    "requirement": "feasible intervention or justified observational design",
+    "instruction": "Supply feasible intervention or justified observational design for Circuit size."
+   },
+   {
+    "id": "d2ce4c3890996c32",
+    "kind": "variable",
+    "term": "error mitigation cost",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for error mitigation cost."
+   },
+   {
+    "id": "50d4c03eb544de82",
+    "kind": "variable",
+    "term": "error mitigation cost",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for error mitigation cost."
+   },
+   {
+    "id": "0c8a53c7eafa753c",
+    "kind": "variable",
+    "term": "sampling overhead",
+    "requirement": "measurement procedure",
+    "instruction": "Supply measurement procedure for sampling overhead."
+   },
+   {
+    "id": "baf11df6ea38004e",
+    "kind": "variable",
+    "term": "sampling overhead",
+    "requirement": "unit or explicit categorical scale",
+    "instruction": "Supply unit or explicit categorical scale for sampling overhead."
+   },
+   {
+    "id": "ed73fcf363a41e96",
+    "kind": "protocol",
+    "requirement": "replicates",
+    "instruction": "Supply replicates."
+   },
+   {
+    "id": "152d768f932c8895",
+    "kind": "protocol",
+    "requirement": "acceptance_criterion",
+    "instruction": "Supply acceptance_criterion."
+   },
+   {
+    "id": "575285a148363b8f",
+    "kind": "composition",
+    "requirement": "Resolve semantic, scope or evidence concerns.",
+    "instruction": "Supply Resolve semantic, scope or evidence concerns."
+   },
+   {
+    "id": "novelty_review",
+    "kind": "novelty",
+    "instruction": "Compare this exact proposal with current literature; inspect overlap candidates and document coverage."
+   },
+   {
+    "id": "execute_reviewed_plan",
+    "kind": "execution",
+    "instruction": "After resolving requirements, execute the reviewed protocol and supply measurements; this node has not run an experiment."
+   }
+  ],
+  "test_plan": {
+   "design": "mediation",
+   "manipulate": [
+    "Circuit size"
+   ],
+   "measure": [
+    "error mitigation cost"
+   ],
+   "mediator": "sampling overhead",
+   "controls": [],
+   "steps": [
+    "Vary Circuit size across matched settings and measure error mitigation cost.",
+    "No additional outcome cause was extracted; this does not establish absence of confounding.",
+    "Repeat with sampling overhead held fixed or blocked to test whether it carries the effect."
+   ],
+   "fails_if": "error mitigation cost does not change when Circuit size varies with the controls fixed, or holding sampling overhead fixed leaves the effect unchanged.",
+   "variables": [
+    {
+     "term": "Circuit size",
+     "role": "intervention",
+     "definition": {},
+     "missing": [
+      "intervention levels",
+      "feasible intervention or justified observational design"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-quant-ph-0703143-p0002",
+       "quote": "The operational overhead is poly-logarithmic in the circuit size.",
+       "start": 650,
+       "end": 715,
+       "chunk_sha256": "4da456c463d23d8702bbdc92b531c46a3d6843bc178e8072913be0e85568d9c6",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "error mitigation cost",
+     "role": "outcome",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [
+      {
+       "document_id": "arxiv-2006-14044-p0002",
+       "quote": "The error mitigation overhead, including the the number of measurements and the cost of the classical post-processing, is exponential in epsilon n, where epsilon is the maximum error rate and n is the number of qubits.",
+       "start": 709,
+       "end": 927,
+       "chunk_sha256": "ab94fc74acecb70a069e893278ca4994e1829e8a0003594ab9ec5fc6425c2dec",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2109-04457-p0006",
+       "quote": "Our bounds are represented in terms of the reduction in the distinguishabilityof quantumstatesdue tothe noiseeffect, providing an operational understanding of the cost for error mitigation.",
+       "start": 602,
+       "end": 791,
+       "chunk_sha256": "7863cf9c0586a625835fbcbd3e8b06151c80a1ccaef473517454c296a91e193b",
+       "qualification": "measurement_hint_not_validated_definition"
+      },
+      {
+       "document_id": "arxiv-2208-09385-p0002",
+       "quote": "By analyzing the quantum Fisher information matrix of a virtual quantum circuit that effectively represents the operations of quantum error mitigation methods, we derive for a generic layered quantum circuit under a wide class of Markovian noise that, unbiased estimation of an observable encounters an exponential growth with the circuit depth in the lower bound on the measurement cost.",
+       "start": 585,
+       "end": 973,
+       "chunk_sha256": "133876183918ad42ee680678cb2b9a17d2df6ebe8aa0cb141e08e1099bc2c4ab",
+       "qualification": "measurement_hint_not_validated_definition"
+      }
+     ],
+     "provenance": "not_defined"
+    },
+    {
+     "term": "sampling overhead",
+     "role": "mediator",
+     "definition": {},
+     "missing": [
+      "measurement procedure",
+      "unit or explicit categorical scale"
+     ],
+     "source_hints": [],
+     "provenance": "not_defined"
+    }
+   ],
+   "protocol": {},
+   "missing_requirements": [
+    {
+     "kind": "variable",
+     "term": "Circuit size",
+     "requirement": "intervention levels"
+    },
+    {
+     "kind": "variable",
+     "term": "Circuit size",
+     "requirement": "feasible intervention or justified observational design"
+    },
+    {
+     "kind": "variable",
+     "term": "error mitigation cost",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "error mitigation cost",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "variable",
+     "term": "sampling overhead",
+     "requirement": "measurement procedure"
+    },
+    {
+     "kind": "variable",
+     "term": "sampling overhead",
+     "requirement": "unit or explicit categorical scale"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "replicates"
+    },
+    {
+     "kind": "protocol",
+     "requirement": "acceptance_criterion"
+    },
+    {
+     "kind": "composition",
+     "requirement": "Resolve semantic, scope or evidence concerns."
+    }
+   ],
+   "readiness": "needs_input",
+   "executed": false,
+   "control_policy": "Candidate controls require causal review; do not adjust automatically.",
+   "statistical_validity": "not_established",
+   "mediators": [
+    "sampling overhead"
+   ]
+  },
+  "relation_edges": 996,
+  "bridge_check": "encoder",
+  "encoded_terms": 1102,
+  "graph_reused": false,
+  "incomplete": false,
+  "stop_reason": null,
+  "budget_used": {
+   "rounds": 0,
+   "candidates": 0,
+   "edges": 1042,
+   "bytes": 487195,
+   "seconds": 8.986
+  },
+  "snapshot": {
+   "as_of": 1795595208,
+   "chunk_count": 3369,
+   "fingerprint": "e1f22592dd30fdf495871e0d73fa02a6638a7b4a23f5a1b343c0a7ccc35d6cf4"
+  }
+ },
+ "reply": "Deepen: Circuit size may increase error mitigation cost through sampling overhead.\nOverall: unsupported. This remains an unverified hypothesis; the evidence below is what the authorized sources state about each link.\nEnd-to-end direction: unresolved.\nComposition assessment: insufficient evidence. Component support does not establish a joint effect or causal validity.\n\nLink Circuit size -> sampling overhead: weak (0 supporting, 0 contrary).\n  ~ [arxiv-2409-06636-p0029] To reduce the sampling overhead, the authors propose a method called the significant-error approach where they truncate the set of optimization parameters (quasi-probabilities) by assuming a Pauli error model consisting only of significant Pauli strings which scale polynomially with the circuit size.\n\nLink sampling overhead -> error mitigation cost: missing (0 supporting, 0 contrary).\n\nExisting setups that measure one of its terms:\n  [arxiv-1811-00566-p0008] In this model, we compare the overhead cost of our scheme to a magic state distillation scheme introduced by Meier, Eastin and Knill (MEK), due to its efficiency and small circuit size [26].\n  [arxiv-2208-05378-p0004] Next, based on the assumption of the leakage occurrence during two-qubit gates, the most typical leakage noise in superconducting quantum computing, we conduct numerical experiments to benchmark the impact of leakage error on applications of data fitting and data classification when using the widely used hardware-efficient ansatz, with varying the system size, circuit depth, and leakage probability.\n  [arxiv-2208-05378-p0016] Eventually, there are only three hyperparameters in our experiments: the system size n, the depth of the circuit d, and the leakage probability L. In all the experiments below, we take uniformly random initial parameters at the start of training.\n  [arxiv-2504-12091-p0002] Numerical experiments on random circuit sampling and 2D Ising Hamiltonian simulation demonstrate that our scheme significantly reduces execution time, while incurring little or no additional spatial overhead, compared to sequential Pauli-based computation, a conventional computation scheme, and scales favorably with increasing qubit count.\n\nTest plan (mediation):\n  1. Vary Circuit size across matched settings and measure error mitigation cost.\n  2. No additional outcome cause was extracted; this does not establish absence of confounding.\n  3. Repeat with sampling overhead held fixed or blocked to test whether it carries the effect.\n  Fails if: error mitigation cost does not change when Circuit size varies with the controls fixed, or holding sampling overhead fixed leaves the effect unchanged.\nPlan readiness: needs input; experiment not executed.\n  Required: intervention levels for Circuit size.\n  Required: feasible intervention or justified observational design for Circuit size.\n  Required: measurement procedure for error mitigation cost.\n  Required: unit or explicit categorical scale for error mitigation cost.\n  Required: measurement procedure for sampling overhead.\n  Required: unit or explicit categorical scale for sampling overhead.\n  Required: replicates.\n  Required: acceptance_criterion.\n  Required: Resolve semantic, scope or evidence concerns.\nNovelty: no overlap found in snapshot; external review: not requested. Scientific novelty not established.\n\nInvention note. Proposals from the invention node are hypotheses. They may contain errors and can vary between runs."
+}
