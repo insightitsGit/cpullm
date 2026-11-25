@@ -132,7 +132,8 @@ def assess_composition(spec, links, rows, direction, budget):
 
 def classify_controls(items, spec, graph, budget):
     """A cause of the outcome alone is a candidate control, not a confounder."""
-    exposures = [spec.a] if spec.pattern == 'chain' else [spec.a, spec.b] if spec.pattern == 'convergent' else [spec.c]
+    exposures = ([spec.a] if spec.pattern in {'chain', 'direct'} else [spec.a, spec.b] if spec.pattern == 'convergent'
+                 else [spec.c])
     for item in items:
         item.update(role='outcome_predictor', recommended_action='Review before adjustment; not an established confounder.')
         causes_exposure, downstream = [], []
@@ -158,7 +159,7 @@ def measurement_hints(spec, sentences):
     from cpu_llm.deepen import _cite
     marker = re.compile(r'\b(?:measur\w*|defined as|operational\w*|tokens?\s*(?:/|per)\s*s(?:econd)?|'
                         r'watts?|joules?|milliseconds?|percent)\b', re.I)
-    terms = list(dict.fromkeys([spec.a, *spec.via, spec.b, spec.c]))
+    terms = [t for t in dict.fromkeys([spec.a, *spec.via, spec.b, spec.c]) if t]
     return {term_key(t): [dict(_cite(row, sentence), qualification='measurement_hint_not_validated_definition')
                          for _, row, sentence in sentences.with_terms([t], at_least=1, pattern=marker)[:3]]
             for t in terms}
@@ -214,7 +215,7 @@ def novelty_review(spec, sentences, options, budget, reviewer=None):
                   external_status='not_requested', external_matches=[], scientific_novelty='not_established')
     if not options['novelty']:
         return result
-    terms = list(dict.fromkeys([spec.a, *spec.via, spec.b, spec.c]))
+    terms = [t for t in dict.fromkeys([spec.a, *spec.via, spec.b, spec.c]) if t]
     # Co-mention is deliberately not labeled a prior demonstration of the relationship.
     from cpu_llm.deepen import _cite
     result['matches'] = [dict(_cite(row, sentence), qualification='potential_overlap_not_equivalence')

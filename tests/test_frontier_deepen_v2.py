@@ -250,3 +250,49 @@ def test_axiom_only_candidates_are_dropped():
     assert with_axioms['candidates_rejected'].get('pre_thinker:axiom_only', 0) >= 1
     for h in with_axioms['hypotheses']:
         assert any(not c['document_id'].startswith('review') for c in h['citations'])
+
+
+# ------------------------------------------------------------------ 9. free-form Deepen hypotheses
+
+from cpu_llm.deepen import read_hypothesis  # noqa: E402
+
+
+@pytest.mark.parametrize('text, pattern, a, c, relation', [
+    ('Error mitigation cost may increase exponentially with circuit size', 'direct', 'circuit size',
+     'Error mitigation cost', 'increases'),
+    ('Quantum LDPC codes may reduce the overhead of fault-tolerant quantum computation', 'direct',
+     'Quantum LDPC codes', 'the overhead of fault-tolerant quantum computation', 'decreases'),
+    ('Noise may remove quantum advantage through classical simulation of random circuits', 'chain', 'Noise',
+     'quantum advantage', 'decreases'),
+    ('Leakage limits logical error rates via correlated errors', 'chain', 'Leakage', 'logical error rates',
+     'constrains'),
+    ('Barren plateaus imply classical simulability', 'direct', 'Barren plateaus', 'classical simulability', 'supports'),
+])
+def test_free_form_hypotheses_are_read(text, pattern, a, c, relation):
+    spec = read_hypothesis(text)
+    assert (spec.pattern, spec.a, spec.c, spec.relation) == (pattern, a, c, relation)
+
+
+def test_frontier_forms_still_win():
+    spec = read_hypothesis('memory bandwidth may increase serving revenue through inference throughput')
+    assert spec.pattern == 'chain' and spec.via == ('inference throughput',)
+
+
+def test_unreadable_text_still_asks_for_a_form():
+    with pytest.raises(ValueError, match='Frontier forms'):
+        read_hypothesis('quantum computers are interesting')
+
+
+def test_a_direct_hypothesis_runs_end_to_end():
+    rows = rows_of('Circuit size increases error mitigation cost.', 'We measured error mitigation cost in benchmarks.')
+    receipt = run_deepen('Error mitigation cost may increase exponentially with circuit size.', rows)
+    assert receipt['pattern'] == 'direct' and len(receipt['links']) == 1
+    assert receipt['links'][0]['status'] == 'supported'
+    assert receipt['test_plan']['design'] == 'intervention'
+
+
+def test_plain_questions_keep_their_route_but_explicit_checks_read_free_forms():
+    from cpu_llm.hypothesis_routes import natural_deepen_target
+    assert natural_deepen_target('Is it true that smoking causes cancer?') is None
+    assert natural_deepen_target('Check this hypothesis: noise reduces quantum advantage.') == \
+        'noise reduces quantum advantage'

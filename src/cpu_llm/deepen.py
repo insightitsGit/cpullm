@@ -62,6 +62,8 @@ class HypothesisSpec:
     relation: str | None
 
     def links(self):
+        if self.pattern == 'direct':
+            return [(self.a, self.c)]
         if self.pattern == 'chain':
             nodes = (self.a, *self.via, self.c)
             return list(zip(nodes, nodes[1:]))
@@ -90,8 +92,11 @@ def _edge_kinds(hypothesis):
     return identities
 
 
-def read_hypothesis(value):
-    """Validate used fields, preserve every mediator and the intended direction."""
+def read_hypothesis(value, *, free_form=True):
+    """Validate used fields, preserve every mediator and the intended direction.
+
+    ``free_form=False`` accepts only the Frontier forms (used where a plain question must keep its ordinary route).
+    """
     if isinstance(value, dict):
         if 'text' in value and not isinstance(value['text'], str):
             raise ValueError('Hypothesis text must be a string.')
@@ -155,13 +160,63 @@ def read_hypothesis(value):
                 if text.lower().startswith('gains in '):
                     expected, relation = ('increases', 'decreases'), 'offset'
             return HypothesisSpec(pattern, a, via[0] if via else _term(b), c, via, expected, relation)
+    free = read_free_form(text) if free_form else None
+    if free is not None:
+        return free
     raise ValueError('Deepen reads hypotheses in the Frontier forms, for example '
-                     '"A may constrain C through B." or "A and B may jointly drive C."')
+                     '"A may constrain C through B." or "A and B may jointly drive C.", and plain forms such as '
+                     '"A may reduce C.", "A limits C through B." or "C may grow exponentially with A."')
 
 
-def parse_hypothesis(value):
+_FREE_VERBS = {
+    'increases': 'increase|increases|raise|raises|drive|drives|enhance|enhances|improve|improves|boost|boosts',
+    'decreases': ('reduce|reduces|lower|lowers|decrease|decreases|suppress|suppresses|degrade|degrades|remove|removes|'
+                  'eliminate|eliminates|hurt|hurts|impair|impairs'),
+    'constrains': 'limit|limits|constrain|constrains|bound|bounds|restrict|restricts|cap|caps',
+    'affects': 'affect|affects|influence|influences|shape|shapes',
+    'causes': 'cause|causes|lead to|leads to|produce|produces',
+    'supports': 'support|supports|imply|implies|entail|entails',
+    'undermines': 'undermine|undermines|contradict|contradicts',
+}
+_VERB_KIND = {verb: kind for kind, verbs in _FREE_VERBS.items() for verb in verbs.split('|')}
+_VERBS = '|'.join(sorted(_VERB_KIND, key=len, reverse=True))
+_MODAL = r'(?:(?:may|might|can|could|will|would|should)\s+(?:also\s+)?)?'
+_FREE_FORMS = (
+    ('chain', re.compile(rf'^(?P<a>.+?)\s+{_MODAL}(?P<verb>{_VERBS})\s+(?P<c>.+?)\s+'
+                         rf'(?:through|via|by way of|by means of|by)\s+(?P<b>(?![\d.]+\s*%)\D.+)$', re.I)),
+    ('scale', re.compile(rf'^(?P<c>.+?)\s+{_MODAL}(?:increase|increases|grow|grows|scale|scales|rise|rises)\s+'
+                         r'(?:(?:exponentially|polynomially|linearly|quadratically|super-?polynomially|rapidly)\s+)?'
+                         r'(?:with|in)\s+(?P<a>.+)$', re.I)),
+    ('direct', re.compile(rf'^(?P<a>.+?)\s+{_MODAL}(?P<verb>{_VERBS})\s+(?P<c>.+)$', re.I)),
+)
+
+
+def read_free_form(text):
+    """Read a plain-sentence hypothesis, or None. A one-link claim becomes the ``direct`` pattern."""
+    text = re.sub(r'^(?:that|whether|if)\s+', '', text.strip(), flags=re.I)
+    for kind, form in _FREE_FORMS:
+        match = form.fullmatch(text)
+        if not match:
+            continue
+        parts = {key: value.strip(' ,;') for key, value in match.groupdict().items() if value}
+        if any(not parts.get(key) or len(parts[key]) > 160 for key in ('a', 'c')):
+            continue
+        a, c = _term(parts['a']), _term(parts['c'])
+        if kind == 'scale':
+            return HypothesisSpec('direct', a, '', c, (), ('increases',), 'increases')
+        relation = _VERB_KIND[parts['verb'].lower()]
+        if kind == 'chain':
+            via = tuple(_term(v) for v in re.split(r'\s+and\s+then\s+', parts['b'], flags=re.I))
+            if len(via) > 2:
+                raise ValueError('Frontier supports at most three path links.')
+            return HypothesisSpec('chain', a, via[0], c, via, (None,) * (len(via) + 1), relation)
+        return HypothesisSpec('direct', a, '', c, (), (relation,), relation)
+    return None
+
+
+def parse_hypothesis(value, *, free_form=True):
     """Compatibility view; execution uses read_hypothesis to retain the full path."""
-    spec = read_hypothesis(value)
+    spec = read_hypothesis(value, free_form=free_form)
     return spec.pattern, spec.a, spec.b, spec.c, list(spec.expected)
 
 
@@ -454,7 +509,7 @@ def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, simila
                                       operationalize, novelty_review, research_actions, measurement_hints)
     hypothesis, options = request_options(hypothesis)
     spec = read_hypothesis(hypothesis)
-    known = {term_key(t) for t in (spec.a, *spec.via, spec.b, spec.c)}
+    known = {term_key(t) for t in (spec.a, *spec.via, spec.b, spec.c) if t}
     if set(options['definitions']) - known:
         raise ValueError('Definitions must use the exact hypothesis variable terms.')
     pattern, a, b, c = spec.pattern, spec.a, spec.b, spec.c
@@ -488,7 +543,7 @@ def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, simila
             exact = _direction_assessment(spec, links, budget, 'exact_observed_relations')
             direction['exact_status'] = exact['status']
             direction['bridged_contradiction'] = exact['status'] not in {'contradicted', 'contested'}
-        terms = [a, *spec.via, c] if pattern == 'chain' else [a, b, c]
+        terms = [a, *spec.via, c] if pattern == 'chain' else [a, c] if pattern == 'direct' else [a, b, c]
         predictions = [dict(_cite(row, sentence), qualification='source_prediction')
             for _, row, sentence in sentences.with_terms(terms, at_least=2,
                 pattern=re.compile(r'\b(?:predicts?|should|would|might|could|hypothes[ei]s)\b', re.I))][:_MAX_ITEMS]
@@ -511,7 +566,7 @@ def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, simila
         verdict = ('contested' if 'contested' in statuses or 'counter_only' in statuses or genuine_contradiction else
                    'bridge_mismatch' if 'bridge_mismatch' in statuses or direction.get('bridged_contradiction') else
                    'partly_supported' if spec.relation is not None and direction['status'] == 'unresolved'
-                   and pattern == 'chain' and any(s == 'supported' for s in statuses) else
+                   and pattern in {'chain', 'direct'} and any(s == 'supported' for s in statuses) else
                    'all_links_supported' if all(s == 'supported' for s in statuses) else
                    'partly_supported' if any(s == 'supported' for s in statuses) else 'unsupported')
     except StopSearch as exc:
@@ -545,7 +600,8 @@ def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, simila
                                            'not evidence against the hypothesis.'))
     return dict(schema=SCHEMA, triggered=True, claim_status=CLAIM_STATUS, promotion='blocked', index_write=False,
                 potentially_nondeterministic=True, pattern=pattern, terms=dict(a=a, b=b, c=c),
-                path_nodes=[a, *spec.via, c] if pattern == 'chain' else None, links=links,
+                path_nodes=[a, *spec.via, c] if pattern == 'chain' else [a, c] if pattern == 'direct' else None,
+                links=links,
                 expected_relation=spec.relation, direction_check=direction,
                 verdict=verdict, lead_status=status, predictions=predictions, setups=setups, confounders=confounders,
                 composition=composition, novelty_review=novelty,
@@ -654,7 +710,7 @@ def execute_deepen(app, message, hypothesis, *, caller=None, as_of=None, strict=
         from cpu_llm.deepen_review import request_options
         unwrapped, options = request_options(hypothesis)
         spec = read_hypothesis(unwrapped)
-        if set(options['definitions']) - {term_key(t) for t in (spec.a, *spec.via, spec.b, spec.c)}:
+        if set(options['definitions']) - {term_key(t) for t in (spec.a, *spec.via, spec.b, spec.c) if t}:
             raise ValueError('Definitions must use the exact hypothesis variable terms.')
     except ValueError as exc:
         return result('needs_clarification', str(exc))

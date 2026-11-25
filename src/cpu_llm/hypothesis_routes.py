@@ -100,13 +100,15 @@ def natural_deepen_target(message):
     follow_up = _FOLLOW_UP.fullmatch(text)
     if follow_up and not _claimed_by_existing_route(message):
         return ('follow_up', int(follow_up['number']))
-    for form in _DEEPEN_FORMS:
+    for index, form in enumerate(_DEEPEN_FORMS):
         match = form.fullmatch(text)
         if not match:
             continue
         hypothesis = match['hypothesis'].strip()
         try:
-            parse_hypothesis(hypothesis)
+            # "Check this hypothesis: ..." accepts plain sentences; "Is it true that ...?" keeps its ordinary route
+            # unless the claim is already in a Frontier form.
+            parse_hypothesis(hypothesis, free_form=index == 0)
         except ValueError:
             continue
         if not _claimed_by_existing_route(message):
