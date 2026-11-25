@@ -39,11 +39,16 @@ def request_options(value):
         raise ValueError('definitions must be an object with at most 12 terms.')
     for term, fields in definitions.items():
         _text(term, 'definition term', 500)
-        if not isinstance(fields, dict) or set(fields) - {'measurement', 'unit', 'levels', 'feasible'}:
-            raise ValueError('Variable definitions support measurement, unit, levels and feasible.')
+        if not isinstance(fields, dict) or set(fields) - {'measurement', 'unit', 'levels', 'feasible', 'type'}:
+            raise ValueError('Variable definitions support measurement, unit, levels, feasible and type.')
         clean = {}
         for key, item in fields.items():
-            if key == 'feasible':
+            if key == 'type':
+                from cpu_llm.variable_types import TYPES
+                if item not in TYPES:
+                    raise ValueError('type must be one of ' + ', '.join(TYPES) + '.')
+                clean[key] = item
+            elif key == 'feasible':
                 if type(item) is not bool:
                     raise ValueError('feasible must be a boolean.')
                 clean[key] = item
@@ -162,7 +167,9 @@ def measurement_hints(spec, sentences):
 def operationalize(plan, spec, options, composition, hints=None):
     variables, missing = [], []
     roles = [('intervention', t) for t in plan['manipulate']] + [('outcome', t) for t in plan['measure']]
-    roles += [('mediator', t) for t in (spec.via if spec.pattern == 'chain' else ())]
+    roles += [('stratifier', t) for t in plan.get('strata', [])]
+    roles += [('mediator', t) for t in (spec.via if spec.pattern == 'chain' and plan['design'] != 'resolve_first' else ())]
+    typed = {term_key(spec.c): (plan.get('variable_types') or {}).get('c')}
     for role, term in roles:
         definition = options['definitions'].get(term_key(term), {})
         requirements = []
@@ -176,6 +183,11 @@ def operationalize(plan, spec, options, composition, hints=None):
                 requirements.append('measurement procedure')
             if not definition.get('unit'):
                 requirements.append('unit or explicit categorical scale')
+            if role == 'stratifier' and not definition.get('levels'):
+                requirements.append('levels or strata to compare')
+            if role == 'outcome' and typed.get(term_key(term)) not in (None, 'outcome_metric') \
+                    and not definition.get('measurement'):
+                requirements.append('a measurable outcome (this term is not a metric)')
         if _VAGUE.search(term):
             requirements.append('precise replacement for vague variable')
         variables.append(dict(term=term, role=role, definition=definition, missing=requirements,

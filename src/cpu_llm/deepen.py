@@ -348,26 +348,68 @@ def _confounders(graph, outcome, exclude, similar, budget=None):
     return found
 
 
-def test_plan(pattern, a, b, c, confounders):
+def test_plan(pattern, a, b, c, confounders, types=None):
+    """Design a test. ``types`` (from ``variable_types.classify``) route fixed properties and noise sources to
+    stratified or observational designs instead of a manipulation they cannot receive."""
+    from cpu_llm.variable_types import route
     controls = [item['term'] for item in confounders]
     hold = ('Review candidate controls (' + ', '.join(controls) + ') for timing, feasibility and causal role before adjustment.') if controls else (
         'No additional outcome cause was extracted; this does not establish absence of confounding.')
-    if pattern == 'chain':
-        return dict(design='mediation', manipulate=[a], measure=[c], mediator=b, controls=controls,
-                    steps=[f'Vary {a} across matched settings and measure {c}.', hold,
-                           f'Repeat with {b} held fixed or blocked to test whether it carries the effect.'],
+    types = types or {}
+    design, reason = route(pattern, types) if types else (
+        {'chain': 'mediation', 'convergent': '2x2 factorial', 'direct': 'intervention'}.get(pattern, 'common cause'), None)
+    noise = types.get('a') == 'noise_channel'
+    vary = (f'Inject {a} at controlled levels (or select naturally exposed runs) and measure {c}.' if noise else
+            f'Vary {a} across matched settings and measure {c}.')
+    if design == 'mediation':
+        plan = dict(design='mediation', manipulate=[a], measure=[c], mediator=b, controls=controls,
+                    steps=[vary, hold, f'Repeat with {b} held fixed or blocked to test whether it carries the effect.'],
                     fails_if=(f'{c} does not change when {a} varies with the controls fixed, or holding {b} fixed '
                               'leaves the effect unchanged.'))
-    if pattern == 'convergent':
-        return dict(design='2x2 factorial', manipulate=[a, b], measure=[c], mediator=None, controls=controls,
+    elif design == 'intervention':
+        plan = dict(design='intervention', manipulate=[a], measure=[c], mediator=None, controls=controls,
+                    steps=[vary, hold, f'Compare {c} across at least two levels of {a} with replicates.'],
+                    fails_if=f'{c} does not change when {a} varies with the controls fixed.')
+    elif design == '2x2 factorial':
+        plan = dict(design='2x2 factorial', manipulate=[a, b], measure=[c], mediator=None, controls=controls,
                     steps=[f'Run all four combinations of low and high {a} and {b}; measure {c}.', hold,
                            'Compare the joint effect with the sum of the separate effects.'],
                     fails_if=(f'A precisely measured absence of an interaction challenges compounding in {c}; '
                               f'it does not refute individual effects of {a} or {b}. Predefine a meaningful effect threshold.'))
-    return dict(design='common cause', manipulate=[c], measure=[a, b], mediator=None, controls=controls,
-                steps=[f'Vary {c} and measure {a} and {b}.', hold,
-                       f'Check whether {a} and {b} still co-vary when {c} is held fixed.'],
-                fails_if=f'{a} and {b} co-vary just as strongly when {c} is held fixed, or {c} moves neither.')
+    elif design == 'stratified' and pattern == 'convergent':
+        lever, stratum = (a, b) if types.get('a') == 'intervention' else (b, a)
+        injected = types.get('a' if stratum == a else 'b') == 'noise_channel'
+        plan = dict(design='stratified', manipulate=[lever], measure=[c], strata=[stratum], mediator=None,
+                    controls=controls,
+                    steps=[(f'Inject {stratum} at two or more controlled levels' if injected else
+                            f'Select instances at two or more levels of {stratum}') +
+                           f'; within each, vary {lever} and measure {c}.', hold,
+                           f'Compare the effect of {lever} on {c} across the levels of {stratum}.'],
+                    fails_if=(f'The effect of {lever} on {c} is the same at every level of {stratum}, within a '
+                              'predefined threshold; this does not refute either individual effect.'))
+    elif design == 'stratified':
+        plan = dict(design='stratified', manipulate=[], measure=[c], strata=[a], mediator=b if pattern == 'chain' else None,
+                    controls=controls,
+                    steps=[f'Select instances at several levels of {a} (it cannot be set directly) and measure {c}.', hold,
+                           (f'Measure {b} in the same instances to check whether it carries the association.'
+                            if pattern == 'chain' else f'Match instances on the controls before comparing {c}.')],
+                    fails_if=f'{c} does not differ across levels of {a} once the controls are matched.')
+    elif design == 'observational_regime_map':
+        strata, measured = ([a, b], [c]) if pattern == 'convergent' else ([c], [a, b])
+        plan = dict(design='observational_regime_map', manipulate=[], measure=measured, strata=strata, mediator=None,
+                    controls=controls,
+                    steps=[f'Collect instances spanning the levels of {" and ".join(strata)}; measure '
+                           f'{" and ".join(measured)}.', hold,
+                           'Map where the effect appears and where it vanishes; no factor is manipulated.'],
+                    fails_if=f'{" and ".join(measured)} show no pattern across the levels of {" and ".join(strata)}.')
+    else:
+        plan = dict(design='common cause', manipulate=[c], measure=[a, b], mediator=None, controls=controls,
+                    steps=[f'Vary {c} and measure {a} and {b}.', hold,
+                           f'Check whether {a} and {b} still co-vary when {c} is held fixed.'],
+                    fails_if=f'{a} and {b} co-vary just as strongly when {c} is held fixed, or {c} moves neither.')
+    if types:
+        plan.update(variable_types=dict(types), design_reason=reason)
+    return plan
 
 
 def _direction_assessment(spec, links, budget, field='observed_relations'):
@@ -479,7 +521,10 @@ def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, simila
         verdict = 'incomplete'
     from cpu_llm.deepen_review import lead_status as classify_lead, quarantine
     status = classify_lead(verdict, composition, links, incomplete)
-    plan = test_plan(pattern, a, b, c, confounders)
+    from cpu_llm.variable_types import classify
+    roles = dict(a=a, b=b, c=c)
+    types = {role: classify(term, options['definitions'].get(term_key(term))) for role, term in roles.items() if term}
+    plan = test_plan(pattern, a, b, c, confounders, types)
     if status in {'needs_semantic_resolution', 'contested_tension'}:
         plan = quarantine(plan, status, composition, links)
     operationalize(plan, spec, options, composition, hints)

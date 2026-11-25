@@ -144,3 +144,44 @@ def test_setups_become_cited_suggestions_without_changing_readiness():
     suggestions = receipt['test_plan']['suggested_procedures']
     assert suggestions['inference throughput'][0]['qualification'] == 'suggested_not_validated'
     assert receipt['test_plan']['readiness'] == 'needs_input'
+
+
+# ------------------------------------------------------------------ 5. variable typing and design routing
+
+from cpu_llm.variable_types import classify  # noqa: E402
+
+
+@pytest.mark.parametrize('term, kind', [
+    ('low weight Pauli operators', 'observable_property'), ('samples', 'intervention'),
+    ('chemical initialization', 'intervention'), ('mid - circuit measurements', 'intervention'),
+    ('weight decay', 'intervention'), ('Cosmic rays', 'noise_channel'), ('dielectric loss', 'noise_channel'),
+    ('leakage', 'noise_channel'), ('logical error rates', 'outcome_metric'), ('qubit coherence', 'outcome_metric'),
+    ('error mitigation cost', 'outcome_metric'), ('Hamiltonian locality', 'observable_property'),
+])
+def test_variables_are_typed(term, kind):
+    assert classify(term) == kind
+
+
+def test_a_fixed_property_routes_to_a_stratified_design():
+    rows = rows_of('Low weight Pauli operators constrain error mitigation.',
+                   'Samples constrain error mitigation.')
+    receipt = run_deepen('low weight Pauli operators and samples may jointly constrain error mitigation.', rows)
+    plan = receipt['test_plan']
+    assert plan['design'] == 'stratified'
+    assert plan['manipulate'] == ['samples'] and plan['strata'] == ['low weight Pauli operators']
+    assert plan['variable_types']['a'] == 'observable_property' and plan['design_reason']
+
+
+def test_two_interventions_keep_the_factorial():
+    rows = rows_of('Chemical initialization increases trainability.',
+                   'Mid-circuit measurements increase trainability.')
+    receipt = run_deepen('chemical initialization and mid-circuit measurements may jointly drive trainability.', rows)
+    assert receipt['test_plan']['design'] == '2x2 factorial'
+
+
+def test_a_user_type_overrides_the_lexicon():
+    rows = rows_of('Low weight Pauli operators constrain error mitigation.',
+                   'Samples constrain error mitigation.')
+    receipt = run_deepen({'hypothesis': 'low weight Pauli operators and samples may jointly constrain error mitigation.',
+                          'definitions': {'low weight Pauli operators': {'type': 'intervention'}}}, rows)
+    assert receipt['test_plan']['design'] == '2x2 factorial'
