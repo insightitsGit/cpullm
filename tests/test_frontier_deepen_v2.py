@@ -370,3 +370,30 @@ def test_scale_and_level_jumps_are_warned_not_rejected():
     fields = {d['field'] for d in receipt['composition']['scope_differences']}
     assert 'time_scale' in fields
     assert receipt['verdict'] != 'unsupported'
+
+
+# ------------------------------------------------------------------ 13. ingestion speed
+
+def test_cached_edge_merge_matches_a_fresh_merge(tmp_path):
+    import json
+    import cpu_llm.relations as relations
+    groups = [[('a-p0001', 'Memory bandwidth limits inference throughput on accelerators.')],
+              [('b-p0001', 'Inference throughput drives serving revenue for accelerators.')],
+              [('c-p0001', 'HBM supply constrains memory bandwidth and accelerator capacity.')]]
+    cached, fresh = tmp_path / 'cached.json', tmp_path / 'fresh.json'
+    for group in groups:
+        left = relations.merge_passage_edges(cached, group)
+        relations._EDGE_STATE.pop(str(fresh), None)
+        right = relations.merge_passage_edges(fresh, group)
+        relations._EDGE_STATE.pop(str(fresh), None)
+        assert [(e.from_word, e.to_word) for e in left] == [(e.from_word, e.to_word) for e in right]
+    assert json.loads(cached.read_text()) == json.loads(fresh.read_text())
+    cached.write_text(json.dumps({'edges': [['x', 'y']]}))          # an outside write invalidates the cache
+    assert [(e.from_word, e.to_word) for e in relations.load_edges(cached)] == [('x', 'y')]
+
+
+def test_consolidate_option_is_validated():
+    from cpu_llm.pipeline import Appliance
+    app = object.__new__(Appliance)
+    with pytest.raises(ValueError, match='consolidate'):
+        Appliance.ingest(app, 'missing.md', consolidate='never')

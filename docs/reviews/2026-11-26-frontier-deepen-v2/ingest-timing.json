@@ -1,0 +1,8 @@
+{
+ "method": "Re-ingest ten existing abstract-only documents (identical content) into the quantum_computing namespace (3,369 chunks), one call per document, after one warm-up ingest; both runs from the same working directory, so they share the local resonance and relation state. Two repetitions each.",
+ "script": "docs/reviews/2026-11-26-frontier-deepen-v2/scripts/time_ingest.py",
+ "baseline_71713c7_seconds_per_document": [2.95, 2.94],
+ "v2_default_consolidate_each_seconds_per_document": [2.48, 2.54],
+ "v2_folder_consolidate_end_seconds_per_document": [0.89, 0.87],
+ "note": "The default path removes the edge-file reparse (no behaviour change). consolidate='end' skips per-document resonance consolidation and is opt-in because the resonance state then goes through fewer decay cycles."
+}

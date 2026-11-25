@@ -444,12 +444,17 @@ class Appliance:
         _store_resonance_tags(self, chunks, replace_prefix=replace_prefix)
         return len(chunks)
 
-    def ingest(self, source: str | Path | Any, *, encoder_workers: int = 1) -> dict[str, Any]:
+    def ingest(self, source: str | Path | Any, *, encoder_workers: int = 1,
+               consolidate: str = "each") -> dict[str, Any]:
         """Store a file, a folder, or a ``SourceDocument`` the caller already split.
 
         Each paragraph joins the same index as the paragraphs already stored.
         Reading the same source again replaces that source's paragraphs.
         A sheet connection is stored as a word edge beside the paragraph.
+
+        ``consolidate="each"`` (default) runs the resonance consolidation after every document, as before.
+        ``consolidate="end"`` runs it once after all documents of this call: much faster for a folder on a large
+        knowledge base, but the resonance state goes through fewer decay cycles, so it is opt-in.
         """
         from cpu_llm.clauses import propositions_for
         from cpu_llm.documents import chunks_for, open_source, replace_prefix
@@ -457,6 +462,15 @@ class Appliance:
 
         if type(encoder_workers) is not int or not 1 <= encoder_workers <= 4:
             raise ValueError("encoder_workers must be an integer from 1 to 4")
+        if consolidate not in ("each", "end"):
+            raise ValueError('consolidate must be "each" or "end"')
+        if consolidate == "end":
+            self._defer_consolidation = True
+            try:
+                return self.ingest(source, encoder_workers=encoder_workers)
+            finally:
+                self._defer_consolidation = False
+                self.resonance.sleep()
 
         documents = open_source(source)
         registry = getattr(self, "source_slug_path", None)
@@ -2757,6 +2771,7 @@ def _bind_stored_words(appliance: Appliance, chunks: list[tuple[str, str]], tens
         tensors,
         tags_path=appliance.word_tags_path,
         tenant_id=appliance.tenant_id,
+        consolidate=not getattr(appliance, "_defer_consolidation", False),
     )
     appliance.word_tags = bound["index"]
 

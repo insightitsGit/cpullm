@@ -143,25 +143,59 @@ def apply_relation_signature(tensor: np.ndarray, hands: dict[int, list[str]]) ->
     return vector
 
 
+class _EdgeState:
+    """Parsed edge file kept in memory between ingests; valid while the file's size and mtime are unchanged."""
+
+    __slots__ = ("stamp", "keys", "edges", "degree")
+
+    def __init__(self, stamp, keys, edges, degree):
+        self.stamp, self.keys, self.edges, self.degree = stamp, keys, edges, degree
+
+
+_EDGE_STATE: dict[str, _EdgeState] = {}
+
+
+def _stamp(path: Path):
+    try:
+        stat = path.stat()
+    except FileNotFoundError:
+        return None
+    return (stat.st_size, stat.st_mtime_ns)
+
+
+def _read_state(path: Path) -> _EdgeState:
+    """The edge file as sorted keys, GraphEdges and degrees; reparsed only when the file changed on disk."""
+    stamp = _stamp(path)
+    state = _EDGE_STATE.get(str(path))
+    if state is not None and state.stamp == stamp:
+        return state
+    keys: list[tuple[str, str]] = []
+    if stamp is not None:
+        loaded = json.loads(path.read_text(encoding="utf-8"))
+        rows = loaded.get("edges") if isinstance(loaded, dict) else None
+        if isinstance(rows, list):
+            keys = [(str(row[0]), str(row[1])) for row in rows if isinstance(row, list) and len(row) >= 2]
+    degree: dict[str, int] = defaultdict(int)
+    for left, right in keys:
+        degree[left] += 1
+        degree[right] += 1
+    state = _EdgeState(stamp, keys, [GraphEdge(left, right, "rule", 1.0) for left, right in keys], degree)
+    _EDGE_STATE[str(path)] = state
+    return state
+
+
 def load_edges(path: Path) -> list[GraphEdge]:
     if not path.exists():
         return []
-    loaded = json.loads(path.read_text(encoding="utf-8"))
-    rows = loaded.get("edges") if isinstance(loaded, dict) else None
-    if not isinstance(rows, list):
-        return []
-    edges: list[GraphEdge] = []
-    for row in rows:
-        if not isinstance(row, list) or len(row) < 2:
-            continue
-        edges.append(GraphEdge(str(row[0]), str(row[1]), "rule", 1.0))
-    return edges
+    state = _read_state(path)
+    return [GraphEdge(e.from_word, e.to_word, e.edge_type, e.weight) for e in state.edges]
 
 
 def save_edges(path: Path, edges: list[GraphEdge]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     rows = sorted((edge.from_word, edge.to_word) for edge in edges)
     path.write_text(json.dumps({"edges": rows}), encoding="utf-8")
+    _EDGE_STATE.pop(str(path), None)
 
 
 def add_edges(path: Path, pairs: list[tuple[str, str]]) -> int:
@@ -187,24 +221,35 @@ def merge_passage_edges(
     chunks: list[tuple[str, str]],
     word_tags: dict[str, dict[str, list[str]]] | None = None,
 ) -> list[GraphEdge]:
-    """Add edges from ``chunks`` without dropping edges already stored."""
-    current = {(edge.from_word, edge.to_word) for edge in load_edges(path)}
-    degree: dict[str, int] = defaultdict(int)
-    for left, right in current:
-        degree[left] += 1
-        degree[right] += 1
+    """Add edges from ``chunks`` without dropping edges already stored.
+
+    The stored edges stay in memory between calls (see ``_read_state``), so an ingest costs the new edges plus one
+    file write, not a reparse of every edge. The returned list and file contents are unchanged by the cache.
+    """
+    from bisect import bisect_left
+
+    state = _read_state(path)
+    known = set(state.keys)
+    added = False
     for edge in edges_from_passages(chunks, base_counts=_document_counts(word_tags)):
         key = tuple(sorted((edge.from_word, edge.to_word)))
-        if key in current:
+        if key in known:
             continue
-        if degree[key[0]] >= _MAX_DEGREE or degree[key[1]] >= _MAX_DEGREE:
+        if state.degree[key[0]] >= _MAX_DEGREE or state.degree[key[1]] >= _MAX_DEGREE:
             continue
-        current.add(key)
-        degree[key[0]] += 1
-        degree[key[1]] += 1
-    edges = [GraphEdge(left, right, "rule", 1.0) for left, right in sorted(current)]
-    save_edges(path, edges)
-    return edges
+        known.add(key)
+        index = bisect_left(state.keys, key)
+        state.keys.insert(index, key)
+        state.edges.insert(index, GraphEdge(key[0], key[1], "rule", 1.0))
+        state.degree[key[0]] += 1
+        state.degree[key[1]] += 1
+        added = True
+    if added or state.stamp is None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({"edges": state.keys}), encoding="utf-8")
+        state.stamp = _stamp(path)
+        _EDGE_STATE[str(path)] = state
+    return list(state.edges)
 
 
 def sign_and_store(db: Any, rows: list[tuple[str, str, np.ndarray]], edges: list[GraphEdge]) -> int:

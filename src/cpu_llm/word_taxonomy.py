@@ -239,6 +239,7 @@ def bind_word_taxonomy(
     tags_path: Path,
     amplitudes: list[np.ndarray] | None = None,
     tenant_id: str = "cpu-llm",
+    consolidate: bool = True,
 ) -> dict[str, Any]:
     """Tag every content word and checkpoint the resonance ledger.
 
@@ -281,7 +282,7 @@ def bind_word_taxonomy(
                 )
                 seen_tags.add(tag)
             resonance.record_co_activation(tag, document_id)
-    if chunks:
+    if chunks and consolidate:
         resonance.sleep()
     return {
         "words": len(incoming),
