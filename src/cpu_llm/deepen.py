@@ -214,8 +214,33 @@ def _direction(kind):
     return 1 if kind == 'constrains' else _sign(kind) if kind is not None else None
 
 
+SAME_TERM_SIMILARITY = 0.8    # encoder cosine at which a differently worded endpoint counts as the same term
+
+
+def _endpoint_match(key, surface, requested, similar):
+    """'exact' when the normalized terms agree, 'similar' at high encoder cosine, otherwise 'bridged'."""
+    if key == term_key(requested):
+        return 'exact'
+    if similar is not None and surface:
+        score = similar(surface, requested)
+        if score is not None and score >= SAME_TERM_SIMILARITY:
+            return 'similar'
+    return 'bridged'
+
+
+def _match(citation, source, target, similar):
+    left = _endpoint_match(term_key(citation.get('subject') or ''), citation.get('subject'), source, similar)
+    right = _endpoint_match(term_key(citation.get('object') or ''), citation.get('object'), target, similar)
+    return 'bridged' if 'bridged' in (left, right) else 'similar' if 'similar' in (left, right) else 'exact'
+
+
 def _link_evidence(graph, sentences, source, target, similar, expected, budget=None):
-    """Supporting edges, counter-evidence and co-mentions for one link."""
+    """Supporting edges, counter-evidence and co-mentions for one link.
+
+    Every citation records ``endpoint_match``: whether its endpoints are the requested terms (``exact``), close
+    in meaning (``similar``) or only joined through a bridge (``bridged``). A link whose only contrary evidence is
+    bridged is a ``bridge_mismatch``, not a contest.
+    """
     s_term, t_term = _Term(term_key(source), source), _Term(term_key(target), target)
     support, counter = [], []
     for edge in graph.edges.values():
@@ -228,20 +253,26 @@ def _link_evidence(graph, sentences, source, target, similar, expected, budget=N
             continue
         want, have = _direction(expected), _direction(edge.kind)
         opposite = want is not None and have is not None and have == -want
-        (counter if opposite else support).append(_cite(edge))
+        cited = _cite(edge)
+        cited['endpoint_match'] = _match(cited, source, target, similar)
+        (counter if opposite else support).append(cited)
     observed = {item['relation'] for item in support + counter}
     negations = []
     for (subject_key, kind, object_key), proofs in graph.negatives.items():
         if budget: budget.check()
         if related(subject_key, s_term.key) and related(object_key, t_term.key):
-            cited = [dict(proof, negated=True, relation=kind) for proof in proofs]
+            match = ('exact' if subject_key == s_term.key and object_key == t_term.key else 'bridged')
+            cited = [dict(proof, negated=True, relation=kind, endpoint_match=match) for proof in proofs]
             negations.extend(cited)
             if kind == expected or kind in observed:
                 counter.extend(cited)
     co_mentions = [_cite(row, sentence) for _, row, sentence in sentences.with_terms([source, target], at_least=2)]
     signs = {_direction(item['relation']) for item in support} - {None}
+    genuine_support = [item for item in support if item['endpoint_match'] != 'bridged']
+    genuine_signs = {_direction(item['relation']) for item in genuine_support} - {None}
+    genuine_counter = [item for item in counter if item['endpoint_match'] != 'bridged']
     if support and (counter or signs == {1, -1}):
-        status = 'contested'
+        status = 'contested' if genuine_counter or genuine_signs == {1, -1} else 'bridge_mismatch'
     elif support:
         status = 'supported'
     elif counter:
@@ -253,7 +284,8 @@ def _link_evidence(graph, sentences, source, target, similar, expected, budget=N
     return dict(source=source, target=target, expected_relation=expected, status=status,
                 support=support[:_MAX_ITEMS], counter=counter[:_MAX_ITEMS], co_mentions=co_mentions[:3],
                 support_count=len(support), counter_count=len(counter), negations=negations[:_MAX_ITEMS],
-                observed_relations=sorted(observed))
+                observed_relations=sorted(observed),
+                exact_observed_relations=sorted({item['relation'] for item in genuine_support + genuine_counter}))
 
 
 def _confounders(graph, outcome, exclude, similar, budget=None):
@@ -298,14 +330,14 @@ def test_plan(pattern, a, b, c, confounders):
                 fails_if=f'{a} and {b} co-vary just as strongly when {c} is held fixed, or {c} moves neither.')
 
 
-def _direction_assessment(spec, links, budget):
+def _direction_assessment(spec, links, budget, field='observed_relations'):
     requested = spec.relation
-    if spec.pattern != 'chain' or requested is None:
+    if spec.pattern not in {'chain', 'direct'} or requested is None:
         return dict(requested=requested, status='unspecified', observed=[])
     kinds = None
     for link in links:
         budget.check()
-        found = set(link['observed_relations'])
+        found = set(link[field])
         if not found:
             return dict(requested=requested, status='unresolved', observed=[])
         if kinds is None:
@@ -369,6 +401,10 @@ def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, simila
             kind = spec.expected[index]
             links.append(_link_evidence(graph, sentences, source, target, similar, kind, budget))
         direction = _direction_assessment(spec, links, budget)
+        if direction['status'] in {'contradicted', 'contested'}:
+            exact = _direction_assessment(spec, links, budget, 'exact_observed_relations')
+            direction['exact_status'] = exact['status']
+            direction['bridged_contradiction'] = exact['status'] not in {'contradicted', 'contested'}
         terms = [a, *spec.via, c] if pattern == 'chain' else [a, b, c]
         predictions = [dict(_cite(row, sentence), qualification='source_prediction')
             for _, row, sentence in sentences.with_terms(terms, at_least=2,
@@ -381,13 +417,16 @@ def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, simila
             confounders += _confounders(graph, outcome, terms, similar, budget)
         confounders = confounders[:_MAX_ITEMS]
         classify_controls(confounders, spec, graph, budget)
-        composition = assess_composition(spec, links, rows, direction, budget)
+        composition = assess_composition(spec, links, rows, dict(direction, status=direction.get(
+            'exact_status', direction['status'])) if direction.get('bridged_contradiction') else direction, budget)
         novelty = novelty_review(spec, sentences, options, budget, literature_reviewer)
         hints = measurement_hints(spec, sentences)
         budget.check()
         statuses = [link['status'] for link in links]
-        verdict = ('contested' if 'contested' in statuses or 'counter_only' in statuses
-                   or direction['status'] in {'contradicted', 'contested'} else
+        genuine_contradiction = (direction['status'] in {'contradicted', 'contested'}
+                                 and not direction.get('bridged_contradiction'))
+        verdict = ('contested' if 'contested' in statuses or 'counter_only' in statuses or genuine_contradiction else
+                   'bridge_mismatch' if 'bridge_mismatch' in statuses or direction.get('bridged_contradiction') else
                    'partly_supported' if spec.relation is not None and direction['status'] == 'unresolved'
                    and pattern == 'chain' and any(s == 'supported' for s in statuses) else
                    'all_links_supported' if all(s == 'supported' for s in statuses) else
@@ -397,9 +436,13 @@ def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, simila
     incomplete = stop_reason is not None or graph is not None and not graph.complete
     if incomplete:
         verdict = 'incomplete'
+    from cpu_llm.deepen_review import lead_status as classify_lead, quarantine
+    status = classify_lead(verdict, composition, links, incomplete)
     plan = test_plan(pattern, a, b, c, confounders)
+    if status in {'needs_semantic_resolution', 'contested_tension'}:
+        plan = quarantine(plan, status, composition, links)
     operationalize(plan, spec, options, composition, hints)
-    if pattern == 'chain':
+    if pattern == 'chain' and plan['design'] != 'resolve_first':
         plan['mediators'] = list(spec.via)
         if len(spec.via) > 1:
             plan['mediator'] = None  # use the full ordered mediator list
@@ -409,7 +452,7 @@ def run_deepen(hypothesis, rows, *, limits=None, encode=None, graph=None, simila
                 potentially_nondeterministic=True, pattern=pattern, terms=dict(a=a, b=b, c=c),
                 path_nodes=[a, *spec.via, c] if pattern == 'chain' else None, links=links,
                 expected_relation=spec.relation, direction_check=direction,
-                verdict=verdict, predictions=predictions, setups=setups, confounders=confounders,
+                verdict=verdict, lead_status=status, predictions=predictions, setups=setups, confounders=confounders,
                 composition=composition, novelty_review=novelty,
                 research_actions=research_actions(composition, plan, novelty),
                 test_plan=plan, relation_edges=len(graph.edges) if graph is not None else 0,
@@ -423,6 +466,12 @@ def format_reply(receipt, text):
     plan = receipt['test_plan']
     lines = [f'Deepen: {text}', f'Overall: {receipt["verdict"].replace("_", " ")}. This remains an unverified '
              'hypothesis; the evidence below is what the authorized sources state about each link.']
+    lines.append('Lead status: ' + receipt['lead_status'].replace('_', ' ') + '.' + {
+        'needs_semantic_resolution': ' The linked sources may use different meanings; resolve them before any '
+                                     'experiment is planned.',
+        'contested_tension': ' The sources disagree; this is a tension to examine, not a mediation hypothesis.',
+        'coverage_gap': ' The sources barely cover these terms; add documents before judging the hypothesis.',
+    }.get(receipt['lead_status'], ''))
     if receipt['direction_check']['requested'] is not None:
         lines.append('End-to-end direction: ' + receipt['direction_check']['status'] + '.')
     composition = receipt['composition']
@@ -454,7 +503,8 @@ def format_reply(receipt, text):
                      f'[{item["citation"]["document_id"]}]' for item in receipt['confounders'])
     lines.append(f'\nTest plan ({plan["design"]}):')
     lines.extend(f'  {number}. {step}' for number, step in enumerate(plan['steps'], 1))
-    lines.append(f'  Fails if: {plan["fails_if"]}')
+    if plan.get('fails_if'):
+        lines.append(f'  Fails if: {plan["fails_if"]}')
     lines.append('Plan readiness: ' + plan['readiness'].replace('_', ' ') + '; experiment not executed.')
     for variable in plan['variables']:
         if variable['definition']:

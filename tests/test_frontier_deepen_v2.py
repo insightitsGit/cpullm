@@ -64,3 +64,60 @@ def test_deepen_skips_artefact_controls():
     receipt = run_deepen('HBM supply may increase inference throughput through memory bandwidth.', rows)
     terms = [c['term'] for c in receipt['confounders']]
     assert 'Batch size' in terms and not any(artefact_reason(t) for t in terms)
+
+
+# ------------------------------------------------------------------ 2. composition gate
+
+CHAIN = 'memory bandwidth may increase serving revenue through inference throughput.'
+
+
+def test_bridged_contrary_evidence_is_a_bridge_mismatch_and_quarantined():
+    rows = rows_of('Memory bandwidth increases inference throughput.',
+                   'DRAM bandwidth reduces inference throughput.',
+                   'Inference throughput increases serving revenue.')
+    receipt = run_deepen(CHAIN, rows)
+    assert receipt['links'][0]['status'] == 'bridge_mismatch'
+    assert receipt['verdict'] == 'bridge_mismatch'
+    assert receipt['lead_status'] == 'needs_semantic_resolution'
+    plan = receipt['test_plan']
+    assert plan['design'] == 'resolve_first' and plan['blocked_design'] == 'mediation'
+    assert plan['manipulate'] == [] and plan['readiness'] == 'needs_input'
+    assert any('DRAM bandwidth' in step for step in plan['steps'])
+
+
+def test_exact_contrary_evidence_stays_contested_and_is_quarantined():
+    rows = rows_of('Memory bandwidth increases inference throughput.',
+                   'Memory bandwidth reduces inference throughput in other studies.',
+                   'Inference throughput increases serving revenue.')
+    receipt = run_deepen(CHAIN, rows)
+    assert receipt['verdict'] == 'contested'
+    assert receipt['lead_status'] == 'contested_tension'
+    assert receipt['test_plan']['design'] == 'resolve_first'
+    assert any('Weigh the contrary evidence' in step for step in receipt['test_plan']['steps'])
+
+
+def test_clean_chain_is_testable_with_its_experiment():
+    rows = rows_of('Memory bandwidth increases inference throughput.',
+                   'Inference throughput increases serving revenue.')
+    receipt = run_deepen(CHAIN, rows)
+    assert receipt['verdict'] == 'all_links_supported'
+    assert receipt['lead_status'] == 'testable'
+    assert receipt['test_plan']['design'] == 'mediation'
+
+
+def test_modifier_bridge_is_reviewed_but_not_quarantined():
+    rows = rows_of('Faster memory bandwidth increases inference throughput.',
+                   'Inference throughput increases serving revenue.')
+    receipt = run_deepen(CHAIN, rows)
+    assert {b['kind'] for b in receipt['composition']['bridges']} == {'modifier'}
+    assert receipt['lead_status'] == 'needs_review'
+    assert receipt['test_plan']['design'] == 'mediation'
+
+
+def test_frontier_checks_carry_the_lead_status():
+    rows = rows_of('HBM supply constrains memory bandwidth.',
+                   'Memory bandwidth drives inference throughput.',
+                   'Inference throughput drives serving revenue.')
+    receipt = run_frontier('memory bandwidth', rows, deepen_top=3)
+    checked = [h['check'] for h in receipt['hypotheses'] if h.get('check')]
+    assert checked and all(c['lead_status'] for c in checked)

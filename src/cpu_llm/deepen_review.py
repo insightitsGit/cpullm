@@ -6,7 +6,7 @@ import json
 import re
 from urllib.parse import urlparse
 
-from cpu_llm.frontier import _content, _tokens, related, term_key
+from cpu_llm.frontier import _contains, _content, _tokens, related, term_key
 
 _CONTEXT = {'domain', 'population', 'workload', 'model', 'version', 'regime', 'temperature'}
 _QUALIFIER = re.compile(r'\b(?:not all|not every|some|only|unless|except|under|when|if|provided|'
@@ -98,8 +98,11 @@ def assess_composition(spec, links, rows, direction, budget):
             for endpoint, requested in (('subject', link['source']), ('object', link['target'])):
                 actual = proof.get(endpoint)
                 if actual and term_key(actual) != term_key(requested):
+                    contained = _contains(term_key(actual), term_key(requested))
                     bridges.append(dict(link=index, requested=requested, source_term=actual, citation=proof,
-                        status='requires_review', reason='Changed endpoint modifiers or meaning; similarity is not identity.'))
+                        status='requires_review', kind='modifier' if contained else 'meaning',
+                        reason=('Changed endpoint modifiers; check the direction and scope they imply.' if contained
+                                else 'Different terms joined by similarity; similarity is not identity.')))
     scope_differences = []
     for field in sorted(_CONTEXT):
         budget.check()
@@ -111,7 +114,7 @@ def assess_composition(spec, links, rows, direction, budget):
               'insufficient_evidence' if len(links) != len(spec.links()) or any(
                   l['status'] in {'missing', 'weak', 'counter_only'} for l in links) else
               'requires_review' if bridges or scope_differences or qualifications or any(
-                  l['status'] == 'contested' for l in links) else 'conditional')
+                  l['status'] in {'contested', 'bridge_mismatch'} for l in links) else 'conditional')
     return dict(status=status, bridges=bridges, qualifications=qualifications,
                 source_contexts=scopes, scope_differences=scope_differences,
                 context_coverage='explicit_context_available' if scopes else 'not_recorded',
@@ -260,3 +263,70 @@ def fingerprint(rows):
     for row in rows:
         digest.update(json.dumps([row['document_id'], row['chunk_text'], _context(row)], sort_keys=True).encode())
     return digest.hexdigest()
+
+
+LEAD_STATUSES = ('testable', 'needs_semantic_resolution', 'contested_tension', 'coverage_gap',
+                 'insufficient_evidence', 'needs_review', 'incomplete')
+
+
+def lead_status(verdict, composition, links, incomplete):
+    """One status a consumer can act on; it travels with the receipt so a summary cannot drop it."""
+    if incomplete or verdict == 'incomplete':
+        return 'incomplete'
+    if verdict == 'bridge_mismatch':
+        return 'needs_semantic_resolution'
+    if verdict == 'contested' or composition.get('status') == 'incompatible_direction':
+        return 'contested_tension'
+    if any(link.get('coverage', {}).get('gap') for link in links):
+        return 'coverage_gap'
+    if verdict in {'unsupported', 'partly_supported'}:
+        return 'insufficient_evidence'
+    if any(bridge.get('kind') == 'meaning' for bridge in composition.get('bridges', [])):
+        return 'needs_semantic_resolution'
+    if verdict == 'all_links_supported' and composition.get('status') == 'conditional':
+        return 'testable'
+    return 'needs_review'
+
+
+def quarantine(plan, status, composition, links):
+    """Replace the experiment with what must be resolved first; keep the design that was withheld."""
+    steps = []
+    if status == 'needs_semantic_resolution':
+        seen = set()
+        for bridge in composition.get('bridges', []):
+            if bridge.get('kind') != 'meaning':
+                continue
+            pair = (bridge['source_term'], bridge['requested'])
+            if pair in seen:
+                continue
+            seen.add(pair)
+            steps.append(f'Confirm whether "{pair[0]}" [{bridge["citation"]["document_id"]}] denotes the same '
+                         f'quantity as "{pair[1]}".')
+        for link in links:
+            if link['status'] == 'bridge_mismatch':
+                for item in link['counter'][:2]:
+                    steps.append(f'The contrary source [{item["document_id"]}] uses different terms; check whether '
+                                 f'it bears on {link["source"]} -> {link["target"]}: {item["quote"]}')
+        steps = steps[:6] + ['If the meanings differ, restate the hypothesis in the sources\' own terms and run '
+                             'Deepen again.']
+    else:
+        for link in links:
+            if link['status'] != 'contested' and not link['counter']:
+                continue
+            genuine = [c for c in link['counter'] + link['support'] if c.get('endpoint_match') != 'bridged']
+            by_relation = {}
+            for item in genuine:
+                by_relation.setdefault(item['relation'], item)
+            if len(by_relation) > 1 or link['counter']:
+                for item in list(by_relation.values())[:3]:
+                    steps.append(f'Weigh the contrary evidence on {link["source"]} -> {link["target"]} '
+                                 f'({item["relation"]}) [{item["document_id"]}]: {item["quote"]}')
+        if not steps:
+            steps.append('The cited effects compose to the opposite of the stated direction; inspect each link\'s '
+                         'quotes for the step that reverses it.')
+        steps = steps[:6] + ['State the conditions under which each source holds; the hypothesis may survive only '
+                             'in a restricted regime.', 'Restate it for that regime and run Deepen again.']
+    return dict(design='resolve_first', blocked_design=plan['design'], manipulate=[], measure=[], mediator=None,
+                controls=plan['controls'], steps=steps, fails_if=None,
+                reason=('meaning differences between linked sources' if status == 'needs_semantic_resolution'
+                        else 'contrary evidence or contradicted direction'))

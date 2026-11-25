@@ -1439,7 +1439,8 @@ def _check_leading(items, rows, graph, encode, budget):
         for item in items:
             budget.check()
             receipt = run_deepen(item, rows, graph=graph, similar=similar, sentences=sentences, budget=budget)
-            item['check'] = dict(verdict=receipt['verdict'], incomplete=receipt['incomplete'],
+            item['check'] = dict(verdict=receipt['verdict'], lead_status=receipt['lead_status'],
+                incomplete=receipt['incomplete'],
                 direction_check=receipt['direction_check'],
                 composition=receipt['composition'], plan_readiness=receipt['test_plan']['readiness'],
                 links=[dict(source=l['source'], target=l['target'], status=l['status'],
@@ -1475,6 +1476,8 @@ def format_reply(receipt):
                                  for l in check['links'])
             flag = 'Warning, contested: ' if check['verdict'] == 'contested' else 'Deepen check: '
             lines.append(f'{flag}{check["verdict"].replace("_", " ")} ({statuses}).')
+            if check.get('lead_status'):
+                lines.append('Lead status: ' + check['lead_status'].replace('_', ' ') + '.')
             if 'composition' in check:
                 lines.append('Composition: ' + check['composition']['status'].replace('_', ' ') +
                              '; plan readiness: ' + check['plan_readiness'].replace('_', ' ') + '.')
