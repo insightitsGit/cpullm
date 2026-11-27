@@ -1642,9 +1642,12 @@ def execute_frontier(app, message, topic, *, options=None, caller=None, as_of=No
                       dict(base, status='needs_clarification'))
     try:
         rows, when = _snapshot(app, allowed, as_of)
-    except (ValueError, RuntimeError, psycopg.Error):
-        return result('partial', 'The Frontier source snapshot was unavailable or exceeded its limit.',
-                      dict(base, status='partial', incomplete=True, stop_reason='snapshot_unavailable'))
+    except (ValueError, RuntimeError, psycopg.Error) as exc:
+        from cpu_llm.invention import snapshot_failure
+        status, text, error = snapshot_failure(exc, 'Frontier')
+        response = result(status, text, dict(base, status=status, incomplete=True, stop_reason=error['kind']))
+        response['error'] = error
+        return response
     pipeline = getattr(app.index, 'pipeline', None)
     receipt = run_frontier(topic, rows, limits=options['limits'], deepen_top=options.get('deepen_top', DEEPEN_TOP),
                            encode=getattr(pipeline, 'encode_texts', None), screen=options.get('screen'),

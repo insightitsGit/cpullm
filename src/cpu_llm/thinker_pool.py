@@ -107,7 +107,11 @@ class WarmEvaluatorPool:
             raise
         if failures:
             detail = "; ".join(f"{name}: {message}" for name, message in failures.items())
-            raise RuntimeError(f"evaluator pool failed to start: {detail}")
+            hint = ""
+            if all("exited during startup" in message for message in failures.values()):
+                hint = (" Workers start with 'spawn' and re-import your script: put the code that creates the "
+                        "Appliance under `if __name__ == \"__main__\":` (see the README quickstart).")
+            raise RuntimeError(f"evaluator pool failed to start: {detail}.{hint}")
 
     def worker_pids(self) -> tuple[int, ...]:
         with self._lock:

@@ -61,8 +61,12 @@ def execute_cross_domain(app, message, seed, *, caller=None, as_of=None, strict=
         return result('needs_clarification', 'Name the physics model or mathematical relation to join.', joins=[])
     try:
         rows, when = _snapshot(app, allowed, as_of)
-    except (RuntimeError, ValueError, psycopg.Error):
-        return result('partial', 'The CrossDomain source snapshot is unavailable.', joins=[])
+    except (RuntimeError, ValueError, psycopg.Error) as exc:
+        from cpu_llm.invention import snapshot_failure
+        status, text, error = snapshot_failure(exc, 'CrossDomain')
+        response = result(status, text, joins=[])
+        response['error'] = error
+        return response
 
     selected = [row for row in rows if
                 ('mathematics' if row['document_id'].split('-', 1)[0].casefold() == 'math'

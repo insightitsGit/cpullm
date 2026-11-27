@@ -91,6 +91,20 @@ def _proposal(left, right):
     )
 
 
+def snapshot_failure(exc, route):
+    """Classify a snapshot failure: an unreachable store is ``unavailable`` (loud), a size limit is ``partial``."""
+    import logging
+    if isinstance(exc, ValueError):
+        kind, status = 'snapshot_limit', 'partial'
+        text = f'The {route} source snapshot exceeded its size limit.'
+    else:
+        kind, status = 'storage_unavailable', 'unavailable'
+        text = (f'The {route} source snapshot could not be read: the database is unavailable. '
+                'Check that PostgreSQL is running and VECTORPRISM_PG_DSN is correct (run cpu-llm-doctor), then retry.')
+    logging.getLogger('cpu_llm').warning('%s snapshot failed (%s): %s', route, kind, exc)
+    return status, text, dict(kind=kind, route=route, detail=type(exc).__name__)
+
+
 def _snapshot(app, allowed, as_of):
     from cpu_llm.access import source_allowed
 
@@ -216,9 +230,12 @@ def execute_invention(app, message, seed, *, caller=None, as_of=None, strict=Fal
         return result('needs_clarification', 'Name a short subject in your invention request, such as “Create a new concept from Helios.”', receipt)
     try:
         rows, when = _snapshot(app, allowed, as_of)
-    except (ValueError, RuntimeError, psycopg.Error):
+    except (ValueError, RuntimeError, psycopg.Error) as exc:
         receipt['complete'] = False
-        return result('partial', 'The invention source snapshot was unavailable or exceeded its limit.', receipt)
+        status, text, error = snapshot_failure(exc, 'invention')
+        response = result(status, text, receipt)
+        response['error'] = error
+        return response
     if nammade_kappa is None:
         from cpu_llm.inference import attach_inference
         return attach_inference(_innovation_options(app, seed, rows, when, receipt, result),

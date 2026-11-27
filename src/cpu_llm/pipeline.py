@@ -161,6 +161,27 @@ def default_checkpoint() -> Path:
     return checkpoint()
 
 
+_STATE_NOTICE = set()
+
+
+def resolve_state_dir(state_dir: str | Path | None = None) -> Path:
+    """Where local state (resonance, word tags, relations, graph store) lives, as an absolute path.
+
+    Order: the ``state_dir`` argument, then ``CPU_LLM_STATE_DIR``, then ``.chorusgraph`` under the current working
+    directory (the historical default). The default depends on where the process starts, so it is logged once.
+    """
+    import logging
+
+    chosen = state_dir or os.environ.get("CPU_LLM_STATE_DIR")
+    path = Path(chosen or ".chorusgraph").expanduser().resolve()
+    if not chosen and str(path) not in _STATE_NOTICE:
+        _STATE_NOTICE.add(str(path))
+        logging.getLogger("cpu_llm").warning(
+            "cpu-llm local state: %s (relative to the working directory; pass state_dir= or set "
+            "CPU_LLM_STATE_DIR to keep it fixed)", path)
+    return path
+
+
 class Appliance:
     def __init__(
         self,
@@ -178,6 +199,7 @@ class Appliance:
         external_llm_fallback: ExternalLLMFallback | None = None,
         literature_reviewer: Any = None,
         prismlexicon: bool = False,
+        state_dir: str | Path | None = None,
     ) -> None:
         from cpu_llm.child_safety import ChildSafetyGate, enabled_by_default
 
@@ -233,8 +255,9 @@ class Appliance:
         # None keeps every reached paragraph.
         self.deep_min_similarity: float | None = DENSE_CORE_FLOOR
         self.payment_policy = _payment_evaluator()
-        cache = Path(".chorusgraph") / "cpu-llm" / (self.namespace or "")
+        cache = resolve_state_dir(state_dir) / "cpu-llm" / (self.namespace or "")
         cache.mkdir(parents=True, exist_ok=True)
+        self.state_dir = cache
         self.resonance = PrismResonance.create(
             embedding_dim=TENSOR_DIM,
             onnx_path=cache / "resonance_1024.onnx",

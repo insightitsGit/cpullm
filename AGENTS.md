@@ -7,8 +7,10 @@ and proposes cited hypotheses that are clearly labelled unverified.
 ## Call it
 
 - **Python:** create the appliance with `from cpu_llm.pipeline import Appliance` and
-  `app = Appliance(namespace="...")` (use it as a context manager). Call `app.ingest(path_or_SourceDocument)`,
-  then `app.ask(message, **options)`. On Windows, run it under `if __name__ == "__main__":`.
+  `app = Appliance(namespace="...", state_dir="...")` (use it as a context manager). Call
+  `app.ingest(path_or_SourceDocument)`, then `app.ask(message, **options)`. Run it under
+  `if __name__ == "__main__":`. `cpu_llm.results.require_complete(reply)` raises on unusable replies.
+- **Command line:** `cpu-llm-doctor` checks the setup; `cpu-llm-ask --namespace <ns> "<message>" --json` asks.
 - **HTTP:** `cpu-llm-serve --secrets credentials.json`, then `POST /v1/ask` with
   `Authorization: Bearer <secret>` and a body of `{"message": "...", ...options}`.
 - **Tool definitions:** [docs/agent-tool-schema.json](docs/agent-tool-schema.json).
@@ -40,6 +42,7 @@ and proposes cited hypotheses that are clearly labelled unverified.
 - `conflicting`, `contradicted`: the sources disagree. Show both sides.
 - `needs_clarification`: ask the user the question in `reply.text`, then reply with the same `session_id`.
 - `partial`: a budget stopped the work. Check `incomplete` and `stop_reason`.
+- `unavailable`: the database could not be read (`error.kind`). Report it; never treat it as an empty result.
 - `blocked`: refused by the guard or access policy. Do not retry.
 - `conversation`, `external_unverified`: no source evidence.
 

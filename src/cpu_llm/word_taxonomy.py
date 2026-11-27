@@ -322,7 +322,9 @@ def main() -> None:
     from cpu_llm.retrieval import LOCAL_PG_DSN
 
     dsn = os.environ.get("VECTORPRISM_PG_DSN") or LOCAL_PG_DSN
-    cache = Path(".chorusgraph") / "cpu-llm"
+    from cpu_llm.pipeline import resolve_state_dir
+
+    cache = resolve_state_dir() / "cpu-llm"
     resonance = PrismResonance.create(
         embedding_dim=TENSOR_DIM,
         onnx_path=cache / "resonance_1024.onnx",

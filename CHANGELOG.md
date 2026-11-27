@@ -30,6 +30,14 @@ Specified in [docs/frontier-deepen-v2-spec.md](docs/frontier-deepen-v2-spec.md),
   `prior_art_status`, which is never a finding.
 - **Scale warnings.** Adjacent links at time scales 1,000× apart, or two abstraction levels apart, are flagged
   for review.
+- **Usability.**
+  - Frontier, Deepen, invention and CrossDomain return `answer_status: "unavailable"` with an `error` record (and log a
+    warning) when the database cannot be read, instead of an empty `partial` result.
+  - `Appliance(state_dir=...)` and `CPU_LLM_STATE_DIR` fix where local state lives; the working-directory default is
+    logged.
+  - New `cpu-llm-doctor` (setup checks with fixes) and `cpu-llm-ask` (ask from the command line).
+  - `cpu_llm.results`: `require_complete`, `hypotheses`, `shortlist`, `lead_status`, `citations`.
+  - A worker pool that fails because the `__main__` guard is missing now says so.
 - **Ingestion speed.**
   - Relation edges stay in memory between ingests: about 14% faster per document on a 3,369-chunk knowledge base.
   - `ingest(..., consolidate="end")` consolidates once per call: about 3.4× faster for folders. It is opt-in.

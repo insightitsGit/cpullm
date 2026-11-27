@@ -736,8 +736,12 @@ def execute_deepen(app, message, hypothesis, *, caller=None, as_of=None, strict=
         return result('blocked', 'Request blocked.')
     try:
         rows, when = _snapshot(app, allowed, as_of)
-    except (ValueError, RuntimeError, psycopg.Error):
-        return result('partial', 'The Deepen source snapshot was unavailable or exceeded its limit.')
+    except (ValueError, RuntimeError, psycopg.Error) as exc:
+        from cpu_llm.invention import snapshot_failure
+        status, text, error = snapshot_failure(exc, 'Deepen')
+        response = result(status, text)
+        response['error'] = error
+        return response
     pipeline = getattr(app.index, 'pipeline', None)
     try:
         receipt = run_deepen(hypothesis, rows, encode=getattr(pipeline, 'encode_texts', None),

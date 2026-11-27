@@ -69,8 +69,13 @@ database. [Database setup](docs/development-database.md).
 **3. Allow the encoder download once.** The first appliance downloads `sentence-transformers/all-mpnet-base-v2`
 from Hugging Face. To run offline, prepare the cache first: [encoder caching](docs/offline-setup.md).
 
-**4. Ingest and ask.** Save as a script; on Windows keep the `__main__` guard (the appliance starts worker
-processes).
+**Check the setup.** `cpu-llm-doctor` checks the database connection, the pgvector version, the encoder cache, the
+local state directory and the parser, and prints the fix for anything missing. Local state (resonance, word tags,
+relations) lives under `CPU_LLM_STATE_DIR` or `Appliance(state_dir=...)`; without either it uses `.chorusgraph` in
+the current working directory, so set one to keep runs consistent.
+
+**4. Ingest and ask.** Save as a script and keep the `__main__` guard on every platform: the appliance starts worker
+processes that re-import your script.
 
 ```python
 from cpu_llm.pipeline import Appliance
@@ -103,6 +108,13 @@ everything else with `unsupported`. Ordinary mode answers a wider range of quest
 `.epub`) and splits it into paragraph chunks with IDs such as `helios-manual-p0001`.
 
 **5. Read the result.** Branch on `answer_status`; see [Reading a result](#reading-a-result).
+`cpu_llm.results` has small helpers: `require_complete(reply)` raises when storage was unavailable, the request was
+blocked or a budget stopped the work; `hypotheses`, `shortlist`, `lead_status` and `citations` read Frontier and
+Deepen replies.
+
+**From the command line.** `cpu-llm-ask --namespace quickstart "What does Helios store?"`; add `--strict`,
+`--screen` (Frontier with screening), `--deepen --novelty`, or `--json` for the whole result. The exit status is 2
+when storage is unavailable or the request is blocked, and 3 when a budget stopped the work.
 
 To serve the same API over HTTP, see [HTTP service](#http-service). For agents, see
 [Using CPU-LLM from an AI agent](#using-cpu-llm-from-an-ai-agent).
@@ -165,6 +177,7 @@ machine-readable copy is [prompt-flag-map.json](docs/prompt-flag-map.json).
 | `conflicting`, `contradicted` | The sources disagree, or explicitly contradict the requested relation | Show both sides; do not pick one |
 | `needs_clarification` | The request is ambiguous; `reply.text` is the question to ask | Ask the user, then repeat with the same `session_id` |
 | `partial` | A budget or snapshot limit stopped the work; results may be incomplete | Use with care; check `incomplete` and `stop_reason` |
+| `unavailable` | The database could not be read; `error.kind` is `storage_unavailable` | Fix the database (run `cpu-llm-doctor`) and retry; never treat as an empty result |
 | `blocked` | The guard or access policy refused the request | Do not retry the same request |
 | `conversation` | A built-in social reply ("Who are you?") | No evidence involved |
 | `external_unverified` | The optional external-LLM fallback answered (off by default) | Treat as unverified |
@@ -567,7 +580,8 @@ curl -s http://127.0.0.1:8765/v1/ask -H "Authorization: Bearer $CPU_LLM_TOKEN" \
 - **Optional:**
   - the `prompt_nlp` extra and a spaCy English model, for better Frontier and Deepen extraction and prompt parsing;
   - the `coreference` and `fastcoreference` extras, for reference resolution.
-- **Windows:** construct and call the appliance under `if __name__ == "__main__":`.
+- **Scripts:** construct and call the appliance under `if __name__ == "__main__":` on every platform; otherwise the
+  worker pool fails to start, and the error says so.
 - **Language:** English, with bounded grammars. Topic matching is lexical, and aliases, joins and conflict detection
   are incomplete.
 - **Evidence:** hashes prove consistency with stored text, not that a source is true. A strict quote can preserve an
