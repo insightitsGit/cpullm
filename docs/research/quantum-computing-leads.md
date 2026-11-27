@@ -12,6 +12,7 @@ Created 2026-11-25 from a Frontier and Deepen run over 155 arXiv quant-ph papers
 | [QC-4](#qc-4) | medium | Is error mitigation useful only where classical simulation is already easy? | open |
 | [QC-5](#qc-5) | low | Distillation speed versus circuit error in magic-state factories | open |
 | [QC-6](#qc-6) | low | Do radiation bursts correlate failures inside magic-state factories? | known in literature |
+| [QC-7](#qc-7) | medium | Do barren-plateau mitigations still work on qudits (mid-circuit measurements)? | refuted in a toy pilot (one operationalization) |
 
 ## QC-1
 
@@ -164,6 +165,34 @@ Cosmic rays cause correlated errors (2402.03208); faulty magic states cause circ
 
 1. Run Deepen with the novelty review on this entry.
 2. Search for radiation effects on distillation factories.
+
+## QC-7
+
+**Do barren-plateau mitigations still work on qudits (mid-circuit measurements)?** · priority medium · status refuted in a toy pilot (one operationalization)
+
+Barren plateaus are amplified by qudit dimension (2405.08190, whose abstract asks for scrutiny of mitigations on qudits); mid-circuit measurements mitigate barren plateaus for qubits (2406.14285). Deepen v2 rated it testable with a stratified design. Variants with chemical initialization and MPQC were also proposed.
+
+- **Hypothesis:** Gains in Barren plateaus from dimension of qudits may be offset by mid - circuit measurements. (Frontier `af462610d15d`, topic “barren plateaus”, rank 13)
+  - Scores: support 0.8, relevance 0.815, novelty 0.628
+  - [arxiv-2405-08190-p0001](https://arxiv.org/abs/2405.08190): “# Barren plateaus are amplified by the dimension of qudits”
+  - [arxiv-2406-14285-p0059](https://arxiv.org/abs/2406.14285): “therefore, mid-circuit measurements, circuit pretraining, entanglement regularization to add terms to the cost function, and initial partitioning play on the entanglement entropy to better mitigate barren plateaus”
+  - Deepen: verdict `all_links_supported`, links ['supported', 'supported'], composition `conditional`, knowledge-base novelty `no_overlap_found_in_snapshot`
+  - Test plan (2x2 factorial): vary ['dimension of qudits', 'mid - circuit measurements'], measure ['Barren plateaus']. Fails if: A precisely measured absence of an interaction challenges compounding in Barren plateaus; it does not refute individual effects of dimension of qudits or mid - circuit measurements. Predefine a meaningful effect threshold.
+
+**Prior art found outside the knowledge base**
+
+- arXiv:2608.14981, Qudit-ADAPT-VQE: addresses barren plateaus in qudit circuits with a different method.
+
+**Caveats**
+
+- The qudit link is cited by paper title only (abstract-only source).
+- Pilot result (docs/research/qc7-qudit-pilot): qudit dimension amplified the decay (-0.57, -0.90, -1.59 per qudit for d = 2, 3, 4), but a measure-and-reset far from the cost qudit lowered the gradient variance at every d (x0.88, x0.84, x0.67). Refuted for that operationalization only.
+
+**Next steps**
+
+1. Test measurement with feed-forward or entanglement-entropy targeting near the cost qudit.
+2. Add identity-block initialization as a baseline mitigation across d.
+3. Scale beyond n = 6 with tensor-network or trajectory simulation.
 
 ## Coverage gaps
 

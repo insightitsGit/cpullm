@@ -54,6 +54,21 @@ LEADS = [
              'If a burst hits a factory, many distilled states could fail together.',
          caveats=['Speculative; not checked with Deepen. The two sources study different systems.'],
          next_steps=['Run Deepen with the novelty review on this entry.', 'Search for radiation effects on distillation factories.']),
+    dict(id='QC-7', priority='medium', status='refuted in a toy pilot (one operationalization)',
+         title='Do barren-plateau mitigations still work on qudits (mid-circuit measurements)?',
+         frontier=['Gains in Barren plateaus from dimension of qudits may be offset by mid - circuit measurements'],
+         why='Barren plateaus are amplified by qudit dimension (2405.08190, whose abstract asks for scrutiny of '
+             'mitigations on qudits); mid-circuit measurements mitigate barren plateaus for qubits (2406.14285). Deepen '
+             'v2 rated it testable with a stratified design. Variants with chemical initialization and MPQC were also '
+             'proposed.',
+         prior_art=['arXiv:2608.14981, Qudit-ADAPT-VQE: addresses barren plateaus in qudit circuits with a different method.'],
+         caveats=['The qudit link is cited by paper title only (abstract-only source).',
+                  'Pilot result (docs/research/qc7-qudit-pilot): qudit dimension amplified the decay (-0.57, -0.90, -1.59 '
+                  'per qudit for d = 2, 3, 4), but a measure-and-reset far from the cost qudit lowered the gradient '
+                  'variance at every d (x0.88, x0.84, x0.67). Refuted for that operationalization only.'],
+         next_steps=['Test measurement with feed-forward or entanglement-entropy targeting near the cost qudit.',
+                     'Add identity-block initialization as a baseline mitigation across d.',
+                     'Scale beyond n = 6 with tensor-network or trajectory simulation.']),
 ]
 GAPS = ['Noise may reduce quantum advantage through classical simulation.',
         'Barren plateaus may constrain variational quantum algorithms through classical simulability.',

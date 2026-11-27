@@ -1,0 +1,28 @@
+Var[dC/dtheta] by qudit dimension d and size n (unmitigated -> mitigated, ratio)
+  d=2 n=2: 6.161e-02 -> 2.847e-02  ratio  0.46
+  d=2 n=3: 5.163e-02 -> 4.597e-02  ratio  0.89
+  d=2 n=4: 1.578e-02 -> 1.377e-02  ratio  0.87
+  d=2 n=5: 1.757e-02 -> 1.651e-02  ratio  0.94
+  d=2 n=6: 7.349e-03 -> 7.326e-03  ratio  1.00
+  d=3 n=2: 1.996e-02 -> 9.175e-03  ratio  0.46
+  d=3 n=3: 1.100e-02 -> 9.226e-03  ratio  0.84
+  d=3 n=4: 2.930e-03 -> 2.446e-03  ratio  0.83
+  d=3 n=5: 1.812e-03 -> 1.655e-03  ratio  0.91
+  d=4 n=2: 8.522e-03 -> 3.719e-03  ratio  0.44
+  d=4 n=3: 3.609e-03 -> 2.923e-03  ratio  0.81
+  d=4 n=4: 7.330e-04 -> 4.117e-04  ratio  0.56
+
+Decay rate of log Var per added qudit (n >= 3; more negative = worse barren plateau)
+  d=2: unmitigated -0.57, mitigated -0.53, change +0.04
+  d=3: unmitigated -0.90, mitigated -0.86, change +0.04
+  d=4: unmitigated -1.59, mitigated -1.96, change -0.37
+
+Mean log variance ratio (mitigated/unmitigated) at shared sizes n=3,4
+  d=2: -0.13  (x0.88)
+  d=3: -0.18  (x0.84)
+  d=4: -0.39  (x0.67)
+
+Checks: qudit dimension amplifies the decay (unmitigated): True
+        mitigation raises the variance at every d: False
+        benefit grows with d: False
+Verdict (this toy model only): REFUTED

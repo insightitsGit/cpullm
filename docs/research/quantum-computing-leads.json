@@ -423,6 +423,75 @@
      "deepen": null
     }
    ]
+  },
+  {
+   "status": "refuted in a toy pilot (one operationalization)",
+   "prior_art": [
+    "arXiv:2608.14981, Qudit-ADAPT-VQE: addresses barren plateaus in qudit circuits with a different method."
+   ],
+   "id": "QC-7",
+   "priority": "medium",
+   "title": "Do barren-plateau mitigations still work on qudits (mid-circuit measurements)?",
+   "why": "Barren plateaus are amplified by qudit dimension (2405.08190, whose abstract asks for scrutiny of mitigations on qudits); mid-circuit measurements mitigate barren plateaus for qubits (2406.14285). Deepen v2 rated it testable with a stratified design. Variants with chemical initialization and MPQC were also proposed.",
+   "caveats": [
+    "The qudit link is cited by paper title only (abstract-only source).",
+    "Pilot result (docs/research/qc7-qudit-pilot): qudit dimension amplified the decay (-0.57, -0.90, -1.59 per qudit for d = 2, 3, 4), but a measure-and-reset far from the cost qudit lowered the gradient variance at every d (x0.88, x0.84, x0.67). Refuted for that operationalization only."
+   ],
+   "next_steps": [
+    "Test measurement with feed-forward or entanglement-entropy targeting near the cost qudit.",
+    "Add identity-block initialization as a baseline mitigation across d.",
+    "Scale beyond n = 6 with tensor-network or trajectory simulation."
+   ],
+   "claim_status": "UNVERIFIED_HYPOTHESIS",
+   "hypotheses": [
+    {
+     "text": "Gains in Barren plateaus from dimension of qudits may be offset by mid - circuit measurements.",
+     "frontier_id": "af462610d15d",
+     "topic": "barren plateaus",
+     "rank": 13,
+     "scores": {
+      "source_support": 0.8,
+      "deductive_relevance": 0.815,
+      "novelty": 0.628
+     },
+     "citations": [
+      {
+       "document_id": "arxiv-2405-08190-p0001",
+       "url": "https://arxiv.org/abs/2405.08190",
+       "quote": "# Barren plateaus are amplified by the dimension of qudits"
+      },
+      {
+       "document_id": "arxiv-2406-14285-p0059",
+       "url": "https://arxiv.org/abs/2406.14285",
+       "quote": "therefore, mid-circuit measurements, circuit pretraining, entanglement regularization to add terms to the cost function, and initial partitioning play on the entanglement entropy to better mitigate barren plateaus"
+      }
+     ],
+     "falsification_test": "Measure Barren plateaus where both dimension of qudits and mid - circuit measurements vary independently. The hypothesis fails if the effect of one does not shrink when the other is present.",
+     "deepen": {
+      "verdict": "all_links_supported",
+      "links": [
+       "supported",
+       "supported"
+      ],
+      "composition": "conditional",
+      "novelty_kb": "no_overlap_found_in_snapshot",
+      "test_design": "2x2 factorial",
+      "vary": [
+       "dimension of qudits",
+       "mid - circuit measurements"
+      ],
+      "measure": [
+       "Barren plateaus"
+      ],
+      "fails_if": "A precisely measured absence of an interaction challenges compounding in Barren plateaus; it does not refute individual effects of dimension of qudits or mid - circuit measurements. Predefine a meaningful effect threshold.",
+      "confounders": [
+       "chemical initialization",
+       "issues",
+       "MPQC"
+      ]
+     }
+    }
+   ]
   }
  ],
  "coverage_gaps": [
